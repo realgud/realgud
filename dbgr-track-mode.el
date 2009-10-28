@@ -3,7 +3,7 @@
 (defun dbgr-directory ()
   "The directory of this file, or nil."
   (let ((file-name (or load-file-name
-                       (symbol-file 'dbgr-directory))))
+                       (symbol-file 'dbgr-track-mode))))
     (if file-name
         (file-name-directory file-name)
       nil)))
@@ -20,15 +20,6 @@
 (load "dbgr-regexp")
 (require 'dbgr-regexp)
 (setq load-path (cddr load-path))
-
-(make-variable-buffer-local 'dbgr-info)
-(defvar dbgr-inof (make-dbgr-info
-		    :name "unknown-debugger-name"
-		    :loc-regexp nil
-		    :file-group -1
-		    :line-group -1
-		    :loc-hist   nil)
-  "Debugger object for a process buffer.")
 
 (defvar dbgr-track-minor-mode nil
   "Non-nil if using dbgr-track mode as a minor mode of some other mode.
@@ -47,7 +38,7 @@ Use the command `dbgr-track-minor-mode' to toggle or set this variable.")
 (define-minor-mode dbgr-track-mode
   "Minor mode for tracking ruby debugging inside a process shell."
   :init-value nil
-  ;; :lighter " dbgrr"   ;; indicator in the mode line.
+  ;; :lighter " dbgr"   ;; indicator in the mode line.
   ;; The minor mode bindings.
   :global nil
   :group 'dbgr
@@ -59,11 +50,11 @@ Use the command `dbgr-track-minor-mode' to toggle or set this variable.")
 	(add-hook 'eshell-output-filter-functions 
 		  'dbgr-track-eshell-output-filter-hook)
   
-	;; FIXME: the following is customized for the debugger dbgrr. 
+	;; FIXME: the following is customized for the debugger rdbgr.
 	;; Other debuggers will be put in dbgr-dbgr-pat-hash and the 
 	;; below should be customizable for those debuggers by setting
 	;; dbg-name accordingly. Put this in a subroutine.
-	(dbgr-track-set-debugger "dbgrr")
+	(dbgr-track-set-debugger "rbdbgr")
 	(run-mode-hooks 'dbgr-track-mode-hook)
 	)
     (progn

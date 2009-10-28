@@ -7,20 +7,22 @@
 (defun rbdbgr-directory ()
   "The directory of this file, or nil."
   (let ((file-name (or load-file-name
-                       (symbol-file 'rbdbgr-directory))))
+                       (symbol-file 'rbdbgr-core))))
     (if file-name
         (file-name-directory file-name)
       nil)))
 
-(setq load-path (cons nil (cons (rbdbgr-directory) load-path)))
-(require 'rbdbg-track)
+(setq load-path (cons nil 
+		      (cons (format "%s.." (rbdbgr-directory))
+				    (cons (rbdbgr-directory) load-path))))
+(require 'dbgr-track)
 (require 'gud)  ; FIXME: GUD is BAD! It is too far broken to be fixed.
 (require 'rbdbgr-regexp)
-(require 'rbdbg-scriptbuf-var)
-(setq load-path (cddr load-path))
+(require 'dbgr-scriptbuf-var)
+(setq load-path (cdddr load-path))
 
 
-;; FIXME: move to a more common location. rbdbg-core ? 
+;; FIXME: move to a more common location. dbgr-core ? 
 (defun rbdbgr-strip-command-arg (args two-args opt-two-args)
   "return ARGS with the first argument, an 'option'
 removed. 
@@ -185,8 +187,8 @@ given priority, we use the first one we find."
   "Prompt for a rbdbgr debugger command invocation to run.
 Analogous to `gud-query-cmdline'"
   ;; FIXME: keep a list of recent invocations.
-  (let ((debugger (rbdbg-scriptbuf-var-name rbdbgr-scriptvar))
-	(cmd-name (rbdbg-scriptbuf-var-cmd rbdbgr-scriptvar)))
+  (let ((debugger (dbgr-scriptbuf-var-name rbdbgr-scriptvar))
+	(cmd-name (dbgr-scriptbuf-var-cmd rbdbgr-scriptvar)))
     (read-from-minibuffer
      (format "Run %s (like this): " debugger)
      (concat cmd-name " " (or (rbdbgr-suggest-ruby-file))))))
@@ -204,12 +206,12 @@ to get a regular-expresion pattern matching information."
 		   (end (line-end-position))
 		   (tb (gethash type rbdbgr-dbgr-pat-hash))
 		   ;; FIXME check that tb is not null and abort if it is.
-		   (loc (rbdbg-track-loc (buffer-substring start end)
-					 (rbdbg-dbgr-loc-pat-regexp tb)
-					 (rbdbg-dbgr-loc-pat-file-group tb)
-					 (rbdbg-dbgr-loc-pat-line-group tb)
+		   (loc (dbgr-track-loc (buffer-substring start end)
+					 (dbgr-dbgr-loc-pat-regexp tb)
+					 (dbgr-dbgr-loc-pat-file-group tb)
+					 (dbgr-dbgr-loc-pat-line-group tb)
 					 )))
-    (if loc (rbdbg-track-loc-action loc proc-buff proc-window)))))
+    (if loc (dbgr-track-loc-action loc proc-buff proc-window)))))
 
 (defun rbdbgr-goto-traceback-line (pt)
   "Display the location mentioned by the Ruby traceback line
@@ -304,7 +306,7 @@ described by PT."
     
 ;;     ;; Setup exit callback so that the original frame configuration
 ;;     ;; can be restored.
-;;     ;; (let ((process (get-buffer-process rbdbg-buffer)))
+;;     ;; (let ((process (get-buffer-process dbgr-buffer)))
 ;;     ;;   (when process
 ;;     ;;     (unless (equal rbdbgr-line-width 120)
 ;;     ;; 	    (gud-call (format "set width %d" rbdbgr-line-width)))

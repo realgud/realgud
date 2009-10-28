@@ -3,7 +3,7 @@
 (defun dbgr-directory ()
   "The directory of this file, or nil."
   (let ((file-name (or load-file-name
-                       (symbol-file 'dbgr-directory)
+                       (symbol-file 'dbgr-load)
 		       (buffer-file-name (current-buffer))
 		       )))
     (if file-name

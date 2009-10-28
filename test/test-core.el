@@ -1,4 +1,4 @@
-(setq rbdbgr-core "../rbdbgr-core.el")
+(setq rbdbgr-core "../ruby/rbdbgr-core.el")
 (load-file "./behave.el")
 (load-file rbdbgr-core)
 

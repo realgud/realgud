@@ -19,7 +19,7 @@ to be debugged."
   "Debugger object for a process buffer.")
 (make-variable-buffer-local 'rbdbgr-dbgr-scriptbuf-var)
 
-(provide 'rbdbg-scriptbuf-var)
+(provide 'dbgr-scriptbuf-var)
 
 ;;; Local variables:
 ;;; eval:(put 'rbdbgr-debug-enter 'lisp-indent-hook 1)

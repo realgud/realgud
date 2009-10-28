@@ -3,16 +3,16 @@
 (defun dbgr-directory ()
   "The directory of this file, or nil."
   (let ((file-name (or load-file-name
-                       (symbol-file 'dbgr-directory))))
+                       (symbol-file 'dbgr-file))))
     (if file-name
         (file-name-directory file-name)
       nil)))
 
-(eval-when-compile (require 'cl)
+(eval-when-compile (require 'cl))
 
 (setq load-path (cons (dbgr-directory) load-path))
 (load "dbgr-loc")
-(setq load-path (cdr load-path)))
+(setq load-path (cdr load-path))
 
 
 (defun dbgr-file-line-count(filename)
@@ -41,8 +41,8 @@ problem as best as we can determine."
 			; And you thought we'd never get around to
 			; doing something other than validation? 
 			(make-dbgr-loc :filename    filename 
-					:line-number line-number
-					:marker      (make-marker))
+				       :line-number line-number
+				       :marker      (make-marker))
 		      (format "File %s has only %d lines. (Line %d requested.)"
 			      filename line-count line-number))
 		  (format "Problem getting line count for file `%s'" filename)))
@@ -51,4 +51,3 @@ problem as best as we can determine."
     (format "File named `%s' not found" filename)))
 
 (provide 'dbgr-file)
-

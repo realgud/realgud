@@ -31,6 +31,15 @@
 (require 'dbgr-loc)
 (require 'dbgr-regexp)
 
+(defvar dbgr-info (make-dbgr-info
+		    :name "unknown-debugger-name"
+		    :loc-regexp nil
+		    :file-group -1
+		    :line-group -1
+		    :loc-hist   nil)
+  "Debugger object for a process buffer.")
+(make-variable-buffer-local 'dbgr-info)
+
 (defun dbgr-track-comint-output-filter-hook(text)
   "An output-filter hook custom for comint shells.  Find
 location/s, if any, and run the action(s) associated with
@@ -74,7 +83,7 @@ marks set in buffer-local variables to extract text"
 
 (defun dbgr-track-hist-fn-internal(fn)
   (interactive)
-  (lexical-let* ((loc-hist (dbgr-dbgr-loc-hist dbgr-dbgr))
+  (lexical-let* ((loc-hist (dbgr-info-loc-hist dbgr-info))
 	 (cmd-window (selected-window))
 	 (cmd-buff (current-buffer))
 	 (position (funcall fn loc-hist))
@@ -122,7 +131,7 @@ encountering a new loc."
 	(set-buffer cmd-buff)
 
 	; hist add has to be done in cmd-buff since dbgr-dbgr
-	(dbgr-loc-hist-add (dbgr-dbgr-loc-hist dbgr-dbgr) loc)
+	(dbgr-loc-hist-add (dbgr-info-loc-hist dbgr-info) loc)
 
         ; I like to stay on the debugger prompt rather than the found
         ; source location. Folks like Anders (who would like to totally
@@ -156,13 +165,13 @@ Otherwise return nil."
   
 (defun dbgr-track-set-debugger(debugger-name)
   (interactive "sDebugger name: ")
-  (lexical-let ((loc-pat (gethash debugger-name dbgr-info-pat-hash)))
+  (lexical-let ((loc-pat (gethash debugger-name dbgr-pat-hash)))
     (if loc-pat 
 	(setq dbgr-info (make-dbgr-info
 			  :name debugger-name
-			  :loc-regexp (dbgr-info-loc-pat-regexp     loc-pat)
-			  :file-group (dbgr-info-loc-pat-file-group loc-pat)
-			  :line-group (dbgr-info-loc-pat-line-group loc-pat)
+			  :loc-regexp (dbgr-loc-pat-regexp loc-pat)
+			  :file-group (dbgr-loc-pat-file-group loc-pat)
+			  :line-group (dbgr-loc-pat-line-group loc-pat)
 			  :loc-hist   (make-dbgr-loc-hist)))
       (message "I Don't have %s listed as a debugger." debugger-name)
       ))

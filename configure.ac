@@ -1,5 +1,5 @@
 AC_INIT(rbdbgr-emacs, 0.01vc,)
-AC_CONFIG_SRCDIR(rbdbg-loc.el)
+AC_CONFIG_SRCDIR(dbgr-loc.el)
 AM_INIT_AUTOMAKE
 AM_MAINTAINER_MODE
 

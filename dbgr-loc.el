@@ -6,7 +6,7 @@
 
 (eval-when-compile (require 'cl))
 
-(defstruct dbgr-loc 
+(defstruct dbgr-loc
 "Our own location type. Even though a mark contains a
 file-name (via a buffer) and a line number (via an offset), we
 want to save the values that were seen/requested originally."
