@@ -1,8 +1,7 @@
 ;; -------------------------------------------------------------------
 ;; Dependencies.
 ;;
-(eval-when-compile
-  (require 'cl))
+(eval-when-compile (require 'cl))
 
 (defun rbdbgr-directory ()
   "The directory of this file, or nil."
@@ -204,12 +203,12 @@ to get a regular-expresion pattern matching information."
 		   (curr-proc (get-buffer-process proc-buff))
 		   (start (line-beginning-position))
 		   (end (line-end-position))
-		   (tb (gethash type rbdbgr-dbgr-pat-hash))
+		   (tb (gethash type rbdbgr-pat-hash))
 		   ;; FIXME check that tb is not null and abort if it is.
 		   (loc (dbgr-track-loc (buffer-substring start end)
-					 (dbgr-dbgr-loc-pat-regexp tb)
-					 (dbgr-dbgr-loc-pat-file-group tb)
-					 (dbgr-dbgr-loc-pat-line-group tb)
+					 (dbgr-loc-pat-regexp tb)
+					 (dbgr-loc-pat-file-group tb)
+					 (dbgr-loc-pat-line-group tb)
 					 )))
     (if loc (dbgr-track-loc-action loc proc-buff proc-window)))))
 

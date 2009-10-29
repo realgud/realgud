@@ -37,7 +37,7 @@ Use the command `dbgr-track-minor-mode' to toggle or set this variable.")
 (define-minor-mode dbgr-track-mode
   "Minor mode for tracking ruby debugging inside a process shell."
   :init-value nil
-  ;; :lighter " dbgr"   ;; indicator in the mode line.
+  :lighter (:eval (progn (concat " " (dbgr-info-name dbgr-info))))
   ;; The minor mode bindings.
   :global nil
   :group 'dbgr
@@ -53,21 +53,14 @@ Use the command `dbgr-track-minor-mode' to toggle or set this variable.")
 	;; Other debuggers will be put in dbgr-dbgr-pat-hash and the 
 	;; below should be customizable for those debuggers by setting
 	;; dbg-name accordingly. Put this in a subroutine.
-	(dbgr-track-set-debugger "rbdbgr")
-	(run-mode-hooks 'dbgr-track-mode-hook)
-	(add-to-list 'minor-mode-alist 
-		     '(dbgr-track-mode 
-		       (:eval (progn (concat " " (dbgr-info-name dbgr-info))))))
+	(unless (boundp 'dbgr-info)
+	  (call-interactively 'dbgr-track-set-debugger))
+	(run-mode-hooks 'dbgr-track-mode-hook))
     (progn
-	(remove-hook 'comint-output-filter-functions 
-		  'dbgr-track-comint-output-filter-hook)
-	(remove-hook 'eshell-output-filter-functions 
-		    'dbgr-track-eshell-output-filter-hook)
-	(delq (list 'dbgr-track-mode 
-		     '(dbgr-track-mode 
-		       (:eval (progn (concat " " (dbgr-info-name dbgr-info))))))
-	      minor-mode-alist)
-	))))
+      (remove-hook 'comint-output-filter-functions 
+		   'dbgr-track-comint-output-filter-hook)
+      (remove-hook 'eshell-output-filter-functions 
+		    'dbgr-track-eshell-output-filter-hook))))
 
 ;; -------------------------------------------------------------------
 ;; The end.

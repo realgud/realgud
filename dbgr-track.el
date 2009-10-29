@@ -31,6 +31,7 @@
 (require 'dbgr-loc)
 (require 'dbgr-regexp)
 
+(make-variable-buffer-local 'dbgr-info)
 (defvar dbgr-info (make-dbgr-info
 		    :name "unknown-debugger-name"
 		    :loc-regexp nil
@@ -38,7 +39,6 @@
 		    :line-group -1
 		    :loc-hist   nil)
   "Debugger object for a process buffer.")
-(make-variable-buffer-local 'dbgr-info)
 
 (defun dbgr-track-comint-output-filter-hook(text)
   "An output-filter hook custom for comint shells.  Find
@@ -167,7 +167,7 @@ Otherwise return nil."
   (interactive "sDebugger name: ")
   (lexical-let ((loc-pat (gethash debugger-name dbgr-pat-hash)))
     (if loc-pat 
-	(set (make-variable-buffer-local 'dbgr-info)
+	(setq dbgr-info
 	     (make-dbgr-info
 	      :name debugger-name
 	      :loc-regexp (dbgr-loc-pat-regexp loc-pat)

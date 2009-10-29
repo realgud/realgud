@@ -3,11 +3,21 @@
 ;; -------------------------------------------------------------------
 ;; Variables defining regular expressions (regexp:s).
 ;;
-(eval-when-compile
-  (setq load-path (cons nil (cons ".." load-path)))
-  (require 'cl)
-  (load "dbgr-regexp") ; for make-dbgr-loc-pat
-  (setq load-path (cddr load-path)))
+(eval-when-compile (require 'cl))
+
+(defun rbdbgr-directory ()
+  "The directory of this file, or nil."
+  (let ((file-name (or load-file-name
+                       (symbol-file 'rbdbgr-core))))
+    (if file-name
+        (file-name-directory file-name)
+      nil)))
+
+(setq load-path (cons nil 
+		      (cons (format "%s.." (rbdbgr-directory))
+				    (cons (rbdbgr-directory) load-path))))
+(load "dbgr-regexp") ; for make-dbgr-loc-pat
+(setq load-path (cdddr load-path))
 
 
 (defvar rbdbgr-pat-hash (make-hash-table :test 'equal)
