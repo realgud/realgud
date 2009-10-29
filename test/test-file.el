@@ -6,7 +6,7 @@
 
 (lexical-let ((filename (symbol-file 'behave)))
 
-  (context "dbgr-file-line-count: "
+  (context "dbgr-file-line-count"
 	   (tag file)
 	   (specify "File not found"
 		    (expect-nil
@@ -15,7 +15,7 @@
 		    (expect-t (integerp (dbgr-file-line-count filename))))
 	   )
 
-  (context "dbgr-file-loc-from-line: "
+  (context "dbgr-file-loc-from-line"
 	   (tag file)
 	   (specify "File not found"
 		    (expect-t (stringp (dbgr-file-loc-from-line 

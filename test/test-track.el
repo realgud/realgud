@@ -28,7 +28,7 @@
 					filename line-number))
 	       (loc (dbgr-track-loc debugger-output)))
 
-  (context "dbgr-track: "
+  (context "dbgr-track"
 	   (tag track)
 	   (specify "loc extracted"
 		    (expect (dbgr-loc-p loc) t))

@@ -22,7 +22,7 @@
   (string-match (dbgr-info-loc-regexp dbgr) text)
 )
 
-(context "location matching: "
+(context "location matching"
 	 (tag regexp)
 	 (lexical-let ((text ".. (./dbgr.rb:73)")
 		       (text2 "C> ((eval):1 via /tmp/eval2.rb:2)")

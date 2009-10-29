@@ -20,7 +20,7 @@
   ; file with it.
   (find-file (symbol-file 'behave))
 
-  (context "location ring initialization and fields access: "
+  (context "location ring initialization and fields access"
 	   (tag lochist)
 	   (lexical-let ((loc-hist (make-dbgr-loc-hist))
 			 (filename (buffer-file-name (current-buffer)))

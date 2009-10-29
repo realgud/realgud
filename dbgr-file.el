@@ -18,13 +18,11 @@
 (defun dbgr-file-line-count(filename)
   "Return the number of lines in file FILENAME, or nil FILENAME can't be
 found"
-  (lexical-let ((saved-buffer (current-buffer))
-		(result nil))
-    (if (file-exists-p filename)
-	(progn (find-file filename)
-	       (setq result (line-number-at-pos (point-max)))))
-    (switch-to-buffer saved-buffer)
-    result))
+  (if (file-exists-p filename)
+      (save-current-buffer 
+	(find-file filename)
+	(line-number-at-pos (point-max)))
+    nil))
 
 (defun dbgr-file-loc-from-line(filename line-number)
   "Return a dbgr-loc for FILENAME and LINE-NUMBER

@@ -5,7 +5,7 @@
 
 (behave-clear-contexts)
 
-(context "command argument processing: "
+(context "dbgr-core.el"
 	 (tag cmd-args)
 	 (lexical-let ((opt-two-args '("0" "C" "e" "E" "F" "i")))
 	   (specify "Two args found, none remain afterwards though."
@@ -44,7 +44,7 @@
 	 )
 
 ;; FIXME: move to another file.
-(context "rbdbgr-file-ruby-mode?"
+(context "rbdbgr-core.el"
 	 (tag cmd-args)
 	 (specify "ruby-mode? with Lisp file"
 		  (expect-nil

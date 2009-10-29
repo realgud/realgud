@@ -20,10 +20,6 @@
 (require 'dbgr-regexp)
 (setq load-path (cddr load-path))
 
-(defvar dbgr-track-mode nil
-  "Non-nil if using dbgr-track mode as a minor mode of some other mode.
-Use the command `dbgr-track-minor-mode' to toggle or set this variable.")
-
 (defvar dbgr-track-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map [M-right]	'dbgr-track-hist-newest)
@@ -36,12 +32,20 @@ Use the command `dbgr-track-minor-mode' to toggle or set this variable.")
 
 (define-minor-mode dbgr-track-mode
   "Minor mode for tracking ruby debugging inside a process shell."
-  :init-value nil
-  :lighter (:eval (progn (concat " " (dbgr-info-name dbgr-info))))
-  ;; The minor mode bindings.
+  :init-value (not (dbgr-track-set-debugger "rbdbgr"))
   :global nil
   :group 'dbgr
+
+  :lighter 
+  (:eval (progn 
+	   (concat " "
+		   (if (boundp 'dbgr-info)
+		       (dbgr-info-name dbgr-info)
+		     "dbgr??"))))
+
   :keymap dbgr-track-mode-map
+  
+  ;; body
   (if dbgr-track-mode
       (progn
 	(add-hook 'comint-output-filter-functions 
@@ -49,8 +53,6 @@ Use the command `dbgr-track-minor-mode' to toggle or set this variable.")
 	(add-hook 'eshell-output-filter-functions 
 		  'dbgr-track-eshell-output-filter-hook)
   
-	;; FIXME: dbgr-info is somehow set initiall so this code isn't 
-	;; kicking in.
 	(unless (boundp 'dbgr-info)
 	  (call-interactively 'dbgr-track-set-debugger))
 	(run-mode-hooks 'dbgr-track-mode-hook))
@@ -58,7 +60,8 @@ Use the command `dbgr-track-minor-mode' to toggle or set this variable.")
       (remove-hook 'comint-output-filter-functions 
 		   'dbgr-track-comint-output-filter-hook)
       (remove-hook 'eshell-output-filter-functions 
-		    'dbgr-track-eshell-output-filter-hook))))
+		    'dbgr-track-eshell-output-filter-hook)))
+  )
 
 ;; -------------------------------------------------------------------
 ;; The end.
@@ -70,4 +73,4 @@ Use the command `dbgr-track-minor-mode' to toggle or set this variable.")
 ;;; eval:(put 'dbgr-debug-enter 'lisp-indent-hook 1)
 ;;; End:
 
-;;; dbgr-track.el ends here
+;;; dbgr-track-mode.el ends here

@@ -3,12 +3,13 @@
 
 (behave-clear-contexts)
 
-(lexical-let ((saved-buffer (current-buffer)))
-  ; Below, we need to make sure current-buffer has an associated
-  ; file with it.
+(save-current-buffer
+
+  ;; Below, we need to make sure current-buffer has an associated
+  ;; file with it.
   (find-file (symbol-file 'behave))
 
-  (context "location field extraction: "
+  (context "location field extraction"
 	   (tag loc)
 	   (lexical-let* ((filename (buffer-file-name (current-buffer)))
 			  (marker (point-marker))
@@ -30,8 +31,8 @@
 		      (dbgr-loc-marker= good-loc2 marker)
 		      (expect-equal marker (dbgr-loc-marker good-loc2)))
 
-	     ))
-  (switch-to-buffer saved-buffer))
+	     )))
+
 (behave "loc")
 
 ; TODO: add test for debug-loc-goto, e.g.

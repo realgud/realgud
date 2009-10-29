@@ -96,14 +96,12 @@ annotate option (either '--annotate' or '-A') was set."
   "Return true if FILENAME is a buffer we are visiting a buffer
 that is in ruby-mode"
   (let ((buffer (and filename (find-buffer-visiting filename)))
-	(cur-buff (current-buffer))
 	(match-pos))
     (if buffer 
 	(progn 
-	  (save-excursion
+	  (save-current-buffer
 	    (switch-to-buffer buffer 't)
 	    (setq match-pos (string-match "^ruby-" (format "%s" major-mode))))
-	  (switch-to-buffer cur-buff)
 	  (and match-pos (= 0 match-pos)))
       nil)))
 
@@ -122,6 +120,7 @@ given priority, we use the first one we find."
     (let* ((file)
 	   (file-list (directory-files default-directory))
 	   (priority 2)
+	   (is-not-directory)
 	   (result (buffer-file-name)))
       (if (not (rbdbgr-file-ruby-mode? result))
 	  (while (and (setq file (car-safe file-list)) (< priority 8))
@@ -136,14 +135,14 @@ given priority, we use the first one we find."
 	    ;; The file isn't in a Ruby-mode buffer,
 	    ;; Check for an executable file with a .rb extension.
 	    (if (and file (file-executable-p file)
-		     (not (file-directory-p file)))
+		     (setq is-not-directory (not (file-directory-p file))))
 		(if (and (string-match "\.rb$" file))
 		    (if (< priority 6)
 			(progn
 			  (setq result file)
 			  (setq priority 6))))
-	      ;; Found some sort of executable file.
-	      (if (< priority 5)
+	      (if (and is-not-directory (< priority 5))
+		  ;; Found some sort of executable file.
 		  (progn
 		    (setq result file)
 		    (setq priority 5))))))

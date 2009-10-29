@@ -164,6 +164,9 @@ Otherwise return nil."
       nil)))
   
 (defun dbgr-track-set-debugger (debugger-name)
+  "Set debugger name and information associated with that debugger for
+the buffer process. This info is returned or nil if we can't find a 
+debugger with that information"
   (interactive "sDebugger name: ")
   (lexical-let ((loc-pat (gethash debugger-name dbgr-pat-hash)))
     (if loc-pat 
@@ -174,7 +177,10 @@ Otherwise return nil."
 	      :file-group (dbgr-loc-pat-file-group loc-pat)
 	      :line-group (dbgr-loc-pat-line-group loc-pat)
 	      :loc-hist   (make-dbgr-loc-hist)))
-      (message "I Don't have %s listed as a debugger." debugger-name))))
+      (progn 
+	(message "I Don't have %s listed as a debugger." debugger-name)
+	nil)
+      )))
   
 ;; -------------------------------------------------------------------
 ;; The end.

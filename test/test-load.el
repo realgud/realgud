@@ -12,7 +12,7 @@
 
 (behave-clear-contexts)
 
-(context "rdbg-load: "
+(context "rdbg-load"
 	 (tag load)
 	 (specify "Initialized history"
 		  (setup)

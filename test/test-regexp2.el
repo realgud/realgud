@@ -14,7 +14,7 @@
 ;;        even though we define it in lexical-let. Dunno why.
 ;;        setq however will workaround this.
 (setq text "	from /usr/local/bin/irb:12:in `<main>'")
-(context "traceback location matching: "
+(context "traceback location matching"
 	 (tag regexp-rbdbgr)
 	 (lexical-let ((text "	from /usr/local/bin/irb:12:in `<main>'"))
 	   (specify "basic traceback location"
