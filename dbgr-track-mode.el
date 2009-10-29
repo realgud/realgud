@@ -9,7 +9,6 @@
       nil)))
 
 (eval-when-compile (require 'cl))
-(require 'dbgr-track)
 (setq load-path (cons nil (cons (dbgr-directory) load-path)))
 (load "dbgr-track")
 (load "dbgr-loc")
@@ -21,11 +20,11 @@
 (require 'dbgr-regexp)
 (setq load-path (cddr load-path))
 
-(defvar dbgr-track-minor-mode nil
+(defvar dbgr-track-mode nil
   "Non-nil if using dbgr-track mode as a minor mode of some other mode.
 Use the command `dbgr-track-minor-mode' to toggle or set this variable.")
 
-(defvar dbgr-track-minor-mode-map
+(defvar dbgr-track-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map [M-right]	'dbgr-track-hist-newest)
     (define-key map [M-down]	'dbgr-track-hist-newer)
@@ -42,7 +41,7 @@ Use the command `dbgr-track-minor-mode' to toggle or set this variable.")
   ;; The minor mode bindings.
   :global nil
   :group 'dbgr
-  :keymap dbgr-track-minor-mode-map
+  :keymap dbgr-track-mode-map
   (if dbgr-track-mode
       (progn
 	(add-hook 'comint-output-filter-functions 
@@ -56,13 +55,19 @@ Use the command `dbgr-track-minor-mode' to toggle or set this variable.")
 	;; dbg-name accordingly. Put this in a subroutine.
 	(dbgr-track-set-debugger "rbdbgr")
 	(run-mode-hooks 'dbgr-track-mode-hook)
-	)
+	(add-to-list 'minor-mode-alist 
+		     '(dbgr-track-mode 
+		       (:eval (progn (concat " " (dbgr-info-name dbgr-info))))))
     (progn
 	(remove-hook 'comint-output-filter-functions 
 		  'dbgr-track-comint-output-filter-hook)
 	(remove-hook 'eshell-output-filter-functions 
 		    'dbgr-track-eshell-output-filter-hook)
-	)))
+	(delq (list 'dbgr-track-mode 
+		     '(dbgr-track-mode 
+		       (:eval (progn (concat " " (dbgr-info-name dbgr-info))))))
+	      minor-mode-alist)
+	))))
 
 ;; -------------------------------------------------------------------
 ;; The end.

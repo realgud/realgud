@@ -163,19 +163,18 @@ Otherwise return nil."
 	    nil))
       nil)))
   
-(defun dbgr-track-set-debugger(debugger-name)
+(defun dbgr-track-set-debugger (debugger-name)
   (interactive "sDebugger name: ")
   (lexical-let ((loc-pat (gethash debugger-name dbgr-pat-hash)))
     (if loc-pat 
-	(setq dbgr-info (make-dbgr-info
-			  :name debugger-name
-			  :loc-regexp (dbgr-loc-pat-regexp loc-pat)
-			  :file-group (dbgr-loc-pat-file-group loc-pat)
-			  :line-group (dbgr-loc-pat-line-group loc-pat)
-			  :loc-hist   (make-dbgr-loc-hist)))
-      (message "I Don't have %s listed as a debugger." debugger-name)
-      ))
-  )
+	(set (make-variable-buffer-local 'dbgr-info)
+	     (make-dbgr-info
+	      :name debugger-name
+	      :loc-regexp (dbgr-loc-pat-regexp loc-pat)
+	      :file-group (dbgr-loc-pat-file-group loc-pat)
+	      :line-group (dbgr-loc-pat-line-group loc-pat)
+	      :loc-hist   (make-dbgr-loc-hist)))
+      (message "I Don't have %s listed as a debugger." debugger-name))))
   
 ;; -------------------------------------------------------------------
 ;; The end.

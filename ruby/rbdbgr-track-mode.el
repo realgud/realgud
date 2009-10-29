@@ -32,7 +32,7 @@ Use the command `rbdbgr-track-mode' to toggle or set this variable.")
 (define-minor-mode rbdbgr-track-mode
   "Minor mode for tracking ruby debugging inside a process shell."
   :init-value nil
-  :lighter " rbdbgr"   ;; indicator in the mode line.
+  ;; :lighter " rbdbgr"   ;; indicator in the mode line.
   ;; The minor mode bindings.
   :global nil
   :group 'rbdbgr
