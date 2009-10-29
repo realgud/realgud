@@ -43,7 +43,7 @@ ARGS are passed to the program.  At the moment, no piping of input is
 allowed."
   (let* ((term-buf
 	  (generate-new-buffer
-	   (format "*%s %s*" 
+	   (format "*%s %s shell*" 
 		   (file-name-nondirectory debugger-name)
 		   (file-name-nondirectory program) )))
 	 (dbgr-buf (current-buffer)))
@@ -57,8 +57,8 @@ allowed."
       (let ((proc (get-buffer-process term-buf)))
 	(if (and proc (eq 'run (process-status proc)))
 	    (set-process-sentinel proc 'dbgr-term-sentinel)
-	  (error "Failed to invoke visual command")))))
-  nil)
+	  (error "Failed to invoke shell command")) ;; FIXME: add more info
+	proc))))
 
 ;; -------------------------------------------------------------------
 ;; The end.

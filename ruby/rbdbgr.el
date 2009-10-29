@@ -21,13 +21,13 @@
 ;; User definable variables
 ;;
 
-(defcustom gud-rbdbgr-command-name
+(defcustom rbdbgr-command-name
   ;;"rbdbgr --emacs 3"
   "rbdbgr"
   "File name for executing the Ruby debugger and command options.
 This should be an executable on your path, or an absolute file name."
   :type 'string
-  :group 'gud)
+  :group 'rbdbgr)
 
 
 ;; -------------------------------------------------------------------

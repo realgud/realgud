@@ -148,15 +148,17 @@ given priority, we use the first one we find."
 		    (setq priority 5))))))
       result))
 
-(defun rbdbgr-query-cmdline ()
+(defun rbdbgr-query-cmdline (&optional opt-debugger opt-cmd-name)
   "Prompt for a rbdbgr debugger command invocation to run.
 Analogous to `gud-query-cmdline'"
   ;; FIXME: keep a list of recent invocations.
-  (let ((debugger (dbgr-scriptbuf-var-name rbdbgr-scriptvar))
-	(cmd-name (dbgr-scriptbuf-var-cmd rbdbgr-scriptvar)))
+  (let ((debugger (or opt-debugger
+		   (dbgr-scriptbuf-var-name rbdbgr-scriptvar)))
+	(cmd-name (or opt-cmd-name
+		      (rbdbgr-suggest-ruby-file))))
     (read-from-minibuffer
      (format "Run %s (like this): " debugger)
-     (concat cmd-name " " (or (rbdbgr-suggest-ruby-file))))))
+     (concat debugger " " cmd-name))))
 
 (defun rbdbgr-goto-line-for-type (type pt)
   "Display the location mentioned in line described by PT. TYPE is used
@@ -231,75 +233,30 @@ described by PT."
 ;;; 	  (set-process-sentinel buffer-process 'gud-sentinel))))
 ;;;   (gud-set-buffer))
 
-;; ;;;###autoload
-;; (defun rbdbgr (command-line)
-;;   "Invoke the rbdbgr Ruby debugger and start the Emacs user interface.
+;;;###autoload
+(defun rbdbgr (&optional opt-command-line)
+  "Invoke the rbdbgr Ruby debugger and start the Emacs user interface.
 
-;; String COMMAND-LINE specifies how to run rbdbgr."
-;;   (interactive
-;;    (let ((init (buffer-file-name)))
-;;      (setq init (and init
-;;                      (file-name-nondirectory init)))
-;;      (list (gud-query-cmdline 'rbdbgr init))))
-;;   ;; (rbdbgr-set-window-configuration-state 'debugger t)
-;;   ;; Parse the command line and pick out the script name and whether
-;;   ;; --annotate has been set.
-;;   (let* ((words (with-no-warnings
-;; 		  (split-string-and-unquote command-line)))
-;; 	 (script-name-annotate-p (rbdbgr-get-script-name
-;; 				  (gud-rbdbgr-massage-args "1" words)))
-;; 	 (target-name (file-name-nondirectory (car script-name-annotate-p)))
-;; 	 (annotate-p (cadr script-name-annotate-p))
-;; 	 (cmd-buffer-name (format "rbdbgr-cmd-%s" target-name))
-;; 	 (rbdbgr-cmd-buffer-name (format "*%s*" cmd-buffer-name))
-;; 	 (rbdbgr-cmd-buffer (get-buffer rbdbgr-cmd-buffer-name))
-;; 	 (program (car words))
-;; 	 (args (cdr words))
-;; 	 (gud-chdir-before-run nil))
-    
-;;     ;; `gud-rbdbgr-massage-args' needs whole `command-line'.
-;;     ;; command-line is refered through dynamic scope.
-;;     (rbdbgr-common-init cmd-buffer-name rbdbgr-cmd-buffer target-name
-;; 			program args
-;; 			'gud-rbdbgr-marker-filter
-;; 			'gud-rbdbgr-find-file)
-;;     (setq comint-process-echoes t)
-    
-;;     ;; (setq rbdbgr-inferior-status "running")
-    
-;;     (rbdbgr-command-initialization)
-    
-;;     ;; Setup exit callback so that the original frame configuration
-;;     ;; can be restored.
-;;     ;; (let ((process (get-buffer-process dbgr-buffer)))
-;;     ;;   (when process
-;;     ;;     (unless (equal rbdbgr-line-width 120)
-;;     ;; 	    (gud-call (format "set width %d" rbdbgr-line-width)))
-;;     ;;     (set-process-sentinel process
-;;     ;;                           'rbdbgr-process-sentinel)))
-    
-    
-;;     ;; Add the buffer-displaying commands to the Gud buffer,
-;;     ;; FIXME: combine with code in rbdbgr-track.el; make common
-;;     ;; command buffer mode map.
-;;     (let ((prefix-map (make-sparse-keymap)))
-;;       (define-key (current-local-map) gud-key-prefix prefix-map)
-;;       (define-key prefix-map "t" 'rbdbgr-goto-traceback-line)
-;;       (define-key prefix-map "!" 'rbdbgr-goto-dollarbang-traceback-line)
-;;       (rbdbgr-populate-secondary-buffer-map-plain prefix-map))
-    
-;;     (rbdbgr-populate-common-keys (current-local-map))
-;;     (rbdbgr-populate-debugger-menu (current-local-map))
-    
-;;     ;; (setq comint-prompt-regexp (concat "^" rbdbgr-input-prompt-regexp))
-;;     ;; (setq paragraph-start comint-prompt-regexp)
-    
-;;     ;; (setcdr (assq 'rbdbgr-debugger-support-minor-mode minor-mode-map-alist)
-;;     ;;         rbdbgr-debugger-support-minor-mode-map-when-active)
-;;     ;; (when rbdbgr-many-windows
-;;     ;;   (rbdbgr-setup-windows-initially))
-    
-;;     (run-hooks 'rbdbgr-mode-hook)))
+String COMMAND-LINE specifies how to run rbdbgr."
+  
+  (interactive)
+  (let* (
+       (cmd-str (or opt-command-line (rbdbgr-query-cmdline "rbdbgr")))
+       (cmd-args (split-string-and-unquote cmd-str))
+       (program (cadr cmd-args))       ;; FIXME: parse this
+       (program-args (caddr cmd-args))  ;; FIXME: parse this
+       (proc-buf))
+  
+  
+  ;; Parse the command line and pick out the script name and whether
+  ;; --annotate has been set.
+  
+  ;; (gud-chdir-before-run nil))
+  
+  (setq proc-buf (dbgr-exec-shell "rbdbgr" program program-args))
+  (save-current-buffer
+    (switch-to-buffer proc-buf)
+    (rbdbgr-track-mode 't))))
 
 
 (defun rbdbgr-reset ()
