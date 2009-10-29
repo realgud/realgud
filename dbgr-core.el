@@ -1,3 +1,5 @@
+(require 'term)
+
 (defun dbgr-strip-command-arg (args two-args opt-two-args)
   "return ARGS with the first argument, an 'option'
 removed. 
@@ -30,6 +32,33 @@ return the first argument is always removed.
 	  (cdr remaining)
 	remaining))
      (t remaining))))
+
+(defun dbgr-term-sentinel (proc string)
+  (message "TTTThat's all folks.... %s" string)
+)
+
+(defun dbgr-exec-shell (debugger-name program &rest args)
+  "Run the specified PROGRAM in a terminal emulation buffer.
+ARGS are passed to the program.  At the moment, no piping of input is
+allowed."
+  (let* ((term-buf
+	  (generate-new-buffer
+	   (format "*%s %s*" 
+		   (file-name-nondirectory debugger-name)
+		   (file-name-nondirectory program) )))
+	 (dbgr-buf (current-buffer)))
+    (save-current-buffer
+      (switch-to-buffer term-buf)
+      (term-mode)
+      ;; (set (make-local-variable 'term-term-name) dbgr-term-name)
+      ;; (make-local-variable 'dbgr-parent-buffer)
+      ;; (setq dbgr-parent-buffer dbgr-buf)
+      (term-exec term-buf debugger-name debugger-name nil (cons program args))
+      (let ((proc (get-buffer-process term-buf)))
+	(if (and proc (eq 'run (process-status proc)))
+	    (set-process-sentinel proc 'dbgr-term-sentinel)
+	  (error "Failed to invoke visual command")))))
+  nil)
 
 ;; -------------------------------------------------------------------
 ;; The end.
