@@ -1,16 +1,16 @@
 (require 'term)
 
-(defun dbgr-strip-command-arg (args two-args opt-two-args)
-  "return ARGS with the first argument, an 'option'
-removed. 
+(defun dbgr-parse-command-arg (args two-args opt-two-args)
+  "Return a cons node where the car is a list containing the
+entire first option and the cdr is the remaining arguments from ARGS.
 
-However if that option argument may take another argument, remove
-that as well. TWO-ARGS is list of options (strings without the
-leading dash) that take a mandatory additional
-argument. OPT-TWO-ARGS is a list of options might take two
-arguments. The rule for an optional argument we use: if the next
-parameter starts with a dash ('-'), it is not part of the
-preceeding parameter when that parameter is optional.
+We determine if an option has length one or two using the lists
+TWO-ARGS and OPT-TWO-ARGS. Both of these are list of 'options',
+that is strings without the leading dash. TWO-ARGS takes a
+mandatory additional argument. OPT-TWO-ARGS might take two
+arguments. The rule for an optional argument that we use is if
+the next parameter starts with a dash ('-'), it is not part of
+the preceeding parameter when that parameter is optional.
 
 NOTE: we don't check whether the first arguments of ARGS is an
 option by testing to see if it starts say with a dash. So on
@@ -26,12 +26,12 @@ return the first argument is always removed.
 	  (progn 
 	    (message "Expecting an argument after %s. Continuing anyway."
 		     arg)
-	    remaining)))
+	    (cons (list arg) remaining))))
      ((member arg d-opt-two-args)
       (if (and remaining (not (string-match "^-" (car remaining))))
-	  (cdr remaining)
-	remaining))
-     (t remaining))))
+	  (cons (list arg (car remaining)) (cdr remaining))
+	(cons (list arg) remaining)))
+     (t (cons (list arg) remaining)))))
 
 (defun dbgr-term-sentinel (proc string)
   (message "TTTThat's all folks.... %s" string)

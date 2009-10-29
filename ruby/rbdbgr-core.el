@@ -15,52 +15,75 @@
 		      (cons (format "%s.." (rbdbgr-directory))
 				    (cons (rbdbgr-directory) load-path))))
 (require 'dbgr-track)
-(require 'gud)  ; FIXME: GUD is BAD! It is too far broken to be fixed.
 (require 'rbdbgr-regexp)
 (require 'dbgr-core)
 (require 'dbgr-scriptbuf-var)
 (setq load-path (cdddr load-path))
 
 
-;; FIXME: move to a more common location. dbgr-core ? 
-(defun rbdbgr-get-script-name (orig-args)
+(defun rbdbgr-parse-cmd-args (orig-args)
   "Parse command line ARGS for the annotate level and name of script to debug.
 
 ARGS should contain a tokenized list of the command line to run.
 
-We return the script name to be debugged and whether option the
-annotate option (either '--annotate' or '-A') was set."
+We return the a list containing
+- the command processor (e.g. ruby) and it's arguments if any - a list of strings
+- the name of the debugger given (e.g. rbdbgr) and its arguments - a list of strings
+- the script name and its arguments - list of strings
+- whether the annotate or emacs option was given ('-A', '--annotate' or '--emacs) - a boolean
+
+For example for the following input 
+  (map 'list 'symbol-name
+   '(ruby1.8 -W -C /tmp rbdbgr --emacs ./gcd.rb a b))
+
+we might return:
+   ((ruby1.8 -W -C) (rbdbgr --emacs) (./gcd.rb a b) 't)
+
+NOTE: the above should have each item listed in quotes.
+"
+
+
   ;; Parse the following kind of pattern:
   ;;  [ruby ruby-options] rbdbgr rbdbgr-options script-name script-options
-  (let ((args orig-args)
-	(script-name nil)
-	(annotate-p nil)
+  (let (
+	(args orig-args)
+	(pair)          ;; temp return from 
 	(ruby-opt-two-args '("0" "C" "e" "E" "F" "i"))
 	;; Ruby doesn't have mandatory 2-arg options in our sense,
 	;; since the two args can be run together, e.g. "-C/tmp" or "-C /tmp"
 	;; 
 	(ruby-two-args '())
-	(debugger-name)
 	;; One dash is added automatically to the below, so
 	;; h is really -h and -host is really --host.
 	(rbdbgr-two-args '("h" "-host" "p" "-port"
 			   "I" "-include" "-r" "-require"))
-	(rbdbgr-opt-two-args '()))
+	(rbdbgr-opt-two-args '())
+
+	;; Things returned
+	(script-name nil)
+	(debugger-name nil)
+	(interpreter-args '())
+	(debugger-args '())
+	(script-args '())
+	(annotate-p nil))
+
     (if (not (and args))
 	;; Got nothing: return '(nil, nil)
-	'(script-name annotate-p)
+	(list interpreter-args debugger-args script-args annotate-p)
       ;; else
       ;; Strip off optional "ruby" or "ruby182" etc.
       (when (string-match "^ruby[-0-9]*$"
 			  (file-name-sans-extension
 			   (file-name-nondirectory (car args))))
-	(pop args) ; remove whatever "ruby" thing found.
+	(setq interpreter-args (list (pop args)))
 
 	;; Strip off Ruby-specific options
 	(while (and args
 		    (string-match "^-" (car args)))
-	  (setq args (dbgr-strip-command-arg 
-		      args ruby-two-args ruby-opt-two-args))))
+	  (setq pair (dbgr-parse-command-arg 
+		      args ruby-two-args ruby-opt-two-args))
+	  (nconc interpreter-args (car pair))
+	  (setq args (cdr pair))))
 
       ;; Remove "rbdbgr" from "rbdbgr --rbdbgr-options script
       ;; --script-options"
@@ -68,9 +91,10 @@ annotate option (either '--annotate' or '-A') was set."
 			   (file-name-nondirectory (car args))))
       (unless (string-match "^rbdbgr$" debugger-name)
 	(message 
-	 "Expecting debugger name to be rbdbgr; got `%s'. Stripping anyway."
+	 "Expecting debugger name to be rbdbgr"
 	 debugger-name))
-      (pop args)
+      (setq debugger-args (list (pop args)))
+
       ;; Skip to the first non-option argument.
       (while (and args (not script-name))
 	(let ((arg (car args)))
@@ -79,18 +103,22 @@ annotate option (either '--annotate' or '-A') was set."
 	   ((or (member arg '("--annotate" "-A"))
 		(equal arg "--emacs"))
 	    (setq annotate-p t)
-	    (pop args))
+	    (nconc debugger-args (list (pop args))))
 	   ;; Combined annotation and level option.
 	   ((string-match "^--annotate=[0-9]" arg)
-	    (pop args)
+	    (nconc debugger-args (list (pop args)) )
 	    (setq annotate-p t))
 	   ;; Options with arguments.
 	   ((string-match "^-" arg)
-	    (setq args (dbgr-strip-command-arg 
-			args rbdbgr-two-args rbdbgr-opt-two-args)))
+	    (setq pair (dbgr-parse-command-arg 
+			args rbdbgr-two-args rbdbgr-opt-two-args))
+	    (nconc debugger-args (car pair))
+	    (setq args (cdr pair)))
 	   ;; Anything else must be the script to debug.
-	   (t (setq script-name arg)))))
-      (list script-name annotate-p))))
+	   (t (setq script-name arg)
+	      (setq script-args args))
+	   )))
+      (list interpreter-args debugger-args script-args annotate-p))))
 
 (defun rbdbgr-file-ruby-mode? (filename)
   "Return true if FILENAME is a buffer we are visiting a buffer
