@@ -49,10 +49,8 @@ Use the command `dbgr-track-minor-mode' to toggle or set this variable.")
 	(add-hook 'eshell-output-filter-functions 
 		  'dbgr-track-eshell-output-filter-hook)
   
-	;; FIXME: the following is customized for the debugger rdbgr.
-	;; Other debuggers will be put in dbgr-dbgr-pat-hash and the 
-	;; below should be customizable for those debuggers by setting
-	;; dbg-name accordingly. Put this in a subroutine.
+	;; FIXME: dbgr-info is somehow set initiall so this code isn't 
+	;; kicking in.
 	(unless (boundp 'dbgr-info)
 	  (call-interactively 'dbgr-track-set-debugger))
 	(run-mode-hooks 'dbgr-track-mode-hook))

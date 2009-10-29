@@ -1,4 +1,5 @@
 ;;; behave.el --- Emacs Lisp Behaviour-Driven Development framework
+;;; Some changes have been made by rocky
 
 ;; Copyright (C) 2007 Phil Hagelberg
 
@@ -121,6 +122,29 @@
     (t
      `(or ,actual
 	  (signal 'behave-spec-failed (list (context-description context) spec-desc))))))
+
+(defun expect-equal (expected actual)
+  "expectation is that ACTUAL should be equal to EXPECTED."
+  (if (not (equal actual expected))
+      (signal 'behave-spec-failed 
+	      (format 
+	       "Context: %s\n\tDescription: %s\n\tExpected: %s\n\tGot: %s" 
+	       (context-description context) spec-desc expected actual)))
+  t)
+
+(defun expect-t (actual)
+  "expectation is that ACTUAL should be equal t."
+  (if (not actual)
+      (signal 'behave-spec-failed 
+	      (list (context-description context) spec-desc)))
+  t)
+
+(defun expect-nil (actual)
+  "expectation is that ACTUAL should be nil."
+  (if actual
+      (signal 'behave-spec-failed 
+	      (list (context-description context) spec-desc)))
+  t)
 
 (defmacro tag (&rest tags)
   "Give a context tags for easy reference. (Must be used within a context.)"

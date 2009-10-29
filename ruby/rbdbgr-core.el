@@ -17,44 +17,12 @@
 (require 'dbgr-track)
 (require 'gud)  ; FIXME: GUD is BAD! It is too far broken to be fixed.
 (require 'rbdbgr-regexp)
+(require 'dbgr-core)
 (require 'dbgr-scriptbuf-var)
 (setq load-path (cdddr load-path))
 
 
 ;; FIXME: move to a more common location. dbgr-core ? 
-(defun rbdbgr-strip-command-arg (args two-args opt-two-args)
-  "return ARGS with the first argument, an 'option'
-removed. 
-
-However if that option argument may take another argument, remove
-that as well. TWO-ARGS is list of options (strings without the
-leading dash) that take a mandatory additional
-argument. OPT-TWO-ARGS is a list of options might take two
-arguments. The rule for an optional argument we use: if the next
-parameter starts with a dash ('-'), it is not part of the
-preceeding parameter when that parameter is optional.
-
-NOTE: we don't check whether the first arguments of ARGS is an
-option by testing to see if it starts say with a dash. So on
-return the first argument is always removed.
-"
-  (let ((arg (car args))
-	(d-two-args (mapcar (lambda(x) (concat "-" x)) two-args))
-	(d-opt-two-args (mapcar (lambda(x) (concat "-" x)) opt-two-args))
-	(remaining (cdr args)))
-    (cond 
-     ((member arg d-two-args)
-      (if remaining (cdr remaining)
-	  (progn 
-	    (message "Expecting an argument after %s. Continuing anyway."
-		     arg)
-	    remaining)))
-     ((member arg d-opt-two-args)
-      (if (and remaining (not (string-match "^-" (car remaining))))
-	  (cdr remaining)
-	remaining))
-     (t remaining))))
-
 (defun rbdbgr-get-script-name (orig-args)
   "Parse command line ARGS for the annotate level and name of script to debug.
 
@@ -62,8 +30,7 @@ ARGS should contain a tokenized list of the command line to run.
 
 We return the script name to be debugged and whether option the
 annotate option (either '--annotate' or '-A') was set."
-  ;; Parse the following:
-  ;;
+  ;; Parse the following kind of pattern:
   ;;  [ruby ruby-options] rbdbgr rbdbgr-options script-name script-options
   (let ((args orig-args)
 	(script-name nil)
@@ -92,7 +59,7 @@ annotate option (either '--annotate' or '-A') was set."
 	;; Strip off Ruby-specific options
 	(while (and args
 		    (string-match "^-" (car args)))
-	  (setq args (rbdbgr-strip-command-arg 
+	  (setq args (dbgr-strip-command-arg 
 		      args ruby-two-args ruby-opt-two-args))))
 
       ;; Remove "rbdbgr" from "rbdbgr --rbdbgr-options script
@@ -119,7 +86,7 @@ annotate option (either '--annotate' or '-A') was set."
 	    (setq annotate-p t))
 	   ;; Options with arguments.
 	   ((string-match "^-" arg)
-	    (setq args (rbdbgr-strip-command-arg 
+	    (setq args (dbgr-strip-command-arg 
 			args rbdbgr-two-args rbdbgr-opt-two-args)))
 	   ;; Anything else must be the script to debug.
 	   (t (setq script-name arg)))))

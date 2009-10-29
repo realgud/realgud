@@ -24,45 +24,46 @@
 
 (context "location matching: "
 	 (tag regexp)
-	 (lexical-let ((text ".. (./dbgrr.rb:73)")
+	 (lexical-let ((text ".. (./dbgr.rb:73)")
 		       (text2 "C> ((eval):1 via /tmp/eval2.rb:2)")
 		       (text3 "-- (<internal:prelude>:28 remapped prelude.rb:28)")
 		       (text4 "-- (/src/external-vcs/dbgrr/processor/command/info_subcmd/registers_subcmd/dfp.rb:2)\nrequire_relative %w(.. .. base subsubcmd)\n")
 		       )
 	   (specify "basic location"
-		    (expect (numberp (loc-match text)) t))
+		    (expect-t (numberp (loc-match text))))
 	   (specify "extract file name"
-	   	    (expect (match-string (dbgr-info-file-group dbgr)
-	   				  text)
-	   		    equal "./dbgrr.rb"))
+	   	    (expect-equal "./dbgr.rb"
+				  (match-string (dbgr-info-file-group dbgr)
+						text)))
 	   (specify "extract line number"
-	   	    (expect (match-string (dbgr-info-line-group dbgr)
-	   				  text)
-	   		    equal "73"))
-	   (specify "more compex location"
-		    (expect (numberp (loc-match text4)) t))
+	   	    (expect-equal "73"
+				  (match-string (dbgr-info-line-group dbgr)
+						text)))
+	   (specify "more complex location"
+		    (expect-t (numberp (loc-match text4))))
 
 
 	   ;; Now try via
 	   (specify "basic via location"
-	   	    (expect (numberp (loc-match text2)) t))
+	   	    (expect-t (numberp (loc-match text2))))
 	   (specify "extract via file name"
-	   	    (expect (match-string (dbgr-info-file-group dbgr)
-	   				  text2)
-	   		    equal "/tmp/eval2.rb"))
+	   	    (expect-equal "/tmp/eval2.rb"
+				  (match-string (dbgr-info-file-group dbgr)
+						text2)
+				  ))
 	   (specify "extract via line number"
-	   	    (expect (match-string (dbgr-info-line-group dbgr)
-	   				  text2)
-	   		    equal "2"))
+	   	    (expect-equal (match-string (dbgr-info-line-group dbgr)
+						text2)
+	   		    "2"))
 
 	   ;; Now try remap
 	   (specify "basic via location"
-	   	    (expect (numberp (loc-match text3)) t))
+	   	    (expect-t (numberp (loc-match text3))))
 
 	   ;;
 	   (specify "unmatched location"
 	   	    (setq text "--> #0 METHOD Object#square(x) in file ./rbdbgr.rb at line 73")
-	   	    (expect (numberp (loc-match text)) equal nil))
+	   	    (expect-nil (numberp (loc-match text))))
 	   
 	   ))
 

@@ -18,16 +18,16 @@
 	 (tag regexp-rbdbgr)
 	 (lexical-let ((text "	from /usr/local/bin/irb:12:in `<main>'"))
 	   (specify "basic traceback location"
-		    (expect (numberp (tb-loc-match text)) t))
+		    (expect-t (numberp (tb-loc-match text))))
 	   (specify "extract file name"
-	   	    (expect (match-string (dbgr-loc-pat-file-group tb)
-	   				  text)
-	   		    equal "/usr/local/bin/irb")))
+	   	    (expect-equal "/usr/local/bin/irb"
+				  (match-string (dbgr-loc-pat-file-group tb)
+	   				  text)))
 	   (specify "extract line number"
-	   	    (expect (match-string (dbgr-loc-pat-line-group tb)
-	   				  text)
-	   		    equal "12"))
-	   )
+	   	    (expect-equal "12"
+				  (match-string (dbgr-loc-pat-line-group tb)
+						text)))
+	   ))
 
 (behave "regexp-rbdbgr")
 

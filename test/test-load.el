@@ -16,11 +16,11 @@
 	 (tag load)
 	 (specify "Initialized history"
 		  (setup)
-		  (expect (symbol-file 'dbgr-loc-current) equal nil))
+		  (expect-nil (symbol-file 'dbgr-loc-current)))
 	 (specify "Read el file when none exists"
 		  (dbgr-require-relative "dbgr-loc.el" t)
-		  (expect (symbol-file 'dbgr-loc-current) equal
-			  dbgr-loc-file))
+		  (expect-equal dbgr-loc-file 
+				(symbol-file 'dbgr-loc-current) equal))
 	 (setup)
 	 ;; Try byte compiling a file and then rereading
 	 (setq dbgr-loc-file-compiled (concat dbgr-loc-file "c"))
@@ -32,8 +32,9 @@
 	       (specify "Read elc file when we already have read in an el file"
 			(dbgr-require-relative (file-name-nondirectory
 						 dbgr-loc-file-compiled))
-			(expect (symbol-file 'dbgr-loc-current) equal
-				dbgr-loc-file-compiled))
+			(expect-equal dbgr-loc-file-compiled
+				      (symbol-file 'dbgr-loc-current)
+				))
 	       ;; (setup)
 	       ;; (specify "Read el file by default when we already
 	       ;; have read in an elc file"
