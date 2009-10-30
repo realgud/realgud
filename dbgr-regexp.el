@@ -86,4 +86,4 @@ a string output by a debugger inside a process shell"
 ;;; eval:(put 'dbgr-debug-enter 'lisp-indent-hook 1)
 ;;; End:
 
-;;; dbgrr-regexp.el ends here
+;;; dbgr-regexp.el ends here

@@ -1,3 +1,5 @@
+SUBDIRS = ruby
+
 lisp_files := $(wildcard *.el)
 test_files := $(wildcard test/test-*.el)
 
@@ -5,7 +7,6 @@ EXTRA_DIST = $(lisp_files) $(test_files) test/behave.el
 
 CHECK_FILES = $(notdir $(test_files:.el=.run))
 
-if INSTALL_EMACS_LISP
 lisp_LISP = $(lisp_files)
 
 check: $(CHECK_FILES)
@@ -26,8 +27,6 @@ test-regexp2.run:
 	(cd $(srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )
 test-track.run:
 	(cd $(srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )
-
-endif
 
 .PHONY: $(CHECK_FILES)
 

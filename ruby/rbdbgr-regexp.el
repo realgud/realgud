@@ -24,6 +24,8 @@
   "Hash key is the what kind of pattern we want to match: traceback, prompt, etc. 
 The values of a hash entry is a dbgr-dbgr-loc-pat struct")
 
+(declare-function make-dbgr-loc "dbgr-loc" (a b c d e f))
+
 ;;  Regular expression that describes a rbdbgr command prompt
 (setf (gethash "prompt" rbdbgr-pat-hash)
       (make-dbgr-loc-pat

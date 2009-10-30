@@ -2,13 +2,13 @@
 ;; Dependencies.
 ;;
 (eval-when-compile (require 'cl))
-
+  
 (defun rbdbgr-directory ()
   "The directory of this file, or nil."
   (let ((file-name (or load-file-name
-                       (symbol-file 'rbdbgr-core))))
+		       (symbol-file 'rbdbgr-directory))))
     (if file-name
-        (file-name-directory file-name)
+	(file-name-directory file-name)
       nil)))
 
 (setq load-path (cons nil 
@@ -83,7 +83,7 @@ NOTE: the above should have each item listed in quotes.
 	  (setq pair (dbgr-parse-command-arg 
 		      args ruby-two-args ruby-opt-two-args))
 	  (nconc interpreter-args (car pair))
-	  (setq args (cdr pair))))
+	  (setq args (cadr pair))))
 
       ;; Remove "rbdbgr" from "rbdbgr --rbdbgr-options script
       ;; --script-options"
@@ -113,7 +113,7 @@ NOTE: the above should have each item listed in quotes.
 	    (setq pair (dbgr-parse-command-arg 
 			args rbdbgr-two-args rbdbgr-opt-two-args))
 	    (nconc debugger-args (car pair))
-	    (setq args (cdr pair)))
+	    (setq args (cadr pair)))
 	   ;; Anything else must be the script to debug.
 	   (t (setq script-name arg)
 	      (setq script-args args))
@@ -260,32 +260,6 @@ described by PT."
 ;;; 	  (set-process-filter buffer-process 'gud-filter)
 ;;; 	  (set-process-sentinel buffer-process 'gud-sentinel))))
 ;;;   (gud-set-buffer))
-
-;;;###autoload
-(defun rbdbgr (&optional opt-command-line)
-  "Invoke the rbdbgr Ruby debugger and start the Emacs user interface.
-
-String COMMAND-LINE specifies how to run rbdbgr."
-  
-  (interactive)
-  (let* (
-       (cmd-str (or opt-command-line (rbdbgr-query-cmdline "rbdbgr")))
-       (cmd-args (split-string-and-unquote cmd-str))
-       (program (cadr cmd-args))       ;; FIXME: parse this
-       (program-args (caddr cmd-args))  ;; FIXME: parse this
-       (proc-buf))
-  
-  
-  ;; Parse the command line and pick out the script name and whether
-  ;; --annotate has been set.
-  
-  ;; (gud-chdir-before-run nil))
-  
-  (setq proc-buf (dbgr-exec-shell "rbdbgr" program program-args))
-  (save-current-buffer
-    (switch-to-buffer proc-buf)
-    (rbdbgr-track-mode 't))))
-
 
 (defun rbdbgr-reset ()
   "Rbdbgr cleanup - remove debugger's internal buffers (frame,

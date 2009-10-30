@@ -22,43 +22,44 @@ return the first argument is always removed.
 	(remaining (cdr args)))
     (cond 
      ((member arg d-two-args)
-      (if remaining (cdr remaining)
-	  (progn 
-	    (message "Expecting an argument after %s. Continuing anyway."
-		     arg)
-	    (cons (list arg) remaining))))
+      (if (not remaining)
+	    (progn 
+	      (message "Expecting an argument after %s. Continuing anyway."
+		       arg)
+	      (cons (list arg) (list remaining)))
+	(cons (list arg (car remaining)) (list (cdr remaining)))))
      ((member arg d-opt-two-args)
       (if (and remaining (not (string-match "^-" (car remaining))))
-	  (cons (list arg (car remaining)) (cdr remaining))
-	(cons (list arg) remaining)))
-     (t (cons (list arg) remaining)))))
+	  (cons (list arg (car remaining)) (list (cdr remaining)))
+	(cons (list arg) (list remaining))))
+     (t (cons (list arg) (list remaining))))))
 
 (defun dbgr-term-sentinel (proc string)
   (message "TTTThat's all folks.... %s" string)
 )
 
-(defun dbgr-exec-shell (debugger-name program &rest args)
-  "Run the specified PROGRAM in a terminal emulation buffer.
-ARGS are passed to the program.  At the moment, no piping of input is
-allowed."
-  (let* ((term-buf
+(defun dbgr-exec-shell (debugger-name command &rest args)
+  "Run the specified COMMAND in under debugger DEBUGGER-NAME a terminal emulation buffer.
+ARG-STRING are the arguments passed to the COMMAND.  At the moment, no piping of
+input is allowed."
+  (let* ((term-buffer
 	  (generate-new-buffer
 	   (format "*%s %s shell*" 
 		   (file-name-nondirectory debugger-name)
-		   (file-name-nondirectory program) )))
+		   (file-name-nondirectory command))))
 	 (dbgr-buf (current-buffer)))
     (save-current-buffer
-      (switch-to-buffer term-buf)
+      (switch-to-buffer term-buffer)
       (term-mode)
       ;; (set (make-local-variable 'term-term-name) dbgr-term-name)
       ;; (make-local-variable 'dbgr-parent-buffer)
       ;; (setq dbgr-parent-buffer dbgr-buf)
-      (term-exec term-buf debugger-name debugger-name nil (cons program args))
-      (let ((proc (get-buffer-process term-buf)))
+      (term-exec term-buffer debugger-name command nil args)
+      (let ((proc (get-buffer-process term-buffer)))
 	(if (and proc (eq 'run (process-status proc)))
 	    (set-process-sentinel proc 'dbgr-term-sentinel)
 	  (error "Failed to invoke shell command")) ;; FIXME: add more info
-	proc))))
+	term-buffer))))
 
 ;; -------------------------------------------------------------------
 ;; The end.

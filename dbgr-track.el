@@ -150,18 +150,20 @@ Otherwise return nil."
   ; the fields of dbgr-info appropriately we can accomodate a family
   ; of debuggers -- one at a time -- for the buffer process.
 
-  (lexical-let ((loc-regexp (or opt-regexp (dbgr-info-loc-regexp dbgr-info)))
-		(file-group (or opt-file-group (dbgr-info-file-group dbgr-info)))
-		(line-group (or opt-line-group (dbgr-info-line-group dbgr-info))))
-    (if (and loc-regexp (string-match loc-regexp text))
-	(lexical-let* ((filename (match-string file-group text))
-		       (line-str (match-string line-group text)) 
-		       (lineno (string-to-number (or line-str "1"))))
-	  (unless line-str (message "line number not found -- using 1"))
-	  (if (and filename lineno)
-	      (dbgr-file-loc-from-line filename lineno)
-	    nil))
-      nil)))
+  (if (and (boundp 'dbgr-info) dbgr-info)
+      (lexical-let 
+	  ((loc-regexp (or opt-regexp (dbgr-info-loc-regexp dbgr-info)))
+	   (file-group (or opt-file-group (dbgr-info-file-group dbgr-info)))
+	   (line-group (or opt-line-group (dbgr-info-line-group dbgr-info))))
+	(if (and loc-regexp (string-match loc-regexp text))
+	    (lexical-let* ((filename (match-string file-group text))
+			   (line-str (match-string line-group text)) 
+			   (lineno (string-to-number (or line-str "1"))))
+	      (unless line-str (message "line number not found -- using 1"))
+	      (if (and filename lineno)
+		  (dbgr-file-loc-from-line filename lineno)
+		nil))
+	  nil))))
   
 (defun dbgr-track-set-debugger (debugger-name)
   "Set debugger name and information associated with that debugger for

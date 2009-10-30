@@ -128,7 +128,7 @@
   (if (not (equal actual expected))
       (signal 'behave-spec-failed 
 	      (format 
-	       "Context: %s\n\tDescription: %s\n\tExpected: %s\n\tGot: %s" 
+	       "Context: %s\n\tDescription: %s\n\tExpected: %s\n\tGot:      %s" 
 	       (context-description context) spec-desc expected actual)))
   t)
 

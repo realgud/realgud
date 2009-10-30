@@ -22,21 +22,21 @@
 		 :line-group (dbgr-loc-pat-line-group  loc-pat))) 
 
 ;; FIXME/WARNING the below is customized for rbdbgr
-(lexical-let* ((filename (symbol-file 'behave))
-	       (line-number 7)
-	       (debugger-output (format "-> (%s:%d)\n(rbdbgr):\n" 
-					filename line-number))
-	       (loc (dbgr-track-loc debugger-output)))
-
-  (context "dbgr-track"
-	   (tag track)
+(context "dbgr-track"
+	 (lexical-let* ((filename (symbol-file 'behave))
+			(line-number 7)
+			(debugger-output (format "-> (%s:%d)\n(rbdbgr):\n" 
+						 filename line-number))
+			(loc (dbgr-track-loc debugger-output)))
+	   
+	   (tag dbgr-track)
 	   (specify "loc extracted"
-		    (expect (dbgr-loc-p loc) t))
+		    (expect-equal (dbgr-loc-p loc) t))
 	   (specify "loc filename extracted"
-		    (expect (dbgr-loc-filename loc) equal filename))
+		    (expect-equal (dbgr-loc-filename loc) filename))
 	   (specify "loc line-number extracted"
-		    (expect (dbgr-loc-line-number loc) equal line-number))
+		    (expect-equal (dbgr-loc-line-number loc) line-number))
 	   ))
 
-(behave "track")
+(behave "dbgr-track")
 

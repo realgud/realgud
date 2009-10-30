@@ -9,5 +9,5 @@ AM_MAINTAINER_MODE
 AM_PATH_LISPDIR
 AM_CONDITIONAL(INSTALL_EMACS_LISP, test "x$lispdir" != "x")
 
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile ruby/Makefile])
 AC_OUTPUT

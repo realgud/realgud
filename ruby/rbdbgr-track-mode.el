@@ -6,7 +6,7 @@
 (defun rbdbgr-directory ()
   "The directory of this file, or nil."
   (let ((file-name (or load-file-name
-                       (symbol-file 'rbdbgr-directory))))
+                       (symbol-file 'rbdbgr-track-mode))))
     (if file-name
         (file-name-directory file-name)
       nil)))

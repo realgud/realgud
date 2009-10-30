@@ -30,6 +30,9 @@
     map)
   "Keymap used in `dbgr-track-minor-mode'.")
 
+(declare-function dbgr-track-set-debugger (debugger-name))
+
+
 (define-minor-mode dbgr-track-mode
   "Minor mode for tracking ruby debugging inside a process shell."
   :init-value (not (dbgr-track-set-debugger "rbdbgr"))
