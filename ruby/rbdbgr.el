@@ -55,21 +55,30 @@ String COMMAND-LINE specifies how to run rbdbgr."
 	 (cmd-str (or opt-command-line (rbdbgr-query-cmdline "rbdbgr")))
 	 (cmd-args (split-string-and-unquote cmd-str))
 	 (parsed-args (rbdbgr-parse-cmd-args cmd-args))
-	 (command-args (cdr cmd-args))
-	 (command (car command-args))
+	 (script-args (cdr cmd-args))
+	 (script-name (car script-args))
 	 (proc-buf))
   
   ;; Parse the command line and pick out the script name and whether
   ;; --annotate has been set.
   
   ;; (gud-chdir-before-run nil))
-  
-  (setq proc-buf 
-	(apply 'dbgr-exec-shell "rbdbgr" 
-	       (car cmd-args) (cdr cmd-args)))
-  (save-current-buffer
-    (switch-to-buffer proc-buf)
-    (rbdbgr-track-mode 't))))
+
+    (condition-case nil
+	(setq proc-buf 
+	      (apply 'dbgr-exec-shell "rbdbgr" script-name
+		     (car cmd-args) (cdr cmd-args)))
+    (error nil))
+    ;; FIXME: Is there probably is a way to remove the
+    ;; below test and combine in condition-case? 
+    (let ((proc (get-buffer-process proc-buf)))
+      (if (and proc (eq 'run (process-status proc)))
+	  (save-current-buffer
+	    (switch-to-buffer proc-buf)
+	    (set-process-filter (get-buffer-process proc-buf)
+				'term-output-filter)
+	    (rbdbgr-track-mode 't))))
+    ))
 
 
 (provide 'rbdbgr)

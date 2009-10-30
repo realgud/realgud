@@ -24,7 +24,7 @@ found"
 	(line-number-at-pos (point-max)))
     nil))
 
-(declare-function make-dbgr-loc "dbgr-loc" (a b c d e f))
+;; (declare-function make-dbgr-loc "dbgr-loc" (a b c d e f))
 
 (defun dbgr-file-loc-from-line(filename line-number)
   "Return a dbgr-loc for FILENAME and LINE-NUMBER

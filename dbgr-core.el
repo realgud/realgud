@@ -38,7 +38,7 @@ return the first argument is always removed.
   (message "TTTThat's all folks.... %s" string)
 )
 
-(defun dbgr-exec-shell (debugger-name command &rest args)
+(defun dbgr-exec-shell (debugger-name script-name program &rest args)
   "Run the specified COMMAND in under debugger DEBUGGER-NAME a terminal emulation buffer.
 ARG-STRING are the arguments passed to the COMMAND.  At the moment, no piping of
 input is allowed."
@@ -46,7 +46,7 @@ input is allowed."
 	  (generate-new-buffer
 	   (format "*%s %s shell*" 
 		   (file-name-nondirectory debugger-name)
-		   (file-name-nondirectory command))))
+		   (file-name-nondirectory script-name))))
 	 (dbgr-buf (current-buffer)))
     (save-current-buffer
       (switch-to-buffer term-buffer)
@@ -54,12 +54,21 @@ input is allowed."
       ;; (set (make-local-variable 'term-term-name) dbgr-term-name)
       ;; (make-local-variable 'dbgr-parent-buffer)
       ;; (setq dbgr-parent-buffer dbgr-buf)
-      (term-exec term-buffer debugger-name command nil args)
+      (term-exec term-buffer debugger-name program nil args)
       (let ((proc (get-buffer-process term-buffer)))
 	(if (and proc (eq 'run (process-status proc)))
 	    (set-process-sentinel proc 'dbgr-term-sentinel)
 	  (error "Failed to invoke shell command")) ;; FIXME: add more info
+	(process-put proc 'buffer term-buffer)
 	term-buffer))))
+
+(defun term-output-filter (process string)
+  (let ((buffer (process-get process 'buffer)))
+    (if buffer
+	(save-current-buffer
+	  (switch-to-buffer buffer)
+	  ;; (insert-before-markers (format "+++1 %s" string))
+	  (insert-before-markers string)))))
 
 ;; -------------------------------------------------------------------
 ;; The end.
