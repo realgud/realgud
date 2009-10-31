@@ -75,10 +75,13 @@ String COMMAND-LINE specifies how to run rbdbgr."
       (if (and proc (eq 'run (process-status proc)))
 	  (save-current-buffer
 	    (switch-to-buffer proc-buf)
-	    (set-process-filter (get-buffer-process proc-buf)
-				'term-output-filter)
-	    (rbdbgr-track-mode 't))))
-    ))
+	    ;; (set-process-filter (get-buffer-process proc-buf)
+	    ;; 			'dbgr-term-output-filter)
+	    (shell-mode)
+	    (rbdbgr-track-mode 't)
+	    )
+	(message "Error running rbdbgr command"))
+    )))
 
 
 (provide 'rbdbgr)

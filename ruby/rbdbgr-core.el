@@ -195,7 +195,6 @@ to get a regular-expresion pattern matching information."
   (save-excursion
     (goto-char pt)
     (lexical-let* ((proc-buff (current-buffer))
-		   (proc-window (selected-window))
 		   (curr-proc (get-buffer-process proc-buff))
 		   (start (line-beginning-position))
 		   (end (line-end-position))
@@ -206,7 +205,7 @@ to get a regular-expresion pattern matching information."
 					 (dbgr-loc-pat-file-group tb)
 					 (dbgr-loc-pat-line-group tb)
 					 )))
-    (if loc (dbgr-track-loc-action loc proc-buff proc-window)))))
+    (if loc (dbgr-track-loc-action loc proc-buff)))))
 
 (defun rbdbgr-goto-traceback-line (pt)
   "Display the location mentioned by the Ruby traceback line

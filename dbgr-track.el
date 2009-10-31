@@ -54,7 +54,6 @@ marks set in buffer-local variables to extract text"
 
   ; FIXME: Add unwind-protect? 
   (lexical-let* ((proc-buff (current-buffer))
-		 (proc-window (selected-window))
 		 (curr-proc (get-buffer-process proc-buff))
 		 (last-output-end (process-mark curr-proc))
 		 (last-output-start (max comint-last-input-end 
@@ -62,7 +61,7 @@ marks set in buffer-local variables to extract text"
 		 (loc (dbgr-track-from-region last-output-start 
 					       last-output-end)))
 
-    (if loc (dbgr-track-loc-action loc proc-buff proc-window))))
+    (if loc (dbgr-track-loc-action loc proc-buff))))
 
 (defun dbgr-track-eshell-output-filter-hook()
   "An output-filter hook custom for eshell shells.  Find
@@ -71,10 +70,9 @@ marks set in buffer-local variables to extract text"
 
   ; FIXME: Add unwind-protect? 
   (lexical-let ((proc-buff (current-buffer))
-		(proc-window (selected-window))
 		(loc (dbgr-track-from-region eshell-last-output-start 
 					      eshell-last-output-end)))
-    (dbgr-track-loc-action loc proc-buff proc-window)))
+    (dbgr-track-loc-action loc proc-buff)))
 
 (defun dbgr-track-from-region(from to)
   (interactive "r")
@@ -115,29 +113,22 @@ marks set in buffer-local variables to extract text"
   (interactive)
   (dbgr-track-hist-fn-internal 'dbgr-loc-hist-oldest))
 
-(defun dbgr-track-loc-action(loc &optional cmd-buff cmd-window)
+(defun dbgr-track-loc-action (loc cmd-buff)
   "If loc is valid, show loc and do whatever actions we do for
 encountering a new loc."
   (if (dbgr-loc-p loc)
-      (progn 
-	(if (null cmd-buff) (setq cmd-buff (current-buffer)))
-	(if (null cmd-window) (setq cmd-window (selected-window)))
-	
+      (progn
 	(dbgr-loc-goto loc 'dbgr-split-or-other-window)
 
-        ; We need to go back to the process/command buffer because other
-        ; output-filter hooks run after this may assume they are in that
-        ; buffer.
-	(set-buffer cmd-buff)
+        ;; We need to go back to the process/command buffer because other
+        ;; output-filter hooks run after this may assume they are in that
+        ;; buffer.
+	(switch-to-buffer-other-window cmd-buff)
 
-	; hist add has to be done in cmd-buff since dbgr-dbgr
+	;; hist add has to be done in cmd-buff since history is 
+	;; buffer-local
 	(dbgr-loc-hist-add (dbgr-info-loc-hist dbgr-info) loc)
-
-        ; I like to stay on the debugger prompt rather than the found
-        ; source location. Folks like Anders (who would like to totally
-        ; get rid of the command line) no doubt feel differently about this.
-        (select-window cmd-window))
-    (message "%s" loc)))
+	)))
 
 (defun dbgr-track-loc(text &optional opt-regexp opt-file-group opt-line-group)
   "Do regular-expression matching to find a file name and line number inside

@@ -1,4 +1,5 @@
-(require 'term)
+; (require 'term)
+(require 'comint)
 
 (defun dbgr-parse-command-arg (args two-args opt-two-args)
   "Return a cons node where the car is a list containing the
@@ -50,11 +51,17 @@ input is allowed."
 	 (dbgr-buf (current-buffer)))
     (save-current-buffer
       (switch-to-buffer term-buffer)
-      (term-mode)
+
+      ;; For term.el
+      ;; (term-mode)
       ;; (set (make-local-variable 'term-term-name) dbgr-term-name)
       ;; (make-local-variable 'dbgr-parent-buffer)
       ;; (setq dbgr-parent-buffer dbgr-buf)
-      (term-exec term-buffer debugger-name program nil args)
+
+      ;; For comint.el
+      (set (make-local-variable 'comint-last-output-start) (make-marker))
+      (comint-exec term-buffer debugger-name program nil args)
+
       (let ((proc (get-buffer-process term-buffer)))
 	(if (and proc (eq 'run (process-status proc)))
 	    (set-process-sentinel proc 'dbgr-term-sentinel)
@@ -62,7 +69,7 @@ input is allowed."
 	(process-put proc 'buffer term-buffer)
 	term-buffer))))
 
-(defun term-output-filter (process string)
+(defun dbgr-term-output-filter (process string)
   (let ((buffer (process-get process 'buffer)))
     (if buffer
 	(save-current-buffer

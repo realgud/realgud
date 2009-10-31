@@ -32,7 +32,6 @@
 
 (declare-function dbgr-track-set-debugger (debugger-name))
 
-
 (define-minor-mode dbgr-track-mode
   "Minor mode for tracking ruby debugging inside a process shell."
   :init-value (not (dbgr-track-set-debugger "rbdbgr"))
@@ -48,9 +47,14 @@
 
   :keymap dbgr-track-mode-map
   
-  ;; body
+  (dbgr-track-mode-body)
+  )
+
+(defun dbgr-track-mode-body ()
   (if dbgr-track-mode
       (progn
+	(unless (boundp 'comint-last-output-start)
+	  (set-marker comint-last-output-start (point)))
 	(add-hook 'comint-output-filter-functions 
 		  'dbgr-track-comint-output-filter-hook)
 	(add-hook 'eshell-output-filter-functions 
@@ -64,7 +68,7 @@
 		   'dbgr-track-comint-output-filter-hook)
       (remove-hook 'eshell-output-filter-functions 
 		    'dbgr-track-eshell-output-filter-hook)))
-  )
+)
 
 ;; -------------------------------------------------------------------
 ;; The end.
