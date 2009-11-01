@@ -3,60 +3,62 @@
 ;;
 (eval-when-compile (require 'cl))
   
-(defun rbdbgr-directory ()
+(defun pydbgr-directory ()
   "The directory of this file, or nil."
   (let ((file-name (or load-file-name
-		       (symbol-file 'rbdbgr-directory))))
+		       (symbol-file 'pydbgr-directory))))
     (if file-name
 	(file-name-directory file-name)
       nil)))
 
 (setq load-path (cons nil 
-		      (cons (format "%s.." (rbdbgr-directory))
-				    (cons (rbdbgr-directory) load-path))))
+		      (cons (format "%s.." (pydbgr-directory))
+				    (cons (pydbgr-directory) load-path))))
 (require 'dbgr-track)
-(require 'rbdbgr-regexp)
+(require 'pydbgr-regexp)
 (require 'dbgr-core)
 (require 'dbgr-scriptbuf-var)
 (setq load-path (cdddr load-path))
 
 
-(defun rbdbgr-parse-cmd-args (orig-args)
+(defun pydbgr-parse-cmd-args (orig-args)
   "Parse command line ARGS for the annotate level and name of script to debug.
 
 ARGS should contain a tokenized list of the command line to run.
 
 We return the a list containing
-- the command processor (e.g. ruby) and it's arguments if any - a list of strings
-- the name of the debugger given (e.g. rbdbgr) and its arguments - a list of strings
+- the command processor (e.g. python) and it's arguments if any - a list of strings
+- the name of the debugger given (e.g. pydbgr) and its arguments - a list of strings
 - the script name and its arguments - list of strings
 - whether the annotate or emacs option was given ('-A', '--annotate' or '--emacs) - a boolean
 
 For example for the following input 
   (map 'list 'symbol-name
-   '(ruby1.8 -W -C /tmp rbdbgr --emacs ./gcd.rb a b))
+   '(python2.6 -O -Qold --emacs ./gcd.py a b))
 
 we might return:
-   ((ruby1.8 -W -C) (rbdbgr --emacs) (./gcd.rb a b) 't)
+   ((python2.6 -O -Qold) (pydbgr --emacs) (./gcd.py a b) 't)
 
 NOTE: the above should have each item listed in quotes.
 "
 
+
   ;; Parse the following kind of pattern:
-  ;;  [ruby ruby-options] rbdbgr rbdbgr-options script-name script-options
+  ;;  [python python-options] pydbgr pydbgr-options script-name script-options
   (let (
 	(args orig-args)
 	(pair)          ;; temp return from 
-	(ruby-opt-two-args '("0" "C" "e" "E" "F" "i"))
-	;; Ruby doesn't have mandatory 2-arg options in our sense,
+	(python-opt-two-args '("c" "m" "Q" "W"))
+	;; Python doesn't have mandatory 2-arg options in our sense,
 	;; since the two args can be run together, e.g. "-C/tmp" or "-C /tmp"
 	;; 
-	(ruby-two-args '())
+	(python-two-args '())
 	;; One dash is added automatically to the below, so
 	;; h is really -h and -host is really --host.
-	(rbdbgr-two-args '("h" "-host" "p" "-port"
-			   "I" "-include" "-r" "-require"))
-	(rbdbgr-opt-two-args '())
+	(pydbgr-two-args '("x" "-command" "e" "-execute" 
+			   "o" "-output"  "t" "-target"
+			   "a" "-annotate"))
+	(pydbgr-opt-two-args '())
 
 	;; Things returned
 	(script-name nil)
@@ -70,27 +72,27 @@ NOTE: the above should have each item listed in quotes.
 	;; Got nothing: return '(nil, nil)
 	(list interpreter-args debugger-args script-args annotate-p)
       ;; else
-      ;; Strip off optional "ruby" or "ruby182" etc.
-      (when (string-match "^ruby[-0-9]*$"
+      ;; Strip off optional "python" or "python182" etc.
+      (when (string-match "^python[-0-9.]*$"
 			  (file-name-sans-extension
 			   (file-name-nondirectory (car args))))
 	(setq interpreter-args (list (pop args)))
 
-	;; Strip off Ruby-specific options
+	;; Strip off Python-specific options
 	(while (and args
 		    (string-match "^-" (car args)))
 	  (setq pair (dbgr-parse-command-arg 
-		      args ruby-two-args ruby-opt-two-args))
+		      args python-two-args python-opt-two-args))
 	  (nconc interpreter-args (car pair))
 	  (setq args (cadr pair))))
 
-      ;; Remove "rbdbgr" from "rbdbgr --rbdbgr-options script
+      ;; Remove "pydbgr" from "pydbgr --pydbgr-options script
       ;; --script-options"
       (setq debugger-name (file-name-sans-extension
 			   (file-name-nondirectory (car args))))
-      (unless (string-match "^rbdbgr$" debugger-name)
+      (unless (string-match "^pydbgr$" debugger-name)
 	(message 
-	 "Expecting debugger name to be rbdbgr"
+	 "Expecting debugger name to be pydbgr"
 	 debugger-name))
       (setq debugger-args (list (pop args)))
 
@@ -110,7 +112,7 @@ NOTE: the above should have each item listed in quotes.
 	   ;; Options with arguments.
 	   ((string-match "^-" arg)
 	    (setq pair (dbgr-parse-command-arg 
-			args rbdbgr-two-args rbdbgr-opt-two-args))
+			args pydbgr-two-args pydbgr-opt-two-args))
 	    (nconc debugger-args (car pair))
 	    (setq args (cadr pair)))
 	   ;; Anything else must be the script to debug.
@@ -119,26 +121,26 @@ NOTE: the above should have each item listed in quotes.
 	   )))
       (list interpreter-args debugger-args script-args annotate-p))))
 
-(defun rbdbgr-file-ruby-mode? (filename)
+(defun pydbgr-file-python-mode? (filename)
   "Return true if FILENAME is a buffer we are visiting a buffer
-that is in ruby-mode"
+that is in python-mode"
   (let ((buffer (and filename (find-buffer-visiting filename)))
 	(match-pos))
     (if buffer 
 	(progn 
 	  (save-current-buffer
 	    (switch-to-buffer buffer 't)
-	    (setq match-pos (string-match "^ruby-" (format "%s" major-mode))))
+	    (setq match-pos (string-match "^python-" (format "%s" major-mode))))
 	  (and match-pos (= 0 match-pos)))
       nil)))
 
 
-(defun rbdbgr-suggest-ruby-file ()
-    "Suggest a Ruby file to debug. First priority is given to the
-current buffer. If the major mode is Ruby-mode, then we are
-done. If the major mode is not Ruby, we'll use priority 2 and we
+(defun pydbgr-suggest-python-file ()
+    "Suggest a Python file to debug. First priority is given to the
+current buffer. If the major mode is Python-mode, then we are
+done. If the major mode is not Python, we'll use priority 2 and we
 keep going.  Then we will try files in the default-directory. Of
-those that we are visiting we will see if the major mode is Ruby,
+those that we are visiting we will see if the major mode is Python,
 the first one we find we will return.  Failing this, we see if the
 file is executable and has a .rb suffix. These have priority 8.
 Failing that, we'll go for just having a .rb suffix. These have
@@ -149,17 +151,17 @@ given priority, we use the first one we find."
 	   (priority 2)
 	   (is-not-directory)
 	   (result (buffer-file-name)))
-      (if (not (rbdbgr-file-ruby-mode? result))
+      (if (not (pydbgr-file-python-mode? result))
 	  (while (and (setq file (car-safe file-list)) (< priority 8))
 	    (setq file-list (cdr file-list))
-	    (if (rbdbgr-file-ruby-mode? file)
+	    (if (pydbgr-file-python-mode? file)
 		(progn 
 		  (setq result file)
 		  (setq priority 
 			(if (file-executable-p file)
 			    (setq priority 8)
 			  (setq priority 7)))))
-	    ;; The file isn't in a Ruby-mode buffer,
+	    ;; The file isn't in a Python-mode buffer,
 	    ;; Check for an executable file with a .rb extension.
 	    (if (and file (file-executable-p file)
 		     (setq is-not-directory (not (file-directory-p file))))
@@ -175,63 +177,57 @@ given priority, we use the first one we find."
 		    (setq priority 5))))))
       result))
 
-(defun rbdbgr-query-cmdline (&optional opt-debugger opt-cmd-name)
-  "Prompt for a rbdbgr debugger command invocation to run.
+(defun pydbgr-query-cmdline (&optional opt-debugger opt-cmd-name)
+  "Prompt for a pydbgr debugger command invocation to run.
 Analogous to `gud-query-cmdline'"
   ;; FIXME: keep a list of recent invocations.
   (let ((debugger (or opt-debugger
-		   (dbgr-scriptbuf-var-name rbdbgr-scriptvar)))
+		   (dbgr-scriptbuf-var-name pydbgr-scriptvar)))
 	(cmd-name (or opt-cmd-name
-		      (rbdbgr-suggest-ruby-file))))
+		      (pydbgr-suggest-python-file))))
     (read-from-minibuffer
      (format "Run %s (like this): " debugger)
      (concat debugger " " cmd-name))))
 
-(defun rbdbgr-goto-traceback-line (pt)
-  "Display the location mentioned by the Ruby traceback line
+(defun pydbgr-goto-traceback-line (pt)
+  "Display the location mentioned by the Python traceback line
 described by PT."
   (interactive "d")
-  (goto-line-for-pt-and-type pt "traceback" rbdbgr-pat-hash))
+  (goto-line-for-pt-and-type pt "traceback" pydbgr-pat-hash))
 
-(defun rbdbgr-goto-dollarbang-traceback-line (pt)
-  "Display the location mentioned by the Ruby $! traceback line
-described by PT."
-  (interactive "d")
-  (goto-line-for-pt-and-type pt "dollar-bang" rbdbgr-pat-hash))
-
-(defun rbdbgr-reset ()
-  "Rbdbgr cleanup - remove debugger's internal buffers (frame,
+(defun pydbgr-reset ()
+  "Pydbgr cleanup - remove debugger's internal buffers (frame,
 breakpoints, etc.)."
   (interactive)
-  ;; (rbdbgr-breakpoint-remove-all-icons)
+  ;; (pydbgr-breakpoint-remove-all-icons)
   (dolist (buffer (buffer-list))
-    (when (string-match "\\*rbdbgr-[a-z]+\\*" (buffer-name buffer))
+    (when (string-match "\\*pydbgr-[a-z]+\\*" (buffer-name buffer))
       (let ((w (get-buffer-window buffer)))
         (when w
           (delete-window w)))
       (kill-buffer buffer))))
 
-;; (defun rbdbgr-reset-keymaps()
+;; (defun pydbgr-reset-keymaps()
 ;;   "This unbinds the special debugger keys of the source buffers."
 ;;   (interactive)
-;;   (setcdr (assq 'rbdbgr-debugger-support-minor-mode minor-mode-map-alist)
-;; 	  rbdbgr-debugger-support-minor-mode-map-when-deactive))
+;;   (setcdr (assq 'pydbgr-debugger-support-minor-mode minor-mode-map-alist)
+;; 	  pydbgr-debugger-support-minor-mode-map-when-deactive))
 
 
-(defun rbdbgr-customize ()
-  "Use `customize' to edit the settings of the `rbdbgr' debugger."
+(defun pydbgr-customize ()
+  "Use `customize' to edit the settings of the `pydbgr' debugger."
   (interactive)
-  (customize-group 'rbdbgr))
+  (customize-group 'pydbgr))
 
 
 ;; -------------------------------------------------------------------
 ;; The end.
 ;;
 
-(provide 'rbdbgr-core)
+(provide 'pydbgr-core)
 
 ;;; Local variables:
-;;; eval:(put 'rbdbgr-debug-enter 'lisp-indent-hook 1)
+;;; eval:(put 'pydbgr-debug-enter 'lisp-indent-hook 1)
 ;;; End:
 
-;;; rbdbgr-core.el ends here
+;;; pydbgr-core.el ends here

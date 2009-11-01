@@ -156,6 +156,24 @@ Otherwise return nil."
 		nil))
 	  nil))))
   
+(defun dbgr-goto-line-for-loc-pat (pt loc-pat)
+  "Display the location mentioned in line described by PT. LOC-PAT is used
+to get regular-expresion pattern matching information."
+  (interactive "d")
+  (save-excursion
+    (goto-char pt)
+    (lexical-let* ((proc-buff (current-buffer))
+		   (curr-proc (get-buffer-process proc-buff))
+		   (start (line-beginning-position))
+		   (end (line-end-position))
+		   ;; FIXME check that loc-pat is not null and abort if it is.
+		   (loc (dbgr-track-loc (buffer-substring start end)
+					 (dbgr-loc-pat-regexp loc-pat)
+					 (dbgr-loc-pat-file-group loc-pat)
+					 (dbgr-loc-pat-line-group loc-pat)
+					 )))
+    (if loc (dbgr-track-loc-action loc proc-buff)))))
+
 (defun dbgr-track-set-debugger (debugger-name)
   "Set debugger name and information associated with that debugger for
 the buffer process. This info is returned or nil if we can't find a 
@@ -174,6 +192,11 @@ debugger with that information"
 	(message "I Don't have %s listed as a debugger." debugger-name)
 	nil)
       )))
+
+(defun goto-line-for-pt-and-type (pt type pat-hash)
+  "Display the location mentioned for PT given type PAT-HASH indexed TYPE."
+  (dbgr-goto-line-for-loc-pat pt (gethash type pat-hash)))
+
   
 ;; -------------------------------------------------------------------
 ;; The end.

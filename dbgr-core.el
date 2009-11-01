@@ -1,5 +1,6 @@
 ; (require 'term)
 (require 'comint)
+(eval-when-compile (require 'cl))
 
 (defun dbgr-parse-command-arg (args two-args opt-two-args)
   "Return a cons node where the car is a list containing the

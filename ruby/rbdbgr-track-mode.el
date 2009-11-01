@@ -24,11 +24,16 @@
   (dbgr-track-set-debugger "rbdbgr")
   (if rbdbgr-track-mode
       (progn 
+ 	;; FIXME: until I figure out why this isn't set in the mode
+	(local-set-key "\C-c!"  'rbdbgr-goto-dollarbang-traceback-line)
+        (local-set-key "\C-ce"  'rbdbgr-goto-traceback-line)
 	(dbgr-track-mode 't)
 	(run-mode-hooks 'rbdbgr-track-mode-hook))
     (progn 
       (dbgr-track-mode nil)
-    )))
+      (local-unset-key "\C-c!")
+      (local-unset-key "\C-ce"))
+    ))
 
 (defvar rbdbgr-track-mode nil
   "Non-nil if using rbdbgr-track mode as a minor mode of some other mode.
