@@ -31,11 +31,11 @@
 	   
 	   (tag dbgr-track)
 	   (specify "loc extracted"
-		    (expect-equal (dbgr-loc-p loc) t))
+		    (assert-equal (dbgr-loc-p loc) t))
 	   (specify "loc filename extracted"
-		    (expect-equal (dbgr-loc-filename loc) filename))
+		    (assert-equal (dbgr-loc-filename loc) filename))
 	   (specify "loc line-number extracted"
-		    (expect-equal (dbgr-loc-line-number loc) line-number))
+		    (assert-equal (dbgr-loc-line-number loc) line-number))
 	   ))
 
 (behave "dbgr-track")

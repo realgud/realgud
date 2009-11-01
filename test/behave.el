@@ -84,8 +84,8 @@
 ;; See meta.el for specifications for behave.el. Evaluate meta.el and
 ;; M-x specifications meta RET to see the specifications explained.
 
-(eval-when-compile
-  (require 'cl))
+(eval-when-compile (require 'cl))
+(require 'cl)
 
 (defvar *behave-contexts* '()
   "A list of contexts and their specs.")
@@ -113,17 +113,15 @@
   `(push (lambda () ,description (let ((spec-desc ,description)) 
 			      ,@body)) (context-specs context)))
 
-(defmacro expect (actual &optional predicate expected)
-  "State expectations the code should fulfill."
-  (case predicate
-    ((equals equal)
-     `(if (not (equal ,actual ,expected))
-	  (signal 'behave-spec-failed (list (context-description context) spec-desc))))
-    (t
-     `(or ,actual
-	  (signal 'behave-spec-failed (list (context-description context) spec-desc))))))
+(defmacro tag (&rest tags)
+  "Give a context tags for easy reference. (Must be used within a context.)"
+  `(setf (context-tags context) (append '(,@tags) (context-tags context))))
 
-(defun expect-equal (expected actual)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Assertion tests
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun assert-equal (expected actual)
   "expectation is that ACTUAL should be equal to EXPECTED."
   (if (not (equal actual expected))
       (signal 'behave-spec-failed 
@@ -132,23 +130,18 @@
 	       (context-description context) spec-desc expected actual)))
   t)
 
-(defun expect-t (actual)
-  "expectation is that ACTUAL should be equal t."
-  (if (not actual)
-      (signal 'behave-spec-failed 
-	      (list (context-description context) spec-desc)))
-  t)
+(defun assert-t (actual)
+  "expectation is that ACTUAL is t."
+  (assert-nil (not actual)))
 
-(defun expect-nil (actual)
-  "expectation is that ACTUAL should be nil."
+(defun assert-nil (actual)
+  "expectation is that ACTUAL is nil."
   (if actual
       (signal 'behave-spec-failed 
-	      (list (context-description context) spec-desc)))
+	      (format 
+	       "Context: %s\n\tDescription: %s" 
+	       (context-description context) spec-desc)))
   t)
-
-(defmacro tag (&rest tags)
-  "Give a context tags for easy reference. (Must be used within a context.)"
-  `(setf (context-tags context) (append '(,@tags) (context-tags context))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Context-management

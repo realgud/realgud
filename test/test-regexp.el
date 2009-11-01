@@ -30,40 +30,40 @@
 		       (text4 "-- (/src/external-vcs/dbgrr/processor/command/info_subcmd/registers_subcmd/dfp.rb:2)\nrequire_relative %w(.. .. base subsubcmd)\n")
 		       )
 	   (specify "basic location"
-		    (expect-t (numberp (loc-match text))))
+		    (assert-t (numberp (loc-match text))))
 	   (specify "extract file name"
-	   	    (expect-equal "./dbgr.rb"
+	   	    (assert-equal "./dbgr.rb"
 				  (match-string (dbgr-info-file-group dbgr)
 						text)))
 	   (specify "extract line number"
-	   	    (expect-equal "73"
+	   	    (assert-equal "73"
 				  (match-string (dbgr-info-line-group dbgr)
 						text)))
 	   (specify "more complex location"
-		    (expect-t (numberp (loc-match text4))))
+		    (assert-t (numberp (loc-match text4))))
 
 
 	   ;; Now try via
 	   (specify "basic via location"
-	   	    (expect-t (numberp (loc-match text2))))
+	   	    (assert-t (numberp (loc-match text2))))
 	   (specify "extract via file name"
-	   	    (expect-equal "/tmp/eval2.rb"
+	   	    (assert-equal "/tmp/eval2.rb"
 				  (match-string (dbgr-info-file-group dbgr)
 						text2)
 				  ))
 	   (specify "extract via line number"
-	   	    (expect-equal (match-string (dbgr-info-line-group dbgr)
+	   	    (assert-equal (match-string (dbgr-info-line-group dbgr)
 						text2)
 	   		    "2"))
 
 	   ;; Now try remap
 	   (specify "basic via location"
-	   	    (expect-t (numberp (loc-match text3))))
+	   	    (assert-t (numberp (loc-match text3))))
 
 	   ;;
 	   (specify "unmatched location"
 	   	    (setq text "--> #0 METHOD Object#square(x) in file ./rbdbgr.rb at line 73")
-	   	    (expect-nil (numberp (loc-match text))))
+	   	    (assert-nil (numberp (loc-match text))))
 	   
 	   ))
 

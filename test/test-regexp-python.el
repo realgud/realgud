@@ -17,13 +17,13 @@
 (context "traceback location matching"
 	 (tag regexp-pydbgr)
 	 (specify "basic traceback location"
-		  (expect-t (numberp (tb-loc-match text))))
+		  (assert-t (numberp (tb-loc-match text))))
 	 (specify "extract file name"
-		  (expect-equal "/usr/lib/python2.6/code.py"
+		  (assert-equal "/usr/lib/python2.6/code.py"
 				(match-string (dbgr-loc-pat-file-group tb)
 					      text)))
 	 (specify "extract line number"
-		  (expect-equal "281"
+		  (assert-equal "281"
 				(match-string (dbgr-loc-pat-line-group tb)
 					      text)))
 	   )

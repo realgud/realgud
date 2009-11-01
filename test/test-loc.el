@@ -23,13 +23,13 @@
 			  (good-loc3 (dbgr-loc-current)))
 	     
 	     (specify "line-number extraction"
-		      (expect-equal 5 (dbgr-loc-line-number good-loc)))
+		      (assert-equal 5 (dbgr-loc-line-number good-loc)))
 	     (specify "marker extraction"
-		      (expect-equal marker (dbgr-loc-marker good-loc)))
+		      (assert-equal marker (dbgr-loc-marker good-loc)))
 
 	     (specify "marker set"
 		      (dbgr-loc-marker= good-loc2 marker)
-		      (expect-equal marker (dbgr-loc-marker good-loc2)))
+		      (assert-equal marker (dbgr-loc-marker good-loc2)))
 
 	     )))
 
