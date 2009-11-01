@@ -92,7 +92,11 @@
 
 (defvar *behave-default-tags* "all")
 
-(defstruct context description tags (specs '()) refreshing-vars)
+(defstruct context 
+  (description :type string "Description not set yet")
+  tags 
+  (specs '()) ;; list of its specifications stored as closures.
+  refreshing-vars)
 
 (put 'behave-spec-failed 'error-conditions '(failure))
 
@@ -110,12 +114,14 @@
 
 (defmacro specify (description &rest body)
   "Add a specification and its description to the current context."
-  `(push (lambda () ,description (let ((spec-desc ,description)) 
-			      ,@body)) (context-specs context)))
+  `(push (lambda () ,description 
+	   (let ((spec-desc ,description)) 
+	     ,@body)) (context-specs context)))
 
 (defmacro tag (&rest tags)
   "Give a context tags for easy reference. (Must be used within a context.)"
-  `(setf (context-tags context) (append '(,@tags) (context-tags context))))
+  `(setf (context-tags context) 
+	 (append '(,@tags) (context-tags context))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Assertion tests
@@ -154,7 +160,8 @@
 
 (defun context-find (description)
   "Find a context by its description."
-  (find description *behave-contexts* :test (lambda (description context) (equal description (context-description context)))))
+  (find description *behave-contexts* 
+	:test (lambda (description context) (equal description (context-description context)))))
 
 (defun context-find-by-tag (tag)
   (remove-if (lambda (context) (not (find tag (context-tags context))))
