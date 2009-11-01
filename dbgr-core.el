@@ -41,34 +41,36 @@ return the first argument is always removed.
 
 (defun dbgr-exec-shell (debugger-name script-name program &rest args)
   "Run the specified COMMAND in under debugger DEBUGGER-NAME a terminal emulation buffer.
-ARG-STRING are the arguments passed to the COMMAND.  At the moment, no piping of
+ARGS are the arguments passed to the PRGRAM.  At the moment, no piping of
 input is allowed."
   (let* ((term-buffer
-	  (generate-new-buffer
+	  (get-buffer-create
 	   (format "*%s %s shell*" 
 		   (file-name-nondirectory debugger-name)
 		   (file-name-nondirectory script-name))))
-	 (dbgr-buf (current-buffer)))
-    (save-current-buffer
-      (switch-to-buffer term-buffer)
-
-      ;; For term.el
-      ;; (term-mode)
-      ;; (set (make-local-variable 'term-term-name) dbgr-term-name)
-      ;; (make-local-variable 'dbgr-parent-buffer)
-      ;; (setq dbgr-parent-buffer dbgr-buf)
-
-      ;; For comint.el
-      (set (make-local-variable 'comint-last-output-start) (make-marker))
-      (comint-exec term-buffer debugger-name program nil args)
-
-      (let ((proc (get-buffer-process term-buffer)))
+	 (dbgr-buf (current-buffer))
+	 (proc (get-buffer-process term-buffer)))
+    (unless (and proc (eq 'run (process-status proc)))
+      (save-current-buffer
+	(switch-to-buffer term-buffer)
+	
+	;; For term.el
+	;; (term-mode)
+	;; (set (make-local-variable 'term-term-name) dbgr-term-name)
+	;; (make-local-variable 'dbgr-parent-buffer)
+	;; (setq dbgr-parent-buffer dbgr-buf)
+	
+	;; For comint.el
+	(comint-exec term-buffer debugger-name program nil args)
+	
+	(setq proc (get-buffer-process term-buffer))
 	(if (and proc (eq 'run (process-status proc)))
-	    (set-process-sentinel proc 'dbgr-term-sentinel)
+	  (set-process-sentinel proc 'dbgr-term-sentinel)
 	  (error "Failed to invoke shell command")) ;; FIXME: add more info
-	(process-put proc 'buffer term-buffer)
-	term-buffer))))
+	(process-put proc 'buffer term-buffer)))
+    term-buffer))
 
+;; Start of a term-output-filter for term.el
 (defun dbgr-term-output-filter (process string)
   (let ((buffer (process-get process 'buffer)))
     (if buffer

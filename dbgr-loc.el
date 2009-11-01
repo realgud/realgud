@@ -30,7 +30,7 @@ want to save the values that were seen/requested originally."
 the point to the places indicated by LOC. In the process, the buffer
 and marker inside loc may be updated. If WINDOW-FN and ARGS are given,
 WINDOW-FN is called before switching buffers"
-  (if (dbgr-loc-p loc) 
+  (if (dbgr-loc? loc) 
       (lexical-let* ((filename    (dbgr-loc-filename loc))
 		     (line-number (dbgr-loc-line-number loc))
 		     (marker      (dbgr-loc-marker loc))
