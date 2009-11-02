@@ -52,8 +52,8 @@ input is allowed."
 	 (dbgr-buf (current-buffer))
 	 (proc (get-buffer-process term-buffer)))
     (unless (and proc (eq 'run (process-status proc)))
-      (save-current-buffer
-	(switch-to-buffer term-buffer)
+      (save-excursion
+	(set-buffer term-buffer)
 	
 	;; For term.el
 	;; (term-mode)
@@ -66,17 +66,17 @@ input is allowed."
 	
 	(setq proc (get-buffer-process term-buffer))
 	(if (and proc (eq 'run (process-status proc)))
-	  (set-process-sentinel proc 'dbgr-term-sentinel)
+	      (set-process-sentinel proc 'dbgr-term-sentinel)
 	  (error "Failed to invoke shell command")) ;; FIXME: add more info
 	(process-put proc 'buffer term-buffer)))
     term-buffer))
 
 ;; Start of a term-output-filter for term.el
 (defun dbgr-term-output-filter (process string)
-  (let ((buffer (process-get process 'buffer)))
-    (if buffer
+  (let ((process-buffer (process-get process 'buffer)))
+    (if process-buffer
 	(save-current-buffer
-	  (switch-to-buffer buffer)
+	  (set-buffer process-buffer)
 	  ;; (insert-before-markers (format "+++1 %s" string))
 	  (insert-before-markers string)))))
 

@@ -73,12 +73,13 @@ String COMMAND-LINE specifies how to run rbdbgr."
     ;; below test and combine in condition-case? 
     (let ((proc (get-buffer-process proc-buf)))
       (if (and proc (eq 'run (process-status proc)))
-	  (save-current-buffer
+	  (progn
 	    (switch-to-buffer proc-buf)
 	    ;; (set-process-filter (get-buffer-process proc-buf)
 	    ;; 			'dbgr-term-output-filter)
 	    (shell-mode)
 	    (rbdbgr-track-mode 't)
+	    (set (make-local-variable 'dbgr-invocation) cmd-args)
 	    )
 	(message "Error running rbdbgr command"))
     )))

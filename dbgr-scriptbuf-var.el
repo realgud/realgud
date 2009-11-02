@@ -2,7 +2,7 @@
 ;;; for a script to be debugged.
 (eval-when-compile (require 'cl))
 
-(defstruct rbdbg-scriptbuf-var
+(defstruct dbg-scriptbuf-var
   "debugger object/structure specific to a (top-level) Ruby file
 to be debugged."
   (name       :type string) ;; Name of debugger
@@ -11,7 +11,7 @@ to be debugged."
   (cmdproc)                 ;; buffer containing debugger process
 )
 
-(defvar rbdbgr-scriptvar (make-rbdbg-scriptbuf-var
+(defvar dbgr-scriptvar (make-dbg-scriptbuf-var
 		    :name "rbdbgr"
 		    :cmd  "rbdbgr"
 		    :cmdproc  nil

@@ -127,10 +127,30 @@ that is in ruby-mode"
     (if buffer 
 	(progn 
 	  (save-current-buffer
-	    (switch-to-buffer buffer 't)
+	    (set-buffer buffer)
 	    (setq match-pos (string-match "^ruby-" (format "%s" major-mode))))
 	  (and match-pos (= 0 match-pos)))
       nil)))
+
+;; FIXME generalize and put into dbgr-core.el
+(defun rbdbgr-suggest-invocation (debugger-name)
+  "Suggest a rbdbgr command invocation. If the current buffer is
+a process buffer that that `dbgr-invocation' set and we are in
+rbdbgr-track-mode, then use the value of that variable. Otherwise
+we try to find a suitable Ruby program using `rbdbgr-suggest-ruby-file' and
+prepend the debugger name onto that. FIXME: should keep a list of
+previously used invocations.
+"
+  (cond
+   ((and (boundp 'dbgr-invocation) 
+	 (boundp 'rbdbgr-track-mode) 
+	 rbdbgr-track-mode)
+    (let ((result (car dbgr-invocation)))
+      (reduce (lambda(result, x)
+		(setq result (concat result " " x)))
+	      dbgr-invocation)))
+  ;; FIXME: keep a list of recent invocations
+   (t (concat debugger-name " " (rbdbgr-suggest-ruby-file)))))
 
 
 (defun rbdbgr-suggest-ruby-file ()
@@ -178,14 +198,11 @@ given priority, we use the first one we find."
 (defun rbdbgr-query-cmdline (&optional opt-debugger opt-cmd-name)
   "Prompt for a rbdbgr debugger command invocation to run.
 Analogous to `gud-query-cmdline'"
-  ;; FIXME: keep a list of recent invocations.
   (let ((debugger (or opt-debugger
-		   (dbgr-scriptbuf-var-name rbdbgr-scriptvar)))
-	(cmd-name (or opt-cmd-name
-		      (rbdbgr-suggest-ruby-file))))
+		   (dbgr-scriptbuf-var-name rbdbgr-scriptvar))))
     (read-from-minibuffer
      (format "Run %s (like this): " debugger)
-     (concat debugger " " cmd-name))))
+     (rbdbgr-suggest-invocation debugger))))
 
 (defun rbdbgr-goto-traceback-line (pt)
   "Display the location mentioned by the Ruby traceback line
