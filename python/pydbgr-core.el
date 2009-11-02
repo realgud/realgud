@@ -21,6 +21,32 @@
 (setq load-path (cdddr load-path))
 
 
+;; FIXME: I think the following could be generalized and moved to 
+;; dbgr-... probably via a macro.
+(defvar pydbgr-minibuffer-history nil
+  "minibuffer history list for the command `pydbgr'.")
+
+(easy-mmode-defmap pydbgr-minibuffer-local-map
+  '(("\C-i" . comint-dynamic-complete-filename))
+  "Keymap for minibuffer prompting of gud startup command."
+  :inherit minibuffer-local-map)
+
+(defun pydbgr-query-cmdline (&optional opt-debugger opt-cmd-name)
+  "Prompt for a pydbgr debugger command invocation to run.
+Analogous to `gud-query-cmdline'"
+  ;; FIXME: keep a list of recent invocations.
+  (let ((debugger (or opt-debugger
+		   (dbgr-scriptbuf-var-name pydbgr-scriptvar)))
+	(cmd-name (or opt-cmd-name
+		      (pydbgr-suggest-python-file))))
+    (read-from-minibuffer
+     (format "Run %s (like this): " debugger)  ;; prompt string
+     (pydbgr-suggest-invocation debugger)      ;; initial value
+     pydbgr-minibuffer-local-map               ;; keymap
+     nil                                       ;; read - use default value
+     pydbgr-minibuffer-history                 ;; history variable
+     )))
+
 (defun pydbgr-parse-cmd-args (orig-args)
   "Parse command line ARGS for the annotate level and name of script to debug.
 
@@ -135,6 +161,25 @@ that is in python-mode"
       nil)))
 
 
+;; FIXME generalize and put into dbgr-core.el
+(defun pydbgr-suggest-invocation (debugger-name)
+  "Suggest a rbdbgr command invocation. If the current buffer is
+a process buffer that that `dbgr-invocation' set and we are in
+rbdbgr-track-mode, then use the value of that variable. Otherwise
+we try to find a suitable Ruby program using `rbdbgr-suggest-python-file' and
+prepend the debugger name onto that. FIXME: should keep a list of
+previously used invocations.
+"
+  (cond
+   ((and (boundp 'dbgr-invocation) 
+	 (boundp 'pydbgr-track-mode) 
+	 pydbgr-track-mode)
+    (let ((result (car dbgr-invocation)))
+      (reduce (lambda(result, x)
+		(setq result (concat result " " x)))
+	      dbgr-invocation)))
+   (t (concat debugger-name " " (pydbgr-suggest-python-file)))))
+
 (defun pydbgr-suggest-python-file ()
     "Suggest a Python file to debug. First priority is given to the
 current buffer. If the major mode is Python-mode, then we are
@@ -176,18 +221,6 @@ given priority, we use the first one we find."
 		    (setq result file)
 		    (setq priority 5))))))
       result))
-
-(defun pydbgr-query-cmdline (&optional opt-debugger opt-cmd-name)
-  "Prompt for a pydbgr debugger command invocation to run.
-Analogous to `gud-query-cmdline'"
-  ;; FIXME: keep a list of recent invocations.
-  (let ((debugger (or opt-debugger
-		   (dbgr-scriptbuf-var-name pydbgr-scriptvar)))
-	(cmd-name (or opt-cmd-name
-		      (pydbgr-suggest-python-file))))
-    (read-from-minibuffer
-     (format "Run %s (like this): " debugger)
-     (concat debugger " " cmd-name))))
 
 (defun pydbgr-goto-traceback-line (pt)
   "Display the location mentioned by the Python traceback line

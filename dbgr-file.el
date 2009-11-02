@@ -24,6 +24,10 @@ found"
 	(line-number-at-pos (point-max)))
     nil))
 
+(if (not (boundp 'declare-function))
+    (defmacro declare-function (fn file &optional arglist fileonly)
+      "From Emacs 23.1"
+      nil))
 (declare-function make-dbgr-loc "dbgr-loc" (a b c d e f))
 
 (defun dbgr-file-loc-from-line(filename line-number)

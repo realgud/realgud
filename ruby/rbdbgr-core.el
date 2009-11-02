@@ -20,6 +20,37 @@
 (require 'dbgr-scriptbuf-var)
 (setq load-path (cdddr load-path))
 
+;; FIXME: I think the following could be generalized and moved to 
+;; dbgr-... probably via a macro.
+(defvar rbdbgr-minibuffer-history nil
+  "minibuffer history list for the command `rbdbgr'.")
+
+(easy-mmode-defmap rbdbgr-minibuffer-local-map
+  '(("\C-i" . comint-dynamic-complete-filename))
+  "Keymap for minibuffer prompting of gud startup command."
+  :inherit minibuffer-local-map)
+
+;; FIXME: I think this code could be generalized and moved to 
+;; dbgr-core. 
+(defun rbdbgr-query-cmdline (&optional opt-debugger opt-cmd-name)
+  "Prompt for a rbdbgr debugger command invocation to run.
+Analogous to `gud-query-cmdline'. 
+
+If you happen to be in a rbdgr process buffer the last command invocation
+for that is the initial one. Failing that some amount of guessing is done
+to find a suitable Ruby file via `rbdbgr-suggest-invocation'.
+
+We also set filename completion and use a history of the prior rbdbgr
+invocations "
+  (let ((debugger (or opt-debugger
+		   (dbgr-scriptbuf-var-name rbdbgr-scriptvar))))
+    (read-from-minibuffer
+     (format "Run %s (like this): " debugger)  ;; prompt string
+     (rbdbgr-suggest-invocation debugger)      ;; initial value
+     rbdbgr-minibuffer-local-map               ;; keymap
+     nil                                       ;; read - use default value
+     rbdbgr-minibuffer-history                 ;; history variable
+     )))
 
 (defun rbdbgr-parse-cmd-args (orig-args)
   "Parse command line ARGS for the annotate level and name of script to debug.
@@ -149,7 +180,6 @@ previously used invocations.
       (reduce (lambda(result, x)
 		(setq result (concat result " " x)))
 	      dbgr-invocation)))
-  ;; FIXME: keep a list of recent invocations
    (t (concat debugger-name " " (rbdbgr-suggest-ruby-file)))))
 
 
@@ -194,15 +224,6 @@ given priority, we use the first one we find."
 		    (setq result file)
 		    (setq priority 5))))))
       result))
-
-(defun rbdbgr-query-cmdline (&optional opt-debugger opt-cmd-name)
-  "Prompt for a rbdbgr debugger command invocation to run.
-Analogous to `gud-query-cmdline'"
-  (let ((debugger (or opt-debugger
-		   (dbgr-scriptbuf-var-name rbdbgr-scriptvar))))
-    (read-from-minibuffer
-     (format "Run %s (like this): " debugger)
-     (rbdbgr-suggest-invocation debugger))))
 
 (defun rbdbgr-goto-traceback-line (pt)
   "Display the location mentioned by the Ruby traceback line

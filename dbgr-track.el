@@ -17,19 +17,23 @@
 ; For eshell-output-filter-functions, eshell-last-input-start:
 (require 'esh-mode) 
 
-(eval-when-compile
-  (require 'cl)
-  (setq load-path (cons nil (cons ".." load-path)))
-  (load "dbgr-loc")
-  (load "dbgr-lochist")
-  (load "dbgr-file")
-  (load "dbgr-procbuf-var")
-  (load "dbgr-window")
-  (load "dbgr-regexp")
-  (setq load-path (cddr load-path)))
-(require 'dbgr-file)
-(require 'dbgr-loc)
-(require 'dbgr-regexp)
+(defun dbgr-directory ()
+  "The directory of this file, or nil."
+  (let ((file-name (or load-file-name
+                       (symbol-file 'dbgr-track))))
+    (if file-name
+        (file-name-directory file-name)
+      nil)))
+
+(eval-when-compile (require 'cl))
+(setq load-path (cons nil (cons (dbgr-directory) load-path)))
+(load "dbgr-loc")
+(load "dbgr-lochist")
+(load "dbgr-file")
+(load "dbgr-procbuf-var")
+(load "dbgr-window")
+(load "dbgr-regexp")
+(setq load-path (cddr load-path))
 
 (make-variable-buffer-local 'dbgr-info)
 (defvar dbgr-info (make-dbgr-info
