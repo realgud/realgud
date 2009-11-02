@@ -127,26 +127,43 @@
 ;; Assertion tests
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun assert-equal (expected actual)
+(defun assert-equal (expected actual &optional opt-fail-message)
   "expectation is that ACTUAL should be equal to EXPECTED."
   (if (not (equal actual expected))
-      (signal 'behave-spec-failed 
-	      (format 
-	       "Context: %s\n\tDescription: %s\n\tExpected: %s\n\tGot:      %s" 
-	       (context-description context) spec-desc expected actual)))
+      (let* ((fail-message 
+	      (if opt-fail-message
+		  (format "\n\tMessage: %s" opt-fail-message)
+		""))
+	     (context-mess 
+	      (if (boundp 'context)
+		  (context-description context)
+		"unset")))
+	(signal 'behave-spec-failed 
+		(format 
+		 "Context: %s%s\n\tSpecification: %s\n\tExpected: %s\n\tGot:      %s"
+		 context-mess
+		 fail-message spec-desc expected actual))))
   t)
 
-(defun assert-t (actual)
+(defun assert-t (actual &optional opt-fail-message)
   "expectation is that ACTUAL is t."
   (assert-nil (not actual)))
 
-(defun assert-nil (actual)
+(defun assert-nil (actual &optional opt-fail-message)
   "expectation is that ACTUAL is nil."
   (if actual
-      (signal 'behave-spec-failed 
-	      (format 
-	       "Context: %s\n\tDescription: %s" 
-	       (context-description context) spec-desc)))
+      (let* ((fail-message 
+	      (if opt-fail-message
+		  (format "\n\tMessage: %s" opt-fail-message)
+		""))
+	     (context-mess 
+	      (if (boundp 'context)
+		  (context-description context)
+		"unset")))
+	(signal 'behave-spec-failed 
+		(format 
+		 "Context: %s%s\n\tSpecification: %s" 
+		 context-mess fail-message spec-desc))))
   t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -21,7 +21,9 @@
 	 (specify "extract file name"
 		  (assert-equal "/usr/lib/python2.6/code.py"
 				(match-string (dbgr-loc-pat-file-group tb)
-					      text)))
+					      text)
+				(format "Failing file group is %s" 
+					(dbgr-loc-pat-file-group tb))))
 	 (specify "extract line number"
 		  (assert-equal "281"
 				(match-string (dbgr-loc-pat-line-group tb)
