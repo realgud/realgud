@@ -17,6 +17,8 @@
 ; For eshell-output-filter-functions, eshell-last-input-start:
 (require 'esh-mode) 
 
+(defvar dbgr-track-mode)
+
 (defun dbgr-directory ()
   "The directory of this file, or nil."
   (let ((file-name (or load-file-name
@@ -57,15 +59,16 @@ marks set in buffer-local variables to extract text"
   ;; check all text from comint-last-input-end to process-mark.
 
   ; FIXME: Add unwind-protect? 
-  (lexical-let* ((proc-buff (current-buffer))
-		 (curr-proc (get-buffer-process proc-buff))
-		 (last-output-end (process-mark curr-proc))
-		 (last-output-start (max comint-last-input-end 
-				   (- last-output-end dbgr-track-char-range)))
-		 (loc (dbgr-track-from-region last-output-start 
-					       last-output-end)))
-
-    (if loc (dbgr-track-loc-action loc proc-buff))))
+  (if dbgr-track-mode
+      (lexical-let* ((proc-buff (current-buffer))
+		     (curr-proc (get-buffer-process proc-buff))
+		     (last-output-end (process-mark curr-proc))
+		     (last-output-start (max comint-last-input-end 
+					     (- last-output-end dbgr-track-char-range)))
+		     (loc (dbgr-track-from-region last-output-start 
+						  last-output-end)))
+	
+	(if loc (dbgr-track-loc-action loc proc-buff)))))
 
 (defun dbgr-track-eshell-output-filter-hook()
   "An output-filter hook custom for eshell shells.  Find
@@ -73,10 +76,11 @@ location(s), if any, and run the action(s) associated with We use
 marks set in buffer-local variables to extract text"
 
   ; FIXME: Add unwind-protect? 
-  (lexical-let ((proc-buff (current-buffer))
-		(loc (dbgr-track-from-region eshell-last-output-start 
-					      eshell-last-output-end)))
-    (dbgr-track-loc-action loc proc-buff)))
+  (if dbgr-track-mode
+      (lexical-let ((proc-buff (current-buffer))
+		    (loc (dbgr-track-from-region eshell-last-output-start 
+						 eshell-last-output-end)))
+	(dbgr-track-loc-action loc proc-buff))))
 
 (defun dbgr-track-from-region(from to)
   (interactive "r")

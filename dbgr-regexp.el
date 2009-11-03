@@ -34,9 +34,9 @@ a string output by a debugger inside a process shell"
 ; Create one for ruby-debug
 (setf (gethash "rdebug" dbgr-pat-hash)
       (make-dbgr-loc-pat
-       :regexp "\\(?:source \\)?\\(\\(?:[a-zA-Z]:\\)?[^:\n]*\\):\\([0-9]*\\).*\n"
-       :file-group 2
-       :line-group 3))
+       :regexp "\\(?:source \\)?\\(\\(?:[a-zA-Z]:\\)?\\(?:.+\\)\\):\\([0-9]+\\).*\n"
+       :file-group 1
+       :line-group 2))
 
 ; Now one for the Python debugger "pydbgr". 
 (setf (gethash "pydbgr" dbgr-pat-hash)

@@ -33,7 +33,7 @@
 (declare-function dbgr-track-set-debugger (debugger-name))
 
 (define-minor-mode dbgr-track-mode
-  "Minor mode for tracking ruby debugging inside a process shell."
+  "Minor mode for tracking debugging inside a process shell."
   :init-value (not (dbgr-track-set-debugger "rbdbgr"))
   :global nil
   :group 'dbgr
