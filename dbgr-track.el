@@ -33,7 +33,7 @@
 (load "dbgr-lochist")
 (load "dbgr-file")
 (load "dbgr-procbuf")
-(load "dbgr-scriptbuf-var")
+(load "dbgr-scriptbuf")
 (load "dbgr-window")
 (load "dbgr-regexp")
 (setq load-path (cddr load-path))

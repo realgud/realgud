@@ -14,6 +14,7 @@
 (setq load-path (cons nil (cons (dbgr-directory) load-path)))
 (load "dbgr-arrow")
 (load "dbgr-procbuf")
+(load "dbgr-scriptbuf")
 (setq load-path (cddr load-path))
 
 (declare-function dbgr-set-arrow (src-marker))
@@ -57,22 +58,28 @@ return the first argument is always removed.
   (with-current-buffer (process-buffer proc)
     (lexical-let ((prev-marker (dbgr-proc-src-marker)))
       (if prev-marker (dbgr-unset-arrow (marker-buffer prev-marker)))
-      (message "TTTThat's all folks.... %s" string))))
+      (message "That's all folks.... %s" string))))
 
-(defun dbgr-exec-shell (debugger-name script-name program &rest args)
-  "Run the specified COMMAND in under debugger DEBUGGER-NAME a terminal emulation buffer.
-ARGS are the arguments passed to the PROGRAM.  At the moment, no piping of
-input is allowed."
-  (let* ((term-buffer
+(defun dbgr-exec-shell (debugger-name script-filename program &rest args)
+  "Run the specified COMMAND in under debugger DEBUGGER-NAME a
+comint process buffer. ARGS are the arguments passed to the
+PROGRAM.  At the moment, no piping of input is allowed.
+
+SCRIPT-FILENAME will have local variable `dbgr-scriptvar' set which contains
+the debugger name and debugger process buffer."
+  (let* ((default-directory (file-name-directory script-filename))
+	 (cmdproc-buffer
 	  (get-buffer-create
 	   (format "*%s %s shell*" 
 		   (file-name-nondirectory debugger-name)
-		   (file-name-nondirectory script-name))))
+		   (file-name-nondirectory script-filename))))
 	 (dbgr-buf (current-buffer))
-	 (proc (get-buffer-process term-buffer)))
+	 (proc (get-buffer-process cmdproc-buffer)))
     (unless (and proc (eq 'run (process-status proc)))
       (save-excursion
-	(set-buffer term-buffer)
+	(set-buffer cmdproc-buffer)
+	(setq default-directory default-directory)
+	(insert "Current directory is " default-directory "\n")
 	
 	;; For term.el
 	;; (term-mode)
@@ -80,15 +87,21 @@ input is allowed."
 	;; (make-local-variable 'dbgr-parent-buffer)
 	;; (setq dbgr-parent-buffer dbgr-buf)
 	
-	;; For comint.el
-	(comint-exec term-buffer debugger-name program nil args)
+	;; For comint.el. 
+	(comint-mode)
+	(comint-exec cmdproc-buffer debugger-name program nil args)
 	
-	(setq proc (get-buffer-process term-buffer))
+	(setq proc (get-buffer-process cmdproc-buffer))
 	(if (and proc (eq 'run (process-status proc)))
+	    (let ((src-buffer (find-file-noselect script-filename))
+		  (cmdline-list (cons program args)))
 	      (set-process-sentinel proc 'dbgr-term-sentinel)
+	      (point-max)
+	      (dbgr-scriptbuf-init src-buffer cmdproc-buffer 
+				   debugger-name cmdline-list))
 	  (error "Failed to invoke shell command")) ;; FIXME: add more info
-	(process-put proc 'buffer term-buffer)))
-    term-buffer))
+	(process-put proc 'buffer cmdproc-buffer)))
+    cmdproc-buffer))
 
 ;; Start of a term-output-filter for term.el
 (defun dbgr-term-output-filter (process string)

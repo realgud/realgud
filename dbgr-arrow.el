@@ -5,18 +5,19 @@
 (define-fringe-bitmap 'hollow-right-triangle
   "\xe0\x90\x88\x84\x84\x88\x90\xe0")
 
-(defun dbgr-set-arrow (mark)
-  "Set the fringe arrow in MARKER to indicate the top frame."
+(defun dbgr-set-arrow (marker)
+  "Set the fringe indicator or overlay arrow to MARKER. This is done
+for example to indicate a debugger position."
   (save-excursion
     (let ((indicator-pair 
 	   '((overlay-arrow . right-triangle))))
-      (switch-to-buffer (marker-buffer mark))
-      (setq overlay-arrow-position mark)
+      (switch-to-buffer (marker-buffer marker))
+      (setq overlay-arrow-position marker)
       (setq overlay-arrow-string "=>")
       (setq fringe-indicator-alist indicator-pair))))
 
 (defun dbgr-unset-arrow (buffer)
-  "Set the fringe arrow in MARKER to indicate the top frame."
+  "Remove fringe indicator or overlay arrow for BUFFER."
   (save-excursion
       (switch-to-buffer buffer)
       (setq overlay-arrow-position nil)))

@@ -17,7 +17,7 @@
 (require 'dbgr-track)
 (require 'rbdbgr-regexp)
 (require 'dbgr-core)
-(require 'dbgr-scriptbuf-var)
+(require 'dbgr-scriptbuf)
 (setq load-path (cdddr load-path))
 
 ;; FIXME: I think the following could be generalized and moved to 
@@ -180,6 +180,7 @@ previously used invocations.
       (reduce (lambda(result, x)
 		(setq result (concat result " " x)))
 	      dbgr-invocation)))
+   ((dbgr-scriptbuf-command-string))
    (t (concat debugger-name " " (rbdbgr-suggest-ruby-file)))))
 
 

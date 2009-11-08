@@ -25,6 +25,8 @@ test-regexp.run:
 	(cd $(srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )
 test-regexp2.run:
 	(cd $(srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )
+test-scriptbuf.run:
+	(cd $(srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )
 test-track.run:
 	(cd $(srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )
 

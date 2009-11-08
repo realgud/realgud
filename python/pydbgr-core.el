@@ -17,7 +17,7 @@
 (require 'dbgr-track)
 (require 'pydbgr-regexp)
 (require 'dbgr-core)
-(require 'dbgr-scriptbuf-var)
+(require 'dbgr-scriptbuf)
 (setq load-path (cdddr load-path))
 
 
