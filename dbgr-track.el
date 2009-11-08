@@ -32,19 +32,13 @@
 (load "dbgr-loc")
 (load "dbgr-lochist")
 (load "dbgr-file")
-(load "dbgr-procbuf-var")
+(load "dbgr-procbuf")
+(load "dbgr-scriptbuf-var")
 (load "dbgr-window")
 (load "dbgr-regexp")
 (setq load-path (cddr load-path))
 
-(make-variable-buffer-local 'dbgr-info)
-(defvar dbgr-info (make-dbgr-info
-		    :name "unknown-debugger-name"
-		    :loc-regexp nil
-		    :file-group -1
-		    :line-group -1
-		    :loc-hist   nil)
-  "Debugger object for a process buffer.")
+(declare-function dbgr-proc-src-marker ())
 
 (defun dbgr-track-comint-output-filter-hook(text)
   "An output-filter hook custom for comint shells.  Find
@@ -89,7 +83,7 @@ marks set in buffer-local variables to extract text"
 
 (defun dbgr-track-hist-fn-internal(fn)
   (interactive)
-  (lexical-let* ((loc-hist (dbgr-info-loc-hist dbgr-info))
+  (lexical-let* ((loc-hist (dbgr-proc-loc-hist))
 	 (cmd-window (selected-window))
 	 (cmd-buff (current-buffer))
 	 (position (funcall fn loc-hist))
@@ -125,7 +119,11 @@ marks set in buffer-local variables to extract text"
   "If loc is valid, show loc and do whatever actions we do for
 encountering a new loc."
   (if (dbgr-loc-p loc)
-      (progn
+      (lexical-let* ((loc-hist (dbgr-proc-loc-hist))
+		     (prev-marker (dbgr-proc-src-marker))
+		     (src-buf))
+
+	(if prev-marker (dbgr-unset-arrow (marker-buffer prev-marker)))
 	(dbgr-loc-goto loc 'dbgr-split-or-other-window)
 
         ;; We need to go back to the process/command buffer because other
@@ -135,7 +133,7 @@ encountering a new loc."
 
 	;; hist add has to be done in cmd-buff since history is 
 	;; buffer-local
-	(dbgr-loc-hist-add (dbgr-info-loc-hist dbgr-info) loc)
+	(dbgr-loc-hist-add loc-hist loc)
 	)))
 
 (defun dbgr-track-loc(text &optional opt-regexp opt-file-group opt-line-group)

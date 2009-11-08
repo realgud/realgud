@@ -1,6 +1,6 @@
 (load-file "./behave.el")
 (load-file "../dbgr-regexp.el")
-(load-file "../dbgr-procbuf-var.el")
+(load-file "../dbgr-procbuf.el")
 
 (behave-clear-contexts)
 

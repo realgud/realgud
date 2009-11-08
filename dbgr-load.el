@@ -47,7 +47,7 @@ over a compiled name."
 	))
   
 (defun dbgr-load-all-files()
-  (lexical-let ((file-list '("dbgr-regexp" "dbgr-procbuf-var" 
+  (lexical-let ((file-list '("dbgr-regexp" "dbgr-procbuf" 
 			     "dbgr-loc" "dbgr-lochist" "dbgr-file"
 			     "dbgr-window" "dbgr-track" "dbgr-track-mode"))
 		(filename)

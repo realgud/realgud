@@ -2,6 +2,23 @@
 (require 'comint)
 (eval-when-compile (require 'cl))
 
+(defun dbgr-directory ()
+  "The directory of this file, or nil."
+  (let ((file-name (or load-file-name
+                       (symbol-file 'dbgr-core))))
+    (if file-name
+        (file-name-directory file-name)
+      nil)))
+
+(eval-when-compile (require 'cl))
+(setq load-path (cons nil (cons (dbgr-directory) load-path)))
+(load "dbgr-arrow")
+(load "dbgr-procbuf")
+(setq load-path (cddr load-path))
+
+(declare-function dbgr-set-arrow (src-marker))
+(declare-function dbgr-proc-src-marker ())
+
 (defun dbgr-parse-command-arg (args two-args opt-two-args)
   "Return a cons node where the car is a list containing the
 entire first option and the cdr is the remaining arguments from ARGS.
@@ -37,12 +54,14 @@ return the first argument is always removed.
      (t (cons (list arg) (list remaining))))))
 
 (defun dbgr-term-sentinel (proc string)
-  (message "TTTThat's all folks.... %s" string)
-)
+  (with-current-buffer (process-buffer proc)
+    (lexical-let ((prev-marker (dbgr-proc-src-marker)))
+      (if prev-marker (dbgr-unset-arrow (marker-buffer prev-marker)))
+      (message "TTTThat's all folks.... %s" string))))
 
 (defun dbgr-exec-shell (debugger-name script-name program &rest args)
   "Run the specified COMMAND in under debugger DEBUGGER-NAME a terminal emulation buffer.
-ARGS are the arguments passed to the PRGRAM.  At the moment, no piping of
+ARGS are the arguments passed to the PROGRAM.  At the moment, no piping of
 input is allowed."
   (let* ((term-buffer
 	  (get-buffer-create

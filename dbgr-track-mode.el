@@ -14,7 +14,7 @@
 (load "dbgr-loc")
 (load "dbgr-lochist")
 (load "dbgr-file")
-(load "dbgr-procbuf-var")
+(load "dbgr-procbuf")
 (load "dbgr-window")
 (load "dbgr-regexp")
 (require 'dbgr-regexp)
