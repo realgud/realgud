@@ -20,6 +20,12 @@ to be debugged."
   ;; 
 )
 
+(defun dbgr-scriptbuf-info-cmdproc=(info buffer)
+  (setf (dbgr-scriptbuf-info-cmdproc info) buffer))
+
+(defalias 'dbgr-scriptbuf-info? 'dbgr-scriptbuf-info-p)
+
+
 ;; FIXME: support a list of dbgr-scriptvar's since we want to allow
 ;; a source buffer to potentially participate in several debuggers
 ;; which might be active.
@@ -32,26 +38,38 @@ to be debugged."
 CMDPROC-BUFFER is the process buffer containing the debugger. 
 DEBUGGER-NAME is the name of the debugger.
 as a main program."
-  (save-excursion
+  (with-current-buffer cmdproc-buffer
     (set-buffer src-buffer)
-    (put 'dbgr-scriptbuf-info 'variable-documentation 
-	 "Debugger information for a buffer containing source code.")
-    (setq dbgr-scriptbuf-info
+    (set (make-local-variable 'dbgr-scriptbuf-info)
 	 (make-dbgr-scriptbuf-info
 	  :name debugger-name
 	  :cmd  cmdline-list
-	  :cmdproc cmdproc-buffer))))
+	  :cmdproc cmdproc-buffer))
+    (put 'dbgr-scriptbuf-info 'variable-documentation 
+	 "Debugger information for a buffer containing source code.")))
 
-(defun dbgr-scriptbuf-command-string()
+(defun dbgr-scriptbuf-init-or-update
+  (src-buffer cmdproc-buffer)
+  (with-current-buffer src-buffer
+    (if (dbgr-scriptbuf-info? dbgr-scriptbuf-info)
+	(progn
+	  (dbgr-scriptbuf-info-cmdproc= dbgr-scriptbuf-info cmdproc-buffer)
+	  ;;(setf (dbgr-scriptbuf-info-name dbgr-scriptbuf-info) 
+	  ;;      (dbgr-proc-debugger-name cmdproc-buffer))
+	  )
+      (dbgr-scriptbuf-init src-buffer cmdproc-buffer "unknown" '()))))
+
+(defun dbgr-scriptbuf-command-string(src-buffer)
   "Get the command string invocation for this source buffer"
-   (cond 
-    ((and (boundp 'dbgr-scriptbuf-info) dbgr-scriptbuf-info
-	  (dbgr-scriptbuf-info-cmd dbgr-scriptbuf-info))
-     (mapconcat (lambda(x) x) 
-		(dbgr-scriptbuf-info-cmd dbgr-scriptbuf-info)
-		" "))
-    (t nil)))
-
+  (with-current-buffer src-buffer
+    (cond 
+     ((and (boundp 'dbgr-scriptbuf-info) dbgr-scriptbuf-info
+	   (dbgr-scriptbuf-info-cmd dbgr-scriptbuf-info))
+      (mapconcat (lambda(x) x) 
+		 (dbgr-scriptbuf-info-cmd dbgr-scriptbuf-info)
+		 " "))
+     (t nil))))
+  
 (provide 'dbgr-scriptbuf)
 
 ;;; Local variables:

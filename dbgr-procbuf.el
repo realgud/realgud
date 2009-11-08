@@ -14,13 +14,7 @@
 )
 
 (make-variable-buffer-local 'dbgr-info)
-(defvar dbgr-info (make-dbgr-info
-		    :name "unknown-debugger-name"
-		    :loc-regexp nil
-		    :file-group -1
-		    :line-group -1
-		    :loc-hist   nil)
-  "Debugger object for a process buffer.")
+
 
 (defun dbgr-directory ()
   "The directory of this file, or nil."
@@ -35,15 +29,39 @@
 (load "dbgr-loc")
 (setq load-path (cddr load-path))
 
-(defun dbgr-proc-loc-hist()
-  "Return the history ring of locations that a debugger process has stored."
-  (dbgr-info-loc-hist dbgr-info)
+(declare-function make-dbgr-loc-hist ())
+
+(defun dbgr-procbuf-init 
+  (proc-buffer &optional debugger-name loc-regexp file-group line-group)
+  "Initialize PROC-BUFFER for a working with a debugger.
+DEBUGGER-NAME is the name of the debugger.
+as a main program."
+  (with-current-buffer proc-buffer
+    (setq dbgr-info
+	  (make-dbgr-info
+	   :name (or debugger-name "unknown-debugger-name")
+	    :loc-regexp loc-regexp
+	    :file-group (or file-group -1)
+	    :line-group (or line-group -1)
+	    :loc-hist   (make-dbgr-loc-hist)))
+    (put 'dbgr-info 'variable-documentation 
+	 "Debugger object for a process buffer.")))
+
+(defun dbgr-proc-debugger-name(proc-buff)
+  "Return the debugger name recorded in the debugger process buffer."
+  (with-current-buffer proc-buff (dbgr-info-name dbgr-info))
 )
 
-(defun dbgr-proc-src-marker()
+(defun dbgr-proc-loc-hist(proc-buff)
+  "Return the history ring of locations that a debugger process has stored."
+  (with-current-buffer proc-buff (dbgr-info-loc-hist dbgr-info))
+)
+
+(defun dbgr-proc-src-marker(proc-buff)
   "Return a marker to current source location stored in the history ring."
-  (lexical-let* ((loc (dbgr-loc-hist-item (dbgr-proc-loc-hist))))
-    (and loc (dbgr-loc-marker loc))))
+  (with-current-buffer proc-buff
+    (lexical-let* ((loc (dbgr-loc-hist-item (dbgr-proc-loc-hist proc-buff))))
+      (and loc (dbgr-loc-marker loc)))))
 
 (provide 'dbgr-procbuf)
 

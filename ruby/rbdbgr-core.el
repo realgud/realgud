@@ -180,7 +180,7 @@ previously used invocations.
       (reduce (lambda(result, x)
 		(setq result (concat result " " x)))
 	      dbgr-invocation)))
-   ((dbgr-scriptbuf-command-string))
+   ((dbgr-scriptbuf-command-string (current-buffer)))
    (t (concat debugger-name " " (rbdbgr-suggest-ruby-file)))))
 
 

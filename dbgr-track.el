@@ -39,6 +39,8 @@
 (setq load-path (cddr load-path))
 
 (declare-function dbgr-proc-src-marker ())
+(declare-function dbgr-procbuf-init (a &optional b c d e))
+(declare-function dbgr-scriptbuf-init-or-update (a b))
 
 (defun dbgr-track-comint-output-filter-hook(text)
   "An output-filter hook custom for comint shells.  Find
@@ -83,11 +85,12 @@ marks set in buffer-local variables to extract text"
 
 (defun dbgr-track-hist-fn-internal(fn)
   (interactive)
-  (lexical-let* ((loc-hist (dbgr-proc-loc-hist))
-	 (cmd-window (selected-window))
-	 (cmd-buff (current-buffer))
-	 (position (funcall fn loc-hist))
-	 (loc (dbgr-loc-hist-item loc-hist)))
+  (lexical-let* 
+      ((cmd-buff (current-buffer))
+       (loc-hist (dbgr-proc-loc-hist cmd-buff))
+       (cmd-window (selected-window))
+       (position (funcall fn loc-hist))
+       (loc (dbgr-loc-hist-item loc-hist)))
     (dbgr-loc-goto loc 'dbgr-split-or-other-window)
     (message "history position %s line %s" 
 	     (dbgr-loc-hist-index loc-hist)
@@ -115,23 +118,26 @@ marks set in buffer-local variables to extract text"
   (interactive)
   (dbgr-track-hist-fn-internal 'dbgr-loc-hist-oldest))
 
-(defun dbgr-track-loc-action (loc cmd-buff)
+(defun dbgr-track-loc-action (loc proc-buff)
   "If loc is valid, show loc and do whatever actions we do for
 encountering a new loc."
   (if (dbgr-loc-p loc)
-      (lexical-let* ((loc-hist (dbgr-proc-loc-hist))
-		     (prev-marker (dbgr-proc-src-marker))
-		     (src-buf))
+      (lexical-let* 
+	  ((loc-hist (dbgr-proc-loc-hist proc-buff))
+	   (prev-marker (dbgr-proc-src-marker proc-buff))
+	   (src-buff))
 
 	(if prev-marker (dbgr-unset-arrow (marker-buffer prev-marker)))
-	(dbgr-loc-goto loc 'dbgr-split-or-other-window)
+	(setq src-buff (dbgr-loc-goto loc 'dbgr-split-or-other-window))
+
+	(dbgr-scriptbuf-init-or-update src-buff proc-buff)
 
         ;; We need to go back to the process/command buffer because other
         ;; output-filter hooks run after this may assume they are in that
         ;; buffer.
-	(switch-to-buffer-other-window cmd-buff)
+	(switch-to-buffer-other-window proc-buff)
 
-	;; hist add has to be done in cmd-buff since history is 
+	;; hist add has to be done in proc-buff since history is 
 	;; buffer-local
 	(dbgr-loc-hist-add loc-hist loc)
 	)))
@@ -187,13 +193,10 @@ debugger with that information"
   (interactive "sDebugger name: ")
   (lexical-let ((loc-pat (gethash debugger-name dbgr-pat-hash)))
     (if loc-pat 
-	(setq dbgr-info
-	     (make-dbgr-info
-	      :name debugger-name
-	      :loc-regexp (dbgr-loc-pat-regexp loc-pat)
-	      :file-group (dbgr-loc-pat-file-group loc-pat)
-	      :line-group (dbgr-loc-pat-line-group loc-pat)
-	      :loc-hist   (make-dbgr-loc-hist)))
+	(dbgr-procbuf-init (current-buffer) debugger-name 
+			   (dbgr-loc-pat-regexp loc-pat) 
+			   (dbgr-loc-pat-file-group loc-pat)
+			   (dbgr-loc-pat-line-group loc-pat))
       (progn 
 	(message "I Don't have %s listed as a debugger." debugger-name)
 	nil)

@@ -15,10 +15,14 @@
 (load "dbgr-arrow")
 (load "dbgr-procbuf")
 (load "dbgr-scriptbuf")
+(load "dbgr-track")
 (setq load-path (cddr load-path))
 
 (declare-function dbgr-set-arrow (src-marker))
+(declare-function dbgr-scriptbuf-init(a b c d))
+(declare-function dbgr-unset-arrow())
 (declare-function dbgr-proc-src-marker ())
+(declare-function dbgr-track-set-debugger (name))
 
 (defun dbgr-parse-command-arg (args two-args opt-two-args)
   "Return a cons node where the car is a list containing the
@@ -92,9 +96,11 @@ the debugger name and debugger process buffer."
 	(comint-exec cmdproc-buffer debugger-name program nil args)
 	
 	(setq proc (get-buffer-process cmdproc-buffer))
+
 	(if (and proc (eq 'run (process-status proc)))
 	    (let ((src-buffer (find-file-noselect script-filename))
 		  (cmdline-list (cons program args)))
+	      (dbgr-track-set-debugger debugger-name)
 	      (set-process-sentinel proc 'dbgr-term-sentinel)
 	      (point-max)
 	      (dbgr-scriptbuf-init src-buffer cmdproc-buffer 
