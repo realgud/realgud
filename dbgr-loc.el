@@ -15,9 +15,9 @@
 "Our own location type. Even though a mark contains a
 file-name (via a buffer) and a line number (via an offset), we
 want to save the values that were seen/requested originally."
-   (filename    :type string)
-   (line-number :type integer)
-   (marker      :type marker))
+   (filename)
+   (line-number)
+   (marker))
 
 (defalias 'dbgr-loc? 'dbgr-loc-p)
 

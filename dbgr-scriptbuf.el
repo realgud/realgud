@@ -1,5 +1,8 @@
 ;;; dbgr-scriptbuf.el --- code for a source-code buffer
-(eval-when-compile (require 'cl))
+(eval-when-compile 
+  (require 'cl)
+  (defvar dbgr-scriptbuf-info) ;; is buffer local
+  )
 
 
 (defstruct dbgr-scriptbuf-info

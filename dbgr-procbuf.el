@@ -1,13 +1,20 @@
 ;;; dbgr-procbuf.el --- debugger process buffer things
-(require 'cl)
+(eval-when-compile 
+  (require 'cl)
+  (defvar dbgr-info)
+  (defvar cl-struct-dbgr-loc-tags) ;; ??
+  (declare-function dbgr-unset-arrow (marker))
+  (declare-function make-dbgr-loc-hist ())
+  )
+(declare-function dbgr-loc-hist-item (item))
 
 (defstruct dbgr-info
   "The debugger object/structure specific to a process buffer."
-  (name       :type string) ; Name of debugger
-  (loc-regexp :type string) ; Location regular expression string
+  (name)       ; Name of debugger
+  (loc-regexp) ; Location regular expression string
   ; FIXME: use include?
-  (file-group :type integer)
-  (line-group :type integer)
+  (file-group)
+  (line-group)
   (loc-hist)    ; ring of locations seen in the course of execution
               ; see dbgr-lochist
 )
@@ -16,11 +23,9 @@
 
 (provide 'dbgr-procbuf)
 (require 'load-relative)
-(load-relative "dbgr-loc" 'dbgr-procbuf)
+(load-relative '("dbgr-arrow" "dbgr-loc") 'dbgr-procbuf)
 
-(declare-function make-dbgr-loc-hist ())
-
-(defun dbgr-procbuf-init 
+(defun dbgr-procbuf-init
   (proc-buffer &optional debugger-name loc-regexp file-group line-group)
   "Initialize PROC-BUFFER for a working with a debugger.
 DEBUGGER-NAME is the name of the debugger.

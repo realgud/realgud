@@ -10,9 +10,12 @@
 (require 'ring)
 (eval-when-compile 
   (require 'cl)
-  (setq load-path (cons nil (cons ".." load-path)))
-  (load "dbgr-loc")
-  (setq load-path (cddr load-path)))
+  )
+
+(require 'load-relative)
+(provide 'dbgr-lochist)
+(load-relative "dbgr-loc" 'dbgr-loc-hist)
+
 
 
 (defcustom dbgr-loc-hist-size 10  ; For testing. Should really be larger.
@@ -22,7 +25,7 @@
 
 (defstruct dbgr-loc-hist
   "A list of source-code positions recently encountered"
-  (position -1 :type integer) 
+  (position -1)
   (ring (make-ring dbgr-loc-hist-size) :type (type-of make-ring 0)))
   
 (defun dbgr-loc-hist-item-at(loc-hist position)

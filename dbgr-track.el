@@ -3,9 +3,6 @@
 (defconst dbgr-track-char-range 10000
   "Max number of characters from end of buffer to search for stack entry.")
 
-
-(eval-when-compile (require 'cl))
-
 ;; Shell process buffers that we can hook into:
 (require 'esh-mode) 
 (require 'comint)
@@ -13,12 +10,30 @@
 (require 'load-relative)
 (provide 'dbgr-track)
 (load-relative
- '("dbgr-loc" "dbgr-lochist" "dbgr-file" "dbgr-procbuf" 
+ '("dbgr-arrow" "dbgr-loc" "dbgr-lochist" "dbgr-file" "dbgr-procbuf" 
    "dbgr-scriptbuf" "dbgr-window" "dbgr-regexp") 'dbgr-track)
 
+(eval-when-compile 
+  (require 'cl)
+  (defvar cl-struct-dbgr-info-tags) ;; ??
+  (defvar cl-struct-dbgr-loc-pat) ;; ??
+  (defvar cl-struct-dbgr-loc-pat-tags) ;; ??
+  (defvar cl-struct-dbgr-loc-tags) ;; ??
+  (defvar dbgr-pat-hash)   ;; in dbgr-regexp
+  (defvar dbgr-track-mode) ;; in dbgr-track-mode
+)
 (declare-function dbgr-proc-src-marker ())
-(declare-function dbgr-procbuf-init (a &optional b c d e))
+(declare-function dbgr-loc-goto(loc &optional window-fn &rest args))
+(declare-function dbgr-procbuf-init(proc-buffer 
+				    debugger-name loc-regexp 
+				    file-group line-group))
+(declare-function dbgr-loc-hist-item(item))
+(declare-function dbgr-proc-loc-hist(proc-buff))
 (declare-function dbgr-scriptbuf-init-or-update (a b))
+(declare-function dbgr-unset-arrow(marker))
+(declare-function dbgr-loc-hist-index (loc-hist))
+(declare-function dbgr-loc-hist-add(loc-hist item))
+(declare-function dbgr-file-loc-from-line (filename line-number))
 
 (make-variable-buffer-local 'dbgr-track-mode)
 
@@ -52,7 +67,6 @@ location(s), if any, and run the action(s) associated with We use
 marks set in buffer-local variables to extract text"
 
   ; FIXME: Add unwind-protect? 
-  (make-variable-buffer-local 'dbgr-track-mode)
   (if dbgr-track-mode
       (lexical-let ((proc-buff (current-buffer))
 		    (loc (dbgr-track-from-region eshell-last-output-start 

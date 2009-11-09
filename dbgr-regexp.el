@@ -13,9 +13,9 @@
 (defstruct dbgr-loc-pat
   "Information to match and extract a file and line number location from
 a string output by a debugger inside a process shell"
-  (regexp     :type string)
-  (file-group :type integer)
-  (line-group :type integer))
+  (regexp)
+  (file-group)
+  (line-group))
 
 (defvar dbgr-pat-hash (make-hash-table :test 'equal)
   "Hash key is the debugger name, a string. The values of a hash entry

@@ -10,7 +10,7 @@
 
 (declare-function dbgr-set-arrow (src-marker))
 (declare-function dbgr-scriptbuf-init(a b c d))
-(declare-function dbgr-unset-arrow())
+(declare-function dbgr-unset-arrow(marker))
 (declare-function dbgr-proc-src-marker (a))
 (declare-function dbgr-track-set-debugger (name))
 
