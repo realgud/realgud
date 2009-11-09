@@ -2,17 +2,12 @@
 
 (eval-when-compile (require 'cl))
 
-(require 'dbgr-regexp)
 (require 'load-relative)
 
 (provide 'dbgr-track-mode)
-(load-relative "dbgr-track" 'dbgr-track-mode)
-(load-relative "dbgr-loc" 'dbgr-track-mode)
-(load-relative "dbgr-lochist" 'dbgr-track-mode)
-(load-relative "dbgr-file" 'dbgr-track-mode)
-(load-relative "dbgr-procbuf" 'dbgr-track-mode)
-(load-relative "dbgr-window" 'dbgr-track-mode)
-(load-relative "dbgr-regexp" 'dbgr-track-mode)
+(load-relative 
+ '("dbgr-track" "dbgr-loc" "dbgr-lochist" "dbgr-file" 
+   "dbgr-procbuf" "dbgr-window" "dbgr-regexp") 'dbgr-track-mode)
 
 (defvar dbgr-track-mode-map
   (let ((map (make-sparse-keymap)))

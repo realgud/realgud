@@ -12,7 +12,7 @@
 
 (require 'load-relative)
 (provide 'dbgr-track)
-(load-relative 
+(load-relative
  '("dbgr-loc" "dbgr-lochist" "dbgr-file" "dbgr-procbuf" 
    "dbgr-scriptbuf" "dbgr-window" "dbgr-regexp") 'dbgr-track)
 
@@ -52,6 +52,7 @@ location(s), if any, and run the action(s) associated with We use
 marks set in buffer-local variables to extract text"
 
   ; FIXME: Add unwind-protect? 
+  (make-variable-buffer-local 'dbgr-track-mode)
   (if dbgr-track-mode
       (lexical-let ((proc-buff (current-buffer))
 		    (loc (dbgr-track-from-region eshell-last-output-start 
