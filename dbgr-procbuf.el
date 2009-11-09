@@ -1,5 +1,4 @@
 ;;; dbgr-procbuf.el --- debugger process buffer things
-(eval-when-compile (require 'cl))
 (require 'cl)
 
 (defstruct dbgr-info
@@ -15,19 +14,9 @@
 
 (make-variable-buffer-local 'dbgr-info)
 
-
-(defun dbgr-directory ()
-  "The directory of this file, or nil."
-  (let ((file-name (or load-file-name
-                       (symbol-file 'dbgr-procbuf))))
-    (if file-name
-        (file-name-directory file-name)
-      nil)))
-
-(eval-when-compile (require 'cl))
-(setq load-path (cons nil (cons (dbgr-directory) load-path)))
-(load "dbgr-loc")
-(setq load-path (cddr load-path))
+(provide 'dbgr-procbuf)
+(require 'load-relative)
+(load-relative "dbgr-loc" 'dbgr-procbuf)
 
 (declare-function make-dbgr-loc-hist ())
 

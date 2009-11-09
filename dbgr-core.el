@@ -4,10 +4,9 @@
 
 (require 'load-relative)
 (provide 'dbgr-core)
-(load-relative "dbgr-arrow" 'dbgr-core)
-(load-relative "dbgr-procbuf" 'dbgr-core)
-(load-relative "dbgr-scriptbuf" 'dbgr-core)
-(load-relative "dbgr-track" 'dbgr-core)
+(load-relative 
+ '("dbgr-arrow" "dbgr-procbuf" "dbgr-scriptbuf" "dbgr-track")
+ 'dbgr-core)
 
 (declare-function dbgr-set-arrow (src-marker))
 (declare-function dbgr-scriptbuf-init(a b c d))

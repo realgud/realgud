@@ -1,19 +1,9 @@
 ; Should dbgr-file-loc-from-line be here or elsewhere?
 
-(defun dbgr-directory ()
-  "The directory of this file, or nil."
-  (let ((file-name (or load-file-name
-                       (symbol-file 'dbgr-file))))
-    (if file-name
-        (file-name-directory file-name)
-      nil)))
-
 (eval-when-compile (require 'cl))
-
-(setq load-path (cons (dbgr-directory) load-path))
-(load "dbgr-loc")
-(setq load-path (cdr load-path))
-
+(provide 'dbgr-file)
+(require 'load-relative)
+(load-relative "dbgr-loc" 'dbgr-file)
 
 (defun dbgr-file-line-count(filename)
   "Return the number of lines in file FILENAME, or nil FILENAME can't be
@@ -54,4 +44,3 @@ problem as best as we can determine."
 	(format "%s is not an integer" line-number))
     (format "File named `%s' not found" filename)))
 
-(provide 'dbgr-file)

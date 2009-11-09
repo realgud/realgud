@@ -1,33 +1,20 @@
 ;;; dbgr-track.el --- Debugger tracking a comint or eshell buffer.
 
-;; -------------------------------------------------------------------
-;; Variables.
-;;
-
 (defconst dbgr-track-char-range 10000
   "Max number of characters from end of buffer to search for stack entry.")
 
 
-;; -------------------------------------------------------------------
-;; Dependencies.
-;;
-
 (eval-when-compile (require 'cl))
+
+;; Shell process buffers that we can hook into:
+(require 'esh-mode) 
 (require 'comint)
 
-; For eshell-output-filter-functions, eshell-last-input-start:
-(require 'esh-mode) 
-
 (require 'load-relative)
-
 (provide 'dbgr-track)
-(load-relative "dbgr-loc" 'dbgr-track)
-(load-relative "dbgr-lochist" 'dbgr-track)
-(load-relative "dbgr-file" 'dbgr-track)
-(load-relative "dbgr-procbuf" 'dbgr-track)
-(load-relative "dbgr-scriptbuf" 'dbgr-track)
-(load-relative "dbgr-window" 'dbgr-track)
-(load-relative "dbgr-regexp" 'dbgr-track)
+(load-relative 
+ '("dbgr-loc" "dbgr-lochist" "dbgr-file" "dbgr-procbuf" 
+   "dbgr-scriptbuf" "dbgr-window" "dbgr-regexp") 'dbgr-track)
 
 (declare-function dbgr-proc-src-marker ())
 (declare-function dbgr-procbuf-init (a &optional b c d e))
@@ -200,12 +187,6 @@ debugger with that information"
   (dbgr-goto-line-for-loc-pat pt (gethash type pat-hash)))
 
   
-;; -------------------------------------------------------------------
-;; The end.
-;;
-
-(provide 'dbgr-track)
-
 ;;; Local variables:
 ;;; eval:(put 'dbgr-debug-enter 'lisp-indent-hook 1)
 ;;; End:
