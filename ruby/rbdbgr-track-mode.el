@@ -3,21 +3,9 @@
 
 (eval-when-compile (require 'cl))
 
-(defun rbdbgr-directory ()
-  "The directory of this file, or nil."
-  (let ((file-name (or load-file-name
-                       (symbol-file 'rbdbgr-track-mode))))
-    (if file-name
-        (file-name-directory file-name)
-      nil)))
-
-(setq load-path (cons nil 
-		      (cons (format "%s.." (rbdbgr-directory))
-				    (cons (rbdbgr-directory) load-path))))
-(require 'dbgr-track-mode)
-(require 'rbdbgr-core)
-(setq load-path (cdddr load-path))
-
+(require 'load-relative)
+(provide 'rbdbgr-track-mode)
+(load-relative '("../dbgr-track-mode" "rbdbgr-core") 'rbdbgr-track-mode)
 
 (defun rbdbgr-track-mode-body()
   "Called when entering or leaving rbdbgr-track-mode"
@@ -56,12 +44,6 @@ Use the command `rbdbgr-track-mode' to toggle or set this variable.")
   :keymap rbdbgr-track-mode-map
   (rbdbgr-track-mode-body)
 )
-
-;; -------------------------------------------------------------------
-;; The end.
-;;
-
-(provide 'rbdbgr-track-mode)
 
 ;;; Local variables:
 ;;; eval:(put 'rbdbg-debug-enter 'lisp-indent-hook 1)

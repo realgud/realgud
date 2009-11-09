@@ -4,21 +4,9 @@
      "You need at least Emacs 22 or greater to run this - you have version %d"
      emacs-major-version))
 
-(defun rbdbgr-directory ()
-  "The directory of this file, or nil."
-  (let ((file-name (or load-file-name
-                       (symbol-file 'rbdbgr))))
-    (if file-name
-        (file-name-directory file-name)
-      nil)))
-
-(setq load-path (cons nil 
-		      (cons (format "%s.." (rbdbgr-directory))
-				    (cons (rbdbgr-directory) load-path))))
-
-(load "rbdbgr-core")
-(load "rbdbgr-track-mode")
-(setq load-path (cdddr load-path))
+(require 'load-relative)
+(provide 'rbdbgr)
+(load-relative '("rbdbgr-core" "rbdbgr-track-mode") 'rbdbgr)
 
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.

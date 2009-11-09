@@ -3,22 +3,11 @@
 ;;
 (eval-when-compile (require 'cl))
   
-(defun rbdbgr-directory ()
-  "The directory of this file, or nil."
-  (let ((file-name (or load-file-name
-		       (symbol-file 'rbdbgr-directory))))
-    (if file-name
-	(file-name-directory file-name)
-      nil)))
-
-(setq load-path (cons nil 
-		      (cons (format "%s.." (rbdbgr-directory))
-				    (cons (rbdbgr-directory) load-path))))
-(require 'dbgr-track)
-(require 'rbdbgr-regexp)
-(require 'dbgr-core)
-(require 'dbgr-scriptbuf)
-(setq load-path (cdddr load-path))
+(require 'load-relative)
+(provide 'rbdbgr-core)
+(load-relative 
+ '("../dbgr-track" "../dbgr-core" "../dbgr-scriptbuf") 
+ 'rbdbgr-track-mode)
 
 ;; FIXME: I think the following could be generalized and moved to 
 ;; dbgr-... probably via a macro.
@@ -261,13 +250,6 @@ breakpoints, etc.)."
   "Use `customize' to edit the settings of the `rbdbgr' debugger."
   (interactive)
   (customize-group 'rbdbgr))
-
-
-;; -------------------------------------------------------------------
-;; The end.
-;;
-
-(provide 'rbdbgr-core)
 
 ;;; Local variables:
 ;;; eval:(put 'rbdbgr-debug-enter 'lisp-indent-hook 1)
