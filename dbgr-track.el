@@ -12,35 +12,28 @@
 ;; Dependencies.
 ;;
 
+(eval-when-compile (require 'cl))
 (require 'comint)
 
 ; For eshell-output-filter-functions, eshell-last-input-start:
 (require 'esh-mode) 
 
-(defvar dbgr-track-mode)
+(require 'load-relative)
 
-(defun dbgr-directory ()
-  "The directory of this file, or nil."
-  (let ((file-name (or load-file-name
-                       (symbol-file 'dbgr-track))))
-    (if file-name
-        (file-name-directory file-name)
-      nil)))
-
-(eval-when-compile (require 'cl))
-(setq load-path (cons nil (cons (dbgr-directory) load-path)))
-(load "dbgr-loc")
-(load "dbgr-lochist")
-(load "dbgr-file")
-(load "dbgr-procbuf")
-(load "dbgr-scriptbuf")
-(load "dbgr-window")
-(load "dbgr-regexp")
-(setq load-path (cddr load-path))
+(provide 'dbgr-track)
+(load-relative "dbgr-loc" 'dbgr-track)
+(load-relative "dbgr-lochist" 'dbgr-track)
+(load-relative "dbgr-file" 'dbgr-track)
+(load-relative "dbgr-procbuf" 'dbgr-track)
+(load-relative "dbgr-scriptbuf" 'dbgr-track)
+(load-relative "dbgr-window" 'dbgr-track)
+(load-relative "dbgr-regexp" 'dbgr-track)
 
 (declare-function dbgr-proc-src-marker ())
 (declare-function dbgr-procbuf-init (a &optional b c d e))
 (declare-function dbgr-scriptbuf-init-or-update (a b))
+
+(make-variable-buffer-local 'dbgr-track-mode)
 
 (defun dbgr-track-comint-output-filter-hook(text)
   "An output-filter hook custom for comint shells.  Find

@@ -1,1 +1,4 @@
-Here we have code to facilitate rbdbgr-Emacs interaction.
+Towards a modular framework for interacting with external debuggers.
+
+The debugger is run out of a comint process buffer, or you can use a
+"track-mode" inside an existing shell or eshell buffer.

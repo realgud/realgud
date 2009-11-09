@@ -1,24 +1,18 @@
 ;;  `dbgr-track-mode' tracks shell output 
 
-(defun dbgr-directory ()
-  "The directory of this file, or nil."
-  (let ((file-name (or load-file-name
-                       (symbol-file 'dbgr-track-mode))))
-    (if file-name
-        (file-name-directory file-name)
-      nil)))
-
 (eval-when-compile (require 'cl))
-(setq load-path (cons nil (cons (dbgr-directory) load-path)))
-(load "dbgr-track")
-(load "dbgr-loc")
-(load "dbgr-lochist")
-(load "dbgr-file")
-(load "dbgr-procbuf")
-(load "dbgr-window")
-(load "dbgr-regexp")
+
 (require 'dbgr-regexp)
-(setq load-path (cddr load-path))
+(require 'load-relative)
+
+(provide 'dbgr-track-mode)
+(load-relative "dbgr-track" 'dbgr-track-mode)
+(load-relative "dbgr-loc" 'dbgr-track-mode)
+(load-relative "dbgr-lochist" 'dbgr-track-mode)
+(load-relative "dbgr-file" 'dbgr-track-mode)
+(load-relative "dbgr-procbuf" 'dbgr-track-mode)
+(load-relative "dbgr-window" 'dbgr-track-mode)
+(load-relative "dbgr-regexp" 'dbgr-track-mode)
 
 (defvar dbgr-track-mode-map
   (let ((map (make-sparse-keymap)))
@@ -73,8 +67,6 @@
 ;; -------------------------------------------------------------------
 ;; The end.
 ;;
-
-(provide 'dbgr-track-mode)
 
 ;;; Local variables:
 ;;; eval:(put 'dbgr-debug-enter 'lisp-indent-hook 1)

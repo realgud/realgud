@@ -2,26 +2,17 @@
 (require 'comint)
 (eval-when-compile (require 'cl))
 
-(defun dbgr-directory ()
-  "The directory of this file, or nil."
-  (let ((file-name (or load-file-name
-                       (symbol-file 'dbgr-core))))
-    (if file-name
-        (file-name-directory file-name)
-      nil)))
-
-(eval-when-compile (require 'cl))
-(setq load-path (cons nil (cons (dbgr-directory) load-path)))
-(load "dbgr-arrow")
-(load "dbgr-procbuf")
-(load "dbgr-scriptbuf")
-(load "dbgr-track")
-(setq load-path (cddr load-path))
+(require 'load-relative)
+(provide 'dbgr-core)
+(load-relative "dbgr-arrow" 'dbgr-core)
+(load-relative "dbgr-procbuf" 'dbgr-core)
+(load-relative "dbgr-scriptbuf" 'dbgr-core)
+(load-relative "dbgr-track" 'dbgr-core)
 
 (declare-function dbgr-set-arrow (src-marker))
 (declare-function dbgr-scriptbuf-init(a b c d))
 (declare-function dbgr-unset-arrow())
-(declare-function dbgr-proc-src-marker ())
+(declare-function dbgr-proc-src-marker (a))
 (declare-function dbgr-track-set-debugger (name))
 
 (defun dbgr-parse-command-arg (args two-args opt-two-args)
@@ -58,9 +49,9 @@ return the first argument is always removed.
 	(cons (list arg) (list remaining))))
      (t (cons (list arg) (list remaining))))))
 
-(defun dbgr-term-sentinel (proc string)
-  (with-current-buffer (process-buffer proc)
-    (lexical-let ((prev-marker (dbgr-proc-src-marker)))
+(defun dbgr-term-sentinel (process string)
+  (with-current-buffer (process-buffer process)
+    (lexical-let ((prev-marker (dbgr-proc-src-marker (current-buffer))))
       (if prev-marker (dbgr-unset-arrow (marker-buffer prev-marker)))
       (message "That's all folks.... %s" string))))
 
@@ -121,8 +112,6 @@ the debugger name and debugger process buffer."
 ;; -------------------------------------------------------------------
 ;; The end.
 ;;
-
-(provide 'dbgr-core)
 
 ;;; Local variables:
 ;;; eval:(put 'rbdbgr-debug-enter 'lisp-indent-hook 1)

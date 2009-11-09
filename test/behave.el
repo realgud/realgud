@@ -75,6 +75,7 @@
 ;;; To do:
 
 ;; See open tickets on my Trac:
+;; [Rocky: the below link is defunct]
 ;; http://dev.technomancy.us/phil/query?status=new&status=assigned&status=reopened&component=behave&order=priority
 
 ;; Main issues: more expect predicates

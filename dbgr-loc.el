@@ -5,18 +5,9 @@
 ;; working with them.
 
 (eval-when-compile (require 'cl))
-(defun dbgr-directory ()
-  "The directory of this file, or nil."
-  (let ((file-name (or load-file-name
-                       (symbol-file 'dbgr-loc))))
-    (if file-name
-        (file-name-directory file-name)
-      nil)))
-
-(eval-when-compile (require 'cl))
-(setq load-path (cons nil (cons (dbgr-directory) load-path)))
-(load "dbgr-arrow")
-(setq load-path (cddr load-path))
+(require 'load-relative)
+(provide 'dbgr-loc)
+(load-relative "dbgr-arrow" 'dbgr-loc)
 
 (declare-function dbgr-set-arrow (src-marker))
 
@@ -67,5 +58,3 @@ buffer) is returned, or nil if not found"
 		  (dbgr-loc-marker= loc src-marker)
 		  (dbgr-set-arrow src-marker)))))
 	src-buffer )))
-
-(provide 'dbgr-loc)
