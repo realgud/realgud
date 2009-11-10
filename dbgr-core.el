@@ -61,7 +61,9 @@ PROGRAM.  At the moment, no piping of input is allowed.
 
 SCRIPT-FILENAME will have local variable `dbgr-scriptvar' set which contains
 the debugger name and debugger process buffer."
-  (let* ((default-directory (file-name-directory script-filename))
+  (let* ((starting-directory
+	  (or (file-name-directory script-filename)
+	      default-directory "./"))
 	 (cmdproc-buffer
 	  (get-buffer-create
 	   (format "*%s %s shell*" 
@@ -95,7 +97,7 @@ the debugger name and debugger process buffer."
 	      (point-max)
 	      (dbgr-scriptbuf-init src-buffer cmdproc-buffer 
 				   debugger-name cmdline-list))
-	  (error "Failed to invoke shell command")) ;; FIXME: add more info
+	  (insert (format "Failed to invoke shell command: %s %s" program args)))
 	(process-put proc 'buffer cmdproc-buffer)))
     cmdproc-buffer))
 
@@ -116,4 +118,4 @@ the debugger name and debugger process buffer."
 ;;; eval:(put 'rbdbgr-debug-enter 'lisp-indent-hook 1)
 ;;; End:
 
-;;; rbdbgr-core.el ends here
+;;; dbgr-core.el ends here
