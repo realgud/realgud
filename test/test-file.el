@@ -19,16 +19,19 @@
 	   (tag file)
 	   (specify "File not found"
 		    (assert-t (stringp (dbgr-file-loc-from-line 
-					"not-found-file" 5))))
+					"not-found-file" 5 (make-marker)))))
 	   (specify "invalid real line number"
 		    (assert-t (stringp (dbgr-file-loc-from-line filename 5.5))))
 	   (specify "negative number"
 		    (assert-t (stringp (dbgr-file-loc-from-line filename -1))))
 	   (specify "Line number too large for file"
 		    (assert-t (stringp (dbgr-file-loc-from-line filename 10001))))
-	   (specify "Line number too large for file"
+	   (specify "Ok loc creation - no cmd marker"
 		    (assert-t (dbgr-loc-p 
 			       (dbgr-file-loc-from-line filename 30))))
+	   (specify "Ok loc creation - cmd marker"
+		    (assert-t (dbgr-loc-p 
+			       (dbgr-file-loc-from-line filename 30 (make-marker)))))
   ))
 (behave "file")
 

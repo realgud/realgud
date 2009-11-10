@@ -24,16 +24,17 @@
 )
 (declare-function dbgr-proc-src-marker ())
 (declare-function dbgr-loc-goto(loc &optional window-fn &rest args))
-(declare-function dbgr-procbuf-init(proc-buffer 
+(declare-function dbgr-procbuf-init(cmd-buffer 
 				    debugger-name loc-regexp 
 				    file-group line-group))
 (declare-function dbgr-loc-hist-item(item))
-(declare-function dbgr-proc-loc-hist(proc-buff))
+(declare-function dbgr-proc-loc-hist(cmd-buff))
 (declare-function dbgr-scriptbuf-init-or-update (a b))
 (declare-function dbgr-unset-arrow(marker))
 (declare-function dbgr-loc-hist-index (loc-hist))
 (declare-function dbgr-loc-hist-add(loc-hist item))
-(declare-function dbgr-file-loc-from-line (filename line-number))
+(declare-function dbgr-file-loc-from-line 
+		  (filename line-number &optional cmd-marker))
 
 (make-variable-buffer-local 'dbgr-track-mode)
 
@@ -51,15 +52,16 @@ marks set in buffer-local variables to extract text"
 
   ; FIXME: Add unwind-protect? 
   (if dbgr-track-mode
-      (lexical-let* ((proc-buff (current-buffer))
-		     (curr-proc (get-buffer-process proc-buff))
+      (lexical-let* ((cmd-buff (current-buffer))
+		     (cmd-mark (point-marker))
+		     (curr-proc (get-buffer-process cmd-buff))
 		     (last-output-end (process-mark curr-proc))
 		     (last-output-start (max comint-last-input-end 
 					     (- last-output-end dbgr-track-char-range)))
 		     (loc (dbgr-track-from-region last-output-start 
-						  last-output-end)))
+						  last-output-end cmd-mark)))
 	
-	(if loc (dbgr-track-loc-action loc proc-buff)))))
+	(if loc (dbgr-track-loc-action loc cmd-buff)))))
 
 (defun dbgr-track-eshell-output-filter-hook()
   "An output-filter hook custom for eshell shells.  Find
@@ -68,15 +70,16 @@ marks set in buffer-local variables to extract text"
 
   ;; FIXME: Add unwind-protect? 
   (if dbgr-track-mode
-      (lexical-let ((proc-buff (current-buffer))
-		    (loc (dbgr-track-from-region eshell-last-output-start 
-						 eshell-last-output-end)))
-	(dbgr-track-loc-action loc proc-buff))))
+      (lexical-let* ((cmd-buff (current-buffer))
+		     (cmd-mark (point-marker))
+		     (loc (dbgr-track-from-region eshell-last-output-start 
+						  eshell-last-output-end cmd-mark)))
+	(dbgr-track-loc-action loc cmd-buff))))
 
-(defun dbgr-track-from-region(from to)
+(defun dbgr-track-from-region(from to cmd-mark)
   (interactive "r")
   (if (> from to) (psetq to from from to))
-  (dbgr-track-loc (buffer-substring from to)))
+  (dbgr-track-loc (buffer-substring from to) cmd-mark))
 
 (defun dbgr-track-hist-fn-internal(fn)
   (interactive)
@@ -86,23 +89,13 @@ marks set in buffer-local variables to extract text"
        (cmd-window (selected-window))
        (position (funcall fn loc-hist))
        (loc (dbgr-loc-hist-item loc-hist))
-
-       ;; FIXME: combine into loc-hist
-       (cmd-hist (dbgr-info-cmd-hist dbgr-info))
-       (cmd-hist-pos (dbgr-loc-hist-position loc-hist))
        )
     (dbgr-loc-goto loc 'dbgr-split-or-other-window)
     (message "history position %s line %s" 
 	     (dbgr-loc-hist-index loc-hist)
 	     (dbgr-loc-line-number loc))
-    ;; FIXME: Combine common code with loc-action? 
-    ;; See also comments why we do the below there.
-    (set-buffer cmd-buff)
-
-    ;; FIXME: Combine into dbgr-loc-goto
     (select-window cmd-window)
-    (goto-char (marker-position (ring-ref cmd-hist cmd-hist-pos))))
-  )
+  ))
 
 ;; FIXME: Can we dry code more via a macro?
 (defun dbgr-track-hist-newer()
@@ -121,38 +114,32 @@ marks set in buffer-local variables to extract text"
   (interactive)
   (dbgr-track-hist-fn-internal 'dbgr-loc-hist-oldest))
 
-(defun dbgr-track-loc-action (loc proc-buff)
+(defun dbgr-track-loc-action (loc cmd-buff)
   "If loc is valid, show loc and do whatever actions we do for
 encountering a new loc."
   (if (dbgr-loc-p loc)
       (lexical-let* 
-	  ((loc-hist (dbgr-proc-loc-hist proc-buff))
-	   (prev-marker (dbgr-proc-src-marker proc-buff))
+	  ((loc-hist (dbgr-proc-loc-hist cmd-buff))
+	   (prev-marker (dbgr-proc-src-marker cmd-buff))
 	   (src-buff))
 
 	(if prev-marker (dbgr-unset-arrow (marker-buffer prev-marker)))
 	(setq src-buff (dbgr-loc-goto loc 'dbgr-split-or-other-window))
 
-	(dbgr-scriptbuf-init-or-update src-buff proc-buff)
+	(dbgr-scriptbuf-init-or-update src-buff cmd-buff)
 
         ;; We need to go back to the process/command buffer because other
         ;; output-filter hooks run after this may assume they are in that
         ;; buffer.
-	(switch-to-buffer-other-window proc-buff)
+	(switch-to-buffer-other-window cmd-buff)
 
-	;; hist add has to be done in proc-buff since history is 
+	;; hist add has to be done in cmd-buff since history is 
 	;; buffer-local
 	(dbgr-loc-hist-add loc-hist loc)
-	;; Note process buffer position history.
-	;; FIXME: add to loc-object. So move into dbgr-loc-hist-add
-	(lexical-let* ((cmd-hist (dbgr-proc-cmd-hist proc-buff))
-		       (head (car cmd-hist))
-		       (item (point-marker)))
-	  (setf cmd-hist-position (- head 1))
-	  (ring-insert-at-beginning cmd-hist item))
 	)))
 
-(defun dbgr-track-loc(text &optional opt-regexp opt-file-group opt-line-group)
+(defun dbgr-track-loc(text &optional cmd-mark opt-regexp 
+			   opt-file-group opt-line-group )
   "Do regular-expression matching to find a file name and line number inside
 string TEXT. If we match we will turn the result into a dbgr-loc struct.
 Otherwise return nil."
@@ -174,7 +161,7 @@ Otherwise return nil."
 			   (lineno (string-to-number (or line-str "1"))))
 	      (unless line-str (message "line number not found -- using 1"))
 	      (if (and filename lineno)
-		  (dbgr-file-loc-from-line filename lineno)
+		  (dbgr-file-loc-from-line filename lineno cmd-mark)
 		nil))
 	  nil))))
   
@@ -184,17 +171,19 @@ to get regular-expresion pattern matching information."
   (interactive "d")
   (save-excursion
     (goto-char pt)
-    (lexical-let* ((proc-buff (current-buffer))
-		   (curr-proc (get-buffer-process proc-buff))
+    (lexical-let* ((cmd-buff (current-buffer))
+		   (cmd-mark (point-marker))
+		   (curr-proc (get-buffer-process cmd-buff))
 		   (start (line-beginning-position))
 		   (end (line-end-position))
 		   ;; FIXME check that loc-pat is not null and abort if it is.
 		   (loc (dbgr-track-loc (buffer-substring start end)
-					 (dbgr-loc-pat-regexp loc-pat)
-					 (dbgr-loc-pat-file-group loc-pat)
-					 (dbgr-loc-pat-line-group loc-pat)
-					 )))
-    (if loc (dbgr-track-loc-action loc proc-buff)))))
+					cmd-mark
+					(dbgr-loc-pat-regexp loc-pat)
+					(dbgr-loc-pat-file-group loc-pat)
+					(dbgr-loc-pat-line-group loc-pat)
+					)))
+    (if loc (dbgr-track-loc-action loc cmd-buff)))))
 
 (defun dbgr-track-set-debugger (debugger-name)
   "Set debugger name and information associated with that debugger for

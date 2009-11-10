@@ -11,25 +11,35 @@
 
   (context "location field extraction"
 	   (tag loc)
-	   (lexical-let* ((filename (buffer-file-name (current-buffer)))
-			  (marker (point-marker))
+	   (lexical-let* ((buff (current-buffer))
+			  (filename (buffer-file-name buff))
+			  (source-marker (point-marker))
+			  (cmd-marker (point-marker))
 			  (good-loc (make-dbgr-loc 
 				     :filename filename 
 				     :line-number 5 
-				     :marker marker))
+				     :marker source-marker
+				     :cmd-marker cmd-marker
+				     ))
 			  (good-loc2 (make-dbgr-loc 
 				      :filename filename 
-				      :line-number 6))
-			  (good-loc3 (dbgr-loc-current)))
+				      :line-number 6
+				     :marker source-marker
+				     :cmd-marker cmd-marker
+				     ))
+			  (good-loc3 (dbgr-loc-current buff cmd-marker)))
 	     
 	     (specify "line-number extraction"
 		      (assert-equal 5 (dbgr-loc-line-number good-loc)))
-	     (specify "marker extraction"
-		      (assert-equal marker (dbgr-loc-marker good-loc)))
+	     (specify "source code marker extraction"
+		      (assert-equal source-marker (dbgr-loc-marker good-loc)))
+
+	     (specify "command process marker extraction"
+		      (assert-equal cmd-marker (dbgr-loc-cmd-marker good-loc)))
 
 	     (specify "marker set"
-		      (dbgr-loc-marker= good-loc2 marker)
-		      (assert-equal marker (dbgr-loc-marker good-loc2)))
+		      (dbgr-loc-marker= good-loc2 source-marker)
+		      (assert-equal source-marker (dbgr-loc-marker good-loc2)))
 
 	     )))
 

@@ -22,9 +22,11 @@
 
   (context "location ring initialization and fields access"
 	   (tag lochist)
-	   (lexical-let ((loc-hist (make-dbgr-loc-hist))
-			 (filename (buffer-file-name (current-buffer)))
-			 (loc (dbgr-loc-current)))
+	   (lexical-let* ((loc-hist (make-dbgr-loc-hist))
+			  (source-buffer (current-buffer))
+			  (cmd-marker (point-marker))
+			  (filename (buffer-file-name (current-buffer)))
+			  (loc (dbgr-loc-current source-buffer cmd-marker)))
 	     
 	     (specify "get ring component for a new history ring"
 		      (assert-t (ring-p (dbgr-loc-hist-ring loc-hist))))

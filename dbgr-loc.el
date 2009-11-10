@@ -17,15 +17,22 @@ file-name (via a buffer) and a line number (via an offset), we
 want to save the values that were seen/requested originally."
    (filename)
    (line-number)
-   (marker))
+   (marker)      ;; Position in source code
+   (cmd-marker)  ;; Position in command process buffer
+)
+
 
 (defalias 'dbgr-loc? 'dbgr-loc-p)
 
-(defun dbgr-loc-current()
+(defun dbgr-loc-current(source-buffer cmd-marker)
   "Create a location object for the point in the current buffer."
-  (make-dbgr-loc :filename (buffer-file-name (current-buffer))
-		 :line-number (line-number-at-pos) 
-		 :marker (point-marker)))
+  (with-current-buffer source-buffer
+    (make-dbgr-loc 
+     :filename (buffer-file-name source-buffer)
+     :line-number (line-number-at-pos) 
+     :marker (point-marker)
+     :cmd-marker cmd-marker
+    )))
 
 (defun dbgr-loc-marker=(loc marker)
   (setf (dbgr-loc-marker loc) marker))
@@ -42,9 +49,14 @@ buffer) is returned, or nil if not found"
       (lexical-let* ((filename    (dbgr-loc-filename loc))
 		     (line-number (dbgr-loc-line-number loc))
 		     (marker      (dbgr-loc-marker loc))
+		     (cmd-marker  (dbgr-loc-cmd-marker loc))
 		     (src-buffer  (marker-buffer (or marker (make-marker)))))
 	(if (not src-buffer)
 	    (setq src-buffer (find-file-noselect filename)))
+	(if cmd-marker
+	    (save-excursion
+	      (set-buffer (marker-buffer cmd-marker))
+	      (goto-char cmd-marker)))
 	(if src-buffer
 	    (progn 
 	      (if window-fn (apply window-fn args))

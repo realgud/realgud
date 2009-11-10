@@ -4,6 +4,8 @@
 (provide 'dbgr-file)
 (require 'load-relative)
 (load-relative "dbgr-loc" 'dbgr-file)
+(declare-function make-dbgr-loc(fi li mrk c-mrk))
+
 
 (defun dbgr-file-line-count(filename)
   "Return the number of lines in file FILENAME, or nil FILENAME can't be
@@ -14,13 +16,7 @@ found"
 	(line-number-at-pos (point-max)))
     nil))
 
-(if (not (boundp 'declare-function))
-    (defmacro declare-function (fn file &optional arglist fileonly)
-      "From Emacs 23.1"
-      nil))
-(declare-function make-dbgr-loc "dbgr-loc" (a b c d e f))
-
-(defun dbgr-file-loc-from-line(filename line-number)
+(defun dbgr-file-loc-from-line(filename line-number &optional cmd-marker)
   "Return a dbgr-loc for FILENAME and LINE-NUMBER
 
 If we're unable find the source code we return a string describing the
@@ -36,7 +32,9 @@ problem as best as we can determine."
 			; doing something other than validation? 
 			(make-dbgr-loc :filename    filename 
 				       :line-number line-number
-				       :marker      (make-marker))
+				       :marker      (make-marker)
+				       :cmd-marker  cmd-marker
+				       )
 		      (format "File %s has only %d lines. (Line %d requested.)"
 			      filename line-count line-number))
 		  (format "Problem getting line count for file `%s'" filename)))

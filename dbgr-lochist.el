@@ -50,12 +50,10 @@ component in LOC-HIST"
   ;; Perhaps duplicates should be controlled by an option.
   (lexical-let* ((ring (dbgr-loc-hist-ring loc-hist))
 		 (head (car ring)))
-    ;; FIXME: put process buffer markers into loc
-    ;; (unless (equal (dbgr-loc-hist-item loc-hist) item)
-    (setf (dbgr-loc-hist-position loc-hist) (- head 1))
-    (ring-insert-at-beginning ring item)
-    ;; )
-    ))
+    (unless (equal (dbgr-loc-hist-item loc-hist) item)
+      (setf (dbgr-loc-hist-position loc-hist) (- head 1))
+      (ring-insert-at-beginning ring item)
+    ) ))
 
 (defun dbgr-loc-hist-clear(loc-hist)
   "Clear out all source locations in LOC-HIST"
