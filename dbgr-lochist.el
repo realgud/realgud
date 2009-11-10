@@ -26,7 +26,8 @@
 (defstruct dbgr-loc-hist
   "A list of source-code positions recently encountered"
   (position -1)
-  (ring (make-ring dbgr-loc-hist-size) :type (type-of make-ring 0)))
+  ;; FIXME: Add ring for process buffer positions
+  (ring (make-ring dbgr-loc-hist-size)))
   
 (defun dbgr-loc-hist-item-at(loc-hist position)
   "Get the current item stored at POSITION of the ring
@@ -49,9 +50,12 @@ component in LOC-HIST"
   ;; Perhaps duplicates should be controlled by an option.
   (lexical-let* ((ring (dbgr-loc-hist-ring loc-hist))
 		 (head (car ring)))
-    (unless (equal (dbgr-loc-hist-item loc-hist) item)
-      (setf (dbgr-loc-hist-position loc-hist) (- head 1))
-      (ring-insert-at-beginning ring item))))
+    ;; FIXME: put process buffer markers into loc
+    ;; (unless (equal (dbgr-loc-hist-item loc-hist) item)
+    (setf (dbgr-loc-hist-position loc-hist) (- head 1))
+    (ring-insert-at-beginning ring item)
+    ;; )
+    ))
 
 (defun dbgr-loc-hist-clear(loc-hist)
   "Clear out all source locations in LOC-HIST"

@@ -24,8 +24,8 @@ want to save the values that were seen/requested originally."
 (defun dbgr-loc-current()
   "Create a location object for the point in the current buffer."
   (make-dbgr-loc :filename (buffer-file-name (current-buffer))
-		  :line-number (line-number-at-pos) 
-		  :marker (point-marker)))
+		 :line-number (line-number-at-pos) 
+		 :marker (point-marker)))
 
 (defun dbgr-loc-marker=(loc marker)
   (setf (dbgr-loc-marker loc) marker))

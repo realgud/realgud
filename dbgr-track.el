@@ -15,10 +15,10 @@
 
 (eval-when-compile 
   (require 'cl)
-  (defvar cl-struct-dbgr-info-tags) ;; ??
-  (defvar cl-struct-dbgr-loc-pat) ;; ??
-  (defvar cl-struct-dbgr-loc-pat-tags) ;; ??
-  (defvar cl-struct-dbgr-loc-tags) ;; ??
+  (defvar cl-struct-dbgr-info-tags) ;; why do we need??
+  (defvar cl-struct-dbgr-loc-pat) ;; whe do we need??
+  (defvar cl-struct-dbgr-loc-pat-tags) ;; why do we need??
+  (defvar cl-struct-dbgr-loc-tags) ;; why do we need??
   (defvar dbgr-pat-hash)   ;; in dbgr-regexp
   (defvar dbgr-track-mode) ;; in dbgr-track-mode
 )
@@ -66,7 +66,7 @@ marks set in buffer-local variables to extract text"
 location(s), if any, and run the action(s) associated with We use
 marks set in buffer-local variables to extract text"
 
-  ; FIXME: Add unwind-protect? 
+  ;; FIXME: Add unwind-protect? 
   (if dbgr-track-mode
       (lexical-let ((proc-buff (current-buffer))
 		    (loc (dbgr-track-from-region eshell-last-output-start 
@@ -85,18 +85,26 @@ marks set in buffer-local variables to extract text"
        (loc-hist (dbgr-proc-loc-hist cmd-buff))
        (cmd-window (selected-window))
        (position (funcall fn loc-hist))
-       (loc (dbgr-loc-hist-item loc-hist)))
+       (loc (dbgr-loc-hist-item loc-hist))
+
+       ;; FIXME: combine into loc-hist
+       (cmd-hist (dbgr-info-cmd-hist dbgr-info))
+       (cmd-hist-pos (dbgr-loc-hist-position loc-hist))
+       )
     (dbgr-loc-goto loc 'dbgr-split-or-other-window)
     (message "history position %s line %s" 
 	     (dbgr-loc-hist-index loc-hist)
 	     (dbgr-loc-line-number loc))
-    ; FIXME: Combine common code with loc-action? 
-    ; See also comments why we do the below there.
+    ;; FIXME: Combine common code with loc-action? 
+    ;; See also comments why we do the below there.
     (set-buffer cmd-buff)
-    (select-window cmd-window))
+
+    ;; FIXME: Combine into dbgr-loc-goto
+    (select-window cmd-window)
+    (goto-char (marker-position (ring-ref cmd-hist cmd-hist-pos))))
   )
 
-; FIXME: Can we dry code more via a macro?
+;; FIXME: Can we dry code more via a macro?
 (defun dbgr-track-hist-newer()
   (interactive)
   (dbgr-track-hist-fn-internal 'dbgr-loc-hist-newer))
@@ -135,6 +143,13 @@ encountering a new loc."
 	;; hist add has to be done in proc-buff since history is 
 	;; buffer-local
 	(dbgr-loc-hist-add loc-hist loc)
+	;; Note process buffer position history.
+	;; FIXME: add to loc-object. So move into dbgr-loc-hist-add
+	(lexical-let* ((cmd-hist (dbgr-proc-cmd-hist proc-buff))
+		       (head (car cmd-hist))
+		       (item (point-marker)))
+	  (setf cmd-hist-position (- head 1))
+	  (ring-insert-at-beginning cmd-hist item))
 	)))
 
 (defun dbgr-track-loc(text &optional opt-regexp opt-file-group opt-line-group)
