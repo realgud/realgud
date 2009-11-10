@@ -11,7 +11,7 @@ for example to indicate a debugger position."
   (save-excursion
     (let ((indicator-pair 
 	   '((overlay-arrow . right-triangle))))
-      (switch-to-buffer (marker-buffer marker))
+      (set-buffer (marker-buffer marker))
       (setq overlay-arrow-position marker)
       (setq overlay-arrow-string "=>")
       (setq fringe-indicator-alist indicator-pair))))
@@ -19,7 +19,7 @@ for example to indicate a debugger position."
 (defun dbgr-unset-arrow (buffer)
   "Remove fringe indicator or overlay arrow for BUFFER."
   (save-excursion
-      (switch-to-buffer buffer)
+      (set-buffer buffer)
       (setq overlay-arrow-position nil)))
 
 
