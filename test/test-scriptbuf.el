@@ -3,6 +3,10 @@
 
 (behave-clear-contexts)
 
+;; FIXME: use a real process buffer
+(defun dbgr-info-name(var) "foo")
+(setq dbgr-info nil)
+
 (context "dbgr-scriptbuf"
 	 (tag dbgr-scriptbuf)
 	 (setq dbgr-scriptbuf-info nil)
@@ -13,7 +17,7 @@
 				       "fake-debugger"
 				       '("/bin/pdb" "--emacs" "fake.py" "1"))
 		  (assert-equal "fake-debugger" 
-				(dbgr-scriptbuf-info-name dbgr-scriptbuf-info)))
+				(dbgr-scriptbuf-info-debugger-name dbgr-scriptbuf-info)))
 	 (specify "dbgr-scriptbuf-command-string"
 		  (assert-equal "/bin/pdb --emacs fake.py 1"
 				(dbgr-scriptbuf-command-string (current-buffer))))

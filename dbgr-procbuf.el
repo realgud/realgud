@@ -11,13 +11,14 @@
 
 (defstruct dbgr-info
   "The debugger object/structure specific to a process buffer."
-  (name)         ;; Name of debugger
-  (loc-regexp)   ;; Location regular expression string
+  name         ;; Name of debugger
+  cmdline      ;; Command-line invocation
+  loc-regexp   ;; Location regular expression string
   ;; FIXME: use include?
-  (file-group)
-  (line-group)
-  (loc-hist)     ;; ring of locations seen in the course of execution
-                 ;; see dbgr-lochist
+  file-group
+  line-group
+  loc-hist     ;; ring of locations seen in the course of execution
+               ;; see dbgr-lochist
 )
 
 (make-variable-buffer-local 'dbgr-info)

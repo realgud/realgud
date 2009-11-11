@@ -1,3 +1,11 @@
+(provide 'dbgr-window)
+(require 'load-relative)
+(load-relative "dbgr-helper" 'dbgr-file)
+
+(declare-function fn-p-to-fn?-alias(sym))
+(fn-p-to-fn?-alias 'one-window-p)
+(declare-function one-window?(bool))
+
 (defun dbgr-split-or-other-window()
   "Split the window if there is only one in the current
   frame. However if there is more than one window move to that"
@@ -5,7 +13,7 @@
   ;; Anders code has more complicated logic for figuring out
   ;; which of serveral "other" windows is the one you want to switch
   ;; to.
-  (if (one-window-p 't) (split-window) (other-window 1)))
+  (if (one-window? 't) (split-window) (other-window 1)))
 
 (defun dbgr-split-window()
   "Split the window if there is only one in the current
@@ -14,5 +22,4 @@
   ;; Anders code has more complicated logic for figuring out
   ;; which of serveral "other" windows is the one you want to switch
   ;; to.
-  (if (one-window-p 't) (split-window)))
-
+  (if (one-window? 't) (split-window)))

@@ -78,7 +78,7 @@
 ;; [Rocky: the below link is defunct]
 ;; http://dev.technomancy.us/phil/query?status=new&status=assigned&status=reopened&component=behave&order=priority
 
-;; Main issues: more expect predicates
+;; Main issues: more expect predicates and protected-let
 
 ;;; Usage:
 
@@ -94,7 +94,7 @@
 (defvar *behave-default-tags* "all")
 
 (defstruct context 
-  (description :type string "Description not set yet")
+  description
   tags 
   (specs '()) ;; list of its specifications stored as closures.
   refreshing-vars)
@@ -148,7 +148,7 @@
 
 (defun assert-t (actual &optional opt-fail-message)
   "expectation is that ACTUAL is t."
-  (assert-nil (not actual)))
+  (assert-nil (not actual) opt-fail-message))
 
 (defun assert-nil (actual &optional opt-fail-message)
   "expectation is that ACTUAL is nil."

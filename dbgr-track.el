@@ -10,7 +10,7 @@
 (require 'load-relative)
 (provide 'dbgr-track)
 (load-relative
- '("dbgr-arrow" "dbgr-loc" "dbgr-lochist" "dbgr-file" "dbgr-procbuf" 
+ '("dbgr-helper" "dbgr-arrow" "dbgr-loc" "dbgr-lochist" "dbgr-file" "dbgr-procbuf" 
    "dbgr-scriptbuf" "dbgr-window" "dbgr-regexp") 'dbgr-track)
 
 (eval-when-compile 
@@ -35,6 +35,10 @@
 (declare-function dbgr-loc-hist-add(loc-hist item))
 (declare-function dbgr-file-loc-from-line 
 		  (filename line-number &optional cmd-marker))
+(declare-function fn-p-to-fn?-alias(sym))
+(fn-p-to-fn?-alias 'dbgr-loc-p)
+(declare-function dbgr-loc?(loc))
+
 
 (make-variable-buffer-local 'dbgr-track-mode)
 
@@ -117,7 +121,7 @@ marks set in buffer-local variables to extract text"
 (defun dbgr-track-loc-action (loc cmd-buff)
   "If loc is valid, show loc and do whatever actions we do for
 encountering a new loc."
-  (if (dbgr-loc-p loc)
+  (if (dbgr-loc? loc)
       (lexical-let* 
 	  ((loc-hist (dbgr-proc-loc-hist cmd-buff))
 	   (prev-marker (dbgr-proc-src-marker cmd-buff))

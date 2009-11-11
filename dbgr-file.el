@@ -3,14 +3,17 @@
 (eval-when-compile (require 'cl))
 (provide 'dbgr-file)
 (require 'load-relative)
-(load-relative "dbgr-loc" 'dbgr-file)
+(load-relative '("dbgr-helper" "dbgr-loc") 'dbgr-file)
 (declare-function make-dbgr-loc(fi li mrk c-mrk))
 
+(declare-function fn-p-to-fn?-alias(sym))
+(fn-p-to-fn?-alias 'file-exists-p)
+(declare-function file-exists?(file))
 
 (defun dbgr-file-line-count(filename)
   "Return the number of lines in file FILENAME, or nil FILENAME can't be
 found"
-  (if (file-exists-p filename)
+  (if (file-exists? filename)
       (save-current-buffer 
 	(find-file filename)
 	(line-number-at-pos (point-max)))
@@ -22,7 +25,7 @@ found"
 If we're unable find the source code we return a string describing the
 problem as best as we can determine."
 
-  (if (file-exists-p filename)
+  (if (file-exists? filename)
       (if (integerp line-number)
 	  (if (> line-number 0)
 	      (lexical-let ((line-count))
