@@ -1,6 +1,6 @@
 ;;; dbgr-cmdbuf.el --- debugger process buffer things
+(require 'cl)
 (eval-when-compile 
-  (require 'cl)
   (defvar dbgr-cmdbuf-info)
   (defvar dbgr-loc-hist-size) ;; in dbgr-lochist
   (defvar cl-struct-dbgr-loc-tags) ;; why do we need??
@@ -13,7 +13,7 @@
 (defstruct dbgr-cmdbuf-info
   "The debugger object/structure specific to a process buffer."
   name         ;; Name of debugger
-  cmdline      ;; Command-line invocation
+  cmd-args      ;; Command-line invocation arguments
   loc-regexp   ;; Location regular expression string
   ;; FIXME: use include?
   file-group
@@ -27,6 +27,24 @@
 (provide 'dbgr-cmdbuf)
 (require 'load-relative)
 (load-relative '("dbgr-arrow" "dbgr-lochist" "dbgr-loc") 'dbgr-cmdbuf)
+
+;; FIXME: DRY = access via a macro. See also analogous
+;; code in dbgr-scriptbuf
+(defun dbgr-cmdbuf-info-cmd-args=(info value)
+  (setf (dbgr-cmdbuf-info-cmd-args info) value))
+
+(defun dbgr-cmdbuf-command-string(cmd-buffer)
+  "Get the command string invocation for this command buffer"
+  (with-current-buffer cmd-buffer
+    (cond
+     ((and (boundp 'dbgr-cmdbuf-info) dbgr-cmdbuf-info)
+      (let* 
+	  ((cmd-args) (dbgr-cmdbuf-info-cmd-args dbgr-cmdbuf-info)
+	   (result (car cmd-args)))
+	(reduce (lambda(result, x)
+		  (setq result (concat result " " x)))
+		cmd-args)))
+     (t nil))))
 
 (defun dbgr-cmdbuf-init
   (proc-buffer &optional debugger-name loc-regexp file-group line-group)

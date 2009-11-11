@@ -3,23 +3,15 @@
 ;;
 (eval-when-compile (require 'cl))
   
-(defun pydbgr-directory ()
-  "The directory of this file, or nil."
-  (let ((file-name (or load-file-name
-		       (symbol-file 'pydbgr-directory))))
-    (if file-name
-	(file-name-directory file-name)
-      nil)))
+(require 'load-relative)
+(provide 'pydbgr-core)
+(load-relative 
+ '("../dbgr-track" "../dbgr-core" "../dbgr-scriptbuf" "pydbgr-regexp") 
+ 'pydbgr-core)
 
-(setq load-path (cons nil 
-		      (cons (format "%s.." (pydbgr-directory))
-				    (cons (pydbgr-directory) load-path))))
-(require 'dbgr-track)
-(require 'pydbgr-regexp)
-(require 'dbgr-core)
-(require 'dbgr-scriptbuf)
-(setq load-path (cdddr load-path))
-
+(defvar dbgr-scriptbuf-info)
+(defvar pydbgr-pat-hash)
+(declare-function dbgr-cmdbuf-command-string (current-buffer))
 
 ;; FIXME: I think the following could be generalized and moved to 
 ;; dbgr-... probably via a macro.
@@ -67,7 +59,6 @@ we might return:
 
 NOTE: the above should have each item listed in quotes.
 "
-
 
   ;; Parse the following kind of pattern:
   ;;  [python python-options] pydbgr pydbgr-options script-name script-options
@@ -155,11 +146,10 @@ that is in python-mode"
     (if buffer 
 	(progn 
 	  (save-current-buffer
-	    (switch-to-buffer buffer 't)
+	    (set-buffer buffer)
 	    (setq match-pos (string-match "^python-" (format "%s" major-mode))))
 	  (and match-pos (= 0 match-pos)))
       nil)))
-
 
 ;; FIXME generalize and put into dbgr-core.el
 (defun pydbgr-suggest-invocation (debugger-name)
@@ -171,13 +161,8 @@ prepend the debugger name onto that. FIXME: should keep a list of
 previously used invocations.
 "
   (cond
-   ((and (boundp 'dbgr-invocation) 
-	 (boundp 'pydbgr-track-mode) 
-	 pydbgr-track-mode)
-    (let ((result (car dbgr-invocation)))
-      (reduce (lambda(result, x)
-		(setq result (concat result " " x)))
-	      dbgr-invocation)))
+   ((dbgr-cmdbuf-command-string (current-buffer)))
+   ((dbgr-scriptbuf-command-string (current-buffer)))
    (t (concat debugger-name " " (pydbgr-suggest-python-file)))))
 
 (defun pydbgr-suggest-python-file ()
@@ -256,8 +241,6 @@ breakpoints, etc.)."
 ;; -------------------------------------------------------------------
 ;; The end.
 ;;
-
-(provide 'pydbgr-core)
 
 ;;; Local variables:
 ;;; eval:(put 'pydbgr-debug-enter 'lisp-indent-hook 1)

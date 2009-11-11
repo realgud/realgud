@@ -14,7 +14,7 @@ to be debugged."
                   ;; the process command buffer, but we want to 
                   ;; store it here in case the command buffer
                   ;; disappears
-  (cmd     nil)   ;; Debugger command invocation as a list of strings 
+  (cmd-args)      ;; Debugger command invocation as a list of strings 
 		  ;; or nil. See above about why we don't get from
                   ;; the process command buffer.
   (cmdproc nil)   ;; buffer of the associated debugger process
@@ -40,8 +40,8 @@ to be debugged."
 (defun dbgr-scriptbuf-info-debugger-name=(info value)
   (setf (dbgr-scriptbuf-info-debugger-name info) value))
 
-(defun dbgr-scriptbuf-info-cmd=(info buffer)
-  (setf (dbgr-scriptbuf-info-cmd info) buffer))
+(defun dbgr-scriptbuf-info-cmd-args=(info buffer)
+  (setf (dbgr-scriptbuf-info-cmd-args info) buffer))
 
 (declare-function fn-p-to-fn?-alias(sym))
 (fn-p-to-fn?-alias 'dbgr-scriptbuf-info-p)
@@ -55,7 +55,7 @@ to be debugged."
 (make-variable-buffer-local 'dbgr-scriptbuf-info)
 
 (defun dbgr-scriptbuf-init 
-  (src-buffer cmdproc-buffer debugger-name cmdline-list)
+  (src-buffer cmdproc-buffer debugger-name cmd-args)
   "Initialize SRC-BUFFER as a source-code buffer for a debugger.
 CMDPROC-BUFFER is the process buffer containing the debugger. 
 DEBUGGER-NAME is the name of the debugger.
@@ -65,7 +65,7 @@ as a main program."
     (set (make-local-variable 'dbgr-scriptbuf-info)
 	 (make-dbgr-scriptbuf-info
 	  :debugger-name debugger-name
-	  :cmd  cmdline-list
+	  :cmd-args cmd-args
 	  :cmdproc cmdproc-buffer))
     (put 'dbgr-scriptbuf-info 'variable-documentation 
 	 "Debugger information for a buffer containing source code.")))
@@ -74,25 +74,28 @@ as a main program."
   (src-buffer cmdproc-buffer)
   "Call `dbgr-scriptbuf-init' for SRC-BUFFER update `dbgr-scriptbuf-info' variables
 in it with those from CMDPROC-BUFFER"
-  (let ((debugger-name))
+  (let ((debugger-name)
+	(cmd-args))
    (with-current-buffer cmdproc-buffer
-     (setq debugger-name (dbgr-cmdbuf-info-name dbgr-cmdbuf-info)))
+     (setq debugger-name (dbgr-cmdbuf-info-name dbgr-cmdbuf-info))
+     (setq cmd-args (dbgr-cmdbuf-info-cmd-args dbgr-cmdbuf-info)))
   (with-current-buffer src-buffer
     (if (dbgr-scriptbuf-info? dbgr-scriptbuf-info)
 	(progn
 	  (dbgr-scriptbuf-info-cmdproc= dbgr-scriptbuf-info cmdproc-buffer)
 	  (dbgr-scriptbuf-info-debugger-name= dbgr-scriptbuf-info debugger-name)
+	  (dbgr-scriptbuf-info-cmd-args= dbgr-scriptbuf-info cmd-args)
 	  )
-      (dbgr-scriptbuf-init src-buffer cmdproc-buffer "unknown" '())))))
+      (dbgr-scriptbuf-init src-buffer cmdproc-buffer "unknown" nil)))))
 
 (defun dbgr-scriptbuf-command-string(src-buffer)
   "Get the command string invocation for this source buffer"
   (with-current-buffer src-buffer
     (cond 
      ((and (boundp 'dbgr-scriptbuf-info) dbgr-scriptbuf-info
-	   (dbgr-scriptbuf-info-cmd dbgr-scriptbuf-info))
+	   (dbgr-scriptbuf-info-cmd-args dbgr-scriptbuf-info))
       (mapconcat (lambda(x) x) 
-		 (dbgr-scriptbuf-info-cmd dbgr-scriptbuf-info)
+		 (dbgr-scriptbuf-info-cmd-args dbgr-scriptbuf-info)
 		 " "))
      (t nil))))
   

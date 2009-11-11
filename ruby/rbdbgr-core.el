@@ -6,8 +6,12 @@
 (require 'load-relative)
 (provide 'rbdbgr-core)
 (load-relative 
- '("../dbgr-track" "../dbgr-core" "../dbgr-scriptbuf") 
- 'rbdbgr-track-mode)
+ '("../dbgr-track" "../dbgr-core" "../dbgr-scriptbuf" "rbdbgr-regexp") 
+ 'rbdbgr-core)
+
+(defvar dbgr-scriptbuf-info)
+(defvar rbdbgr-pat-hash)
+(declare-function dbgr-cmdbuf-command-string (current-buffer))
 
 ;; FIXME: I think the following could be generalized and moved to 
 ;; dbgr-... probably via a macro.
@@ -32,7 +36,7 @@ to find a suitable Ruby file via `rbdbgr-suggest-invocation'.
 We also set filename completion and use a history of the prior rbdbgr
 invocations "
   (let ((debugger (or opt-debugger
-		   (dbgr-scriptbuf-var-name rbdbgr-scriptvar))))
+		   (dbgr-scriptbuf-info-debugger-name dbgr-scriptbuf-info))))
     (read-from-minibuffer
      (format "Run %s (like this): " debugger)  ;; prompt string
      (rbdbgr-suggest-invocation debugger)      ;; initial value
@@ -162,13 +166,7 @@ prepend the debugger name onto that. FIXME: should keep a list of
 previously used invocations.
 "
   (cond
-   ((and (boundp 'dbgr-invocation) 
-	 (boundp 'rbdbgr-track-mode) 
-	 rbdbgr-track-mode)
-    (let ((result (car dbgr-invocation)))
-      (reduce (lambda(result, x)
-		(setq result (concat result " " x)))
-	      dbgr-invocation)))
+   ((dbgr-cmdbuf-command-string (current-buffer)))
    ((dbgr-scriptbuf-command-string (current-buffer)))
    (t (concat debugger-name " " (rbdbgr-suggest-ruby-file)))))
 
