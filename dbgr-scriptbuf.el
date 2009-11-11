@@ -2,8 +2,8 @@
 (eval-when-compile 
   (require 'cl)
   (defvar dbgr-scriptbuf-info) ;; is buffer local
-  (defvar dbgr-info)           ;; in procbuf is buffer local
-  (defvar cl-struct-dbgr-info-tags) ;; Why do we need this?
+  (defvar dbgr-cmdbuf-info)        ;; in procbuf is buffer local
+  (defvar cl-struct-dbgr-cmdbuf-info-tags) ;; Why do we need this?
   )
 
 
@@ -46,6 +46,7 @@ to be debugged."
 (declare-function fn-p-to-fn?-alias(sym))
 (fn-p-to-fn?-alias 'dbgr-scriptbuf-info-p)
 (declare-function dbgr-scriptbuf-info?(var))
+(declare-function dbgr-cmdbuf-info-name(cmdbuf-info))
 
 ;; FIXME: support a list of dbgr-scriptvar's since we want to allow
 ;; a source buffer to potentially participate in several debuggers
@@ -75,7 +76,7 @@ as a main program."
 in it with those from CMDPROC-BUFFER"
   (let ((debugger-name))
    (with-current-buffer cmdproc-buffer
-     (setq debugger-name (dbgr-info-name dbgr-info)))
+     (setq debugger-name (dbgr-cmdbuf-info-name dbgr-cmdbuf-info)))
   (with-current-buffer src-buffer
     (if (dbgr-scriptbuf-info? dbgr-scriptbuf-info)
 	(progn

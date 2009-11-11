@@ -10,12 +10,12 @@
 (require 'load-relative)
 (provide 'dbgr-track)
 (load-relative
- '("dbgr-helper" "dbgr-arrow" "dbgr-loc" "dbgr-lochist" "dbgr-file" "dbgr-procbuf" 
+ '("dbgr-helper" "dbgr-arrow" "dbgr-loc" "dbgr-lochist" "dbgr-file" "dbgr-cmdbuf" 
    "dbgr-scriptbuf" "dbgr-window" "dbgr-regexp") 'dbgr-track)
 
 (eval-when-compile 
   (require 'cl)
-  (defvar cl-struct-dbgr-info-tags) ;; why do we need??
+  (defvar cl-struct-dbgr-cmdbuf-info-tags) ;; why do we need??
   (defvar cl-struct-dbgr-loc-pat) ;; whe do we need??
   (defvar cl-struct-dbgr-loc-pat-tags) ;; why do we need??
   (defvar cl-struct-dbgr-loc-tags) ;; why do we need??
@@ -24,9 +24,9 @@
 )
 (declare-function dbgr-proc-src-marker ())
 (declare-function dbgr-loc-goto(loc &optional window-fn &rest args))
-(declare-function dbgr-procbuf-init(cmd-buffer 
-				    debugger-name loc-regexp 
-				    file-group line-group))
+(declare-function dbgr-cmdbuf-init(cmd-buffer 
+				   debugger-name loc-regexp 
+				   file-group line-group))
 (declare-function dbgr-loc-hist-item(item))
 (declare-function dbgr-proc-loc-hist(cmd-buff))
 (declare-function dbgr-scriptbuf-init-or-update (a b))
@@ -148,17 +148,20 @@ encountering a new loc."
 string TEXT. If we match we will turn the result into a dbgr-loc struct.
 Otherwise return nil."
   
-  ; NOTE: dbgr-info is a buffer variable local to the process running
-  ; the debugger. It contains a dbgr-info "struct". In that struct are
+  ; NOTE: dbgr-cmdbuf-info is a buffer variable local to the process running
+  ; the debugger. It contains a dbgr-cmdbuf-info "struct". In that struct are
   ; the fields loc-regexp, file-group, and line-group. By setting the
-  ; the fields of dbgr-info appropriately we can accomodate a family
+  ; the fields of dbgr-cmdbuf-info appropriately we can accomodate a family
   ; of debuggers -- one at a time -- for the buffer process.
 
-  (if (and (boundp 'dbgr-info) dbgr-info)
+  (if (and (boundp 'dbgr-cmdbuf-info) dbgr-cmdbuf-info)
       (lexical-let 
-	  ((loc-regexp (or opt-regexp (dbgr-info-loc-regexp dbgr-info)))
-	   (file-group (or opt-file-group (dbgr-info-file-group dbgr-info)))
-	   (line-group (or opt-line-group (dbgr-info-line-group dbgr-info))))
+	  ((loc-regexp (or opt-regexp 
+			   (dbgr-cmdbuf-info-loc-regexp dbgr-cmdbuf-info)))
+	   (file-group (or opt-file-group 
+			   (dbgr-cmdbuf-info-file-group dbgr-cmdbuf-info)))
+	   (line-group (or opt-line-group 
+			   (dbgr-cmdbuf-info-line-group dbgr-cmdbuf-info))))
 	(if (and loc-regexp (string-match loc-regexp text))
 	    (lexical-let* ((filename (match-string file-group text))
 			   (line-str (match-string line-group text)) 
@@ -196,10 +199,10 @@ debugger with that information"
   (interactive "sDebugger name: ")
   (lexical-let ((loc-pat (gethash debugger-name dbgr-pat-hash)))
     (if loc-pat 
-	(dbgr-procbuf-init (current-buffer) debugger-name 
-			   (dbgr-loc-pat-regexp loc-pat) 
-			   (dbgr-loc-pat-file-group loc-pat)
-			   (dbgr-loc-pat-line-group loc-pat))
+	(dbgr-cmdbuf-init (current-buffer) debugger-name 
+			  (dbgr-loc-pat-regexp loc-pat) 
+			  (dbgr-loc-pat-file-group loc-pat)
+			  (dbgr-loc-pat-line-group loc-pat))
       (progn 
 	(message "I Don't have %s listed as a debugger." debugger-name)
 	nil)

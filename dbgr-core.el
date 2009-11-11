@@ -5,7 +5,7 @@
 (require 'load-relative)
 (provide 'dbgr-core)
 (load-relative 
- '("dbgr-arrow" "dbgr-procbuf" "dbgr-scriptbuf" "dbgr-track")
+ '("dbgr-arrow" "dbgr-cmdbuf" "dbgr-scriptbuf" "dbgr-track")
  'dbgr-core)
 
 (declare-function dbgr-set-arrow (src-marker))

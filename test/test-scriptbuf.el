@@ -4,8 +4,8 @@
 (behave-clear-contexts)
 
 ;; FIXME: use a real process buffer
-(defun dbgr-info-name(var) "foo")
-(setq dbgr-info nil)
+(defun dbgr-cmdbuf-info-name(var) "foo")
+(setq dbgr-cmdbuf-info nil)
 
 (context "dbgr-scriptbuf"
 	 (tag dbgr-scriptbuf)

@@ -1,6 +1,6 @@
 (load-file "./behave.el")
 (load-file "../dbgr-regexp.el")
-(load-file "../dbgr-procbuf.el")
+(load-file "../dbgr-cmdbuf.el")
 
 (behave-clear-contexts)
 
@@ -11,7 +11,7 @@
 (setq dbg-name "rbdbgr")
 (setq loc-pat (gethash dbg-name dbgr-pat-hash))
 
-(setq dbgr (make-dbgr-info
+(setq dbgr (make-dbgr-cmdbuf-info
 		  :name dbg-name
 		  :loc-regexp (dbgr-loc-pat-regexp loc-pat)
 		  :file-group (dbgr-loc-pat-file-group  loc-pat)
@@ -19,7 +19,7 @@
 
 
 (defun loc-match(text) 
-  (string-match (dbgr-info-loc-regexp dbgr) text)
+  (string-match (dbgr-cmdbuf-info-loc-regexp dbgr) text)
 )
 
 (context "location matching"
@@ -33,11 +33,11 @@
 		    (assert-t (numberp (loc-match text))))
 	   (specify "extract file name"
 	   	    (assert-equal "./dbgr.rb"
-				  (match-string (dbgr-info-file-group dbgr)
+				  (match-string (dbgr-cmdbuf-info-file-group dbgr)
 						text)))
 	   (specify "extract line number"
 	   	    (assert-equal "73"
-				  (match-string (dbgr-info-line-group dbgr)
+				  (match-string (dbgr-cmdbuf-info-line-group dbgr)
 						text)))
 	   (specify "more complex location"
 		    (assert-t (numberp (loc-match text4))))
@@ -48,11 +48,11 @@
 	   	    (assert-t (numberp (loc-match text2))))
 	   (specify "extract via file name"
 	   	    (assert-equal "/tmp/eval2.rb"
-				  (match-string (dbgr-info-file-group dbgr)
+				  (match-string (dbgr-cmdbuf-info-file-group dbgr)
 						text2)
 				  ))
 	   (specify "extract via line number"
-	   	    (assert-equal (match-string (dbgr-info-line-group dbgr)
+	   	    (assert-equal (match-string (dbgr-cmdbuf-info-line-group dbgr)
 						text2)
 	   		    "2"))
 

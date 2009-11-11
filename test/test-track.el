@@ -1,7 +1,7 @@
 (load-file "./behave.el")
 (load-file "../dbgr-regexp.el")
 (load-file "../dbgr-loc.el")
-(load-file "../dbgr-procbuf.el")
+(load-file "../dbgr-cmdbuf.el")
 (load-file "../dbgr-track.el")
 
 (behave-clear-contexts)
@@ -12,10 +12,10 @@
 (setq dbg-name "rbdbgr")
 (setq loc-pat (gethash dbg-name dbgr-pat-hash))
 
-;; dbgr-info is supposed to exist in the process buffer
+;; dbgr-cmdbuf-info is supposed to exist in the process buffer
 ;; and be buffer local
-(make-variable-buffer-local 'dbgr-info)
-(setq dbgr-info (make-dbgr-info
+(make-variable-buffer-local 'dbgr-cmdbuf-info)
+(setq dbgr-cmdbuf-info (make-dbgr-cmdbuf-info
 		 :name dbg-name
 		 :loc-regexp (dbgr-loc-pat-regexp      loc-pat)
 		 :file-group (dbgr-loc-pat-file-group  loc-pat)

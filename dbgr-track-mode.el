@@ -7,7 +7,7 @@
 (provide 'dbgr-track-mode)
 (load-relative 
  '("dbgr-track" "dbgr-loc" "dbgr-lochist" "dbgr-file" 
-   "dbgr-procbuf" "dbgr-window" "dbgr-regexp") 'dbgr-track-mode)
+   "dbgr-cmdbuf" "dbgr-window" "dbgr-regexp") 'dbgr-track-mode)
 
 (defvar dbgr-track-mode-map
   (let ((map (make-sparse-keymap)))
@@ -30,8 +30,8 @@
   :lighter 
   (:eval (progn 
 	   (concat " "
-		   (if (boundp 'dbgr-info)
-		       (dbgr-info-name dbgr-info)
+		   (if (boundp 'dbgr-cmdbuf-info)
+		       (dbgr-cmdbuf-info-name dbgr-cmdbuf-info)
 		     "dbgr??"))))
 
   :keymap dbgr-track-mode-map
@@ -49,7 +49,7 @@
 	(add-hook 'eshell-output-filter-functions 
 		  'dbgr-track-eshell-output-filter-hook)
   
-	(unless (boundp 'dbgr-info)
+	(unless (boundp 'dbgr-cmdbuf-info)
 	  (call-interactively 'dbgr-track-set-debugger))
 	(run-mode-hooks 'dbgr-track-mode-hook))
     (progn
