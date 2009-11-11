@@ -54,8 +54,7 @@ buffer) is returned, or nil if not found"
 	(if (not src-buffer)
 	    (setq src-buffer (find-file-noselect filename)))
 	(if cmd-marker
-	    (save-excursion
-	      (set-buffer (marker-buffer cmd-marker))
+	    (with-current-buffer (marker-buffer cmd-marker)
 	      (goto-char cmd-marker)))
 	(if src-buffer
 	    (progn 

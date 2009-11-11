@@ -65,7 +65,6 @@ String COMMAND-LINE specifies how to run rbdbgr."
 	    (switch-to-buffer proc-buf)
 	    ;; (set-process-filter (get-buffer-process proc-buf)
 	    ;; 			'dbgr-term-output-filter)
-	    (shell-mode)
 	    (rbdbgr-track-mode 't)
 	    (set (make-local-variable 'dbgr-invocation) cmd-args)
 	    )
