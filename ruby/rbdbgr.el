@@ -8,6 +8,11 @@
 (provide 'rbdbgr)
 (load-relative '("rbdbgr-core" "rbdbgr-track-mode") 'rbdbgr)
 
+(defvar dbgr-cmdbuf-info)
+(declare-function pydbgr-query-cmdline (&optional debugger))
+(declare-function pydbgr-parse-cmd-args (args))
+(declare-function pydbgr-track-mode (bool))
+
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
 (defgroup rbdbgr nil
@@ -66,7 +71,6 @@ String COMMAND-LINE specifies how to run rbdbgr."
 	    (dbgr-track-set-debugger "rbdbgr")
 	    (rbdbgr-track-mode 't)
 	    (dbgr-cmdbuf-info-cmd-args= dbgr-cmdbuf-info cmd-args)
-	    (set (make-local-variable 'dbgr-invocation) cmd-args)
 	    )
 	(message "Error running rbdbgr command"))
     )))

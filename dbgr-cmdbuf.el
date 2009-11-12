@@ -39,19 +39,20 @@
     (cond
      ((and (boundp 'dbgr-cmdbuf-info) dbgr-cmdbuf-info)
       (let* 
-	  ((cmd-args) (dbgr-cmdbuf-info-cmd-args dbgr-cmdbuf-info)
+	  ((cmd-args (dbgr-cmdbuf-info-cmd-args dbgr-cmdbuf-info))
 	   (result (car cmd-args)))
-	(reduce (lambda(result, x)
-		  (setq result (concat result " " x)))
-		cmd-args)))
+	(and cmd-args 
+	     (reduce (lambda(result x)
+		       (setq result (concat result " " x)))
+		     cmd-args))))
      (t nil))))
 
 (defun dbgr-cmdbuf-init
-  (proc-buffer &optional debugger-name loc-regexp file-group line-group)
-  "Initialize PROC-BUFFER for a working with a debugger.
+  (cmd-buf &optional debugger-name loc-regexp file-group line-group)
+  "Initialize CMD-BUFER for a working with a debugger.
 DEBUGGER-NAME is the name of the debugger.
 as a main program."
-  (with-current-buffer proc-buffer
+  (with-current-buffer cmd-buf
     (setq dbgr-cmdbuf-info
 	  (make-dbgr-cmdbuf-info
 	   :name (or debugger-name "unknown-debugger-name")
@@ -62,20 +63,20 @@ as a main program."
     (put 'dbgr-cmdbuf-info 'variable-documentation 
 	 "Debugger object for a process buffer.")))
 
-(defun dbgr-proc-debugger-name(proc-buff)
+(defun dbgr-proc-debugger-name(cmd-buf)
   "Return the debugger name recorded in the debugger process buffer."
-  (with-current-buffer proc-buff (dbgr-cmdbuf-info-name dbgr-cmdbuf-info))
+  (with-current-buffer cmd-buf (dbgr-cmdbuf-info-name dbgr-cmdbuf-info))
 )
 
-(defun dbgr-proc-loc-hist(proc-buff)
+(defun dbgr-proc-loc-hist(cmd-buf)
   "Return the history ring of locations that a debugger process has stored."
-  (with-current-buffer proc-buff (dbgr-cmdbuf-info-loc-hist dbgr-cmdbuf-info))
+  (with-current-buffer cmd-buf (dbgr-cmdbuf-info-loc-hist dbgr-cmdbuf-info))
 )
 
-(defun dbgr-proc-src-marker(proc-buff)
+(defun dbgr-proc-src-marker(cmd-buf)
   "Return a marker to current source location stored in the history ring."
-  (with-current-buffer proc-buff
-    (lexical-let* ((loc (dbgr-loc-hist-item (dbgr-proc-loc-hist proc-buff))))
+  (with-current-buffer cmd-buf
+    (lexical-let* ((loc (dbgr-loc-hist-item (dbgr-proc-loc-hist cmd-buf))))
       (and loc (dbgr-loc-marker loc)))))
 
 (provide 'dbgr-cmdbuf)

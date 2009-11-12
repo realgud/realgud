@@ -4,21 +4,14 @@
      "You need at least Emacs 22 or greater to run this - you have version %d"
      emacs-major-version))
 
-(defun pydbgr-directory ()
-  "The directory of this file, or nil."
-  (let ((file-name (or load-file-name
-                       (symbol-file 'pydbgr))))
-    (if file-name
-        (file-name-directory file-name)
-      nil)))
+(require 'load-relative)
+(provide 'pydbgr)
+(load-relative '("pydbgr-core" "pydbgr-track-mode") 'pydbgr)
 
-(setq load-path (cons nil 
-		      (cons (format "%s.." (pydbgr-directory))
-				    (cons (pydbgr-directory) load-path))))
-
-(load "pydbgr-core")
-(load "pydbgr-track-mode")
-(setq load-path (cdddr load-path))
+(defvar dbgr-cmdbuf-info)
+(declare-function pydbgr-query-cmdline (&optional debugger))
+(declare-function pydbgr-parse-cmd-args (args))
+(declare-function pydbgr-track-mode (bool))
 
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
@@ -78,13 +71,9 @@ String COMMAND-LINE specifies how to run pydbgr."
 	    (dbgr-track-set-debugger "pydbgr")
 	    (pydbgr-track-mode 't)
 	    (dbgr-cmdbuf-info-cmd-args= dbgr-cmdbuf-info cmd-args)
-	    (set (make-local-variable 'dbgr-invocation) cmd-args)
 	    )
 	(message "Error running pydbgr command"))
     )))
-
-
-(provide 'pydbgr)
 
 ;;; pydbgr.el ends here
 

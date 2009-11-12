@@ -8,11 +8,37 @@
  '("dbgr-arrow" "dbgr-cmdbuf" "dbgr-scriptbuf" "dbgr-track")
  'dbgr-core)
 
-(declare-function dbgr-set-arrow (src-marker))
-(declare-function dbgr-scriptbuf-init(a b c d))
-(declare-function dbgr-unset-arrow(marker))
 (declare-function dbgr-proc-src-marker (a))
+(declare-function dbgr-scriptbuf-info-debugger-name (arg))
+(declare-function dbgr-scriptbuf-init(a b c d))
+(declare-function dbgr-set-arrow (src-marker))
 (declare-function dbgr-track-set-debugger (name))
+(declare-function dbgr-unset-arrow(marker))
+(defvar dbgr-scriptbuf-info)
+
+(defun dbgr-query-cmdline 
+  (suggest-invocation-fn 
+   minibuffer-local-map
+   minibuffer-history 
+   &optional opt-debugger)
+  "Prompt for a debugger command invocation to run.
+Analogous to `gud-query-cmdline'. 
+
+If you happen to be in a debugger process buffer, the last command invocation
+for that first one suggested. Failing that, some amount of guessing is done
+to find a suitable file via SUGGEST-INVOCATION-FN.
+
+We also set filename completion and use a history of the prior rbdbgr
+invocations "
+  (let ((debugger (or opt-debugger
+		   (dbgr-scriptbuf-info-debugger-name dbgr-scriptbuf-info))))
+    (read-from-minibuffer
+     (format "Run %s (like this): " debugger)  ;; prompt string
+     (funcall suggest-invocation-fn debugger)  ;; initial value
+     minibuffer-local-map                      ;; keymap
+     nil                                       ;; read - use default value
+     minibuffer-history                        ;; history variable
+     )))
 
 (defun dbgr-parse-command-arg (args two-args opt-two-args)
   "Return a cons node where the car is a list containing the

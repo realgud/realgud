@@ -12,6 +12,7 @@
 (defvar dbgr-scriptbuf-info)
 (defvar rbdbgr-pat-hash)
 (declare-function dbgr-cmdbuf-command-string (current-buffer))
+(declare-function dbgr-query-cmdline (sf lm hist &optional dbg))
 
 ;; FIXME: I think the following could be generalized and moved to 
 ;; dbgr-... probably via a macro.
@@ -23,27 +24,14 @@
   "Keymap for minibuffer prompting of gud startup command."
   :inherit minibuffer-local-map)
 
-;; FIXME: I think this code could be generalized and moved to 
-;; dbgr-core. 
-(defun rbdbgr-query-cmdline (&optional opt-debugger opt-cmd-name)
-  "Prompt for a rbdbgr debugger command invocation to run.
-Analogous to `gud-query-cmdline'. 
-
-If you happen to be in a rbdgr process buffer the last command invocation
-for that is the initial one. Failing that some amount of guessing is done
-to find a suitable Ruby file via `rbdbgr-suggest-invocation'.
-
-We also set filename completion and use a history of the prior rbdbgr
-invocations "
-  (let ((debugger (or opt-debugger
-		   (dbgr-scriptbuf-info-debugger-name dbgr-scriptbuf-info))))
-    (read-from-minibuffer
-     (format "Run %s (like this): " debugger)  ;; prompt string
-     (rbdbgr-suggest-invocation debugger)      ;; initial value
-     rbdbgr-minibuffer-local-map               ;; keymap
-     nil                                       ;; read - use default value
-     rbdbgr-minibuffer-history                 ;; history variable
-     )))
+;; FIXME: I think this code and the keymaps and history
+;; variable chould be generalized, perhaps via a macro.
+(defun rbdbgr-query-cmdline (&optional opt-debugger)
+  (dbgr-query-cmdline 
+   'rbdbgr-suggest-invocation
+   rbdbgr-minibuffer-local-map
+   rbdbgr-minibuffer-history
+   opt-debugger))
 
 (defun rbdbgr-parse-cmd-args (orig-args)
   "Parse command line ARGS for the annotate level and name of script to debug.

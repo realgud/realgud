@@ -17,3 +17,8 @@ function FN-SYM."
 	   (new-fn-sym (intern (concat new-fn-str "?"))))
 	(defalias new-fn-sym fn-sym))))
 
+;; (defun dbgr-struct-field (var-sym field-sym)
+;;   (setq var-str (symbol-name var-sym))
+;;   (setq field-str (symbol-name field-sym))
+;;   (funcall (symbol-function (intern (concat var-str "-" field-str)))
+;; 	   (eval (intern var-str))))

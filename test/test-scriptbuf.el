@@ -1,11 +1,12 @@
 (load-file "./behave.el")
 (load-file "../dbgr-scriptbuf.el")
+(load-file "../dbgr-cmdbuf.el")
 
 (behave-clear-contexts)
 
 ;; FIXME: use a real process buffer
 (defun dbgr-cmdbuf-info-name(var) "foo")
-(setq dbgr-cmdbuf-info nil)
+(setq dbgr-cmdbuf-info (make-dbgr-cmdbuf-info))
 
 (context "dbgr-scriptbuf"
 	 (tag dbgr-scriptbuf)

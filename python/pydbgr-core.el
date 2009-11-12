@@ -23,21 +23,14 @@
   "Keymap for minibuffer prompting of gud startup command."
   :inherit minibuffer-local-map)
 
-(defun pydbgr-query-cmdline (&optional opt-debugger opt-cmd-name)
-  "Prompt for a pydbgr debugger command invocation to run.
-Analogous to `gud-query-cmdline'"
-  ;; FIXME: keep a list of recent invocations.
-  (let ((debugger (or opt-debugger
-		   (dbgr-scriptbuf-var-name pydbgr-scriptvar)))
-	(cmd-name (or opt-cmd-name
-		      (pydbgr-suggest-python-file))))
-    (read-from-minibuffer
-     (format "Run %s (like this): " debugger)  ;; prompt string
-     (pydbgr-suggest-invocation debugger)      ;; initial value
-     pydbgr-minibuffer-local-map               ;; keymap
-     nil                                       ;; read - use default value
-     pydbgr-minibuffer-history                 ;; history variable
-     )))
+;; FIXME: I think this code and the keymaps and history
+;; variable chould be generalized, perhaps via a macro.
+(defun pydbgr-query-cmdline (&optional opt-debugger)
+  (dbgr-query-cmdline 
+   'pydbgr-suggest-invocation
+   pydbgr-minibuffer-local-map
+   pydbgr-minibuffer-history
+   opt-debugger))
 
 (defun pydbgr-parse-cmd-args (orig-args)
   "Parse command line ARGS for the annotate level and name of script to debug.
