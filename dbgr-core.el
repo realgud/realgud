@@ -5,8 +5,7 @@
 (require 'load-relative)
 (provide 'dbgr-core)
 (load-relative 
- '("dbgr-arrow" "dbgr-cmdbuf" "dbgr-scriptbuf" "dbgr-track")
- 'dbgr-core)
+ '("dbgr-arrow" "dbgr-cmdbuf" "dbgr-scriptbuf" "dbgr-track"))
 
 (declare-function dbgr-proc-src-marker (a))
 (declare-function dbgr-scriptbuf-info-debugger-name (arg))

@@ -5,7 +5,7 @@
 
 (require 'load-relative)
 (provide 'rbdbgr-track-mode)
-(load-relative '("../dbgr-track-mode" "rbdbgr-core") 'rbdbgr-track-mode)
+(load-relative '("../dbgr-track-mode" "rbdbgr-core"))
 
 (defun rbdbgr-track-mode-body()
   "Called when entering or leaving rbdbgr-track-mode"

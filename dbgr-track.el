@@ -11,7 +11,7 @@
 (provide 'dbgr-track)
 (load-relative
  '("dbgr-helper" "dbgr-arrow" "dbgr-loc" "dbgr-lochist" "dbgr-file" "dbgr-cmdbuf" 
-   "dbgr-scriptbuf" "dbgr-window" "dbgr-regexp") 'dbgr-track)
+   "dbgr-scriptbuf" "dbgr-window" "dbgr-regexp"))
 
 (eval-when-compile 
   (require 'cl)

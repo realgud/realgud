@@ -7,7 +7,7 @@
 
 (require 'load-relative)
 (provide 'rbdbgr-regexp)
-(load-relative "../dbgr-regexp" 'rbdbgr-regexp)
+(load-relative "../dbgr-regexp")
 
 (defvar rbdbgr-pat-hash (make-hash-table :test 'equal)
   "Hash key is the what kind of pattern we want to match: traceback, prompt, etc. 

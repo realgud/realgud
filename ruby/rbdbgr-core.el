@@ -6,8 +6,7 @@
 (require 'load-relative)
 (provide 'rbdbgr-core)
 (load-relative 
- '("../dbgr-track" "../dbgr-core" "../dbgr-scriptbuf" "rbdbgr-regexp") 
- 'rbdbgr-core)
+ '("../dbgr-track" "../dbgr-core" "../dbgr-scriptbuf" "rbdbgr-regexp"))
 
 (defvar dbgr-scriptbuf-info)
 (defvar rbdbgr-pat-hash)

@@ -6,7 +6,7 @@
 
 (require 'load-relative)
 (provide 'pydbgr)
-(load-relative '("pydbgr-core" "pydbgr-track-mode") 'pydbgr)
+(load-relative '("pydbgr-core" "pydbgr-track-mode"))
 
 (defvar dbgr-cmdbuf-info)
 (declare-function pydbgr-query-cmdline (&optional debugger))

@@ -6,8 +6,7 @@
 (require 'load-relative)
 (provide 'pydbgr-core)
 (load-relative 
- '("../dbgr-track" "../dbgr-core" "../dbgr-scriptbuf" "pydbgr-regexp") 
- 'pydbgr-core)
+ '("../dbgr-track" "../dbgr-core" "../dbgr-scriptbuf" "pydbgr-regexp"))
 
 (defvar dbgr-scriptbuf-info)
 (defvar pydbgr-pat-hash)

@@ -7,7 +7,7 @@
 (provide 'dbgr-track-mode)
 (load-relative 
  '("dbgr-track" "dbgr-loc" "dbgr-lochist" "dbgr-file" 
-   "dbgr-cmdbuf" "dbgr-window" "dbgr-regexp") 'dbgr-track-mode)
+   "dbgr-cmdbuf" "dbgr-window" "dbgr-regexp"))
 
 (defvar dbgr-track-mode-map
   (let ((map (make-sparse-keymap)))

@@ -30,7 +30,7 @@ to be debugged."
 )
 
 (require 'load-relative)
-(load-relative "dbgr-helper" 'dbgr-scriptbuf)
+(load-relative "dbgr-helper")
 
 
 ;; FIXME: DRY = access via a macro

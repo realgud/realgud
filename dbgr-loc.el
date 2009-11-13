@@ -7,7 +7,7 @@
 (eval-when-compile (require 'cl))
 (require 'load-relative)
 (provide 'dbgr-loc)
-(load-relative "dbgr-arrow" 'dbgr-loc)
+(load-relative "dbgr-arrow")
 
 (declare-function dbgr-set-arrow (src-marker))
 

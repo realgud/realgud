@@ -2,22 +2,9 @@
 ;;; or eshell buffer.
 
 (eval-when-compile (require 'cl))
+(require 'load-relative)
 
-(defun pydbgr-directory ()
-  "The directory of this file, or nil."
-  (let ((file-name (or load-file-name
-                       (symbol-file 'pydbgr-track-mode))))
-    (if file-name
-        (file-name-directory file-name)
-      nil)))
-
-(setq load-path (cons nil 
-		      (cons (format "%s.." (pydbgr-directory))
-				    (cons (pydbgr-directory) load-path))))
-(require 'dbgr-track-mode)
-(require 'pydbgr-core)
-(setq load-path (cdddr load-path))
-
+(load-relative '("../dbgr-track" "pydbgr-core"))
 
 (defun pydbgr-track-mode-body()
   "Called when entering or leaving pydbgr-track-mode"

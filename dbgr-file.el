@@ -3,7 +3,7 @@
 (eval-when-compile (require 'cl))
 (provide 'dbgr-file)
 (require 'load-relative)
-(load-relative '("dbgr-helper" "dbgr-loc") 'dbgr-file)
+(load-relative '("dbgr-helper" "dbgr-loc"))
 (declare-function make-dbgr-loc(fi li mrk c-mrk))
 
 (declare-function fn-p-to-fn?-alias(sym))

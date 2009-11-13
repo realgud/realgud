@@ -6,12 +6,12 @@
 
 (require 'load-relative)
 (provide 'rbdbgr)
-(load-relative '("rbdbgr-core" "rbdbgr-track-mode") 'rbdbgr)
+(load-relative '("rbdbgr-core" "rbdbgr-track-mode"))
 
 (defvar dbgr-cmdbuf-info)
-(declare-function pydbgr-query-cmdline (&optional debugger))
-(declare-function pydbgr-parse-cmd-args (args))
-(declare-function pydbgr-track-mode (bool))
+(declare-function rbdbgr-query-cmdline (&optional debugger))
+(declare-function rbdbgr-parse-cmd-args (args))
+(declare-function rbdbgr-track-mode (bool))
 
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
