@@ -5,7 +5,7 @@
 (require 'load-relative)
 (dolist 
     (rel-file 
-     '("../dbgr-track-mode" "rbdbgr-core"))
+     '("../dbgr-track-mode" "pydbgr-core"))
   (require-relative rel-file))
 
 (defvar pydbgr-track-mode nil
@@ -22,9 +22,10 @@ Use the command `pydbgr-track-mode' to toggle or set this variable.")
   (dbgr-track-set-debugger "pydbgr")
   (if pydbgr-track-mode
       (progn 
-	(dbgr-track-mode 't)
- 	;; FIXME: until I figure out why this isn't set in the mode
         (local-set-key "\C-ce"  'pydbgr-goto-traceback-line)
+	;; FIXME: (pydbgr-track-mode 't) has problems
+	;; until I figure out this out...
+	(dbgr-track-mode 't)
 	(run-mode-hooks 'pydbgr-track-mode-hook))
     (progn 
       (dbgr-track-mode nil)

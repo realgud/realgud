@@ -76,7 +76,13 @@ String COMMAND-LINE specifies how to run rbdbgr."
 	  (progn
 	    (switch-to-buffer cmd-buf)
 	    (dbgr-track-set-debugger "rbdbgr")
-	    (rbdbgr-track-mode 't)
+
+	    ;; FIXME: (pydbgr-track-mode 't) has problems
+	    ;; until I figure out this out...
+	    (setq rbdbgr-track-mode 't)
+	    (setq dbgr-track-mode 't)
+	    (dbgr-track-mode-body)
+	    (run-mode-hooks 'pydbgr-track-mode-hook)
 	    (dbgr-cmdbuf-info-cmd-args= dbgr-cmdbuf-info cmd-args)
 	    )
 	(message "Error running rbdbgr command"))

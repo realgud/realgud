@@ -74,10 +74,13 @@ return the first argument is always removed.
      (t (cons (list arg) (list remaining))))))
 
 (defun dbgr-term-sentinel (process string)
-  (with-current-buffer (process-buffer process)
-    (lexical-let ((prev-marker (dbgr-proc-src-marker (current-buffer))))
-      (if prev-marker (dbgr-unset-arrow (marker-buffer prev-marker)))
-      (message "That's all folks.... %s" string))))
+  (let ((cmdbuf (process-buffer process)))
+    (unless (not (buffer-name cmdbuf))
+      (with-current-buffer cmdbuf
+	(lexical-let ((prev-marker (dbgr-proc-src-marker (current-buffer))))
+	  (if prev-marker (dbgr-unset-arrow (marker-buffer prev-marker)))
+	  )))
+  (message "That's all folks.... %s" string)))
 
 (defun dbgr-exec-shell (debugger-name script-filename program &rest args)
   "Run the specified COMMAND in under debugger DEBUGGER-NAME a

@@ -18,7 +18,6 @@
 (declare-function dbgr-track-set-debugger (debugger-name))
 (declare-function pydbgr-parse-cmd-args (args))
 (declare-function pydbgr-query-cmdline (&optional debugger))
-(declare-function pydbgr-track-mode (bool))
 
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
@@ -76,7 +75,14 @@ String COMMAND-LINE specifies how to run pydbgr."
 	  (progn
 	    (switch-to-buffer cmd-buf)
 	    (dbgr-track-set-debugger "pydbgr")
-	    (pydbgr-track-mode 't)
+
+	    ;; FIXME: (pydbgr-track-mode 't) has problems
+	    ;; until I figure out this out...
+	    (setq pydbgr-track-mode 't)
+	    (setq dbgr-track-mode 't)
+	    (dbgr-track-mode-body)
+	    (run-mode-hooks 'pydbgr-track-mode-hook)
+
 	    (dbgr-cmdbuf-info-cmd-args= dbgr-cmdbuf-info cmd-args)
 	    )
 	(message "Error running pydbgr command"))
