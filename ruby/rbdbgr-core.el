@@ -10,10 +10,18 @@
      '("../dbgr-track" "../dbgr-core" "../dbgr-scriptbuf" "rbdbgr-regexp"))
   (require-relative rel-file))
 
+;; FIXME figure out if I can put this in something like a header file.
 (defvar dbgr-scriptbuf-info)
 (defvar rbdbgr-pat-hash)
-(declare-function dbgr-cmdbuf-command-string (current-buffer))
+(defvar rbdbgr-track-mode)
+
+(declare-function dbgr-cmdbuf-command-string (cmd-buffer))
+(declare-function dbgr-parse-command-arg (args two-args opt-two-args))
 (declare-function dbgr-query-cmdline (sf lm hist &optional dbg))
+(declare-function dbgr-scriptbuf-command-string(src-buffer))
+(declare-function dbgr-track-set-debugger (debugger-name))
+(declare-function dbgr-track-mode(bool))
+(declare-function dbgr-goto-line-for-pt-and-type (pt type pat-hash))
 
 ;; FIXME: I think the following could be generalized and moved to 
 ;; dbgr-... probably via a macro.
@@ -206,13 +214,13 @@ given priority, we use the first one we find."
   "Display the location mentioned by the Ruby traceback line
 described by PT."
   (interactive "d")
-  (goto-line-for-pt-and-type pt "traceback" rbdbgr-pat-hash))
+  (dbgr-goto-line-for-pt-and-type pt "traceback" rbdbgr-pat-hash))
 
 (defun rbdbgr-goto-dollarbang-traceback-line (pt)
   "Display the location mentioned by the Ruby $! traceback line
 described by PT."
   (interactive "d")
-  (goto-line-for-pt-and-type pt "dollar-bang" rbdbgr-pat-hash))
+  (dbgr-goto-line-for-pt-and-type pt "dollar-bang" rbdbgr-pat-hash))
 
 (defun rbdbgr-reset ()
   "Rbdbgr cleanup - remove debugger's internal buffers (frame,

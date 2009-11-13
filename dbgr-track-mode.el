@@ -21,6 +21,7 @@
     map)
   "Keymap used in `dbgr-track-minor-mode'.")
 
+;; FIXME figure out if I can put this in something like a header file.
 (declare-function dbgr-track-set-debugger (debugger-name))
 
 (define-minor-mode dbgr-track-mode

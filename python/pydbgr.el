@@ -11,9 +11,13 @@
      '("pydbgr-core" "pydbgr-track-mode"))
   (require-relative rel-file))
 
+;; FIXME figure out if I can put this in something like a header file.
+;; And we can then eliminate with what is in rbdbgr.el
 (defvar dbgr-cmdbuf-info)
-(declare-function pydbgr-query-cmdline (&optional debugger))
+(declare-function dbgr-cmdbuf-info-cmd-args= (info cmd-args))
+(declare-function dbgr-track-set-debugger (debugger-name))
 (declare-function pydbgr-parse-cmd-args (args))
+(declare-function pydbgr-query-cmdline (&optional debugger))
 (declare-function pydbgr-track-mode (bool))
 
 ;; This is needed, or at least the docstring part of it is needed to

@@ -1,4 +1,4 @@
-SUBDIRS = ruby
+SUBDIRS = ruby python
 
 lisp_files := $(wildcard *.el)
 test_files := $(wildcard test/test-*.el)

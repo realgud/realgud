@@ -212,7 +212,7 @@ debugger with that information"
 	nil)
       )))
 
-(defun goto-line-for-pt-and-type (pt type pat-hash)
+(defun dbgr-goto-line-for-pt-and-type (pt type pat-hash)
   "Display the location mentioned for PT given type PAT-HASH indexed TYPE."
   (dbgr-goto-line-for-loc-pat pt (gethash type pat-hash)))
 

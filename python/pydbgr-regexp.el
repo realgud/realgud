@@ -5,20 +5,12 @@
 ;;
 (eval-when-compile (require 'cl))
 
-(defun pydbgr-directory ()
-  "The directory of this file, or nil."
-  (let ((file-name (or load-file-name
-                       (symbol-file 'pydbgr-core))))
-    (if file-name
-        (file-name-directory file-name)
-      nil)))
+(require 'load-relative)
+(provide 'rbdbgr-regexp)
+(require-relative "../dbgr-regexp")
+(require-relative "../dbgr-loc")
 
-(setq load-path (cons nil 
-		      (cons (format "%s.." (pydbgr-directory))
-				    (cons (pydbgr-directory) load-path))))
-(load "dbgr-regexp") ; for make-dbgr-loc-pat
-(setq load-path (cdddr load-path))
-
+(declare-function make-dbgr-loc-pat (dbgr-loc))
 
 (defvar pydbgr-pat-hash (make-hash-table :test 'equal)
   "Hash key is the what kind of pattern we want to match: traceback, prompt, etc. 

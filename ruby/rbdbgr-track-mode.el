@@ -4,8 +4,19 @@
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
-(provide 'rbdbgr-track-mode)
-(load-relative '("../dbgr-track-mode" "rbdbgr-core"))
+(dolist 
+    (rel-file 
+     '("../dbgr-track-mode" "rbdbgr-core"))
+  (require-relative rel-file))
+
+(defvar rbdbgr-track-mode nil
+  "Non-nil if using rbdbgr-track mode as a minor mode of some other mode.
+Use the command `rbdbgr-track-mode' to toggle or set this variable.")
+
+;; FIXME: DRY below declarations shared in rbdbgr-track-mode by
+;; figuring out how to put in a common header.
+(declare-function dbgr-track-set-debugger (debugger-name))
+(declare-function dbgr-track-mode(bool))
 
 (defun rbdbgr-track-mode-body()
   "Called when entering or leaving rbdbgr-track-mode"
@@ -22,10 +33,6 @@
       (local-unset-key "\C-c!")
       (local-unset-key "\C-ce"))
     ))
-
-(defvar rbdbgr-track-mode nil
-  "Non-nil if using rbdbgr-track mode as a minor mode of some other mode.
-Use the command `rbdbgr-track-mode' to toggle or set this variable.")
 
 (defvar rbdbgr-track-mode-map
   (let ((map (make-sparse-keymap)))
@@ -44,6 +51,8 @@ Use the command `rbdbgr-track-mode' to toggle or set this variable.")
   :keymap rbdbgr-track-mode-map
   (rbdbgr-track-mode-body)
 )
+
+(provide 'rbdbgr-track-mode)
 
 ;;; Local variables:
 ;;; eval:(put 'rbdbg-debug-enter 'lisp-indent-hook 1)

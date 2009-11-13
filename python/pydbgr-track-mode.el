@@ -3,8 +3,19 @@
 
 (eval-when-compile (require 'cl))
 (require 'load-relative)
+(dolist 
+    (rel-file 
+     '("../dbgr-track-mode" "rbdbgr-core"))
+  (require-relative rel-file))
 
-(load-relative '("../dbgr-track" "pydbgr-core"))
+(defvar pydbgr-track-mode nil
+  "Non-nil if using pydbgr-track mode as a minor mode of some other mode.
+Use the command `pydbgr-track-mode' to toggle or set this variable.")
+
+;; FIXME: DRY below declarations shared in rbdbgr-track-mode by
+;; figuring out how to put in a common header.
+(declare-function dbgr-track-set-debugger (debugger-name))
+(declare-function dbgr-track-mode(bool))
 
 (defun pydbgr-track-mode-body()
   "Called when entering or leaving pydbgr-track-mode"
@@ -19,10 +30,6 @@
       (dbgr-track-mode nil)
       (local-unset-key "\C-ce")
     )))
-
-(defvar pydbgr-track-mode nil
-  "Non-nil if using pydbgr-track mode as a minor mode of some other mode.
-Use the command `pydbgr-track-mode' to toggle or set this variable.")
 
 (defvar pydbgr-track-mode-map
   (let ((map (make-sparse-keymap)))
