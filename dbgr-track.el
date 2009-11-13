@@ -9,10 +9,6 @@
 
 (require 'load-relative)
 (provide 'dbgr-track)
-(load-relative
- '("dbgr-helper" "dbgr-arrow" "dbgr-loc" "dbgr-lochist" "dbgr-file" "dbgr-cmdbuf" 
-   "dbgr-scriptbuf" "dbgr-window" "dbgr-regexp"))
-
 (eval-when-compile 
   (require 'cl)
   (defvar cl-struct-dbgr-cmdbuf-info-tags) ;; why do we need??
@@ -22,6 +18,14 @@
   (defvar dbgr-pat-hash)   ;; in dbgr-regexp
   (defvar dbgr-track-mode) ;; in dbgr-track-mode
 )
+
+(dolist 
+    (rel-file 
+     '("dbgr-helper" "dbgr-arrow" "dbgr-loc" "dbgr-lochist" 
+       "dbgr-file" "dbgr-cmdbuf" "dbgr-scriptbuf" "dbgr-window" 
+       "dbgr-regexp"))
+  (require-relative rel-file))
+
 (declare-function dbgr-proc-src-marker ())
 (declare-function dbgr-loc-goto(loc &optional window-fn &rest args))
 (declare-function dbgr-cmdbuf-init(cmd-buffer 

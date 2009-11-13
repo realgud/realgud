@@ -14,7 +14,7 @@
 
 (require 'load-relative)
 (provide 'dbgr-lochist)
-(load-relative "dbgr-loc")
+(require-relative "dbgr-loc")
 
 
 

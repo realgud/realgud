@@ -6,7 +6,10 @@
 
 (require 'load-relative)
 (provide 'rbdbgr)
-(load-relative '("rbdbgr-core" "rbdbgr-track-mode"))
+(dolist 
+    (rel-file 
+     '("rbdbgr-core" "rbdbgr-track-mode"))
+  (require-relative rel-file))
 
 (defvar dbgr-cmdbuf-info)
 (declare-function rbdbgr-query-cmdline (&optional debugger))

@@ -22,6 +22,4 @@ for example to indicate a debugger position."
       (set-buffer buffer)
       (setq overlay-arrow-position nil)))
 
-
-
-
+(provide 'dbgr-arrow)

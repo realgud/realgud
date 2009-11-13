@@ -26,7 +26,8 @@
 
 (provide 'dbgr-cmdbuf)
 (require 'load-relative)
-(load-relative '("dbgr-arrow" "dbgr-lochist" "dbgr-loc"))
+(dolist (rel-file '("dbgr-arrow" "dbgr-lochist" "dbgr-loc"))
+  (require-relative rel-file))
 
 ;; FIXME: DRY = access via a macro. See also analogous
 ;; code in dbgr-scriptbuf
