@@ -14,11 +14,13 @@
 ;; FIXME figure out if I can put this in something like a header file.
 ;; And we can then eliminate with what is in pydbgr.el
 (defvar dbgr-cmdbuf-info)
+(defvar dbgr-track-mode)
+(defvar rbdbgr-track-mode)
 (declare-function dbgr-cmdbuf-info-cmd-args= (info cmd-args))
 (declare-function dbgr-track-set-debugger (debugger-name))
 (declare-function rbdbgr-parse-cmd-args (args))
 (declare-function rbdbgr-query-cmdline (&optional debugger))
-(declare-function rbdbgr-track-mode (bool))
+(declare-function dbgr-track-mode-body ())
 
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
