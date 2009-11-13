@@ -1,5 +1,6 @@
 SUBDIRS = ruby python
 
+lispdir = @lispdir_dbgr@
 lisp_files := $(wildcard *.el)
 test_files := $(wildcard test/test-*.el)
 

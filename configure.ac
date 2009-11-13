@@ -1,4 +1,4 @@
-AC_INIT(rbdbgr-emacs, 0.01vc,)
+AC_INIT(emacs-dbgr, 0.01vc,)
 AC_CONFIG_SRCDIR(dbgr-loc.el)
 AM_INIT_AUTOMAKE
 AM_MAINTAINER_MODE
@@ -7,6 +7,11 @@ AM_MAINTAINER_MODE
 ## Find out where to install the debugger emacs lisp files
 ##
 AM_PATH_LISPDIR
+lispdir_dbgr=$lispdir/dbgr
+AC_SUBST([lispdir_dbgr])
+
+lispdir=${lispdir}/dbgr
+
 AM_CONDITIONAL(INSTALL_EMACS_LISP, test "x$lispdir" != "x")
 
 AC_CONFIG_FILES([Makefile \
