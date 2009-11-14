@@ -11,6 +11,9 @@
 (context "dbgr-scriptbuf"
 	 (tag dbgr-scriptbuf)
 	 (setq dbgr-scriptbuf-info nil)
+	 (specify "dbgr-scriptbuf? before init"
+		  (assert-nil (dbgr-scriptbuf? (current-buffer))))
+
 	 (specify "dbgr-scriptbuf-command-string - uninit"
 		  (assert-equal nil (dbgr-scriptbuf-command-string (current-buffer))))
 	 (specify "dbgr-scriptbuf-init"
@@ -19,6 +22,10 @@
 				       '("/bin/pdb" "--emacs" "fake.py" "1"))
 		  (assert-equal "fake-debugger" 
 				(dbgr-scriptbuf-info-debugger-name dbgr-scriptbuf-info)))
+
+	 (specify "dbgr-scriptbuf? after init"
+		  (assert-t (dbgr-scriptbuf? (current-buffer))))
+
 	 (specify "dbgr-scriptbuf-command-string"
 		  (assert-equal "/bin/pdb --emacs fake.py 1"
 				(dbgr-scriptbuf-command-string (current-buffer))))

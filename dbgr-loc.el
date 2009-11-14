@@ -21,7 +21,6 @@ want to save the values that were seen/requested originally."
    (cmd-marker)  ;; Position in command process buffer
 )
 
-
 (defalias 'dbgr-loc? 'dbgr-loc-p)
 
 (defun dbgr-loc-current(source-buffer cmd-marker)

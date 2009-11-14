@@ -28,10 +28,15 @@ to be debugged."
                        ;; (line-number . marker)
   ;; 
 )
+(defalias 'dbgr-scriptbuf-info? 'dbgr-scriptbuf-p)
 
 (require 'load-relative)
 (require-relative "dbgr-helper")
 
+(defun dbgr-scriptbuf? (buffer)
+  "Return true if BUFFER is a debugger script buffer."
+  (and (boundp 'dbgr-scriptbuf-info) 
+	     (dbgr-scriptbuf-info? dbgr-scriptbuf-info)))
 
 ;; FIXME: DRY = access via a macro
 (defun dbgr-scriptbuf-info-cmdproc=(info buffer)
