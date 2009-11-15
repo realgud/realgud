@@ -1,6 +1,7 @@
 ;;; dbgr-cmdbuf.el --- debugger process buffer things
 (require 'cl)
 (eval-when-compile 
+  (require 'cl)
   (defvar dbgr-cmdbuf-info)
   (defvar dbgr-loc-hist-size) ;; in dbgr-lochist
   (defvar cl-struct-dbgr-loc-tags) ;; why do we need??
@@ -42,17 +43,17 @@
 
 (defun dbgr-cmdbuf-command-string(cmd-buffer)
   "Get the command string invocation for this command buffer"
-  (with-current-buffer cmd-buffer
     (cond
-     ((and (boundp 'dbgr-cmdbuf-info) dbgr-cmdbuf-info)
-      (let* 
-	  ((cmd-args (dbgr-cmdbuf-info-cmd-args dbgr-cmdbuf-info))
-	   (result (car cmd-args)))
-	(and cmd-args 
-	     (reduce (lambda(result x)
-		       (setq result (concat result " " x)))
-		     cmd-args))))
-     (t nil))))
+     ((dbgr-cmdbuf? cmd-buffer)
+      (with-current-buffer cmd-buffer
+	(let* 
+	    ((cmd-args (dbgr-cmdbuf-info-cmd-args dbgr-cmdbuf-info))
+	     (result (car cmd-args)))
+	  (and cmd-args 
+	       (reduce (lambda(result x)
+			 (setq result (concat result " " x)))
+		       cmd-args)))))
+     (t nil)))
 
 (defun dbgr-cmdbuf-init
   (cmd-buf &optional debugger-name loc-regexp file-group line-group)

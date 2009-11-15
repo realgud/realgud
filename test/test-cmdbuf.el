@@ -9,8 +9,8 @@
 	 (specify "dbgr-cmdbuf? before init"
 		  (assert-nil (dbgr-cmdbuf? (current-buffer))))
 
-	 ;; (specify "dbgr-cmdbuf-command-string - uninit"
-	 ;; 	  (assert-equal nil (dbgr-cmdbuf-command-string (current-buffer))))
+	 (specify "dbgr-cmdbuf-command-string - uninit"
+	 	  (assert-equal nil (dbgr-cmdbuf-command-string (current-buffer))))
 	 ;; (specify "dbgr-cmdbuf-init"
 	 ;; 	  (dbgr-cmdbuf-init (current-buffer) (current-buffer)
 	 ;; 			    "fake-debugger"

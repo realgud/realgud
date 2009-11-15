@@ -97,7 +97,7 @@ in it with those from CMDPROC-BUFFER"
   "Get the command string invocation for this source buffer"
   (with-current-buffer src-buffer
     (cond 
-     ((and (boundp 'dbgr-scriptbuf-info) dbgr-scriptbuf-info
+     ((and (dbgr-scriptbuf? src-buffer)
 	   (dbgr-scriptbuf-info-cmd-args dbgr-scriptbuf-info))
       (mapconcat (lambda(x) x) 
 		 (dbgr-scriptbuf-info-cmd-args dbgr-scriptbuf-info)

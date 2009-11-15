@@ -1,18 +1,17 @@
 ; (require 'term)
 (require 'comint)
-(eval-when-compile (require 'cl))
-
 (require 'load-relative)
-(provide 'dbgr-core)
-(load-relative 
- '("dbgr-arrow" "dbgr-cmdbuf" "dbgr-scriptbuf" "dbgr-track"))
 
-(declare-function dbgr-proc-src-marker (a))
-(declare-function dbgr-scriptbuf-info-debugger-name (arg))
-(declare-function dbgr-scriptbuf-init(a b c d))
-(declare-function dbgr-set-arrow (src-marker))
-(declare-function dbgr-track-set-debugger (name))
-(declare-function dbgr-unset-arrow(marker))
+(eval-when-compile
+  (require 'cl)
+  (dolist (rel-file 
+	   '("dbgr-arrow" "dbgr-cmdbuf" "dbgr-scriptbuf" "dbgr-track"))
+    (require-relative rel-file))
+  )
+(dolist (rel-file 
+	 '("dbgr-arrow" "dbgr-cmdbuf" "dbgr-scriptbuf" "dbgr-track"))
+  (require-relative rel-file))
+
 (defvar dbgr-scriptbuf-info)
 
 (defun dbgr-query-cmdline 
@@ -137,6 +136,8 @@ the debugger name and debugger process buffer."
 	  (set-buffer process-buffer)
 	  ;; (insert-before-markers (format "+++1 %s" string))
 	  (insert-before-markers string)))))
+
+(provide 'dbgr-core)
 
 ;; -------------------------------------------------------------------
 ;; The end.

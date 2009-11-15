@@ -1,13 +1,15 @@
 ; Should dbgr-file-loc-from-line be here or elsewhere?
-
-(eval-when-compile (require 'cl))
-(provide 'dbgr-file)
 (require 'load-relative)
+
+;; FIXME DRY using a macro
+(eval-when-compile 
+  (require 'cl)
+  (dolist (rel-file '("dbgr-helper" "dbgr-loc"))
+    (require-relative rel-file))
+)
 (dolist (rel-file '("dbgr-helper" "dbgr-loc"))
   (require-relative rel-file))
-(declare-function make-dbgr-loc(fi li mrk c-mrk))
 
-(declare-function fn-p-to-fn?-alias(sym))
 (fn-p-to-fn?-alias 'file-exists-p)
 (declare-function file-exists?(file))
 
@@ -46,3 +48,4 @@ problem as best as we can determine."
 	(format "%s is not an integer" line-number))
     (format "File named `%s' not found" filename)))
 
+(provide 'dbgr-file)

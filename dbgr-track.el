@@ -11,12 +11,12 @@
 (provide 'dbgr-track)
 (eval-when-compile 
   (require 'cl)
-  (defvar cl-struct-dbgr-cmdbuf-info-tags) ;; why do we need??
-  (defvar cl-struct-dbgr-loc-pat) ;; whe do we need??
-  (defvar cl-struct-dbgr-loc-pat-tags) ;; why do we need??
-  (defvar cl-struct-dbgr-loc-tags) ;; why do we need??
-  (defvar dbgr-pat-hash)   ;; in dbgr-regexp
-  (defvar dbgr-track-mode) ;; in dbgr-track-mode
+  (dolist 
+      (rel-file 
+       '("dbgr-helper" "dbgr-arrow" "dbgr-loc" "dbgr-lochist" 
+	 "dbgr-file" "dbgr-cmdbuf" "dbgr-scriptbuf" "dbgr-window" 
+	 "dbgr-regexp"))
+    (require-relative rel-file))
 )
 
 (dolist 
@@ -26,23 +26,8 @@
        "dbgr-regexp"))
   (require-relative rel-file))
 
-(declare-function dbgr-proc-src-marker ())
-(declare-function dbgr-loc-goto(loc &optional window-fn &rest args))
-(declare-function dbgr-cmdbuf-init(cmd-buffer 
-				   debugger-name loc-regexp 
-				   file-group line-group))
-(declare-function dbgr-loc-hist-item(item))
-(declare-function dbgr-proc-loc-hist(cmd-buff))
-(declare-function dbgr-scriptbuf-init-or-update (a b))
-(declare-function dbgr-unset-arrow(marker))
-(declare-function dbgr-loc-hist-index (loc-hist))
-(declare-function dbgr-loc-hist-add(loc-hist item))
-(declare-function dbgr-file-loc-from-line 
-		  (filename line-number &optional cmd-marker))
-(declare-function fn-p-to-fn?-alias(sym))
 (fn-p-to-fn?-alias 'dbgr-loc-p)
 (declare-function dbgr-loc?(loc))
-
 
 (make-variable-buffer-local 'dbgr-track-mode)
 
