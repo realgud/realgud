@@ -17,6 +17,19 @@ function FN-SYM."
 	   (new-fn-sym (intern (concat new-fn-str "?"))))
 	(defalias new-fn-sym fn-sym))))
 
+(defun buffer-killed? (buffer)
+  "Return t if BUFFER is killed."
+  (not (buffer-name buffer)))
+
+(defmacro with-current-buffer-safe (buffer &rest body)
+  "Check that BUFFER has not been deleted before calling 
+`with-current-buffer'. If it has been deleted return nil."
+  (declare (indent 1) (debug t))
+  `(if (buffer-killed? ,buffer)
+       nil
+     (with-current-buffer ,buffer
+       ,@body)))
+
 (provide 'dbgr-helper)
 ;; (defun dbgr-struct-field (var-sym field-sym)
 ;;   (setq var-str (symbol-name var-sym))

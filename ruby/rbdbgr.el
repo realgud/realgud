@@ -8,7 +8,7 @@
 (provide 'rbdbgr)
 (dolist 
     (rel-file 
-     '("rbdbgr-core" "rbdbgr-track-mode"))
+     '("../dbgr-helper" "rbdbgr-core" "rbdbgr-track-mode"))
   (require-relative rel-file))
 
 ;; FIXME figure out if I can put this in something like a header file.

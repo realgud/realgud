@@ -1,20 +1,22 @@
 ;;; dbgr-cmdbuf.el --- debugger process buffer things
 (require 'cl)
+(require 'load-relative)
+(require-relative-list
+ '("dbgr-arrow" "dbgr-helper" "dbgr-loc" "dbgr-lochist"))
+
 (eval-when-compile 
   (require 'cl)
   (defvar dbgr-cmdbuf-info)
-  (defvar dbgr-loc-hist-size) ;; in dbgr-lochist
-  (defvar cl-struct-dbgr-loc-tags) ;; why do we need??
   (declare-function dbgr-unset-arrow (marker))
   )
-(declare-function dbgr-loc-hist-item (item))
-(declare-function dbgr-loc-marker (loc))
-(declare-function make-dbgr-loc-hist ())
 
 (defstruct dbgr-cmdbuf-info
   "The debugger object/structure specific to a process buffer."
-  name         ;; Name of debugger
-  cmd-args      ;; Command-line invocation arguments
+  name                 ;; Name of debugger
+  cmd-args             ;; Command-line invocation arguments
+  prior-prompt-regexp  ;; regular expression prompt (e.g.
+                       ;; comint-prompt-regexp) *before* setting
+                       ;; loc-regexp
   loc-regexp   ;; Location regular expression string
   ;; FIXME: use include?
   file-group
@@ -37,9 +39,12 @@
 	     (dbgr-cmdbuf-info? dbgr-cmdbuf-info)))
 
 ;; FIXME: DRY = access via a macro. See also analogous
-;; code in dbgr-scriptbuf
+;; code in dbgr-srcbuf
 (defun dbgr-cmdbuf-info-cmd-args=(info value)
   (setf (dbgr-cmdbuf-info-cmd-args info) value))
+
+(defun dbgr-cmdbuf-info-prior-prompt-regexp=(info value)
+  (setf (dbgr-cmdbuf-info-prior-prompt-regexp info) value))
 
 (defun dbgr-cmdbuf-command-string(cmd-buffer)
   "Get the command string invocation for this command buffer"
@@ -57,13 +62,13 @@
 
 (defun dbgr-cmdbuf-init
   (cmd-buf &optional debugger-name loc-regexp file-group line-group)
-  "Initialize CMD-BUFER for a working with a debugger.
+  "Initialize CMD-BUF for a working with a debugger.
 DEBUGGER-NAME is the name of the debugger.
 as a main program."
   (with-current-buffer cmd-buf
     (setq dbgr-cmdbuf-info
 	  (make-dbgr-cmdbuf-info
-	   :name (or debugger-name "unknown-debugger-name")
+	   :name debugger-name
 	   :loc-regexp loc-regexp
 	   :file-group (or file-group -1)
 	   :line-group (or line-group -1)
@@ -71,14 +76,16 @@ as a main program."
     (put 'dbgr-cmdbuf-info 'variable-documentation 
 	 "Debugger object for a process buffer.")))
 
-(defun dbgr-proc-debugger-name(cmd-buf)
+(defun dbgr-cmdbuf-debugger-name (&optional cmd-buf)
   "Return the debugger name recorded in the debugger process buffer."
-  (with-current-buffer cmd-buf (dbgr-cmdbuf-info-name dbgr-cmdbuf-info))
+  (with-current-buffer-safe cmd-buf 
+    (dbgr-cmdbuf-info-name dbgr-cmdbuf-info))
 )
 
 (defun dbgr-proc-loc-hist(cmd-buf)
   "Return the history ring of locations that a debugger process has stored."
-  (with-current-buffer cmd-buf (dbgr-cmdbuf-info-loc-hist dbgr-cmdbuf-info))
+  (with-current-buffer-safe cmd-buf 
+    (dbgr-cmdbuf-info-loc-hist dbgr-cmdbuf-info))
 )
 
 (defun dbgr-proc-src-marker(cmd-buf)

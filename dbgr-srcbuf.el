@@ -1,13 +1,13 @@
-;;; dbgr-scriptbuf.el --- code for a source-code buffer
+;;; dbgr-srcbuf.el --- code for a source-code buffer
 (eval-when-compile 
   (require 'cl)
-  (defvar dbgr-scriptbuf-info) ;; is buffer local
+  (defvar dbgr-srcbuf-info) ;; is buffer local
   (defvar dbgr-cmdbuf-info)        ;; in procbuf is buffer local
   (defvar cl-struct-dbgr-cmdbuf-info-tags) ;; Why do we need this?
   )
 
 
-(defstruct dbgr-scriptbuf-info
+(defstruct dbgr-srcbuf-info
   "debugger object/structure specific to a (top-level) Ruby file
 to be debugged."
   (debugger-name) ;; Name of debugger. We could get this from
@@ -28,38 +28,37 @@ to be debugged."
                        ;; (line-number . marker)
   ;; 
 )
-(defalias 'dbgr-scriptbuf-info? 'dbgr-scriptbuf-p)
+(defalias 'dbgr-srcbuf-info? 'dbgr-srcbuf-p)
 
 (require 'load-relative)
 (require-relative "dbgr-helper")
 
-(defun dbgr-scriptbuf? (buffer)
+(defun dbgr-srcbuf? (buffer)
   "Return true if BUFFER is a debugger script buffer."
-  (and (boundp 'dbgr-scriptbuf-info) 
-	     (dbgr-scriptbuf-info? dbgr-scriptbuf-info)))
+  (and (boundp 'dbgr-srcbuf-info) 
+	     (dbgr-srcbuf-info? dbgr-srcbuf-info)))
 
 ;; FIXME: DRY = access via a macro
-(defun dbgr-scriptbuf-info-cmdproc=(info buffer)
-  (setf (dbgr-scriptbuf-info-cmdproc info) buffer))
+(defun dbgr-srcbuf-info-cmdproc=(info buffer)
+  (setf (dbgr-srcbuf-info-cmdproc info) buffer))
 
-(defun dbgr-scriptbuf-info-debugger-name=(info value)
-  (setf (dbgr-scriptbuf-info-debugger-name info) value))
+(defun dbgr-srcbuf-info-debugger-name=(info value)
+  (setf (dbgr-srcbuf-info-debugger-name info) value))
 
-(defun dbgr-scriptbuf-info-cmd-args=(info buffer)
-  (setf (dbgr-scriptbuf-info-cmd-args info) buffer))
+(defun dbgr-srcbuf-info-cmd-args=(info buffer)
+  (setf (dbgr-srcbuf-info-cmd-args info) buffer))
 
 (declare-function fn-p-to-fn?-alias(sym))
-(fn-p-to-fn?-alias 'dbgr-scriptbuf-info-p)
-(declare-function dbgr-scriptbuf-info?(var))
+(fn-p-to-fn?-alias 'dbgr-srcbuf-info-p)
+(declare-function dbgr-srcbuf-info?(var))
 (declare-function dbgr-cmdbuf-info-name(cmdbuf-info))
 
-;; FIXME: support a list of dbgr-scriptvar's since we want to allow
+;; FIXME: support a list of cmdprocs's since we want to allow
 ;; a source buffer to potentially participate in several debuggers
 ;; which might be active.
+(make-variable-buffer-local 'dbgr-srcbuf-info)
 
-(make-variable-buffer-local 'dbgr-scriptbuf-info)
-
-(defun dbgr-scriptbuf-init 
+(defun dbgr-srcbuf-init 
   (src-buffer cmdproc-buffer debugger-name cmd-args)
   "Initialize SRC-BUFFER as a source-code buffer for a debugger.
 CMDPROC-BUFFER is the process buffer containing the debugger. 
@@ -67,47 +66,47 @@ DEBUGGER-NAME is the name of the debugger.
 as a main program."
   (with-current-buffer cmdproc-buffer
     (set-buffer src-buffer)
-    (set (make-local-variable 'dbgr-scriptbuf-info)
-	 (make-dbgr-scriptbuf-info
+    (set (make-local-variable 'dbgr-srcbuf-info)
+	 (make-dbgr-srcbuf-info
 	  :debugger-name debugger-name
 	  :cmd-args cmd-args
 	  :cmdproc cmdproc-buffer))
-    (put 'dbgr-scriptbuf-info 'variable-documentation 
+    (put 'dbgr-srcbuf-info 'variable-documentation 
 	 "Debugger information for a buffer containing source code.")))
 
-(defun dbgr-scriptbuf-init-or-update
+(defun dbgr-srcbuf-init-or-update
   (src-buffer cmdproc-buffer)
-  "Call `dbgr-scriptbuf-init' for SRC-BUFFER update `dbgr-scriptbuf-info' variables
+  "Call `dbgr-srcbuf-init' for SRC-BUFFER update `dbgr-srcbuf-info' variables
 in it with those from CMDPROC-BUFFER"
   (let ((debugger-name)
 	(cmd-args))
-   (with-current-buffer cmdproc-buffer
+   (with-current-buffer-safe cmdproc-buffer
      (setq debugger-name (dbgr-cmdbuf-info-name dbgr-cmdbuf-info))
      (setq cmd-args (dbgr-cmdbuf-info-cmd-args dbgr-cmdbuf-info)))
-  (with-current-buffer src-buffer
-    (if (dbgr-scriptbuf-info? dbgr-scriptbuf-info)
+  (with-current-buffer-safe src-buffer
+    (if (dbgr-srcbuf-info? dbgr-srcbuf-info)
 	(progn
-	  (dbgr-scriptbuf-info-cmdproc= dbgr-scriptbuf-info cmdproc-buffer)
-	  (dbgr-scriptbuf-info-debugger-name= dbgr-scriptbuf-info debugger-name)
-	  (dbgr-scriptbuf-info-cmd-args= dbgr-scriptbuf-info cmd-args)
+	  (dbgr-srcbuf-info-cmdproc= dbgr-srcbuf-info cmdproc-buffer)
+	  (dbgr-srcbuf-info-debugger-name= dbgr-srcbuf-info debugger-name)
+	  (dbgr-srcbuf-info-cmd-args= dbgr-srcbuf-info cmd-args)
 	  )
-      (dbgr-scriptbuf-init src-buffer cmdproc-buffer "unknown" nil)))))
+      (dbgr-srcbuf-init src-buffer cmdproc-buffer "unknown" nil)))))
 
-(defun dbgr-scriptbuf-command-string(src-buffer)
+(defun dbgr-srcbuf-command-string(src-buffer)
   "Get the command string invocation for this source buffer"
-  (with-current-buffer src-buffer
+  (with-current-buffer-safe src-buffer
     (cond 
-     ((and (dbgr-scriptbuf? src-buffer)
-	   (dbgr-scriptbuf-info-cmd-args dbgr-scriptbuf-info))
+     ((and (dbgr-srcbuf? src-buffer)
+	   (dbgr-srcbuf-info-cmd-args dbgr-srcbuf-info))
       (mapconcat (lambda(x) x) 
-		 (dbgr-scriptbuf-info-cmd-args dbgr-scriptbuf-info)
+		 (dbgr-srcbuf-info-cmd-args dbgr-srcbuf-info)
 		 " "))
      (t nil))))
   
-(provide 'dbgr-scriptbuf)
+(provide 'dbgr-srcbuf)
 
 ;;; Local variables:
 ;;; eval:(put 'dbgr-debug-enter 'lisp-indent-hook 1)
 ;;; End:
 
-;;; dbgr-scriptbuf.el ends here
+;;; dbgr-srcbuf.el ends here

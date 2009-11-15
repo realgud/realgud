@@ -38,7 +38,14 @@ a string output by a debugger inside a process shell"
        :file-group 1
        :line-group 2))
 
-; Now one for the Python debugger "pydbgr". 
+;; Regular expression used to find a file location given by pydbgr.
+;;
+;; Program-location lines look like this:
+;;   (/usr/bin/zonetab2pot.py:15): <module>
+;; or MS Windows:
+;;   (c:\\mydirectory\\gcd.py:10): <module>
+;;  and in tracebacks like this:
+;;   (/usr/bin/zonetab2pot.py:15)
 (setf (gethash "pydbgr" dbgr-pat-hash)
       (make-dbgr-loc-pat
        :regexp "^(\\(\\(?:[a-zA-Z]:\\)?[-a-zA-Z0-9_/.\\\\ ]+\\):\\([0-9]+\\))"

@@ -45,17 +45,29 @@
 (defun dbgr-track-mode-body ()
   (if dbgr-track-mode
       (progn
-	(unless (boundp 'comint-last-output-start)
-	  (set-marker comint-last-output-start (point)))
+	(if (boundp 'comint-last-output-start)
+	    (setq comint-prompt-regexp
+		  (dbgr-cmdbuf-info-loc-regexp dbgr-cmdbuf-info))
+	  (progn
+	    (set-marker comint-last-output-start (point))
+	    (dbgr-cmdbuf-info-prior-prompt-regexp= 
+	     dbgr-cmdbuf-info comint-prompt-regexp)
+	    ))
 	(add-hook 'comint-output-filter-functions 
 		  'dbgr-track-comint-output-filter-hook)
 	(add-hook 'eshell-output-filter-functions 
 		  'dbgr-track-eshell-output-filter-hook)
   
-	(unless (boundp 'dbgr-cmdbuf-info)
+	(unless (and (boundp 'dbgr-cmdbuf-info) dbgr-cmdbuf-info
+		     (dbgr-cmdbuf-info-name dbgr-cmdbuf-info))
 	  (call-interactively 'dbgr-track-set-debugger))
 	(run-mode-hooks 'dbgr-track-mode-hook))
     (progn
+      (unless (boundp 'comint-last-output-start)
+	(setq comint-prompt-regexp
+	   (dbgr-cmdbuf-info-prior-prompt-regexp 
+	    dbgr-cmdbuf-info))
+	)
       (remove-hook 'comint-output-filter-functions 
 		   'dbgr-track-comint-output-filter-hook)
       (remove-hook 'eshell-output-filter-functions 

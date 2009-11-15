@@ -8,7 +8,7 @@
 (provide 'pydbgr)
 (dolist 
     (rel-file 
-     '("pydbgr-core" "pydbgr-track-mode"))
+     '("../dbgr-helper" "pydbgr-core" "pydbgr-track-mode"))
   (require-relative rel-file))
 
 ;; FIXME figure out if I can put this in something like a header file.

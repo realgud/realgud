@@ -9,6 +9,8 @@
     (if cmdbuf
 	(let ((proc (get-buffer-process cmdbuf)))
 	  (or proc (error "Current buffer has no process"))
-	  (process-send-string proc (concat command "\n"))))))
+	  (apply comint-input-sender (list proc command))
+	  ;;(process-send-string proc (concat command "\n"))
+	  ))))
 
 (provide 'dbgr-send)

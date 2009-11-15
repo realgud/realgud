@@ -10,7 +10,7 @@
 (require 'load-relative)
 (require-relative-list
  '("dbgr-helper" "dbgr-arrow" "dbgr-loc" "dbgr-lochist" 
-   "dbgr-file" "dbgr-cmdbuf" "dbgr-scriptbuf" "dbgr-window" 
+   "dbgr-file" "dbgr-cmdbuf" "dbgr-srcbuf" "dbgr-window" 
    "dbgr-regexp"))
 
 (fn-p-to-fn?-alias 'dbgr-loc-p)
@@ -106,7 +106,7 @@ encountering a new loc."
 	(if prev-marker (dbgr-unset-arrow (marker-buffer prev-marker)))
 	(setq src-buff (dbgr-loc-goto loc 'dbgr-split-or-other-window))
 
-	(dbgr-scriptbuf-init-or-update src-buff cmd-buff)
+	(dbgr-srcbuf-init-or-update src-buff cmd-buff)
 
         ;; We need to go back to the process/command buffer because other
         ;; output-filter hooks run after this may assume they are in that

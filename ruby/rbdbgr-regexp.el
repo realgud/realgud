@@ -24,9 +24,8 @@ The values of a hash entry is a dbgr-dbgr-loc-pat struct")
 ;;  Regular expression that describes a rbdbgr command prompt
 (setf (gethash "prompt" rbdbgr-pat-hash)
       (make-dbgr-loc-pat
-       :regexp ".. (.*?\\(?:via \\)?\\([-a-zA-Z0-9_/.]+\\):\\([0-9]+\\))"
-       :file-group 1
-       :line-group 2))
+       :regexp "^(rbdbgr): "
+       ))
 
 ;;  Regular expression that describes a Ruby traceback line.
 (setf (gethash "traceback" rbdbgr-pat-hash)

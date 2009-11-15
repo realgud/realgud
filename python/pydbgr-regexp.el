@@ -18,20 +18,10 @@ The values of a hash entry is a dbgr-dbgr-loc-pat struct")
 
 (declare-function make-dbgr-loc "dbgr-loc" (a b c d e f))
 
-;; Regular expression used to find a file location given by pydbgr.
-;;
-;; Program-location lines look like this:
-;;   (/usr/bin/zonetab2pot.py:15): <module>
-;; or MS Windows:
-;;   (c:\\mydirectory\\gcd.py:10): <module>
-;;  and in tracebacks like this:
-;;   (/usr/bin/zonetab2pot.py:15)
-
 (setf (gethash "prompt" pydbgr-pat-hash)
       (make-dbgr-loc-pat
-       :regexp   "^(\\(\\(?:[a-zA-Z]:\\)?[-a-zA-Z0-9_/.\\\\ ]+\\):\\([0-9]+\\))"
-       :file-group 1
-       :line-group 2))
+       :regexp   "^(Pydbgr) "
+       ))
 
 ;;  Regular expression that describes a Ruby traceback line.
 (setf (gethash "traceback" pydbgr-pat-hash)

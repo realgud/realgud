@@ -2,9 +2,9 @@
 (require 'comint)
 (require 'load-relative)
 (require-relative-list
- '("dbgr-arrow" "dbgr-cmdbuf" "dbgr-scriptbuf" "dbgr-track"))
+ '("dbgr-arrow" "dbgr-cmdbuf" "dbgr-srcbuf" "dbgr-track"))
 
-(defvar dbgr-scriptbuf-info)
+(defvar dbgr-srcbuf-info)
 
 (defun dbgr-query-cmdline 
   (suggest-invocation-fn 
@@ -21,7 +21,7 @@ to find a suitable file via SUGGEST-INVOCATION-FN.
 We also set filename completion and use a history of the prior rbdbgr
 invocations "
   (let ((debugger (or opt-debugger
-		   (dbgr-scriptbuf-info-debugger-name dbgr-scriptbuf-info))))
+		   (dbgr-srcbuf-info-debugger-name dbgr-srcbuf-info))))
     (read-from-minibuffer
      (format "Run %s (like this): " debugger)  ;; prompt string
      (funcall suggest-invocation-fn debugger)  ;; initial value
@@ -114,8 +114,8 @@ the debugger name and debugger process buffer."
 	      (dbgr-track-set-debugger debugger-name)
 	      (set-process-sentinel proc 'dbgr-term-sentinel)
 	      (point-max)
-	      (dbgr-scriptbuf-init src-buffer cmdproc-buffer 
-				   debugger-name cmdline-list))
+	      (dbgr-srcbuf-init src-buffer cmdproc-buffer 
+				debugger-name cmdline-list))
 	  (insert (format "Failed to invoke shell command: %s %s" program args)))
 	(process-put proc 'buffer cmdproc-buffer)))
     cmdproc-buffer))
