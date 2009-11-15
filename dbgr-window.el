@@ -1,8 +1,7 @@
 (provide 'dbgr-window)
 (require 'load-relative)
-(require-relative "dbgr-helper")
+(require-relative-list '("dbgr-helper"))
 
-(declare-function fn-p-to-fn?-alias(sym))
 (fn-p-to-fn?-alias 'one-window-p)
 (declare-function one-window?(bool))
 

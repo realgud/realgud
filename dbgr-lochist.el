@@ -8,15 +8,8 @@
 ;;; Code:
  
 (require 'ring)
-(eval-when-compile 
-  (require 'cl)
-  )
-
 (require 'load-relative)
-(provide 'dbgr-lochist)
-(require-relative "dbgr-loc")
-
-
+(require-relative-list '("dbgr-loc"))
 
 (defcustom dbgr-loc-hist-size 10  ; For testing. Should really be larger.
   "Size of dbgr position history ring"
@@ -105,7 +98,7 @@ component in LOC-HIST"
 		 (head (car ring)))
     (setf (dbgr-loc-hist-position loc-hist) head)))
 
-(provide 'dbgr-loc-hist)
+(provide 'dbgr-lochist)
 
 ;;; Local variables:
 ;;; eval:(put 'dbgr-debug-enter 'lisp-indent-hook 1)

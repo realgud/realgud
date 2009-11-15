@@ -1,20 +1,10 @@
 (require 'load-relative)
-
-;; FIXME DRY using a macro
-(eval-when-compile 
-  (require 'cl)
-  (dolist (rel-file 
-	   '("dbgr-scriptbuf" "dbgr-cmdbuf"
-	     "dbgr-lochist" "dbgr-loc"))
-    (require-relative rel-file)))
-(dolist (rel-file 
-	 '("dbgr-scriptbuf" "dbgr-cmdbuf"
-	   "dbgr-lochist" "dbgr-loc"))
-  (require-relative rel-file))
+(require-relative-list
+ '("dbgr-arrow" "dbgr-cmdbuf" "dbgr-scriptbuf" "dbgr-track"))
 
 (defvar dbgr-cmdbuf-info)
 
-(defun dbgr-cmdbuf-get-scriptbuf ( &optional opt-buffer)
+(defun dbgr-get-scriptbuf-from-cmdbuf ( &optional opt-buffer)
   "Return the script buffer associated with command
 OPT-BUFFER or if that is ommited `current-buffer' which is
 assumed to be a process command buffer."
@@ -39,5 +29,5 @@ if we don't find anything."
        ((dbgr-scriptbuf? buffer) buffer)
        ;; Perhaps buffer is a process command buffer.
        ((dbgr-cmdbuf? buffer)
-	(dbgr-cmdbuf-get-scriptbuf buffer))
+	(dbgr-get-scriptbuf-from-cmdbuf buffer))
        (t nil)))))

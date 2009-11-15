@@ -4,12 +4,8 @@
 ;; This describes a debugger location structure and has code for
 ;; working with them.
 
-(eval-when-compile (require 'cl))
 (require 'load-relative)
-(provide 'dbgr-loc)
-(require-relative "dbgr-arrow")
-
-(declare-function dbgr-set-arrow (src-marker))
+(require-relative-list '("dbgr-arrow"))
 
 (defstruct dbgr-loc
 "Our own location type. Even though a mark contains a
@@ -68,3 +64,5 @@ buffer) is returned, or nil if not found"
 		  (dbgr-loc-marker= loc src-marker)
 		  (dbgr-set-arrow src-marker)))))
 	src-buffer )))
+
+(provide 'dbgr-loc)

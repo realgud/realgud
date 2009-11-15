@@ -1,16 +1,8 @@
 ; (require 'term)
 (require 'comint)
 (require 'load-relative)
-
-(eval-when-compile
-  (require 'cl)
-  (dolist (rel-file 
-	   '("dbgr-arrow" "dbgr-cmdbuf" "dbgr-scriptbuf" "dbgr-track"))
-    (require-relative rel-file))
-  )
-(dolist (rel-file 
-	 '("dbgr-arrow" "dbgr-cmdbuf" "dbgr-scriptbuf" "dbgr-track"))
-  (require-relative rel-file))
+(require-relative-list
+ '("dbgr-arrow" "dbgr-cmdbuf" "dbgr-scriptbuf" "dbgr-track"))
 
 (defvar dbgr-scriptbuf-info)
 

@@ -1,14 +1,6 @@
 ; Should dbgr-file-loc-from-line be here or elsewhere?
 (require 'load-relative)
-
-;; FIXME DRY using a macro
-(eval-when-compile 
-  (require 'cl)
-  (dolist (rel-file '("dbgr-helper" "dbgr-loc"))
-    (require-relative rel-file))
-)
-(dolist (rel-file '("dbgr-helper" "dbgr-loc"))
-  (require-relative rel-file))
+(require-relative-list '("dbgr-helper" "dbgr-loc"))
 
 (fn-p-to-fn?-alias 'file-exists-p)
 (declare-function file-exists?(file))

@@ -8,23 +8,10 @@
 (require 'comint)
 
 (require 'load-relative)
-(provide 'dbgr-track)
-(eval-when-compile 
-  (require 'cl)
-  (dolist 
-      (rel-file 
-       '("dbgr-helper" "dbgr-arrow" "dbgr-loc" "dbgr-lochist" 
-	 "dbgr-file" "dbgr-cmdbuf" "dbgr-scriptbuf" "dbgr-window" 
-	 "dbgr-regexp"))
-    (require-relative rel-file))
-)
-
-(dolist 
-    (rel-file 
-     '("dbgr-helper" "dbgr-arrow" "dbgr-loc" "dbgr-lochist" 
-       "dbgr-file" "dbgr-cmdbuf" "dbgr-scriptbuf" "dbgr-window" 
-       "dbgr-regexp"))
-  (require-relative rel-file))
+(require-relative-list
+ '("dbgr-helper" "dbgr-arrow" "dbgr-loc" "dbgr-lochist" 
+   "dbgr-file" "dbgr-cmdbuf" "dbgr-scriptbuf" "dbgr-window" 
+   "dbgr-regexp"))
 
 (fn-p-to-fn?-alias 'dbgr-loc-p)
 (declare-function dbgr-loc?(loc))
@@ -202,6 +189,8 @@ debugger with that information"
   (dbgr-goto-line-for-loc-pat pt (gethash type pat-hash)))
 
   
+(provide 'dbgr-track)
+
 ;;; Local variables:
 ;;; eval:(put 'dbgr-debug-enter 'lisp-indent-hook 1)
 ;;; End:
