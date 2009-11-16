@@ -30,6 +30,18 @@ function FN-SYM."
      (with-current-buffer ,buffer
        ,@body)))
 
+
+;; FIXME: prepend dbgr- onto the beginning of struct-symbol
+(defmacro dbgr-sget (struct-symbol struct-field) 
+  "Simplified access to a field of a `defstruct'
+variable. STRUCT-SYMBOL is a defstruct symbol name. STRUCT-FIELD
+is a field in that. Access (STRUCT-SYMBOL-STRUCT-FIELD STRUCT-SYMBOL)"
+  (declare (indent 1) (debug t))
+  `(funcall (intern (concat (symbol-name ,struct-symbol) 
+			    "-" (symbol-name ,struct-field))) 
+	    (eval ,struct-symbol)))
+
+
 (provide 'dbgr-helper)
 ;; (defun dbgr-struct-field (var-sym field-sym)
 ;;   (setq var-str (symbol-name var-sym))

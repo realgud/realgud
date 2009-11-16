@@ -103,7 +103,7 @@ encountering a new loc."
 	   (prev-marker (dbgr-proc-src-marker cmd-buff))
 	   (src-buff))
 
-	;;(if prev-marker (dbgr-unset-arrow (marker-buffer prev-marker)))
+	(if prev-marker (dbgr-unset-arrow (marker-buffer prev-marker)))
 	(setq src-buff (dbgr-loc-goto loc 'dbgr-split-or-other-window))
 
 	(dbgr-srcbuf-init-or-update src-buff cmd-buff)

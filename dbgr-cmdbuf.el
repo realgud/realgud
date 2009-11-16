@@ -36,7 +36,7 @@
 
 (provide 'dbgr-cmdbuf)
 (require 'load-relative)
-(dolist (rel-file '("dbgr-arrow" "dbgr-lochist" "dbgr-loc"))
+(dolist (rel-file '("dbgr-arrow" "dbgr-helper" "dbgr-lochist" "dbgr-loc"))
   (require-relative rel-file))
 
 (defun dbgr-cmdbuf? (buffer)
@@ -58,7 +58,7 @@
      ((dbgr-cmdbuf? cmd-buffer)
       (with-current-buffer cmd-buffer
 	(let* 
-	    ((cmd-args (dbgr-cmdbuf-info-cmd-args dbgr-cmdbuf-info))
+	    ((cmd-args (dbgr-sget 'dbgr-cmdbuf-info 'cmd-args))
 	     (result (car cmd-args)))
 	  (and cmd-args 
 	       (reduce (lambda(result x)
@@ -96,14 +96,14 @@ as a main program."
 
 (defun dbgr-cmdbuf-debugger-name (&optional cmd-buf)
   "Return the debugger name recorded in the debugger process buffer."
-  (with-current-buffer-safe cmd-buf 
-    (dbgr-cmdbuf-info-name dbgr-cmdbuf-info))
+  (with-current-buffer-safe (or cmd-buf (current-buffer))
+    (dbgr-sget 'dbgr-cmdbuf-info 'name))
 )
 
 (defun dbgr-proc-loc-hist(cmd-buf)
   "Return the history ring of locations that a debugger process has stored."
   (with-current-buffer-safe cmd-buf 
-    (dbgr-cmdbuf-info-loc-hist dbgr-cmdbuf-info))
+    (dbgr-sget 'dbgr-cmdbuf-info 'loc-hist))
 )
 
 (defun dbgr-proc-src-marker(cmd-buf)

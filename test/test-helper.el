@@ -48,7 +48,13 @@
 	    (assert-nil
 	     (with-current-buffer-safe buf
 	       t))))
- 
+
+ (specify "dbgr-sget"
+	  (defstruct xxx-info name)
+	  (let ((xxx-info (make-xxx-info)))
+	    (setf (xxx-info-name xxx-info) 20)
+	    (assert-equal 20 (dbgr-sget 'xxx-info 'name))
+	  ))
 )
 
 (behave "helper")

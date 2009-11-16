@@ -147,7 +147,7 @@
   t)
 
 (defun assert-t (actual &optional opt-fail-message)
-  "expectation is that ACTUAL is t."
+  "expectation is that ACTUAL is not nil."
   (assert-nil (not actual) opt-fail-message))
 
 (defun assert-nil (actual &optional opt-fail-message)
