@@ -6,21 +6,22 @@
 (require 'load-relative)
 (dolist 
     (rel-file 
-     '("../dbgr-track-mode" "rbdbgr-core"))
+     '("../dbgr-track-mode" "rbdbgr-core" "rbdbgr-regexp"))
   (require-relative rel-file))
 
+(defvar rbdbgr-pat-hash)
 (defvar rbdbgr-track-mode nil
   "Non-nil if using rbdbgr-track mode as a minor mode of some other mode.
 Use the command `rbdbgr-track-mode' to toggle or set this variable.")
 
 ;; FIXME: DRY below declarations shared in rbdbgr-track-mode by
 ;; figuring out how to put in a common header.
-(declare-function dbgr-track-set-debugger (debugger-name))
+(declare-function dbgr-track-set-debugger (debugger-name &optional hash))
 (declare-function dbgr-track-mode(bool))
 
 (defun rbdbgr-track-mode-body()
   "Called when entering or leaving rbdbgr-track-mode"
-  (dbgr-track-set-debugger "rbdbgr")
+  (dbgr-track-set-debugger "rbdbgr" rbdbgr-pat-hash)
   (if rbdbgr-track-mode
       (progn 
  	;; FIXME: until I figure out why this isn't set in the mode

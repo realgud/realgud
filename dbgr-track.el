@@ -103,7 +103,7 @@ encountering a new loc."
 	   (prev-marker (dbgr-proc-src-marker cmd-buff))
 	   (src-buff))
 
-	(if prev-marker (dbgr-unset-arrow (marker-buffer prev-marker)))
+	;;(if prev-marker (dbgr-unset-arrow (marker-buffer prev-marker)))
 	(setq src-buff (dbgr-loc-goto loc 'dbgr-split-or-other-window))
 
 	(dbgr-srcbuf-init-or-update src-buff cmd-buff)
@@ -168,17 +168,19 @@ to get regular-expresion pattern matching information."
 					)))
     (if loc (dbgr-track-loc-action loc cmd-buff)))))
 
-(defun dbgr-track-set-debugger (debugger-name)
+(defun dbgr-track-set-debugger (debugger-name &optional regexp-hash)
   "Set debugger name and information associated with that debugger for
 the buffer process. This info is returned or nil if we can't find a 
 debugger with that information"
   (interactive "sDebugger name: ")
-  (lexical-let ((loc-pat (gethash debugger-name dbgr-pat-hash)))
+  (let 
+      ((loc-pat (gethash debugger-name dbgr-pat-hash)))
     (if loc-pat 
 	(dbgr-cmdbuf-init (current-buffer) debugger-name 
 			  (dbgr-loc-pat-regexp loc-pat) 
 			  (dbgr-loc-pat-file-group loc-pat)
-			  (dbgr-loc-pat-line-group loc-pat))
+			  (dbgr-loc-pat-line-group loc-pat)
+			  regexp-hash)
       (progn 
 	(message "I Don't have %s listed as a debugger." debugger-name)
 	nil)

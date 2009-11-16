@@ -1,14 +1,14 @@
 ;;  `pydbgr' Main interface to pydbgr via Emacs
-(if (< emacs-major-version 22)
+(if (< emacs-major-version 23)
     (error
-     "You need at least Emacs 22 or greater to run this - you have version %d"
+     "You need at least Emacs 23 or greater to run this - you have version %d"
      emacs-major-version))
 
 (require 'load-relative)
 (provide 'pydbgr)
 (dolist 
     (rel-file 
-     '("../dbgr-helper" "pydbgr-core" "pydbgr-track-mode"))
+     '("../dbgr-helper" "pydbgr-core" "pydbgr-regexp" "pydbgr-track-mode"))
   (require-relative rel-file))
 
 ;; FIXME figure out if I can put this in something like a header file.
@@ -17,7 +17,7 @@
 (defvar dbgr-track-mode)
 (defvar pydbgr-track-mode)
 (declare-function dbgr-cmdbuf-info-cmd-args= (info cmd-args))
-(declare-function dbgr-track-set-debugger (debugger-name))
+(declare-function dbgr-track-set-debugger (debugger-name &optional hash))
 (declare-function pydbgr-parse-cmd-args (args))
 (declare-function pydbgr-query-cmdline (&optional debugger))
 (declare-function dbgr-track-mode-body ())
@@ -77,7 +77,7 @@ String COMMAND-LINE specifies how to run pydbgr."
       (if (and proc (eq 'run (process-status proc)))
 	  (progn
 	    (switch-to-buffer cmd-buf)
-	    (dbgr-track-set-debugger "pydbgr")
+	    (dbgr-track-set-debugger "pydbgr" pydbgr-pat-hash)
 
 	    ;; FIXME: (pydbgr-track-mode 't) has problems
 	    ;; until I figure out this out...

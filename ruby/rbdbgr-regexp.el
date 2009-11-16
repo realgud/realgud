@@ -13,13 +13,22 @@
 (declare-function make-dbgr-loc-pat (dbgr-loc))
 
 (defvar rbdbgr-pat-hash (make-hash-table :test 'equal)
-  "Hash key is the what kind of pattern we want to match: traceback, prompt, etc. 
-The values of a hash entry is a dbgr-dbgr-loc-pat struct")
+  "Hash key is the what kind of pattern we want to match:
+traceback, prompt, etc.  The values of a hash entry is a
+dbgr-dbgr-loc-pat struct")
 
 (if (not (boundp 'declare-function))
     (defmacro declare-function (fn file &optional arglist fileonly)
       "From Emacs 23.1"
       nil))
+
+;; Regular expression that describes a rbdbgr location generally shown
+;; before a command prompt.
+(setf (gethash "loc" rbdbgr-pat-hash)
+      (make-dbgr-loc-pat
+       :regexp ".. (\\(?:.+ \\(?:via\\|remapped\\) \\)?\\(.+\\):\\([0-9]+\\))"
+       :file-group 1
+       :line-group 2))
 
 ;;  Regular expression that describes a rbdbgr command prompt
 (setf (gethash "prompt" rbdbgr-pat-hash)

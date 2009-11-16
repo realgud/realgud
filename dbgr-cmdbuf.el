@@ -1,5 +1,6 @@
 ;;; dbgr-cmdbuf.el --- debugger process buffer things
 (require 'cl)
+
 (require 'load-relative)
 (require-relative-list
  '("dbgr-arrow" "dbgr-helper" "dbgr-loc" "dbgr-lochist"))
@@ -17,10 +18,15 @@
   prior-prompt-regexp  ;; regular expression prompt (e.g.
                        ;; comint-prompt-regexp) *before* setting
                        ;; loc-regexp
+  regexp-hash          ;; hash table of regular expressions appropriate for
+                       ;; this debugger. Eventually loc-regexp, file-group
+                       ;; and line-group below will removed and stored here.
+
+  ;; FIXME: REMOVE THIS and use regexp-hash
   loc-regexp   ;; Location regular expression string
-  ;; FIXME: use include?
   file-group
   line-group
+
   loc-hist     ;; ring of locations seen in the course of execution
                ;; see dbgr-lochist
 )
@@ -60,8 +66,18 @@
 		       cmd-args)))))
      (t nil)))
 
+;; FIXME pat-hash should not be optional. And while I am at it, remove
+;; parameters loc-regexp, file-group, and line-group which can be found
+;; inside pat-hash
+;;
+;; To do this however we need to fix up the caller
+;; dbgr-track-set-debugger by changing dbgr-pat-hash to store a hash
+;; rather than the loc, file, and line fields; those fields then get
+;; removed.
+
 (defun dbgr-cmdbuf-init
-  (cmd-buf &optional debugger-name loc-regexp file-group line-group)
+  (cmd-buf &optional debugger-name loc-regexp file-group line-group
+	  regexp-hash)
   "Initialize CMD-BUF for a working with a debugger.
 DEBUGGER-NAME is the name of the debugger.
 as a main program."
@@ -72,7 +88,9 @@ as a main program."
 	   :loc-regexp loc-regexp
 	   :file-group (or file-group -1)
 	   :line-group (or line-group -1)
-	   :loc-hist (make-dbgr-loc-hist)))
+	   :loc-hist (make-dbgr-loc-hist)
+	   :regexp-hash regexp-hash))
+
     (put 'dbgr-cmdbuf-info 'variable-documentation 
 	 "Debugger object for a process buffer.")))
 

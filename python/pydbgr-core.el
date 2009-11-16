@@ -19,7 +19,6 @@
 (declare-function dbgr-parse-command-arg (args two-args opt-two-args))
 (declare-function dbgr-query-cmdline (sf lm hist &optional dbg))
 (declare-function dbgr-srcbuf-command-string(src-buffer))
-(declare-function dbgr-track-set-debugger (debugger-name))
 (declare-function dbgr-track-mode(bool))
 (declare-function dbgr-goto-line-for-pt-and-type (pt type pat-hash))
 

@@ -22,11 +22,11 @@
   "Keymap used in `dbgr-track-minor-mode'.")
 
 ;; FIXME figure out if I can put this in something like a header file.
-(declare-function dbgr-track-set-debugger (debugger-name))
+(declare-function dbgr-track-set-debugger (debugger-name &optional hash))
 
 (define-minor-mode dbgr-track-mode
   "Minor mode for tracking debugging inside a process shell."
-  :init-value (not (dbgr-track-set-debugger "rbdbgr"))
+  :init-value nil
   :global nil
   :group 'dbgr
 
@@ -46,8 +46,13 @@
   (if dbgr-track-mode
       (progn
 	(if (boundp 'comint-last-output-start)
-	    (setq comint-prompt-regexp
-		  (dbgr-cmdbuf-info-loc-regexp dbgr-cmdbuf-info))
+	    (let* ((regexp-hash
+		   (and dbgr-cmdbuf-info 
+		    (dbgr-cmdbuf-info-regexp-hash dbgr-cmdbuf-info)))
+		   (prompt-pat (and regexp-hash 
+				       (gethash "prompt" regexp-hash))))
+	      (if prompt-pat
+		  (setq comint-prompt-regexp (dbgr-loc-pat-regexp prompt-pat))))
 	  (progn
 	    (set-marker comint-last-output-start (point))
 	    (dbgr-cmdbuf-info-prior-prompt-regexp= 
