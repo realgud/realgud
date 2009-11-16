@@ -8,7 +8,6 @@
 (eval-when-compile 
   (require 'cl)
   (defvar dbgr-cmdbuf-info)
-  (declare-function dbgr-unset-arrow (marker))
   )
 
 (defstruct dbgr-cmdbuf-info
@@ -30,8 +29,6 @@
   loc-hist     ;; ring of locations seen in the course of execution
                ;; see dbgr-lochist
 )
-(defalias 'dbgr-cmdbuf-info? 'dbgr-cmdbuf-info-p)
-
 (make-variable-buffer-local 'dbgr-cmdbuf-info)
 
 (provide 'dbgr-cmdbuf)
@@ -39,10 +36,21 @@
 (dolist (rel-file '("dbgr-arrow" "dbgr-helper" "dbgr-lochist" "dbgr-loc"))
   (require-relative rel-file))
 
-(defun dbgr-cmdbuf? (buffer)
-  "Return true if BUFFER is a debugger command buffer."
+(defalias 'dbgr-cmdbuf-info? 'dbgr-cmdbuf-info-p)
+
+(defmacro dbgr-cmdbuf-info-set? ()
+  "Return true if dbgr-cmdbuf-info is set."
   (and (boundp 'dbgr-cmdbuf-info) 
-	     (dbgr-cmdbuf-info? dbgr-cmdbuf-info)))
+       dbgr-cmdbuf-info
+       (dbgr-cmdbuf-info? dbgr-cmdbuf-info)))
+
+;; Without the \?, dbgr-cmdbuf? somehow doesn't get loaded properly.
+(defun dbgr-cmdbuf\? ( &optional buffer)
+  "Return true if BUFFER is a debugger command buffer."
+  (with-current-buffer-safe 
+   (or buffer (current-buffer))
+   (dbgr-cmdbuf-info-set?)))
+
 
 ;; FIXME: DRY = access via a macro. See also analogous
 ;; code in dbgr-srcbuf

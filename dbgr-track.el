@@ -130,7 +130,7 @@ Otherwise return nil."
   ; the fields of dbgr-cmdbuf-info appropriately we can accomodate a family
   ; of debuggers -- one at a time -- for the buffer process.
 
-  (if (and (boundp 'dbgr-cmdbuf-info) dbgr-cmdbuf-info)
+  (if (dbgr-cmdbuf?)
       (lexical-let 
 	  ((loc-regexp (or opt-regexp 
 			   (dbgr-cmdbuf-info-loc-regexp dbgr-cmdbuf-info)))

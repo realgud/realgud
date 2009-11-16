@@ -35,7 +35,7 @@ to be debugged."
 
 (defun dbgr-srcbuf? (buffer)
   "Return true if BUFFER is a debugger script buffer."
-  (and (boundp 'dbgr-srcbuf-info) 
+  (and (boundp 'dbgr-srcbuf-info) dbgr-srcbuf-info
 	     (dbgr-srcbuf-info? dbgr-srcbuf-info)))
 
 ;; FIXME: DRY = access via a macro

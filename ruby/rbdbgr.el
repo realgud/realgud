@@ -11,6 +11,8 @@
      '("../dbgr-helper" "rbdbgr-core" "rbdbgr-track-mode"))
   (require-relative rel-file))
 
+(defvar rbdbgr-pat-hash)
+
 ;; FIXME figure out if I can put this in something like a header file.
 ;; And we can then eliminate with what is in pydbgr.el
 (defvar dbgr-cmdbuf-info)
@@ -77,7 +79,7 @@ String COMMAND-LINE specifies how to run rbdbgr."
       (if (and proc (eq 'run (process-status proc)))
 	  (progn
 	    (switch-to-buffer cmd-buf)
-	    (dbgr-track-set-debugger "rbdbgr")
+	    (dbgr-track-set-debugger "rbdbgr" rbdbgr-pat-hash)
 
 	    ;; FIXME: (pydbgr-track-mode 't) has problems
 	    ;; until I figure out this out...

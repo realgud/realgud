@@ -3,13 +3,10 @@
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
-
 (provide 'dbgr-track-mode)
-(dolist 
-    (rel-file 
-     '("dbgr-track" "dbgr-loc" "dbgr-lochist" "dbgr-file" 
-       "dbgr-cmdbuf" "dbgr-window" "dbgr-regexp"))
-  (require-relative rel-file))
+(require-relative-list
+ '("dbgr-helper" "dbgr-track" "dbgr-loc" "dbgr-lochist" "dbgr-file" 
+   "dbgr-cmdbuf" "dbgr-window" "dbgr-regexp"))
 
 (defvar dbgr-track-mode-map
   (let ((map (make-sparse-keymap)))
@@ -33,8 +30,8 @@
   :lighter 
   (:eval (progn 
 	   (concat " "
-		   (if (boundp 'dbgr-cmdbuf-info)
-		       (dbgr-cmdbuf-info-name dbgr-cmdbuf-info)
+		   (if (dbgr-cmdbuf-info-set?)
+		       (dbgr-sget 'dbgr-cmdbuf-info 'name)
 		     "dbgr??"))))
 
   :keymap dbgr-track-mode-map
@@ -48,9 +45,9 @@
 	(if (boundp 'comint-last-output-start)
 	    (let* ((regexp-hash
 		   (and dbgr-cmdbuf-info 
-		    (dbgr-cmdbuf-info-regexp-hash dbgr-cmdbuf-info)))
+		    (dbgr-sget 'dbgr-cmdbuf-info 'regexp-hash)))
 		   (prompt-pat (and regexp-hash 
-				       (gethash "prompt" regexp-hash))))
+				    (gethash "prompt" regexp-hash))))
 	      (if prompt-pat
 		  (setq comint-prompt-regexp (dbgr-loc-pat-regexp prompt-pat))))
 	  (progn
@@ -63,15 +60,14 @@
 	(add-hook 'eshell-output-filter-functions 
 		  'dbgr-track-eshell-output-filter-hook)
   
-	(unless (and (boundp 'dbgr-cmdbuf-info) dbgr-cmdbuf-info
-		     (dbgr-cmdbuf-info-name dbgr-cmdbuf-info))
+	(unless (and (dbgr-cmdbuf-info-set?)
+		     (dbgr-sget 'dbgr-cmdbuf-info 'name))
 	  (call-interactively 'dbgr-track-set-debugger))
 	(run-mode-hooks 'dbgr-track-mode-hook))
     (progn
       (unless (boundp 'comint-last-output-start)
 	(setq comint-prompt-regexp
-	   (dbgr-cmdbuf-info-prior-prompt-regexp 
-	    dbgr-cmdbuf-info))
+	   (dbgr-sget 'dbgr-cmdbuf-info 'prior-prompt-regexp))
 	)
       (remove-hook 'comint-output-filter-functions 
 		   'dbgr-track-comint-output-filter-hook)

@@ -11,11 +11,13 @@
      '("../dbgr-helper" "pydbgr-core" "pydbgr-regexp" "pydbgr-track-mode"))
   (require-relative rel-file))
 
+
 ;; FIXME figure out if I can put this in something like a header file.
 ;; And we can then eliminate with what is in rbdbgr.el
 (defvar dbgr-cmdbuf-info)
 (defvar dbgr-track-mode)
 (defvar pydbgr-track-mode)
+(defvar pydbgr-pat-hash)
 (declare-function dbgr-cmdbuf-info-cmd-args= (info cmd-args))
 (declare-function dbgr-track-set-debugger (debugger-name &optional hash))
 (declare-function pydbgr-parse-cmd-args (args))
