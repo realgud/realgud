@@ -10,7 +10,7 @@
 	 (tag send)
 	 (specify "format no expand characters"
 		  (dolist (str '("abc" "100%" "I feel %% today"))
-		    (assert-equal str (dbgr-expand-format-string str)))
+		    (assert-equal str (dbgr-expand-format str)))
 	   ))
 
 (behave "send")

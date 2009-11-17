@@ -35,7 +35,7 @@ results into the command buffer."
       (error "Can't find command process buffer")
       )))
 
-(defun dbgr-expand-format-string (fmt-str &optional opt-num-str opt-buffer)
+(defun dbgr-expand-format (fmt-str &optional opt-num-str opt-buffer)
   "Expands commands format characters inside FMT-STRING using values
 from the debugging session. OPT-NUM-STR is an optional number string.
 If present %-escapes in the string arguments are expanded. These are:
@@ -93,5 +93,12 @@ If present %-escapes in the string arguments are expanded. These are:
       (setq fmt-str (substring fmt-str (match-end 2))))
     ;; There might be text left in FMT-STR when the loop ends.
     (concat result fmt-str)))
+
+(defun dbgr-command (fmt &optional arg)
+  (interactive "sCommand (may contain format chars): ")
+  (let ((command-str (dbgr-expand-format fmt arg)))
+    (message "Command: %s" command-str)
+    (sit-for 0)
+    (dbgr-send-command command-str)))
 
 (provide 'dbgr-send)
