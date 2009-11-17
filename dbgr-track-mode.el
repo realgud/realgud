@@ -31,7 +31,7 @@
   (:eval (progn 
 	   (concat " "
 		   (if (dbgr-cmdbuf-info-set?)
-		       (dbgr-sget 'dbgr-cmdbuf-info 'name)
+		       (dbgr-sget 'cmdbuf-info 'name)
 		     "dbgr??"))))
 
   :keymap dbgr-track-mode-map
@@ -45,7 +45,7 @@
 	(if (boundp 'comint-last-output-start)
 	    (let* ((regexp-hash
 		   (and dbgr-cmdbuf-info 
-		    (dbgr-sget 'dbgr-cmdbuf-info 'regexp-hash)))
+		    (dbgr-sget 'cmdbuf-info 'regexp-hash)))
 		   (prompt-pat (and regexp-hash 
 				    (gethash "prompt" regexp-hash))))
 	      (if prompt-pat
@@ -61,13 +61,13 @@
 		  'dbgr-track-eshell-output-filter-hook)
   
 	(unless (and (dbgr-cmdbuf-info-set?)
-		     (dbgr-sget 'dbgr-cmdbuf-info 'name))
+		     (dbgr-sget 'cmdbuf-info 'name))
 	  (call-interactively 'dbgr-track-set-debugger))
 	(run-mode-hooks 'dbgr-track-mode-hook))
     (progn
       (unless (boundp 'comint-last-output-start)
 	(setq comint-prompt-regexp
-	   (dbgr-sget 'dbgr-cmdbuf-info 'prior-prompt-regexp))
+	   (dbgr-sget 'cmdbuf-info 'prior-prompt-regexp))
 	)
       (remove-hook 'comint-output-filter-functions 
 		   'dbgr-track-comint-output-filter-hook)

@@ -105,9 +105,9 @@ in it with those from CMDPROC-BUFFER"
   (with-current-buffer-safe src-buffer
     (cond 
      ((and (dbgr-srcbuf? src-buffer)
-	   (dbgr-sget 'dbgr-srcbuf-info 'cmd-args))
+	   (dbgr-sget 'srcbuf-info 'cmd-args))
       (mapconcat (lambda(x) x) 
-		 (dbgr-sget 'dbgr-srcbuf-info 'cmd-args)
+		 (dbgr-sget 'srcbuf-info 'cmd-args)
 		 " "))
      (t nil))))
   

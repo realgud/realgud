@@ -65,7 +65,7 @@
      ((dbgr-cmdbuf? cmd-buffer)
       (with-current-buffer cmd-buffer
 	(let* 
-	    ((cmd-args (dbgr-sget 'dbgr-cmdbuf-info 'cmd-args))
+	    ((cmd-args (dbgr-sget 'cmdbuf-info 'cmd-args))
 	     (result (car cmd-args)))
 	  (and cmd-args 
 	       (reduce (lambda(result x)
@@ -104,13 +104,13 @@ as a main program."
 (defun dbgr-cmdbuf-debugger-name (&optional cmd-buf)
   "Return the debugger name recorded in the debugger process buffer."
   (with-current-buffer-safe (or cmd-buf (current-buffer))
-    (dbgr-sget 'dbgr-cmdbuf-info 'name))
+    (dbgr-sget 'cmdbuf-info 'name))
 )
 
 (defun dbgr-proc-loc-hist(cmd-buf)
   "Return the history ring of locations that a debugger process has stored."
   (with-current-buffer-safe cmd-buf 
-    (dbgr-sget 'dbgr-cmdbuf-info 'loc-hist))
+    (dbgr-sget 'cmdbuf-info 'loc-hist))
 )
 
 (defun dbgr-proc-src-marker(cmd-buf)

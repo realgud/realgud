@@ -37,9 +37,11 @@ function FN-SYM."
 variable. STRUCT-SYMBOL is a defstruct symbol name. STRUCT-FIELD
 is a field in that. Access (STRUCT-SYMBOL-STRUCT-FIELD STRUCT-SYMBOL)"
   (declare (indent 1) (debug t))
-  `(funcall (intern (concat (symbol-name ,struct-symbol) 
-			    "-" (symbol-name ,struct-field))) 
-	    (eval ,struct-symbol)))
+  `(let* ((dbgr-symbol-str
+	   (concat "dbgr-" (symbol-name ,struct-symbol)))
+	  (dbgr-field-access
+	   (intern (concat dbgr-symbol-str "-" (symbol-name, struct-field)))))
+    (funcall dbgr-field-access (eval (intern dbgr-symbol-str)))))
 
 
 (provide 'dbgr-helper)

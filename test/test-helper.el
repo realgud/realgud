@@ -50,11 +50,11 @@
 	       t))))
 
  (specify "dbgr-sget"
-	  (defstruct xxx-info name)
-	  (let ((xxx-info (make-xxx-info)))
-	    (setf (xxx-info-name xxx-info) 20)
+	  (defstruct dbgr-xxx-info name)
+	  (setq dbgr-xxx-info (make-dbgr-xxx-info))
+	    (setf (dbgr-xxx-info-name dbgr-xxx-info) 20)
 	    (assert-equal 20 (dbgr-sget 'xxx-info 'name))
-	  ))
+	  )
 )
 
 (behave "helper")

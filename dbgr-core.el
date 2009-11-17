@@ -21,7 +21,7 @@ to find a suitable file via SUGGEST-INVOCATION-FN.
 We also set filename completion and use a history of the prior rbdbgr
 invocations "
   (let ((debugger (or opt-debugger
-		   (dbgr-sget 'dbgr-srcbuf-info 'debugger-name))))
+		   (dbgr-sget 'srcbuf-info 'debugger-name))))
     (read-from-minibuffer
      (format "Run %s (like this): " debugger)  ;; prompt string
      (funcall suggest-invocation-fn debugger)  ;; initial value
