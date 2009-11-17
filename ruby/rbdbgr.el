@@ -1,14 +1,8 @@
 ;;  `rbdbgr' Main interface to rbdbgr via Emacs
-(if (< emacs-major-version 22)
-    (error
-     "You need at least Emacs 22 or greater to run this - you have version %d"
-     emacs-major-version))
-
 (require 'load-relative)
-(provide 'rbdbgr)
 (dolist 
     (rel-file 
-     '("../dbgr-helper" "rbdbgr-core" "rbdbgr-track-mode"))
+     '("../dbgr-helper" "rbdbgr-core" "rbdbgr-regexp" "rbdbgr-track-mode"))
   (require-relative rel-file))
 
 (defvar rbdbgr-pat-hash)
@@ -96,4 +90,3 @@ String COMMAND-LINE specifies how to run rbdbgr."
 (provide 'rbdbgr)
 
 ;;; rbdbgr.el ends here
-

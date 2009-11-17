@@ -1,11 +1,5 @@
 ;;  `pydbgr' Main interface to pydbgr via Emacs
-(if (< emacs-major-version 23)
-    (error
-     "You need at least Emacs 23 or greater to run this - you have version %d"
-     emacs-major-version))
-
 (require 'load-relative)
-(provide 'pydbgr)
 (dolist 
     (rel-file 
      '("../dbgr-helper" "pydbgr-core" "pydbgr-regexp" "pydbgr-track-mode"))
@@ -93,5 +87,6 @@ String COMMAND-LINE specifies how to run pydbgr."
 	(message "Error running pydbgr command"))
     )))
 
+(provide 'pydbgr)
 ;;; pydbgr.el ends here
 

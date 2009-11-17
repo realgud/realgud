@@ -1,4 +1,9 @@
 ; (require 'term)
+(if (< emacs-major-version 23)
+    (error
+     "You need at least Emacs 23 or greater to run this - you have version %d"
+     emacs-major-version))
+
 (require 'comint)
 (require 'load-relative)
 (require-relative-list
