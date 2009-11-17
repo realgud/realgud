@@ -51,7 +51,6 @@
    (or buffer (current-buffer))
    (dbgr-cmdbuf-info-set?)))
 
-
 ;; FIXME: DRY = access via a macro. See also analogous
 ;; code in dbgr-srcbuf
 (defun dbgr-cmdbuf-info-cmd-args=(info value)

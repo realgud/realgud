@@ -111,7 +111,7 @@ NOTE: the above should have each item listed in quotes.
 			   (file-name-nondirectory (car args))))
       (unless (string-match "^pydbgr$" debugger-name)
 	(message 
-	 "Expecting debugger name to be pydbgr"
+	 "Expecting debugger name `%s' to be `pydbgr'"
 	 debugger-name))
       (setq debugger-args (list (pop args)))
 

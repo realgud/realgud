@@ -33,10 +33,18 @@ to be debugged."
 (require 'load-relative)
 (require-relative "dbgr-helper")
 
-(defun dbgr-srcbuf? (buffer)
-  "Return true if BUFFER is a debugger script buffer."
-  (and (boundp 'dbgr-srcbuf-info) dbgr-srcbuf-info
-	     (dbgr-srcbuf-info? dbgr-srcbuf-info)))
+(defmacro dbgr-srcbuf-info-set? ()
+  "Return true if `dbgr-srcbuf-info' is set."
+  (and (boundp 'dbgr-srcbuf-info) 
+       dbgr-srcbuf-info
+       (dbgr-srcbuf-info? dbgr-srcbuf-info)))
+
+;; Without the \?, dbgr-cmdbuf? somehow doesn't get loaded properly.
+(defun dbgr-srcbuf\? ( &optional buffer)
+  "Return true if BUFFER is a debugger source buffer."
+  (with-current-buffer-safe 
+   (or buffer (current-buffer))
+   (dbgr-srcbuf-info-set?)))
 
 ;; FIXME: DRY = access via a macro
 (defun dbgr-srcbuf-info-cmdproc=(info buffer)
@@ -97,9 +105,9 @@ in it with those from CMDPROC-BUFFER"
   (with-current-buffer-safe src-buffer
     (cond 
      ((and (dbgr-srcbuf? src-buffer)
-	   (dbgr-srcbuf-info-cmd-args dbgr-srcbuf-info))
+	   (dbgr-sget 'dbgr-srcbuf-info 'cmd-args))
       (mapconcat (lambda(x) x) 
-		 (dbgr-srcbuf-info-cmd-args dbgr-srcbuf-info)
+		 (dbgr-sget 'dbgr-srcbuf-info 'cmd-args)
 		 " "))
      (t nil))))
   

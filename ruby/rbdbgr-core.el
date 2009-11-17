@@ -111,7 +111,7 @@ NOTE: the above should have each item listed in quotes.
 			   (file-name-nondirectory (car args))))
       (unless (string-match "^rbdbgr$" debugger-name)
 	(message 
-	 "Expecting debugger name to be rbdbgr"
+	 "Expecting debugger name `%s' to be `rbdbgr'"
 	 debugger-name))
       (setq debugger-args (list (pop args)))
 

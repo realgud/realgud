@@ -2,7 +2,7 @@
 (require 'comint)
 (require 'load-relative)
 (require-relative-list
- '("dbgr-arrow" "dbgr-cmdbuf" "dbgr-srcbuf" "dbgr-track"))
+ '("dbgr-arrow" "dbgr-helper" "dbgr-cmdbuf" "dbgr-srcbuf" "dbgr-track"))
 
 (defvar dbgr-srcbuf-info)
 
@@ -21,7 +21,7 @@ to find a suitable file via SUGGEST-INVOCATION-FN.
 We also set filename completion and use a history of the prior rbdbgr
 invocations "
   (let ((debugger (or opt-debugger
-		   (dbgr-srcbuf-info-debugger-name dbgr-srcbuf-info))))
+		   (dbgr-sget 'dbgr-srcbuf-info 'debugger-name))))
     (read-from-minibuffer
      (format "Run %s (like this): " debugger)  ;; prompt string
      (funcall suggest-invocation-fn debugger)  ;; initial value

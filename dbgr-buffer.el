@@ -11,7 +11,7 @@ assumed to be a source file buffer."
   (let ((buffer (or opt-buffer (current-buffer))))
     (if (dbgr-srcbuf? buffer)
 	(with-current-buffer-safe buffer
-	  (dbgr-srcbuf-info-cmdproc dbgr-srcbuf-info))
+	  (dbgr-sget 'dbgr-srcbuf-info 'cmdproc))
       nil)))
 
 (defun dbgr-get-srcbuf-from-cmdbuf ( &optional opt-buffer)
