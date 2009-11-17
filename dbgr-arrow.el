@@ -5,12 +5,13 @@
 (define-fringe-bitmap 'hollow-right-triangle
   "\xe0\x90\x88\x84\x84\x88\x90\xe0")
 
-(defun dbgr-set-arrow (marker)
+(defun dbgr-set-arrow (marker &optional opt-indicator-pair)
   "Set the fringe indicator or overlay arrow to MARKER. This is done
 for example to indicate a debugger position."
   (save-excursion
     (let ((indicator-pair 
-	   '((overlay-arrow . right-triangle))))
+	   (or opt-indicator-pair
+	   '((overlay-arrow . right-triangle)))))
       (set-buffer (marker-buffer marker))
       (setq overlay-arrow-position marker)
       (setq overlay-arrow-string "=>")
