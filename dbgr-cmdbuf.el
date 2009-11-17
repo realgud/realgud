@@ -44,8 +44,7 @@
        dbgr-cmdbuf-info
        (dbgr-cmdbuf-info? dbgr-cmdbuf-info)))
 
-;; Without the \?, dbgr-cmdbuf? somehow doesn't get loaded properly.
-(defun dbgr-cmdbuf\? ( &optional buffer)
+(defun dbgr-cmdbuf? ( &optional buffer)
   "Return true if BUFFER is a debugger command buffer."
   (with-current-buffer-safe 
    (or buffer (current-buffer))

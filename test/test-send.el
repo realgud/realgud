@@ -1,11 +1,5 @@
 (load-file "./behave.el")
 
-;; FIXME: not sure why we have to include since dbgr-send includes this.
-(load-file "../dbgr-helper.el")
-(load-file "../dbgr-cmdbuf.el")
-(load-file "../dbgr-srcbuf.el")
-(load-file "../dbgr-buffer.el")
-
 (load-file "../dbgr-send.el")
 (behave-clear-contexts)
 
