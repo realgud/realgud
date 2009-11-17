@@ -38,7 +38,7 @@ results into the command buffer."
 (defun dbgr-expand-format (fmt-str &optional opt-num-str opt-buffer)
   "Expands commands format characters inside FMT-STRING using values
 from the debugging session. OPT-NUM-STR is an optional number string.
-If present %-escapes in the string arguments are expanded. These are:
+Some %-escapes in the string arguments are expanded. These are:
 
   %f -- Name without directory of current source file.
   %F -- Name without directory or extension of current source file.
@@ -111,5 +111,19 @@ If present %-escapes in the string arguments are expanded. These are:
 	  (message "Command: %s" command-str)
 	  (sit-for 0)))
     (dbgr-send-command command-str)))
+
+(defmacro dbgr-define-command (func cmd &optional key doc)
+  "Define FUNC to be a command sending CMD possibly bound to KEY, and with
+optional doc string DOC."
+  (declare (indent 1) (debug t))
+  `(progn
+     (fset (intern (concat "dbgr-cmd-" (symbol-name ,func)))
+	   (lambda(arg)
+	     ,doc
+	     (interactive "p")
+	     (dbgr-command ,cmd arg)))
+     ,(if key `(local-set-key ,(concat "\C-c" key) ',func))
+     ;; ,(if key `(global-set-key (vconcat dbgr-key-prefix ,key) ',func))
+     ))
 
 (provide 'dbgr-send)
