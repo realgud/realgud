@@ -16,10 +16,10 @@ for example to indicate a debugger position."
       (setq overlay-arrow-string "=>")
       (setq fringe-indicator-alist indicator-pair))))
 
-(defun dbgr-unset-arrow (buffer)
+(defun dbgr-unset-arrow (&optional buffer)
   "Remove fringe indicator or overlay arrow for BUFFER."
   (save-excursion
-      (set-buffer buffer)
+      (set-buffer (or buffer (current-buffer)))
       (setq overlay-arrow-position nil)))
 
 (provide 'dbgr-arrow)
