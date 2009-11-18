@@ -1,5 +1,5 @@
 (load-file "./behave.el")
-(load-file "../ruby/rbdbgr-regexp.el")
+(load-file "../init/rbdbgr.el")
 
 (behave-clear-contexts)
 

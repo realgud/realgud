@@ -6,7 +6,7 @@
 (defvar temp-cmdbuf nil)
 (defun setup ()
   (setq temp-cmdbuf (generate-new-buffer "*cmdbuf-test*"))
-  (dbgr-cmdbuf-init temp-cmdbuf "bogus-debugger")
+  (dbgr-cmdbuf-init temp-cmdbuf "pydbgr" (gethash "rbdbgr" dbgr-pat-hash))
   (dbgr-srcbuf-init (current-buffer) temp-cmdbuf 
 		    "bugus-debugger" 
 		    '("/bin/bogus-debugger" "my-script" "arg1"))

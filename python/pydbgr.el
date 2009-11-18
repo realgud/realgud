@@ -2,7 +2,7 @@
 (require 'load-relative)
 (dolist 
     (rel-file 
-     '("../dbgr-helper" "pydbgr-core" "pydbgr-regexp" "pydbgr-track-mode"))
+     '("../dbgr-helper" "pydbgr-core" "pydbgr-track-mode"))
   (require-relative rel-file))
 
 
@@ -73,7 +73,7 @@ String COMMAND-LINE specifies how to run pydbgr."
       (if (and proc (eq 'run (process-status proc)))
 	  (progn
 	    (switch-to-buffer cmd-buf)
-	    (dbgr-track-set-debugger "pydbgr" pydbgr-pat-hash)
+	    (dbgr-track-set-debugger "pydbgr")
 
 	    ;; FIXME: (pydbgr-track-mode 't) has problems
 	    ;; until I figure out this out...

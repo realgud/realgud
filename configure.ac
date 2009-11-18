@@ -15,6 +15,7 @@ lispdir=${lispdir}/dbgr
 AM_CONDITIONAL(INSTALL_EMACS_LISP, test "x$lispdir" != "x")
 
 AC_CONFIG_FILES([Makefile \
+		 init/Makefile \
 		 python/Makefile \
 		 ruby/Makefile \
 		 ])

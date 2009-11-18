@@ -1,0 +1,51 @@
+;;; regexp/rdebug.el --- Ruby 1.8 ruby-debug (rdebug) regular expressions
+
+(eval-when-compile (require 'cl))
+
+(require 'load-relative)
+(require-relative "../dbgr-regexp")
+(require-relative "../dbgr-loc")
+
+(defvar dbgr-pat-hash)
+(declare-function make-dbgr-loc-pat (dbgr-loc))
+
+(defvar rdebug-pat-hash (make-hash-table :test 'equal)
+  "Hash key is the what kind of pattern we want to match:
+traceback, prompt, etc.  The values of a hash entry is a
+dbgr-loc-pat struct")
+
+;; Regular expression that describes a rdebug location generally shown
+;; before a command prompt.
+(setf (gethash "loc" rdebug-pat-hash)
+      (make-dbgr-loc-pat
+       :regexp "\\(?:source \\)?\\(\\(?:[a-zA-Z]:\\)?\\(?:.+\\)\\):\\([0-9]+\\).*\n"
+       :file-group 1
+       :line-group 2))
+
+;;  Regular expression that describes a rdebug command prompt
+(setf (gethash "prompt" rdebug-pat-hash)
+      (make-dbgr-loc-pat
+       :regexp "^(rdb:[0-9]+) "
+       ))
+
+;;  Regular expression that describes a Ruby traceback line.
+(setf (gethash "traceback" rdebug-pat-hash)
+      (make-dbgr-loc-pat
+       :regexp "^[ \t]+from \\([^:]+\\):\\([0-9]+\\)\\(?: in `.*'\\)?"
+       :file-group 1
+       :line-group 2))
+
+;;  Regular expression that describes a Ruby $! string
+(setf (gethash "dollar-bang" rdebug-pat-hash)
+      (make-dbgr-loc-pat
+       :regexp "^[ \t]*[[]?\\(.+\\):\\([0-9]+\\):in `.*'"
+       :file-group 1
+       :line-group 2))
+
+(setf (gethash "rdebug" dbgr-pat-hash) rdebug-pat-hash)
+
+;;; Local variables:
+;;; eval:(put 'rdebug-debug-enter 'lisp-indent-hook 1)
+;;; End:
+
+;;; regexp/rdebug.el ends here

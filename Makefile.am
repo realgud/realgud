@@ -1,4 +1,4 @@
-SUBDIRS = ruby python
+SUBDIRS = init ruby python 
 
 lispdir = @lispdir_dbgr@
 lisp_files := $(wildcard *.el)

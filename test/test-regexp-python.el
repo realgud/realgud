@@ -1,5 +1,5 @@
 (load-file "./behave.el")
-(load-file "../python/pydbgr-regexp.el")
+(load-file "../init/pydbgr.el")
 
 (behave-clear-contexts)
 

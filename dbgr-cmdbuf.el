@@ -82,20 +82,21 @@
 ;; removed.
 
 (defun dbgr-cmdbuf-init
-  (cmd-buf &optional debugger-name loc-regexp file-group line-group
-	  regexp-hash)
+  (cmd-buf debugger-name regexp-hash)
   "Initialize CMD-BUF for a working with a debugger.
 DEBUGGER-NAME is the name of the debugger.
 as a main program."
-  (with-current-buffer cmd-buf
-    (setq dbgr-cmdbuf-info
-	  (make-dbgr-cmdbuf-info
-	   :name debugger-name
-	   :loc-regexp loc-regexp
-	   :file-group (or file-group -1)
-	   :line-group (or line-group -1)
-	   :loc-hist (make-dbgr-loc-hist)
-	   :regexp-hash regexp-hash))
+  (with-current-buffer-safe
+   cmd-buf
+   (let ((dbgr-loc-pat (gethash "loc" regexp-hash)))
+     (setq dbgr-cmdbuf-info
+	   (make-dbgr-cmdbuf-info
+	    :name debugger-name
+	    :loc-regexp (dbgr-sget 'loc-pat 'regexp)
+	    :file-group (dbgr-sget 'loc-pat 'file-group)
+	    :line-group (dbgr-sget 'loc-pat 'line-group)
+	    :loc-hist (make-dbgr-loc-hist)
+	    :regexp-hash regexp-hash)))
 
     (put 'dbgr-cmdbuf-info 'variable-documentation 
 	 "Debugger object for a process buffer.")))

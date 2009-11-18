@@ -9,7 +9,7 @@
 
 (require 'load-relative)
 (require-relative-list
- '("dbgr-helper" "dbgr-arrow" "dbgr-loc" "dbgr-lochist" 
+ '("dbgr-helper" "dbgr-init" "dbgr-arrow" "dbgr-loc" "dbgr-lochist" 
    "dbgr-file" "dbgr-cmdbuf" "dbgr-srcbuf" "dbgr-window" 
    "dbgr-regexp"))
 
@@ -162,25 +162,20 @@ to get regular-expresion pattern matching information."
 		   ;; FIXME check that loc-pat is not null and abort if it is.
 		   (loc (dbgr-track-loc (buffer-substring start end)
 					cmd-mark
-					(dbgr-loc-pat-regexp loc-pat)
-					(dbgr-loc-pat-file-group loc-pat)
-					(dbgr-loc-pat-line-group loc-pat)
+					(dbgr-sget 'loc-pat 'regexp)
+					(dbgr-sget 'loc-pat 'file-group)
+					(dbgr-sget 'loc-pat 'line-group)
 					)))
     (if loc (dbgr-track-loc-action loc cmd-buff)))))
 
-(defun dbgr-track-set-debugger (debugger-name &optional regexp-hash)
+(defun dbgr-track-set-debugger (debugger-name)
   "Set debugger name and information associated with that debugger for
 the buffer process. This info is returned or nil if we can't find a 
 debugger with that information"
   (interactive "sDebugger name: ")
-  (let 
-      ((loc-pat (gethash debugger-name dbgr-pat-hash)))
-    (if loc-pat 
-	(dbgr-cmdbuf-init (current-buffer) debugger-name 
-			  (dbgr-loc-pat-regexp loc-pat) 
-			  (dbgr-loc-pat-file-group loc-pat)
-			  (dbgr-loc-pat-line-group loc-pat)
-			  regexp-hash)
+  (let ((regexp-hash (gethash debugger-name dbgr-pat-hash)))
+    (if regexp-hash
+	(dbgr-cmdbuf-init (current-buffer) debugger-name regexp-hash)
       (progn 
 	(message "I Don't have %s listed as a debugger." debugger-name)
 	nil)

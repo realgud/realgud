@@ -7,7 +7,7 @@
 (provide 'rbdbgr-core)
 (dolist 
     (rel-file 
-     '("../dbgr-track" "../dbgr-core" "../dbgr-srcbuf" "rbdbgr-regexp"))
+     '("../dbgr-track" "../dbgr-core" "../dbgr-srcbuf"))
   (require-relative rel-file))
 
 ;; FIXME figure out if I can put this in something like a header file.

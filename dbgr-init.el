@@ -1,0 +1,12 @@
+(require 'load-relative)
+
+(defun load-debuggers()
+  (let*
+      ((dir (file-name-directory (__FILE__)))
+       (debugger-dir (concat dir "init/"))
+       (file-list (directory-files debugger-dir nil "\.el$")))
+    (dolist (file file-list)
+      (load (file-name-sans-extension file) 't))))
+
+(load-debuggers)
+(provide 'dbgr-init)

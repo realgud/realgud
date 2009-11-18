@@ -6,7 +6,7 @@
 (require 'load-relative)
 (dolist 
     (rel-file 
-     '("../dbgr-track-mode" "rbdbgr-core" "rbdbgr-regexp"))
+     '("../dbgr-track-mode" "rbdbgr-core"))
   (require-relative rel-file))
 
 (defvar rbdbgr-pat-hash)
@@ -21,7 +21,7 @@ Use the command `rbdbgr-track-mode' to toggle or set this variable.")
 
 (defun rbdbgr-track-mode-body()
   "Called when entering or leaving rbdbgr-track-mode"
-  (dbgr-track-set-debugger "rbdbgr" rbdbgr-pat-hash)
+  (dbgr-track-set-debugger "rbdbgr")
   (if rbdbgr-track-mode
       (progn 
  	;; FIXME: until I figure out why this isn't set in the mode

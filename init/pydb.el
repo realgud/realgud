@@ -1,24 +1,21 @@
-;;; rdebug-regexp.el --- Ruby debugger regular expressions
+;;; init/pydb.el --- Python (older) pydb debugger
 
-;; -------------------------------------------------------------------
-;; Variables defining regular expressions (regexp:s).
-;;
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
-(provide 'rbdbgr-regexp)
 (require-relative "../dbgr-regexp")
 (require-relative "../dbgr-loc")
 
+(defvar dbgr-pat-hash)
 (declare-function make-dbgr-loc-pat (dbgr-loc))
 
-(defvar pydbgr-pat-hash (make-hash-table :test 'equal)
+(defvar pydb-pat-hash (make-hash-table :test 'equal)
   "Hash key is the what kind of pattern we want to match: traceback, prompt, etc. 
-The values of a hash entry is a dbgr-dbgr-loc-pat struct")
+The values of a hash entry is a dbgr-loc-pat struct")
 
 (declare-function make-dbgr-loc "dbgr-loc" (a b c d e f))
 
-;; Regular expression that describes a pydbgr location generally shown
+;; Regular expression that describes a pydb location generally shown
 ;; before a command prompt.
 ;;
 ;; Program-location lines look like this:
@@ -27,28 +24,28 @@ The values of a hash entry is a dbgr-dbgr-loc-pat struct")
 ;;   (c:\\mydirectory\\gcd.py:10): <module>
 ;;  and in tracebacks like this:
 ;;   (/usr/bin/zonetab2pot.py:15)
-(setf (gethash "loc" pydbgr-pat-hash)
+(setf (gethash "loc" pydb-pat-hash)
       (make-dbgr-loc-pat
        :regexp "^(\\(\\(?:[a-zA-Z]:\\)?[-a-zA-Z0-9_/.\\\\ ]+\\):\\([0-9]+\\))"
        :file-group 1
        :line-group 2))
 
-(setf (gethash "prompt" pydbgr-pat-hash)
+(setf (gethash "prompt" pydb-pat-hash)
       (make-dbgr-loc-pat
-       :regexp   "^(Pydbgr) "
+       :regexp   "^(Pydb) "
        ))
 
-;;  Regular expression that describes a Ruby traceback line.
-(setf (gethash "traceback" pydbgr-pat-hash)
+;;  Regular expression that describes a Python traceback line.
+(setf (gethash "traceback" pydb-pat-hash)
       (make-dbgr-loc-pat
        :regexp   "^[ \t]+File \"\\(.+\\)\", line \\([0-9]+\\)"
        :file-group 1
        :line-group 2))
 
-(provide 'pydbgr-regexp)
+(setf (gethash "pydb" dbgr-pat-hash) pydb-pat-hash)
 
 ;;; Local variables:
-;;; eval:(put 'pydbgr-debug-enter 'lisp-indent-hook 1)
+;;; eval:(put 'pydb-debug-enter 'lisp-indent-hook 1)
 ;;; End:
 
-;;; pydbgr-regexp.el ends here
+;;; regexp/pydb.el ends here

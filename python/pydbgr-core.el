@@ -7,7 +7,7 @@
 (provide 'pydbgr-core)
 (dolist 
     (rel-file 
-     '("../dbgr-track" "../dbgr-core" "../dbgr-srcbuf" "pydbgr-regexp"))
+     '("../dbgr-track" "../dbgr-core" "../dbgr-srcbuf"))
   (require-relative rel-file))
 
 ;; FIXME figure out if I can put this in something like a header file.
@@ -213,7 +213,7 @@ given priority, we use the first one we find."
   "Display the location mentioned by the Python traceback line
 described by PT."
   (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "traceback" pydbgr-pat-hash))
+  (dbgr-goto-line-for-pt-and-type pt "traceback"))
 
 (defun pydbgr-reset ()
   "Pydbgr cleanup - remove debugger's internal buffers (frame,

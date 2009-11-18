@@ -83,7 +83,7 @@ return the first argument is always removed.
 comint process buffer. ARGS are the arguments passed to the
 PROGRAM.  At the moment, no piping of input is allowed.
 
-SCRIPT-FILENAME will have local variable `dbgr-scriptvar' set which contains
+SCRIPT-FILENAME will have local variable `dbgr-script-info' set which contains
 the debugger name and debugger process buffer."
   (let* ((starting-directory
 	  (or (file-name-directory script-filename)

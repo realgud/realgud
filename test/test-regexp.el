@@ -1,5 +1,5 @@
 (load-file "./behave.el")
-(load-file "../dbgr-regexp.el")
+(load-file "../dbgr-init.el")
 (load-file "../dbgr-cmdbuf.el")
 
 (behave-clear-contexts)
@@ -9,7 +9,7 @@
 ; We customize this for the debugger rbdbgr. Others may follow.
 ; FIXME: encapsulate this.
 (setq dbg-name "rbdbgr")
-(setq loc-pat (gethash dbg-name dbgr-pat-hash))
+(setq loc-pat (gethash "loc" (gethash dbg-name dbgr-pat-hash)))
 
 (setq dbgr (make-dbgr-cmdbuf-info
 		  :name dbg-name
