@@ -6,7 +6,7 @@
 (provide 'dbgr-track-mode)
 (require-relative-list
  '("dbgr-helper" "dbgr-track" "dbgr-loc" "dbgr-lochist" "dbgr-file" 
-   "dbgr-cmdbuf" "dbgr-window" "dbgr-regexp"))
+   "dbgr-cmdbuf" "dbgr-window" "dbgr-regexp" "dbgr-send"))
 
 (defvar dbgr-track-mode-map
   (let ((map (make-sparse-keymap)))
@@ -42,6 +42,9 @@
 (defun dbgr-track-mode-body ()
   (if dbgr-track-mode
       (progn
+	(unless (and (dbgr-cmdbuf-info-set?)
+		     (dbgr-sget 'cmdbuf-info 'name))
+	  (call-interactively 'dbgr-track-set-debugger))
 	(if (boundp 'comint-last-output-start)
 	    (progn
 	      (dbgr-cmdbuf-info-prior-prompt-regexp= 
@@ -60,10 +63,6 @@
 		  'dbgr-track-comint-output-filter-hook)
 	(add-hook 'eshell-output-filter-functions 
 		  'dbgr-track-eshell-output-filter-hook)
-  
-	(unless (and (dbgr-cmdbuf-info-set?)
-		     (dbgr-sget 'cmdbuf-info 'name))
-	  (call-interactively 'dbgr-track-set-debugger))
 	(run-mode-hooks 'dbgr-track-mode-hook))
     (progn
       (if (boundp 'comint-last-output-start)

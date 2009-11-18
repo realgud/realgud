@@ -33,14 +33,13 @@ to be debugged."
 (require 'load-relative)
 (require-relative "dbgr-helper")
 
-(defmacro dbgr-srcbuf-info-set? ()
+(defun dbgr-srcbuf-info-set? ()
   "Return true if `dbgr-srcbuf-info' is set."
   (and (boundp 'dbgr-srcbuf-info) 
        dbgr-srcbuf-info
        (dbgr-srcbuf-info? dbgr-srcbuf-info)))
 
-;; Without the \?, dbgr-cmdbuf? somehow doesn't get loaded properly.
-(defun dbgr-srcbuf\? ( &optional buffer)
+(defun dbgr-srcbuf? ( &optional buffer)
   "Return true if BUFFER is a debugger source buffer."
   (with-current-buffer-safe 
    (or buffer (current-buffer))

@@ -1,5 +1,6 @@
 (load-file "./behave.el")
 (load-file "../dbgr-send.el")
+(load-file "../dbgr-regexp.el")
 (behave-clear-contexts)
 
 (defvar temp-cmdbuf nil)

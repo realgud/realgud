@@ -38,7 +38,7 @@
 
 (defalias 'dbgr-cmdbuf-info? 'dbgr-cmdbuf-info-p)
 
-(defmacro dbgr-cmdbuf-info-set? ()
+(defun dbgr-cmdbuf-info-set? ()
   "Return true if dbgr-cmdbuf-info is set."
   (and (boundp 'dbgr-cmdbuf-info) 
        dbgr-cmdbuf-info
