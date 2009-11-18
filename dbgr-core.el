@@ -22,7 +22,8 @@ using SUGGEST-FILE-FN."
   (cond
    ((dbgr-cmdbuf-command-string (current-buffer)))
    ((dbgr-srcbuf-command-string (current-buffer)))
-   ((listp minibuffer-history) (car minibuffer-history))
+   ((and minibuffer-history (listp minibuffer-history)) 
+    (car minibuffer-history))
    (t (concat debugger-name " " (funcall suggest-file-fn)))))
 
 (defun dbgr-query-cmdline 
