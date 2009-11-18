@@ -20,12 +20,10 @@ Use the command `pydbgr-track-mode' to toggle or set this variable.")
 
 (defun pydbgr-track-mode-body()
   "Called when entering or leaving pydbgr-track-mode"
-  (dbgr-track-set-debugger "pydbgr" pydbgr-pat-hash)
+  (dbgr-track-set-debugger "pydbgr")
   (if pydbgr-track-mode
       (progn 
         (local-set-key "\C-ce"  'pydbgr-goto-traceback-line)
-	;; FIXME: (pydbgr-track-mode 't) has problems
-	;; until I figure out this out...
 	(dbgr-track-mode 't)
 	(run-mode-hooks 'pydbgr-track-mode-hook))
     (progn 

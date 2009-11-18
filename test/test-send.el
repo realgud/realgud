@@ -1,15 +1,14 @@
 (load-file "./behave.el")
-
 (load-file "../dbgr-send.el")
 (behave-clear-contexts)
 
 (defvar temp-cmdbuf nil)
 (defun setup ()
   (setq temp-cmdbuf (generate-new-buffer "*cmdbuf-test*"))
-  (dbgr-cmdbuf-init temp-cmdbuf "pydbgr" (gethash "rbdbgr" dbgr-pat-hash))
+  (dbgr-cmdbuf-init temp-cmdbuf "rbdbgr" (gethash "rbdbgr" dbgr-pat-hash))
   (dbgr-srcbuf-init (current-buffer) temp-cmdbuf 
-		    "bugus-debugger" 
-		    '("/bin/bogus-debugger" "my-script" "arg1"))
+		    "rbdbgr" 
+		    '("/bin/rbdbgr" "my-script" "arg1"))
 )
 
 (defun tear-down()

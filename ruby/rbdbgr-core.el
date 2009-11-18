@@ -7,19 +7,15 @@
 (provide 'rbdbgr-core)
 (dolist 
     (rel-file 
-     '("../dbgr-track" "../dbgr-core" "../dbgr-srcbuf"))
+     '("../dbgr-track" "../dbgr-core"))
   (require-relative rel-file))
 
 ;; FIXME figure out if I can put this in something like a header file.
-(defvar dbgr-srcbuf-info)
 (defvar rbdbgr-pat-hash)
 (defvar rbdbgr-track-mode)
 
-(declare-function dbgr-cmdbuf-command-string (cmd-buffer))
 (declare-function dbgr-parse-command-arg (args two-args opt-two-args))
 (declare-function dbgr-query-cmdline (sf lm hist &optional dbg))
-(declare-function dbgr-srcbuf-command-string(src-buffer))
-(declare-function dbgr-track-set-debugger (debugger-name))
 (declare-function dbgr-track-mode(bool))
 (declare-function dbgr-goto-line-for-pt-and-type (pt type pat-hash))
 
@@ -153,20 +149,10 @@ that is in ruby-mode"
 	  (and match-pos (= 0 match-pos)))
       nil)))
 
-;; FIXME generalize and put into dbgr-core.el
 (defun rbdbgr-suggest-invocation (debugger-name)
-  "Suggest a rbdbgr command invocation. If the current buffer is
-a process buffer that that `dbgr-invocation' set and we are in
-rbdbgr-track-mode, then use the value of that variable. Otherwise
-we try to find a suitable Ruby program using `rbdbgr-suggest-ruby-file' and
-prepend the debugger name onto that. FIXME: should keep a list of
-previously used invocations.
-"
-  (cond
-   ((dbgr-cmdbuf-command-string (current-buffer)))
-   ((dbgr-srcbuf-command-string (current-buffer)))
-   (t (concat debugger-name " " (rbdbgr-suggest-ruby-file)))))
-
+  "Suggest a rbdbgr command invocation via `dbgr-suggest-invocaton'"
+  (dbgr-suggest-invocation "rbdbgr" rbdbgr-minibuffer-history 
+			   'rbdbgr-suggest-python-file))
 
 (defun rbdbgr-suggest-ruby-file ()
     "Suggest a Ruby file to debug. First priority is given to the

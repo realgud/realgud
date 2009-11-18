@@ -5,18 +5,13 @@
      '("../dbgr-helper" "rbdbgr-core" "rbdbgr-track-mode"))
   (require-relative rel-file))
 
-(defvar rbdbgr-pat-hash)
-
 ;; FIXME figure out if I can put this in something like a header file.
 ;; And we can then eliminate with what is in pydbgr.el
 (defvar dbgr-cmdbuf-info)
-(defvar dbgr-track-mode)
-(defvar rbdbgr-track-mode)
+(declare-function rbdbgr-track-mode (bool))
 (declare-function dbgr-cmdbuf-info-cmd-args= (info cmd-args))
-(declare-function dbgr-track-set-debugger (debugger-name))
 (declare-function rbdbgr-parse-cmd-args (args))
 (declare-function rbdbgr-query-cmdline (&optional debugger))
-(declare-function dbgr-track-mode-body ())
 
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
@@ -57,11 +52,9 @@ String COMMAND-LINE specifies how to run rbdbgr."
 	 (script-name (car script-args))
 	 (cmd-buf))
   
-  ;; Parse the command line and pick out the script name and whether
-  ;; --annotate has been set.
+    ;; Parse the command line and pick out the script name and whether
+    ;; --annotate has been set.
   
-  ;; (gud-chdir-before-run nil))
-
     (condition-case nil
 	(setq cmd-buf 
 	      (apply 'dbgr-exec-shell "rbdbgr" script-name
@@ -73,14 +66,7 @@ String COMMAND-LINE specifies how to run rbdbgr."
       (if (and proc (eq 'run (process-status proc)))
 	  (progn
 	    (switch-to-buffer cmd-buf)
-	    (dbgr-track-set-debugger "rbdbgr")
-
-	    ;; FIXME: (pydbgr-track-mode 't) has problems
-	    ;; until I figure out this out...
-	    (setq rbdbgr-track-mode 't)
-	    (setq dbgr-track-mode 't)
-	    (dbgr-track-mode-body)
-	    (run-mode-hooks 'pydbgr-track-mode-hook)
+	    (rbdbgr-track-mode 't)
 	    (dbgr-cmdbuf-info-cmd-args= dbgr-cmdbuf-info cmd-args)
 	    )
 	(message "Error running rbdbgr command"))

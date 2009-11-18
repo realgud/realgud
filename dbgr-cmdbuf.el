@@ -56,7 +56,8 @@
   (setf (dbgr-cmdbuf-info-cmd-args info) value))
 
 (defun dbgr-cmdbuf-info-prior-prompt-regexp=(info value)
-  (setf (dbgr-cmdbuf-info-prior-prompt-regexp info) value))
+  (if (dbgr-cmdbuf-info? info)
+      (setf (dbgr-cmdbuf-info-prior-prompt-regexp info) value)))
 
 (defun dbgr-cmdbuf-command-string(cmd-buffer)
   "Get the command string invocation for this command buffer"

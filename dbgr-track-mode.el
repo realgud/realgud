@@ -43,18 +43,19 @@
   (if dbgr-track-mode
       (progn
 	(if (boundp 'comint-last-output-start)
-	    (let* ((regexp-hash
-		   (and dbgr-cmdbuf-info 
-		    (dbgr-sget 'cmdbuf-info 'regexp-hash)))
-		   (prompt-pat (and regexp-hash 
-				    (gethash "prompt" regexp-hash))))
-	      (if prompt-pat
-		  (setq comint-prompt-regexp (dbgr-loc-pat-regexp prompt-pat))))
-	  (progn
-	    (set-marker comint-last-output-start (point))
-	    (dbgr-cmdbuf-info-prior-prompt-regexp= 
-	     dbgr-cmdbuf-info comint-prompt-regexp)
-	    ))
+	    (progn
+	      (dbgr-cmdbuf-info-prior-prompt-regexp= 
+	       dbgr-cmdbuf-info comint-prompt-regexp)
+	      (let* ((regexp-hash
+		      (and (dbgr-cmdbuf-info? dbgr-cmdbuf-info)
+			   (dbgr-sget 'cmdbuf-info 'regexp-hash)))
+		     (prompt-pat (and regexp-hash 
+				      (gethash "prompt" regexp-hash))))
+		(if prompt-pat
+		    (setq comint-prompt-regexp 
+			    (dbgr-loc-pat-regexp prompt-pat)))))
+	  (set-marker comint-last-output-start (point)))
+
 	(add-hook 'comint-output-filter-functions 
 		  'dbgr-track-comint-output-filter-hook)
 	(add-hook 'eshell-output-filter-functions 
@@ -65,7 +66,7 @@
 	  (call-interactively 'dbgr-track-set-debugger))
 	(run-mode-hooks 'dbgr-track-mode-hook))
     (progn
-      (unless (boundp 'comint-last-output-start)
+      (if (boundp 'comint-last-output-start)
 	(setq comint-prompt-regexp
 	   (dbgr-sget 'cmdbuf-info 'prior-prompt-regexp))
 	)

@@ -11,6 +11,20 @@
 
 (defvar dbgr-srcbuf-info)
 
+(defun dbgr-suggest-invocation 
+  (debugger-name minibuffer-history suggest-file-fn)
+  "Suggest a debugger command invocation. If the current buffer
+is a source file or process buffer previously set, then use the
+value of that the command invocations found by buffer-local
+variables. Next, try to use the first value of MINIBUFFER-HISTORY
+if that exists.  Finally we try to find a suitable program file
+using SUGGEST-FILE-FN."
+  (cond
+   ((dbgr-cmdbuf-command-string (current-buffer)))
+   ((dbgr-srcbuf-command-string (current-buffer)))
+   ((listp minibuffer-history) (car minibuffer-history))
+   (t (concat debugger-name " " (funcall suggest-file-fn)))))
+
 (defun dbgr-query-cmdline 
   (suggest-invocation-fn 
    minibuffer-local-map
@@ -116,7 +130,8 @@ the debugger name and debugger process buffer."
 	(if (and proc (eq 'run (process-status proc)))
 	    (let ((src-buffer (find-file-noselect script-filename))
 		  (cmdline-list (cons program args)))
-	      (dbgr-track-set-debugger debugger-name)
+	      ;; is this right? 
+	      ;; (dbgr-track-set-debugger debugger-name)
 	      (set-process-sentinel proc 'dbgr-term-sentinel)
 	      (point-max)
 	      (dbgr-srcbuf-init src-buffer cmdproc-buffer 
