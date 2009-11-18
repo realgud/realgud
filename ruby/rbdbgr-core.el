@@ -5,19 +5,8 @@
   
 (require 'load-relative)
 (provide 'rbdbgr-core)
-(dolist 
-    (rel-file 
-     '("../dbgr-track" "../dbgr-core"))
-  (require-relative rel-file))
-
-;; FIXME figure out if I can put this in something like a header file.
-(defvar rbdbgr-pat-hash)
-(defvar rbdbgr-track-mode)
-
-(declare-function dbgr-parse-command-arg (args two-args opt-two-args))
-(declare-function dbgr-query-cmdline (sf lm hist &optional dbg))
-(declare-function dbgr-track-mode(bool))
-(declare-function dbgr-goto-line-for-pt-and-type (pt type pat-hash))
+(require-relative-list
+ '("../dbgr-track" "../dbgr-core"))
 
 ;; FIXME: I think the following could be generalized and moved to 
 ;; dbgr-... probably via a macro.

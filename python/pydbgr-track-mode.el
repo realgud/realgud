@@ -3,19 +3,14 @@
 
 (eval-when-compile (require 'cl))
 (require 'load-relative)
-(dolist 
-    (rel-file 
-     '("../dbgr-track-mode" "pydbgr-core"))
-  (require-relative rel-file))
+(require-relative-list
+ '("../dbgr-track-mode" "pydbgr-core"))
 
 (defvar pydbgr-pat-hash)
 (defvar pydbgr-track-mode nil
   "Non-nil if using pydbgr-track mode as a minor mode of some other mode.
 Use the command `pydbgr-track-mode' to toggle or set this variable.")
 
-;; FIXME: DRY below declarations shared in rbdbgr-track-mode by
-;; figuring out how to put in a common header.
-(declare-function dbgr-track-set-debugger (debugger-name &optional hash))
 (declare-function dbgr-track-mode(bool))
 
 (defun pydbgr-track-mode-body()
@@ -23,6 +18,7 @@ Use the command `pydbgr-track-mode' to toggle or set this variable.")
   (dbgr-track-set-debugger "pydbgr")
   (if pydbgr-track-mode
       (progn 
+ 	;; FIXME: until I figure out why this isn't set in the mode
         (local-set-key "\C-ce"  'pydbgr-goto-traceback-line)
 	(dbgr-track-mode 't)
 	(run-mode-hooks 'pydbgr-track-mode-hook))
@@ -47,10 +43,6 @@ Use the command `pydbgr-track-mode' to toggle or set this variable.")
   :keymap pydbgr-track-mode-map
   (pydbgr-track-mode-body)
 )
-
-;; -------------------------------------------------------------------
-;; The end.
-;;
 
 (provide 'pydbgr-track-mode)
 

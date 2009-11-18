@@ -1,18 +1,7 @@
 ;;  `pydbgr' Main interface to pydbgr via Emacs
 (require 'load-relative)
-(dolist 
-    (rel-file 
-     '("../dbgr-helper" "pydbgr-core" "pydbgr-track-mode"))
-  (require-relative rel-file))
-
-
-;; FIXME figure out if I can put this in something like a header file.
-;; And we can then eliminate with what is in rbdbgr.el
-(defvar dbgr-cmdbuf-info)
-(declare-function pydbgr-track-mode (bool))
-(declare-function dbgr-cmdbuf-info-cmd-args= (info cmd-args))
-(declare-function pydbgr-parse-cmd-args (args))
-(declare-function pydbgr-query-cmdline (&optional debugger))
+(require-relative-list
+ '("../dbgr-helper" "pydbgr-core" "pydbgr-track-mode"))
 
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
@@ -33,6 +22,7 @@ This should be an executable on your path, or an absolute file name."
   :type 'string
   :group 'pydbgr)
 
+(declare-function pydbgr-track-mode (bool))
 
 ;; -------------------------------------------------------------------
 ;; The end.
@@ -75,4 +65,3 @@ String COMMAND-LINE specifies how to run pydbgr."
 
 (provide 'pydbgr)
 ;;; pydbgr.el ends here
-

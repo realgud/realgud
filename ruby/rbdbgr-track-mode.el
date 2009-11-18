@@ -2,21 +2,15 @@
 ;;; or eshell buffer.
 
 (eval-when-compile (require 'cl))
-
 (require 'load-relative)
-(dolist 
-    (rel-file 
-     '("../dbgr-track-mode" "rbdbgr-core"))
-  (require-relative rel-file))
+(require-relative-list
+ '("../dbgr-track-mode" "rbdbgr-core"))
 
 (defvar rbdbgr-pat-hash)
 (defvar rbdbgr-track-mode nil
   "Non-nil if using rbdbgr-track mode as a minor mode of some other mode.
 Use the command `rbdbgr-track-mode' to toggle or set this variable.")
 
-;; FIXME: DRY below declarations shared in rbdbgr-track-mode by
-;; figuring out how to put in a common header.
-(declare-function dbgr-track-set-debugger (debugger-name &optional hash))
 (declare-function dbgr-track-mode(bool))
 
 (defun rbdbgr-track-mode-body()
