@@ -141,7 +141,7 @@ that is in ruby-mode"
 (defun rbdbgr-suggest-invocation (debugger-name)
   "Suggest a rbdbgr command invocation via `dbgr-suggest-invocaton'"
   (dbgr-suggest-invocation "rbdbgr" rbdbgr-minibuffer-history 
-			   'rbdbgr-suggest-python-file))
+			   'rbdbgr-suggest-ruby-file))
 
 (defun rbdbgr-suggest-ruby-file ()
     "Suggest a Ruby file to debug. First priority is given to the
