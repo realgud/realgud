@@ -88,8 +88,10 @@ return the first argument is always removed.
   (let ((cmdbuf (process-buffer process)))
     (unless (not (buffer-name cmdbuf))
       (with-current-buffer cmdbuf
-	(lexical-let ((prev-marker (dbgr-proc-src-marker (current-buffer))))
-	  (if prev-marker (dbgr-unset-arrow (marker-buffer prev-marker)))
+	(let ((prev-marker (dbgr-proc-src-marker (current-buffer))))
+	  (if prev-marker 
+	      (dbgr-unset-arrow 'dbgr-overlay-arrow1
+				(marker-buffer prev-marker)))
 	  )))
   (message "That's all folks.... %s" string)))
 

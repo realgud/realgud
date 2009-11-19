@@ -65,15 +65,15 @@ position.")
 	  (set-fringe-bitmap-face arrow-bitmap arrow-face)))
     (add-to-list 'overlay-arrow-variable-list arrow-symbol)))
 
-(defun dbgr-set-arrow (marker &optional buffer)
+(defun dbgr-set-arrow (overlay-arrow marker)
   "Set the fringe indicator or overlay arrow to MARKER. This is done
 for example to indicate a debugger position."
-  (with-current-buffer (or buffer (current-buffer))
-    (setq dbgr-overlay-arrow1 marker)))
+  (with-current-buffer (marker-buffer marker)
+    (set overlay-arrow marker)))
 
-(defun dbgr-unset-arrow (&optional buffer)
+(defun dbgr-unset-arrow (overlay-arrow &optional buffer)
   "Remove fringe indicator or overlay arrow for BUFFER."
   (with-current-buffer (or buffer (current-buffer))
-    (setq dbgr-overlay-arrow1 nil)))
+    (set overlay-arrow nil)))
 
 (provide 'dbgr-arrow)

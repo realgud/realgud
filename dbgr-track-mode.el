@@ -69,6 +69,10 @@
 	(setq comint-prompt-regexp
 	   (dbgr-sget 'cmdbuf-info 'prior-prompt-regexp))
 	)
+      (let ((prev-marker (dbgr-proc-src-marker (current-buffer))))
+	(if prev-marker 
+	    (dbgr-unset-arrow 'dbgr-overlay-arrow1
+			      (marker-buffer prev-marker))))
       (remove-hook 'comint-output-filter-functions 
 		   'dbgr-track-comint-output-filter-hook)
       (remove-hook 'eshell-output-filter-functions 

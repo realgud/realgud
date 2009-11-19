@@ -62,7 +62,7 @@ buffer) is returned, or nil if not found"
 		  (forward-line (- line-number 1))
 		  (setq src-marker (point-marker))
 		  (dbgr-loc-marker= loc src-marker)
-		  (dbgr-set-arrow src-marker)))))
+		  (dbgr-set-arrow 'dbgr-overlay-arrow1 src-marker)))))
 	src-buffer )))
 
 (provide 'dbgr-loc)
