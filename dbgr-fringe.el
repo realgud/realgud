@@ -8,21 +8,21 @@
 
 ;; FIXME: Figure out how to do this as a macro.
 
-(defface dbgr-overlay-arrow-face1
+(defface dbgr-overlay-arrow1
   '((t
      :foreground "black"
      :weight bold))
   "Fringe face for current position."
   :group 'dbgr)
 
-(defface dbgr-overlay-arrow-face2
+(defface dbgr-overlay-arrow2
   '((t
      :foreground "gray"
      :weight bold))
   "Fringe face for position one back in fringe."
   :group 'dbgr)
 
-(defface dbgr-overlay-arrow-face3
+(defface dbgr-overlay-arrow3
   '((t
      :foreground "gainsboro"
      :weight bold))
@@ -48,14 +48,14 @@ position.")
 ;;
 ;;   (make-local-variable 'dbgr-overlay-arrow1) ;; or 2, or 3
 ;;   (put 'dbgr-overlay-arrow1 'overlay-arrow-string "=>" ;; or "2>", or ">3"
-;;   (define-fringe-bitmap 'dbgr-overlay-arrow-face1 "\xc0...")
+;;   (define-fringe-bitmap 'dbgr-overlay-arrow1 "\xc0...")
 ;;   (add-to-list 'overlay-arrow-variable-list 'dbgr-overlay-arrow1)
 
 (dolist (pair 
 	 '( ("1" . "=>") ("2" . "2>") ("3" . "3>")))
   (let ((arrow-symbol (intern (concat "dbgr-overlay-arrow" (car pair))))
 	(arrow-bitmap (intern (concat "dbgr-right-triangle" (car pair))))
-	(arrow-face (intern (concat "dbgr-overlay-arrow-face" (car pair)))))
+	(arrow-face (intern (concat "dbgr-overlay-arrow" (car pair)))))
     (make-local-variable arrow-symbol)
     (put arrow-symbol 'overlay-arrow-string (cdr pair))
     (if (window-system)
@@ -76,4 +76,4 @@ for example to indicate a debugger position."
   (with-current-buffer (or buffer (current-buffer))
     (set overlay-arrow nil)))
 
-(provide 'dbgr-arrow)
+(provide 'dbgr-fringe)

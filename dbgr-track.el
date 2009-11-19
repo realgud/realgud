@@ -9,7 +9,7 @@
 
 (require 'load-relative)
 (require-relative-list
- '("dbgr-helper" "dbgr-init" "dbgr-arrow" "dbgr-loc" "dbgr-lochist" 
+ '("dbgr-helper" "dbgr-init" "dbgr-fringe" "dbgr-loc" "dbgr-lochist" 
    "dbgr-file" "dbgr-cmdbuf" "dbgr-srcbuf" "dbgr-window" 
    "dbgr-regexp"))
 

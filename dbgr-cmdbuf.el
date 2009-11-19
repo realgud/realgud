@@ -3,7 +3,7 @@
 
 (require 'load-relative)
 (require-relative-list
- '("dbgr-arrow" "dbgr-helper" "dbgr-loc" "dbgr-lochist"))
+ '("dbgr-fringe" "dbgr-helper" "dbgr-loc" "dbgr-lochist"))
 
 (eval-when-compile 
   (require 'cl)
@@ -33,7 +33,7 @@
 
 (provide 'dbgr-cmdbuf)
 (require 'load-relative)
-(dolist (rel-file '("dbgr-arrow" "dbgr-helper" "dbgr-lochist" "dbgr-loc"))
+(dolist (rel-file '("dbgr-fringe" "dbgr-helper" "dbgr-lochist" "dbgr-loc"))
   (require-relative rel-file))
 
 (defalias 'dbgr-cmdbuf-info? 'dbgr-cmdbuf-info-p)

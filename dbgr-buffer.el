@@ -1,6 +1,6 @@
 (require 'load-relative)
 (require-relative-list
- '("dbgr-arrow" "dbgr-cmdbuf" "dbgr-helper" "dbgr-srcbuf"))
+ '("dbgr-fringe" "dbgr-cmdbuf" "dbgr-helper" "dbgr-srcbuf"))
 
 (defvar dbgr-cmdbuf-info)
 

@@ -5,7 +5,7 @@
 ;; working with them.
 
 (require 'load-relative)
-(require-relative-list '("dbgr-arrow"))
+(require-relative-list '("dbgr-fringe"))
 
 (defstruct dbgr-loc
 "Our own location type. Even though a mark contains a
