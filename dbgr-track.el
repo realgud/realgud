@@ -132,11 +132,11 @@ Otherwise return nil."
   (if (dbgr-cmdbuf?)
       (lexical-let 
 	  ((loc-regexp (or opt-regexp 
-			   (dbgr-cmdbuf-info-loc-regexp dbgr-cmdbuf-info)))
+			   (dbgr-sget 'cmdbuf-info 'loc-regexp)))
 	   (file-group (or opt-file-group 
-			   (dbgr-cmdbuf-info-file-group dbgr-cmdbuf-info)))
+			   (dbgr-sget 'cmdbuf-info 'file-group)))
 	   (line-group (or opt-line-group 
-			   (dbgr-cmdbuf-info-line-group dbgr-cmdbuf-info))))
+			   (dbgr-sget 'cmdbuf-info 'line-group))))
 	(if (and loc-regexp (string-match loc-regexp text))
 	    (lexical-let* ((filename (match-string file-group text))
 			   (line-str (match-string line-group text)) 

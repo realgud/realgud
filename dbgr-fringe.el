@@ -80,18 +80,19 @@ for example to indicate a debugger position."
 (defun dbgr-fringe-history-set (loc-hist)
   "Set arrows on the last positions we have stopped on."
   ;; FIXME DRY somehow
-  (let ((loc1 (dbgr-loc-hist-item-at loc-hist -1))
-	(loc2 (dbgr-loc-hist-item-at loc-hist -2))
-	(loc3 (dbgr-loc-hist-item-at loc-hist -3)))
-    (if loc3
-	(let ((src-marker (dbgr-loc-marker loc3)))
-	  (dbgr-fringe-set-arrow 'dbgr-overlay-arrow3 src-marker)))
-    (if loc2
-	(let ((src-marker (dbgr-loc-marker loc2)))
-	  (dbgr-fringe-set-arrow 'dbgr-overlay-arrow2 src-marker)))
+  (let* (
+	 (loc1 (dbgr-loc-hist-item-at loc-hist -1))
+	 (loc2 (dbgr-loc-hist-item-at loc-hist -2))
+	 (loc3 (dbgr-loc-hist-item-at loc-hist -3))
+	 (mark1 (and loc3 (dbgr-loc-marker loc3)))
+	 (mark2 (and loc2 (dbgr-loc-marker loc2)))
+	 (mark3 (and loc1 (dbgr-loc-marker loc1))))
+    (if (and loc3 (not (equal mark3 mark2)))
+	(dbgr-fringe-set-arrow 'dbgr-overlay-arrow3 mark3))
+    (if (and loc2 (not (equal mark2 mark1)))
+	(dbgr-fringe-set-arrow 'dbgr-overlay-arrow2 mark2))
     (if loc1
-	(let ((src-marker (dbgr-loc-marker loc1)))
-	  (dbgr-fringe-set-arrow 'dbgr-overlay-arrow1 src-marker)))))
+	(dbgr-fringe-set-arrow 'dbgr-overlay-arrow1 mark1))))
 
 (defun dbgr-fringe-history-unset ()
   "Unset all fringe-history arrows"
