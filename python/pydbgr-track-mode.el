@@ -4,7 +4,7 @@
 (eval-when-compile (require 'cl))
 (require 'load-relative)
 (require-relative-list
- '("../dbgr-track-mode" "pydbgr-core"))
+ '("../dbgr-track-mode" "../dbgr-cmds" "pydbgr-core"))
 
 (defvar pydbgr-pat-hash)
 (defvar pydbgr-track-mode nil
@@ -16,6 +16,7 @@ Use the command `pydbgr-track-mode' to toggle or set this variable.")
 (defun pydbgr-track-mode-body()
   "Called when entering or leaving pydbgr-track-mode"
   (dbgr-track-set-debugger "pydbgr")
+  (dbgr-define-gdb-like-commands)
   (if pydbgr-track-mode
       (progn 
  	;; FIXME: until I figure out why this isn't set in the mode

@@ -81,9 +81,9 @@ for example to indicate a debugger position."
   "Set arrows on the last positions we have stopped on."
   ;; FIXME DRY somehow
   (let* (
-	 (loc1 (dbgr-loc-hist-item-at loc-hist -1))
-	 (loc2 (dbgr-loc-hist-item-at loc-hist -2))
-	 (loc3 (dbgr-loc-hist-item-at loc-hist -3))
+	 (loc1 (dbgr-loc-hist-item-at loc-hist 2))
+	 (loc2 (dbgr-loc-hist-item-at loc-hist 1))
+	 (loc3 (dbgr-loc-hist-item-at loc-hist 0))
 	 (mark1 (and loc3 (dbgr-loc-marker loc3)))
 	 (mark2 (and loc2 (dbgr-loc-marker loc2)))
 	 (mark3 (and loc1 (dbgr-loc-marker loc1))))

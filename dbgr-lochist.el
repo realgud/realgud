@@ -41,12 +41,12 @@ component in LOC-HIST"
   ;; Switching frames shouldn't save a new ring
   ;; position. Also make sure no position is different.
   ;; Perhaps duplicates should be controlled by an option.
-  (lexical-let* ((ring (dbgr-loc-hist-ring loc-hist))
-		 (head (car ring)))
-    (unless (equal (dbgr-loc-hist-item loc-hist) item)
-      (setf (dbgr-loc-hist-position loc-hist) (- head 1))
-      (ring-insert-at-beginning ring item)
-    ) ))
+  (let* ((ring (dbgr-loc-hist-ring loc-hist)))
+    ;;(unless (equal (dbgr-loc-hist-item loc-hist) item)
+      (setf (dbgr-loc-hist-position loc-hist) 0)
+      (ring-insert ring item)
+    ;;) 
+    ))
 
 (defun dbgr-loc-hist-clear(loc-hist)
   "Clear out all source locations in LOC-HIST"
@@ -78,7 +78,7 @@ component in LOC-HIST"
   "Set LOC-HIST position to an newer position."
   
   (setf (dbgr-loc-hist-position loc-hist) 
-	(ring-plus1 (dbgr-loc-hist-position loc-hist)
+	(ring-minus1 (dbgr-loc-hist-position loc-hist)
 		    (ring-length (dbgr-loc-hist-ring loc-hist)))))
 
 (defun dbgr-loc-hist-newest (loc-hist)
@@ -89,7 +89,7 @@ component in LOC-HIST"
 (defun dbgr-loc-hist-older (loc-hist)
   "Set LOC-HIST position to an older position."
     (setf (dbgr-loc-hist-position loc-hist) 
-	 (ring-minus1 (dbgr-loc-hist-position loc-hist)
+	 (ring-plus1 (dbgr-loc-hist-position loc-hist)
 		      (ring-length (dbgr-loc-hist-ring loc-hist)))))
 
 (defun dbgr-loc-hist-oldest (loc-hist)

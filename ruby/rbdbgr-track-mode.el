@@ -4,7 +4,7 @@
 (eval-when-compile (require 'cl))
 (require 'load-relative)
 (require-relative-list
- '("../dbgr-track-mode" "rbdbgr-core"))
+ '("../dbgr-track-mode" "../dbgr-cmds" "rbdbgr-core"))
 
 (defvar rbdbgr-pat-hash)
 (defvar rbdbgr-track-mode nil
@@ -16,6 +16,7 @@ Use the command `rbdbgr-track-mode' to toggle or set this variable.")
 (defun rbdbgr-track-mode-body()
   "Called when entering or leaving rbdbgr-track-mode"
   (dbgr-track-set-debugger "rbdbgr")
+  (dbgr-define-gdb-like-commands)
   (if rbdbgr-track-mode
       (progn 
  	;; FIXME: until I figure out why this isn't set in the mode

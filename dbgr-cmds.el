@@ -9,5 +9,15 @@
   (dbgr-define-command 
       'step "step %p" "\C-s" "Step one source line")
   (dbgr-define-command 
-      'next "next %p" "\C-s" "Step one source line at current call level")
+      'next "next %p" "\C-n" "Step one source line at current call level")
+  (dbgr-define-command 
+      'up "up %p" "<" "Up N stack frames (numeric arg).")
+  (dbgr-define-command 
+      'down "down %p" ">" "Down N stack frames (numeric arg).")
+  (dbgr-define-command 
+      'frame "frame %p" "C-f" "Set frame to N (numeric arg).")
+  (dbgr-define-command 
+      'continue "continue" "C-r" "Continue execution.")
 )
+
+(provide 'dbgr-cmds)
