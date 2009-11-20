@@ -65,7 +65,7 @@ marks set in buffer-local variables to extract text"
   (interactive)
   (lexical-let* 
       ((cmd-buff (current-buffer))
-       (loc-hist (dbgr-proc-loc-hist cmd-buff))
+       (loc-hist (dbgr-cmdbuf-loc-hist cmd-buff))
        (cmd-window (selected-window))
        (position (funcall fn loc-hist))
        (loc (dbgr-loc-hist-item loc-hist))
@@ -94,30 +94,27 @@ marks set in buffer-local variables to extract text"
   (interactive)
   (dbgr-track-hist-fn-internal 'dbgr-loc-hist-oldest))
 
-(defun dbgr-track-loc-action (loc cmd-buff)
+(defun dbgr-track-loc-action (loc cmdbuf)
   "If loc is valid, show loc and do whatever actions we do for
 encountering a new loc."
   (if (dbgr-loc? loc)
-      (lexical-let* 
-	  ((loc-hist (dbgr-proc-loc-hist cmd-buff))
-	   (prev-marker (dbgr-proc-src-marker cmd-buff))
-	   (src-buff))
+      (let* 
+	  ((cmdbuf-loc-hist (dbgr-cmdbuf-loc-hist cmdbuf))
+	   (srcbuf)
+	   (srcbuf-loc-hist)
+	   )
 
-	(if prev-marker 
-	    (dbgr-unset-arrow 
-	     'dbgr-overlay-arrow1 (marker-buffer prev-marker)))
-	(setq src-buff (dbgr-loc-goto loc 'dbgr-split-or-other-window))
-
-	(dbgr-srcbuf-init-or-update src-buff cmd-buff)
+	(setq srcbuf (dbgr-loc-goto loc 'dbgr-split-or-other-window))
+	(dbgr-srcbuf-init-or-update srcbuf cmdbuf)
+	(setq srcbuf-loc-hist (dbgr-srcbuf-loc-hist srcbuf))
+	(dbgr-loc-hist-add srcbuf-loc-hist loc)
+	(dbgr-loc-hist-add cmdbuf-loc-hist loc)
+	(dbgr-fringe-history-set cmdbuf-loc-hist)
 
         ;; We need to go back to the process/command buffer because other
         ;; output-filter hooks run after this may assume they are in that
         ;; buffer.
-	(switch-to-buffer-other-window cmd-buff)
-
-	;; hist add has to be done in cmd-buff since history is 
-	;; buffer-local
-	(dbgr-loc-hist-add loc-hist loc)
+	(switch-to-buffer-other-window cmdbuf)
 	)))
 
 (defun dbgr-track-loc(text &optional cmd-mark opt-regexp 

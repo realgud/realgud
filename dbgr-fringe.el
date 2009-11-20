@@ -52,7 +52,7 @@ position.")
 ;;   (add-to-list 'overlay-arrow-variable-list 'dbgr-overlay-arrow1)
 
 (dolist (pair 
-	 '( ("1" . "=>") ("2" . "2>") ("3" . "3>")))
+	 '( ("3" . "3>")  ("2" . "2>") ("1" . "=>")))
   (let ((arrow-symbol (intern (concat "dbgr-overlay-arrow" (car pair))))
 	(arrow-bitmap (intern (concat "dbgr-right-triangle" (car pair))))
 	(arrow-face (intern (concat "dbgr-overlay-arrow" (car pair)))))
@@ -65,15 +65,38 @@ position.")
 	  (set-fringe-bitmap-face arrow-bitmap arrow-face)))
     (add-to-list 'overlay-arrow-variable-list arrow-symbol)))
 
-(defun dbgr-set-arrow (overlay-arrow marker)
+(defun dbgr-fringe-set-arrow (overlay-arrow marker)
   "Set the fringe indicator or overlay arrow to MARKER. This is done
 for example to indicate a debugger position."
   (with-current-buffer (marker-buffer marker)
-    (set overlay-arrow marker)))
+    (save-excursion
+      (save-restriction
+	(widen)
+	(goto-char (marker-position marker))
+	(beginning-of-line)
+	(set overlay-arrow (point-marker))))))
 
-(defun dbgr-unset-arrow (overlay-arrow &optional buffer)
-  "Remove fringe indicator or overlay arrow for BUFFER."
-  (with-current-buffer (or buffer (current-buffer))
-    (set overlay-arrow nil)))
+
+(defun dbgr-fringe-history-set (loc-hist)
+  "Set arrows on the last positions we have stopped on."
+  ;; FIXME DRY somehow
+  (let ((loc1 (dbgr-loc-hist-item-at loc-hist -1))
+	(loc2 (dbgr-loc-hist-item-at loc-hist -2))
+	(loc3 (dbgr-loc-hist-item-at loc-hist -3)))
+    (if loc3
+	(let ((src-marker (dbgr-loc-marker loc3)))
+	  (dbgr-fringe-set-arrow 'dbgr-overlay-arrow3 src-marker)))
+    (if loc2
+	(let ((src-marker (dbgr-loc-marker loc2)))
+	  (dbgr-fringe-set-arrow 'dbgr-overlay-arrow2 src-marker)))
+    (if loc1
+	(let ((src-marker (dbgr-loc-marker loc1)))
+	  (dbgr-fringe-set-arrow 'dbgr-overlay-arrow1 src-marker)))))
+
+(defun dbgr-fringe-history-unset ()
+  "Unset all fringe-history arrows"
+  (setq dbgr-overlay-arrow1 nil)
+  (setq dbgr-overlay-arrow2 nil)
+  (setq dbgr-overlay-arrow3 nil))
 
 (provide 'dbgr-fringe)

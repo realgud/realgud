@@ -12,7 +12,7 @@
 
 (defstruct dbgr-cmdbuf-info
   "The debugger object/structure specific to a process buffer."
-  name                 ;; Name of debugger
+  debugger-name        ;; Name of debugger
   cmd-args             ;; Command-line invocation arguments
   prior-prompt-regexp  ;; regular expression prompt (e.g.
                        ;; comint-prompt-regexp) *before* setting
@@ -92,7 +92,7 @@ as a main program."
    (let ((dbgr-loc-pat (gethash "loc" regexp-hash)))
      (setq dbgr-cmdbuf-info
 	   (make-dbgr-cmdbuf-info
-	    :name debugger-name
+	    :debugger-name debugger-name
 	    :loc-regexp (dbgr-sget 'loc-pat 'regexp)
 	    :file-group (dbgr-sget 'loc-pat 'file-group)
 	    :line-group (dbgr-sget 'loc-pat 'line-group)
@@ -105,19 +105,19 @@ as a main program."
 (defun dbgr-cmdbuf-debugger-name (&optional cmd-buf)
   "Return the debugger name recorded in the debugger process buffer."
   (with-current-buffer-safe (or cmd-buf (current-buffer))
-    (dbgr-sget 'cmdbuf-info 'name))
+    (dbgr-sget 'cmdbuf-info 'debugger-name))
 )
 
-(defun dbgr-proc-loc-hist(cmd-buf)
+(defun dbgr-cmdbuf-loc-hist(cmd-buf)
   "Return the history ring of locations that a debugger process has stored."
   (with-current-buffer-safe cmd-buf 
     (dbgr-sget 'cmdbuf-info 'loc-hist))
 )
 
-(defun dbgr-proc-src-marker(cmd-buf)
+(defun dbgr-cmdbuf-src-marker(cmd-buf)
   "Return a marker to current source location stored in the history ring."
   (with-current-buffer cmd-buf
-    (lexical-let* ((loc (dbgr-loc-hist-item (dbgr-proc-loc-hist cmd-buf))))
+    (lexical-let* ((loc (dbgr-loc-hist-item (dbgr-cmdbuf-loc-hist cmd-buf))))
       (and loc (dbgr-loc-marker loc)))))
 
 (provide 'dbgr-cmdbuf)

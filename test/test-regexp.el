@@ -12,7 +12,7 @@
 (setq loc-pat (gethash "loc" (gethash dbg-name dbgr-pat-hash)))
 
 (setq dbgr (make-dbgr-cmdbuf-info
-		  :name dbg-name
+		  :debugger-name dbg-name
 		  :loc-regexp (dbgr-loc-pat-regexp loc-pat)
 		  :file-group (dbgr-loc-pat-file-group  loc-pat)
 		  :line-group (dbgr-loc-pat-line-group  loc-pat)))

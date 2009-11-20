@@ -31,7 +31,7 @@
   (:eval (progn 
 	   (concat " "
 		   (if (dbgr-cmdbuf-info-set?)
-		       (dbgr-sget 'cmdbuf-info 'name)
+		       (dbgr-sget 'cmdbuf-info 'debugger-name)
 		     "dbgr??"))))
 
   :keymap dbgr-track-mode-map
@@ -43,7 +43,7 @@
   (if dbgr-track-mode
       (progn
 	(unless (and (dbgr-cmdbuf-info-set?)
-		     (dbgr-sget 'cmdbuf-info 'name))
+		     (dbgr-sget 'cmdbuf-info 'debugger-name))
 	  (call-interactively 'dbgr-track-set-debugger))
 	(if (boundp 'comint-last-output-start)
 	    (progn
@@ -69,10 +69,7 @@
 	(setq comint-prompt-regexp
 	   (dbgr-sget 'cmdbuf-info 'prior-prompt-regexp))
 	)
-      (let ((prev-marker (dbgr-proc-src-marker (current-buffer))))
-	(if prev-marker 
-	    (dbgr-unset-arrow 'dbgr-overlay-arrow1
-			      (marker-buffer prev-marker))))
+      (dbgr-fringe-history-unset)
       (remove-hook 'comint-output-filter-functions 
 		   'dbgr-track-comint-output-filter-hook)
       (remove-hook 'eshell-output-filter-functions 

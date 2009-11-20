@@ -85,15 +85,8 @@ return the first argument is always removed.
      (t (cons (list arg) (list remaining))))))
 
 (defun dbgr-term-sentinel (process string)
-  (let ((cmdbuf (process-buffer process)))
-    (unless (not (buffer-name cmdbuf))
-      (with-current-buffer cmdbuf
-	(let ((prev-marker (dbgr-proc-src-marker (current-buffer))))
-	  (if prev-marker 
-	      (dbgr-unset-arrow 'dbgr-overlay-arrow1
-				(marker-buffer prev-marker)))
-	  )))
-  (message "That's all folks.... %s" string)))
+  (dbgr-fringe-history-unset)
+  (message "That's all folks.... %s" string))
 
 (defun dbgr-exec-shell (debugger-name script-filename program &rest args)
   "Run the specified COMMAND in under debugger DEBUGGER-NAME a

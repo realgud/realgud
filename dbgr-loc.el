@@ -11,10 +11,12 @@
 "Our own location type. Even though a mark contains a
 file-name (via a buffer) and a line number (via an offset), we
 want to save the values that were seen/requested originally."
-   (filename)
-   (line-number)
-   (marker)      ;; Position in source code
-   (cmd-marker)  ;; Position in command process buffer
+   id          ;; Unique id -- is the total number of locations seen
+	       ;; when this one was created.
+   filename
+   line-number
+   marker      ;; Position in source code
+   cmd-marker  ;; Position in command process buffer
 )
 
 (defalias 'dbgr-loc? 'dbgr-loc-p)
@@ -62,7 +64,7 @@ buffer) is returned, or nil if not found"
 		  (forward-line (- line-number 1))
 		  (setq src-marker (point-marker))
 		  (dbgr-loc-marker= loc src-marker)
-		  (dbgr-set-arrow 'dbgr-overlay-arrow1 src-marker)))))
+		  ))))
 	src-buffer )))
 
 (provide 'dbgr-loc)

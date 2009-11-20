@@ -2,30 +2,27 @@
 (eval-when-compile 
   (require 'cl)
   (defvar dbgr-srcbuf-info) ;; is buffer local
-  (defvar dbgr-cmdbuf-info)        ;; in procbuf is buffer local
-  (defvar cl-struct-dbgr-cmdbuf-info-tags) ;; Why do we need this?
+  (defvar dbgr-cmdbuf-info) ;; in the cmdbuf, this is buffer local
   )
 
 
 (defstruct dbgr-srcbuf-info
   "debugger object/structure specific to a (top-level) Ruby file
 to be debugged."
-  (debugger-name) ;; Name of debugger. We could get this from
-                  ;; the process command buffer, but we want to 
-                  ;; store it here in case the command buffer
-                  ;; disappears
-  (cmd-args)      ;; Debugger command invocation as a list of strings 
-		  ;; or nil. See above about why we don't get from
-                  ;; the process command buffer.
-  (cmdproc nil)   ;; buffer of the associated debugger process
-  (cur-pos nil)   ;; If not nil, the debugger thinks we are currently 
-                  ;; positioned at a corresponding place in the program.
+  debugger-name ;; Name of debugger. We could get this from the
+		;; process command buffer, but we want to store it
+		;; here in case the command buffer disappears
+  cmd-args      ;; Debugger command invocation as a list of strings or
+		;; nil. See above about why we don't get from the
+		;; process command buffer.
+  cmdproc       ;; buffer of the associated debugger process
+  cur-pos       ;; If not nil, the debugger thinks we are currently 
+                ;; positioned at a corresponding place in the program.
+  loc-hist      ;; ring of locations seen 
+
   ;; FILL IN THE FUTURE
   ;;(brkpt-alist '())  ;; alist of breakpoints the debugger has referring
                        ;; to this buffer. Each item is (brkpt-name . marker)
-  ;;(loc-alist  '())   ;; alist of locations that the debugger has stopped
-                       ;; on at some point in the past. Each item is
-                       ;; (line-number . marker)
   ;; 
 )
 (defalias 'dbgr-srcbuf-info? 'dbgr-srcbuf-p)
@@ -45,6 +42,11 @@ to be debugged."
    (or buffer (current-buffer))
    (dbgr-srcbuf-info-set?)))
 
+(defun dbgr-srcbuf-loc-hist(src-buf)
+  "Return the history ring of locations that a debugger process has stored."
+  (with-current-buffer-safe src-buf 
+    (dbgr-sget 'srcbuf-info 'loc-hist))
+)
 ;; FIXME: DRY = access via a macro
 (defun dbgr-srcbuf-info-cmdproc=(info buffer)
   (setf (dbgr-srcbuf-info-cmdproc info) buffer))
@@ -77,7 +79,8 @@ as a main program."
 	 (make-dbgr-srcbuf-info
 	  :debugger-name debugger-name
 	  :cmd-args cmd-args
-	  :cmdproc cmdproc-buffer))
+	  :cmdproc cmdproc-buffer
+	  :loc-hist (make-dbgr-loc-hist)))
     (put 'dbgr-srcbuf-info 'variable-documentation 
 	 "Debugger information for a buffer containing source code.")))
 
@@ -88,7 +91,7 @@ in it with those from CMDPROC-BUFFER"
   (let ((debugger-name)
 	(cmd-args))
    (with-current-buffer-safe cmdproc-buffer
-     (setq debugger-name (dbgr-cmdbuf-info-name dbgr-cmdbuf-info))
+     (setq debugger-name (dbgr-sget 'cmdbuf-info 'debugger-name))
      (setq cmd-args (dbgr-cmdbuf-info-cmd-args dbgr-cmdbuf-info)))
   (with-current-buffer-safe src-buffer
     (if (dbgr-srcbuf-info? dbgr-srcbuf-info)
