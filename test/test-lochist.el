@@ -48,10 +48,10 @@
 	     (specify "ring index in history ring is 1"
 		      (assert-equal 1 (dbgr-loc-hist-index loc-hist)))
 
-	     (specify "duplicate item added is ignored"
-		      (dbgr-loc-hist-add loc-hist loc)
-		      (assert-equal 1 (ring-length 
-			       (dbgr-loc-hist-ring loc-hist))))
+	     ;; (specify "duplicate item added is ignored"
+	     ;; 	      (dbgr-loc-hist-add loc-hist loc)
+	     ;; 	      (assert-equal 1 (ring-length 
+	     ;; 		       (dbgr-loc-hist-ring loc-hist))))
 
 	     (specify "ring index in history ring after dup ignore is still 1"
 		      (assert-equal 1 (dbgr-loc-hist-index loc-hist)))
