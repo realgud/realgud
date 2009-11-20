@@ -106,8 +106,7 @@ the debugger name and debugger process buffer."
 	 (dbgr-buf (current-buffer))
 	 (proc (get-buffer-process cmdproc-buffer)))
     (unless (and proc (eq 'run (process-status proc)))
-      (save-excursion
-	(set-buffer cmdproc-buffer)
+      (with-current-buffer cmdproc-buffer
 	(setq default-directory default-directory)
 	(insert "Current directory is " default-directory "\n")
 	
@@ -119,6 +118,16 @@ the debugger name and debugger process buffer."
 	
 	;; For comint.el. 
 	(comint-mode)
+
+	;; Making overlay-arrow-variable-list buffer local has to be
+	;; done after running commint mode. FIXME: find out why and if
+	;; this reason is justifyable. Also consider moving this somewhere
+	;; else.
+	(make-local-variable 'overlay-arrow-variable-list)
+	(make-local-variable 'dbgr-overlay-arrow1)
+	(make-local-variable 'dbgr-overlay-arrow2)
+	(make-local-variable 'dbgr-overlay-arrow3)
+
 	(comint-exec cmdproc-buffer debugger-name program nil args)
 	
 	(setq proc (get-buffer-process cmdproc-buffer))

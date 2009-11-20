@@ -100,6 +100,9 @@ encountering a new loc."
   (if (dbgr-loc? loc)
       (let* 
 	  ((cmdbuf-loc-hist (dbgr-cmdbuf-loc-hist cmdbuf))
+	   (cmdbuf-local-overlay-arrow? 
+	    (with-current-buffer cmdbuf 
+	      (local-variable-p 'overlay-arrow-variable-list)))
 	   (srcbuf)
 	   (srcbuf-loc-hist)
 	   )
@@ -109,7 +112,7 @@ encountering a new loc."
 	(setq srcbuf-loc-hist (dbgr-srcbuf-loc-hist srcbuf))
 	(dbgr-loc-hist-add srcbuf-loc-hist loc)
 	(dbgr-loc-hist-add cmdbuf-loc-hist loc)
-	(dbgr-fringe-history-set cmdbuf-loc-hist)
+	(dbgr-fringe-history-set cmdbuf-loc-hist cmdbuf-local-overlay-arrow?)
 
         ;; We need to go back to the process/command buffer because other
         ;; output-filter hooks run after this may assume they are in that

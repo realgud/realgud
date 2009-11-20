@@ -42,6 +42,15 @@ position.")
 
 (eval-when-compile (require 'cl))
 
+
+;; FIXME: since overlay overlay-arrow-list can be global, and perhaps
+;; has to stay that way since some Emacs code may expect that, we
+;; should use different global overlay arrow variables for the
+;; different debuggers. E.g. rbdbgr-overlay-arrow1,
+;; pydbgr-overlay-arrow1 and so on. That way, if those debuggers are
+;; running concurrently, the fringe for one doesn't interfere with the
+;; fringe for another.
+
 ;; Loop to set up fringe position markers. 
 
 ;; Here is an example of what each iteration does:
@@ -73,11 +82,12 @@ for example to indicate a debugger position."
       (save-restriction
 	(widen)
 	(goto-char (marker-position marker))
-	(beginning-of-line)
+	;; We need to ignore field boundaries, so we use
+	;; forward-line rather than beginning-of-line. 
+	(forward-line 0)
 	(set overlay-arrow (point-marker))))))
 
-
-(defun dbgr-fringe-history-set (loc-hist)
+(defun dbgr-fringe-history-set (loc-hist &optional do-cmdbuf?)
   "Set arrows on the last positions we have stopped on."
   ;; FIXME DRY somehow
   (let* (
@@ -86,13 +96,27 @@ for example to indicate a debugger position."
 	 (loc3 (dbgr-loc-hist-item-at loc-hist 0))
 	 (mark1 (and loc3 (dbgr-loc-marker loc3)))
 	 (mark2 (and loc2 (dbgr-loc-marker loc2)))
-	 (mark3 (and loc1 (dbgr-loc-marker loc1))))
+	 (mark3 (and loc1 (dbgr-loc-marker loc1)))
+	 (cmd-mark1 (and loc3 (dbgr-loc-cmd-marker loc3)))
+	 (cmd-mark2 (and loc2 (dbgr-loc-cmd-marker loc2)))
+	 (cmd-mark3 (and loc1 (dbgr-loc-cmd-marker loc1)))
+	 )
     (if (and loc3 (not (equal mark3 mark2)))
-	(dbgr-fringe-set-arrow 'dbgr-overlay-arrow3 mark3))
+	(progn
+	  (dbgr-fringe-set-arrow 'dbgr-overlay-arrow3 mark3)
+	  (if do-cmdbuf?
+	      (dbgr-fringe-set-arrow 'dbgr-overlay-arrow3 cmd-mark3))))
     (if (and loc2 (not (equal mark2 mark1)))
-	(dbgr-fringe-set-arrow 'dbgr-overlay-arrow2 mark2))
+	(progn 
+	  (dbgr-fringe-set-arrow 'dbgr-overlay-arrow2 mark2)
+	  (if do-cmdbuf?
+	      (dbgr-fringe-set-arrow 'dbgr-overlay-arrow2 cmd-mark2))))
     (if loc1
-	(dbgr-fringe-set-arrow 'dbgr-overlay-arrow1 mark1))))
+	(progn
+	  (dbgr-fringe-set-arrow 'dbgr-overlay-arrow1 mark1)
+	  (if do-cmdbuf?
+	      (dbgr-fringe-set-arrow 'dbgr-overlay-arrow1 cmd-mark1))))
+    ))
 
 (defun dbgr-fringe-history-unset ()
   "Unset all fringe-history arrows"
