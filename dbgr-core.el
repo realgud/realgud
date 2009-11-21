@@ -154,7 +154,7 @@ the debugger name and debugger process buffer."
 	  ;; (insert-before-markers (format "+++1 %s" string))
 	  (insert-before-markers string)))))
 
-(provide 'dbgr-core)
+(provide-me)
 
 ;; -------------------------------------------------------------------
 ;; The end.

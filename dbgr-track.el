@@ -188,7 +188,7 @@ debugger with that information"
   (dbgr-goto-line-for-loc-pat pt (gethash type pat-hash)))
 
   
-(provide 'dbgr-track)
+(provide-me)
 
 ;;; Local variables:
 ;;; eval:(put 'dbgr-debug-enter 'lisp-indent-hook 1)

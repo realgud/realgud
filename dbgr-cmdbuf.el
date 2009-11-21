@@ -120,7 +120,7 @@ as a main program."
     (lexical-let* ((loc (dbgr-loc-hist-item (dbgr-cmdbuf-loc-hist cmd-buf))))
       (and loc (dbgr-loc-marker loc)))))
 
-(provide 'dbgr-cmdbuf)
+(provide-me)
 
 ;;; Local variables:
 ;;; eval:(put 'dbgr-debug-enter 'lisp-indent-hook 1)

@@ -113,7 +113,7 @@ in it with those from CMDPROC-BUFFER"
 		 " "))
      (t nil))))
   
-(provide 'dbgr-srcbuf)
+(provide-me)
 
 ;;; Local variables:
 ;;; eval:(put 'dbgr-debug-enter 'lisp-indent-hook 1)

@@ -40,4 +40,4 @@ problem as best as we can determine."
 	(format "%s is not an integer" line-number))
     (format "File named `%s' not found" filename)))
 
-(provide 'dbgr-file)
+(provide-me)

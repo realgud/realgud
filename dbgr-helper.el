@@ -1,4 +1,5 @@
 ;;; Miscellaneous utility functions
+(require 'load-relative)
 (defun fn-p-to-fn?-alias (fn-sym)
   "FN-SYM is assumed to be a symbol which is a function.  If it
 ends in a 'p' or '-p', that suffix is stripped; in either case, a
@@ -43,8 +44,11 @@ is a field in that. Access (STRUCT-SYMBOL-STRUCT-FIELD STRUCT-SYMBOL)"
 	   (intern (concat dbgr-symbol-str "-" (symbol-name, struct-field)))))
     (funcall dbgr-field-access (eval (intern dbgr-symbol-str)))))
 
+(defmacro provide-me ()
+  `(provide (intern (file-name-sans-extension
+	  (file-name-nondirectory (__FILE__))))))
 
-(provide 'dbgr-helper)
+(provide-me)
 ;; (defun dbgr-struct-field (var-sym field-sym)
 ;;   (setq var-str (symbol-name var-sym))
 ;;   (setq field-str (symbol-name field-sym))

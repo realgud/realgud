@@ -58,4 +58,4 @@ if we don't find anything."
 	(dbgr-get-cmdbuf-from-srcbuf buffer))
        (t nil)))))
 
-(provide 'dbgr-buffer)
+(provide-me)
