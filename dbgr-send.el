@@ -1,15 +1,34 @@
+(require 'comint)
 (require 'load-relative)
 (require-relative-list
  '("dbgr-buffer"))
 
-(defvar dbgr-send-command-fn
-  (function (lambda (command-str) 
-	    (comint-goto-process-mark)
-	    (insert command-str)
-	    (comint-send-input))) ;; Note: comint specific!
-  "Should be a function which takes one string parameter without
-any trailing newline. The function will be applied in the debugger process
-buffer.")
+(defun dbgr-send-command-comint (process command-str)
+  "Assume we are in a comint buffer. Insert COMMAND-STR and 
+send that input onto the process.  Parameter PROCESS not used."
+  (comint-goto-process-mark)
+  (insert command-str)
+  (comint-send-input))
+
+(defalias 'comint-output-filter-orig 
+  (symbol-function 'comint-output-filter))
+
+(defun fake-output-filter(process string)
+  (with-current-buffer (get-buffer-create "*dbgr-process-output-temp*")
+    (goto-char (point-max))
+    (set (make-local-variable 'dbgr-last-output-start)
+	 (point-marker))
+    (insert (concat "\n" string))
+    (goto-char (point-max))))
+
+(defun dbgr-send-command-process (process command-str)
+  "Sent Invoke the debugger COMMAND adding that command and the
+results into the command buffer."
+  (fset 'comint-output-filter (symbol-function 'fake-output-filter))
+  (apply comint-input-sender (list process command-str))
+  (sit-for 0.25) ;; FIXME with something better
+  (fset 'comint-output-filter (symbol-function 'comint-output-filter-orig))
+  )
 
 ;; Here are some other possibilities for functions.
 ;; Comint-specific: doesn't insert input into the buffer which is
@@ -21,19 +40,25 @@ buffer.")
 ;;                        (concat command "\n"))
 
 
-(defun dbgr-send-command (command &optional opt-buffer)
+(defun dbgr-send-command (command &optional opt-send-fn opt-buffer)
   "Invoke the debugger COMMAND adding that command and the
 results into the command buffer."
   (let* ((buffer (or opt-buffer (current-buffer)))
-	 (cmdbuf (dbgr-get-cmdbuf buffer)))
+	 (cmdbuf (dbgr-get-cmdbuf buffer))
+	 (send-command-fn (or opt-send-fn (function dbgr-send-command-comint)))
+	 )
     (if cmdbuf
 	(with-current-buffer cmdbuf
-	  (let ((proc (get-buffer-process cmdbuf)))
-	    (or proc (error "Command process buffer is not running"))
-	    (funcall dbgr-send-command-fn command)
+	  (let ((process (get-buffer-process cmdbuf)))
+	    (or process (error "Command process buffer is not running"))
+	    (funcall send-command-fn process command)
 	    ))
       (error "Can't find command process buffer")
       )))
+
+(defun dbgr-send-command-invisible (command-str)
+  (dbgr-send-command command-str (function dbgr-send-command-process)))
+
 
 (defun dbgr-expand-format (fmt-str &optional opt-num-str opt-buffer)
   "Expands commands format characters inside FMT-STRING using values
@@ -110,7 +135,7 @@ Some %-escapes in the string arguments are expanded. These are:
 	(progn
 	  (message "Command: %s" command-str)
 	  (sit-for 0)))
-    (dbgr-send-command command-str)))
+    (dbgr-send-command command-str (function dbgr-send-command-comint))))
 
 (defmacro dbgr-define-command (func cmd &optional key doc)
   "Define FUNC to be a command sending CMD possibly bound to KEY, and with
