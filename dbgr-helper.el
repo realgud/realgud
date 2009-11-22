@@ -44,10 +44,6 @@ is a field in that. Access (STRUCT-SYMBOL-STRUCT-FIELD STRUCT-SYMBOL)"
 	   (intern (concat dbgr-symbol-str "-" (symbol-name, struct-field)))))
     (funcall dbgr-field-access (eval (intern dbgr-symbol-str)))))
 
-(defmacro provide-me ()
-  `(provide (intern (file-name-sans-extension
-	  (file-name-nondirectory (__FILE__))))))
-
 (provide-me)
 ;; (defun dbgr-struct-field (var-sym field-sym)
 ;;   (setq var-str (symbol-name var-sym))

@@ -9,9 +9,10 @@
 
 (require 'load-relative)
 (require-relative-list
- '("dbgr-helper" "dbgr-init" "dbgr-fringe" "dbgr-loc" "dbgr-lochist" 
-   "dbgr-file" "dbgr-cmdbuf" "dbgr-srcbuf" "dbgr-window" 
-   "dbgr-regexp"))
+ '("dbgr-buffer" "dbgr-cmdbuf" "dbgr-file" "dbgr-fringe" 
+   "dbgr-helper" "dbgr-init"   "dbgr-loc"  "dbgr-lochist" 
+   "dbgr-regexp" "dbgr-srcbuf" "dbgr-window" 
+   ))
 
 (fn-p-to-fn?-alias 'dbgr-loc-p)
 (declare-function dbgr-loc?(loc))
@@ -63,18 +64,17 @@ marks set in buffer-local variables to extract text"
 
 (defun dbgr-track-hist-fn-internal(fn)
   (interactive)
-  (lexical-let* 
-      ((cmd-buff (current-buffer))
-       (loc-hist (dbgr-cmdbuf-loc-hist cmd-buff))
-       (cmd-window (selected-window))
-       (position (funcall fn loc-hist))
-       (loc (dbgr-loc-hist-item loc-hist))
-       )
-    (dbgr-loc-goto loc 'dbgr-split-or-other-window)
-    (message "history position %s line %s" 
-	     (dbgr-loc-hist-index loc-hist)
-	     (dbgr-loc-line-number loc))
-    (select-window cmd-window)
+  (let ((cmd-buff (dbgr-get-cmdbuf (current-buffer))))
+    (if cmd-buff
+	(let* ((loc-hist (dbgr-cmdbuf-loc-hist cmd-buff))
+	       (window (selected-window))
+	       (position (funcall fn loc-hist))
+	       (loc (dbgr-loc-hist-item loc-hist)))
+	  (dbgr-loc-goto loc 'dbgr-split-or-other-window)
+	  (message "history position %s line %s" 
+		   (dbgr-loc-hist-index loc-hist)
+		   (dbgr-loc-line-number loc))
+	  (select-window window)))
   ))
 
 ;; FIXME: Can we dry code more via a macro?
@@ -103,21 +103,29 @@ encountering a new loc."
 	   (cmdbuf-local-overlay-arrow? 
 	    (with-current-buffer cmdbuf 
 	      (local-variable-p 'overlay-arrow-variable-list)))
+	   (stay-in-cmdbuf?
+	    (with-current-buffer cmdbuf
+	      (not (dbgr-sget 'cmdbuf-info 'in-srcbuf))))
 	   (srcbuf)
 	   (srcbuf-loc-hist)
 	   )
 
-	(setq srcbuf (dbgr-loc-goto loc 'dbgr-split-or-other-window))
+	(setq srcbuf (dbgr-loc-goto loc))
 	(dbgr-srcbuf-init-or-update srcbuf cmdbuf)
 	(setq srcbuf-loc-hist (dbgr-srcbuf-loc-hist srcbuf))
 	(dbgr-loc-hist-add srcbuf-loc-hist loc)
 	(dbgr-loc-hist-add cmdbuf-loc-hist loc)
 	(dbgr-fringe-history-set cmdbuf-loc-hist cmdbuf-local-overlay-arrow?)
 
-        ;; We need to go back to the process/command buffer because other
+        ;; Do we need to go back to the process/command buffer because other
         ;; output-filter hooks run after this may assume they are in that
-        ;; buffer.
-	(switch-to-buffer-other-window cmdbuf)
+        ;; buffer. If so, we may have to use set-buffer rather than 
+	;; switch-to-buffer in some cases.
+	(if stay-in-cmdbuf?
+	    (progn
+	      (dbgr-split-or-other-window srcbuf)
+	      (switch-to-buffer-other-window cmdbuf))
+	  (set-buffer cmdbuf))
 	)))
 
 (defun dbgr-track-loc(text &optional cmd-mark opt-regexp 

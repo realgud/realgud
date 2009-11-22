@@ -6,7 +6,8 @@
 (provide 'dbgr-track-mode)
 (require-relative-list
  '("dbgr-helper" "dbgr-track" "dbgr-loc" "dbgr-lochist" "dbgr-file" 
-   "dbgr-fringe" "dbgr-cmdbuf" "dbgr-window" "dbgr-regexp" "dbgr-send"))
+   "dbgr-fringe" "dbgr-cmdbuf" "dbgr-window" "dbgr-regexp" 
+   "dbgr-send" "dbgr-shortkey"))
 
 (defvar dbgr-track-mode-map
   (let ((map (make-sparse-keymap)))

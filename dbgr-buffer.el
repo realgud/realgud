@@ -29,9 +29,12 @@ assumed to be a process command buffer."
       nil)))
 
 (defun dbgr-get-srcbuf( &optional opt-buffer)
-  "Return the script buffer associated with OPT-BUFFER
-or `current-buffer' if that is omitted. nil is returned
-if we don't find anything."
+  "Return source-code buffer associated with OPT-BUFFER or
+`current-buffer' if that is omitted. nil is returned if we don't
+find anything. If we started out with a buffer that is set up to
+be a source-code buffer we will use that even though it might not
+be the source code buffer for the frame that the debugger is
+using. See also `dbgr-get-current-srcbuf'."
 
   (let ((buffer (or opt-buffer (current-buffer))))
     (with-current-buffer-safe buffer
@@ -42,6 +45,24 @@ if we don't find anything."
        ((dbgr-cmdbuf? buffer)
 	(dbgr-get-srcbuf-from-cmdbuf buffer))
        (t nil)))))
+
+(defun dbgr-get-current-srcbuf( &optional opt-buffer)
+  "Return the script buffer associated with OPT-BUFFER
+or `current-buffer' if that is omitted. nil is returned
+if we don't find anything."
+
+  (let ((buffer (or opt-buffer (current-buffer))))
+    (with-current-buffer-safe buffer
+      (let ((cmdbuf
+	     (cond 
+	      ((dbgr-srcbuf? buffer)
+	       (dbgr-get-cmdbuf-from-srcbuf buffer))
+	      ((dbgr-cmdbuf? buffer) 
+	       buffer)
+	      (t nil))))
+	(if cmdbuf
+	    (dbgr-get-srcbuf-from-cmdbuf cmdbuf)
+	  nil)))))
 
 (defun dbgr-get-cmdbuf( &optional opt-buffer)
   "Return the script buffer associated with OPT-BUFFER

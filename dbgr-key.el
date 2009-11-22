@@ -1,5 +1,5 @@
 (require 'load-relative)
-(require-relative-list '("dbgr-helper" "dbgr-custom"))
+(require-relative-list '("dbgr-custom"))
 
 ;; -------------------------------------------------------------------
 ;; Key bindings
@@ -8,7 +8,7 @@
 (defun dbgr-populate-common-keys-standard (map)
   "Bind the basic debugger key layout used by many debuggers.
 
-\\{rdebug-example-map-standard}"
+\\{dbgr-example-map-standard}"
   (define-key map [f5]    'dbgr-continue)
   ;; (define-key map [S-f5]  'rdebug-quit)
   ;; (define-key map [f9]    'rdebug-toggle-source-breakpoint)
@@ -30,9 +30,10 @@ The variable `dbgr-populate-common-keys-function' controls the layout."
       (funcall dbgr-populate-common-keys-function map)))
 
 (defun dbgr-populate-src-buffer-map-plain (map)
-  "Bind the plain keys used in rdebug secondary buffers.
+  "Bind ordinary text characters used in debugger source-code buffers.
 
-This does not menus or prefix keys."
+This does not touch change menus; for that see `dbgr-populate-debugger-menu'.
+Nor does it touch prefix keys; for that see `dbgr-populate-keys-standard'"
   ;; Keys to view other buffers.
   (let ((prefix-map (make-sparse-keymap)))
     ;; (define-key map "?" 'dbgr-display-secondary-window-help-buffer)
@@ -63,10 +64,10 @@ This does not menus or prefix keys."
     ;; (define-key map "r" 'dbgr-restart)
     ;; (define-key map "R" 'dbgr-restart)
     ;; (define-key map "s" 'dbgr-step)
-    (define-key map [M-down]   'dbgr-loc-hist-newer)
-    (define-key map [M-up]     'dbgr-loc-hist-older)
-    (define-key map [M-S-down] 'dbgr-loc-hist-newest)
-    (define-key map [M-S-up]   'dbgr-loc-hist-oldest)
+    (define-key map [M-down]   'dbgr-track-hist-newer)
+    (define-key map [M-up]     'dbgr-track-hist-older)
+    (define-key map [M-S-down] 'dbgr-track-hist-newest)
+    (define-key map [M-S-up]   'dbgr-track-hist-oldest)
     ;; (define-key map [mouse-3]  'dbgr-variables-pretty-print-mouse)
     ;; (define-key prefix-map "l" 'dbgr-print-list-region)
     ;; (define-key prefix-map "p" 'dbgr-pretty-print-region)

@@ -141,14 +141,24 @@ Some %-escapes in the string arguments are expanded. These are:
   "Define FUNC to be a command sending CMD possibly bound to KEY, and with
 optional doc string DOC."
   (declare (indent 1) (debug t))
-  `(progn
-     (fset (intern (concat "dbgr-cmd-" (symbol-name ,func)))
+;; Here is a sample expansion of the below for 
+;; dbgr-define-command('foo", "bar", "f", "Now is the time")
+;;
+;; (defun dbgr-cmd-foo (arg)
+;;  "Now is the time"  
+;;  (interactive "p")
+;;  (dbgr-command "bar" arg))
+;; )
+;; (local-set-key "\C-cf" 'dbgr-cmd-foo)
+    `(progn
+       (fset (intern (concat "dbgr-cmd-" (symbol-name ,func)))
 	   (lambda(arg)
 	     ,doc
 	     (interactive "p")
 	     (dbgr-command ,cmd arg)))
-     ,(if key `(local-set-key ,(concat "\C-c" key) ',func))
+       ,(if key `(local-set-key ,(concat "\C-c" key) 
+				(intern (concat "dbgr-cmd-" (symbol-name ,func)))))
      ;; ,(if key `(global-set-key (vconcat dbgr-key-prefix ,key) ',func))
      ))
 
-(provide 'dbgr-send)
+(provide-me)
