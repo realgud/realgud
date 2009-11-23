@@ -33,4 +33,4 @@ This variable can be bound to the following:
   :type 'string
   :group 'dbbgr)
 
-(provide-me)
+(provide-me "dbgr-")

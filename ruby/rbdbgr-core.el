@@ -1,12 +1,7 @@
-;; -------------------------------------------------------------------
-;; Dependencies.
-;;
 (eval-when-compile (require 'cl))
   
 (require 'load-relative)
-(provide 'rbdbgr-core)
-(require-relative-list
- '("../dbgr-track" "../dbgr-core"))
+(require-relative-list '("../track" "../core") "dbgr-")
 
 ;; FIXME: I think the following could be generalized and moved to 
 ;; dbgr-... probably via a macro.
@@ -221,8 +216,4 @@ breakpoints, etc.)."
   (interactive)
   (customize-group 'rbdbgr))
 
-;;; Local variables:
-;;; eval:(put 'rbdbgr-debug-enter 'lisp-indent-hook 1)
-;;; End:
-
-;;; rbdbgr-core.el ends here
+(provide-me)

@@ -1,5 +1,3 @@
-;;; dbgr-track.el --- Debugger tracking a comint or eshell buffer.
-
 (defconst dbgr-track-char-range 10000
   "Max number of characters from end of buffer to search for stack entry.")
 
@@ -9,10 +7,10 @@
 
 (require 'load-relative)
 (require-relative-list
- '("dbgr-buffer" "dbgr-cmdbuf" "dbgr-file" "dbgr-fringe" 
-   "dbgr-helper" "dbgr-init"   "dbgr-loc"  "dbgr-lochist" 
-   "dbgr-regexp" "dbgr-srcbuf" "dbgr-window" 
-   ))
+ '("buffer" "cmdbuf" "file" "fringe" 
+   "helper" "init"   "loc"  "lochist" 
+   "regexp" "srcbuf" "window" 
+   ) "dbgr-")
 
 (fn-p-to-fn?-alias 'dbgr-loc-p)
 (declare-function dbgr-loc?(loc))
@@ -57,7 +55,12 @@ marks set in buffer-local variables to extract text"
 						  eshell-last-output-end cmd-mark)))
 	(dbgr-track-loc-action loc cmd-buff))))
 
-(defun dbgr-track-from-region(from to cmd-mark)
+(defun dbgr-track-from-region(from to &optional cmd-mark)
+  "Show in another window the location found in the marked region.
+The marked region location match the regexp found in buffer-local variable 
+`dbgr-cmdbuf-info' structure with field loc-regexp. You can see what this is
+by evaluating (dbgr-cmdbuf-info-loc-regexp dbgr-cmdbuf-info)"
+
   (interactive "r")
   (if (> from to) (psetq to from from to))
   (dbgr-track-loc (buffer-substring from to) cmd-mark))
@@ -196,10 +199,7 @@ debugger with that information"
   (dbgr-goto-line-for-loc-pat pt (gethash type pat-hash)))
 
   
-(provide-me)
+(provide-me "dbgr-")
 
 ;;; Local variables:
-;;; eval:(put 'dbgr-debug-enter 'lisp-indent-hook 1)
 ;;; End:
-
-;;; dbgr-track.el ends here

@@ -1,7 +1,7 @@
 (load-file "./behave.el")
 
 (makunbound 'file-exists?)
-(load-file "../dbgr-helper.el")
+(load-file "../helper.el")
 
 (behave-clear-contexts)
 

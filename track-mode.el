@@ -1,13 +1,12 @@
-;;  `dbgr-track-mode' tracks shell output 
+;;  tracks shell output 
 
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
-(provide 'dbgr-track-mode)
 (require-relative-list
- '("dbgr-helper" "dbgr-track" "dbgr-loc" "dbgr-lochist" "dbgr-file" 
-   "dbgr-fringe" "dbgr-cmdbuf" "dbgr-window" "dbgr-regexp" 
-   "dbgr-send" "dbgr-shortkey"))
+ '("helper" "track" "loc" "lochist" "file" 
+   "fringe" "cmdbuf" "window" "regexp"
+   "send" "shortkey") "dbgr-")
 
 (defvar dbgr-track-mode-map
   (let ((map (make-sparse-keymap)))
@@ -77,12 +76,4 @@
 		    'dbgr-track-eshell-output-filter-hook)))
 )
 
-;; -------------------------------------------------------------------
-;; The end.
-;;
-
-;;; Local variables:
-;;; eval:(put 'dbgr-debug-enter 'lisp-indent-hook 1)
-;;; End:
-
-;;; dbgr-track-mode.el ends here
+(provide-me "dbgr-")

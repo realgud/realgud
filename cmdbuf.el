@@ -3,10 +3,9 @@
 
 (require 'load-relative)
 (require-relative-list
- '("dbgr-fringe" "dbgr-helper" "dbgr-loc" "dbgr-lochist"))
+ '("fringe" "helper" "loc" "lochist") "dbgr-")
 
 (eval-when-compile 
-  (require 'cl)
   (defvar dbgr-cmdbuf-info)
   )
 
@@ -34,11 +33,6 @@
                ;; see dbgr-lochist
 )
 (make-variable-buffer-local 'dbgr-cmdbuf-info)
-
-(provide 'dbgr-cmdbuf)
-(require 'load-relative)
-(dolist (rel-file '("dbgr-fringe" "dbgr-helper" "dbgr-lochist" "dbgr-loc"))
-  (require-relative rel-file))
 
 (defalias 'dbgr-cmdbuf-info? 'dbgr-cmdbuf-info-p)
 
@@ -130,10 +124,7 @@ as a main program."
     (lexical-let* ((loc (dbgr-loc-hist-item (dbgr-cmdbuf-loc-hist cmd-buf))))
       (and loc (dbgr-loc-marker loc)))))
 
-(provide-me)
+(provide-me "dbgr-")
 
 ;;; Local variables:
-;;; eval:(put 'dbgr-debug-enter 'lisp-indent-hook 1)
 ;;; End:
-
-;;; dbgr-cmdbuf.el ends here

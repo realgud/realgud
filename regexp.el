@@ -1,9 +1,9 @@
 ;;; FIXME - think of a better name.
-;;; dbgr-regexp.el --- Debugger regular expressions for many kinds of
-;;  debuggers
+;;; Debugger regular expressions for many kinds of
+;;;  debuggers
 
-;; Here we have regular expressions and names for matched patterns
-;; of those regular expressions.
+;;; Here we have regular expressions and names for matched patterns
+;;; of those regular expressions.
 
 ;;; Code:
 
@@ -23,9 +23,3 @@ a string output by a debugger inside a process shell"
   is a dbgr-loc-pat struct")
 
 (provide 'dbgr-regexp)
-
-;;; Local variables:
-;;; eval:(put 'dbgr-debug-enter 'lisp-indent-hook 1)
-;;; End:
-
-;;; dbgr-regexp.el ends here

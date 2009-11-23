@@ -1,6 +1,6 @@
 (require 'load-relative)
 (require-relative-list
- '("dbgr-send" "dbgr-cmdbuf"))
+ '("send" "cmdbuf") "dbgr-")
 
 (defun dbgr-define-gdb-like-commands ()
   "Define a bunch of gdb-command that we expect most debuggers to have"
@@ -39,4 +39,4 @@ getting stepped."
     (dbgr-command "step" count))
 )
 
-(provide-me)
+(provide-me "dbgr-")

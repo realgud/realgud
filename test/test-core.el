@@ -1,6 +1,6 @@
 (setq rbdbgr-core "../ruby/rbdbgr-core.el")
 (load-file "./behave.el")
-(load-file "../dbgr-core.el")
+(load-file "../core.el")
 (load-file rbdbgr-core)
 
 (behave-clear-contexts)

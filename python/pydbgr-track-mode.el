@@ -1,10 +1,11 @@
-;;; pydbgr-track-mode.el --- Ruby "pydbgr" Debugger tracking a comint
+;;; Python "pydbgr" Debugger tracking a comint
 ;;; or eshell buffer.
 
 (eval-when-compile (require 'cl))
 (require 'load-relative)
 (require-relative-list
- '("../dbgr-track-mode" "../dbgr-cmds" "pydbgr-core"))
+ '("../track-mode" "../cmds") "dbgr-")
+(require-relative "pydbgr-core")
 
 (defvar pydbgr-pat-hash)
 (defvar pydbgr-track-mode nil
@@ -46,9 +47,3 @@ Use the command `pydbgr-track-mode' to toggle or set this variable.")
 )
 
 (provide 'pydbgr-track-mode)
-
-;;; Local variables:
-;;; eval:(put 'rbdbg-debug-enter 'lisp-indent-hook 1)
-;;; End:
-
-;;; pydbgr-track.el ends here

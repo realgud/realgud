@@ -10,4 +10,4 @@
 
 (load-debuggers)
 
-(provide 'dbgr-init)
+(provide-me "dbgr-")

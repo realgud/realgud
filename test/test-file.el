@@ -1,6 +1,6 @@
 (load-file "./behave.el")
-(load-file "../dbgr-loc.el")
-(load-file "../dbgr-file.el")
+(load-file "../loc.el")
+(load-file "../file.el")
 
 (behave-clear-contexts)
 

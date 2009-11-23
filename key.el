@@ -1,5 +1,5 @@
 (require 'load-relative)
-(require-relative-list '("dbgr-custom"))
+(require-relative-list '("custom") "dbgr-")
 
 ;; -------------------------------------------------------------------
 ;; Key bindings
@@ -330,5 +330,5 @@ Nor does it touch prefix keys; for that see `dbgr-populate-keys-standard'"
     ;;                     :enable '(get-buffer-process gud-comint-buffer)))
     menu))
 
-(provide-me)
+(provide-me "dbgr-")
 

@@ -1,12 +1,7 @@
-;; -------------------------------------------------------------------
-;; Dependencies.
-;;
 (eval-when-compile (require 'cl))
   
 (require 'load-relative)
-(provide 'pydbgr-core)
-(require-relative-list
- '("../dbgr-track" "../dbgr-core"))
+(require-relative-list '("../track" "../core") "dbgr-")
 
 ;; FIXME: I think the following could be generalized and moved to 
 ;; dbgr-... probably via a macro.
@@ -216,8 +211,4 @@ breakpoints, etc.)."
   (interactive)
   (customize-group 'pydbgr))
 
-;;; Local variables:
-;;; eval:(put 'pydbgr-debug-enter 'lisp-indent-hook 1)
-;;; End:
-
-;;; pydbgr-core.el ends here
+(provide-me)

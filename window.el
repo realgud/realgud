@@ -1,5 +1,5 @@
 (require 'load-relative)
-(require-relative-list '("dbgr-helper"))
+(require-relative-list '("helper") "dbgr-")
 
 (fn-p-to-fn?-alias 'one-window-p)
 (declare-function one-window?(bool))
@@ -17,4 +17,4 @@ either case, make that window display buffer"
       (set-window-buffer (selected-window) buffer))
   )
 
-(provide-me)
+(provide-me "dbgr-")

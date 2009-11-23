@@ -1,5 +1,5 @@
 (require 'load-relative)
-(require-relative-list '("dbgr-custom" "dbgr-key"))
+(require-relative-list '("custom" "key") "dbgr-")
 
 (define-minor-mode dbgr-short-key-mode
   "When enabled, short keys can be used in source buffers in `dbgr'."
@@ -89,9 +89,7 @@ C-a)."
     (dbgr-populate-src-buffer-map-plain prefix-map)
     (define-key map dbgr-key-prefix prefix-map)))
 
-(provide-me)
+(provide-me "dbgr-")
 
 ;;; Local variables:
 ;;; End:
-
-;;; dbgr-shortkey.el ends here

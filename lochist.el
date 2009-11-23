@@ -1,15 +1,14 @@
-;;; dbgr-locring.el --- Debugger location ring
+;;; Debugger location ring
 ;;; Commentary:
 
 ;; This file manages a ring of (recently stopped) positions to allow
 ;; the programmer to move between them.
 
-
 ;;; Code:
  
 (require 'ring)
 (require 'load-relative)
-(require-relative-list '("dbgr-loc"))
+(require-relative-list '("loc") "dbgr-")
 
 (defcustom dbgr-loc-hist-size 10  ; For testing. Should really be larger.
   "Size of dbgr position history ring"
@@ -98,10 +97,5 @@ component in LOC-HIST"
 		 (head (car ring)))
     (setf (dbgr-loc-hist-position loc-hist) head)))
 
-(provide 'dbgr-lochist)
+(provide-me "dbgr-")
 
-;;; Local variables:
-;;; eval:(put 'dbgr-debug-enter 'lisp-indent-hook 1)
-;;; End:
-
-;;; dbgr-lochist.el ends here

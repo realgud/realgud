@@ -1,10 +1,9 @@
-;;; init/bashdb.el --- Bash debugger bashdb
+;;; Bash debugger: bashdb
 
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
-(require-relative "../dbgr-regexp")
-(require-relative "../dbgr-loc")
+(require-relative-list '("../regexp" "../loc") "dbgr-")
 
 (defvar dbgr-pat-hash)
 (declare-function make-dbgr-loc-pat (dbgr-loc))
@@ -29,9 +28,3 @@ The values of a hash entry is a dbgr-loc-pat struct")
        ))
 
 (setf (gethash "bashdb" dbgr-pat-hash) bashdb-pat-hash)
-
-;;; Local variables:
-;;; eval:(put 'bashdb-debug-enter 'lisp-indent-hook 1)
-;;; End:
-
-;;; init/bashdb.el ends here

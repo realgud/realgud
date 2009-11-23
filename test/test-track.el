@@ -1,9 +1,9 @@
 (load-file "./behave.el")
-(load-file "../dbgr-regexp.el")
-(load-file "../dbgr-init.el")
-(load-file "../dbgr-loc.el")
-(load-file "../dbgr-cmdbuf.el")
-(load-file "../dbgr-track.el")
+(load-file "../regexp.el")
+(load-file "../init.el")
+(load-file "../loc.el")
+(load-file "../cmdbuf.el")
+(load-file "../track.el")
 
 (behave-clear-contexts)
 

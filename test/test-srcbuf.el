@@ -1,7 +1,7 @@
 (load-file "./behave.el")
-(load-file "../dbgr-init.el")
-(load-file "../dbgr-srcbuf.el")
-(load-file "../dbgr-cmdbuf.el")
+(load-file "../init.el")
+(load-file "../srcbuf.el")
+(load-file "../cmdbuf.el")
 
 (behave-clear-contexts)
 

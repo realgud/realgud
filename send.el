@@ -1,6 +1,6 @@
 (require 'comint)
 (require 'load-relative)
-(require-relative-list '("dbgr-buffer"))
+(require-relative-list '("buffer") "dbgr-")
 
 (defun dbgr-send-command-comint (process command-str)
   "Assume we are in a comint buffer. Insert COMMAND-STR and 
@@ -161,4 +161,4 @@ optional doc string DOC."
      ;; ,(if key `(global-set-key (vconcat dbgr-key-prefix ,key) ',func))
      ))
 
-(provide-me)
+(provide-me "dbgr-")

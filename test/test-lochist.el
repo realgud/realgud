@@ -1,6 +1,6 @@
 (load-file "./behave.el")
-(load-file "../dbgr-loc.el")
-(load-file "../dbgr-lochist.el")
+(load-file "../loc.el")
+(load-file "../lochist.el")
 
 (behave-clear-contexts)
 

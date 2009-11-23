@@ -1,11 +1,11 @@
-;;; dbgr-loc.el --- Debugger location
+;;; Debugger location
 ;;; Commentary:
 
 ;; This describes a debugger location structure and has code for
 ;; working with them.
 
 (require 'load-relative)
-(require-relative-list '("dbgr-fringe"))
+(require-relative-list '("fringe") "dbgr-")
 
 (defstruct dbgr-loc
 "Our own location type. Even though a mark contains a
@@ -67,4 +67,4 @@ buffer) is returned, or nil if not found"
 		  ))))
 	src-buffer )))
 
-(provide 'dbgr-loc)
+(provide-me "dbgr-")

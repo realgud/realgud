@@ -1,6 +1,6 @@
 ; Should dbgr-file-loc-from-line be here or elsewhere?
 (require 'load-relative)
-(require-relative-list '("dbgr-helper" "dbgr-loc"))
+(require-relative-list '("helper" "loc") "dbgr-")
 
 (fn-p-to-fn?-alias 'file-exists-p)
 (declare-function file-exists?(file))
@@ -40,4 +40,4 @@ problem as best as we can determine."
 	(format "%s is not an integer" line-number))
     (format "File named `%s' not found" filename)))
 
-(provide-me)
+(provide-me "dbgr-")

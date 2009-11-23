@@ -1,10 +1,12 @@
-;;; dbgr-srcbuf.el --- code for a source-code buffer
+;;; source-code buffer code
 (eval-when-compile 
   (require 'cl)
   (defvar dbgr-srcbuf-info) ;; is buffer local
   (defvar dbgr-cmdbuf-info) ;; in the cmdbuf, this is buffer local
   )
 
+(require 'load-relative)
+(require-relative-list '("helper") "dbgr-")
 
 (defstruct dbgr-srcbuf-info
   "debugger object/structure specific to a (top-level) Ruby file
@@ -26,9 +28,6 @@ to be debugged."
   ;; 
 )
 (defalias 'dbgr-srcbuf-info? 'dbgr-srcbuf-p)
-
-(require 'load-relative)
-(require-relative "dbgr-helper")
 
 (defun dbgr-srcbuf-info-set? ()
   "Return true if `dbgr-srcbuf-info' is set."
@@ -113,10 +112,5 @@ in it with those from CMDPROC-BUFFER"
 		 " "))
      (t nil))))
   
-(provide-me)
+(provide-me "dbgr-")
 
-;;; Local variables:
-;;; eval:(put 'dbgr-debug-enter 'lisp-indent-hook 1)
-;;; End:
-
-;;; dbgr-srcbuf.el ends here

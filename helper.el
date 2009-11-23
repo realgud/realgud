@@ -44,9 +44,10 @@ is a field in that. Access (STRUCT-SYMBOL-STRUCT-FIELD STRUCT-SYMBOL)"
 	   (intern (concat dbgr-symbol-str "-" (symbol-name, struct-field)))))
     (funcall dbgr-field-access (eval (intern dbgr-symbol-str)))))
 
-(provide-me)
 ;; (defun dbgr-struct-field (var-sym field-sym)
 ;;   (setq var-str (symbol-name var-sym))
 ;;   (setq field-str (symbol-name field-sym))
 ;;   (funcall (symbol-function (intern (concat var-str "-" field-str)))
 ;; 	   (eval (intern var-str))))
+
+(provide-me "dbgr-")

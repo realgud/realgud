@@ -1,10 +1,9 @@
-;;; regexp/rdebug.el --- Ruby 1.8 ruby-debug (rdebug) regular expressions
+;;; Ruby 1.8 debuggger: ruby-debug (rdebug)
 
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
-(require-relative "../dbgr-regexp")
-(require-relative "../dbgr-loc")
+(require-relative-list '("../regexp" "../loc") "dbgr-")
 
 (defvar dbgr-pat-hash)
 (declare-function make-dbgr-loc-pat (dbgr-loc))
@@ -43,9 +42,3 @@ dbgr-loc-pat struct")
        :line-group 2))
 
 (setf (gethash "rdebug" dbgr-pat-hash) rdebug-pat-hash)
-
-;;; Local variables:
-;;; eval:(put 'rdebug-debug-enter 'lisp-indent-hook 1)
-;;; End:
-
-;;; regexp/rdebug.el ends here

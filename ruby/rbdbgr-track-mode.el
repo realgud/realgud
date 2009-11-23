@@ -1,10 +1,9 @@
-;;; rbdbgr-track-mode.el --- Ruby "rbdbgr" Debugger tracking a comint
-;;; or eshell buffer.
+;;; Ruby "rbdbgr" Debugger tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))
 (require 'load-relative)
-(require-relative-list
- '("../dbgr-track-mode" "../dbgr-cmds" "rbdbgr-core"))
+(require-relative-list '("../track-mode" "../cmds") "dbgr-")
+(require-relative "rbdbgr-core")
 
 (defvar rbdbgr-pat-hash)
 (defvar rbdbgr-track-mode nil

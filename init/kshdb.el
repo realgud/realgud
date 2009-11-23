@@ -1,10 +1,9 @@
-;;; init/kshdb.el --- Korn Shell kshdb regular expressions
+;;; Korn Shell debugger kshdb
 
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
-(require-relative "../dbgr-regexp")
-(require-relative "../dbgr-loc")
+(require-relative-list '("../regexp" "../loc") "dbgr-")
 
 (defvar dbgr-pat-hash)
 (declare-function make-dbgr-loc-pat (dbgr-loc))

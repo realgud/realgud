@@ -1,10 +1,9 @@
-;;; init/zshdb.el --- Z shell zshdb regular expressions
+;;; Z shell zshdb regular expressions
 
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
-(require-relative "../dbgr-regexp")
-(require-relative "../dbgr-loc")
+(require-relative-list '("../regexp" "../loc") "dbgr-")
 
 (defvar dbgr-pat-hash)
 (declare-function make-dbgr-loc-pat (dbgr-loc))
@@ -29,9 +28,3 @@ The values of a hash entry is a dbgr-loc-pat struct")
        ))
 
 (setf (gethash "zshdb" dbgr-pat-hash) zshdb-pat-hash)
-
-;;; Local variables:
-;;; eval:(put 'zshdb-debug-enter 'lisp-indent-hook 1)
-;;; End:
-
-;;; init/zshdb.el ends here

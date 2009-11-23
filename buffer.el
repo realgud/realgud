@@ -1,6 +1,6 @@
 (require 'load-relative)
 (require-relative-list
- '("dbgr-fringe" "dbgr-cmdbuf" "dbgr-helper" "dbgr-srcbuf"))
+ '("fringe" "cmdbuf" "helper" "srcbuf") "dbgr-")
 
 (defvar dbgr-cmdbuf-info)
 
@@ -79,4 +79,4 @@ if we don't find anything."
 	(dbgr-get-cmdbuf-from-srcbuf buffer))
        (t nil)))))
 
-(provide-me)
+(provide-me "dbgr-")

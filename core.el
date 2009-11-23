@@ -7,7 +7,7 @@
 (require 'comint)
 (require 'load-relative)
 (require-relative-list
- '("dbgr-fringe" "dbgr-helper" "dbgr-cmdbuf" "dbgr-srcbuf" "dbgr-track"))
+ '("fringe" "helper" "cmdbuf" "srcbuf" "track") "dbgr-")
 
 (defvar dbgr-srcbuf-info)
 
@@ -154,14 +154,4 @@ the debugger name and debugger process buffer."
 	  ;; (insert-before-markers (format "+++1 %s" string))
 	  (insert-before-markers string)))))
 
-(provide-me)
-
-;; -------------------------------------------------------------------
-;; The end.
-;;
-
-;;; Local variables:
-;;; eval:(put 'rbdbgr-debug-enter 'lisp-indent-hook 1)
-;;; End:
-
-;;; dbgr-core.el ends here
+(provide-me "dbgr-")
