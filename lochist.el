@@ -18,7 +18,6 @@
 (defstruct dbgr-loc-hist
   "A list of source-code positions recently encountered"
   (position -1)
-  ;; FIXME: Add ring for process buffer positions
   (ring (make-ring dbgr-loc-hist-size)))
   
 (defun dbgr-loc-hist-item-at(loc-hist position)

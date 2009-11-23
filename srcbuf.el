@@ -69,9 +69,9 @@ to be debugged."
 (defun dbgr-srcbuf-init 
   (src-buffer cmdproc-buffer debugger-name cmd-args)
   "Initialize SRC-BUFFER as a source-code buffer for a debugger.
-CMDPROC-BUFFER is the process buffer containing the debugger. 
-DEBUGGER-NAME is the name of the debugger.
-as a main program."
+CMDPROC-BUFFER is the process-command buffer containing the
+debugger.  DEBUGGER-NAME is the name of the debugger.  as a main
+program."
   (with-current-buffer cmdproc-buffer
     (set-buffer src-buffer)
     (set (make-local-variable 'dbgr-srcbuf-info)

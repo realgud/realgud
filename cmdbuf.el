@@ -1,4 +1,4 @@
-;;; dbgr-cmdbuf.el --- debugger process buffer things
+;;; process-command buffer things
 (require 'cl)
 
 (require 'load-relative)
@@ -107,13 +107,14 @@ as a main program."
 	 "Debugger object for a process buffer.")))
 
 (defun dbgr-cmdbuf-debugger-name (&optional cmd-buf)
-  "Return the debugger name recorded in the debugger process buffer."
+  "Return the debugger name recorded in the debugger command-process buffer."
   (with-current-buffer-safe (or cmd-buf (current-buffer))
     (dbgr-sget 'cmdbuf-info 'debugger-name))
 )
 
 (defun dbgr-cmdbuf-loc-hist(cmd-buf)
-  "Return the history ring of locations that a debugger process has stored."
+  "Return the history ring of locations that a debugger
+command-process buffer has stored."
   (with-current-buffer-safe cmd-buf 
     (dbgr-sget 'cmdbuf-info 'loc-hist))
 )
@@ -125,6 +126,3 @@ as a main program."
       (and loc (dbgr-loc-marker loc)))))
 
 (provide-me "dbgr-")
-
-;;; Local variables:
-;;; End:
