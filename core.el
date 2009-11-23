@@ -136,8 +136,6 @@ the debugger name and debugger process-command buffer."
 	    (let ((src-buffer (find-file-noselect script-filename))
 		  (cmdline-list (cons program args)))
 	      ;; is this right? 
-	      ;; (dbgr-track-set-debugger debugger-name)
-	      (set-process-sentinel proc 'dbgr-term-sentinel)
 	      (point-max)
 	      (dbgr-srcbuf-init src-buffer cmdproc-buffer 
 				debugger-name cmdline-list))

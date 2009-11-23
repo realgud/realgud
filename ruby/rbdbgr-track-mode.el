@@ -13,7 +13,9 @@ Use the command `rbdbgr-track-mode' to toggle or set this variable.")
 (declare-function dbgr-track-mode(bool))
 
 (defun rbdbgr-track-mode-body()
-  "Called when entering or leaving rbdbgr-track-mode"
+  "Called when entering or leaving rbdbgr-track-mode. Variable
+`pydbgr-track-mode' is a boolean which specifies if we are going
+into or out of this mode."
   (dbgr-track-set-debugger "rbdbgr")
   (dbgr-define-gdb-like-commands)
   (if rbdbgr-track-mode

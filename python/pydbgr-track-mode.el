@@ -15,7 +15,9 @@ Use the command `pydbgr-track-mode' to toggle or set this variable.")
 (declare-function dbgr-track-mode(bool))
 
 (defun pydbgr-track-mode-body()
-  "Called when entering or leaving pydbgr-track-mode"
+  "Called when entering or leaving pydbgr-track-mode. Variable
+`pydbgr-track-mode' is a boolean which specifies if we are going
+into or out of this mode."
   (dbgr-track-set-debugger "pydbgr")
   (dbgr-define-gdb-like-commands)
   (if pydbgr-track-mode

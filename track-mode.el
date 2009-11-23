@@ -4,7 +4,7 @@
 
 (require 'load-relative)
 (require-relative-list
- '("helper" "track" "loc" "lochist" "file" 
+ '("core" "helper" "track" "loc" "lochist" "file" 
    "fringe" "cmdbuf" "window" "regexp"
    "send" "shortkey") "dbgr-")
 
@@ -40,8 +40,15 @@
   )
 
 (defun dbgr-track-mode-body ()
+  "Called when entering or leaving debug-track-mode. Variable
+`dbgr-track-mode' is a boolean which specifies if we are going
+into or out of this mode."
   (if dbgr-track-mode
-      (progn
+      (let* ((process (get-buffer-process (current-buffer)))
+	     (running? (eq 'run (process-status process))))
+	;; FIXME: save and chain process-sentinel via
+	;; (process-sentinel (get-buffer-process (current-buffer)))
+	(set-process-sentinel process 'dbgr-term-sentinel)
 	(unless (and (dbgr-cmdbuf-info-set?)
 		     (dbgr-sget 'cmdbuf-info 'debugger-name))
 	  (call-interactively 'dbgr-track-set-debugger))
@@ -73,7 +80,11 @@
       (remove-hook 'comint-output-filter-functions 
 		   'dbgr-track-comint-output-filter-hook)
       (remove-hook 'eshell-output-filter-functions 
-		    'dbgr-track-eshell-output-filter-hook)))
+		    'dbgr-track-eshell-output-filter-hook)
+      ;; FIXME: restore/unchain old process sentinels.
+      )
+    )
+
 )
 
 (provide-me "dbgr-")

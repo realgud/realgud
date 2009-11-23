@@ -52,8 +52,8 @@ String COMMAND-LINE specifies how to run rbdbgr."
     (error nil))
     ;; FIXME: Is there probably is a way to remove the
     ;; below test and combine in condition-case? 
-    (let ((proc (get-buffer-process cmd-buf)))
-      (if (and proc (eq 'run (process-status proc)))
+    (let ((process (get-buffer-process cmd-buf)))
+      (if (and process (eq 'run (process-status process)))
 	  (progn
 	    (switch-to-buffer cmd-buf)
 	    (rbdbgr-track-mode 't)
