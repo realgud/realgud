@@ -1,5 +1,5 @@
 AC_INIT(emacs-dbgr, 0.01vc,)
-AC_CONFIG_SRCDIR(dbgr-loc.el)
+AC_CONFIG_SRCDIR(loc.el)
 AM_INIT_AUTOMAKE
 AM_MAINTAINER_MODE
 
