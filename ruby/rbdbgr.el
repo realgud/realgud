@@ -1,6 +1,6 @@
 ;;  `rbdbgr' Main interface to rbdbgr via Emacs
 (require 'load-relative)
-(require-relative "../helper" "dbgr-")
+(require-relative-list '("../helper") "dbgr-")
 (require-relative-list '("rbdbgr-core" "rbdbgr-track-mode"))
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
