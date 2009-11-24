@@ -127,6 +127,9 @@ encountering a new loc."
 	(if stay-in-cmdbuf?
 	    (progn
 	      (dbgr-split-or-other-window srcbuf)
+	      (if (and (boundp 'dbgr-overlay-arrow1)
+		       (markerp dbgr-overlay-arrow1))
+		  (goto-char dbgr-overlay-arrow1))
 	      (switch-to-buffer-other-window cmdbuf))
 	  (set-buffer cmdbuf))
 	)))
