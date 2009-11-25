@@ -93,9 +93,9 @@
 
 (defvar *behave-default-tags* "all")
 
-(defvar *behave-total-assertions* 
+(defvar *behave-total-assertions* 0
   "Count of number of assertions seen since the last `behave-clear-contexts'"
-0)
+)
 
 (defstruct context 
   description
@@ -134,7 +134,8 @@
 
 (defun assert-equal (expected actual &optional opt-fail-message)
   "expectation is that ACTUAL should be equal to EXPECTED."
-  (incf *behave-total-assertions*)
+  (if (boundp '*behave-total-assertions*)
+	   (incf *behave-total-assertions*))
   (if (not (equal actual expected))
       (let* ((fail-message 
 	      (if opt-fail-message
