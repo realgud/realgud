@@ -138,8 +138,9 @@ Some %-escapes in the string arguments are expanded. These are:
     (dbgr-send-command command-str (function dbgr-send-command-comint))))
 
 (defmacro dbgr-define-command (func cmd &optional key doc)
-  "Define FUNC to be a command sending CMD possibly bound to KEY, and with
-optional doc string DOC."
+  "Define symbol name FUNC to be a command sending string CMD to
+dbgr-command. If KEY is not nil, the command is bound to that.
+DOC gives the document string for the command."
   (declare (indent 1) (debug t))
 ;; Here is a sample expansion of the below for 
 ;; dbgr-define-command('foo", "bar", "f", "Now is the time")

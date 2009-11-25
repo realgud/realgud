@@ -43,6 +43,19 @@
 			    (cons "%F" "test-send")))
 			(assert-equal (cdr pair) (dbgr-expand-format (car pair))))))
 	 (tear-down)
+
+	 (specify "dbgr-define-command"
+		  (defalias 'dbgr-command-orig
+		    (symbol-function 'dbgr-command))
+		  (defun dbgr-command (str &optional arg)
+		    (assert-equal "testing" str))
+		  (dbgr-define-command 'my-test "testing" "a")
+		  (assert-t (functionp 'dbgr-cmd-my-test))
+		  (assert-equal 'dbgr-cmd-my-test (lookup-key (current-local-map) "\C-ca"))
+		  (dbgr-cmd-my-test 5)
+		  (fset 'dbgr-command (symbol-function 'dbgr-command-orig))
+		  )
+
 )
 
 (behave "send")

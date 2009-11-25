@@ -78,7 +78,7 @@
 ;; [Rocky: the below link is defunct]
 ;; http://dev.technomancy.us/phil/query?status=new&status=assigned&status=reopened&component=behave&order=priority
 
-;; Main issues: more expect predicates and protected-let
+;; Main issues: more expect predicates
 
 ;;; Usage:
 
@@ -92,6 +92,10 @@
   "A list of contexts and their specs.")
 
 (defvar *behave-default-tags* "all")
+
+(defvar *behave-total-assertions* 
+  "Count of number of assertions seen since the last `behave-clear-contexts'"
+0)
 
 (defstruct context 
   description
@@ -130,6 +134,7 @@
 
 (defun assert-equal (expected actual &optional opt-fail-message)
   "expectation is that ACTUAL should be equal to EXPECTED."
+  (incf *behave-total-assertions*)
   (if (not (equal actual expected))
       (let* ((fail-message 
 	      (if opt-fail-message
@@ -152,6 +157,7 @@
 
 (defun assert-nil (actual &optional opt-fail-message)
   "expectation is that ACTUAL is nil."
+  (incf *behave-total-assertions*)
   (if actual
       (let* ((fail-message 
 	      (if opt-fail-message
@@ -174,6 +180,7 @@
 (defun behave-clear-contexts ()
   (interactive)
   (setq *behave-contexts* '())
+  (setq *behave-total-assertions* 0)
   (message "Behave: contexts cleared"))
 
 (defun context-find (description)
@@ -241,7 +248,8 @@
   (princ (concat "\n\n" (number-to-string (length failures)) " problem" (unless (= 1 (length failures)) "s") " in " 
 		 (number-to-string spec-count)
 		 " specification" (unless (= 1 spec-count) "s") 
-		 ". (" (number-to-string (- (cadr (current-time)) start-time)) " seconds)\n\n"))
+		 " using " (number-to-string *behave-total-assertions*) " assertions. "
+		 "(" (number-to-string (- (cadr (current-time)) start-time)) " seconds)\n\n"))
   (dolist (failure failures)
     (behave-report-result failure)))
 
