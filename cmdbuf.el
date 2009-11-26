@@ -1,13 +1,18 @@
 ;;; process-command buffer things
-(require 'cl)
 
 (require 'load-relative)
 (require-relative-list
  '("fringe" "helper" "loc" "lochist") "dbgr-")
 
 (eval-when-compile 
+  (byte-compile-disable-warning 'cl-functions)
+  ;; Somehow disabling cl-functions causes the erroneous message:
+  ;;   Warning: the function `reduce' might not be defined at runtime.
+  ;; FIXME: isolate, fix and/or report back to Emacs developers a bug
+  (byte-compile-disable-warning 'unresolved)
   (defvar dbgr-cmdbuf-info)
   )
+(require 'cl)
 
 (defstruct dbgr-cmdbuf-info
   "The debugger object/structure specific to a process buffer."
