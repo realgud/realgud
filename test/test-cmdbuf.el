@@ -1,5 +1,6 @@
 (load-file "./behave.el")
-(load-file "../dbgr-cmdbuf.el")
+(load-file "../cmdbuf.el")
+(load-file "../init.el")
 
 (behave-clear-contexts)
 
@@ -14,8 +15,7 @@
 		  (setq temp-cmdbuf (generate-new-buffer "*cmdbuf-test*"))
 		  (assert-t (dbgr-cmdbuf-init temp-cmdbuf "rbdbgr" (gethash "rbdbgr" dbgr-pat-hash)))
 		  (with-current-buffer temp-cmdbuf
- 		    (dbgr-cmdbuf-info-cmd-args= dbgr-cmdbuf-info
-						'("command" "args"))
+ 		    (dbgr-cmdbuf-info-cmd-args= '("command" "args"))
 		    (assert-equal "command args" 
 				  (dbgr-cmdbuf-command-string temp-cmdbuf))
 		    (assert-equal "rbdbgr" 

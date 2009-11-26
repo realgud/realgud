@@ -44,6 +44,20 @@ is a field in that. Access (STRUCT-SYMBOL-STRUCT-FIELD STRUCT-SYMBOL)"
 	   (intern (concat dbgr-symbol-str "-" (symbol-name, struct-field)))))
     (funcall dbgr-field-access (eval (intern dbgr-symbol-str)))))
 
+;; FIXME: This is broken. setf is not setting. 
+(defmacro dbgr-setter(struct-var field)
+  "Create field-setter macro name STRUCT-VAR-FEILD= takes a value parameters and sets 
+the FIELD field of STRUCT. The macro created looks like this:
+  (defmacro (value) (setf (STRUCT-VAR-FIELD STRUCT-VAR) value))"
+  (declare (indent 1) (debug t))
+  (let* ((struct-var-field (concat struct-var "-" field))
+	  (struct-var-sym (intern struct-var))
+	  (struct-var-field-sym (intern struct-var-field))
+	  (macro-symbol (intern (concat struct-var-field "="))))
+    (list 'defmacro macro-symbol '(value)
+       (list 'setf (list struct-var-field-sym struct-var-sym)) 'value)
+     ))
+
 ;; (defun dbgr-struct-field (var-sym field-sym)
 ;;   (setq var-str (symbol-name var-sym))
 ;;   (setq field-str (symbol-name field-sym))
