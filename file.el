@@ -9,9 +9,9 @@
   "Return the number of lines in file FILENAME, or nil FILENAME can't be
 found"
   (if (file-exists? filename)
-      (save-current-buffer 
-	(find-file filename)
-	(line-number-at-pos (point-max)))
+      (let ((file-buffer (find-file-noselect filename)))
+	(with-current-buffer-safe file-buffer
+	  (line-number-at-pos (point-max))))
     nil))
 
 (defun dbgr-file-loc-from-line(filename line-number &optional cmd-marker)

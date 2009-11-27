@@ -34,14 +34,14 @@ want to save the values that were seen/requested originally."
 (defun dbgr-loc-marker=(loc marker)
   (setf (dbgr-loc-marker loc) marker))
 
-(defun dbgr-loc-goto(loc &optional window-fn &rest args)
-  "Goto the LOC which may involve switching buffers and moving
-the point to the places indicated by LOC. In the process, the buffer
-and marker inside loc may be updated. If WINDOW-FN and ARGS are given,
-WINDOW-FN is called before switching buffers. 
+(defun dbgr-loc-goto(loc)
+  "Position a buffer at LOC which may involve reading in a file
+and setting the point to the place indicated by LOC. In the
+process, the marker inside loc may be updated.
 
-The buffer containing the location referred to (or 'source-code'
-buffer) is returned, or nil if not found"
+The buffer containing the location referred to, the source-code
+buffer, is returned if LOC is found. nil is returned if LOC is
+not not found"
   (if (dbgr-loc? loc) 
       (lexical-let* ((filename    (dbgr-loc-filename loc))
 		     (line-number (dbgr-loc-line-number loc))
@@ -55,8 +55,7 @@ buffer) is returned, or nil if not found"
 	      (goto-char cmd-marker)))
 	(if src-buffer
 	    (progn 
-	      (if window-fn (apply window-fn args))
-	      (switch-to-buffer src-buffer)
+	      (set-buffer src-buffer)
 	      (if (and marker (marker-position marker))
 		  (goto-char (marker-position marker))
 		(let ((src-marker))

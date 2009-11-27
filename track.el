@@ -70,10 +70,26 @@ by evaluating (dbgr-cmdbuf-info-loc-regexp dbgr-cmdbuf-info)"
   (let ((cmd-buff (dbgr-get-cmdbuf (current-buffer))))
     (if cmd-buff
 	(let* ((loc-hist (dbgr-cmdbuf-loc-hist cmd-buff))
+	       (srcbuf (dbgr-get-srcbuf-from-cmdbuf cmd-buff)) 
 	       (window (selected-window))
 	       (position (funcall fn loc-hist))
+	       (stay-in-cmdbuf? 
+		(with-current-buffer cmd-buff
+		  (not (dbgr-sget 'cmdbuf-info 'in-srcbuf?))))
 	       (loc (dbgr-loc-hist-item loc-hist)))
-	  (dbgr-loc-goto loc 'dbgr-split-or-other-window)
+	  (dbgr-loc-goto loc)
+	  ;; FIXME turn into fn. combine with dbgr-track-loc-action.
+	  (if stay-in-cmdbuf?
+	      (let ((cmd-window (dbgr-window-src-undisturb-cmd srcbuf)))
+	      (with-current-buffer srcbuf
+		(if (and (boundp 'dbgr-overlay-arrow1)
+			 (markerp dbgr-overlay-arrow1))
+		      (select-window (get-buffer-window srcbuf))
+		      (goto-char dbgr-overlay-arrow1)))
+		(if cmd-window (select-window cmd-window)))
+	    (dbgr-window-src srcbuf)
+	  )
+
 	  (message "history position %s line %s" 
 		   (dbgr-loc-hist-index loc-hist)
 		   (dbgr-loc-line-number loc))
@@ -108,7 +124,7 @@ encountering a new loc."
 	      (local-variable-p 'overlay-arrow-variable-list)))
 	   (stay-in-cmdbuf?
 	    (with-current-buffer cmdbuf
-	      (not (dbgr-sget 'cmdbuf-info 'in-srcbuf))))
+	      (not (dbgr-sget 'cmdbuf-info 'in-srcbuf?))))
 	   (srcbuf)
 	   (srcbuf-loc-hist)
 	   )
@@ -122,16 +138,22 @@ encountering a new loc."
 
         ;; Do we need to go back to the process/command buffer because other
         ;; output-filter hooks run after this may assume they are in that
-        ;; buffer. If so, we may have to use set-buffer rather than 
+        ;; buffer? If so, we may have to use set-buffer rather than 
 	;; switch-to-buffer in some cases.
+	(set-buffer cmdbuf)
+	;; FIXME turn into fn. combine with dbgr-track-hist-fn-internal
 	(if stay-in-cmdbuf?
-	    (progn
-	      (dbgr-split-or-other-window srcbuf)
-	      (if (and (boundp 'dbgr-overlay-arrow1)
-		       (markerp dbgr-overlay-arrow1))
-		  (goto-char dbgr-overlay-arrow1))
-	      (switch-to-buffer-other-window cmdbuf))
-	  (set-buffer cmdbuf))
+	    (let ((cmd-window (dbgr-window-src-undisturb-cmd srcbuf)))
+	      (with-current-buffer srcbuf
+		(if (and (boundp 'dbgr-overlay-arrow1)
+			 (markerp dbgr-overlay-arrow1))
+		    (progn
+		      (select-window (get-buffer-window srcbuf))
+		      (goto-char dbgr-overlay-arrow1))
+		  ))
+	      (if cmd-window (select-window cmd-window)))
+	  (dbgr-window-src srcbuf)
+	  )
 	)))
 
 (defun dbgr-track-loc(text &optional cmd-mark opt-regexp 

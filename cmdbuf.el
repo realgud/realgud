@@ -21,9 +21,10 @@
   prior-prompt-regexp  ;; regular expression prompt (e.g.
                        ;; comint-prompt-regexp) *before* setting
                        ;; loc-regexp
-  in-srcbuf            ;; should the selected window be the source buffer or
+  in-srcbuf?           ;; Should the selected window be the source buffer or
 		       ;; command buffer?
-  update-history       ;; should we update the location history 
+  update-history?      ;; Should we update the location history?
+  src-shortkey?        ;; Are source buffers in dbgr-short-key mode?
   regexp-hash          ;; hash table of regular expressions appropriate for
                        ;; this debugger. Eventually loc-regexp, file-group
                        ;; and line-group below will removed and stored here.
@@ -58,11 +59,11 @@
 (defun dbgr-cmdbuf-info-cmd-args=(info value)
   (setf (dbgr-cmdbuf-info-cmd-args info) value))
 
-(defun dbgr-cmdbuf-info-in-srcbuf=(info value)
-  (setf (dbgr-cmdbuf-info-in-srcbuf info) value))
+(defun dbgr-cmdbuf-info-in-srcbuf?=(info value)
+  (setf (dbgr-cmdbuf-info-in-srcbuf? info) value))
 
-(defun dbgr-cmdbuf-info-update-history=(info value)
-  (setf (dbgr-cmdbuf-info-update-history info) value))
+(defun dbgr-cmdbuf-info-update-history?=(info value)
+  (setf (dbgr-cmdbuf-info-update-history? info) value))
 
 (defun dbgr-cmdbuf-info-prior-prompt-regexp=(info value)
   (if (dbgr-cmdbuf-info? info)

@@ -6,6 +6,7 @@
   :group 'dbgr
   :global t
   :init-value nil
+  ;; executed on activation/deactivation:
   (dbgr-short-key-mode-maybe-activate)
 )
 

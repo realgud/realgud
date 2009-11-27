@@ -34,7 +34,7 @@ getting stepped."
   (let ((buffer (current-buffer))
 	(cmdbuf (dbgr-get-cmdbuf)))
     (with-current-buffer-safe cmdbuf
-      (dbgr-cmdbuf-info-in-srcbuf= dbgr-cmdbuf-info 
+      (dbgr-cmdbuf-info-in-srcbuf?= dbgr-cmdbuf-info 
 				   (not (dbgr-cmdbuf? buffer))))
     (dbgr-command "step" count))
 )
