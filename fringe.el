@@ -77,15 +77,18 @@ position.")
 (defun dbgr-fringe-set-arrow (overlay-arrow marker)
   "Set the fringe indicator or overlay arrow to MARKER. This is done
 for example to indicate a debugger position."
-  (with-current-buffer (marker-buffer marker)
-    (save-excursion
-      (save-restriction
-	(widen)
-	(goto-char (marker-position marker))
-	;; We need to ignore field boundaries, so we use
-	;; forward-line rather than beginning-of-line. 
-	(forward-line 0)
-	(set overlay-arrow (point-marker))))))
+  (let ((position (marker-position marker)))
+    (if position
+	(with-current-buffer (marker-buffer marker)
+	  (save-excursion
+	    (save-restriction
+	      (widen)
+	      (progn
+		(goto-char position)
+		;; We need to ignore field boundaries, so we use
+		;; forward-line rather than beginning-of-line. 
+		(forward-line 0)
+		(set overlay-arrow (point-marker)))))))))
 
 (defun dbgr-fringe-history-set (loc-hist &optional do-cmdbuf?)
   "Set arrows on the last positions we have stopped on."

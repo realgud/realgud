@@ -44,8 +44,11 @@
 MODE-ON is a boolean which specifies if we are going into or out
 of this mode."
   (if mode-on?
-      (let* ((process (get-buffer-process (current-buffer)))
-	     (running? (eq 'run (process-status process))))
+      (let ((process (get-buffer-process (current-buffer))))
+	(unless process
+	  (setq dbgr-track-mode nil)
+	  (error "Can't find a process for buffer %s" (current-buffer)))
+
 	;; FIXME: save and chain process-sentinel via
 	;; (process-sentinel (get-buffer-process (current-buffer)))
 	(set-process-sentinel process 'dbgr-term-sentinel)

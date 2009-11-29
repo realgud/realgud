@@ -166,9 +166,10 @@ encountering a new loc."
 	;; FIXME turn into fn. combine with dbgr-track-hist-fn-internal
 	(if stay-in-cmdbuf?
 	    (let ((cmd-window (dbgr-window-src-undisturb-cmd srcbuf)))
-	      (if (and (boundp 'dbgr-overlay-arrow1)
-		       (markerp dbgr-overlay-arrow1))
-		  (dbgr-window-update-position srcbuf dbgr-overlay-arrow1))
+	      (with-current-buffer srcbuf
+		(if (and (boundp 'dbgr-overlay-arrow1)
+			 (markerp dbgr-overlay-arrow1))
+		    (dbgr-window-update-position srcbuf dbgr-overlay-arrow1)))
 	      (if cmd-window (select-window cmd-window)))
 	  (dbgr-window-src srcbuf)
 	  )
