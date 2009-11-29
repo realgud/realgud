@@ -7,7 +7,7 @@
 (require 'comint)
 (require 'load-relative)
 (require-relative-list
- '("fringe" "helper" "cmdbuf" "srcbuf" "track") "dbgr-")
+ '("fringe" "helper" "cmdbuf" "srcbuf") "dbgr-")
 
 (defvar dbgr-srcbuf-info)
 

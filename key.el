@@ -63,7 +63,7 @@ Nor does it touch prefix keys; for that see `dbgr-populate-keys-standard'"
     ;; (define-key map "q" 'dbgr-quit)
     ;; (define-key map "r" 'dbgr-restart)
     ;; (define-key map "R" 'dbgr-restart)
-    ;; (define-key map "s" 'dbgr-step)
+    (define-key map "s" 'dbgr-cmd-step)
     (define-key map [M-down]   'dbgr-track-hist-newer)
     (define-key map [M-up]     'dbgr-track-hist-older)
     (define-key map [M-S-down] 'dbgr-track-hist-newest)

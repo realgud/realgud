@@ -7,11 +7,12 @@
 
 (require 'load-relative)
 (require-relative-list
- '("buffer" "cmdbuf" "file" "fringe" 
-   "helper" "init"   "loc"  "lochist" 
-   "regexp" "srcbuf" "window" 
+ '("buffer" "cmdbuf"   "file"   "fringe" 
+   "helper" "init"     "loc"    "lochist" 
+   "regexp" "shortkey" "srcbuf" "window"
    ) "dbgr-")
 
+(defvar dbgr-track-mode)
 (fn-p-to-fn?-alias 'dbgr-loc-p)
 (declare-function dbgr-loc?(loc))
 
@@ -125,6 +126,9 @@ encountering a new loc."
 	   (stay-in-cmdbuf?
 	    (with-current-buffer cmdbuf
 	      (not (dbgr-sget 'cmdbuf-info 'in-srcbuf?))))
+	   (shortkey-mode?
+	    (with-current-buffer cmdbuf
+	      (dbgr-sget 'cmdbuf-info 'src-shortkey?)))
 	   (srcbuf)
 	   (srcbuf-loc-hist)
 	   )
@@ -132,6 +136,10 @@ encountering a new loc."
 	(setq srcbuf (dbgr-loc-goto loc))
 	(dbgr-srcbuf-init-or-update srcbuf cmdbuf)
 	(setq srcbuf-loc-hist (dbgr-srcbuf-loc-hist srcbuf))
+
+	(with-current-buffer srcbuf
+	  (dbgr-short-key-mode-setup shortkey-mode?))
+	  
 	(dbgr-loc-hist-add srcbuf-loc-hist loc)
 	(dbgr-loc-hist-add cmdbuf-loc-hist loc)
 	(dbgr-fringe-history-set cmdbuf-loc-hist cmdbuf-local-overlay-arrow?)

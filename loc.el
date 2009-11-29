@@ -60,7 +60,7 @@ not not found"
 		  (goto-char (marker-position marker))
 		(let ((src-marker))
 		  (goto-char (point-min))
-		  (forward-line (- line-number 1))
+		  (forward-line (1- line-number))
 		  (setq src-marker (point-marker))
 		  (dbgr-loc-marker= loc src-marker)
 		  ))))

@@ -34,6 +34,8 @@ test-srcbuf.run:
 	(cd $(srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )
 test-send.run:
 	(cd $(srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )
+test-shortkey.run:
+	(cd $(srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )
 test-track.run:
 	(cd $(srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )
 

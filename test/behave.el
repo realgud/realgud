@@ -132,6 +132,15 @@
 ;; Assertion tests
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defmacro assert-raises (error-condition body &optional opt-fail-message)
+  (let ((fail-message (or opt-fail-message
+			  (format "assert-raises did not get expected %s" 
+				  error-condition))))
+  (list 'condition-case nil
+       (list 'progn body
+	      (list 'assert-t nil fail-message))
+     (list error-condition '(assert-t t)))))
+
 (defun assert-equal (expected actual &optional opt-fail-message)
   "expectation is that ACTUAL should be equal to EXPECTED."
   (if (boundp '*behave-total-assertions*)

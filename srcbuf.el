@@ -11,16 +11,29 @@
 (defstruct dbgr-srcbuf-info
   "debugger object/structure specific to a (top-level) Ruby file
 to be debugged."
-  debugger-name ;; Name of debugger. We could get this from the
-		;; process command buffer, but we want to store it
-		;; here in case the command buffer disappears
-  cmd-args      ;; Debugger command invocation as a list of strings or
-		;; nil. See above about why we don't get from the
-		;; process command buffer.
-  cmdproc       ;; buffer of the associated debugger process
-  cur-pos       ;; If not nil, the debugger thinks we are currently 
-                ;; positioned at a corresponding place in the program.
-  loc-hist      ;; ring of locations seen 
+  debugger-name  ;; Name of debugger. We could get this from the
+                 ;; process command buffer, but we want to store it
+                 ;; here in case the command buffer disappears. Used
+                 ;; in recomputing a suitiable debugger invocation.
+  cmd-args       ;; Debugger command invocation as a list of strings
+                 ;; or nil. See above about why we don't get from the
+                 ;; process command buffer. Used to suggest a debugger
+                 ;; invocation.
+  cmdproc        ;; buffer of the associated debugger process
+  cur-pos        ;; If not nil, the debugger thinks we are currently
+		 ;; positioned at a corresponding place in the
+		 ;; program.
+  short-key?     ;; Was the source buffer previously in short-key
+		 ;; mode? Used to deterimine when short-key mode
+		 ;; changes state in a source buffer , so we need to
+		 ;; perform on/off actions.
+  was-read-only? ;; Was buffer initially read only? (i.e. the original
+		 ;; value of the buffer's buffer-read-only
+		 ;; variable. Short-key-mode may change the read-only
+		 ;; state, so we need restore this value when leaving
+		 ;; short-key mode
+  
+  loc-hist       ;; ring of locations seen 
 
   ;; FILL IN THE FUTURE
   ;;(brkpt-alist '())  ;; alist of breakpoints the debugger has referring
@@ -28,6 +41,14 @@ to be debugged."
   ;; 
 )
 (defalias 'dbgr-srcbuf-info? 'dbgr-srcbuf-p)
+
+;; FIXME: DRY = access via a macro. See also analogous
+;; code in dbgr-srcbuf
+(defun dbgr-srcbuf-info-was-read-only?=(info value)
+  (setf (dbgr-srcbuf-info-was-read-only? info) value))
+
+(defun dbgr-srcbuf-info-short-key?=(info value)
+  (setf (dbgr-srcbuf-info-short-key? info) value))
 
 (defun dbgr-srcbuf-info-set? ()
   "Return true if `dbgr-srcbuf-info' is set."
@@ -37,9 +58,10 @@ to be debugged."
 
 (defun dbgr-srcbuf? ( &optional buffer)
   "Return true if BUFFER is a debugger source buffer."
-  (with-current-buffer-safe 
-   (or buffer (current-buffer))
-   (dbgr-srcbuf-info-set?)))
+  (with-current-buffer-safe (or buffer (current-buffer))
+    (and (dbgr-srcbuf-info-set?)
+	 (not (buffer-killed? (dbgr-sget 'srcbuf-info 'cmdproc)))
+   )))
 
 (defun dbgr-srcbuf-loc-hist(src-buf)
   "Return the history ring of locations that a debugger process has stored."

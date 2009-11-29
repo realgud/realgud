@@ -62,6 +62,9 @@
 (defun dbgr-cmdbuf-info-in-srcbuf?=(info value)
   (setf (dbgr-cmdbuf-info-in-srcbuf? info) value))
 
+(defun dbgr-cmdbuf-info-src-shortkey?=(info value)
+  (setf (dbgr-cmdbuf-info-src-shortkey? info) value))
+
 (defun dbgr-cmdbuf-info-update-history?=(info value)
   (setf (dbgr-cmdbuf-info-update-history? info) value))
 

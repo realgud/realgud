@@ -35,15 +35,15 @@
 		     "dbgr??"))))
 
   :keymap dbgr-track-mode-map
-  
-  (dbgr-track-mode-body)
+  ;; Setup/teardown
+  (dbgr-track-mode-setup dbgr-track-mode)
   )
 
-(defun dbgr-track-mode-body ()
-  "Called when entering or leaving debug-track-mode. Variable
-`dbgr-track-mode' is a boolean which specifies if we are going
-into or out of this mode."
-  (if dbgr-track-mode
+(defun dbgr-track-mode-setup (mode-on?)
+  "Called when entering or leaving `dbgr-track-mode'. Variable
+MODE-ON is a boolean which specifies if we are going into or out
+of this mode."
+  (if mode-on?
       (let* ((process (get-buffer-process (current-buffer)))
 	     (running? (eq 'run (process-status process))))
 	;; FIXME: save and chain process-sentinel via
@@ -84,7 +84,6 @@ into or out of this mode."
       ;; FIXME: restore/unchain old process sentinels.
       )
     )
-
 )
 
 (provide-me "dbgr-")

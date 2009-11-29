@@ -5,7 +5,7 @@
 (behave-clear-contexts)
 
 (lexical-let ((filename (symbol-file 'behave)))
-
+  
   (context "dbgr-file-line-count"
 	   (tag file)
 	   (specify "File not found"
@@ -34,4 +34,3 @@
 			       (dbgr-file-loc-from-line filename 30 (make-marker)))))
   ))
 (behave "file")
-
