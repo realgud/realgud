@@ -4,6 +4,17 @@
 (fn-p-to-fn?-alias 'one-window-p)
 (declare-function one-window?(bool))
 
+(defun dbgr-window-update-position (buffer marker)
+  "Update BUFFER to position specified with MARKER.
+We assume MAKER points inside BUFFER"
+  (with-current-buffer buffer
+    (let ((window (get-buffer-window buffer)))
+      (if window
+	  (progn 
+	    (select-window window)
+	    (goto-char marker))))))
+
+
 (defun dbgr-window-src ( &optional opt-buffer )
   "Make sure the source buffer is displayed in a window
 We don't care if the command buffer is also displayed.

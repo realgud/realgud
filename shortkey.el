@@ -10,11 +10,6 @@
     map)
   "Keymap used in `dbgr-short-key-mode'.")
 
-;; `define-minor-mode' does not set if the mode was on or off prior to
-;; being called.
-(defvar dbgr-short-key-mode-previous-state nil
-  "Used to determine when 'dbgr-short-key-mode' changed state.")
-
 ;; Implementation note: This is the mode that does all the work, it's
 ;; local to the buffer that is affected.
 (define-minor-mode dbgr-short-key-mode

@@ -67,29 +67,42 @@ by evaluating (dbgr-cmdbuf-info-loc-regexp dbgr-cmdbuf-info)"
   (dbgr-track-loc (buffer-substring from to) cmd-mark))
 
 (defun dbgr-track-hist-fn-internal(fn)
+  "Update both command buffer and a source buffer to reflect the
+selected location in the location histor. If we started in a
+command buffer, we stay in a command buffer. Moving inside a
+command buffer always shows the corresponding source
+file. However it is possible in shortkey mode to show only the
+source code window, even the commmand buffer is updated albeit
+unshown."
+
   (interactive)
-  (let ((cmd-buff (dbgr-get-cmdbuf (current-buffer))))
-    (if cmd-buff
-	(let* ((loc-hist (dbgr-cmdbuf-loc-hist cmd-buff))
-	       (srcbuf (dbgr-get-srcbuf-from-cmdbuf cmd-buff)) 
+  (let ((cmdbuf (dbgr-get-cmdbuf (current-buffer))))
+    (if cmdbuf
+	(let* ((loc-hist (dbgr-cmdbuf-loc-hist cmdbuf))
+	       (srcbuf (dbgr-get-srcbuf-from-cmdbuf cmdbuf)) 
 	       (window (selected-window))
 	       (position (funcall fn loc-hist))
-	       (stay-in-cmdbuf? 
-		(with-current-buffer cmd-buff
-		  (not (dbgr-sget 'cmdbuf-info 'in-srcbuf?))))
+	       (stay-in-cmdbuf?
+		(or (eq (current-buffer) cmdbuf)
+		    (with-current-buffer cmdbuf
+		      (not (dbgr-sget 'cmdbuf-info 'in-srcbuf?)))))
 	       (loc (dbgr-loc-hist-item loc-hist)))
 	  (dbgr-loc-goto loc)
+
+	  ;; Make sure command buffer is updated
+	  (dbgr-window-update-position cmdbuf 
+				       (dbgr-loc-cmd-marker loc))
+
 	  ;; FIXME turn into fn. combine with dbgr-track-loc-action.
 	  (if stay-in-cmdbuf?
 	      (let ((cmd-window (dbgr-window-src-undisturb-cmd srcbuf)))
-	      (with-current-buffer srcbuf
-		(if (and (boundp 'dbgr-overlay-arrow1)
-			 (markerp dbgr-overlay-arrow1))
-		      (select-window (get-buffer-window srcbuf))
-		      (goto-char dbgr-overlay-arrow1)))
 		(if cmd-window (select-window cmd-window)))
 	    (dbgr-window-src srcbuf)
 	  )
+
+	  ;; Make sure source buffer is updated
+	  (dbgr-window-update-position srcbuf 
+				       (dbgr-loc-marker loc))
 
 	  (message "history position %s line %s" 
 		   (dbgr-loc-hist-index loc-hist)
@@ -149,16 +162,13 @@ encountering a new loc."
         ;; buffer? If so, we may have to use set-buffer rather than 
 	;; switch-to-buffer in some cases.
 	(set-buffer cmdbuf)
+
 	;; FIXME turn into fn. combine with dbgr-track-hist-fn-internal
 	(if stay-in-cmdbuf?
 	    (let ((cmd-window (dbgr-window-src-undisturb-cmd srcbuf)))
-	      (with-current-buffer srcbuf
-		(if (and (boundp 'dbgr-overlay-arrow1)
-			 (markerp dbgr-overlay-arrow1))
-		    (progn
-		      (select-window (get-buffer-window srcbuf))
-		      (goto-char dbgr-overlay-arrow1))
-		  ))
+	      (if (and (boundp 'dbgr-overlay-arrow1)
+		       (markerp dbgr-overlay-arrow1))
+		  (dbgr-window-update-position srcbuf dbgr-overlay-arrow1))
 	      (if cmd-window (select-window cmd-window)))
 	  (dbgr-window-src srcbuf)
 	  )
@@ -200,9 +210,9 @@ to get regular-expresion pattern matching information."
   (interactive "d")
   (save-excursion
     (goto-char pt)
-    (lexical-let* ((cmd-buff (current-buffer))
+    (lexical-let* ((cmdbuf (current-buffer))
 		   (cmd-mark (point-marker))
-		   (curr-proc (get-buffer-process cmd-buff))
+		   (curr-proc (get-buffer-process cmdbuf))
 		   (start (line-beginning-position))
 		   (end (line-end-position))
 		   ;; FIXME check that loc-pat is not null and abort if it is.
@@ -212,7 +222,7 @@ to get regular-expresion pattern matching information."
 					(dbgr-sget 'loc-pat 'file-group)
 					(dbgr-sget 'loc-pat 'line-group)
 					)))
-    (if loc (dbgr-track-loc-action loc cmd-buff)))))
+    (if loc (dbgr-track-loc-action loc cmdbuf)))))
 
 (defun dbgr-track-set-debugger (debugger-name)
   "Set debugger name and information associated with that debugger for
