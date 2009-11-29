@@ -26,7 +26,7 @@ function FN-SYM."
   "Check that BUFFER has not been deleted before calling 
 `with-current-buffer'. If it has been deleted return nil."
   (declare (indent 1) (debug t))
-  `(if (buffer-killed? ,buffer)
+  `(if (or (not ,buffer) (buffer-killed? ,buffer))
        nil
      (with-current-buffer ,buffer
        ,@body)))

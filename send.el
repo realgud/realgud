@@ -143,11 +143,16 @@ dbgr-command. If KEY is not nil, the command is bound to that.
 DOC gives the document string for the command."
   (declare (indent 1) (debug t))
 ;; Here is a sample expansion of the below for 
-;; dbgr-define-command('foo", "bar", "f", "Now is the time")
+;; dbgr-define-command('foo", "bar", "f", "This documents dbgr-cmd-foo.")
 ;;
 ;; (defun dbgr-cmd-foo (arg)
-;;  "Now is the time"  
+;;  "This documents the dbgr-cmd-foo."  
 ;;  (interactive "p")
+;;  (let ((buffer (current-buffer))
+;;	(cmdbuf (dbgr-get-cmdbuf)))
+;;    (with-current-buffer-safe cmdbuf
+;;      (dbgr-cmdbuf-info-in-srcbuf?= dbgr-cmdbuf-info 
+;;				   (not (dbgr-cmdbuf? buffer))))
 ;;  (dbgr-command "bar" arg))
 ;; )
 ;; (local-set-key "\C-cf" 'dbgr-cmd-foo)
@@ -156,7 +161,12 @@ DOC gives the document string for the command."
 	   (lambda(arg)
 	     ,doc
 	     (interactive "p")
-	     (dbgr-command ,cmd arg)))
+	     (let ((buffer (current-buffer))
+		   (cmdbuf (dbgr-get-cmdbuf)))
+	       (with-current-buffer-safe cmdbuf
+		 (dbgr-cmdbuf-info-in-srcbuf?= dbgr-cmdbuf-info 
+					       (not (dbgr-cmdbuf? buffer))))
+	       (dbgr-command ,cmd arg))))
        ,(if key `(local-set-key ,(concat "\C-c" key) 
 				(intern (concat "dbgr-cmd-" (symbol-name ,func)))))
      ;; ,(if key `(global-set-key (vconcat dbgr-key-prefix ,key) ',func))
