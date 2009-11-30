@@ -128,16 +128,62 @@ Some %-escapes in the string arguments are expanded. These are:
     ;; There might be text left in FMT-STR when the loop ends.
     (concat result fmt-str)))
 
-(defun dbgr-command (fmt &optional arg)
-  (interactive "sCommand (may contain format chars): ")
-  (let ((command-str (dbgr-expand-format fmt arg)))
-    (unless (dbgr-cmdbuf?)
-	(progn
-	  (message "Command: %s" command-str)
-	  (sit-for 0)))
-    (dbgr-send-command command-str (function dbgr-send-command-comint))))
+(defun dbgr-command (fmt &optional arg no-record? frame-switch?)
+  "Sends a command to the process associated with the command
+buffer of the current buffer. A bit of checking is done before
+sending the command to make sure that we can find a command
+buffer, and that it has a running process associated with it.
 
-(defmacro dbgr-define-command (func cmd &optional key doc)
+FMT is a string which may contain format characters that are
+expanded. See `dbgr-expand-format' for a list of the ormat
+characters and their meanings.
+
+If NO-RECORD? is set, the command won't be recorded in the
+position history. This is often done in status and information
+gathering or frame setting commands and is generally *not* done
+in commands that continue execution.
+
+If FRAME-SWITCH? is set, the fringe overlay array icon is set to
+indicate the depth of the frame."
+  (interactive "sCommand (may contain format chars): ")
+  (let* ((command-str (dbgr-expand-format fmt arg))
+	 (cmd-buff (dbgr-get-cmdbuf))
+	 )
+    (unless cmd-buff
+      (error "Can't find command buffer for buffer %s" (current-buffer)))
+
+    ;; Display the expanded command in the message area unless the
+    ;; current buffer is the command buffer.
+    (unless (dbgr-cmdbuf?)
+      (message "Command: %s" command-str))
+
+    (with-current-buffer cmd-buff 
+      (let* ((process (get-buffer-process cmd-buff))
+	     (last-output-end (point-marker))
+	     )
+	(unless process
+	  (error "Can't find process for command buffer %s" cmd-buff))
+	(unless (eq 'run (process-status process))
+	  (error "Process %s isn't running; status %s" process 
+		 (process-status process)))
+	
+	(dbgr-cmdbuf-info-no-record?= dbgr-cmdbuf-info no-record?)
+	(dbgr-cmdbuf-info-frame-switch?= dbgr-cmdbuf-info frame-switch?)
+	(dbgr-send-command command-str (function dbgr-send-command-comint))
+
+	;; Wait for the process-mark to change before changing variables
+	;; that effect the hook processing.
+	(while (and (eq 'run (process-status process))
+		    (equal last-output-end (process-mark process)))
+	  (sit-for 0))
+
+	;; Reset temporary hook-processing variables to their default state.
+	(dbgr-cmdbuf-info-no-record?= dbgr-cmdbuf-info nil)
+	(dbgr-cmdbuf-info-frame-switch?= dbgr-cmdbuf-info nil)
+	))))
+
+(defmacro dbgr-define-command (func cmd &optional key doc no-record? 
+				    frame-switch?)
   "Define symbol name FUNC to be a command sending string CMD to
 dbgr-command. If KEY is not nil, the command is bound to that.
 DOC gives the document string for the command."
@@ -145,7 +191,7 @@ DOC gives the document string for the command."
 ;; Here is a sample expansion of the below for 
 ;; dbgr-define-command('foo", "bar", "f", "This documents dbgr-cmd-foo.")
 ;;
-;; (defun dbgr-cmd-foo (arg)
+;; (defun dbgr-cmd-foo (arg &optional save-history?)
 ;;  "This documents the dbgr-cmd-foo."  
 ;;  (interactive "p")
 ;;  (let ((buffer (current-buffer))
@@ -153,12 +199,12 @@ DOC gives the document string for the command."
 ;;    (with-current-buffer-safe cmdbuf
 ;;      (dbgr-cmdbuf-info-in-srcbuf?= dbgr-cmdbuf-info 
 ;;				   (not (dbgr-cmdbuf? buffer))))
-;;  (dbgr-command "bar" arg))
+;;  (dbgr-command "bar" arg no-record? frame-switch?))
 ;; )
 ;; (local-set-key "\C-cf" 'dbgr-cmd-foo)
     `(progn
        (fset (intern (concat "dbgr-cmd-" (symbol-name ,func)))
-	   (lambda(arg)
+	   (lambda(arg &optional no-record? frame-switch?)
 	     ,doc
 	     (interactive "p")
 	     (let ((buffer (current-buffer))
@@ -166,7 +212,7 @@ DOC gives the document string for the command."
 	       (with-current-buffer-safe cmdbuf
 		 (dbgr-cmdbuf-info-in-srcbuf?= dbgr-cmdbuf-info 
 					       (not (dbgr-cmdbuf? buffer))))
-	       (dbgr-command ,cmd arg))))
+	       (dbgr-command ,cmd arg no-record? frame-switch?))))
        ,(if key `(local-set-key ,(concat "\C-c" key) 
 				(intern (concat "dbgr-cmd-" (symbol-name ,func)))))
      ;; ,(if key `(global-set-key (vconcat dbgr-key-prefix ,key) ',func))

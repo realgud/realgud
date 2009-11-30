@@ -63,6 +63,12 @@ to be debugged."
 	 (not (buffer-killed? (dbgr-sget 'srcbuf-info 'cmdproc)))
    )))
 
+(defun dbgr-srcbuf-debugger-name (&optional src-buf)
+  "Return the debugger name recorded in the debugger command-process buffer."
+  (with-current-buffer-safe (or src-buf (current-buffer))
+    (dbgr-sget 'srcbuf-info 'debugger-name))
+)
+
 (defun dbgr-srcbuf-loc-hist(src-buf)
   "Return the history ring of locations that a debugger process has stored."
   (with-current-buffer-safe src-buf 

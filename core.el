@@ -19,12 +19,18 @@ value of that the command invocations found by buffer-local
 variables. Next, try to use the first value of MINIBUFFER-HISTORY
 if that exists.  Finally we try to find a suitable program file
 using SUGGEST-FILE-FN."
-  (cond
-   ((dbgr-cmdbuf-command-string (current-buffer)))
-   ((dbgr-srcbuf-command-string (current-buffer)))
-   ((and minibuffer-history (listp minibuffer-history)) 
-    (car minibuffer-history))
-   (t (concat debugger-name " " (funcall suggest-file-fn)))))
+  (let* ((buf (current-buffer))
+	 (cmd-str-cmdbuf (dbgr-cmdbuf-command-string buf))
+	 (cmd-str-srcbuf (dbgr-srcbuf-command-string buf))
+	 )
+    (cond
+     ((and cmd-str-cmdbuf (equal debugger-name (dbgr-cmdbuf-debugger-name buf)))
+      cmd-str-cmdbuf)
+     ((and cmd-str-srcbuf (equal debugger-name (dbgr-srcbuf-debugger-name buf)))
+      cmd-str-srcbuf)
+     ((and minibuffer-history (listp minibuffer-history)) 
+      (car minibuffer-history))
+     (t (concat debugger-name " " (funcall suggest-file-fn))))))
 
 (defun dbgr-query-cmdline 
   (suggest-invocation-fn 
@@ -104,8 +110,8 @@ the debugger name and debugger process-command buffer."
 		   (file-name-nondirectory debugger-name)
 		   (file-name-nondirectory script-filename))))
 	 (dbgr-buf (current-buffer))
-	 (proc (get-buffer-process cmdproc-buffer)))
-    (unless (and proc (eq 'run (process-status proc)))
+	 (process (get-buffer-process cmdproc-buffer)))
+    (unless (and process (eq 'run (process-status process)))
       (with-current-buffer cmdproc-buffer
 	(setq default-directory default-directory)
 	(insert "Current directory is " default-directory "\n")
@@ -130,9 +136,9 @@ the debugger name and debugger process-command buffer."
 
 	(comint-exec cmdproc-buffer debugger-name program nil args)
 	
-	(setq proc (get-buffer-process cmdproc-buffer))
+	(setq process (get-buffer-process cmdproc-buffer))
 
-	(if (and proc (eq 'run (process-status proc)))
+	(if (and process (eq 'run (process-status process)))
 	    (let ((src-buffer (find-file-noselect script-filename))
 		  (cmdline-list (cons program args)))
 	      ;; is this right? 
@@ -140,7 +146,7 @@ the debugger name and debugger process-command buffer."
 	      (dbgr-srcbuf-init src-buffer cmdproc-buffer 
 				debugger-name cmdline-list))
 	  (insert (format "Failed to invoke shell command: %s %s" program args)))
-	(process-put proc 'buffer cmdproc-buffer)))
+	(process-put process 'buffer cmdproc-buffer)))
     cmdproc-buffer))
 
 ;; Start of a term-output-filter for term.el

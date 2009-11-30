@@ -16,14 +16,16 @@
 
 (defstruct dbgr-cmdbuf-info
   "The debugger object/structure specific to a process buffer."
+  in-srcbuf?           ;; Should the selected window be the source buffer or
+		       ;; command buffer?
   debugger-name        ;; Name of debugger
+  frame-switch?           ;; Should the selected window be the source buffer or
+		       ;; command buffer?
   cmd-args             ;; Command-line invocation arguments
   prior-prompt-regexp  ;; regular expression prompt (e.g.
                        ;; comint-prompt-regexp) *before* setting
                        ;; loc-regexp
-  in-srcbuf?           ;; Should the selected window be the source buffer or
-		       ;; command buffer?
-  update-history?      ;; Should we update the location history?
+  no-record?           ;; Should we update the location history?
   src-shortkey?        ;; Are source buffers in dbgr-short-key mode?
   regexp-hash          ;; hash table of regular expressions appropriate for
                        ;; this debugger. Eventually loc-regexp, file-group
@@ -65,8 +67,11 @@
 (defun dbgr-cmdbuf-info-src-shortkey?=(info value)
   (setf (dbgr-cmdbuf-info-src-shortkey? info) value))
 
-(defun dbgr-cmdbuf-info-update-history?=(info value)
-  (setf (dbgr-cmdbuf-info-update-history? info) value))
+(defun dbgr-cmdbuf-info-no-record?=(info value)
+  (setf (dbgr-cmdbuf-info-no-record? info) value))
+
+(defun dbgr-cmdbuf-info-frame-switch?=(info value)
+  (setf (dbgr-cmdbuf-info-frame-switch? info) value))
 
 (defun dbgr-cmdbuf-info-prior-prompt-regexp=(info value)
   (if (dbgr-cmdbuf-info? info)

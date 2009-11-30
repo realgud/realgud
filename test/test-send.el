@@ -31,8 +31,8 @@
 	 (setup)
 	 ;; Current buffer is now set up as a source buffer
 	 (setq file-name (buffer-file-name))
-	 (if (and file-name (dbgr-get-srcbuf (current-buffer)))
-	     (specify "File formatting"
+	 (specify "File formatting"
+		  (if (and file-name (dbgr-get-srcbuf (current-buffer)))
 		      (dolist 
 			  (pair 
 			   (list 
@@ -44,10 +44,14 @@
 			(assert-equal (cdr pair) (dbgr-expand-format (car pair))))))
 	 (tear-down)
 
+	 (specify "dbgr-dbgr-command - not a command buffer"
+		  (assert-raises error (dbgr-command "testing")))
+
 	 (specify "dbgr-define-command"
 	 	  (defalias 'dbgr-command-orig
 	 	    (symbol-function 'dbgr-command))
-	 	  (defun dbgr-command (str &optional arg)
+	 	  (defun dbgr-command (str &optional arg no-record? 
+					   frame-switch?)
 	 	    (assert-equal "testing" str))
 	 	  (dbgr-define-command 'my-test "testing" "a" "my documentation")
 	 	  (assert-t (functionp 'dbgr-cmd-my-test))

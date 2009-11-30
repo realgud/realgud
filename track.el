@@ -152,16 +152,18 @@ encountering a new loc."
 
 	(with-current-buffer srcbuf
 	  (dbgr-short-key-mode-setup shortkey-mode?))
-	  
-	(dbgr-loc-hist-add srcbuf-loc-hist loc)
-	(dbgr-loc-hist-add cmdbuf-loc-hist loc)
-	(dbgr-fringe-history-set cmdbuf-loc-hist cmdbuf-local-overlay-arrow?)
 
         ;; Do we need to go back to the process/command buffer because other
         ;; output-filter hooks run after this may assume they are in that
         ;; buffer? If so, we may have to use set-buffer rather than 
 	;; switch-to-buffer in some cases.
 	(set-buffer cmdbuf)
+
+	(unless (dbgr-sget 'cmdbuf-info 'no-record?) 
+	  (dbgr-loc-hist-add srcbuf-loc-hist loc)
+	  (dbgr-loc-hist-add cmdbuf-loc-hist loc)
+	  (dbgr-fringe-history-set cmdbuf-loc-hist cmdbuf-local-overlay-arrow?)
+	  )
 
 	;; FIXME turn into fn. combine with dbgr-track-hist-fn-internal
 	(if stay-in-cmdbuf?
