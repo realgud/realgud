@@ -1,5 +1,3 @@
-;;; init/rdbdbgr.el --- Ruby 1.9 rbdbgr debugger
-
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
@@ -43,8 +41,4 @@ dbgr-loc-pat struct")
 
 (setf (gethash "rbdbgr" dbgr-pat-hash) rbdbgr-pat-hash)
 
-;;; Local variables:
-;;; eval:(put 'rbdbgr-debug-enter 'lisp-indent-hook 1)
-;;; End:
-
-;;; regexp/rbdbgr.el ends here
+(provide-me "dbgr-init-")
