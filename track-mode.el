@@ -13,6 +13,7 @@
     (define-key map [M-right]	'dbgr-track-hist-newest)
     (define-key map [M-down]	'dbgr-track-hist-newer)
     (define-key map [M-up]	'dbgr-track-hist-older)
+    (define-key map [M-print]	'dbgr-track-hist-older)
     (define-key map [M-S-down]	'dbgr-track-hist-newest)
     (define-key map [M-S-up]	'dbgr-track-hist-oldest)
     map)

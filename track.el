@@ -207,8 +207,8 @@ Otherwise return nil."
 		nil))
 	  nil))))
   
-(defun dbgr-goto-line-for-loc-pat (pt loc-pat)
-  "Display the location mentioned in line described by PT. LOC-PAT is used
+(defun dbgr-goto-line-for-loc-pat (pt dbgr-loc-pat)
+  "Display the location mentioned in line described by PT. DBGR-LOC-PAT is used
 to get regular-expresion pattern matching information."
   (interactive "d")
   (save-excursion
@@ -218,7 +218,7 @@ to get regular-expresion pattern matching information."
 		   (curr-proc (get-buffer-process cmdbuf))
 		   (start (line-beginning-position))
 		   (end (line-end-position))
-		   ;; FIXME check that loc-pat is not null and abort if it is.
+		   ;; FIXME check that dbgr-loc-pat is not null and abort if it is.
 		   (loc (dbgr-track-loc (buffer-substring start end)
 					cmd-mark
 					(dbgr-sget 'loc-pat 'regexp)
