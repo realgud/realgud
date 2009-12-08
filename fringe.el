@@ -1,6 +1,12 @@
 ;; Bitmap for breakpoint in fringe
-;; (define-fringe-bitmap 'breakpoint
-;;  "\x3c\x7e\xff\xff\xff\xff\x7e\x3c")
+
+(and (display-images-p)
+     ;; Bitmap for breakpoint in fringe
+     (define-fringe-bitmap 'breakpoint
+       "\x3c\x7e\xff\xff\xff\xff\x7e\x3c")
+     ;; Bitmap for gud-overlay-arrow in fringe
+     (define-fringe-bitmap 'hollow-right-triangle
+       "\xe0\x90\x88\x84\x84\x88\x90\xe0"))
 
 ;; Bitmap for hollow overlay-arrow in fringe
 ;; (define-fringe-bitmap 'hollow-right-triangle
@@ -67,7 +73,7 @@ position.")
 	(arrow-face (intern (concat "dbgr-overlay-arrow" (car pair)))))
     (make-local-variable arrow-symbol)
     (put arrow-symbol 'overlay-arrow-string (cdr pair))
-    (if (window-system)
+    (if (display-images-p)
 	(progn
 	  (define-fringe-bitmap arrow-bitmap "\xc0\xf0\xf8\xfc\xfc\xf8\xf0\xc0")
 	  (put arrow-symbol 'overlay-arrow-bitmap arrow-bitmap)

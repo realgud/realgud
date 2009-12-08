@@ -8,7 +8,8 @@
 (defgroup rbdbgr nil
   "The Ruby 1.9 debugger"
   :group 'processes
-  :group 'tools)
+  :group 'tools
+  :version "23.1")
 
 ;; -------------------------------------------------------------------
 ;; User definable variables

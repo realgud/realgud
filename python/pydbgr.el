@@ -8,7 +8,8 @@
 (defgroup pydbgr nil
   "The Python pydbgr debugger"
   :group 'processes
-  :group 'tools)
+  :group 'tools
+  :version "23.1")
 
 ;; -------------------------------------------------------------------
 ;; User definable variables
