@@ -190,7 +190,7 @@ Otherwise return nil."
   ; of debuggers -- one at a time -- for the buffer process.
 
   (if (dbgr-cmdbuf?)
-      (lexical-let 
+      (let 
 	  ((loc-regexp (or opt-regexp 
 			   (dbgr-sget 'cmdbuf-info 'loc-regexp)))
 	   (file-group (or opt-file-group 

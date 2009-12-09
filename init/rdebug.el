@@ -17,7 +17,7 @@ dbgr-loc-pat struct")
 ;; before a command prompt.
 (setf (gethash "loc" rdebug-pat-hash)
       (make-dbgr-loc-pat
-       :regexp "\\(?:source \\)?\\(\\(?:[a-zA-Z]:\\)?\\(?:.+\\)\\):\\([0-9]+\\).*\n"
+       :regexp "\\(?:source \\)?\\(\\(?:[a-zA-Z]:\\)?\\(?:.+\\)\\):\\([0-9]+\\).*\\(?:\n\\|$\\)"
        :file-group 1
        :line-group 2))
 
