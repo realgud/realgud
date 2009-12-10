@@ -189,7 +189,7 @@ encountering a new loc."
 (defun dbgr-track-loc(text &optional cmd-mark opt-regexp 
 			   opt-file-group opt-line-group )
   "Do regular-expression matching to find a file name and line number inside
-string TEXT. If we match we will turn the result into a dbgr-loc struct.
+string TEXT. If we match, we will turn the result into a dbgr-loc struct.
 Otherwise return nil."
   
   ; NOTE: dbgr-cmdbuf-info is a buffer variable local to the process running
@@ -206,15 +206,20 @@ Otherwise return nil."
 			   (dbgr-sget 'cmdbuf-info 'file-group)))
 	   (line-group (or opt-line-group 
 			   (dbgr-sget 'cmdbuf-info 'line-group))))
-	(if (and loc-regexp (string-match loc-regexp text))
-	    (lexical-let* ((filename (match-string file-group text))
-			   (line-str (match-string line-group text)) 
-			   (lineno (string-to-number (or line-str "1"))))
-	      (unless line-str (message "line number not found -- using 1"))
-	      (if (and filename lineno)
-		  (dbgr-file-loc-from-line filename lineno cmd-mark)
-		nil))
-	  nil))))
+	(if loc-regexp
+	    (if (string-match loc-regexp text)
+		(let* ((filename (match-string file-group text))
+		       (line-str (match-string line-group text)) 
+		       (lineno (string-to-number (or line-str "1"))))
+		  (unless line-str (message "line number not found -- using 1"))
+		  (if (and filename lineno)
+		      (dbgr-file-loc-from-line filename lineno cmd-mark)
+		    nil)))
+	  (and (message (concat "Buffer variable for regular expression pattern not"
+			   " given and not passed as a parameter")) nil)))
+    (and (message "Current buffer %s is not a debugger command buffer"
+		  (current-buffer)) nil)
+    ))
   
 (defun dbgr-goto-line-for-loc-pat (pt dbgr-loc-pat)
   "Display the location mentioned in line described by PT. DBGR-LOC-PAT is used
