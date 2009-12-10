@@ -32,16 +32,16 @@ marks set in buffer-local variables to extract text"
 
   ; FIXME: Add unwind-protect? 
   (if dbgr-track-mode
-      (lexical-let* ((cmd-buff (current-buffer))
-		     (cmd-mark (point-marker))
-		     (curr-proc (get-buffer-process cmd-buff))
-		     (last-output-end (process-mark curr-proc))
-		     (last-output-start (max comint-last-input-end 
-					     (- last-output-end dbgr-track-char-range)))
-		     (loc (dbgr-track-from-region last-output-start 
-						  last-output-end cmd-mark)))
-	
-	(if loc (dbgr-track-loc-action loc cmd-buff)))))
+      (let* ((cmd-buff (current-buffer))
+	     (cmd-mark (point-marker))
+	     (curr-proc (get-buffer-process cmd-buff))
+	     (last-output-end (process-mark curr-proc))
+	     (last-output-start (max comint-last-input-end 
+				     (- last-output-end dbgr-track-char-range))))
+	(dbgr-track-from-region last-output-start 
+				last-output-end cmd-mark)))
+  )
+
 
 (defun dbgr-track-eshell-output-filter-hook()
   "An output-filter hook custom for eshell shells.  Find
@@ -54,7 +54,8 @@ marks set in buffer-local variables to extract text"
 		     (cmd-mark (point-marker))
 		     (loc (dbgr-track-from-region eshell-last-output-start 
 						  eshell-last-output-end cmd-mark)))
-	(dbgr-track-loc-action loc cmd-buff))))
+	(dbgr-track-loc-action loc cmd-buff)))
+  )
 
 (defun dbgr-track-from-region(from to &optional cmd-mark)
   "Show in another window the location found in the marked region.
@@ -64,7 +65,9 @@ by evaluating (dbgr-cmdbuf-info-loc-regexp dbgr-cmdbuf-info)"
 
   (interactive "r")
   (if (> from to) (psetq to from from to))
-  (dbgr-track-loc (buffer-substring from to) cmd-mark))
+  (let ((loc (dbgr-track-loc (buffer-substring from to) cmd-mark)))
+    (if loc (dbgr-track-loc-action loc (current-buffer))))
+  )
 
 (defun dbgr-track-hist-fn-internal(fn)
   "Update both command buffer and a source buffer to reflect the
