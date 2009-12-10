@@ -58,10 +58,16 @@ marks set in buffer-local variables to extract text"
   )
 
 (defun dbgr-track-from-region(from to &optional cmd-mark)
-  "Show in another window the location found in the marked region.
-The marked region location match the regexp found in buffer-local variable 
-`dbgr-cmdbuf-info' structure with field loc-regexp. You can see what this is
-by evaluating (dbgr-cmdbuf-info-loc-regexp dbgr-cmdbuf-info)"
+  "Find and position a buffer at the location found in the marked region.
+
+You might want to use this function interactively after marking a
+region in a debugger-tracked shell buffer (see `dbgr-track-mode')
+or a more dedicated debugger command buffer.
+
+The marked region location should match the regexp found in the
+buffer-local variable `dbgr-cmdbuf-info' structure under the
+field loc-regexp. You can see what this is by
+evaluating (dbgr-cmdbuf-info-loc-regexp dbgr-cmdbuf-info)"
 
   (interactive "r")
   (if (> from to) (psetq to from from to))
@@ -249,6 +255,3 @@ debugger with that information"
 
   
 (provide-me "dbgr-")
-
-;;; Local variables:
-;;; End:

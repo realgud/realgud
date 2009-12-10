@@ -127,8 +127,13 @@ for example to indicate a debugger position."
 	      (dbgr-fringe-set-arrow 'dbgr-overlay-arrow1 cmd-mark1))))
     ))
 
-(defun dbgr-fringe-history-unset ()
-  "Unset all fringe-history arrows"
+(defun dbgr-fringe-erase-history-arrows ()
+  "Erase the history arrows from the fringe. You might want call
+this command interactively if you have conceptually stopped
+debugging and now find the fringe arrows distracting. But you
+don't want to kill the debugger process or quit a debugger
+session which should also erase those fringe arrows."
+  (interactive)
   (setq dbgr-overlay-arrow1 nil)
   (setq dbgr-overlay-arrow2 nil)
   (setq dbgr-overlay-arrow3 nil))

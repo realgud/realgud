@@ -91,7 +91,7 @@ return the first argument is always removed.
      (t (cons (list arg) (list remaining))))))
 
 (defun dbgr-term-sentinel (process string)
-  (dbgr-fringe-history-unset)
+  (dbgr-fringe-erase-history-arrows)
   (message "That's all folks.... %s" string))
 
 (defun dbgr-exec-shell (debugger-name script-filename program &rest args)

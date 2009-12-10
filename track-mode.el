@@ -80,7 +80,7 @@ of this mode."
 	(setq comint-prompt-regexp
 	   (dbgr-sget 'cmdbuf-info 'prior-prompt-regexp))
 	)
-      (dbgr-fringe-history-unset)
+      (dbgr-fringe-erase-history-arrows)
       (remove-hook 'comint-output-filter-functions 
 		   'dbgr-track-comint-output-filter-hook)
       (remove-hook 'eshell-output-filter-functions 
