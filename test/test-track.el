@@ -1,11 +1,11 @@
-(load-file "./behave.el")
+(require 'test-unit)
 (load-file "../regexp.el")
 (load-file "../init.el")
 (load-file "../loc.el")
 (load-file "../cmdbuf.el")
 (load-file "../track.el")
 
-(behave-clear-contexts)
+(test-unit-clear-contexts)
 
 ;; Some setup usually done in setting up the buffer.
 ;; We customize this for the debugger rbdbgr. Others may follow.
@@ -19,7 +19,7 @@
 (context "dbgr-track"
 	 (tag dbgr-track)
 
-	 (setq filename (symbol-file 'behave))
+	 (setq filename (symbol-file 'test-unit))
 	 (setq line-number 7)
 	 (setq debugger-output (format "-> (%s:%d)\n(rbdbgr):\n" 
 						 filename line-number))
@@ -33,5 +33,5 @@
 		  (assert-equal (dbgr-loc-line-number loc) line-number))
 	 )
 
-(behave "dbgr-track")
+(test-unit "dbgr-track")
 

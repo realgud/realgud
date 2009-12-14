@@ -1,9 +1,9 @@
-(load-file "./behave.el")
+(require 'test-unit)
 (load-file "../init.el")
 (load-file "../srcbuf.el")
 (load-file "../cmdbuf.el")
 
-(behave-clear-contexts)
+(test-unit-clear-contexts)
 
 (defvar temp-cmdbuf nil)
 (defun tear-down()
@@ -68,5 +68,5 @@
 		  )
 	 )
 
-(behave "dbgr-srcbuf")
+(test-unit "dbgr-srcbuf")
 
