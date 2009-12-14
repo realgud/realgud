@@ -1,9 +1,9 @@
 (setq rbdbgr-core "../ruby/rbdbgr-core.el")
-(load-file "./behave.el")
+(require 'test-unit)
 (load-file "../core.el")
 (load-file rbdbgr-core)
 
-(behave-clear-contexts)
+(test-unit-clear-contexts)
 
 (context "dbgr-core.el"
 	 (tag cmd-args)
@@ -81,5 +81,5 @@
 				(rbdbgr-suggest-ruby-file)))
 	 )
 
-(behave "cmd-args")
+(test-unit "cmd-args")
 

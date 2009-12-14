@@ -1,8 +1,8 @@
-(load-file "./behave.el")
+(require 'test-unit)
 (load-file "../send.el")
 (load-file "../regexp.el")
 (load-file "../init.el")
-(behave-clear-contexts)
+(test-unit-clear-contexts)
 
 (defvar temp-cmdbuf nil)
 (defun setup ()
@@ -63,5 +63,5 @@
 
 )
 
-(behave "send")
+(test-unit "send")
 

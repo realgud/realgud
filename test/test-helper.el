@@ -1,9 +1,9 @@
-(load-file "./behave.el")
+(require 'test-unit)
 
 (makunbound 'file-exists?)
 (load-file "../helper.el")
 
-(behave-clear-contexts)
+(test-unit-clear-contexts)
 
 (context 
  "helper functions"
@@ -16,7 +16,7 @@
 
  	  (makunbound 'file-exists?)
  	  (fn-p-to-fn?-alias 'file-exists-p)
- 	  (assert-t (file-exists? "./behave.el")
+ 	  (assert-t (file-exists? "./test-unit.el")
  		    "file-exists? should be a defined function")
 
  	  (makunbound 'equal?)
@@ -57,5 +57,5 @@
 	  )
 )
 
-(behave "helper")
+(test-unit "helper")
 

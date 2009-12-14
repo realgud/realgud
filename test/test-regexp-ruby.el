@@ -1,7 +1,7 @@
-(load-file "./behave.el")
+(require 'test-unit)
 (load-file "../init/rbdbgr.el")
 
-(behave-clear-contexts)
+(test-unit-clear-contexts)
 
 
 (setq tb (gethash "traceback" rbdbgr-pat-hash))
@@ -29,5 +29,5 @@
 						text)))
 	   ))
 
-(behave "regexp-rbdbgr")
+(test-unit "regexp-rbdbgr")
 

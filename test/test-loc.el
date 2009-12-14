@@ -1,13 +1,13 @@
-(load-file "./behave.el")
+(require 'test-unit)
 (load-file "../loc.el")
 
-(behave-clear-contexts)
+(test-unit-clear-contexts)
 
 (save-current-buffer
 
   ;; Below, we need to make sure current-buffer has an associated
   ;; file with it.
-  (find-file (symbol-file 'behave))
+  (find-file (symbol-file 'test-unit))
 
   (context "location field extraction"
 	   (tag loc)
@@ -43,7 +43,7 @@
 
 	     )))
 
-(behave "loc")
+(test-unit "loc")
 
 ; TODO: add test for debug-loc-goto, e.g.
 ;(dbgr-loc-goto (dbgr-loc-new "/tmp/bashdb.diff" 8))

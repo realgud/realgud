@@ -1,8 +1,8 @@
-(load-file "./behave.el")
+(require 'test-unit)
 (load-file "../loc.el")
 (load-file "../lochist.el")
 
-(behave-clear-contexts)
+(test-unit-clear-contexts)
 
 ;;; (defun setup()
 ;;;      (lexical-let ((loc-hist (make-dbgr-loc-hist))
@@ -18,7 +18,7 @@
 (lexical-let ((saved-buffer (current-buffer)))
   ; Below, we need to make sure current-buffer has an associated
   ; file with it.
-  (find-file (symbol-file 'behave))
+  (find-file (symbol-file 'test-unit))
 
   (context "location ring initialization and fields access"
 	   (tag lochist)
@@ -61,6 +61,6 @@
 		      (assert-equal -1 (dbgr-loc-hist-newest loc-hist)))
 	     
 	     ))
-  (behave "lochist")
+  (test-unit "lochist")
   (switch-to-buffer saved-buffer))
 

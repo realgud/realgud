@@ -1,8 +1,8 @@
-(load-file "./behave.el")
+(require 'test-unit)
 (load-file "../cmdbuf.el")
 (load-file "../init.el")
 
-(behave-clear-contexts)
+(test-unit-clear-contexts)
 
 (context "dbgr-cmdbuf"
 	 (tag dbgr-cmdbuf)
@@ -23,5 +23,5 @@
 		   ))
 	 )
 
-(behave "dbgr-cmdbuf")
+(test-unit "dbgr-cmdbuf")
 

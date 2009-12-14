@@ -1,8 +1,8 @@
-(load-file "./behave.el")
+(require 'test-unit)
 (load-file "../init.el")
 (load-file "../cmdbuf.el")
 
-(behave-clear-contexts)
+(test-unit-clear-contexts)
 
 
 ; Some setup usually done in setting up the buffer.
@@ -67,5 +67,5 @@
 	   
 	   ))
 
-(behave "regexp")
+(test-unit "regexp")
 

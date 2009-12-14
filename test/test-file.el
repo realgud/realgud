@@ -1,10 +1,10 @@
-(load-file "./behave.el")
+(require 'test-unit)
 (load-file "../loc.el")
 (load-file "../file.el")
 
-(behave-clear-contexts)
+(test-unit-clear-contexts)
 
-(lexical-let ((filename (symbol-file 'behave)))
+(lexical-let ((filename (symbol-file 'test-unit)))
   
   (context "dbgr-file-line-count"
 	   (tag file)
@@ -33,4 +33,4 @@
 		    (assert-t (dbgr-loc-p 
 			       (dbgr-file-loc-from-line filename 30 (make-marker)))))
   ))
-(behave "file")
+(test-unit "file")

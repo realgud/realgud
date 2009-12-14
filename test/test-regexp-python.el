@@ -1,7 +1,7 @@
-(load-file "./behave.el")
+(require 'test-unit)
 (load-file "../init/pydbgr.el")
 
-(behave-clear-contexts)
+(test-unit-clear-contexts)
 
 
 (setq tb (gethash "traceback" pydbgr-pat-hash))
@@ -30,5 +30,5 @@
 					      text)))
 	   )
 
-(behave "regexp-pydbgr")
+(test-unit "regexp-pydbgr")
 

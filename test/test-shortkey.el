@@ -1,6 +1,6 @@
-(load-file "./behave.el")
+(require 'test-unit)
 (load-file "../shortkey.el")
-(behave-clear-contexts)
+(test-unit-clear-contexts)
 
 (context "dbgr-shortkey"
 	 (tag shortkey)
@@ -10,4 +10,4 @@
 		  )
 )
 
-(behave "shortkey")
+(test-unit "shortkey")
