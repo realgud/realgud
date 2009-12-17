@@ -5,6 +5,7 @@
 ;; working with them.
 
 (require 'load-relative)
+(require 'loc-changes)
 (require-relative-list '("fringe") "dbgr-")
 
 (defstruct dbgr-loc
@@ -57,10 +58,16 @@ not not found"
 	    (progn 
 	      (set-buffer src-buffer)
 	      (if (and marker (marker-position marker))
+		  ;; A marker has been set in loc, so use that.
 		  (goto-char (marker-position marker))
+		;; We don't have a position set in the source buffer
+		;; so find it and go there. We use `loc-changes-goto'
+		;; to find that spot. `loc-changes-goto' keeps a
+		;; record of the first time we went to that spot, so
+		;; in the face of buffer modifications, it may be more
+		;; reliable.
 		(let ((src-marker))
-		  (goto-char (point-min))
-		  (forward-line (1- line-number))
+		  (loc-changes-goto line-number)
 		  (setq src-marker (point-marker))
 		  (dbgr-loc-marker= loc src-marker)
 		  ))))
