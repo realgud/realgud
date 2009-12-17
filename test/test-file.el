@@ -1,6 +1,6 @@
 (require 'test-unit)
-(load-file "../loc.el")
-(load-file "../file.el")
+(load-file "../dbgr/loc.el")
+(load-file "../dbgr/file.el")
 
 (test-unit-clear-contexts)
 

@@ -1,10 +1,10 @@
-SUBDIRS = init ruby python 
+SUBDIRS = dbgr
 
-lispdir = @lispdir_dbgr@
-lisp_files := $(wildcard *.el)
+lispdir = @lispdir@
+lisp_files := $(wildcard dbgr.el)
 test_files := $(wildcard test/test-*.el)
 
-EXTRA_DIST = $(lisp_files) $(test_files) test/behave.el
+EXTRA_DIST = $(lisp_files) $(test_files)
 
 CHECK_FILES = $(notdir $(test_files:.el=.run))
 

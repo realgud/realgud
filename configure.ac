@@ -1,5 +1,5 @@
 AC_INIT(emacs-dbgr, 0.01vc,)
-AC_CONFIG_SRCDIR(loc.el)
+AC_CONFIG_SRCDIR(dbgr.el)
 AM_INIT_AUTOMAKE
 AM_MAINTAINER_MODE
 
@@ -8,15 +8,15 @@ AM_MAINTAINER_MODE
 ##
 AM_PATH_LISPDIR
 lispdir_dbgr=$lispdir/dbgr
+AC_SUBST([lispdir])
 AC_SUBST([lispdir_dbgr])
 
-lispdir=${lispdir}/dbgr
-
-AM_CONDITIONAL(INSTALL_EMACS_LISP, test "x$lispdir" != "x")
+AM_CONDITIONAL(INSTALL_EMACS_LISP, test "x$lispdir_dbgr" != "x")
 
 AC_CONFIG_FILES([Makefile \
-		 init/Makefile \
-		 python/Makefile \
-		 ruby/Makefile \
+		 dbgr/Makefile \
+		 dbgr/init/Makefile \
+		 dbgr/python/Makefile \
+		 dbgr/ruby/Makefile \
 		 ])
 AC_OUTPUT

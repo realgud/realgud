@@ -1,7 +1,7 @@
 (require 'test-unit)
-(load-file "../send.el")
-(load-file "../regexp.el")
-(load-file "../init.el")
+(load-file "../dbgr/send.el")
+(load-file "../dbgr/regexp.el")
+(load-file "../dbgr/init.el")
 (test-unit-clear-contexts)
 
 (defvar temp-cmdbuf nil)

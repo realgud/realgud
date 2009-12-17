@@ -1,6 +1,6 @@
-(setq rbdbgr-core "../ruby/rbdbgr-core.el")
+(setq rbdbgr-core "../dbgr/ruby/rbdbgr-core.el")
 (require 'test-unit)
-(load-file "../core.el")
+(load-file "../dbgr/core.el")
 (load-file rbdbgr-core)
 
 (test-unit-clear-contexts)

@@ -1,6 +1,6 @@
 (require 'test-unit)
-(load-file "../init.el")
-(load-file "../cmdbuf.el")
+(load-file "../dbgr/init.el")
+(load-file "../dbgr/cmdbuf.el")
 
 (test-unit-clear-contexts)
 
