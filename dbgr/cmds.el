@@ -8,7 +8,7 @@
       'break "break %f:%l" "\C-b" "Set a breakpoint at the current line" t nil)
 
   (dbgr-define-command 
-      'step "step %p" "\C-s" 
+      'step "step %p" "s" 
       "Step one source line. With a numeric argument, step that many times.
 This command is often referred to as 'step into' as opposed to
 'step over' or 'step out'.
@@ -18,7 +18,7 @@ debugger documentation for a more complete definition of what is
 getting stepped.")
 
   (dbgr-define-command 
-      'next "next %p" "\C-n" 
+      'next "next %p" "n" 
       "Step one source line at current call level. With a numeric
 argument, step that many times. This ocmmand is often referred to as 'step over' as
 opposed to 'step into' or 'step out'.
@@ -26,6 +26,13 @@ opposed to 'step into' or 'step out'.
 The definition of 'step' is debugger specific so, see the
 debugger documentation for a more complete definition of what is
 getting stepped.")
+
+  (dbgr-define-command 
+      'finish "finish" "F" 
+      "Run until the completion of the current stack frame.
+argument, step that many times. This command is often referred to as 'step out' as
+opposed to 'step over' or 'step into'.
+")
 
   (dbgr-define-command 
       'newer-frame "down %p" "<" 
@@ -38,7 +45,7 @@ numeric argument move that many levels forward." t t)
 numeric argument move that many levels back." t t)
 
   (dbgr-define-command 
-      'frame "frame %p" "C-f" 
+      'frame "frame %p" "f" 
 
 "Change the current frame number to the value of the numeric
 arguement or 0 if none is specified. The most recent frame has

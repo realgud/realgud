@@ -7,6 +7,7 @@
     ;; (define-key map "t" 'dbgr-toggle-source-breakpoint-enabled)
     (define-key map [insert] 'dbgr-short-key-mode)
     (dbgr-populate-src-buffer-map-plain map)
+    (dbgr-populate-debugger-menu map)
     map)
   "Keymap used in `dbgr-short-key-mode'.")
 

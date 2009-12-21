@@ -5,7 +5,7 @@
 (require 'load-relative)
 (require-relative-list
  '("core" "helper" "track" "loc" "lochist" "file" 
-   "fringe" "cmdbuf" "window" "regexp"
+   "fringe" "cmdbuf" "window" "regexp" "menu"
    "send" "shortkey") "dbgr-")
 
 (defvar dbgr-track-mode-map
@@ -16,6 +16,7 @@
     (define-key map [M-print]	'dbgr-track-hist-older)
     (define-key map [M-S-down]	'dbgr-track-hist-newest)
     (define-key map [M-S-up]	'dbgr-track-hist-oldest)
+    (dbgr-populate-debugger-menu map)
     map)
   "Keymap used in `dbgr-track-minor-mode'.")
 

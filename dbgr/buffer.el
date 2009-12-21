@@ -79,4 +79,16 @@ if we don't find anything."
 	(dbgr-get-cmdbuf-from-srcbuf buffer))
        (t nil)))))
 
+(defun dbgr-get-process (&optional opt-buffer)
+  "Return the process buffer associated with OPT-BUFFER or
+  `current-buffer' if that is omitted. nil is returned if
+we don't find anything."
+  (let* ((buffer (or opt-buffer (current-buffer)))
+	 (cmdbuf (dbgr-get-cmdbuf buffer)))
+    (if cmdbuf
+	(get-buffer-process cmdbuf)
+      nil)
+    )
+)
+
 (provide-me "dbgr-")
