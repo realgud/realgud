@@ -1,6 +1,6 @@
 (require 'comint)
 (require 'load-relative)
-(require-relative-list '("buffer") "dbgr-")
+(require-relative-list '("buffer" "window") "dbgr-")
 
 (defun dbgr-send-command-comint (process command-str)
   "Assume we are in a comint buffer. Insert COMMAND-STR and 
@@ -128,14 +128,14 @@ Some %-escapes in the string arguments are expanded. These are:
     ;; There might be text left in FMT-STR when the loop ends.
     (concat result fmt-str)))
 
-(defun dbgr-command (fmt &optional arg no-record? frame-switch?)
+(defun dbgr-command (fmt &optional arg no-record? frame-switch? dbgr-prompts?)
   "Sends a command to the process associated with the command
 buffer of the current buffer. A bit of checking is done before
 sending the command to make sure that we can find a command
 buffer, and that it has a running process associated with it.
 
 FMT is a string which may contain format characters that are
-expanded. See `dbgr-expand-format' for a list of the ormat
+expanded. See `dbgr-expand-format' for a list of the format
 characters and their meanings.
 
 If NO-RECORD? is set, the command won't be recorded in the
@@ -144,7 +144,11 @@ gathering or frame setting commands and is generally *not* done
 in commands that continue execution.
 
 If FRAME-SWITCH? is set, the fringe overlay array icon is set to
-indicate the depth of the frame."
+indicate the depth of the frame.
+
+If DBGR-PROMPTS? is set, then then issuing the command will cause a 
+debugger prompt.
+"
   (interactive "sCommand (may contain format chars): ")
   (let* ((command-str (dbgr-expand-format fmt arg))
 	 (cmd-buff (dbgr-get-cmdbuf))
@@ -160,6 +164,7 @@ indicate the depth of the frame."
     (with-current-buffer cmd-buff 
       (let* ((process (get-buffer-process cmd-buff))
 	     (last-output-end (point-marker))
+	     (in-srcbuf? (dbgr-sget 'cmdbuf-info 'in-srcbuf?))
 	     )
 	(unless process
 	  (error "Can't find process for command buffer %s" cmd-buff))
@@ -169,6 +174,12 @@ indicate the depth of the frame."
 	
 	(dbgr-cmdbuf-info-no-record?= dbgr-cmdbuf-info no-record?)
 	(dbgr-cmdbuf-info-frame-switch?= dbgr-cmdbuf-info frame-switch?)
+
+	;; Down the line we may handle prompting in a more
+	;; sophisticated way. But for now, we handle this by forcing
+	;; display of the command buffer.
+	(if dbgr-prompts? (dbgr-window-cmd-undisturb-src nil 't))
+
 	(dbgr-send-command command-str (function dbgr-send-command-comint))
 
 	;; Wait for the process-mark to change before changing variables
@@ -183,10 +194,13 @@ indicate the depth of the frame."
 	))))
 
 (defmacro dbgr-define-command (func cmd &optional key doc no-record? 
-				    frame-switch?)
-  "Define symbol name FUNC to be a command sending string CMD to
-dbgr-command. If KEY is not nil, the command is bound to that.
-DOC gives the document string for the command."
+				    frame-switch? dbgr-prompts?)
+  "Define symbol name dbgr-cmd-FUNC to be a command sending
+string CMD to dbgr-command. If KEY is not nil, the command is
+bound to that.  DOC gives the document string for the command.
+NO-RECORD?, FRAME-SWITCH? and DBGR-PROMPTS? are optional
+parameters that are passed to `dbgr-command'. See that for their
+meanings."
   (declare (indent 1) (debug t))
 ;; Here is a sample expansion of the below for 
 ;; dbgr-define-command('foo", "bar", "f", "This documents dbgr-cmd-foo.")
@@ -204,7 +218,7 @@ DOC gives the document string for the command."
 ;; (local-set-key "\C-cf" 'dbgr-cmd-foo)
     `(progn
        (fset (intern (concat "dbgr-cmd-" (symbol-name ,func)))
-	   (lambda(arg &optional no-record? frame-switch?)
+	   (lambda(arg &optional no-record? frame-switch? dbgr-prompts?)
 	     ,doc
 	     (interactive "p")
 	     (let ((buffer (current-buffer))
@@ -212,7 +226,8 @@ DOC gives the document string for the command."
 	       (with-current-buffer-safe cmdbuf
 		 (dbgr-cmdbuf-info-in-srcbuf?= dbgr-cmdbuf-info 
 					       (not (dbgr-cmdbuf? buffer))))
-	       (dbgr-command ,cmd arg no-record? frame-switch?))))
+	       (dbgr-command ,cmd arg ,no-record? ,frame-switch? 
+			     ,dbgr-prompts?))))
        ,(if key `(local-set-key ,(concat "\C-c" key) 
 				(intern (concat "dbgr-cmd-" (symbol-name ,func)))))
      ;; ,(if key `(global-set-key (vconcat dbgr-key-prefix ,key) ',func))

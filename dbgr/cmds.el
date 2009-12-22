@@ -67,11 +67,13 @@ If no argument specified use 0 or the most recent frame." t t)
 
   (dbgr-define-command 
       'quit "quit" "q" 
-      "Gently terminate execution of the debugged program.")
+      "Gently terminate execution of the debugged program."
+      't nil 't)
 
   (dbgr-define-command 
       'restart "run" "R" 
-      "Restart execution.")
+      "Restart execution."
+      't nil 't)
 )
 
 (provide-me "dbgr-")

@@ -51,7 +51,7 @@
 	 	  (defalias 'dbgr-command-orig
 	 	    (symbol-function 'dbgr-command))
 	 	  (defun dbgr-command (str &optional arg no-record? 
-					   frame-switch?)
+					   frame-switch? dbgr-prompts?)
 	 	    (assert-equal "testing" str))
 	 	  (dbgr-define-command 'my-test "testing" "a" "my documentation")
 	 	  (assert-t (functionp 'dbgr-cmd-my-test))
