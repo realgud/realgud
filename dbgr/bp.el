@@ -1,5 +1,7 @@
 ;; Code associated with breakpoints
 
+(require 'image)
+
 ;; NOTE: if you don't see the icon, check the that the window margin
 ;; is not nil.
 (defconst dbgr-bp-xpm-data
