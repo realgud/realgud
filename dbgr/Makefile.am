@@ -8,6 +8,8 @@ lisp_LISP = $(lisp_files)
 
 test: check
 
+check:
+	$(MAKE) -C ../test $@
 
 
 

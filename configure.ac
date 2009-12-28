@@ -18,5 +18,6 @@ AC_CONFIG_FILES([Makefile \
 		 dbgr/init/Makefile \
 		 dbgr/python/Makefile \
 		 dbgr/ruby/Makefile \
+		 test/Makefile \
 		 ])
 AC_OUTPUT
