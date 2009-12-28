@@ -101,8 +101,9 @@ overlay string is 'b5:'."
 	(setq brkpt-icon dbgr-bp-disabled-icon)
 	))
     (setq bp-str (concat enabled-str bp-num-str))
-    (unless (window-margins)
-      (set-window-margins (selected-window) 1))
+    (let ((window (get-buffer-window (current-buffer) 0)))
+      (if window
+	  (set-window-margins window 2)))
     (put-image brkpt-icon pos bp-str 'left-margin)
     )
   )
