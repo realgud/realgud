@@ -1,6 +1,8 @@
 ;; Code associated with breakpoints
 
 (require 'image)
+(require 'load-relative)
+(require-relative-list '("loc") "dbgr-")
 
 ;; NOTE: if you don't see the icon, check the that the window margin
 ;; is not nil.
@@ -77,6 +79,13 @@ static char *magick[] = {
 
 (defun dbgr-bp-add-info (loc)
   "Record bp information for location LOC."
+  (if (dbgr-loc? loc) 
+      (let* ((marker (dbgr-loc-marker loc))
+	     (bp-num (dbgr-loc-bp-num loc))
+	     )
+	(dbgr-bp-put-icon marker 't bp-num)
+	)
+    )
 )
 
 (defun dbgr-bp-put-icon (pos enabled bp-num)
@@ -117,7 +126,13 @@ also attached to the icon via its display string."
     ;; enough.
     (let ((window (get-buffer-window (current-buffer) 0)))
       (if window
-	  (set-window-margins window 2)))
+	  (set-window-margins window 2)
+	;; FIXME: This is all crap, but I don't know how to fix.
+	(let ((buffer-save (window-buffer (selected-window))))
+	  (set-window-buffer (selected-window) (current-buffer))
+	  (set-window-margins (selected-window) 2)
+	  (set-window-buffer (selected-window) buffer-save))
+	))
     (put-image brkpt-icon pos bp-str 'left-margin)
     )
   )
@@ -146,3 +161,4 @@ overlay for a before-string property containing one we normally set.
     )
   )
 
+(provide-me "dbgr-")

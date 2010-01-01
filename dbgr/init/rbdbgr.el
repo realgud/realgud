@@ -32,6 +32,14 @@ dbgr-loc-pat struct")
        :file-group 1
        :line-group 2))
 
+;;  Regular expression that describes a rbdbgr "breakpoint set" line
+(setf (gethash "brkpt-set" rbdbgr-pat-hash)
+      (make-dbgr-loc-pat
+       :regexp "^Breakpoint \\([0-9]+\\) set at line \\([0-9]+\\)[ \t\n]+in file \\(.+\\),\n"
+       :bp-num 1
+       :file-group 3
+       :line-group 2))
+
 ;;  Regular expression that describes a Ruby $! string
 (setf (gethash "dollar-bang" rbdbgr-pat-hash)
       (make-dbgr-loc-pat

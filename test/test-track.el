@@ -23,10 +23,13 @@
 	 (setq line-number 7)
 	 (setq debugger-output (format "-> (%s:%d)\n(rbdbgr):\n" 
 						 filename line-number))
-	 (setq loc (dbgr-track-loc debugger-output))
+	 (setq loc (dbgr-track-loc debugger-output nil))
 	   
 	 (specify "loc extracted"
 		  (assert-equal (dbgr-loc-p loc) t))
+	 (specify "loc-remaining"
+		  (assert-equal "\n(rbdbgr):\n"
+				(dbgr-track-loc-remaining debugger-output)))
 	 (specify "loc filename extracted"
 		  (assert-equal (dbgr-loc-filename loc) filename))
 	 (specify "loc line-number extracted"

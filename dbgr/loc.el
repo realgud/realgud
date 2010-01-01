@@ -14,6 +14,8 @@ file-name (via a buffer) and a line number (via an offset), we
 want to save the values that were seen/requested originally."
    id          ;; Unique id -- is the total number of locations seen
 	       ;; when this one was created.
+   bp-num      ;; If there is a breakpoint associated with this location
+               ;; this is the breakpoint number. Nil otherwise.
    filename
    line-number
    marker      ;; Position in source code
@@ -36,27 +38,26 @@ want to save the values that were seen/requested originally."
   (setf (dbgr-loc-marker loc) marker))
 
 (defun dbgr-loc-goto(loc)
-  "Position a buffer at LOC which may involve reading in a file
-and setting the point to the place indicated by LOC. In the
-process, the marker inside loc may be updated.
+  "Position point in the buffer referred to by LOC. This may
+involve reading in a file.In the process, the marker inside loc
+may be updated.
 
 The buffer containing the location referred to, the source-code
 buffer, is returned if LOC is found. nil is returned if LOC is
 not not found"
   (if (dbgr-loc? loc) 
-      (lexical-let* ((filename    (dbgr-loc-filename loc))
-		     (line-number (dbgr-loc-line-number loc))
-		     (marker      (dbgr-loc-marker loc))
-		     (cmd-marker  (dbgr-loc-cmd-marker loc))
-		     (src-buffer  (marker-buffer (or marker (make-marker)))))
+      (let* ((filename    (dbgr-loc-filename loc))
+	     (line-number (dbgr-loc-line-number loc))
+	     (marker      (dbgr-loc-marker loc))
+	     (cmd-marker  (dbgr-loc-cmd-marker loc))
+	     (src-buffer  (marker-buffer (or marker (make-marker)))))
 	(if (not src-buffer)
 	    (setq src-buffer (find-file-noselect filename)))
 	(if cmd-marker
 	    (with-current-buffer (marker-buffer cmd-marker)
 	      (goto-char cmd-marker)))
 	(if src-buffer
-	    (progn 
-	      (set-buffer src-buffer)
+	    (with-current-buffer src-buffer
 	      (if (and marker (marker-position marker))
 		  ;; A marker has been set in loc, so use that.
 		  (goto-char (marker-position marker))

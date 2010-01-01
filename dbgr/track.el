@@ -10,6 +10,7 @@
  '("buffer" "cmdbuf"   "file"   "fringe" 
    "helper" "init"     "loc"    "lochist" 
    "regexp" "shortkey" "srcbuf" "window"
+   "bp"
    ) "dbgr-")
 
 (defvar dbgr-track-mode)
@@ -71,7 +72,16 @@ evaluating (dbgr-cmdbuf-info-loc-regexp dbgr-cmdbuf-info)"
 
   (interactive "r")
   (if (> from to) (psetq to from from to))
-  (let ((loc (dbgr-track-loc (buffer-substring from to) cmd-mark)))
+  (let* ((text (buffer-substring from to))
+	 (loc (dbgr-track-loc text cmd-mark))
+	 (text-sans-loc (or (dbgr-track-loc-remaining text) text))
+	 (bp-loc (dbgr-track-bp-loc text-sans-loc cmd-mark))
+	 )
+    (if bp-loc 
+	(let ((src-buffer (dbgr-loc-goto bp-loc)))
+	  (with-current-buffer src-buffer
+	    (dbgr-bp-add-info bp-loc)
+	  )))
     (if loc (dbgr-track-loc-action loc (current-buffer))))
   )
 
@@ -96,7 +106,7 @@ unshown."
 		    (with-current-buffer cmdbuf
 		      (not (dbgr-sget 'cmdbuf-info 'in-srcbuf?)))))
 	       (loc (dbgr-loc-hist-item loc-hist)))
-	  (dbgr-loc-goto loc)
+	  (set-buffer (dbgr-loc-goto loc))
 
 	  ;; Make sure command buffer is updated
 	  (dbgr-window-update-position cmdbuf 
@@ -186,8 +196,7 @@ encountering a new loc."
 	  )
 	)))
 
-(defun dbgr-track-loc(text &optional cmd-mark opt-regexp 
-			   opt-file-group opt-line-group )
+(defun dbgr-track-loc(text cmd-mark &optional opt-regexp opt-file-group opt-line-group )
   "Do regular-expression matching to find a file name and line number inside
 string TEXT. If we match, we will turn the result into a dbgr-loc struct.
 Otherwise return nil."
@@ -220,6 +229,58 @@ Otherwise return nil."
     (and (message "Current buffer %s is not a debugger command buffer"
 		  (current-buffer)) nil)
     ))
+
+(defun dbgr-track-bp-loc(text &optional cmd-mark)
+  "Do regular-expression matching to find a file name and line number inside
+string TEXT. If we match, we will turn the result into a dbgr-loc struct.
+Otherwise return nil."
+  
+  ; NOTE: dbgr-cmdbuf-info is a buffer variable local to the process
+  ; running the debugger. It contains a dbgr-cmdbuf-info "struct". In
+  ; that struct is the regexp hash to match positions. By setting the
+  ; the fields of dbgr-cmdbuf-info appropriately we can accomodate a
+  ; family of debuggers -- one at a time -- for the buffer process.
+
+  (if (dbgr-cmdbuf?)
+      (let* ((regexp-hash (dbgr-sget 'cmdbuf-info 'regexp-hash))
+	     (dbgr-loc-pat (gethash "brkpt-set" regexp-hash))
+	     )
+	(if dbgr-loc-pat
+	    (let ((bp-num-group (dbgr-sget 'loc-pat 'bp-num))
+		  (loc-regexp   (dbgr-sget 'loc-pat 'regexp))
+		  (file-group   (dbgr-sget 'loc-pat 'file-group))
+		  (line-group   (dbgr-sget 'loc-pat 'line-group)))
+	      (if loc-regexp
+		  (if (string-match loc-regexp text)
+		      (let* ((bp-num (match-string bp-num-group text))
+			     (filename (match-string file-group text))
+			     (line-str (match-string line-group text)) 
+			     (lineno (string-to-number (or line-str "1")))
+			     )
+			(unless line-str (message "line number not found -- using 1"))
+			(if (and filename lineno)
+			    (dbgr-file-loc-from-line filename lineno cmd-mark bp-num)
+			  nil))
+		    (and (message (concat "Buffer variable for regular expression pattern not"
+					  " given and not passed as a parameter")) nil))))
+	  nil))
+    (and (message "Current buffer %s is not a debugger command buffer"
+		  (current-buffer)) nil)
+    ))
+
+(defun dbgr-track-loc-remaining(text)
+  "Return the portion of TEXT staring with the part after the
+loc-regexp pattern"
+  (if (dbgr-cmdbuf?)
+      (let 
+	  ((loc-regexp (dbgr-sget 'cmdbuf-info 'loc-regexp)))
+	(if loc-regexp
+	    (if (string-match loc-regexp text)
+		(substring text (match-end 0))
+	      nil)
+	  nil))
+    nil)
+)
   
 (defun dbgr-goto-line-for-loc-pat (pt dbgr-loc-pat)
   "Display the location mentioned in line described by PT. DBGR-LOC-PAT is used
