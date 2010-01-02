@@ -27,4 +27,12 @@ The values of a hash entry is a dbgr-loc-pat struct")
        :regexp   "^bashdb<[(]*[0-9]+[)]*> "
        ))
 
+;;  Regular expression that describes a "breakpoint set" line
+(setf (gethash "brkpt-set" bashdb-pat-hash)
+      (make-dbgr-loc-pat
+       :regexp "^Breakpoint \\([0-9]+\\) set in file \\(.+\\), line \\([0-9]+\\).\n"
+       :bp-num 1
+       :file-group 2
+       :line-group 3))
+
 (setf (gethash "bashdb" dbgr-pat-hash) bashdb-pat-hash)
