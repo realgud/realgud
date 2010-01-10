@@ -102,6 +102,7 @@ also attached to the icon via its display string."
 	  ('t (format "%d:" bp-num))))
 	(brkpt-icon)
 	(bp-str)
+	(help-string "mouse-1: clear bkpt, mouse-3: enable/disable bkpt")
 	)
     (if enabled 
 	(progn 
@@ -118,7 +119,7 @@ also attached to the icon via its display string."
     (add-text-properties
 	 0 1 `(dbgr-bptno ,bp-num enabled ,enabled) bp-str)
     (add-text-properties
-     0 1 '(help-echo "mouse-1: clear bkpt, mouse-3: enable/disable bkpt")
+     0 1 (list 'help-echo (format "%s %s" bp-str help-string))
      bp-str)
 
     ;; Display breakpoint icon or display string.  If the window is
@@ -133,6 +134,7 @@ also attached to the icon via its display string."
 	  (set-window-margins (selected-window) 2)
 	  (set-window-buffer (selected-window) buffer-save))
 	))
+    (dbgr-bp-remove-icons pos)
     (put-image brkpt-icon pos bp-str 'left-margin)
     )
   )

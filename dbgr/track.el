@@ -259,7 +259,8 @@ Otherwise return nil."
 			     )
 			(unless line-str (message "line number not found -- using 1"))
 			(if (and filename lineno)
-			    (dbgr-file-loc-from-line filename lineno cmd-mark bp-num)
+			    (dbgr-file-loc-from-line filename lineno cmd-mark 
+						     (string-to-number bp-num))
 			  nil)))
 		nil))
 	  nil))

@@ -26,15 +26,25 @@
 	 (setq loc (dbgr-track-loc debugger-output nil))
 	   
 	 (specify "loc extracted"
-		  (assert-equal (dbgr-loc-p loc) t))
+		  (assert-equal t (dbgr-loc-p loc)))
 	 (specify "loc-remaining"
 		  (assert-equal "\n(rbdbgr):\n"
 				(dbgr-track-loc-remaining debugger-output)))
 	 (specify "loc filename extracted"
-		  (assert-equal (dbgr-loc-filename loc) filename))
+		  (assert-equal filename (dbgr-loc-filename loc)))
 	 (specify "loc line-number extracted"
-		  (assert-equal (dbgr-loc-line-number loc) line-number))
+		  (assert-equal line-number (dbgr-loc-line-number loc)))
+
+	 (setq bp-num 2)
+	 (setq debugger-bp-output (format "Breakpoint %d set at line %d\n\tin file %s,\n"
+					  bp-num line-number filename))
+	 (setq loc (dbgr-track-bp-loc debugger-bp-output nil))
+
+	 (specify "bp-loc extracted"
+		  (assert-equal t (dbgr-loc-p loc))
+		  (assert-equal bp-num (dbgr-loc-bp-num loc)))
 	 )
+
 
 (test-unit "dbgr-track")
 
