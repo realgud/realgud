@@ -12,14 +12,15 @@
 "Our own location type. Even though a mark contains a
 file-name (via a buffer) and a line number (via an offset), we
 want to save the values that were seen/requested originally."
-   id          ;; Unique id -- is the total number of locations seen
-	       ;; when this one was created.
-   bp-num      ;; If there is a breakpoint associated with this location
-               ;; this is the breakpoint number. Nil otherwise.
-   filename
+   id            ;; Unique id -- is the total number of locations seen
+	         ;; when this one was created.
+   bp-num        ;; If there is a breakpoint associated with this location
+                 ;; this is the breakpoint number. Nil otherwise.
+   filename  
    line-number
-   marker      ;; Position in source code
-   cmd-marker  ;; Position in command process buffer
+   column-number ;; Column offset within line
+   marker        ;; Position in source code
+   cmd-marker    ;; Position in command process buffer
 )
 
 (defalias 'dbgr-loc? 'dbgr-loc-p)
