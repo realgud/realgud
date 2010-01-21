@@ -46,4 +46,4 @@ into or out of this mode."
   (dbgr-gdb-track-mode-body)
 )
 
-(provide 'dbgr-gdb-track-mode)
+(provide-me)

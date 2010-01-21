@@ -259,14 +259,21 @@ Otherwise return nil."
 			     )
 			(unless line-str (message "line number not found -- using 1"))
 			(if (and filename lineno)
-			    (dbgr-file-loc-from-line filename lineno cmd-mark 
-						     (string-to-number bp-num))
+			    (let ((loc-or-error
+				   (dbgr-file-loc-from-line 
+				    filename lineno 
+				    cmd-mark 
+				    (string-to-number bp-num))))
+			      (if (stringp loc-or-error)
+				  (progn (message loc-or-error) nil)
+				loc-or-error))
 			  nil)))
 		nil))
 	  nil))
     (and (message "Current buffer %s is not a debugger command buffer"
 		  (current-buffer)) nil)
-    ))
+    )
+  )
 
 (defun dbgr-track-loc-remaining(text)
   "Return the portion of TEXT staring with the part after the
