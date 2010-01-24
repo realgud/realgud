@@ -30,6 +30,7 @@ want to save the values that were seen/requested originally."
   (with-current-buffer source-buffer
     (make-dbgr-loc 
      :filename (buffer-file-name source-buffer)
+     :column-number (current-column)
      :line-number (line-number-at-pos) 
      :marker (point-marker)
      :cmd-marker cmd-marker
@@ -49,6 +50,7 @@ not not found"
   (if (dbgr-loc? loc) 
       (let* ((filename    (dbgr-loc-filename loc))
 	     (line-number (dbgr-loc-line-number loc))
+	     (column-number (dbgr-loc-column-number loc))
 	     (marker      (dbgr-loc-marker loc))
 	     (cmd-marker  (dbgr-loc-cmd-marker loc))
 	     (src-buffer  (marker-buffer (or marker (make-marker)))))

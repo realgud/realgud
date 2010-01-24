@@ -18,6 +18,9 @@ a string output by a debugger inside a process shell"
   (regexp)
   (file-group)
   (line-group)
+  (char-offset-group)
+  (instruction-address-group)
+  (column-group)
 )
 
 (defvar dbgr-pat-hash (make-hash-table :test 'equal)

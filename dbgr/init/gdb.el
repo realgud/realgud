@@ -20,7 +20,8 @@ the values of a hash entry is a dbgr-loc-pat struct")
       (make-dbgr-loc-pat
        :regexp "^\\(.+\\):\\([0-9]+\\):\\([0-9]+\\):beg:0x\\([0-9a-f]+\\)"
        :file-group 1
-       :line-group 2))
+       :line-group 2
+       :char-offset-group 3))
 
 (setf (gethash "prompt" gdb-pat-hash)
       (make-dbgr-loc-pat
