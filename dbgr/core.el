@@ -95,7 +95,7 @@ return the first argument is always removed.
   (message "That's all folks.... %s" string))
 
 (defun dbgr-exec-shell (debugger-name script-filename program &rest args)
-  "Run the specified COMMAND in under debugger DEBUGGER-NAME a
+  "Run the specified SCRIPT-FILENAME in under debugger DEBUGGER-NAME a
 comint process buffer. ARGS are the arguments passed to the
 PROGRAM.  At the moment, no piping of input is allowed.
 

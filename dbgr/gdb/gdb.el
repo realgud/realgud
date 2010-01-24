@@ -41,7 +41,7 @@ String COMMAND-LINE specifies how to run gdb."
 	 (cmd-args (split-string-and-unquote cmd-str))
 	 (parsed-args (dbgr-gdb-parse-cmd-args cmd-args))
 	 (script-args (cdr cmd-args))
-	 (script-name (car script-args))
+	 (script-name (expand-file-name (car script-args)))
 	 (cmd-buf))
   
     ;; Parse the command line and pick out the script name and whether
@@ -49,8 +49,8 @@ String COMMAND-LINE specifies how to run gdb."
   
     (condition-case nil
 	(setq cmd-buf 
-	      (apply 'dbgr-exec-shell "gdb" script-name
-		     (car cmd-args) (cdr cmd-args)))
+	      (apply 'dbgr-exec-shell "gdb" (car script-args)
+		     (car cmd-args) (cons script-name (cddr cmd-args))))
     (error nil))
     ;; FIXME: Is there probably is a way to remove the
     ;; below test and combine in condition-case? 
