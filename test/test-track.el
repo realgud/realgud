@@ -10,14 +10,13 @@
 ;; Some setup usually done in setting up the buffer.
 ;; We customize this for the debugger rbdbgr. Others may follow.
 ;; FIXME: encapsulate this.
-
-;; dbgr-cmdbuf-info is supposed to exist in the process buffer
-;; and be buffer local
-(dbgr-cmdbuf-init (current-buffer) "rbdbgr" (gethash "rbdbgr" dbgr-pat-hash))
+(makunbound 'dbgr-cmdbuf-info)
 
 ;; FIXME/WARNING the below is customized for rbdbgr
 (context "dbgr-track"
 	 (tag dbgr-track)
+	 (dbgr-cmdbuf-init (current-buffer) "rbdbgr" 
+			   (gethash "rbdbgr" dbgr-pat-hash))
 
 	 (setq filename (symbol-file 'test-unit))
 	 (setq line-number 7)
@@ -43,6 +42,14 @@
 	 (specify "bp-loc extracted"
 		  (assert-equal t (dbgr-loc-p loc))
 		  (assert-equal bp-num (dbgr-loc-bp-num loc)))
+
+	 (specify "invalid cmdbuf"
+		  (makunbound 'dbgr-cmdbuf-info)
+		  (assert-raises error 
+				 (dbgr-track-from-region (point-min) 
+							 (point-max))
+				 )
+		  )
 	 )
 
 

@@ -20,6 +20,21 @@
 				  (dbgr-cmdbuf-command-string temp-cmdbuf))
 		    (assert-equal "rbdbgr" 
 				  (dbgr-cmdbuf-debugger-name))
+		    (assert-equal nil 
+				  (dbgr-cmdbuf-info-srcbuf-list 
+				   dbgr-cmdbuf-info)
+				  "srcbuf-list should start out nil")
+		    (dbgr-cmdbuf-add-srcbuf (current-buffer) temp-cmdbuf)
+		    (assert-equal (list (current-buffer))
+				  (dbgr-cmdbuf-info-srcbuf-list
+				   dbgr-cmdbuf-info)
+				  "should have added one item to srcbuf-list")
+		    (dbgr-cmdbuf-add-srcbuf (current-buffer) temp-cmdbuf)
+		    (assert-equal (list (current-buffer))
+				  (dbgr-cmdbuf-info-srcbuf-list
+				   dbgr-cmdbuf-info)
+				  "Second source buffer same as first; should have added still only one item.")
+
 		   ))
 	 )
 

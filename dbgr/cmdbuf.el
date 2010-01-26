@@ -19,7 +19,7 @@
   in-srcbuf?           ;; Should the selected window be the source buffer or
 		       ;; command buffer?
   debugger-name        ;; Name of debugger
-  frame-switch?           ;; Should the selected window be the source buffer or
+  frame-switch?        ;; Should the selected window be the source buffer or
 		       ;; command buffer?
   cmd-args             ;; Command-line invocation arguments
   prior-prompt-regexp  ;; regular expression prompt (e.g.
@@ -30,7 +30,7 @@
   regexp-hash          ;; hash table of regular expressions appropriate for
                        ;; this debugger. Eventually loc-regexp, file-group
                        ;; and line-group below will removed and stored here.
-
+  srcbuf-list          ;; list of source buffers we have stopped at
 
   ;; FIXME: REMOVE THIS and use regexp-hash
   loc-regexp   ;; Location regular expression string
@@ -55,6 +55,18 @@
   (with-current-buffer-safe 
    (or buffer (current-buffer))
    (dbgr-cmdbuf-info-set?)))
+
+(defun dbgr-cmdbuf-add-srcbuf(srcbuf &optional cmdbuf)
+  "Add SRCBUF to srcbuf-list field of INFO unless it is already included."
+  (setq cmdbuf (or cmdbuf (current-buffer)))
+  (if (dbgr-cmdbuf? cmdbuf)
+      (with-current-buffer-safe cmdbuf
+	(unless (memq srcbuf (dbgr-cmdbuf-info-srcbuf-list dbgr-cmdbuf-info))
+	  (setf (dbgr-cmdbuf-info-srcbuf-list dbgr-cmdbuf-info) 
+		(cons srcbuf (dbgr-cmdbuf-info-srcbuf-list dbgr-cmdbuf-info))))
+	)
+    )
+  )
 
 ;; FIXME: DRY = access via a macro. See also analogous
 ;; code in dbgr-srcbuf

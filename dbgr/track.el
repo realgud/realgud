@@ -76,13 +76,20 @@ evaluating (dbgr-cmdbuf-info-loc-regexp dbgr-cmdbuf-info)"
 	 (loc (dbgr-track-loc text cmd-mark))
 	 (text-sans-loc (or (dbgr-track-loc-remaining text) text))
 	 (bp-loc (dbgr-track-bp-loc text-sans-loc cmd-mark))
+	 (cmdbuf (current-buffer))
 	 )
-    (if bp-loc 
-	(let ((src-buffer (dbgr-loc-goto bp-loc)))
-	  (with-current-buffer src-buffer
-	    (dbgr-bp-add-info bp-loc)
-	  )))
-    (if loc (dbgr-track-loc-action loc (current-buffer))))
+    (if (dbgr-cmdbuf? cmdbuf)
+	(progn
+	  (if bp-loc 
+	      (let ((src-buffer (dbgr-loc-goto bp-loc)))
+		(dbgr-cmdbuf-add-srcbuf src-buffer cmdbuf)
+		(with-current-buffer src-buffer
+		  (dbgr-bp-add-info bp-loc)
+		  )))
+	  (if loc (dbgr-track-loc-action loc cmdbuf)))
+      ;; else
+      (error "Buffer %s is not a debugger command buffer" cmdbuf))
+    )
   )
 
 (defun dbgr-track-hist-fn-internal(fn)
@@ -168,6 +175,7 @@ encountering a new loc."
 	(setq srcbuf (dbgr-loc-goto loc))
 	(dbgr-srcbuf-init-or-update srcbuf cmdbuf)
 	(setq srcbuf-loc-hist (dbgr-srcbuf-loc-hist srcbuf))
+	(dbgr-cmdbuf-add-srcbuf srcbuf cmdbuf)
 
 	(with-current-buffer srcbuf
 	  (dbgr-short-key-mode-setup shortkey-mode?))
