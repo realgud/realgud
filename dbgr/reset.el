@@ -29,3 +29,5 @@
       (error "Unable to find command buffer from %s" buf)
       ))
   )
+
+(provide-me "dbgr-")

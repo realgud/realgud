@@ -7,7 +7,7 @@
 (require 'comint)
 (require 'load-relative)
 (require-relative-list
- '("fringe" "helper" "cmdbuf" "srcbuf") "dbgr-")
+ '("fringe" "helper" "cmdbuf" "reset" "srcbuf") "dbgr-")
 
 (defvar dbgr-srcbuf-info)
 
@@ -94,13 +94,23 @@ return the first argument is always removed.
   (dbgr-fringe-erase-history-arrows)
   (message "That's all folks.... %s" string))
 
-(defun dbgr-exec-shell (debugger-name script-filename program &rest args)
+(defun dbgr-exec-shell (debugger-name script-filename program 
+				      &optional no-reset &rest args)
   "Run the specified SCRIPT-FILENAME in under debugger DEBUGGER-NAME a
 comint process buffer. ARGS are the arguments passed to the
 PROGRAM.  At the moment, no piping of input is allowed.
 
-SCRIPT-FILENAME will have local variable `dbgr-script-info' set which contains
-the debugger name and debugger process-command buffer."
+SCRIPT-FILENAME will have local variable `dbgr-script-info' set
+which contains the debugger name and debugger process-command
+buffer.
+
+Normally command buffers are reused when the same debugger is
+reinvoked inside a command buffer with a similar command. If we
+discover that the buffer has prior command-buffer information and
+NO-RESET is nil, then that information which may point into other
+buffers and source buffers which may contain marks and fringe or
+marginal icons is reset."
+
   (let* ((starting-directory
 	  (or (file-name-directory script-filename)
 	      default-directory "./"))
@@ -113,6 +123,7 @@ the debugger name and debugger process-command buffer."
 	 (process (get-buffer-process cmdproc-buffer)))
     (unless (and process (eq 'run (process-status process)))
       (with-current-buffer cmdproc-buffer
+	(and (dbgr-cmdbuf?) (not no-reset) (dbgr-reset))
 	(setq default-directory default-directory)
 	(insert "Current directory is " default-directory "\n")
 	

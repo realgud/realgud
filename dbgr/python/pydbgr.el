@@ -30,10 +30,18 @@ This should be an executable on your path, or an absolute file name."
 ;;
 
 ;;;###autoload
-(defun pydbgr (&optional opt-command-line)
+(defun pydbgr (&optional opt-command-line no-reset)
   "Invoke the pydbgr Ruby debugger and start the Emacs user interface.
 
-String COMMAND-LINE specifies how to run pydbgr."
+String COMMAND-LINE specifies how to run pydbgr.
+
+Normally command buffers are reused when the same debugger is
+reinvoked inside a command buffer with a similar command. If we
+discover that the buffer has prior command-buffer information and
+NO-RESET is nil, then that information which may point into other
+buffers and source buffers which may contain marks and fringe or
+marginal icons is reset."
+
   
   (interactive)
   (let* (
@@ -50,7 +58,7 @@ String COMMAND-LINE specifies how to run pydbgr."
     (condition-case nil
 	(setq cmd-buf 
 	      (apply 'dbgr-exec-shell "pydbgr" script-name
-		     (car cmd-args) (cdr cmd-args)))
+		     (car cmd-args) no-reset (cdr cmd-args)))
     (error nil))
     ;; FIXME: Is there probably is a way to remove the
     ;; below test and combine in condition-case? 
