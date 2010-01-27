@@ -48,6 +48,7 @@ like 'rbdbgr', 'pydbgr'."
   "Remove all features loaded from this package. Useful if you want to
 reload another version, say a newer development version and you already have
 this package loaded."
+  (interactive "")
   (let ((result (dbgr-loaded-features)))
     (dolist (feature result result)
       (unload-feature feature 't)))
