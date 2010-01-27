@@ -88,7 +88,7 @@ static char *magick[] = {
     )
 )
 
-(defun dbgr-bp-put-icon (pos enabled bp-num)
+(defun dbgr-bp-put-icon (pos enabled bp-num &optional opt-buf)
   "Add a breakpoint icon in the left margin at POS via a `put-image' overlay.
 The alternate string name for the image is created from the value
 of ENABLED and BP-NUM.  In particular, if ENABLED is 't and
@@ -96,6 +96,7 @@ BP-NUM is 5 the overlay string is be 'B5:' If ENABLED is false
 then the overlay string is 'b5:'. Breakpoint text properties are
 also attached to the icon via its display string."
   (let ((enabled-str)
+	(buf (or opt-buf (current-buffer)))
 	(bp-num-str
 	 (cond 
 	  ((or (not bp-num) (not (numberp bp-num))) ":")
@@ -104,38 +105,40 @@ also attached to the icon via its display string."
 	(bp-str)
 	(help-string "mouse-1: clear bkpt, mouse-3: enable/disable bkpt")
 	)
-    (if enabled 
-	(progn 
-	  (setq enabled-str "B")
-	  (setq brkpt-icon dbgr-bp-enabled-icon)
-	  )
-      (progn
-	(setq enabled-str "b")
-	(setq brkpt-icon dbgr-bp-disabled-icon)
-	))
-    ;; Create alternate display string and attach
-    ;; properties it.
-    (setq bp-str (concat enabled-str bp-num-str))
-    (add-text-properties
-	 0 1 `(dbgr-bptno ,bp-num enabled ,enabled) bp-str)
-    (add-text-properties
-     0 1 (list 'help-echo (format "%s %s" bp-str help-string))
-     bp-str)
-
-    ;; Display breakpoint icon or display string.  If the window is
-    ;; nil, the image doesn't get displayed, so make sure it is large
-    ;; enough.
-    (let ((window (get-buffer-window (current-buffer) 0)))
-      (if window
-	  (set-window-margins window 2)
-	;; FIXME: This is all crap, but I don't know how to fix.
-	(let ((buffer-save (window-buffer (selected-window))))
-	  (set-window-buffer (selected-window) (current-buffer))
-	  (set-window-margins (selected-window) 2)
-	  (set-window-buffer (selected-window) buffer-save))
-	))
-    (dbgr-bp-remove-icons pos)
-    (put-image brkpt-icon pos bp-str 'left-margin)
+    (with-current-buffer buf
+      (if enabled 
+	  (progn 
+	    (setq enabled-str "B")
+	    (setq brkpt-icon dbgr-bp-enabled-icon)
+	    )
+	(progn
+	  (setq enabled-str "b")
+	  (setq brkpt-icon dbgr-bp-disabled-icon)
+	  ))
+      ;; Create alternate display string and attach
+      ;; properties it.
+      (setq bp-str (concat enabled-str bp-num-str))
+      (add-text-properties
+       0 1 `(dbgr-bptno ,bp-num enabled ,enabled) bp-str)
+      (add-text-properties
+       0 1 (list 'help-echo (format "%s %s" bp-str help-string))
+       bp-str)
+      
+      ;; Display breakpoint icon or display string.  If the window is
+      ;; nil, the image doesn't get displayed, so make sure it is large
+      ;; enough.
+      (let ((window (get-buffer-window (current-buffer) 0)))
+	(if window
+	    (set-window-margins window 2)
+	  ;; FIXME: This is all crap, but I don't know how to fix.
+	  (let ((buffer-save (window-buffer (selected-window))))
+	    (set-window-buffer (selected-window) (current-buffer))
+	    (set-window-margins (selected-window) 2)
+	    (set-window-buffer (selected-window) buffer-save))
+	  ))
+      (dbgr-bp-remove-icons pos)
+      (put-image brkpt-icon pos bp-str 'left-margin)
+      )
     )
   )
 
