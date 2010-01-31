@@ -40,6 +40,12 @@ dbgr-loc-pat struct")
        :file-group 3
        :line-group 2))
 
+;;  Regular expression that describes a rbdbgr "delete breakpoint" line
+(setf (gethash "brkpt-del" rbdbgr-pat-hash)
+      (make-dbgr-loc-pat
+       :regexp "^Deleted breakpoint \\([0-9]+\\)\n"
+       :bp-num 1))
+
 ;;  Regular expression that describes a Ruby $! string
 (setf (gethash "dollar-bang" rbdbgr-pat-hash)
       (make-dbgr-loc-pat

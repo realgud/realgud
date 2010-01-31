@@ -284,11 +284,12 @@ Otherwise return nil."
   )
 
 (defun dbgr-track-loc-remaining(text)
-  "Return the portion of TEXT staring with the part after the
+  "Return the portion of TEXT starting with the part after the
 loc-regexp pattern"
   (if (dbgr-cmdbuf?)
-      (let 
-	  ((loc-regexp (dbgr-sget 'cmdbuf-info 'loc-regexp)))
+      (let* ((loc-pat (dbgr-cmdbuf-loc-pat))
+	     (loc-regexp (dbgr-loc-pat-regexp loc-pat))
+	     )
 	(if loc-regexp
 	    (if (string-match loc-regexp text)
 		(substring text (match-end 0))
@@ -297,25 +298,32 @@ loc-regexp pattern"
     nil)
 )
   
-(defun dbgr-goto-line-for-loc-pat (pt dbgr-loc-pat)
-  "Display the location mentioned in line described by PT. DBGR-LOC-PAT is used
-to get regular-expresion pattern matching information."
+(defun dbgr-goto-line-for-loc-pat (pt &optional opt-dbgr-loc-pat)
+  "Display the location mentioned in line described by
+PT. OPT-DBGR-LOC-PAT is used to get regular-expresion pattern
+matching information. If not supplied we use the currnet buffer's \"location\" 
+pattern found via dbgr-cmdbuf information."
   (interactive "d")
   (save-excursion
     (goto-char pt)
-    (lexical-let* ((cmdbuf (current-buffer))
-		   (cmd-mark (point-marker))
-		   (curr-proc (get-buffer-process cmdbuf))
-		   (start (line-beginning-position))
-		   (end (line-end-position))
-		   ;; FIXME check that dbgr-loc-pat is not null and abort if it is.
-		   (loc (dbgr-track-loc (buffer-substring start end)
-					cmd-mark
-					(dbgr-sget 'loc-pat 'regexp)
-					(dbgr-sget 'loc-pat 'file-group)
-					(dbgr-sget 'loc-pat 'line-group)
-					)))
-    (if loc (dbgr-track-loc-action loc cmdbuf)))))
+    (let* 
+	((cmdbuf (current-buffer))
+	 (cmd-mark (point-marker))
+	 (curr-proc (get-buffer-process cmdbuf))
+	 (start (line-beginning-position))
+	 (end (line-end-position))
+	 (loc-pat (or opt-dbgr-loc-pat (dbgr-cmdbuf-loc-pat)))
+	 (loc)
+	 )
+      (unless (and loc-pat (dbgr-loc-pat-p loc-pat))
+	(error "Can't find location information for %s" cmdbuf))
+      (setq loc (dbgr-track-loc (buffer-substring start end)
+				cmd-mark
+				(dbgr-loc-pat-regexp loc-pat)
+				(dbgr-loc-pat-file-group loc-pat)
+				(dbgr-loc-pat-line-group loc-pat)
+				))
+      (if loc (dbgr-track-loc-action loc cmdbuf)))))
 
 (defun dbgr-track-set-debugger (debugger-name)
   "Set debugger name and information associated with that debugger for

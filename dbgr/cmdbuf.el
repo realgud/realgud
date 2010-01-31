@@ -2,7 +2,7 @@
 
 (require 'load-relative)
 (require-relative-list
- '("fringe" "helper" "loc" "lochist") "dbgr-")
+ '("fringe" "helper" "loc" "lochist" "regexp") "dbgr-")
 
 (eval-when-compile 
   (byte-compile-disable-warning 'cl-functions)
@@ -76,11 +76,11 @@
 (defun dbgr-cmdbuf-info-in-srcbuf?=(info value)
   (setf (dbgr-cmdbuf-info-in-srcbuf? info) value))
 
-(defun dbgr-cmdbuf-info-src-shortkey?=(info value)
-  (setf (dbgr-cmdbuf-info-src-shortkey? info) value))
-
 (defun dbgr-cmdbuf-info-no-record?=(info value)
   (setf (dbgr-cmdbuf-info-no-record? info) value))
+
+(defun dbgr-cmdbuf-info-src-shortkey?=(info value)
+  (setf (dbgr-cmdbuf-info-src-shortkey? info) value))
 
 (defun dbgr-cmdbuf-info-frame-switch?=(info value)
   (setf (dbgr-cmdbuf-info-frame-switch? info) value))
@@ -137,6 +137,16 @@ as a main program."
   (with-current-buffer-safe (or cmd-buf (current-buffer))
     (dbgr-sget 'cmdbuf-info 'debugger-name))
 )
+
+(defun dbgr-cmdbuf-loc-pat()
+  "Extract loc regexp in a dbgr-cmdbuf via dbgr-cmdbuf-info"
+  (if (dbgr-cmdbuf?)
+      (let*
+	  ((debugger-name (dbgr-cmdbuf-debugger-name))
+	   (regexp-hash (gethash debugger-name dbgr-pat-hash))
+	   (loc-pat (gethash "loc" regexp-hash)))
+	loc-pat)
+    nil))
 
 (defun dbgr-cmdbuf-loc-hist(cmd-buf)
   "Return the history ring of locations that a debugger
