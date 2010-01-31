@@ -59,6 +59,12 @@ menu. (The common map typically contains function key bindings.)"
     ;;                     'dbgr-toggle-source-breakpoint
     ;;                     :enable '(dbgr-get-process)))
 
+    (define-key menu-map [break]
+      (dbgr-menu-item menu-map "Set breakpoint" 'dbgr-cmd-break
+                        :enable '(dbgr-get-process)
+			:help (documentation 'dbgr-cmd-continue)
+			))
+
     (define-key menu-map [cont]
       (dbgr-menu-item menu-map "continue" 'dbgr-cmd-continue
                         :enable '(dbgr-get-process)

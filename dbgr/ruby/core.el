@@ -216,4 +216,4 @@ breakpoints, etc.)."
   (interactive)
   (customize-group 'rbdbgr))
 
-(provide-me)
+(provide-me "rbdbgr-")

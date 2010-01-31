@@ -31,6 +31,7 @@
                        ;; this debugger. Eventually loc-regexp, file-group
                        ;; and line-group below will removed and stored here.
   srcbuf-list          ;; list of source buffers we have stopped at
+  bp-list              ;; list of breakpoints
 
   ;; FIXME: REMOVE THIS and use regexp-hash
   loc-regexp   ;; Location regular expression string
@@ -89,6 +90,10 @@
   (if (dbgr-cmdbuf-info? info)
       (setf (dbgr-cmdbuf-info-prior-prompt-regexp info) value)))
 
+(defun dbgr-cmdbuf-info-bp-list=(info value)
+  (if (dbgr-cmdbuf-info? info)
+      (setf (dbgr-cmdbuf-info-bp-list info) value)))
+
 (defun dbgr-cmdbuf-command-string(cmd-buffer)
   "Get the command string invocation for this command buffer"
     (cond
@@ -138,13 +143,13 @@ as a main program."
     (dbgr-sget 'cmdbuf-info 'debugger-name))
 )
 
-(defun dbgr-cmdbuf-loc-pat()
-  "Extract loc regexp in a dbgr-cmdbuf via dbgr-cmdbuf-info"
+(defun dbgr-cmdbuf-pat(key)
+  "Extract regexp stored under KEY in a dbgr-cmdbuf via dbgr-cmdbuf-info"
   (if (dbgr-cmdbuf?)
       (let*
 	  ((debugger-name (dbgr-cmdbuf-debugger-name))
 	   (regexp-hash (gethash debugger-name dbgr-pat-hash))
-	   (loc-pat (gethash "loc" regexp-hash)))
+	   (loc-pat (gethash key regexp-hash)))
 	loc-pat)
     nil))
 

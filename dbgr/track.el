@@ -72,14 +72,16 @@ evaluating (dbgr-cmdbuf-info-loc-regexp dbgr-cmdbuf-info)"
 
   (interactive "r")
   (if (> from to) (psetq to from from to))
-  (let* ((text (buffer-substring from to))
+  (let* ((text (buffer-substring-no-properties from to))
 	 (loc (dbgr-track-loc text cmd-mark))
-	 (text-sans-loc (or (dbgr-track-loc-remaining text) text))
-	 (bp-loc (dbgr-track-bp-loc text-sans-loc cmd-mark))
+	 (text-sans-loc)
+	 (bp-loc)
 	 (cmdbuf (current-buffer))
 	 )
     (if (dbgr-cmdbuf? cmdbuf)
-	(progn
+	(with-current-buffer cmdbuf
+	  (setq text-sans-loc (or (dbgr-track-loc-remaining text) text))
+	  (setq bp-loc (dbgr-track-bp-loc text-sans-loc cmd-mark cmdbuf))
 	  (if bp-loc 
 	      (let ((src-buffer (dbgr-loc-goto bp-loc)))
 		(dbgr-cmdbuf-add-srcbuf src-buffer cmdbuf)
@@ -94,7 +96,7 @@ evaluating (dbgr-cmdbuf-info-loc-regexp dbgr-cmdbuf-info)"
 
 (defun dbgr-track-hist-fn-internal(fn)
   "Update both command buffer and a source buffer to reflect the
-selected location in the location histor. If we started in a
+selected location in the location history. If we started in a
 command buffer, we stay in a command buffer. Moving inside a
 command buffer always shows the corresponding source
 file. However it is possible in shortkey mode to show only the
@@ -238,7 +240,7 @@ Otherwise return nil."
 		  (current-buffer)) nil)
     ))
 
-(defun dbgr-track-bp-loc(text &optional cmd-mark)
+(defun dbgr-track-bp-loc(text &optional cmd-mark cmdbuf)
   "Do regular-expression matching to find a file name and line number inside
 string TEXT. If we match, we will turn the result into a dbgr-loc struct.
 Otherwise return nil."
@@ -249,45 +251,57 @@ Otherwise return nil."
   ; the fields of dbgr-cmdbuf-info appropriately we can accomodate a
   ; family of debuggers -- one at a time -- for the buffer process.
 
-  (if (dbgr-cmdbuf?)
-      (let* ((regexp-hash (dbgr-sget 'cmdbuf-info 'regexp-hash))
-	     (dbgr-loc-pat (gethash "brkpt-set" regexp-hash))
-	     )
-	(if dbgr-loc-pat
-	    (let ((bp-num-group (dbgr-sget 'loc-pat 'bp-num))
-		  (loc-regexp   (dbgr-sget 'loc-pat 'regexp))
-		  (file-group   (dbgr-sget 'loc-pat 'file-group))
-		  (line-group   (dbgr-sget 'loc-pat 'line-group)))
-	      (if loc-regexp
-		  (if (string-match loc-regexp text)
-		      (let* ((bp-num (match-string bp-num-group text))
-			     (filename (match-string file-group text))
-			     (line-str (match-string line-group text)) 
-			     (lineno (string-to-number (or line-str "1")))
-			     )
-			(unless line-str (message "line number not found -- using 1"))
-			(if (and filename lineno)
-			    (let ((loc-or-error
-				   (dbgr-file-loc-from-line 
-				    filename lineno 
-				    cmd-mark 
-				    (string-to-number bp-num))))
-			      (if (stringp loc-or-error)
-				  (progn (message loc-or-error) nil)
-				loc-or-error))
-			  nil)))
-		nil))
-	  nil))
-    (and (message "Current buffer %s is not a debugger command buffer"
-		  (current-buffer)) nil)
+  (setq cmdbuf (or cmdbuf (current-buffer)))
+  (with-current-buffer cmdbuf
+    (if (dbgr-cmdbuf?)
+	(let* ((loc-pat (dbgr-cmdbuf-pat "brkpt-set")))
+	  (if loc-pat
+	      (let ((bp-num-group (dbgr-loc-pat-bp-num loc-pat))
+		    (loc-regexp   (dbgr-loc-pat-regexp loc-pat))
+		    (file-group   (dbgr-loc-pat-file-group loc-pat))
+		    (line-group   (dbgr-loc-pat-line-group loc-pat)))
+		(if loc-regexp
+		    (if (string-match loc-regexp text)
+			(let* ((bp-num (match-string bp-num-group text))
+			       (filename (match-string file-group text))
+			       (line-str (match-string line-group text)) 
+			       (lineno (string-to-number (or line-str "1")))
+			       )
+			  (unless line-str 
+			    (message "line number not found -- using 1"))
+			  (if (and filename lineno)
+			      (let ((loc-or-error
+				     (dbgr-file-loc-from-line 
+				      filename lineno 
+				      cmd-mark 
+				      (string-to-number bp-num))))
+				(if (stringp loc-or-error)
+				    (progn 
+				      (message loc-or-error) 
+				      ;; set to return nil
+				      nil)
+				  ;; else
+				  (progn 
+				    ;; Add breakpoint to list of breakpoints
+				    (dbgr-cmdbuf-info-bp-list= 
+				     dbgr-cmdbuf-info 
+				     (cons loc-or-error (dbgr-sget 'cmdbuf-info 'bp-list)))
+				    ;; Set to return location
+				    loc-or-error)))
+			    nil)))
+		  nil))
+	    nil))
+      (and (message "Current buffer %s is not a debugger command buffer"
+		    (current-buffer)) nil)
+      )
     )
-  )
+)
 
 (defun dbgr-track-loc-remaining(text)
   "Return the portion of TEXT starting with the part after the
 loc-regexp pattern"
   (if (dbgr-cmdbuf?)
-      (let* ((loc-pat (dbgr-cmdbuf-loc-pat))
+      (let* ((loc-pat (dbgr-cmdbuf-pat "loc"))
 	     (loc-regexp (dbgr-loc-pat-regexp loc-pat))
 	     )
 	(if loc-regexp
@@ -312,12 +326,12 @@ pattern found via dbgr-cmdbuf information."
 	 (curr-proc (get-buffer-process cmdbuf))
 	 (start (line-beginning-position))
 	 (end (line-end-position))
-	 (loc-pat (or opt-dbgr-loc-pat (dbgr-cmdbuf-loc-pat)))
+	 (loc-pat (or opt-dbgr-loc-pat (dbgr-cmdbuf-pat "loc")))
 	 (loc)
 	 )
       (unless (and loc-pat (dbgr-loc-pat-p loc-pat))
 	(error "Can't find location information for %s" cmdbuf))
-      (setq loc (dbgr-track-loc (buffer-substring start end)
+      (setq loc (dbgr-track-loc (buffer-substring-no-properties start end)
 				cmd-mark
 				(dbgr-loc-pat-regexp loc-pat)
 				(dbgr-loc-pat-file-group loc-pat)

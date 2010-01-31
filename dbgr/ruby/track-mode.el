@@ -4,7 +4,7 @@
 (require 'load-relative)
 (require-relative-list '("../track-mode" "../cmds" "../menu") "dbgr-")
 (require-relative-list '("../init/rbdbgr") "dbgr-init-")
-(require-relative "rbdbgr-core")
+(require-relative-list '("core" "cmds") "rbdbgr-")
 
 (defvar rbdbgr-pat-hash)
 (defvar rbdbgr-track-mode nil
@@ -19,6 +19,7 @@ Use the command `rbdbgr-track-mode' to toggle or set this variable.")
 into or out of this mode."
   (dbgr-track-set-debugger "rbdbgr")
   (dbgr-define-gdb-like-commands)
+  (dbgr-define-rbdbgr-commands)
   (if rbdbgr-track-mode
       (progn 
  	;; FIXME: until I figure out why this isn't set in the mode
@@ -50,7 +51,7 @@ into or out of this mode."
   (rbdbgr-track-mode-body)
 )
 
-(provide 'rbdbgr-track-mode)
+(provide-me "rbdbgr-")
 
 ;;; Local variables:
 ;;; eval:(put 'rbdbg-debug-enter 'lisp-indent-hook 1)

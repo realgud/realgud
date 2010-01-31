@@ -74,6 +74,7 @@ Nor does it touch prefix keys; for that see `dbgr-populate-keys-standard'"
     (define-key map "r" 'dbgr-cmd-restart)
     (define-key map "R" 'dbgr-cmd-restart)
     (define-key map "s" 'dbgr-cmd-step)
+    (define-key map "\C-x "    'dbgr-cmd-break)
     (define-key map [M-down]   'dbgr-track-hist-newer)
     (define-key map [M-up]     'dbgr-track-hist-older)
     (define-key map [M-print]  'dbgr-track-hist-older)
