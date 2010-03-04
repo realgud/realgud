@@ -3,7 +3,8 @@
 (require-relative-list
  '("./dbgr/track-mode") "dbgr-")
 (require-relative-list
-   '("./dbgr/ruby/rbdbgr"
+   '("./dbgr/rbdbgr/rbdbgr"
+     "./dbgr/rdebug/rdebug"
      "./dbgr/gdb/gdb"
    "./dbgr/python/pydbgr"))
 

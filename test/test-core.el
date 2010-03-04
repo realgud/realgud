@@ -1,4 +1,4 @@
-(setq rbdbgr-core "../dbgr/ruby/core.el")
+(setq rbdbgr-core "../dbgr/rbdbgr/core.el")
 (require 'test-unit)
 (load-file "../dbgr/core.el")
 (load-file rbdbgr-core)

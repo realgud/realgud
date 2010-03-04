@@ -5,46 +5,46 @@
 
 ;; FIXME: I think the following could be generalized and moved to 
 ;; dbgr-... probably via a macro.
-(defvar rbdbgr-minibuffer-history nil
-  "minibuffer history list for the command `rbdbgr'.")
+(defvar rdebug-minibuffer-history nil
+  "minibuffer history list for the command `rdebug'.")
 
-(easy-mmode-defmap rbdbgr-minibuffer-local-map
+(easy-mmode-defmap rdebug-minibuffer-local-map
   '(("\C-i" . comint-dynamic-complete-filename))
   "Keymap for minibuffer prompting of gud startup command."
   :inherit minibuffer-local-map)
 
 ;; FIXME: I think this code and the keymaps and history
 ;; variable chould be generalized, perhaps via a macro.
-(defun rbdbgr-query-cmdline (&optional opt-debugger)
+(defun rdebug-query-cmdline (&optional opt-debugger)
   (dbgr-query-cmdline 
-   'rbdbgr-suggest-invocation
-   rbdbgr-minibuffer-local-map
-   'rbdbgr-minibuffer-history
+   'rdebug-suggest-invocation
+   rdebug-minibuffer-local-map
+   'rdebug-minibuffer-history
    opt-debugger))
 
-(defun rbdbgr-parse-cmd-args (orig-args)
+(defun rdebug-parse-cmd-args (orig-args)
   "Parse command line ARGS for the annotate level and name of script to debug.
 
 ARGS should contain a tokenized list of the command line to run.
 
 We return the a list containing
 - the command processor (e.g. ruby) and it's arguments if any - a list of strings
-- the name of the debugger given (e.g. rbdbgr) and its arguments - a list of strings
+- the name of the debugger given (e.g. rdebug) and its arguments - a list of strings
 - the script name and its arguments - list of strings
 - whether the annotate or emacs option was given ('-A', '--annotate' or '--emacs) - a boolean
 
 For example for the following input 
   (map 'list 'symbol-name
-   '(ruby1.8 -W -C /tmp rbdbgr --emacs ./gcd.rb a b))
+   '(ruby1.9 -W -C /tmp rdebug --emacs ./gcd.rb a b))
 
 we might return:
-   ((ruby1.8 -W -C) (rbdbgr --emacs) (./gcd.rb a b) 't)
+   ((ruby1.9 -W -C) (rdebug --emacs) (./gcd.rb a b) 't)
 
 NOTE: the above should have each item listed in quotes.
 "
 
   ;; Parse the following kind of pattern:
-  ;;  [ruby ruby-options] rbdbgr rbdbgr-options script-name script-options
+  ;;  [ruby ruby-options] rdebug rdebug-options script-name script-options
   (let (
 	(args orig-args)
 	(pair)          ;; temp return from 
@@ -55,9 +55,9 @@ NOTE: the above should have each item listed in quotes.
 	(ruby-two-args '())
 	;; One dash is added automatically to the below, so
 	;; h is really -h and -host is really --host.
-	(rbdbgr-two-args '("h" "-host" "p" "-port"
+	(rdebug-two-args '("h" "-host" "p" "-port"
 			   "I" "-include" "-r" "-require"))
-	(rbdbgr-opt-two-args '())
+	(rdebug-opt-two-args '())
 
 	;; Things returned
 	(script-name nil)
@@ -85,13 +85,13 @@ NOTE: the above should have each item listed in quotes.
 	  (nconc interpreter-args (car pair))
 	  (setq args (cadr pair))))
 
-      ;; Remove "rbdbgr" from "rbdbgr --rbdbgr-options script
+      ;; Remove "rdebug" from "rdebug --rdebug-options script
       ;; --script-options"
       (setq debugger-name (file-name-sans-extension
 			   (file-name-nondirectory (car args))))
-      (unless (string-match "^rbdbgr$" debugger-name)
+      (unless (string-match "^rdebug$" debugger-name)
 	(message 
-	 "Expecting debugger name `%s' to be `rbdbgr'"
+	 "Expecting debugger name `%s' to be `rdebug'"
 	 debugger-name))
       (setq debugger-args (list (pop args)))
 
@@ -111,7 +111,7 @@ NOTE: the above should have each item listed in quotes.
 	   ;; Options with arguments.
 	   ((string-match "^-" arg)
 	    (setq pair (dbgr-parse-command-arg 
-			args rbdbgr-two-args rbdbgr-opt-two-args))
+			args rdebug-two-args rdebug-opt-two-args))
 	    (nconc debugger-args (car pair))
 	    (setq args (cadr pair)))
 	   ;; Anything else must be the script to debug.
@@ -120,7 +120,7 @@ NOTE: the above should have each item listed in quotes.
 	   )))
       (list interpreter-args debugger-args script-args annotate-p))))
 
-(defun rbdbgr-file-ruby-mode? (filename)
+(defun rdebug-file-ruby-mode? (filename)
   "Return true if FILENAME is a buffer we are visiting a buffer
 that is in ruby-mode"
   (let ((buffer (and filename (find-buffer-visiting filename)))
@@ -133,12 +133,12 @@ that is in ruby-mode"
 	  (and match-pos (= 0 match-pos)))
       nil)))
 
-(defun rbdbgr-suggest-invocation (debugger-name)
-  "Suggest a rbdbgr command invocation via `dbgr-suggest-invocaton'"
-  (dbgr-suggest-invocation "rbdbgr" rbdbgr-minibuffer-history 
-			   'rbdbgr-suggest-ruby-file))
+(defun rdebug-suggest-invocation (debugger-name)
+  "Suggest a rdebug command invocation via `dbgr-suggest-invocaton'"
+  (dbgr-suggest-invocation "rdebug" rdebug-minibuffer-history 
+			   'rdebug-suggest-ruby-file))
 
-(defun rbdbgr-suggest-ruby-file ()
+(defun rdebug-suggest-ruby-file ()
     "Suggest a Ruby file to debug. First priority is given to the
 current buffer. If the major mode is Ruby-mode, then we are
 done. If the major mode is not Ruby, we'll use priority 2 and we
@@ -154,10 +154,10 @@ given priority, we use the first one we find."
 	   (priority 2)
 	   (is-not-directory)
 	   (result (buffer-file-name)))
-      (if (not (rbdbgr-file-ruby-mode? result))
+      (if (not (rdebug-file-ruby-mode? result))
 	  (while (and (setq file (car-safe file-list)) (< priority 8))
 	    (setq file-list (cdr file-list))
-	    (if (rbdbgr-file-ruby-mode? file)
+	    (if (rdebug-file-ruby-mode? file)
 		(progn 
 		  (setq result file)
 		  (setq priority 
@@ -180,40 +180,40 @@ given priority, we use the first one we find."
 		    (setq priority 5))))))
       result))
 
-(defun rbdbgr-goto-traceback-line (pt)
+(defun rdebug-goto-traceback-line (pt)
   "Display the location mentioned by the Ruby traceback line
 described by PT."
   (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "traceback" rbdbgr-pat-hash))
+  (dbgr-goto-line-for-pt-and-type pt "traceback" rdebug-pat-hash))
 
-(defun rbdbgr-goto-dollarbang-traceback-line (pt)
+(defun rdebug-goto-dollarbang-traceback-line (pt)
   "Display the location mentioned by the Ruby $! traceback line
 described by PT."
   (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "dollar-bang" rbdbgr-pat-hash))
+  (dbgr-goto-line-for-pt-and-type pt "dollar-bang" rdebug-pat-hash))
 
-(defun rbdbgr-reset ()
-  "Rbdbgr cleanup - remove debugger's internal buffers (frame,
+(defun rdebug-reset ()
+  "Rdebug cleanup - remove debugger's internal buffers (frame,
 breakpoints, etc.)."
   (interactive)
-  ;; (rbdbgr-breakpoint-remove-all-icons)
+  ;; (rdebug-breakpoint-remove-all-icons)
   (dolist (buffer (buffer-list))
-    (when (string-match "\\*rbdbgr-[a-z]+\\*" (buffer-name buffer))
+    (when (string-match "\\*rdebug-[a-z]+\\*" (buffer-name buffer))
       (let ((w (get-buffer-window buffer)))
         (when w
           (delete-window w)))
       (kill-buffer buffer))))
 
-;; (defun rbdbgr-reset-keymaps()
+;; (defun rdebug-reset-keymaps()
 ;;   "This unbinds the special debugger keys of the source buffers."
 ;;   (interactive)
-;;   (setcdr (assq 'rbdbgr-debugger-support-minor-mode minor-mode-map-alist)
-;; 	  rbdbgr-debugger-support-minor-mode-map-when-deactive))
+;;   (setcdr (assq 'rdebug-debugger-support-minor-mode minor-mode-map-alist)
+;; 	  rdebug-debugger-support-minor-mode-map-when-deactive))
 
 
-(defun rbdbgr-customize ()
-  "Use `customize' to edit the settings of the `rbdbgr' debugger."
+(defun rdebug-customize ()
+  "Use `customize' to edit the settings of the `rdebug' debugger."
   (interactive)
-  (customize-group 'rbdbgr))
+  (customize-group 'rdebug))
 
-(provide-me "rbdbgr-")
+(provide-me "rdebug-")

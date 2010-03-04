@@ -50,3 +50,5 @@ dbgr-loc-pat struct")
        :line-group 2))
 
 (setf (gethash "rdebug" dbgr-pat-hash) rdebug-pat-hash)
+
+(provide-me "dbgr-init-")
