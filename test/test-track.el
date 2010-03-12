@@ -1,8 +1,4 @@
 (require 'test-unit)
-(load-file "../dbgr/regexp.el")
-(load-file "../dbgr/init.el")
-(load-file "../dbgr/loc.el")
-(load-file "../dbgr/cmdbuf.el")
 (load-file "../dbgr/track.el")
 
 (test-unit-clear-contexts)
@@ -40,7 +36,7 @@
 	 (setq loc (dbgr-track-bp-loc debugger-bp-output nil))
 
 	 (specify "bp-loc extracted"
-		  (assert-equal t (dbgr-loc-p loc))
+		  (assert-t (dbgr-loc-p loc))
 		  (assert-equal bp-num (dbgr-loc-bp-num loc)))
 
 	 (specify "invalid cmdbuf"

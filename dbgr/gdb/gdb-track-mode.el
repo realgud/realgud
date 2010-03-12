@@ -31,7 +31,7 @@ into or out of this mode."
     )))
 
 (defvar dbgr-gdb-track-mode-map
-  (let ((map (make-sparse-keymap)))
+  (let ((map dbgr-track-mode-map))
     map)
   "Keymap used in `gdb-track-mode'.")
 

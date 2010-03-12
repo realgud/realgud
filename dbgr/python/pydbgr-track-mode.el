@@ -32,7 +32,7 @@ into or out of this mode."
     )))
 
 (defvar pydbgr-track-mode-map
-  (let ((map (make-sparse-keymap)))
+  (let ((map dbgr-track-mode-map))
     (define-key map [C-c e]	'pydbgr-goto-traceback-line)
     map)
   "Keymap used in `pydbgr-track-mode'.")

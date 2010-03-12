@@ -34,7 +34,7 @@ into or out of this mode."
     ))
 
 (defvar rbdbgr-track-mode-map
-  (let ((map (make-sparse-keymap)))
+  (let ((map dbgr-track-mode-map))
     (define-key map [C-c !]	'rbdbgr-goto-dollarbang-traceback-line)
     (define-key map [C-c e]	'rbdbgr-goto-traceback-line)
     map)
