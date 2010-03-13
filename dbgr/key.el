@@ -39,10 +39,12 @@ This variable can be bound to the following:
   (define-key map [f5]    'dbgr-continue)
   (define-key map [S-f5]  'dbgr-cmd-quit)
   ;; (define-key map [f9]    'dbgr-toggle-source-breakpoint)
+  (define-key map [f9]    'dbgr-cmd-break)
   ;; (define-key map [C-f9]  'dbgr-toggle-source-breakpoint-enabled)
   (define-key map [f10]   'dbgr-cmd-next)
   (define-key map [f11]   'dbgr-cmd-step)
   (define-key map [S-f11] 'dbgr-cmd-finish)
+  (define-key map "\C-x " 'dbgr-cmd-break)
   )
 
 ;; TODO: add eclipse, and netbeans
@@ -74,7 +76,6 @@ Nor does it touch prefix keys; for that see `dbgr-populate-keys-standard'"
     (define-key map "r" 'dbgr-cmd-restart)
     (define-key map "R" 'dbgr-cmd-restart)
     (define-key map "s" 'dbgr-cmd-step)
-    (define-key map "\C-x "    'dbgr-cmd-break)
     (define-key map [M-down]   'dbgr-track-hist-newer)
     (define-key map [M-up]     'dbgr-track-hist-older)
     (define-key map [M-print]  'dbgr-track-hist-older)

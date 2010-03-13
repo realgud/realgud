@@ -10,7 +10,7 @@
 (require 'load-relative)
 (require-relative-list '("loc") "dbgr-")
 
-(defcustom dbgr-loc-hist-size 10  ; For testing. Should really be larger.
+(defcustom dbgr-loc-hist-size 20  ; For testing. Should really be larger.
   "Size of dbgr position history ring"
   :type 'integer
   :group 'dbgr)
