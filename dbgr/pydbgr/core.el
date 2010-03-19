@@ -211,4 +211,4 @@ breakpoints, etc.)."
   (interactive)
   (customize-group 'pydbgr))
 
-(provide-me)
+(provide-me "pydbgr-")

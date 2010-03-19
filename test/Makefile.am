@@ -28,7 +28,7 @@ test-lochist.run:
 	(cd $(top_srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )
 test-regexp.run:
 	(cd $(top_srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )
-test-regexp-python.run:
+test-regexp-pydbgr.run:
 	(cd $(top_srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )
 test-regexp-ruby.run:
 	(cd $(top_srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )

@@ -3,9 +3,9 @@
 
 (eval-when-compile (require 'cl))
 (require 'load-relative)
-(require-relative-list
- '("../common/track-mode" "../common/cmds") "dbgr-")
-(require-relative "pydbgr-core")
+(require-relative-list '("../common/track-mode" "../common/cmds"
+			 "../common/menu") "dbgr-")
+(require-relative-list '("core") "pydbgr-")
 
 (defvar pydbgr-pat-hash)
 (defvar pydbgr-track-mode nil
@@ -48,4 +48,4 @@ into or out of this mode."
   (pydbgr-track-mode-body)
 )
 
-(provide 'pydbgr-track-mode)
+(provide-me "pydbgr-")

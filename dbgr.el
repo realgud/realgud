@@ -6,7 +6,7 @@
    '("./dbgr/rbdbgr/rbdbgr"
      "./dbgr/rdebug/rdebug"
      "./dbgr/gdb/gdb"
-   "./dbgr/python/pydbgr"))
+   "./dbgr/pydbgr/pydbgr"))
 
 
 ;; Really should be part of GNU Emacs. But until then...

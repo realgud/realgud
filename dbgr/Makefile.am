@@ -1,4 +1,4 @@
-SUBDIRS = common gdb python rbdbgr rdebug 
+SUBDIRS = common gdb pydbgr rbdbgr rdebug 
 
 test: check
 
