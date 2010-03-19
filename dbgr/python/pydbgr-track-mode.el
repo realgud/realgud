@@ -4,7 +4,7 @@
 (eval-when-compile (require 'cl))
 (require 'load-relative)
 (require-relative-list
- '("../track-mode" "../cmds") "dbgr-")
+ '("../common/track-mode" "../common/cmds") "dbgr-")
 (require-relative "pydbgr-core")
 
 (defvar pydbgr-pat-hash)

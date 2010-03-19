@@ -1,5 +1,5 @@
 (require 'test-unit)
-(load-file "../dbgr/bp.el")
+(load-file "../dbgr/common/bp.el")
 
 (test-unit-clear-contexts)
 

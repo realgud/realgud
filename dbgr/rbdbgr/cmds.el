@@ -1,6 +1,6 @@
 (require 'load-relative)
 (require-relative-list
- '("../send") "dbgr-")
+ '("../common/send") "dbgr-")
 
 (defun dbgr-define-rbdbgr-commands ()
   "(Re)define a bunch of rbdbgr commands have"

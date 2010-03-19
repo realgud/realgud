@@ -1,6 +1,6 @@
 ;;  `dbgr-gdb' Main interface to pydbgr via Emacs
 (require 'load-relative)
-(require-relative-list '("../helper") "dbgr-")
+(require-relative-list '("../common/helper") "dbgr-")
 (require-relative-list '("gdb-core" "gdb-track-mode"))
 
 ;; This is needed, or at least the docstring part of it is needed to

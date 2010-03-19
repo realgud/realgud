@@ -1,4 +1,4 @@
-lispdir = @lispdir_dbgr@/init
+lispdir = @lispdir_dbgr@/common/init
 lisp_files := $(wildcard *.el)
 lisp_LISP = $(lisp_files)
 EXTRA_DIST = $(lisp_files) 

@@ -1,5 +1,5 @@
 (require 'test-unit)
-(load-file "../dbgr/init/rdebug.el")
+(load-file "../dbgr/common/init/rdebug.el")
 
 (test-unit-clear-contexts)
 

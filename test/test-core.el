@@ -1,7 +1,7 @@
 (setq rbdbgr-core "../dbgr/rbdbgr/core.el")
 (require 'test-unit)
-(load-file "../dbgr/core.el")
-(load-file rbdbgr-core)
+(load-file "../dbgr/common/core.el")
+(load-file "../dbgr/rbdbgr/core.el")
 
 (test-unit-clear-contexts)
 

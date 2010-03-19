@@ -2,8 +2,9 @@
 
 (eval-when-compile (require 'cl))
 (require 'load-relative)
-(require-relative-list '("../track-mode" "../cmds" "../menu") "dbgr-")
-(require-relative-list '("../init/rbdbgr") "dbgr-init-")
+(require-relative-list '("../common/track-mode" "../common/cmds" 
+			 "../common/menu") "dbgr-")
+(require-relative-list '("../common/init/rbdbgr") "dbgr-init-")
 (require-relative-list '("core" "cmds") "rbdbgr-")
 
 (defvar rbdbgr-pat-hash)

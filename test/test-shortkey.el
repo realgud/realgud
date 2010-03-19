@@ -1,5 +1,5 @@
 (require 'test-unit)
-(load-file "../dbgr/shortkey.el")
+(load-file "../dbgr/common/shortkey.el")
 (test-unit-clear-contexts)
 
 (context "dbgr-shortkey"

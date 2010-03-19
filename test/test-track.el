@@ -1,5 +1,5 @@
 (require 'test-unit)
-(load-file "../dbgr/track.el")
+(load-file "../dbgr/common/track.el")
 
 (test-unit-clear-contexts)
 

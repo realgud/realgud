@@ -1,7 +1,7 @@
 (eval-when-compile (require 'cl))
   
 (require 'load-relative)
-(require-relative-list '("../track" "../core") "dbgr-")
+(require-relative-list '("../common/track" "../common/core") "dbgr-")
 
 ;; FIXME: I think the following could be generalized and moved to 
 ;; dbgr-... probably via a macro.

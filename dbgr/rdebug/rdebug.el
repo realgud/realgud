@@ -1,7 +1,7 @@
 ;;  `rdebug' Main interface to rdebug via Emacs
 (require 'load-relative)
-(require-relative-list '("../helper") "dbgr-")
-(require-relative-list '("../track") "dbgr-")
+(require-relative-list '("../common/helper") "dbgr-")
+(require-relative-list '("../common/track") "dbgr-")
 (require-relative-list '("core" "track-mode") "rdebug-")
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.

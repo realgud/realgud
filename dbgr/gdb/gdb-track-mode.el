@@ -3,7 +3,7 @@
 (eval-when-compile (require 'cl))
 (require 'load-relative)
 (require-relative-list
- '("../track-mode" "../cmds") "dbgr-")
+ '("../common/track-mode" "../common/cmds") "dbgr-")
 (require-relative "gdb-core")
 
 (defvar gdb-pat-hash)

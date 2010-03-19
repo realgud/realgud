@@ -1,10 +1,4 @@
-SUBDIRS = gdb init python rbdbgr rdebug 
-
-lispdir = @lispdir_dbgr@
-lisp_files := $(wildcard *.el)
-
-EXTRA_DIST = $(lisp_files)
-lisp_LISP = $(lisp_files)
+SUBDIRS = common gdb python rbdbgr rdebug 
 
 test: check
 

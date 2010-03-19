@@ -1,7 +1,7 @@
 (require 'test-unit)
 
 (makunbound 'file-exists?)
-(load-file "../dbgr/helper.el")
+(load-file "../dbgr/common/helper.el")
 
 (test-unit-clear-contexts)
 
