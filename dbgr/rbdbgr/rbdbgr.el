@@ -73,6 +73,6 @@ marginal icons is reset."
     )))
 
 
-(provide 'rbdbgr)
+(provide-me "dbgr-")
 
 ;;; rbdbgr.el ends here

@@ -73,4 +73,4 @@ marginal icons is reset."
 	(message "Error running pydbgr command"))
     )))
 
-(provide-me)
+(provide-me "dbgr-")

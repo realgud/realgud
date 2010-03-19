@@ -1,12 +1,11 @@
 ;;; Things related to loading and loading the dbgr package.
 (require 'load-relative)
 (require-relative-list
- '("./dbgr/common/track-mode") "dbgr-")
-(require-relative-list
-   '("./dbgr/rbdbgr/rbdbgr"
-     "./dbgr/rdebug/rdebug"
-     "./dbgr/gdb/gdb"
-   "./dbgr/pydbgr/pydbgr"))
+ '("./dbgr/common/track-mode"
+   "./dbgr/rbdbgr/rbdbgr"
+   "./dbgr/rdebug/rdebug"
+   "./dbgr/gdb/gdb"
+   "./dbgr/pydbgr/pydbgr") "dbgr-")
 
 
 ;; Really should be part of GNU Emacs. But until then...

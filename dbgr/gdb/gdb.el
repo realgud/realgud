@@ -72,4 +72,4 @@ marginal icons is reset."
 	(message "Error running gdb command"))
     )))
 
-(provide-me)
+(provide-me "dbgr-")
