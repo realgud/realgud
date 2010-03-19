@@ -18,7 +18,7 @@ AC_CONFIG_FILES([Makefile \
 		 dbgr/common/Makefile \
 		 dbgr/common/init/Makefile \
 		 dbgr/gdb/Makefile \
-		 dbgr/python/Makefile \
+		 dbgr/pydbgr/Makefile \
 		 dbgr/rbdbgr/Makefile \
 		 dbgr/rdebug/Makefile \
 		 test/Makefile \
