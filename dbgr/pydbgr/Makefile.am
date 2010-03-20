@@ -1,4 +1,4 @@
-lispdir = @lispdir_dbgr@/python
+lispdir = @lispdir_dbgr@/pydbgr
 lisp_files := $(wildcard *.el)
 lisp_LISP = $(lisp_files)
 EXTRA_DIST = $(lisp_files) 
