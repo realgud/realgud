@@ -37,6 +37,8 @@ The values of a hash entry is a dbgr-loc-pat struct")
 
 (setf (gethash "kshdb" dbgr-pat-hash) kshdb-pat-hash)
 
+(provide-me "dbgr-init-")
+
 ;;; Local variables:
 ;;; eval:(put 'kshdb-debug-enter 'lisp-indent-hook 1)
 ;;; End:

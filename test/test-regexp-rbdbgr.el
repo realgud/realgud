@@ -4,8 +4,9 @@
 (test-unit-clear-contexts)
 
 
-(setq tb  (gethash "traceback" rbdbgr-pat-hash))
-(setq bps (gethash "brkpt-set" rbdbgr-pat-hash))
+(setq bps    (gethash "brkpt-set" rbdbgr-pat-hash))
+(setq prompt (gethash "prompt"    rbdbgr-pat-hash))
+(setq tb     (gethash "traceback" rbdbgr-pat-hash))
 
 (defun tb-loc-match(text) 
   (string-match (dbgr-loc-pat-regexp tb) text)
@@ -33,6 +34,18 @@
 				  (match-string (dbgr-loc-pat-line-group tb)
 						text)))
 	   )
+
+	   (specify "prompt"
+	   	    (assert-equal 0 (string-match (dbgr-loc-pat-regexp prompt)
+						  "(rbdbgr): "))
+	   	    (assert-equal 0 (string-match (dbgr-loc-pat-regexp prompt)
+						  "((rbdbgr)): "))
+	   	    (assert-equal 0 (string-match (dbgr-loc-pat-regexp prompt)
+						  "((rbdbgr@55)): "))
+	   	    (assert-equal 0 (string-match (dbgr-loc-pat-regexp prompt)
+						  "((rbdbgr@main)): "))
+		    )
+
 
 	 (lexical-let ((text "Breakpoint 1 set at line 9
 	in file /usr/local/bin/irb,

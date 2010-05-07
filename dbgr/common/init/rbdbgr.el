@@ -22,7 +22,7 @@ dbgr-loc-pat struct")
 ;;  Regular expression that describes a rbdbgr command prompt
 (setf (gethash "prompt" rbdbgr-pat-hash)
       (make-dbgr-loc-pat
-       :regexp "^(rbdbgr): "
+       :regexp "^(+rbdbgr\\(@[0-9]+\\|@main\\)?)+: "
        ))
 
 ;;  Regular expression that describes a Ruby traceback line.
