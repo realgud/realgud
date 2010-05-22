@@ -43,8 +43,4 @@ The values of a hash entry is a dbgr-loc-pat struct")
 
 (setf (gethash "pydb" dbgr-pat-hash) pydb-pat-hash)
 
-;;; Local variables:
-;;; eval:(put 'pydb-debug-enter 'lisp-indent-hook 1)
-;;; End:
-
-;;; regexp/pydb.el ends here
+(provide-me "dbgr-init-")
