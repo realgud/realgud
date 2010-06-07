@@ -34,7 +34,7 @@ dbgr-loc-pat struct")
        :file-group 1
        :line-group 2))
 
-;;  Regular expression that describes a rbdbgr "breakpoint set" line
+;;  Regular expression that describes a rdebug "breakpoint set" line
 (setf (gethash "brkpt-set" rdebug-pat-hash)
       (make-dbgr-loc-pat
        :regexp "^Breakpoint \\([0-9]+\\) file \\(.+\\), line \\([0-9]+\\)\n"
