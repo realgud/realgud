@@ -1,0 +1,27 @@
+h1. Introduction
+
+Towards a modular framework for interacting with external debuggers.
+
+Debuggers we currently support are:
+
+ * bashdb  (BASH)
+ * gdb  
+ * kshdb (Korn Shell)
+ * pydb (Python)
+ * pydbgr (Python)
+ * rbdbgr (Ruby 1.9)
+ * remake (GNU Make)
+ * ruby-debug (Ruby)
+ * zshdb (Zsh)
+
+The debugger is run out of a comint process buffer, or you can use a
+"track-mode" inside an existing shell.
+
+h1. Installation
+
+To install you'll need a couple of other emacs packages installed:
+ * emacs-loc-changes (for storing marks at buffer locations)
+ * emacs-test-unit (for unit testing)
+ * emacs-load-relative (internal loading mechanism)
+
+Get these from from http://githib/rocky as you did this package
