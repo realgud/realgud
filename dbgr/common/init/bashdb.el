@@ -36,3 +36,6 @@ The values of a hash entry is a dbgr-loc-pat struct")
        :line-group 3))
 
 (setf (gethash "bashdb" dbgr-pat-hash) bashdb-pat-hash)
+
+(provide-me "dbgr-init-")
+
