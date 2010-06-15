@@ -5,7 +5,9 @@
 (defvar temp-cmdbuf nil)
 (defun setup ()
   (setq temp-cmdbuf (generate-new-buffer "*cmdbuf-test*"))
-  (start-process "test-track-mode" temp-cmdbuf nil)
+  ;; (start-process "test-track-mode" temp-cmdbuf nil)
+  (start-process "test-track-mode" temp-cmdbuf "/bin/sh")
+
   (dbgr-cmdbuf-init temp-cmdbuf "rbdbgr" (gethash "rbdbgr" dbgr-pat-hash))
   (with-current-buffer temp-cmdbuf 
     (rbdbgr-track-mode 't))
