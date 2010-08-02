@@ -83,7 +83,7 @@ a tokenized list of the command line."
 
 
 ;;;###autoload
-(defun rdebug (&optional opt-command-line no-reset)
+(defun dbgr-rdebug (&optional opt-command-line no-reset)
   "Invoke the rdebug Ruby debugger and start the Emacs user interface.
 
 String COMMAND-LINE specifies how to run rdebug.
