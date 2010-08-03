@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
-# -*- Ruby -*-
 
 # GCD. We assume positive numbers
 def gcd(a, b)

@@ -169,7 +169,7 @@ given priority, we use the first one we find."
 	    ;; Check for an executable file with a .rb extension.
 	    (if (and file (file-executable-p file)
 		     (setq is-not-directory (not (file-directory-p file))))
-		(if (and (string-match "\.rb$" file))
+		(if (and (string-match "\.py$" file))
 		    (if (< priority 6)
 			(progn
 			  (setq result file)

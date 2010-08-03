@@ -1,6 +1,8 @@
 # Whatever it is you want to do, it should be forwarded to the 
 # to top-level directories
 PHONY=check test all
+EXTRA_DIST=gcd.py gcd.rb
+
 all: check
 
 %: 
@@ -25,6 +27,8 @@ test-file.run:
 test-loc.run: 
 	(cd $(top_srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )
 test-lochist.run:
+	(cd $(top_srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )
+test-pydbgr.run:
 	(cd $(top_srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )
 test-rdebug.run:
 	(cd $(top_srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )
