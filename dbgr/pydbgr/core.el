@@ -146,8 +146,8 @@ done. If the major mode is not Python, we'll use priority 2 and we
 keep going.  Then we will try files in the default-directory. Of
 those that we are visiting we will see if the major mode is Python,
 the first one we find we will return.  Failing this, we see if the
-file is executable and has a .rb suffix. These have priority 8.
-Failing that, we'll go for just having a .rb suffix. These have
+file is executable and has a .py suffix. These have priority 8.
+Failing that, we'll go for just having a .py suffix. These have
 priority 7. And other executable files have priority 6.  Within a
 given priority, we use the first one we find."
     (let* ((file)
@@ -166,7 +166,7 @@ given priority, we use the first one we find."
 			    (setq priority 8)
 			  (setq priority 7)))))
 	    ;; The file isn't in a Python-mode buffer,
-	    ;; Check for an executable file with a .rb extension.
+	    ;; Check for an executable file with a .py extension.
 	    (if (and file (file-executable-p file)
 		     (setq is-not-directory (not (file-directory-p file))))
 		(if (and (string-match "\.py$" file))
