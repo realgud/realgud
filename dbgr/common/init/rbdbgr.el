@@ -32,7 +32,7 @@ dbgr-loc-pat struct")
        :file-group 1
        :line-group 2))
 
-;;  Regular expression that describes a rbdbgr "breakpoint set" line
+;;  Regular expression that describes a "breakpoint set" line
 (setf (gethash "brkpt-set" rbdbgr-pat-hash)
       (make-dbgr-loc-pat
        :regexp "^Breakpoint \\([0-9]+\\) set at line \\([0-9]+\\)[ \t\n]+in file \\(.+\\),\n"
@@ -40,7 +40,7 @@ dbgr-loc-pat struct")
        :file-group 3
        :line-group 2))
 
-;;  Regular expression that describes a rbdbgr "delete breakpoint" line
+;;  Regular expression that describes a "delete breakpoint" line
 (setf (gethash "brkpt-del" rbdbgr-pat-hash)
       (make-dbgr-loc-pat
        :regexp "^Deleted breakpoint \\([0-9]+\\)\n"

@@ -4,8 +4,8 @@
 (defvar dbgr-short-key-mode-map
   (let ((map (make-sparse-keymap))
 	(common-map (make-sparse-keymap)))
-    ;; (define-key map "b" 'dbgr-cmd-break)
-    ;; (define-key map "t" 'dbgr-toggle-source-breakpoint-enabled)
+    (define-key map "b" 'dbgr-cmd-break)
+    ; (define-key map "t" 'dbgr-toggle-source-breakpoint-enabled)
     (define-key map [insert] 'dbgr-short-key-mode)
 
     ;; Use a simple common map to find the best key sequence to
