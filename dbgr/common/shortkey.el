@@ -5,6 +5,7 @@
   (let ((map (make-sparse-keymap))
 	(common-map (make-sparse-keymap)))
     (define-key map "b" 'dbgr-cmd-break)
+    (define-key map "c" 'dbgr-cmd-continue)
     ; (define-key map "t" 'dbgr-toggle-source-breakpoint-enabled)
     (define-key map [insert] 'dbgr-short-key-mode)
 
