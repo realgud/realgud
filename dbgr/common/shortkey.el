@@ -8,6 +8,7 @@
     (define-key map "c" 'dbgr-cmd-continue)
     ; (define-key map "t" 'dbgr-toggle-source-breakpoint-enabled)
     (define-key map [insert] 'dbgr-short-key-mode)
+    (define-key map [M-insert] 'dbgr-short-key-mode)
 
     ;; Use a simple common map to find the best key sequence to
     ;; display in menu.
@@ -46,6 +47,7 @@ MODE-ON? a boolean which specifies if we are going into or out of this mode."
 	      (progn
 		(dbgr-srcbuf-info-was-read-only?=  
 		 dbgr-srcbuf-info buffer-read-only)
+		(local-set-key [M-insert] 'dbgr-short-key-mode)
 		(setq buffer-read-only t))
 	    ;; Mode is being turned off: restore read-only state.
 	    (setq buffer-read-only (dbgr-sget 'srcbuf-info 'was-read-only?)))
