@@ -17,11 +17,5 @@ Debuggers we currently support are:
 The debugger is run out of a comint process buffer, or you can use a
 "track-mode" inside an existing shell.
 
-h1. Installation
-
-To install you'll need a couple of other emacs packages installed:
- * emacs-loc-changes (for storing marks at buffer locations)
- * emacs-test-unit (for unit testing)
- * emacs-load-relative (internal loading mechanism)
-
-Get these from from http://githib/rocky as you did this package
+To install you'll need a couple of other emacs packages installed.
+See http://wiki.github.com/rocky/emacs-dbgr/how-to-install for how to install.
