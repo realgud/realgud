@@ -183,10 +183,10 @@ configure again during the build, and the customized values of these
 variables may be lost.  In order to avoid this problem, you should set
 them in the `configure' command line, using `VAR=value'.  For example:
 
-     ./configure CC=/usr/local2/bin/gcc
+     ./configure EMACS=/usr/bin/emacs23-x
 
-causes the specified `gcc' to be used as the C compiler (unless it is
-overridden in the site shell script).
+causes the specified `/usr/bin/emacs23-x' to be used as the Emacs program
+to use.
 
 Unfortunately, this technique does not work for `CONFIG_SHELL' due to
 an Autoconf bug.  Until the bug is fixed you can use this workaround:
