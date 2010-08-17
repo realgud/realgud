@@ -4,14 +4,18 @@ AM_INIT_AUTOMAKE
 AM_MAINTAINER_MODE
 
 AC_PATH_PROG([EMACS], [emacs], [emacs])
+AC_MSG_NOTICE("Checking emacs version and prerequiste packages")
 $EMACS -batch -q -no-site-file -eval \
   '(if (<= emacs-major-version 22)
-     (progn
-       (error "You need GNU Emacs 23 or better.")
-       (kill-emacs 1)
-     ))'
+       (progn
+         (error "You need GNU Emacs 23 or better.")
+         (kill-emacs 1)
+       )
+     (dolist (package (quote (loc-changes load-relative test-unit)))
+        (require package))
+   )'
 if test $? -ne 0 ; then
-    AC_MSG_ERROR([Can't continue with this version of Emacs])
+    AC_MSG_ERROR([Can't continue until above error is corrected.])
 fi
 
 ##
