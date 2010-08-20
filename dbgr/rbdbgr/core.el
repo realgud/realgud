@@ -186,7 +186,7 @@ described by PT."
   (interactive "d")
   (dbgr-goto-line-for-pt-and-type pt "traceback" rbdbgr-pat-hash))
 
-(defun rbdbgr-goto-control-frame-traceback-line (pt)
+(defun rbdbgr-goto-control-frame-line (pt)
   "Display the location mentioned by a control-frame line
 described by PT."
   (interactive "d")
