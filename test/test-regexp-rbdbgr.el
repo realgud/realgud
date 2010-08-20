@@ -4,9 +4,10 @@
 (test-unit-clear-contexts)
 
 
-(setq bps    (gethash "brkpt-set" rbdbgr-pat-hash))
-(setq prompt (gethash "prompt"    rbdbgr-pat-hash))
-(setq tb     (gethash "traceback" rbdbgr-pat-hash))
+(setq bps    (gethash "brkpt-set"     rbdbgr-pat-hash))
+(setq prompt (gethash "prompt"        rbdbgr-pat-hash))
+(setq tb     (gethash "traceback"     rbdbgr-pat-hash))
+(setq ctrl   (gethash "control-frame" rbdbgr-pat-hash))
 
 (defun tb-loc-match(text) 
   (string-match (dbgr-loc-pat-regexp tb) text)
@@ -14,6 +15,10 @@
 
 (defun bp-loc-match(text) 
   (string-match (dbgr-loc-pat-regexp bps) text)
+)
+
+(defun ctrl-frame-match(text) 
+  (string-match (dbgr-loc-pat-regexp ctrl) text)
 )
 
 ;; FIXME: we get a void variable somewhere in here when running
@@ -46,22 +51,32 @@
 						  "((rbdbgr@main)): "))
 		    )
 
-
-	 (lexical-let ((text "Breakpoint 1 set at line 9
+	   (specify "control-frame"
+	   	    (assert-equal 0 (ctrl-frame-match 
+				     "c:0026 p:0181 s:0136 b:0136 l:000135 d:000135 METHOD /rbdbgr-0.0.1/app/frame.rb:132 "
+				     )
+				  )
+	   	    (assert-equal 0 (ctrl-frame-match 
+				     "c:0015 p:0139 s:0070 b:0070 l:000063 d:000069 BLOCK  /gems/app/core.rb:121"
+				     )
+				  )
+		    )
+	   
+	   (lexical-let ((text "Breakpoint 1 set at line 9
 	in file /usr/local/bin/irb,
 	VM offset 2 of instruction sequence <top (required)>."))
-	   (specify "basic breakpoint location"
-		    (assert-t (numberp (bp-loc-match text))))
-	   (specify "extract breakpoint file name"
-	   	    (assert-equal "/usr/local/bin/irb"
-				  (match-string (dbgr-loc-pat-file-group bps)
-	   				  text)))
-	   (specify "extract breakpoint line number"
-	   	    (assert-equal "9"
-				  (match-string (dbgr-loc-pat-line-group bps)
-						text)))
+	     (specify "basic breakpoint location"
+		      (assert-t (numberp (bp-loc-match text))))
+	     (specify "extract breakpoint file name"
+		      (assert-equal "/usr/local/bin/irb"
+				    (match-string (dbgr-loc-pat-file-group bps)
+						  text)))
+	     (specify "extract breakpoint line number"
+		      (assert-equal "9"
+				    (match-string (dbgr-loc-pat-line-group bps)
+						  text)))
+	     )
 	   )
-	 )
 
 (test-unit "regexp-rbdbgr")
 

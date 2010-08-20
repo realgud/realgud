@@ -46,6 +46,12 @@ dbgr-loc-pat struct")
        :regexp "^Deleted breakpoint \\([0-9]+\\)\n"
        :bp-num 1))
 
+(setf (gethash "control-frame" rbdbgr-pat-hash)
+      (make-dbgr-loc-pat
+       :regexp "^c:\\([0-9]+\\) p:\\([0-9]+\\) s:\\([0-9]+\\) b:\\([0-9]+\\) l:\\([0-9]+\\) d:\\([0-9]+\\) \\([A-Z]+\\) \\(.+\\):\\([0-9]+\\)"
+       :file-group 8
+       :line-group 9))
+
 ;;  Regular expression that describes a Ruby $! string
 (setf (gethash "dollar-bang" rbdbgr-pat-hash)
       (make-dbgr-loc-pat

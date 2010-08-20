@@ -186,8 +186,14 @@ described by PT."
   (interactive "d")
   (dbgr-goto-line-for-pt-and-type pt "traceback" rbdbgr-pat-hash))
 
+(defun rbdbgr-goto-control-frame-traceback-line (pt)
+  "Display the location mentioned by a control-frame line
+described by PT."
+  (interactive "d")
+  (dbgr-goto-line-for-pt-and-type pt "control-frame" rbdbgr-pat-hash))
+
 (defun rbdbgr-goto-dollarbang-traceback-line (pt)
-  "Display the location mentioned by the Ruby $! traceback line
+  "Display the location mentioned by a Ruby $! traceback line
 described by PT."
   (interactive "d")
   (dbgr-goto-line-for-pt-and-type pt "dollar-bang" rbdbgr-pat-hash))
