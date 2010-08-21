@@ -180,11 +180,11 @@ given priority, we use the first one we find."
 		    (setq priority 5))))))
       result))
 
-(defun rbdbgr-goto-traceback-line (pt)
+(defun rbdbgr-goto-backtrace-line (pt)
   "Display the location mentioned by the Ruby traceback line
 described by PT."
   (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "traceback" rbdbgr-pat-hash))
+  (dbgr-goto-line-for-pt-and-type pt "backtrace" rbdbgr-pat-hash))
 
 (defun rbdbgr-goto-control-frame-line (pt)
   "Display the location mentioned by a control-frame line

@@ -16,7 +16,7 @@ Use the command `rbdbgr-track-mode' to toggle or set this variable.")
 
 (defun rbdbgr-track-mode-body()
   "Called when entering or leaving rbdbgr-track-mode. Variable
-`pydbgr-track-mode' is a boolean which specifies if we are going
+`rbdbgr-track-mode' is a boolean which specifies if we are going
 into or out of this mode."
   (dbgr-track-set-debugger "rbdbgr")
   (dbgr-define-gdb-like-commands)
@@ -26,21 +26,21 @@ into or out of this mode."
  	;; FIXME: until I figure out why this isn't set in the mode
 	(local-set-key "\C-c!!"  'rbdbgr-goto-dollarbang-traceback-line)
         (local-set-key "\C-c!c"  'rbdbgr-goto-control-frame-line)
-        (local-set-key "\C-c!e"  'rbdbgr-goto-traceback-line)
+        (local-set-key "\C-c!b"  'rbdbgr-goto-backtrace-line)
 	(dbgr-track-mode 't)
 	(run-mode-hooks 'rbdbgr-track-mode-hook))
     (progn 
       (dbgr-track-mode nil)
       (local-unset-key "\C-c!!")
       (local-unset-key "\C-c!c")
-      (local-unset-key "\C-c!e"))
+      (local-unset-key "\C-c!b"))
     ))
 
 (defvar rbdbgr-track-mode-map
   (let ((map dbgr-track-mode-map))
-    (define-key map [C-c ! !]	'rbdbgr-goto-dollarbang-traceback-line)
+    (define-key map [C-c ! !]	'rbdbgr-goto-dollarbang-backtrace-line)
     (define-key map [C-c ! c]	'rbdbgr-goto-control-frame-line)
-    (define-key map [C-c ! e]	'rbdbgr-goto-traceback-line)
+    (define-key map [C-c ! b]	'rbdbgr-goto-backtrace-line)
     map)
   "Keymap used in `rbdbgr-track-mode'.")
 

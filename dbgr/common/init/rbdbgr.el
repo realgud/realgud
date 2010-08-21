@@ -25,8 +25,8 @@ dbgr-loc-pat struct")
        :regexp "^(+rbdbgr\\(@[0-9]+\\|@main\\)?)+: "
        ))
 
-;;  Regular expression that describes a Ruby traceback line.
-(setf (gethash "traceback" rbdbgr-pat-hash)
+;;  Regular expression that describes a Ruby backtrace line.
+(setf (gethash "backtrace" rbdbgr-pat-hash)
       (make-dbgr-loc-pat
        :regexp "^[ \t]+from \\([^:]+\\):\\([0-9]+\\)\\(?: in `.*'\\)?"
        :file-group 1
