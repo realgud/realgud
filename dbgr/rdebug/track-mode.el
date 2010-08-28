@@ -36,7 +36,7 @@ into or out of this mode."
 
 (defvar rdebug-track-mode-map
   (let ((map dbgr-track-mode-map))
-    (define-key map [C-c !]	'rdebug-goto-dollarbang-traceback-line)
+    (define-key map [C-c ! !]	'rdebug-goto-dollarbang-traceback-line)
     (define-key map [C-c e]	'rdebug-goto-traceback-line)
     map)
   "Keymap used in `rdebug-track-mode'.")
