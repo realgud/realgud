@@ -1,4 +1,5 @@
 SUBDIRS = init
+MOSTLYCLEANFILES = *.elc
 
 lispdir = @lispdir_dbgr@/common
 lisp_files := $(wildcard *.el)

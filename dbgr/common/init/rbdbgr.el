@@ -48,7 +48,7 @@ dbgr-loc-pat struct")
 
 (setf (gethash "control-frame" rbdbgr-pat-hash)
       (make-dbgr-loc-pat
-       :regexp "^c:\\([0-9]+\\) p:\\([0-9]+\\) s:\\([0-9]+\\) b:\\([0-9]+\\) l:\\([0-9]+\\) d:\\([0-9]+\\) \\([A-Z]+\\) \\(.+\\):\\([0-9]+\\)"
+       :regexp "^c:\\([0-9]+\\) p:\\([0-9]+\\) s:\\([0-9]+\\) b:\\([0-9]+\\) l:\\([0-9a-f]+\\) d:\\([0-9a-f]+\\) \\([A-Z]+\\) \\(.+\\):\\([0-9]+\\)"
        :file-group 8
        :line-group 9))
 

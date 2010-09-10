@@ -6,7 +6,7 @@
 
 (setq bps    (gethash "brkpt-set"     rbdbgr-pat-hash))
 (setq prompt (gethash "prompt"        rbdbgr-pat-hash))
-(setq tb     (gethash "traceback"     rbdbgr-pat-hash))
+(setq tb     (gethash "backtrace"     rbdbgr-pat-hash))
 (setq ctrl   (gethash "control-frame" rbdbgr-pat-hash))
 
 (defun tb-loc-match(text) 
@@ -54,6 +54,10 @@
 	   (specify "control-frame"
 	   	    (assert-equal 0 (ctrl-frame-match 
 				     "c:0026 p:0181 s:0136 b:0136 l:000135 d:000135 METHOD /rbdbgr-0.0.1/app/frame.rb:132 "
+				     )
+				  )
+	   	    (assert-equal 0 (ctrl-frame-match 
+				     "c:0030 p:0041 s:0144 b:0144 l:00226c d:00226c METHOD /gems/rbdbgr-0.0.1/processor/eval.rb:15 "
 				     )
 				  )
 	   	    (assert-equal 0 (ctrl-frame-match 
