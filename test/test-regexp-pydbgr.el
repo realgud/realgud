@@ -60,7 +60,7 @@
 
 (context "promp matching"
 	 (tag regexp-pydbgr)
-	 (lexical-let ((text "(c:\\working\\python\\helloworld.py:30)"))
+	 (lexical-let ((text "(c:\\working\\python\\helloworld.py:30): <module>"))
 	   (specify "MS DOS position location"
 		    (assert-t (numberp (prompt-loc-match text))))
 	   (specify "extract file name"
