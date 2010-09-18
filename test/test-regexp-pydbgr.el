@@ -5,7 +5,7 @@
 
 
 (setq bps    (gethash "brkpt-set" pydbgr-pat-hash))
-(setq prompt (gethash "prompt"    pydbgr-pat-hash))
+(setq loc    (gethash "loc"       pydbgr-pat-hash))
 (setq tb     (gethash "traceback" pydbgr-pat-hash))
 
 (setq tb (gethash "traceback" pydbgr-pat-hash))
@@ -16,6 +16,10 @@
 
 (defun bp-loc-match(text) 
   (string-match (dbgr-loc-pat-regexp bps) text)
+)
+
+(defun prompt-loc-match(text) 
+  (string-match (dbgr-loc-pat-regexp loc) text)
 )
 
 ;; FIXME: we get a void variable somewhere in here when running
@@ -36,7 +40,10 @@
 		  (assert-equal "281"
 				(match-string (dbgr-loc-pat-line-group tb)
 					      text))
-		  )
+		  ))
+
+(context "breakpoint location matching"
+	 (tag regexp-pydbgr)
 	 (lexical-let ((text "Breakpoint 1 set at line 13 of file /src/git/code/gcd.py"))
 	   (specify "basic breakpoint location"
 		    (assert-t (numberp (bp-loc-match text))))
@@ -51,6 +58,39 @@
 	   )
 	 )
 
+(context "promp matching"
+	 (tag regexp-pydbgr)
+	 (lexical-let ((text "(c:\\working\\python\\helloworld.py:30)"))
+	   (specify "MS DOS position location"
+		    (assert-t (numberp (prompt-loc-match text))))
+	   (specify "extract file name"
+		    (assert-equal "c:\\working\\python\\helloworld.py"
+				(match-string (dbgr-loc-pat-file-group loc)
+					      text)
+				(format "Failing file group is %s" 
+					(dbgr-loc-pat-file-group tb))))
+	 (specify "extract line number"
+		  (assert-equal "30"
+				(match-string (dbgr-loc-pat-line-group loc)
+					      text)))
+
+	   )
+	 (lexical-let ((text "(/usr/bin/ipython:24): <module>"))
+	   (specify "position location"
+		    (assert-t (numberp (prompt-loc-match text))))
+	   (specify "extract file name"
+		    (assert-equal "/usr/bin/ipython"
+				(match-string (dbgr-loc-pat-file-group loc)
+					      text)
+				(format "Failing file group is %s" 
+					(dbgr-loc-pat-file-group tb))))
+	 (specify "extract line number"
+		  (assert-equal "24"
+				(match-string (dbgr-loc-pat-line-group loc)
+					      text)))
+
+	   )
+	 )
 
 (test-unit "regexp-pydbgr")
 
