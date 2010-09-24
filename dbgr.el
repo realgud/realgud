@@ -4,6 +4,8 @@
  '("./dbgr/common/track-mode"
    "./dbgr/rbdbgr/rbdbgr"
    "./dbgr/rdebug/rdebug"
+   "./dbgr/trepan/trepan"
+   "./dbgr/trepanx/trepanx"
    "./dbgr/gdb/gdb"
    "./dbgr/pydbgr/pydbgr") "dbgr-")
 
@@ -33,11 +35,19 @@ like 'rbdbgr', 'pydbgr'."
 		 (dbgr-feature-starts-with feature "dbgr-"))
 	     (setq result (cons feature result)))
 	    ((eq 't
+		 (dbgr-feature-starts-with feature "pydbgr"))
+	     (setq result (cons feature result)))
+	    ((eq 't
 		 ;; No trailing '-' to get a plain "rbdbgr".
 		 (dbgr-feature-starts-with feature "rbdbgr")) 
 	     (setq result (cons feature result)))
 	    ((eq 't
-		 (dbgr-feature-starts-with feature "pydbgr"))
+		 ;; No trailing '-' to get a plain "trepan".
+		 (dbgr-feature-starts-with feature "trepan")) 
+	     (setq result (cons feature result)))
+	    ((eq 't
+		 ;; No trailing '-' to get a plain "trepanx".
+		 (dbgr-feature-starts-with feature "trepanx")) 
 	     (setq result (cons feature result)))
 	    ('t nil))
 	)
