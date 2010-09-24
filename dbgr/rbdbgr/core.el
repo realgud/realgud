@@ -133,9 +133,10 @@ that is in ruby-mode"
 	  (and match-pos (= 0 match-pos)))
       nil)))
 
+(defvar rbdbgr-command-name) ; # To silence Warning: reference to free variable
 (defun rbdbgr-suggest-invocation (debugger-name)
   "Suggest a rbdbgr command invocation via `dbgr-suggest-invocaton'"
-  (dbgr-suggest-invocation "rbdbgr" rbdbgr-minibuffer-history 
+  (dbgr-suggest-invocation rbdbgr-command-name rbdbgr-minibuffer-history 
 			   'rbdbgr-suggest-ruby-file))
 
 (defun rbdbgr-suggest-ruby-file ()

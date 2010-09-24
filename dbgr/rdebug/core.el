@@ -133,9 +133,10 @@ that is in ruby-mode"
 	  (and match-pos (= 0 match-pos)))
       nil)))
 
+(defvar rdebug-command-name)
 (defun rdebug-suggest-invocation (debugger-name)
   "Suggest a rdebug command invocation via `dbgr-suggest-invocaton'"
-  (dbgr-suggest-invocation "rdebug" rdebug-minibuffer-history 
+  (dbgr-suggest-invocation rdebug-command-name rdebug-minibuffer-history 
 			   'rdebug-suggest-ruby-file))
 
 (defun rdebug-suggest-ruby-file ()

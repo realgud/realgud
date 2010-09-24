@@ -108,9 +108,10 @@ NOTE: the above should have each item listed in quotes.
 	     )))
 	(list debugger-args script-args annotate-p)))))
 
+(defvar dbgr-gdb-command-name)
 (defun dbgr-gdb-suggest-invocation (debugger-name)
   "Suggest a gdb command invocation via `dbgr-suggest-invocaton'"
-  (dbgr-suggest-invocation "gdb" dbgr-gdb-minibuffer-history 
+  (dbgr-suggest-invocation dbgr-gdb-command-name dbgr-gdb-minibuffer-history 
 			   'dbgr-gdb-suggest-file)
 )
 

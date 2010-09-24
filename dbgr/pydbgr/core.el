@@ -134,9 +134,10 @@ that is in python-mode"
 	  (and match-pos (= 0 match-pos)))
       nil)))
 
+(defvar pydbgr-command-name) ; # To silence Warning: reference to free variable
 (defun pydbgr-suggest-invocation (debugger-name)
   "Suggest a pydbgr command invocation via `dbgr-suggest-invocaton'"
-  (dbgr-suggest-invocation "pydbgr" pydbgr-minibuffer-history 
+  (dbgr-suggest-invocation pydbgr-command-name pydbgr-minibuffer-history 
 			   'pydbgr-suggest-python-file))
 
 (defun pydbgr-suggest-python-file ()

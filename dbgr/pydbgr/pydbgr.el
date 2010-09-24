@@ -46,7 +46,8 @@ marginal icons is reset."
   
   (interactive)
   (let* (
-	 (cmd-str (or opt-command-line (pydbgr-query-cmdline "pydbgr")))
+	 (cmd-str (or opt-command-line (pydbgr-query-cmdline 
+					"pydbgr")))
 	 (cmd-args (split-string-and-unquote cmd-str))
 	 (parsed-args (pydbgr-parse-cmd-args cmd-args))
 	 (script-args (cdr cmd-args))
