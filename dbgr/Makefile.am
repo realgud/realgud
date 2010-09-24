@@ -1,4 +1,4 @@
-SUBDIRS = common gdb pydbgr rbdbgr rdebug 
+SUBDIRS = common gdb pydbgr rbdbgr rdebug trepan trepanx
 MOSTLYCLEANFILES = *.elc
 
 test: check
