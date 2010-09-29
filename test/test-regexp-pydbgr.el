@@ -6,9 +6,7 @@
 
 (setq bps    (gethash "brkpt-set" pydbgr-pat-hash))
 (setq loc    (gethash "loc"       pydbgr-pat-hash))
-(setq tb     (gethash "traceback" pydbgr-pat-hash))
-
-(setq tb (gethash "traceback" pydbgr-pat-hash))
+(setq tb     (gethash "backtrace" pydbgr-pat-hash))
 
 (defun tb-loc-match(text) 
   (string-match (dbgr-loc-pat-regexp tb) text)

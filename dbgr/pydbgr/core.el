@@ -182,11 +182,11 @@ given priority, we use the first one we find."
 		    (setq priority 5))))))
       result))
 
-(defun pydbgr-goto-traceback-line (pt)
+(defun pydbgr-goto-backtrace-line (pt)
   "Display the location mentioned by the Python traceback line
 described by PT."
   (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "traceback" pydbgr-pat-hash))
+  (dbgr-goto-line-for-pt-and-type pt "backtrace" pydbgr-pat-hash))
 
 (defun pydbgr-reset ()
   "Pydbgr cleanup - remove debugger's internal buffers (frame,

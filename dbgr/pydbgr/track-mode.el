@@ -23,7 +23,7 @@ into or out of this mode."
   (if pydbgr-track-mode
       (progn 
  	;; FIXME: until I figure out why this isn't set in the mode
-        (local-set-key "\C-ce"  'pydbgr-goto-traceback-line)
+        (local-set-key "\C-c!b"  'pydbgr-goto-backtrace-line)
 	(dbgr-track-mode 't)
 	(run-mode-hooks 'pydbgr-track-mode-hook))
     (progn 

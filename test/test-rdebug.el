@@ -6,7 +6,7 @@
 (context "rdebug"
 	 (tag rdebug)
 
-	 (specify "pydbgr-suggest-python-file"
+	 (specify "rdebug-suggest-ruby-file"
 		  (assert-equal "gcd.rb" 
 				(rdebug-suggest-ruby-file))
 		  )

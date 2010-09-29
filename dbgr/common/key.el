@@ -67,6 +67,7 @@ This does not touch change menus; for that see `dbgr-populate-debugger-menu'.
 Nor does it touch prefix keys; for that see `dbgr-populate-keys-standard'"
   ;; Keys to view other buffers.
   (let ((prefix-map (make-sparse-keymap)))
+    (define-key map "b" 'dbgr-cmd-break)
     (define-key map " " 'dbgr-cmd-step)
     (define-key map "<" 'dbgr-cmd-newer-frame)
     (define-key map ">" 'dbgr-cmd-older-frame)

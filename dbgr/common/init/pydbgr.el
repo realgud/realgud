@@ -34,8 +34,8 @@ The values of a hash entry is a dbgr-loc-pat struct")
        :regexp   "^(Pydbgr) "
        ))
 
-;;  Regular expression that describes a Python traceback line.
-(setf (gethash "traceback" pydbgr-pat-hash)
+;;  Regular expression that describes a Python backtrace line.
+(setf (gethash "backtrace" pydbgr-pat-hash)
       (make-dbgr-loc-pat
        :regexp   "^[ \t]+File \"\\(.+\\)\", line \\([0-9]+\\)"
        :file-group 1
