@@ -13,6 +13,12 @@ Use the command `dbgr-gdb-track-mode' to toggle or set this variable.")
 
 (declare-function dbgr-track-mode(bool))
 
+(defvar gdb-track-mode-map
+  (let ((map dbgr-track-mode-map))
+    (define-key map [C-c !b]	'dbgr-gdb-goto-traceback-line)
+    map)
+  "Keymap used in `gdb-track-mode'.")
+
 (defun dbgr-gdb-track-mode-body()
   "Called when entering or leaving gdb-track-mode. Variable
 `gdb-track-mode' is a boolean which specifies if we are going
@@ -21,13 +27,12 @@ into or out of this mode."
   (dbgr-define-gdb-like-commands)
   (if gdb-track-mode
       (progn 
- 	;; FIXME: until I figure out why this isn't set in the mode
-        (local-set-key "\C-ce"  'gdb-goto-traceback-line)
+	(dbgr-populate-common-keys 
+	 (or (current-local-map) (use-local-map (make-sparse-keymap))))
 	(dbgr-track-mode 't)
 	(run-mode-hooks 'dbgr-gdb-track-mode-hook))
     (progn 
       (dbgr-track-mode nil)
-      (local-unset-key "\C-ce")
     )))
 
 (defvar dbgr-gdb-track-mode-map

@@ -6,7 +6,7 @@
   )
 
 (require 'load-relative)
-(require-relative-list '("helper") "dbgr-")
+(require-relative-list '("helper" "key") "dbgr-")
 
 (defstruct dbgr-srcbuf-info
   "debugger object/structure specific to a (top-level) Ruby file
@@ -121,6 +121,7 @@ in it with those from CMDPROC-BUFFER"
      (setq debugger-name (dbgr-sget 'cmdbuf-info 'debugger-name))
      (setq cmd-args (dbgr-cmdbuf-info-cmd-args dbgr-cmdbuf-info)))
   (with-current-buffer-safe src-buffer
+    (dbgr-populate-common-keys (current-local-map))
     (if (dbgr-srcbuf-info? dbgr-srcbuf-info)
 	(progn
 	  (dbgr-srcbuf-info-cmdproc= dbgr-srcbuf-info cmdproc-buffer)

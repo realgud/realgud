@@ -14,6 +14,13 @@ Use the command `rdebug-track-mode' to toggle or set this variable.")
 
 (declare-function dbgr-track-mode(bool))
 
+(defvar rdebug-track-mode-map
+  (let ((map dbgr-track-mode-map))
+    (define-key map [C-c ! !]	'rdebug-goto-dollarbang-traceback-line)
+    (define-key map [C-c e]	'rdebug-goto-traceback-line)
+    map)
+  "Keymap used in `rdebug-track-mode'.")
+
 (defun rdebug-track-mode-body()
   "Called when entering or leaving rdebug-track-mode. Variable
 `pydbgr-track-mode' is a boolean which specifies if we are going
@@ -23,23 +30,13 @@ into or out of this mode."
   ;; (dbgr-define-rdebug-commands)
   (if rdebug-track-mode
       (progn 
- 	;; FIXME: until I figure out why this isn't set in the mode
-	(local-set-key "\C-c!"  'rdebug-goto-dollarbang-traceback-line)
-        (local-set-key "\C-ce"  'rdebug-goto-traceback-line)
+	(dbgr-populate-common-keys 
+	 (or (current-local-map) rdebug-track-mode-map)))
 	(dbgr-track-mode 't)
 	(run-mode-hooks 'rdebug-track-mode-hook))
     (progn 
       (dbgr-track-mode nil)
-      (local-unset-key "\C-c!")
-      (local-unset-key "\C-ce"))
     ))
-
-(defvar rdebug-track-mode-map
-  (let ((map dbgr-track-mode-map))
-    (define-key map [C-c ! !]	'rdebug-goto-dollarbang-traceback-line)
-    (define-key map [C-c e]	'rdebug-goto-traceback-line)
-    map)
-  "Keymap used in `rdebug-track-mode'.")
 
 (define-minor-mode rdebug-track-mode
   "Minor mode for tracking ruby debugging inside a process shell."

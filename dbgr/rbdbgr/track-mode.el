@@ -14,6 +14,14 @@ Use the command `rbdbgr-track-mode' to toggle or set this variable.")
 
 (declare-function dbgr-track-mode(bool))
 
+(defvar rbdbgr-track-mode-map
+  (let ((map dbgr-track-mode-map))
+    (define-key map [C-c ! !]	'rbdbgr-goto-dollarbang-backtrace-line)
+    (define-key map [C-c ! c]	'rbdbgr-goto-control-frame-line)
+    (define-key map [C-c ! b]	'rbdbgr-goto-backtrace-line)
+    map)
+  "Keymap used in `rbdbgr-track-mode'.")
+
 (defun rbdbgr-track-mode-body()
   "Called when entering or leaving rbdbgr-track-mode. Variable
 `rbdbgr-track-mode' is a boolean which specifies if we are going
@@ -23,26 +31,13 @@ into or out of this mode."
   (dbgr-define-rbdbgr-commands)
   (if rbdbgr-track-mode
       (progn 
- 	;; FIXME: until I figure out why this isn't set in the mode
-	(local-set-key "\C-c!!"  'rbdbgr-goto-dollarbang-traceback-line)
-        (local-set-key "\C-c!c"  'rbdbgr-goto-control-frame-line)
-        (local-set-key "\C-c!b"  'rbdbgr-goto-backtrace-line)
+	(dbgr-populate-common-keys 
+	 (or (current-local-map) (use-local-map (make-sparse-keymap))))
 	(dbgr-track-mode 't)
 	(run-mode-hooks 'rbdbgr-track-mode-hook))
     (progn 
       (dbgr-track-mode nil)
-      (local-unset-key "\C-c!!")
-      (local-unset-key "\C-c!c")
-      (local-unset-key "\C-c!b"))
-    ))
-
-(defvar rbdbgr-track-mode-map
-  (let ((map dbgr-track-mode-map))
-    (define-key map [C-c ! !]	'rbdbgr-goto-dollarbang-backtrace-line)
-    (define-key map [C-c ! c]	'rbdbgr-goto-control-frame-line)
-    (define-key map [C-c ! b]	'rbdbgr-goto-backtrace-line)
-    map)
-  "Keymap used in `rbdbgr-track-mode'.")
+    )))
 
 (define-minor-mode rbdbgr-track-mode
   "Minor mode for tracking ruby debugging inside a process shell."

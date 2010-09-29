@@ -14,6 +14,12 @@ Use the command `pydbgr-track-mode' to toggle or set this variable.")
 
 (declare-function dbgr-track-mode(bool))
 
+(defvar pydbgr-track-mode-map
+  (let ((map dbgr-track-mode-map))
+    (define-key map [C-c !b]	'pydbgr-goto-traceback-line)
+    map)
+  "Keymap used in `pydbgr-track-mode'.")
+
 (defun pydbgr-track-mode-body()
   "Called when entering or leaving pydbgr-track-mode. Variable
 `pydbgr-track-mode' is a boolean which specifies if we are going
@@ -22,20 +28,13 @@ into or out of this mode."
   (dbgr-define-gdb-like-commands)
   (if pydbgr-track-mode
       (progn 
- 	;; FIXME: until I figure out why this isn't set in the mode
-        (local-set-key "\C-c!b"  'pydbgr-goto-backtrace-line)
+	(dbgr-populate-common-keys 
+	 (or (current-local-map) (use-local-map pydbgr-track-mode-map)))
 	(dbgr-track-mode 't)
 	(run-mode-hooks 'pydbgr-track-mode-hook))
     (progn 
       (dbgr-track-mode nil)
-      (local-unset-key "\C-ce")
     )))
-
-(defvar pydbgr-track-mode-map
-  (let ((map dbgr-track-mode-map))
-    (define-key map [C-c e]	'pydbgr-goto-traceback-line)
-    map)
-  "Keymap used in `pydbgr-track-mode'.")
 
 (define-minor-mode pydbgr-track-mode
   "Minor mode for tracking ruby debugging inside a process shell."
