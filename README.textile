@@ -9,7 +9,7 @@ Debuggers we currently support are:
  * kshdb (Korn Shell)
  * pydb (Python)
  * pydbgr (Python)
- * rbdbgr (Ruby 1.9)
+ * trepanning (Ruby 1.9)
  * remake (GNU Make)
  * ruby-debug (Ruby)
  * zshdb (Zsh)
