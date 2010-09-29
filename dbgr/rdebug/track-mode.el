@@ -14,29 +14,27 @@ Use the command `rdebug-track-mode' to toggle or set this variable.")
 
 (declare-function dbgr-track-mode(bool))
 
-(defvar rdebug-track-mode-map
-  (let ((map dbgr-track-mode-map))
-    (define-key map [C-c ! !]	'rdebug-goto-dollarbang-traceback-line)
-    (define-key map [C-c e]	'rdebug-goto-traceback-line)
-    map)
-  "Keymap used in `rdebug-track-mode'.")
+(defvar rdebug-track-minor-mode-map (make-sparse-keymap)
+  "Keymap used in `rdebug-track-minor-mode'.")
+(dbgr-populate-common-keys rdebug-track-minor-mode-map)
+(define-key rdebug-track-minor-mode-map 
+  (kbd "C-c !b") 'rdebug-goto-traceback-line)
 
 (defun rdebug-track-mode-body()
   "Called when entering or leaving rdebug-track-mode. Variable
-`pydbgr-track-mode' is a boolean which specifies if we are going
+`rdebug-track-mode' is a boolean which specifies if we are going
 into or out of this mode."
-  (dbgr-track-set-debugger "rdebug")
   (dbgr-define-gdb-like-commands)
   ;; (dbgr-define-rdebug-commands)
   (if rdebug-track-mode
       (progn 
-	(dbgr-populate-common-keys 
-	 (or (current-local-map) rdebug-track-mode-map)))
+	(dbgr-track-set-debugger "rdebug")
+	(dbgr-define-gdb-like-commands) ;; FIXME: unless already defined
 	(dbgr-track-mode 't)
 	(run-mode-hooks 'rdebug-track-mode-hook))
     (progn 
       (dbgr-track-mode nil)
-    ))
+    )))
 
 (define-minor-mode rdebug-track-mode
   "Minor mode for tracking ruby debugging inside a process shell."
@@ -45,7 +43,7 @@ into or out of this mode."
   ;; The minor mode bindings.
   :global nil
   :group 'rdebug
-  :keymap rdebug-track-mode-map
+  :keymap rdebug-track-minor-mode-map
   (rdebug-track-mode-body)
 )
 

@@ -32,7 +32,7 @@ This variable can be bound to the following:
 ;; Key bindings
 ;;
 
-(defun dbgr-populate-common-fn-keys-standard (map)
+(defun dbgr-populate-common-fn-keys-standard (&optional map)
   "Bind the debugger function key layout used by many debuggers.
 
 \\{dbgr-example-map-standard}"
@@ -44,7 +44,7 @@ This variable can be bound to the following:
   (define-key map [f10]   'dbgr-cmd-next)
   (define-key map [f11]   'dbgr-cmd-step)
   (define-key map [S-f11] 'dbgr-cmd-finish)
-  (define-key map "\C-x " 'dbgr-cmd-break)
+  (define-key map "\C-c " 'dbgr-cmd-break)
   )
 
 ;; TODO: add eclipse, and netbeans

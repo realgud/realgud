@@ -182,7 +182,7 @@ given priority, we use the first one we find."
 		    (setq priority 5))))))
       result))
 
-(defun pydbgr-goto-backtrace-line (pt)
+(defun pydbgr-goto-traceback-line (pt)
   "Display the location mentioned by the Python traceback line
 described by PT."
   (interactive "d")

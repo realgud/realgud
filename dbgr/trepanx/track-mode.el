@@ -14,32 +14,29 @@ Use the command `trepanx-track-mode' to toggle or set this variable.")
 
 (declare-function dbgr-track-mode(bool))
 
-(defvar trepanx-track-mode-map
-  (let ((map dbgr-track-mode-map))
-    (define-key map [C-c ! !]	'trepanx-goto-dollarbang-backtrace-line)
-    (define-key map [C-c ! b]	'trepanx-goto-backtrace-line)
-    map)
+(defvar trepanx-track-minor-mode-map (make-sparse-keymap)
   "Keymap used in `trepanx-track-mode'.")
+(dbgr-populate-common-keys trepanx-track-minor-mode-map)
+
+(define-key trepanx-track-minor-mode-map 
+  (kbd "C-c !!") 'trepanx-goto-dollarbang-traceback-line)
+(define-key trepanx-track-minor-mode-map 
+  (kbd "C-c !b") 'trepanx-goto-traceback-line)
 
 (defun trepanx-track-mode-body()
   "Called when entering or leaving trepanx-track-mode. Variable
 `trepanx-track-mode' is a boolean which specifies if we are going
 into or out of this mode."
-  (dbgr-track-set-debugger "trepanx")
   (dbgr-define-gdb-like-commands)
   (dbgr-define-trepanx-commands)
   (if trepanx-track-mode
       (progn 
-	(dbgr-populate-common-keys 
-	 (or (current-local-map) (use-local-map trepanx-track-mode-map)))
-	(local-set-key "\C-c!!"  'trepanx-goto-dollarbang-traceback-line)
-        (local-set-key "\C-c!b"  'trepanx-goto-backtrace-line)
+	(dbgr-track-set-debugger "trepanx")
+	(dbgr-define-gdb-like-commands) ;; FIXME: unless already defined
 	(dbgr-track-mode 't)
 	(run-mode-hooks 'trepanx-track-mode-hook))
     (progn 
       (dbgr-track-mode nil)
-      (local-unset-key "\C-c!!")
-      (local-unset-key "\C-c!b")
     )))
 
 (define-minor-mode trepanx-track-mode
@@ -49,7 +46,7 @@ into or out of this mode."
   ;; The minor mode bindings.
   :global nil
   :group 'trepanx
-  :keymap trepanx-track-mode-map
+  :keymap trepanx-track-minor-mode-map
   (trepanx-track-mode-body)
 )
 

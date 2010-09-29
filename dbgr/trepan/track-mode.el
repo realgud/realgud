@@ -14,25 +14,28 @@ Use the command `trepan-track-mode' to toggle or set this variable.")
 
 (declare-function dbgr-track-mode(bool))
 
-(defvar trepan-track-mode-map
-  (let ((map dbgr-track-mode-map))
-    (define-key map [C-c ! !]	'trepan-goto-dollarbang-backtrace-line)
-    (define-key map [C-c ! c]	'trepan-goto-control-frame-line)
-    (define-key map [C-c ! b]	'trepan-goto-backtrace-line)
-    map)
-  "Keymap used in `trepan-track-mode'.")
+(defvar trepan-track-minor-mode-map (make-sparse-keymap)
+  "Keymap used in `trepan-track-minor-mode'.")
+(dbgr-populate-common-keys trepan-track-minor-mode-map)
+(define-key trepan-track-minor-mode-map 
+  (kbd "C-c !!") 'trepan-goto-dollarbang-traceback-line)
+(define-key trepan-track-minor-mode-map 
+  (kbd "C-c !b") 'trepan-goto-backtrace-line)
+(define-key trepan-track-minor-mode-map 
+  (kbd "C-c !c") 'trepan-goto-control-frame-line)
+(define-key trepan-track-minor-mode-map 
+  (kbd "C-c !c") 'trepan-goto-control-frame-line)
+
 
 (defun trepan-track-mode-body()
   "Called when entering or leaving trepan-track-mode. Variable
 `trepan-track-mode' is a boolean which specifies if we are going
 into or out of this mode."
   (dbgr-track-set-debugger "trepan")
-  (dbgr-define-gdb-like-commands)
   (dbgr-define-trepan-commands)
   (if trepan-track-mode
       (progn 
-	(dbgr-populate-common-keys 
-	 (or (current-local-map) (use-local-map trepan-track-mode-map)))
+	(dbgr-define-gdb-like-commands) ;; FIXME: unless already defined
 	(dbgr-track-mode 't)
 	(run-mode-hooks 'trepan-track-mode-hook))
     (progn 
@@ -46,7 +49,7 @@ into or out of this mode."
   ;; The minor mode bindings.
   :global nil
   :group 'trepan
-  :keymap trepan-track-mode-map
+  :keymap trepan-track-minor-mode-map
   (trepan-track-mode-body)
 )
 
