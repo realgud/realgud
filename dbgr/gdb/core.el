@@ -146,4 +146,4 @@ breakpoints, etc.)."
   (interactive)
   (customize-group 'dbgr-gdb))
 
-(provide-me "gdb-")
+(provide-me "dbgr-gdb-")

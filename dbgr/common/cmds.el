@@ -8,7 +8,7 @@
 (defun dbgr-define-gdb-like-commands ()
   "Define a bunch of gdb-command that we expect most debuggers to have"
   (dbgr-define-command 
-      'break "break %f:%l" "\C-b" 
+      'break "break %X:%l" "\C-b" 
       "Set a breakpoint at the current line")
 
   (dbgr-define-command 

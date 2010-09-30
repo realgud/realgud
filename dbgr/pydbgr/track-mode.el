@@ -5,34 +5,16 @@
 (require 'load-relative)
 (require-relative-list '("../common/track-mode" "../common/cmds"
 			 "../common/menu") "dbgr-")
-(require-relative-list '("core") "pydbgr-")
+(require-relative-list '("core" "cmds") "pydbgr-")
 
-(defvar pydbgr-pat-hash)
-(defvar pydbgr-track-mode nil
-  "Non-nil if using pydbgr-track mode as a minor mode of some other mode.
-Use the command `pydbgr-track-mode' to toggle or set this variable.")
-
+(dbgr-track-mode-vars "pydbgr")
 (declare-function dbgr-track-mode(bool))
 
-(defvar pydbgr-track-minor-mode-map (make-sparse-keymap)
-  "Keymap for pydbgr track minor mode.")
+;;; FIXME: The following could be more DRY.
+
 (dbgr-populate-common-keys pydbgr-track-minor-mode-map)
 (define-key pydbgr-track-minor-mode-map 
   (kbd "C-c !b") 'pydbgr-goto-traceback-line)
-
-(defun pydbgr-track-mode-body()
-  "Called when entering or leaving pydbgr-track-mode. Variable
-`pydbgr-track-mode' is a boolean which specifies if we are going
-into or out of this mode."
-  (if pydbgr-track-mode
-      (progn 
-	(dbgr-track-set-debugger "pydbgr")
-	(dbgr-define-gdb-like-commands) ;; FIXME: unless already defined
-	(dbgr-track-mode 't)
-	(run-mode-hooks 'pydbgr-track-mode-hook))
-    (progn 
-      (dbgr-track-mode nil)
-    )))
 
 (define-minor-mode pydbgr-track-mode
   "Minor mode for tracking ruby debugging inside a process shell."
@@ -42,7 +24,7 @@ into or out of this mode."
   :global nil
   :group 'pydbgr
   :keymap pydbgr-track-minor-mode-map
-  (pydbgr-track-mode-body)
+  (dbgr-track-mode-body "pydbgr")
 )
 
 (provide-me "pydbgr-")

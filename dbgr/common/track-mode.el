@@ -91,4 +91,29 @@ of this mode."
     )
 )
 
+(defmacro dbgr-track-mode-vars (name)
+  (list 'defvar 
+	(intern (concat name "-track-mode")) nil
+	(format "Non-nil if using %s-track-mode as a minor mode of some other mode.
+Use the command `%s-track-mode' to toggle or set this variable." name name))
+  (list 'defvar 
+	(intern (concat name "-track-minor-mode-map")) '(make-sparse-keymap)
+	(format "Keymap used in %s-track-minor-mode'." name)))
+
+;; FIXME: The below could be a macro? I have a hard time getting
+;; macros right.
+(defun dbgr-track-mode-body(name)
+  "Used in by custom debuggers: pydbgr, trepan, gdb, etc. NAME is
+the name of the debugger which is used to preface variables."
+  (dbgr-track-set-debugger name)
+  (funcall (intern (concat "dbgr-define-" name "-commands")))
+  (if (intern (concat name "-track-mode"))
+      (progn 
+	(dbgr-define-gdb-like-commands) ;; FIXME: unless already defined
+	(dbgr-track-mode 't)
+	(run-mode-hooks (intern (concat name "-track-mode-hook"))))
+    (progn 
+      (dbgr-track-mode nil)
+      )))
+
 (provide-me "dbgr-")
