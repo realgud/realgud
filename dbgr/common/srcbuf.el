@@ -25,7 +25,7 @@ to be debugged."
 		 ;; program.
   short-key?     ;; Was the source buffer previously in short-key
 		 ;; mode? Used to deterimine when short-key mode
-		 ;; changes state in a source buffer , so we need to
+		 ;; changes state in a source buffer, so we need to
 		 ;; perform on/off actions.
   was-read-only? ;; Was buffer initially read only? (i.e. the original
 		 ;; value of the buffer's buffer-read-only

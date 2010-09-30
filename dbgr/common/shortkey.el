@@ -1,24 +1,18 @@
 (require 'load-relative)
 (require-relative-list '("custom" "key" "menu") "dbgr-")
 
-(defvar dbgr-short-key-mode-map
-  (let ((map (make-sparse-keymap))
-	(common-map (make-sparse-keymap)))
-    (define-key map "b" 'dbgr-cmd-break)
-    (define-key map "c" 'dbgr-cmd-continue)
-    ; (define-key map "t" 'dbgr-toggle-source-breakpoint-enabled)
-    (define-key map [insert] 'dbgr-short-key-mode)
-    (define-key map [M-insert] 'dbgr-short-key-mode)
-
-    ;; Use a simple common map to find the best key sequence to
-    ;; display in menu.
-    (dbgr-populate-common-keys common-map)
-    (set-keymap-parent map common-map)
-
-    (dbgr-populate-src-buffer-map-plain map)
-    (dbgr-populate-debugger-menu map)
-    map)
+(defvar dbgr-short-key-mode-map (make-sparse-keymap)
   "Keymap used in `dbgr-short-key-mode'.")
+
+(define-key dbgr-short-key-mode-map
+  (kbd "b") 'dbgr-cmd-break)
+(define-key dbgr-short-key-mode-map
+  (kbd "c") 'dbgr-cmd-continue)
+(define-key dbgr-short-key-mode-map [insert] 'dbgr-short-key-mode)
+(define-key dbgr-short-key-mode-map [M-insert] 'dbgr-short-key-mode)
+(dbgr-populate-common-keys dbgr-short-key-mode-map)
+(dbgr-populate-src-buffer-map-plain dbgr-short-key-mode-map)
+(dbgr-populate-debugger-menu dbgr-short-key-mode-map)
 
 ;; Implementation note: This is the mode that does all the work, it's
 ;; local to the buffer that is affected.

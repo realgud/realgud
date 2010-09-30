@@ -2,7 +2,7 @@
 
 (eval-when-compile (require 'cl))
 (require 'load-relative)
-(require-relative-list '("../common/track-mode" "../common/track-mode-macro" 
+(require-relative-list '("../common/track-mode"
 			 "../common/cmds" 
 			 "../common/menu") "dbgr-")
 (require-relative-list '("../common/init/trepan") "dbgr-init-")
