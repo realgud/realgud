@@ -134,8 +134,9 @@ as a main program."
 	    :loc-hist (make-dbgr-loc-hist)
 	    :regexp-hash regexp-hash)))
 
-    (put 'dbgr-cmdbuf-info 'variable-documentation 
-	 "Debugger object for a process buffer.")))
+   (make-local-variable 'short-key-on-tracing?)
+   (put 'dbgr-cmdbuf-info 'variable-documentation 
+	"Debugger object for a process buffer.")))
 
 (defun dbgr-cmdbuf-debugger-name (&optional cmd-buf)
   "Return the debugger name recorded in the debugger command-process buffer."

@@ -92,6 +92,12 @@ return the first argument is always removed.
 
 (defun dbgr-term-sentinel (process string)
   (dbgr-fringe-erase-history-arrows)
+  (dolist (srcbuf (dbgr-cmdbuf-info-srcbuf-list dbgr-cmdbuf-info))
+    (with-current-buffer srcbuf
+      (dbgr-fringe-erase-history-arrows)
+      (dbgr-short-key-mode nil)
+      (dbgr-bp-remove-icons (point-min) (point-max))
+      ))
   (message "That's all folks.... %s" string))
 
 (defun dbgr-exec-shell (debugger-name script-filename program 
