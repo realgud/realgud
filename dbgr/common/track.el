@@ -13,7 +13,7 @@
    "bp"
    ) "dbgr-")
 
-(defcustom short-key-on-tracing? nil
+(defcustom dbgr-short-key-on-tracing? nil
 "If non-nil, set short-key mode for any source buffer that is traced into"
   :type 'symbolp
   :group 'dbgr)
@@ -186,7 +186,7 @@ encountering a new loc."
 
 	(with-current-buffer srcbuf
 	  (dbgr-short-key-mode-setup 
-	   (or short-key-on-tracing? shortkey-mode?)))
+	   (or dbgr-short-key-on-tracing? shortkey-mode?)))
 
         ;; Do we need to go back to the process/command buffer because other
         ;; output-filter hooks run after this may assume they are in that

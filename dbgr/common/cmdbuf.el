@@ -134,7 +134,6 @@ as a main program."
 	    :loc-hist (make-dbgr-loc-hist)
 	    :regexp-hash regexp-hash)))
 
-   (make-local-variable 'short-key-on-tracing?)
    (put 'dbgr-cmdbuf-info 'variable-documentation 
 	"Debugger object for a process buffer.")))
 
