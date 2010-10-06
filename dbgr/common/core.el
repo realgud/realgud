@@ -9,6 +9,8 @@
 (require-relative-list
  '("fringe" "helper" "cmdbuf" "reset" "srcbuf") "dbgr-")
 
+(declare-function dbgr-short-key-mode &optional arg)
+
 (defvar dbgr-srcbuf-info)
 
 (defun dbgr-suggest-invocation 
