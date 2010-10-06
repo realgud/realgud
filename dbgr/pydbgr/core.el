@@ -59,21 +59,26 @@ NOTE: the above should have each item listed in quotes.
 			   "o" "-output"  "t" "-target"
 			   "a" "-annotate"))
 	(pydbgr-opt-two-args '())
+	(interp-regexp 
+	 (if (member system-type (list 'windows-nt 'cygwin 'msdos))
+	     "^python[-0-9.]*\\(.exe\\)?$"
+	   "^python[-0-9.]*$"))
 
 	;; Things returned
-	(script-name nil)
+	(annotate-p nil)
+	(debugger-args '())
 	(debugger-name nil)
 	(interpreter-args '())
-	(debugger-args '())
 	(script-args '())
-	(annotate-p nil))
+	(script-name nil)
+	)
 
     (if (not (and args))
 	;; Got nothing: return '(nil, nil)
 	(list interpreter-args debugger-args script-args annotate-p)
       ;; else
       ;; Strip off optional "python" or "python182" etc.
-      (when (string-match "^python[-0-9.]*$"
+      (when (string-match interp-regexp
 			  (file-name-sans-extension
 			   (file-name-nondirectory (car args))))
 	(setq interpreter-args (list (pop args)))
@@ -90,9 +95,9 @@ NOTE: the above should have each item listed in quotes.
       ;; --script-options"
       (setq debugger-name (file-name-sans-extension
 			   (file-name-nondirectory (car args))))
-      (unless (string-match "^pydbgr$" debugger-name)
+      (unless (string-match "^\\(pydbgr\\|cli.py\\))$" debugger-name)
 	(message 
-	 "Expecting debugger name `%s' to be `pydbgr'"
+	 "Expecting debugger name `%s' to be `pydbgr' or `cli.py'"
 	 debugger-name))
       (setq debugger-args (list (pop args)))
 
