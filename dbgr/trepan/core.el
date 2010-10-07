@@ -58,6 +58,10 @@ NOTE: the above should have each item listed in quotes.
 	(trepan-two-args '("h" "-host" "p" "-port"
 			   "I" "-include" "-r" "-require"))
 	(trepan-opt-two-args '())
+	(interp-regexp 
+	 (if (member system-type (list 'windows-nt 'cygwin 'msdos))
+	     "^ruby[-0-9]*\\(.exe\\)?$"
+	   "^ruby[-0-9]*$"))
 
 	;; Things returned
 	(script-name nil)
@@ -72,7 +76,7 @@ NOTE: the above should have each item listed in quotes.
 	(list interpreter-args debugger-args script-args annotate-p)
       ;; else
       ;; Strip off optional "ruby" or "ruby182" etc.
-      (when (string-match "^ruby[-0-9]*$"
+      (when (string-match interp-regexp
 			  (file-name-sans-extension
 			   (file-name-nondirectory (car args))))
 	(setq interpreter-args (list (pop args)))
