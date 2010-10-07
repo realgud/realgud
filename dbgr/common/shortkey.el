@@ -65,7 +65,7 @@ MODE-ON? a boolean which specifies if we are going into or out of this mode."
       (dolist (buf (buffer-list))
         (set-buffer buf)
         (when dbgr-short-key-mode
-	  (dbgr-short-key-mode-setup nil)))))
+	  (dbgr-short-key-mode-setup 0)))))
 
 (defun dbgr-populate-src-buffer-map (map)
   "Bind all common keys and menu used in the dbgr src buffers.

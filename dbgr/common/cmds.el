@@ -2,6 +2,8 @@
 (require-relative-list
  '("send" "cmdbuf") "dbgr-")
 
+(declare-function dbgr-terminate &optional cmdbuf)
+
 ;; Note dbgr-define-command docstrings may appear in menu help, but only
 ;; the first line will appears. So be careful about where to put line
 ;; breaks in the docstrings below.
@@ -65,10 +67,20 @@ If no argument specified use 0 or the most recent frame." t t)
       'continue "continue" "c" 
       "Continue execution.")
 
-  (dbgr-define-command 
-      'quit "quit" "q" 
-      "Gently terminate execution of the debugged program."
-      't nil 't)
+  (defun dbgr-cmd-quit (arg)
+    "Gently terminate execution of the debugged program."
+    (interactive "p")
+    (let ((buffer (current-buffer))
+	  (cmdbuf (dbgr-get-cmdbuf)))
+      (with-current-buffer-safe cmdbuf
+	(dbgr-cmdbuf-info-in-srcbuf?= dbgr-cmdbuf-info 
+				      (not (dbgr-cmdbuf? buffer))))
+      (dbgr-command "quit" arg 't)
+      (if cmdbuf (dbgr-terminate cmdbuf))
+      )
+    )
+  (local-set-key "\C-cq" 'dbgr-cmd-quit)
+
 
   (dbgr-define-command 
       'restart "run" "R" 

@@ -92,14 +92,35 @@ return the first argument is always removed.
 	(cons (list arg) (list remaining))))
      (t (cons (list arg) (list remaining))))))
 
+(defun dbgr-terminate (&optional buf)
+  "Resets state in all buffers associated with source or command buffer BUF)
+This does things like remove fringe arrows breakpoint icons and
+resets short-key mode."
+  (interactive "bbuffer: ")
+  (let ((cmdbuf (dbgr-get-cmdbuf buf)))
+    (if cmdbuf
+	(with-current-buffer cmdbuf
+	  (dbgr-fringe-erase-history-arrows)
+	  (if dbgr-cmdbuf-info
+	      (dolist (srcbuf (dbgr-cmdbuf-info-srcbuf-list dbgr-cmdbuf-info))
+		(if (dbgr-srcbuf? srcbuf)
+		    (with-current-buffer srcbuf
+		      (dbgr-fringe-erase-history-arrows)
+		  (dbgr-short-key-mode 0)
+		  (dbgr-bp-remove-icons (point-min) (point-max))
+		  )))
+	    )
+	  )
+      (error "Buffer %s does not seem to be attached to a debugger" 
+	     (buffer-name))
+      )
+    )
+  )
+
 (defun dbgr-term-sentinel (process string)
-  (dbgr-fringe-erase-history-arrows)
-  (dolist (srcbuf (dbgr-cmdbuf-info-srcbuf-list dbgr-cmdbuf-info))
-    (with-current-buffer srcbuf
-      (dbgr-fringe-erase-history-arrows)
-      (dbgr-short-key-mode nil)
-      (dbgr-bp-remove-icons (point-min) (point-max))
-      ))
+  "Called when PROCESS dies. We call `dbgr-quit' to clean up."
+  (let ((cmdbuf (dbgr-get-cmdbuf)))
+    (if cmdbuf (dbgr-terminate cmdbuf)))
   (message "That's all folks.... %s" string))
 
 (defun dbgr-exec-shell (debugger-name script-filename program 
