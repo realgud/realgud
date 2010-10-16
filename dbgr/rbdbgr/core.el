@@ -1,7 +1,8 @@
 (eval-when-compile (require 'cl))
   
 (require 'load-relative)
-(require-relative-list '("../common/track" "../common/core") "dbgr-")
+(require-relative-list '("../common/track" "../common/core" "../common/lang")
+		       "dbgr-")
 
 ;; FIXME: I think the following could be generalized and moved to 
 ;; dbgr-... probably via a macro.
@@ -58,6 +59,10 @@ NOTE: the above should have each item listed in quotes.
 	(rbdbgr-two-args '("h" "-host" "p" "-port"
 			   "I" "-include" "-r" "-require"))
 	(rbdbgr-opt-two-args '())
+	(interp-regexp 
+	 (if (member system-type (list 'windows-nt 'cygwin 'msdos))
+	     "^ruby[-0-9]*\\(.exe\\)?$"
+	   "^ruby[-0-9]*$"))
 
 	;; Things returned
 	(script-name nil)
@@ -72,7 +77,7 @@ NOTE: the above should have each item listed in quotes.
 	(list interpreter-args debugger-args script-args annotate-p)
       ;; else
       ;; Strip off optional "ruby" or "ruby182" etc.
-      (when (string-match "^ruby[-0-9]*$"
+      (when (string-match interp-regexp
 			  (file-name-sans-extension
 			   (file-name-nondirectory (car args))))
 	(setq interpreter-args (list (pop args)))
@@ -120,66 +125,11 @@ NOTE: the above should have each item listed in quotes.
 	   )))
       (list interpreter-args debugger-args script-args annotate-p))))
 
-(defun rbdbgr-file-ruby-mode? (filename)
-  "Return true if FILENAME is a buffer we are visiting a buffer
-that is in ruby-mode"
-  (let ((buffer (and filename (find-buffer-visiting filename)))
-	(match-pos))
-    (if buffer 
-	(progn 
-	  (save-current-buffer
-	    (set-buffer buffer)
-	    (setq match-pos (string-match "^ruby-" (format "%s" major-mode))))
-	  (and match-pos (= 0 match-pos)))
-      nil)))
-
 (defvar rbdbgr-command-name) ; # To silence Warning: reference to free variable
 (defun rbdbgr-suggest-invocation (debugger-name)
   "Suggest a rbdbgr command invocation via `dbgr-suggest-invocaton'"
   (dbgr-suggest-invocation rbdbgr-command-name rbdbgr-minibuffer-history 
-			   'rbdbgr-suggest-ruby-file))
-
-(defun rbdbgr-suggest-ruby-file ()
-    "Suggest a Ruby file to debug. First priority is given to the
-current buffer. If the major mode is Ruby-mode, then we are
-done. If the major mode is not Ruby, we'll use priority 2 and we
-keep going.  Then we will try files in the default-directory. Of
-those that we are visiting we will see if the major mode is Ruby,
-the first one we find we will return.  Failing this, we see if the
-file is executable and has a .rb suffix. These have priority 8.
-Failing that, we'll go for just having a .rb suffix. These have
-priority 7. And other executable files have priority 6.  Within a
-given priority, we use the first one we find."
-    (let* ((file)
-	   (file-list (directory-files default-directory))
-	   (priority 2)
-	   (is-not-directory)
-	   (result (buffer-file-name)))
-      (if (not (rbdbgr-file-ruby-mode? result))
-	  (while (and (setq file (car-safe file-list)) (< priority 8))
-	    (setq file-list (cdr file-list))
-	    (if (rbdbgr-file-ruby-mode? file)
-		(progn 
-		  (setq result file)
-		  (setq priority 
-			(if (file-executable-p file)
-			    (setq priority 8)
-			  (setq priority 7)))))
-	    ;; The file isn't in a Ruby-mode buffer,
-	    ;; Check for an executable file with a .rb extension.
-	    (if (and file (file-executable-p file)
-		     (setq is-not-directory (not (file-directory-p file))))
-		(if (and (string-match "\.rb$" file))
-		    (if (< priority 6)
-			(progn
-			  (setq result file)
-			  (setq priority 6))))
-	      (if (and is-not-directory (< priority 5))
-		  ;; Found some sort of executable file.
-		  (progn
-		    (setq result file)
-		    (setq priority 5))))))
-      result))
+			   'dbgr-suggest-ruby-file))
 
 (defun rbdbgr-goto-backtrace-line (pt)
   "Display the location mentioned by the Ruby traceback line

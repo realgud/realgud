@@ -1,7 +1,8 @@
 (eval-when-compile (require 'cl))
   
 (require 'load-relative)
-(require-relative-list '("../common/track" "../common/core") "dbgr-")
+(require-relative-list '("../common/track" "../common/core" "../common/lang")
+		       "dbgr-")
 
 ;; FIXME: I think the following could be generalized and moved to 
 ;; dbgr-... probably via a macro.
@@ -126,66 +127,11 @@ NOTE: the above should have each item listed in quotes.
 	   )))
       (list interpreter-args debugger-args script-args annotate-p))))
 
-(defun pydbgr-file-python-mode? (filename)
-  "Return true if FILENAME is a buffer we are visiting a buffer
-that is in python-mode"
-  (let ((buffer (and filename (find-buffer-visiting filename)))
-	(match-pos))
-    (if buffer 
-	(progn 
-	  (save-current-buffer
-	    (set-buffer buffer)
-	    (setq match-pos (string-match "^python-" (format "%s" major-mode))))
-	  (and match-pos (= 0 match-pos)))
-      nil)))
-
 (defvar pydbgr-command-name) ; # To silence Warning: reference to free variable
 (defun pydbgr-suggest-invocation (debugger-name)
   "Suggest a pydbgr command invocation via `dbgr-suggest-invocaton'"
   (dbgr-suggest-invocation pydbgr-command-name pydbgr-minibuffer-history 
-			   'pydbgr-suggest-python-file))
-
-(defun pydbgr-suggest-python-file ()
-    "Suggest a Python file to debug. First priority is given to the
-current buffer. If the major mode is Python-mode, then we are
-done. If the major mode is not Python, we'll use priority 2 and we
-keep going.  Then we will try files in the default-directory. Of
-those that we are visiting we will see if the major mode is Python,
-the first one we find we will return.  Failing this, we see if the
-file is executable and has a .py suffix. These have priority 8.
-Failing that, we'll go for just having a .py suffix. These have
-priority 7. And other executable files have priority 6.  Within a
-given priority, we use the first one we find."
-    (let* ((file)
-	   (file-list (directory-files default-directory))
-	   (priority 2)
-	   (is-not-directory)
-	   (result (buffer-file-name)))
-      (if (not (pydbgr-file-python-mode? result))
-	  (while (and (setq file (car-safe file-list)) (< priority 8))
-	    (setq file-list (cdr file-list))
-	    (if (pydbgr-file-python-mode? file)
-		(progn 
-		  (setq result file)
-		  (setq priority 
-			(if (file-executable-p file)
-			    (setq priority 8)
-			  (setq priority 7)))))
-	    ;; The file isn't in a Python-mode buffer,
-	    ;; Check for an executable file with a .py extension.
-	    (if (and file (file-executable-p file)
-		     (setq is-not-directory (not (file-directory-p file))))
-		(if (and (string-match "\.py$" file))
-		    (if (< priority 6)
-			(progn
-			  (setq result file)
-			  (setq priority 6))))
-	      (if (and is-not-directory (< priority 5))
-		  ;; Found some sort of executable file.
-		  (progn
-		    (setq result file)
-		    (setq priority 5))))))
-      result))
+			   'dbgr-suggest-python-file))
 
 (defun pydbgr-goto-traceback-line (pt)
   "Display the location mentioned by the Python traceback line

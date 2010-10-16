@@ -6,9 +6,9 @@
 (context "pydbgr"
 	 (tag pydbgr)
 
-	 (specify "pydbgr-suggest-python-file"
+	 (specify "dbgr-suggest-python-file"
 		  (assert-equal "gcd.py" 
-				(pydbgr-suggest-python-file))
+				(dbgr-suggest-python-file))
 		  )
 	 ;; (specify "pydbgr-get-script-name"
 	 ;;      (assert-equal '("foo" nil) 

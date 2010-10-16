@@ -1,7 +1,9 @@
 (eval-when-compile (require 'cl))
   
 (require 'load-relative)
-(require-relative-list '("../common/track" "../common/core") "dbgr-")
+
+(require-relative-list '("../common/track" "../common/core" "../common/lang")
+		       "dbgr-")
 
 ;; FIXME: I think the following could be generalized and moved to 
 ;; dbgr-... probably via a macro.
@@ -120,19 +122,6 @@ NOTE: the above should have each item listed in quotes.
 	   )))
       (list interpreter-args debugger-args script-args annotate-p))))
 
-(defun trepanx-file-ruby-mode? (filename)
-  "Return true if FILENAME is a buffer we are visiting a buffer
-that is in ruby-mode"
-  (let ((buffer (and filename (find-buffer-visiting filename)))
-	(match-pos))
-    (if buffer 
-	(progn 
-	  (save-current-buffer
-	    (set-buffer buffer)
-	    (setq match-pos (string-match "^ruby-" (format "%s" major-mode))))
-	  (and match-pos (= 0 match-pos)))
-      nil)))
-
 (defvar trepanx-command-name) ; # To silence Warning: reference to free variable
 (defun trepanx-suggest-invocation (debugger-name)
   "Suggest a trepanx command invocation via `dbgr-suggest-invocaton'"
@@ -155,31 +144,37 @@ given priority, we use the first one we find."
 	   (priority 2)
 	   (is-not-directory)
 	   (result (buffer-file-name)))
-      (if (not (trepanx-file-ruby-mode? result))
-	  (while (and (setq file (car-safe file-list)) (< priority 8))
-	    (setq file-list (cdr file-list))
-	    (if (trepanx-file-ruby-mode? file)
-		(progn 
-		  (setq result file)
-		  (setq priority 
-			(if (file-executable-p file)
-			    (setq priority 8)
-			  (setq priority 7)))))
-	    ;; The file isn't in a Ruby-mode buffer,
-	    ;; Check for an executable file with a .rb extension.
-	    (if (and file (file-executable-p file)
-		     (setq is-not-directory (not (file-directory-p file))))
-		(if (and (string-match "\.rb$" file))
-		    (if (< priority 6)
-			(progn
-			  (setq result file)
-			  (setq priority 6))))
-	      (if (and is-not-directory (< priority 5))
-		  ;; Found some sort of executable file.
-		  (progn
+      (if (not (dbgr-lang-mode? result "ruby"))
+	  (progn 
+	    (while (and (setq file (car-safe file-list)) (< priority 8))
+	      (setq file-list (cdr file-list))
+	      (if (dbgr-lang-mode? file "ruby")
+		  (progn 
 		    (setq result file)
-		    (setq priority 5))))))
-      result))
+		    (setq priority 
+			  (if (file-executable-p file)
+			      (setq priority 8)
+			    (setq priority 7)))))
+	      ;; The file isn't in a Ruby-mode buffer,
+	      ;; Check for an executable file with a .rb extension.
+	      (if (and file (file-executable-p file)
+		       (setq is-not-directory (not (file-directory-p file))))
+		  (if (and (string-match "\.rb$" file))
+		      (if (< priority 6)
+			  (progn
+			    (setq result file)
+			    (setq priority 6))))
+		(if (and is-not-directory (< priority 5))
+		    ;; Found some sort of executable file.
+		    (progn
+		      (setq result file)
+		      (setq priority 5)))))
+	    (if (and (< priority 6) 
+		     (setq file (dbgr-suggest-file-from-buffer "ruby")))
+	    (setq result file))
+	    ))
+      result)
+    )
 
 (defun trepanx-goto-backtrace-line (pt)
   "Display the location mentioned by the Ruby traceback line

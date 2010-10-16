@@ -1,7 +1,7 @@
-(setq rbdbgr-core "../dbgr/rbdbgr/core.el")
+(setq trepan-core "../dbgr/trepan/core.el")
 (require 'test-unit)
 (load-file "../dbgr/common/core.el")
-(load-file "../dbgr/rbdbgr/core.el")
+(load-file "../dbgr/trepan/core.el")
 
 (test-unit-clear-contexts)
 
@@ -30,55 +30,55 @@
 
 	   (specify "Separate Ruby with its arg from debugger and its arg."
 	   	    (assert-equal 
-	   	     '(("/usr/bin/ruby1.9" "-W") ("rbdbgr") ("foo") nil)
-	   	     (rbdbgr-parse-cmd-args
-	   	      '("/usr/bin/ruby1.9" "-W" "rbdbgr" "foo"))))
+	   	     '(("/usr/bin/ruby1.9" "-W") ("trepan") ("foo") nil)
+	   	     (trepan-parse-cmd-args
+	   	      '("/usr/bin/ruby1.9" "-W" "trepan" "foo"))))
 	   
-	   (specify "ruby with two args and rbdbgr with two args"
+	   (specify "ruby with two args and trepan with two args"
 	   	    (assert-equal 
-	   	     '(("ruby1.9" "-T3") ("rbdbgr" "--port" "123") ("bar") nil)
-	   	     (rbdbgr-parse-cmd-args
-	   	      '("ruby1.9" "-T3" "rbdbgr" "--port" "123" "bar"))))
+	   	     '(("ruby1.9" "-T3") ("trepan" "--port" "123") ("bar") nil)
+	   	     (trepan-parse-cmd-args
+	   	      '("ruby1.9" "-T3" "trepan" "--port" "123" "bar"))))
 
-	   (specify "rbdbgr with annotate args"
+	   (specify "trepan with annotate args"
 	   	    (assert-equal
-	   	     '(nil ("rbdbgr" "--port" "1" "--annotate=3")
+	   	     '(nil ("trepan" "--port" "1" "--annotate=3")
 	   		   ("foo" "a") t)
-	   	     (rbdbgr-parse-cmd-args
-	   	      '("rbdbgr" "--port" "1" "--annotate=3" "foo" "a"))))
+	   	     (trepan-parse-cmd-args
+	   	      '("trepan" "--port" "1" "--annotate=3" "foo" "a"))))
 
-	   (specify "rbdbgr with --emacs in the wrong place"
+	   (specify "trepan with --emacs in the wrong place"
 	   	    (assert-equal
-	   	     '(nil ("rbdbgr" "--port" "123")
+	   	     '(nil ("trepan" "--port" "123")
 	   		   ("foo" "--emacs" "a") nil)
-	   	     (rbdbgr-parse-cmd-args
-	   	      '("rbdbgr" "--port" "123" "foo" "--emacs" "a"))))
+	   	     (trepan-parse-cmd-args
+	   	      '("trepan" "--port" "123" "foo" "--emacs" "a"))))
 
-	   (specify "rbdbgr with emacs"
+	   (specify "trepan with emacs"
 	   	    (assert-equal 
 	   	     '(("ruby" "-I/usr/lib/ruby") 
-	   	       ("rbdbgr" "-h" "foo" "--emacs") 
+	   	       ("trepan" "-h" "foo" "--emacs") 
 	   	       ("baz") t)
-	   	     (rbdbgr-parse-cmd-args
-	   	      '("ruby" "-I/usr/lib/ruby" "rbdbgr" "-h" "foo" 
+	   	     (trepan-parse-cmd-args
+	   	      '("ruby" "-I/usr/lib/ruby" "trepan" "-h" "foo" 
 	   		"--emacs" "baz"))))
 	   ))
 
 ;; FIXME: move to another file.
-(context "rbdbgr-core.el"
+(context "trepan-core.el"
 	 (tag cmd-args)
 	 (specify "ruby-mode? with Lisp file"
 		  (assert-nil
-		   (rbdbgr-file-ruby-mode? rbdbgr-core)))
+		   (dbgr-lang-mode? trepan-core "ruby")))
 	 
 	 (specify "ruby-mode? with Ruby file"
 		  (save-excursion (find-file "./gcd.rb"))
 		  (assert-t
-		   (rbdbgr-file-ruby-mode? "./gcd.rb")))
+		   (dbgr-lang-mode? "./gcd.rb" "ruby")))
 	 
-	 (specify "rbdbgr-suggest-ruby-file"
+	 (specify "dbgr-suggest-ruby-file"
 		  (assert-equal "gcd.rb"
-				(rbdbgr-suggest-ruby-file)))
+				(dbgr-suggest-ruby-file)))
 	 )
 
 (test-unit "cmd-args")

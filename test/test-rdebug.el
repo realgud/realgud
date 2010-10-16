@@ -8,7 +8,7 @@
 
 	 (specify "rdebug-suggest-ruby-file"
 		  (assert-equal "gcd.rb" 
-				(rdebug-suggest-ruby-file))
+				(dbgr-suggest-ruby-file))
 		  )
 	 (specify "rdebug-get-script-name"
 	      (assert-equal '("foo" nil) 
