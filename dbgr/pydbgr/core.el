@@ -96,7 +96,7 @@ NOTE: the above should have each item listed in quotes.
       ;; --script-options"
       (setq debugger-name (file-name-sans-extension
 			   (file-name-nondirectory (car args))))
-      (unless (string-match "^\\(pydbgr\\|cli.py\\))$" debugger-name)
+      (unless (string-match "^\\(pydbgr\\|cli.py\\)$" debugger-name)
 	(message 
 	 "Expecting debugger name `%s' to be `pydbgr' or `cli.py'"
 	 debugger-name))
