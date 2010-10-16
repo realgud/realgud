@@ -125,7 +125,7 @@ NOTE: the above should have each item listed in quotes.
 (defun rdebug-suggest-invocation (debugger-name)
   "Suggest a rdebug command invocation via `dbgr-suggest-invocaton'"
   (dbgr-suggest-invocation rdebug-command-name rdebug-minibuffer-history 
-			   'dbgr-suggest-ruby-file))
+			   "ruby" "\\.rb$"))
 
 (defun rdebug-goto-traceback-line (pt)
   "Display the location mentioned by the Ruby traceback line

@@ -1,7 +1,8 @@
 (eval-when-compile (require 'cl))
   
 (require 'load-relative)
-(require-relative-list '("../common/track" "../common/core") "dbgr-")
+(require-relative-list '("../common/track" "../common/core" "../common/lang")
+		       "dbgr-")
 
 ;; FIXME: I think the following could be generalized and moved to 
 ;; dbgr-... probably via a macro.
@@ -112,15 +113,8 @@ NOTE: the above should have each item listed in quotes.
 (defun dbgr-gdb-suggest-invocation (debugger-name)
   "Suggest a gdb command invocation via `dbgr-suggest-invocaton'"
   (dbgr-suggest-invocation dbgr-gdb-command-name dbgr-gdb-minibuffer-history 
-			   'dbgr-gdb-suggest-file)
+			   "c" "\\.\\([ch]\\)\\(pp\\)?")
 )
-
-(defun dbgr-gdb-suggest-file ()
-    "Suggest a file to debug. Priority should be given the languages
-that gdb supports: C, C++, Fortran, Java."
-    '()
-)
-
 
 (defun dbgr-gdb-reset ()
   "Gdb cleanup - remove debugger's internal buffers (frame,

@@ -129,7 +129,7 @@ NOTE: the above should have each item listed in quotes.
 (defun trepan-suggest-invocation (debugger-name)
   "Suggest a trepan command invocation via `dbgr-suggest-invocaton'"
   (dbgr-suggest-invocation trepan-command-name trepan-minibuffer-history 
-			   'dbgr-suggest-ruby-file))
+			   "ruby" "\\.rb$"))
 
 (defun trepan-goto-backtrace-line (pt)
   "Display the location mentioned by the Ruby traceback line

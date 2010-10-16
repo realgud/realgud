@@ -131,7 +131,7 @@ NOTE: the above should have each item listed in quotes.
 (defun pydbgr-suggest-invocation (debugger-name)
   "Suggest a pydbgr command invocation via `dbgr-suggest-invocaton'"
   (dbgr-suggest-invocation pydbgr-command-name pydbgr-minibuffer-history 
-			   'dbgr-suggest-python-file))
+			   "python" "\\.py"))
 
 (defun pydbgr-goto-traceback-line (pt)
   "Display the location mentioned by the Python traceback line

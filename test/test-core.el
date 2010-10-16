@@ -64,22 +64,5 @@
 	   		"--emacs" "baz"))))
 	   ))
 
-;; FIXME: move to another file.
-(context "trepan-core.el"
-	 (tag cmd-args)
-	 (specify "ruby-mode? with Lisp file"
-		  (assert-nil
-		   (dbgr-lang-mode? trepan-core "ruby")))
-	 
-	 (specify "ruby-mode? with Ruby file"
-		  (save-excursion (find-file "./gcd.rb"))
-		  (assert-t
-		   (dbgr-lang-mode? "./gcd.rb" "ruby")))
-	 
-	 (specify "dbgr-suggest-ruby-file"
-		  (assert-equal "gcd.rb"
-				(dbgr-suggest-ruby-file)))
-	 )
-
 (test-unit "cmd-args")
 

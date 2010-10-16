@@ -7,20 +7,20 @@
 (require 'comint)
 (require 'load-relative)
 (require-relative-list
- '("fringe" "helper" "cmdbuf" "reset" "srcbuf") "dbgr-")
+ '("cmdbuf" "fringe" "helper" "lang" "reset" "srcbuf") "dbgr-")
 
 (declare-function dbgr-short-key-mode &optional arg)
 
 (defvar dbgr-srcbuf-info)
 
 (defun dbgr-suggest-invocation 
-  (debugger-name minibuffer-history suggest-file-fn)
+  (debugger-name minibuffer-history lang-str lang-ext-regexp)
   "Suggest a debugger command invocation. If the current buffer
 is a source file or process buffer previously set, then use the
 value of that the command invocations found by buffer-local
 variables. Next, try to use the first value of MINIBUFFER-HISTORY
 if that exists.  Finally we try to find a suitable program file
-using SUGGEST-FILE-FN."
+using LANG-STR and LANG-EXT-REGEXP."
   (let* ((buf (current-buffer))
 	 (cmd-str-cmdbuf (dbgr-cmdbuf-command-string buf))
 	 (cmd-str-srcbuf (dbgr-srcbuf-command-string buf))
@@ -32,7 +32,9 @@ using SUGGEST-FILE-FN."
       cmd-str-srcbuf)
      ((and minibuffer-history (listp minibuffer-history)) 
       (car minibuffer-history))
-     (t (concat debugger-name " " (funcall suggest-file-fn))))))
+     (t (concat debugger-name " " 
+		(dbgr-suggest-lang-file lang-str lang-ext-regexp)))
+     )))
 
 (defun dbgr-query-cmdline 
   (suggest-invocation-fn 

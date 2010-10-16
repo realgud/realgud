@@ -6,10 +6,6 @@
 (context "rdebug"
 	 (tag rdebug)
 
-	 (specify "rdebug-suggest-ruby-file"
-		  (assert-equal "gcd.rb" 
-				(dbgr-suggest-ruby-file))
-		  )
 	 (specify "rdebug-get-script-name"
 	      (assert-equal '("foo" nil) 
 			    (rdebug-get-script-name '("rdebug" "foo")))
