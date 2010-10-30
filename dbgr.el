@@ -1,14 +1,16 @@
 ;;; Things related to loading and loading the dbgr package.
 (require 'load-relative)
-(require-relative-list
- '("./dbgr/common/track-mode"
-   "./dbgr/rbdbgr/rbdbgr"
-   "./dbgr/rdebug/rdebug"
-   "./dbgr/trepan/trepan"
-   "./dbgr/trepanx/trepanx"
-   "./dbgr/gdb/gdb"
-   "./dbgr/pydbgr/pydbgr") "dbgr-")
 
+(defun dbgr-load-features()
+  (require-relative-list
+   '("./dbgr/common/track-mode"
+     "./dbgr/rbdbgr/rbdbgr"
+     "./dbgr/rdebug/rdebug"
+     "./dbgr/trepan/trepan"
+     "./dbgr/trepanx/trepanx"
+     "./dbgr/gdb/gdb"
+     "./dbgr/pydbgr/pydbgr") "dbgr-")
+)
 
 ;; Really should be part of GNU Emacs. But until then...
 (defmacro dbgr-string-starts-with(string prefix)
@@ -55,14 +57,24 @@ like 'rbdbgr', 'pydbgr'."
 )
 
 (defun dbgr-unload-features()
-  "Remove all features loaded from this package. Useful if you want to
-reload another version, say a newer development version and you already have
-this package loaded."
+  "Remove all features loaded from this package. Used in 
+`dbgr-reload-features'. See that."
   (interactive "")
   (let ((result (dbgr-loaded-features)))
     (dolist (feature result result)
       (unload-feature feature 't)))
   )
 
+(defun dbgr-reload-features()
+  "Reload all features loaded from this package. Useful if have
+changed some code or want to reload another version, say a newer
+development version and you already have this package loaded."
+  (interactive "")
+  (dbgr-unload-features)
+  (dbgr-load-features)
+  )
+
+;; Load everything.
+(dbgr-load-features)
 
 (provide-me)
