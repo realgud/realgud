@@ -41,6 +41,12 @@
   (dbgr-track-mode-setup dbgr-track-mode)
   )
 
+;; FIXME: this should have been picked up by require'ing track.
+(defvar dbgr-track-divert-output?)
+(make-variable-buffer-local 'dbgr-track-divert-output?)
+(defvar dbgr-track-divert-string)
+(make-variable-buffer-local 'dbgr-track-divert-string)
+
 (defun dbgr-track-mode-setup (mode-on?)
   "Called when entering or leaving `dbgr-track-mode'. Variable
 MODE-ON is a boolean which specifies if we are going into or out
@@ -95,13 +101,13 @@ of this mode."
 )
 
 (defmacro dbgr-track-mode-vars (name)
-  (list 'defvar 
-	(intern (concat name "-track-mode")) nil
-	(format "Non-nil if using %s-track-mode as a minor mode of some other mode.
+  `(progn
+     (defvar ,(intern (concat name "-track-mode")) nil
+	,(format "Non-nil if using %s-track-mode as a minor mode of some other mode.
 Use the command `%s-track-mode' to toggle or set this variable." name name))
-  (list 'defvar 
-	(intern (concat name "-track-minor-mode-map")) '(make-sparse-keymap)
-	(format "Keymap used in %s-track-minor-mode'." name)))
+     (defvar  ,(intern (concat name "-minor-mode-map")) (make-sparse-keymap)
+       ,(format "Keymap used in %s-track-minor-mode'." name))
+    ))
 
 ;; FIXME: The below could be a macro? I have a hard time getting
 ;; macros right.
