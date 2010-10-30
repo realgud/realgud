@@ -325,19 +325,19 @@ loc-regexp pattern"
   
 (defun dbgr-track-divert-prompt(text)
   "Return a cons node of the part before the prompt-regexp and the part 
-   after the loc-regexp-prompt. If not found return nil."
+   after the prompt-regexp-prompt. If not found return nil."
   (if (dbgr-cmdbuf?)
-      (let* ((loc-pat (dbgr-cmdbuf-pat "prompt"))
-  	     (loc-regexp (dbgr-loc-pat-regexp loc-pat))
+      (let* ((prompt-pat (dbgr-cmdbuf-pat "prompt"))
+  	     (prompt-regexp (dbgr-loc-pat-regexp prompt-pat))
   	     )
-  	(if loc-regexp
-  	    (if (string-match loc-regexp text)
+  	(if prompt-regexp
+  	    (if (string-match prompt-regexp text)
 		(progn 
 		  (setq dbgr-track-divert-string 
 			(substring text 0 (match-beginning 0)))
 		  ;; We've got desired output, so reset divert output.
 		  (setq dbgr-track-divert-output? nil)
-		  ;; FIXME: DELETE output.
+		  ;; FIXME: DELETE output. Or do elsewhere?
 		  )
 	      ))
 	)
