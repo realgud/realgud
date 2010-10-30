@@ -23,6 +23,10 @@
 (declare-function dbgr-loc?(loc))
 
 (make-variable-buffer-local 'dbgr-track-mode)
+(defvar dbgr-track-divert-output?)
+(make-variable-buffer-local 'dbgr-track-divert-output?)
+(defvar dbgr-track-divert-string)
+(make-variable-buffer-local 'dbgr-track-divert-string)
 
 (defun dbgr-track-comint-output-filter-hook(text)
   "An output-filter hook custom for comint shells.  Find
@@ -47,7 +51,6 @@ marks set in buffer-local variables to extract text"
 	(dbgr-track-from-region last-output-start 
 				last-output-end cmd-mark)))
   )
-
 
 (defun dbgr-track-eshell-output-filter-hook()
   "An output-filter hook custom for eshell shells.  Find
@@ -80,11 +83,13 @@ evaluating (dbgr-cmdbuf-info-loc-regexp dbgr-cmdbuf-info)"
   (let* ((text (buffer-substring-no-properties from to))
 	 (loc (dbgr-track-loc text cmd-mark))
 	 (text-sans-loc)
+	 (before-after-pair)
 	 (bp-loc)
 	 (cmdbuf (current-buffer))
 	 )
     (if (dbgr-cmdbuf? cmdbuf)
 	(with-current-buffer cmdbuf
+	  (if dbgr-track-divert-output? (dbgr-track-divert-prompt text))
 	  (setq text-sans-loc (or (dbgr-track-loc-remaining text) text))
 	  (setq bp-loc (dbgr-track-bp-loc text-sans-loc cmd-mark cmdbuf))
 	  (if bp-loc 
@@ -316,7 +321,28 @@ loc-regexp pattern"
 	      nil)
 	  nil))
     nil)
-)
+  )
+  
+(defun dbgr-track-divert-prompt(text)
+  "Return a cons node of the part before the prompt-regexp and the part 
+   after the loc-regexp-prompt. If not found return nil."
+  (if (dbgr-cmdbuf?)
+      (let* ((loc-pat (dbgr-cmdbuf-pat "prompt"))
+  	     (loc-regexp (dbgr-loc-pat-regexp loc-pat))
+  	     )
+  	(if loc-regexp
+  	    (if (string-match loc-regexp text)
+		(progn 
+		  (setq dbgr-track-divert-string 
+			(substring text 0 (match-beginning 0)))
+		  ;; We've got desired output, so reset divert output.
+		  (setq dbgr-track-divert-output? nil)
+		  ;; FIXME: DELETE output.
+		  )
+	      ))
+	)
+    )
+  )
   
 (defun dbgr-goto-line-for-loc-pat (pt &optional opt-dbgr-loc-pat)
   "Display the location mentioned in line described by

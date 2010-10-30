@@ -51,6 +51,9 @@ of this mode."
 	  (setq dbgr-track-mode nil)
 	  (error "Can't find a process for buffer %s" (current-buffer)))
 
+	(setq dbgr-track-divert-output? nil)
+	(setq dbgr-track-divert-string "")
+
 	;; FIXME: save and chain process-sentinel via
 	;; (process-sentinel (get-buffer-process (current-buffer)))
 	(set-process-sentinel process 'dbgr-term-sentinel)

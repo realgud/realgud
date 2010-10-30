@@ -4,26 +4,26 @@
 (test-unit-clear-contexts)
 
 ;; Some setup usually done in setting up the buffer.
-;; We customize this for the debugger rbdbgr. Others may follow.
+;; We customize this for the debugger trepan. Others may follow.
 ;; FIXME: encapsulate this.
 (makunbound 'dbgr-cmdbuf-info)
 
-;; FIXME/WARNING the below is customized for rbdbgr
+;; FIXME/WARNING the below is customized for trepan
 (context "dbgr-track"
 	 (tag dbgr-track)
-	 (dbgr-cmdbuf-init (current-buffer) "rbdbgr" 
-			   (gethash "rbdbgr" dbgr-pat-hash))
+	 (dbgr-cmdbuf-init (current-buffer) "trepan" 
+			   (gethash "trepan" dbgr-pat-hash))
 
 	 (setq filename (symbol-file 'test-unit))
 	 (setq line-number 7)
-	 (setq debugger-output (format "-> (%s:%d)\n(rbdbgr):\n" 
+	 (setq debugger-output (format "-> (%s:%d)\n(trepan):\n" 
 						 filename line-number))
 	 (setq loc (dbgr-track-loc debugger-output nil))
 	   
 	 (specify "loc extracted"
 		  (assert-equal t (dbgr-loc-p loc)))
 	 (specify "loc-remaining"
-		  (assert-equal "\n(rbdbgr):\n"
+		  (assert-equal "\n(trepan):\n"
 				(dbgr-track-loc-remaining debugger-output)))
 	 (specify "loc filename extracted"
 		  (assert-equal filename (dbgr-loc-filename loc)))
@@ -38,6 +38,18 @@
 	 (specify "bp-loc extracted"
 		  (assert-t (dbgr-loc-p loc))
 		  (assert-equal bp-num (dbgr-loc-bp-num loc)))
+
+	 (specify "dbgr-track-divert-prompt"
+		  (setq dbgr-track-divert-output? 't)
+		  (setq dbgr-track-divert-string "")
+		  (setq text 
+			"--> #0 TOP Object#<top /usr/local/bin/irb> in file /usr/local/bin/irb at line 9\n(trepan): ")
+		  (dbgr-track-divert-prompt text)
+		  (assert-equal "--> #0 TOP Object#<top /usr/local/bin/irb> in file /usr/local/bin/irb at line 9\n"
+				dbgr-track-divert-string)
+		  (assert-equal nil dbgr-track-divert-output?)
+		  )
+
 
 	 (specify "invalid cmdbuf"
 		  (makunbound 'dbgr-cmdbuf-info)
