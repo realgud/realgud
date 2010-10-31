@@ -6,7 +6,7 @@
 (require 'load-relative)
 (require-relative-list '("../common/track-mode" "../common/cmds"
 			 "../common/menu") "dbgr-")
-(require-relative-list '("core" "cmds") "pydbgr-")
+(require-relative-list '("core" "cmds" "init") "dbgr-pydbgr-")
 
 (dbgr-track-mode-vars "pydbgr")
 (declare-function dbgr-track-mode(bool))
@@ -28,4 +28,4 @@
   (dbgr-track-mode-body "pydbgr")
 )
 
-(provide-me "pydbgr-")
+(provide-me "dbgr-pydbgr-")

@@ -10,6 +10,6 @@
   (dbgr-define-gdb-like-commands)
   )
 
-(provide-me "pydbgr-")
+(provide-me "dbgr-pydbgr-")
 
 

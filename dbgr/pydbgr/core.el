@@ -4,6 +4,8 @@
 (require 'load-relative)
 (require-relative-list '("../common/track" "../common/core" "../common/lang")
 		       "dbgr-")
+(require-relative-list '("init") "dbgr-pydbgr-")
+
 
 ;; FIXME: I think the following could be generalized and moved to 
 ;; dbgr-... probably via a macro.
@@ -138,7 +140,7 @@ NOTE: the above should have each item listed in quotes.
   "Display the location mentioned by the Python traceback line
 described by PT."
   (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "backtrace" pydbgr-pat-hash))
+  (dbgr-goto-line-for-pt-and-type pt "backtrace" dbgr-pydbgr-pat-hash))
 
 (defun pydbgr-reset ()
   "Pydbgr cleanup - remove debugger's internal buffers (frame,
@@ -164,4 +166,4 @@ breakpoints, etc.)."
   (interactive)
   (customize-group 'pydbgr))
 
-(provide-me "pydbgr-")
+(provide-me "dbgr-pydbgr-")

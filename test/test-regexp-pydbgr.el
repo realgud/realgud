@@ -1,12 +1,12 @@
 (require 'test-unit)
-(load-file "../dbgr/common/init/pydbgr.el")
+(load-file "../dbgr/pydbgr/init.el")
 
 (test-unit-clear-contexts)
 
 
-(setq bps    (gethash "brkpt-set" pydbgr-pat-hash))
-(setq loc    (gethash "loc"       pydbgr-pat-hash))
-(setq tb     (gethash "backtrace" pydbgr-pat-hash))
+(setq bps    (gethash "brkpt-set" dbgr-pydbgr-pat-hash))
+(setq loc    (gethash "loc"       dbgr-pydbgr-pat-hash))
+(setq tb     (gethash "backtrace" dbgr-pydbgr-pat-hash))
 
 (defun tb-loc-match(text) 
   (string-match (dbgr-loc-pat-regexp tb) text)

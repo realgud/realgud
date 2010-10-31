@@ -34,9 +34,3 @@
 )
 
 (provide-me "dbgr-zshdb-")
-
-;;; Local variables:
-;;; eval:(put 'rbdbg-debug-enter 'lisp-indent-hook 1)
-;;; End:
-
-;;; zshdb-track.el ends here

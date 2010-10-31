@@ -4,12 +4,12 @@
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
-(require-relative-list '("../regexp" "../loc") "dbgr-")
+(require-relative-list '("../common/regexp" "../common/loc") "dbgr-")
 
 (defvar dbgr-pat-hash)
 (declare-function make-dbgr-loc-pat (dbgr-loc))
 
-(defvar pydbgr-pat-hash (make-hash-table :test 'equal)
+(defvar dbgr-pydbgr-pat-hash (make-hash-table :test 'equal)
   "Hash key is the what kind of pattern we want to match: traceback, prompt, etc. 
 The values of a hash entry is a dbgr-loc-pat struct")
 
@@ -24,26 +24,26 @@ The values of a hash entry is a dbgr-loc-pat struct")
 ;;   (c:\\mydirectory\\gcd.py:10): <module>
 ;;  and in tracebacks like this:
 ;;   (/usr/bin/zonetab2pot.py:15)
-(setf (gethash "loc" pydbgr-pat-hash)
+(setf (gethash "loc" dbgr-pydbgr-pat-hash)
       (make-dbgr-loc-pat
        :regexp "^(\\(\\(?:[a-zA-Z]:\\)?[-a-zA-Z0-9_/.\\\\ ]+\\):\\([0-9]+\\))"
        :file-group 1
        :line-group 2))
 
-(setf (gethash "prompt" pydbgr-pat-hash)
+(setf (gethash "prompt" dbgr-pydbgr-pat-hash)
       (make-dbgr-loc-pat
        :regexp   "^(Pydbgr) "
        ))
 
 ;;  Regular expression that describes a Python backtrace line.
-(setf (gethash "backtrace" pydbgr-pat-hash)
+(setf (gethash "backtrace" dbgr-pydbgr-pat-hash)
       (make-dbgr-loc-pat
        :regexp   "^[ \t]+File \"\\(.+\\)\", line \\([0-9]+\\)"
        :file-group 1
        :line-group 2))
 
 ;;  Regular expression that describes a "breakpoint set" line
-(setf (gethash "brkpt-set" pydbgr-pat-hash)
+(setf (gethash "brkpt-set" dbgr-pydbgr-pat-hash)
       (make-dbgr-loc-pat
        :regexp "^Breakpoint \\([0-9]+\\) set at line \\([0-9]+\\)[ \t\n]+of file \\(.+\\)\\(\n\\|$\\)"
        :bp-num 1
@@ -51,17 +51,11 @@ The values of a hash entry is a dbgr-loc-pat struct")
        :line-group 2))
 
 ;;  Regular expression that describes a "delete breakpoint" line
-(setf (gethash "brkpt-del" pydbgr-pat-hash)
+(setf (gethash "brkpt-del" dbgr-pydbgr-pat-hash)
       (make-dbgr-loc-pat
        :regexp "^Deleted breakpoint \\([0-9]+\\)\n"
        :bp-num 1))
 
-(setf (gethash "pydbgr" dbgr-pat-hash) pydbgr-pat-hash)
+(setf (gethash "pydbgr" dbgr-pat-hash) dbgr-pydbgr-pat-hash)
 
-(provide-me "dbgr-init-")
-
-;;; Local variables:
-;;; eval:(put 'pydbgr-debug-enter 'lisp-indent-hook 1)
-;;; End:
-
-;;; regexp/pydbgr.el ends here
+(provide-me "dbgr-pydbgr-")

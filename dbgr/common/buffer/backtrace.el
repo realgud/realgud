@@ -27,19 +27,19 @@
     (define-key map "9" 'dbgr-goto-frame-n)
     (dbgr-populate-common-keys map)
 
-    ;; --------------------
-    ;; The "Stack window" submenu.
-    (let ((submenu (make-sparse-keymap)))
-      (define-key-after map [menu-bar debugger stack]
-        (cons "Stack window" submenu)
-        'placeholder))
+    ;; ;; --------------------
+    ;; ;; The "Stack window" submenu.
+    ;; (let ((submenu (make-sparse-keymap)))
+    ;;   (define-key-after map [menu-bar debugger stack]
+    ;;     (cons "Stack window" submenu)
+    ;;     'placeholder))
 
-    (define-key map [menu-bar debugger stack goto]
-      '(menu-item "Goto frame" dbgr-goto-frame))
+    ;; (define-key map [menu-bar debugger stack goto]
+    ;;   '(menu-item "Goto frame" dbgr-goto-frame))
     map)
   "Keymap to navigate dbgr stack frames.")
 
-(defun dbgr-bactrace-init ()
+(defun dbgr-backtrace-init ()
   (interactive)
   (let ((buffer (current-buffer))
   	(cmdbuf (dbgr-get-cmdbuf))
