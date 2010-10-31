@@ -126,7 +126,7 @@ NOTE: the above should have each item listed in quotes.
 
 (defvar zshdb-command-name) ; # To silence Warning: reference to free variable
 (defun zshdb-suggest-invocation (debugger-name)
-  "Suggest a trepan command invocation via `dbgr-suggest-invocaton'"
+  "Suggest a zshdb command invocation via `dbgr-suggest-invocaton'"
   (dbgr-suggest-invocation zshdb-command-name zshdb-minibuffer-history 
 			   "Shell-script" "\\.sh$"))
 

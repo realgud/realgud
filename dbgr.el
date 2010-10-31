@@ -4,14 +4,17 @@
 
 (defun dbgr-load-features()
   (require-relative-list
-   '("./dbgr/common/track-mode"
+   '(
+     "./dbgr/common/track-mode"
+     "./dbgr/gdb/gdb"
+     "./dbgr/pydbgr/pydbgr"
      "./dbgr/rbdbgr/rbdbgr"
      "./dbgr/rdebug/rdebug"
      "./dbgr/trepan/trepan"
      "./dbgr/trepanx/trepanx"
-     "./dbgr/gdb/gdb"
-     "./dbgr/pydbgr/pydbgr") "dbgr-")
-)
+     "./dbgr/zshdb/zshdb"
+     ) "dbgr-")
+  )
 
 ;; Really should be part of GNU Emacs. But until then...
 (defmacro dbgr-string-starts-with(string prefix)
