@@ -1,13 +1,13 @@
 (require 'test-unit)
-(load-file "../dbgr/common/init/trepan.el")
+(load-file "../dbgr/trepan/init.el")
 
 (test-unit-clear-contexts)
 
 
-(setq bps    (gethash "brkpt-set"     trepan-pat-hash))
-(setq prompt (gethash "prompt"        trepan-pat-hash))
-(setq tb     (gethash "backtrace"     trepan-pat-hash))
-(setq ctrl   (gethash "control-frame" trepan-pat-hash))
+(setq bps    (gethash "brkpt-set"     dbgr-trepan-pat-hash))
+(setq prompt (gethash "prompt"        dbgr-trepan-pat-hash))
+(setq tb     (gethash "backtrace"     dbgr-trepan-pat-hash))
+(setq ctrl   (gethash "control-frame" dbgr-trepan-pat-hash))
 
 (defun tb-loc-match(text) 
   (string-match (dbgr-loc-pat-regexp tb) text)

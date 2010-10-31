@@ -9,6 +9,8 @@
 ;: FIXME: not picked up from track. Why?
 (defvar dbgr-track-divert-string nil)
 
+(defvar dbgr-goto-entry-acc "")
+
 (defvar dbgr-backtrace-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map [double-mouse-1] 'dbgr-goto-frame-mouse)
@@ -95,7 +97,7 @@
   (setq buffer-read-only 't)
   (setq major-mode 'dbgr-backtrace-mode)
   (setq mode-name "dbgr Stack Frames")
-  (set (make-local-variable 'dbgr-secondary-buffer) t)
+  ;; (set (make-local-variable 'dbgr-secondary-buffer) t)
   (setq mode-line-process 'dbgr-mode-line-process)
   (use-local-map dbgr-backtrace-mode-map)
 

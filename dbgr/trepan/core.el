@@ -4,6 +4,7 @@
 (require 'load-relative)
 (require-relative-list '("../common/track" "../common/core" "../common/lang")
 		       "dbgr-")
+(require-relative-list '("init") "dbgr-trepan-")
 
 ;; FIXME: I think the following could be generalized and moved to 
 ;; dbgr-... probably via a macro.
@@ -136,19 +137,19 @@ NOTE: the above should have each item listed in quotes.
   "Display the location mentioned by the Ruby traceback line
 described by PT."
   (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "backtrace" trepan-pat-hash))
+  (dbgr-goto-line-for-pt-and-type pt "backtrace" dbgr-trepan-pat-hash))
 
 (defun trepan-goto-control-frame-line (pt)
   "Display the location mentioned by a control-frame line
 described by PT."
   (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "control-frame" trepan-pat-hash))
+  (dbgr-goto-line-for-pt-and-type pt "control-frame" dbgr-trepan-pat-hash))
 
 (defun trepan-goto-dollarbang-traceback-line (pt)
   "Display the location mentioned by a Ruby $! traceback line
 described by PT."
   (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "dollar-bang" trepan-pat-hash))
+  (dbgr-goto-line-for-pt-and-type pt "dollar-bang" dbgr-trepan-pat-hash))
 
 (defun trepan-reset ()
   "Trepan cleanup - remove debugger's internal buffers (frame,
@@ -174,4 +175,4 @@ breakpoints, etc.)."
   (interactive)
   (customize-group 'trepan))
 
-(provide-me "trepan-")
+(provide-me "dbgr-trepan-")

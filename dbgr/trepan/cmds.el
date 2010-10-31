@@ -30,4 +30,4 @@
   (local-set-key "\C-cq" 'dbgr-cmd-quit)
 
 
-(provide-me "trepan-")
+(provide-me "dbgr-trepan-")
