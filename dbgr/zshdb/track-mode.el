@@ -5,8 +5,7 @@
 (require-relative-list '("../common/track-mode"
 			 "../common/cmds" 
 			 "../common/menu") "dbgr-")
-(require-relative-list '("../common/init/zshdb") "dbgr-init-")
-(require-relative-list '("core" "cmds") "zshdb-")
+(require-relative-list '("core" "cmds" "init") "dbgr-zshdb-")
 
 (dbgr-track-mode-vars "zshdb")
 (declare-function dbgr-track-mode(bool))
@@ -34,7 +33,7 @@
   (dbgr-track-mode-body "zshdb")
 )
 
-(provide-me "zshdb-")
+(provide-me "dbgr-zshdb-")
 
 ;;; Local variables:
 ;;; eval:(put 'rbdbg-debug-enter 'lisp-indent-hook 1)

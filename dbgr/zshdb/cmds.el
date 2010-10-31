@@ -30,4 +30,4 @@
 (local-set-key "\C-cq" 'dbgr-cmd-quit)
 
 
-(provide-me "zshdb-")
+(provide-me "dbgr-zshdb-")

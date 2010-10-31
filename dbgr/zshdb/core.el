@@ -2,6 +2,7 @@
   
 (require 'load-relative)
 (require-relative-list '("../common/track" "../common/core") "dbgr-")
+(require-relative-list '("init") "dbgr-zshdb-")
 
 ;; FIXME: I think the following could be generalized and moved to 
 ;; dbgr-... probably via a macro.
@@ -134,19 +135,19 @@ NOTE: the above should have each item listed in quotes.
   "Display the location mentioned by the Ruby traceback line
 described by PT."
   (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "backtrace" zshdb-pat-hash))
+  (dbgr-goto-line-for-pt-and-type pt "backtrace" dbgr-zshdb-pat-hash))
 
 (defun zshdb-goto-control-frame-line (pt)
   "Display the location mentioned by a control-frame line
 described by PT."
   (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "control-frame" zshdb-pat-hash))
+  (dbgr-goto-line-for-pt-and-type pt "control-frame" dbgr-zshdb-pat-hash))
 
 (defun zshdb-goto-dollarbang-traceback-line (pt)
   "Display the location mentioned by a Ruby $! traceback line
 described by PT."
   (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "dollar-bang" zshdb-pat-hash))
+  (dbgr-goto-line-for-pt-and-type pt "dollar-bang" dbgr-zshdb-pat-hash))
 
 (defun zshdb-reset ()
   "Zshdb cleanup - remove debugger's internal buffers (frame,
@@ -172,4 +173,4 @@ breakpoints, etc.)."
   (interactive)
   (customize-group 'zshdb))
 
-(provide-me "zshdb-")
+(provide-me "dbgr-zshdb-")
