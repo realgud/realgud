@@ -1,3 +1,4 @@
+;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 ;;; Korn Shell debugger kshdb
 
 (eval-when-compile (require 'cl))

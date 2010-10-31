@@ -1,3 +1,4 @@
+;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 ;;; FIXME - think of a better name.
 ;;; Debugger regular expressions for many kinds of
 ;;;  debuggers

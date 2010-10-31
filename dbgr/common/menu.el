@@ -1,3 +1,4 @@
+;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 ;; -------------------------------------------------------------------
 ;; Menu support.
 ;;

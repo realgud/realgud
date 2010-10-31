@@ -1,4 +1,5 @@
-;;; Z shell zshdb regular expressions
+;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Regular expressions for Z shell debugger: zshdb 
 
 (eval-when-compile (require 'cl))
 
@@ -36,3 +37,5 @@ The values of a hash entry is a dbgr-loc-pat struct")
        :line-group 3))
 
 (setf (gethash "zshdb" dbgr-pat-hash) zshdb-pat-hash)
+
+(provide-me "dbgr-init-")

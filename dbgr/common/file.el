@@ -1,3 +1,4 @@
+;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 ; Should dbgr-file-loc-from-line be here or elsewhere?
 (require 'load-relative)
 (require-relative-list '("helper" "loc") "dbgr-")

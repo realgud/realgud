@@ -1,3 +1,4 @@
+;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 (require 'comint)
 (require 'load-relative)
 (require-relative-list '("buffer" "window") "dbgr-")

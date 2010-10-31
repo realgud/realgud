@@ -1,4 +1,5 @@
-;;; Bash debugger: bashdb
+;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Regular expressions for Bash shell debugger: bashdb
 
 (eval-when-compile (require 'cl))
 

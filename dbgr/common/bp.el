@@ -1,3 +1,4 @@
+;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 ;; Code associated with breakpoints
 
 (require 'image)

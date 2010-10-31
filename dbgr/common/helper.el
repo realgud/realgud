@@ -1,3 +1,4 @@
+;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 ;;; Miscellaneous utility functions
 (require 'load-relative)
 (defun fn-p-to-fn?-alias (fn-sym)

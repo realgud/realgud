@@ -1,3 +1,4 @@
+;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 ;;; Python "pydbgr" Debugger tracking a comint
 ;;; or eshell buffer.
 

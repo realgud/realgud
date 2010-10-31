@@ -1,3 +1,4 @@
+;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 ;;  `pydbgr' Main interface to pydbgr via Emacs
 (require 'load-relative)
 (require-relative-list '("../common/helper") "dbgr-")

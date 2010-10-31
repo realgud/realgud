@@ -1,3 +1,4 @@
+;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 ;;; GNU make debugger: remake
 
 (eval-when-compile (require 'cl))

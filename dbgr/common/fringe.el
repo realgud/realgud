@@ -1,3 +1,4 @@
+;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 ;; Fringe marks for history of stopping points
 
 ;; Bitmap for hollow overlay-arrow in fringe

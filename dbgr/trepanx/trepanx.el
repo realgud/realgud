@@ -1,3 +1,4 @@
+;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 ;;  `trepanx' Main interface to trepanx via Emacs
 (require 'load-relative)
 (require-relative-list '("../common/helper") "dbgr-")
@@ -6,7 +7,7 @@
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
 (defgroup trepanx nil
-  "The Ruby 1.9 debugger"
+  "The Rubinius \"trepanning\" debugger"
   :group 'processes
   :group 'tools
   :version "23.1")

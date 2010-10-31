@@ -1,9 +1,41 @@
+;;; Backtrace buffer
+;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
 (require-relative-list
  '("send" "track" "cmdbuf") "dbgr-")
 
 ;: FIXME: not picked up from track. Why?
 (defvar dbgr-track-divert-string nil)
+
+(defvar dbgr-bt-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map [double-mouse-1] 'dbgr-goto-frame-mouse)
+    (define-key map [mouse-2] 'dbgr-goto-frame-mouse)
+    (define-key map [mouse-3] 'dbgr-goto-frame-mouse)
+    (define-key map [(control m)] 'dbgr-goto-frame)
+    (define-key map "0" 'dbgr-goto-frame-n)
+    (define-key map "1" 'dbgr-goto-frame-n)
+    (define-key map "2" 'dbgr-goto-frame-n)
+    (define-key map "3" 'dbgr-goto-frame-n)
+    (define-key map "4" 'dbgr-goto-frame-n)
+    (define-key map "5" 'dbgr-goto-frame-n)
+    (define-key map "6" 'dbgr-goto-frame-n)
+    (define-key map "7" 'dbgr-goto-frame-n)
+    (define-key map "8" 'dbgr-goto-frame-n)
+    (define-key map "9" 'dbgr-goto-frame-n)
+    (dbgr-populate-secondary-buffer-map map)
+
+    ;; --------------------
+    ;; The "Stack window" submenu.
+    (let ((submenu (make-sparse-keymap)))
+      (define-key-after map [menu-bar debugger stack]
+        (cons "Stack window" submenu)
+        'placeholder))
+
+    (define-key map [menu-bar debugger stack goto]
+      '(menu-item "Goto frame" dbgr-goto-frame))
+    map)
+  "Keymap to navigate dbgr stack frames.")
 
 (defun dbgr-bt-init ()
   (interactive)
@@ -36,4 +68,6 @@
     )
   )
 )
+
+
 

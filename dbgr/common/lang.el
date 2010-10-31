@@ -1,3 +1,4 @@
+;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 ;; Programming language specific stuff.
 (require 'load-relative)
 (defun dbgr-lang-mode? (filename lang-str)

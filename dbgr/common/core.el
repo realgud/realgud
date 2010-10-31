@@ -1,3 +1,4 @@
+;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 ; (require 'term)
 (if (< emacs-major-version 23)
     (error

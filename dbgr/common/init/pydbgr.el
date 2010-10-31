@@ -1,3 +1,4 @@
+;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 ;;; pydbgr: Python 2.5 and beyond 
 
 (eval-when-compile (require 'cl))

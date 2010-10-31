@@ -1,3 +1,4 @@
+;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 ;;; Things related to loading and loading the dbgr package.
 (require 'load-relative)
 

@@ -1,3 +1,4 @@
+;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 ;;  `rdebug' Main interface to rdebug via Emacs
 (require 'load-relative)
 (require-relative-list '("../common/helper") "dbgr-")

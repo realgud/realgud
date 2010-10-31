@@ -1,3 +1,4 @@
+;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 ;;; Python (older) pydb debugger: pydb
 
 (eval-when-compile (require 'cl))

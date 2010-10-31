@@ -1,4 +1,5 @@
-;;  `dbgr-gdb' Main interface to pydbgr via Emacs
+;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;  `dbgr-gdb' Main interface to gdb via Emacs
 (require 'load-relative)
 (require-relative-list '("../common/helper") "dbgr-")
 (require-relative-list '("core" "track-mode") "dbgr-gdb-")

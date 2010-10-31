@@ -1,3 +1,4 @@
+;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 ;; reset state on quit or restart
 (require 'load-relative)
 (require-relative-list '("buffer" "fringe" "cmdbuf" "helper" "srcbuf" "bp") 

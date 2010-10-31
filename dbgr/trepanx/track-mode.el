@@ -1,3 +1,4 @@
+;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 ;;; Ruby "trepanx" Debugger tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))

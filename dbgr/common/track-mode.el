@@ -1,3 +1,4 @@
+;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 ;;  tracks shell output 
 
 (eval-when-compile (require 'cl))

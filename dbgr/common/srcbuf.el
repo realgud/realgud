@@ -1,3 +1,4 @@
+;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 ;;; source-code buffer code
 (eval-when-compile 
   (require 'cl)
