@@ -38,6 +38,7 @@ AC_CONFIG_FILES([Makefile \
 		 dbgr/rdebug/Makefile \
 		 dbgr/trepan/Makefile \
 		 dbgr/trepanx/Makefile \
+		 dbgr/zshdb/Makefile \
 		 test/Makefile \
 		 ])
 AC_OUTPUT
