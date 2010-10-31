@@ -1,6 +1,7 @@
 ;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
-(require-relative-list '("helper" "buffer") "dbgr-")
+(require-relative-list '("helper") "dbgr-")
+(require-relative-list '("buffer/helper") "dbgr-buffer-")
 
 (fn-p-to-fn?-alias 'one-window-p)
 (declare-function one-window?(bool))

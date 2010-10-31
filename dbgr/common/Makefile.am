@@ -1,4 +1,4 @@
-SUBDIRS = init
+SUBDIRS = buffer init
 MOSTLYCLEANFILES = *.elc
 
 lispdir = @lispdir_dbgr@/common

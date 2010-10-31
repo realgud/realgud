@@ -31,6 +31,7 @@ AM_CONDITIONAL(INSTALL_EMACS_LISP, test "x$lispdir_dbgr" != "x")
 AC_CONFIG_FILES([Makefile \
 		 dbgr/Makefile \
 		 dbgr/common/Makefile \
+		 dbgr/common/buffer/Makefile \
 		 dbgr/common/init/Makefile \
 		 dbgr/gdb/Makefile \
 		 dbgr/pydbgr/Makefile \

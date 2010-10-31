@@ -3,7 +3,7 @@
 
 (require 'load-relative)
 (require-relative-list
- '("fringe" "helper" "loc" "lochist" "regexp") "dbgr-")
+ '("../fringe" "../helper" "../loc" "../lochist" "../regexp") "dbgr-")
 
 (eval-when-compile 
   (byte-compile-disable-warning 'cl-functions)
@@ -172,4 +172,4 @@ command-process buffer has stored."
     (lexical-let* ((loc (dbgr-loc-hist-item (dbgr-cmdbuf-loc-hist cmd-buf))))
       (and loc (dbgr-loc-marker loc)))))
 
-(provide-me "dbgr-")
+(provide-me "dbgr-buffer-")

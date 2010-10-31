@@ -1,6 +1,7 @@
 ;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
-(require-relative-list '("fringe" "cmdbuf" "helper" "srcbuf") "dbgr-")
+(require-relative-list '("../fringe" "../helper") "dbgr-")
+(require-relative-list '("command" "source") "dbgr-buffer-")
 
 (defvar dbgr-cmdbuf-info)
 
@@ -92,4 +93,4 @@ we don't find anything."
     )
 )
 
-(provide-me "dbgr-")
+(provide-me "dbgr-buffer-")

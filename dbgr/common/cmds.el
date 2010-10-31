@@ -1,7 +1,7 @@
 ;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
-(require-relative-list
- '("send" "cmdbuf") "dbgr-")
+(require-relative-list  '("send") "dbgr-")
+(require-relative-list  '("buffer/command") "dbgr-buffer-")
 
 (declare-function dbgr-terminate &optional cmdbuf)
 

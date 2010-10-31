@@ -7,8 +7,8 @@
 
 (require 'comint)
 (require 'load-relative)
-(require-relative-list
- '("cmdbuf" "fringe" "helper" "lang" "reset" "srcbuf") "dbgr-")
+(require-relative-list '("fringe" "helper" "lang" "reset") "dbgr-")
+(require-relative-list '("buffer/command" "buffer/source") "dbgr-buffer-")
 
 (declare-function dbgr-short-key-mode &optional arg)
 

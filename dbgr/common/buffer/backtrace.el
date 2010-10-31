@@ -2,7 +2,9 @@
 ;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
 (require-relative-list
- '("send" "track" "cmdbuf") "dbgr-")
+ '("../send" "../track" "../key") "dbgr-")
+(require-relative-list
+ '("command") "dbgr-buffer-")
 
 ;: FIXME: not picked up from track. Why?
 (defvar dbgr-track-divert-string nil)
@@ -23,7 +25,7 @@
     (define-key map "7" 'dbgr-goto-frame-n)
     (define-key map "8" 'dbgr-goto-frame-n)
     (define-key map "9" 'dbgr-goto-frame-n)
-    (dbgr-populate-secondary-buffer-map map)
+    (dbgr-populate-common-keys map)
 
     ;; --------------------
     ;; The "Stack window" submenu.
@@ -37,7 +39,7 @@
     map)
   "Keymap to navigate dbgr stack frames.")
 
-(defun dbgr-bt-init ()
+(defun dbgr-bactrace-init ()
   (interactive)
   (let ((buffer (current-buffer))
   	(cmdbuf (dbgr-get-cmdbuf))
@@ -69,5 +71,4 @@
   )
 )
 
-
-
+(provide-me "dbgr-buffer-")

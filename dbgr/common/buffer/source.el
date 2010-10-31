@@ -7,7 +7,7 @@
   )
 
 (require 'load-relative)
-(require-relative-list '("helper" "key") "dbgr-")
+(require-relative-list '("../helper" "../key") "dbgr-")
 
 (defstruct dbgr-srcbuf-info
   "debugger object/structure specific to a (top-level) Ruby file
@@ -142,5 +142,5 @@ in it with those from CMDPROC-BUFFER"
 		 " "))
      (t nil))))
   
-(provide-me "dbgr-")
+(provide-me "dbgr-buffer-")
 

@@ -7,11 +7,14 @@
 
 (require 'load-relative)
 (require-relative-list
- '("buffer" "cmdbuf"   "file"   "fringe" 
-   "helper" "init"     "loc"    "lochist" 
-   "regexp" "shortkey" "srcbuf" "window"
+ '("file"           "fringe" 
+   "helper"         "init"     "loc"    "lochist" 
+   "regexp"         "shortkey" "window"
    "bp"
    ) "dbgr-")
+
+(require-relative-list
+ '("buffer/command" "buffer/helper" "buffer/source") "dbgr-buffer-")
 
 (defcustom dbgr-short-key-on-tracing? nil
 "If non-nil, set short-key mode for any source buffer that is traced into"

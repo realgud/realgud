@@ -5,9 +5,11 @@
 
 (require 'load-relative)
 (require-relative-list
- '("core" "helper" "track" "loc" "lochist" "file" 
-   "fringe" "cmdbuf" "window" "regexp" "menu"
-   "send" "shortkey") "dbgr-")
+ '("core"   "helper" "track" "loc" "lochist" "file" 
+   "fringe" "window" "regexp" "menu"
+   "send"   "shortkey") "dbgr-")
+
+(require-relative-list  '("buffer/command") "dbgr-buffer-")
 
 (defvar dbgr-track-mode-map
   (let ((map (make-sparse-keymap)))

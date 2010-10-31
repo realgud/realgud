@@ -1,7 +1,8 @@
 ;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 (require 'comint)
 (require 'load-relative)
-(require-relative-list '("buffer" "window") "dbgr-")
+(require-relative-list '("window") "dbgr-")
+(require-relative-list '("buffer/helper") "dbgr-buffer-")
 
 (defun dbgr-send-command-comint (process command-str)
   "Assume we are in a comint buffer. Insert COMMAND-STR and 

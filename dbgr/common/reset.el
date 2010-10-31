@@ -1,8 +1,9 @@
 ;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 ;; reset state on quit or restart
 (require 'load-relative)
-(require-relative-list '("buffer" "fringe" "cmdbuf" "helper" "srcbuf" "bp") 
-		       "dbgr-")
+(require-relative-list '("bp" "fringe" "helper") "dbgr-")
+(require-relative-list '("buffer/helper" "buffer/command" "buffer/source")
+		       "dbgr-buffer-")
 (defun dbgr-reset (&optional opt-buffer)
   "Reset state prior to quitting or restarting"
   (interactive)

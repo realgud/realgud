@@ -1,6 +1,7 @@
 ;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
 (require-relative-list '("custom" "key" "menu") "dbgr-")
+(require-relative-list '("buffer/helper") "dbgr-buffer-")
 
 (defvar dbgr-short-key-mode-map (make-sparse-keymap)
   "Keymap used in `dbgr-short-key-mode'.")
