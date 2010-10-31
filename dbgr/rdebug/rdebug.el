@@ -3,7 +3,7 @@
 (require 'load-relative)
 (require-relative-list '("../common/helper") "dbgr-")
 (require-relative-list '("../common/track") "dbgr-")
-(require-relative-list '("core" "track-mode") "rdebug-")
+(require-relative-list '("core" "track-mode") "dbgr-rdebug-")
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
 (defgroup rdebug nil

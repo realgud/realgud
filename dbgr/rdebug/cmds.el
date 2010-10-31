@@ -13,6 +13,6 @@
   ;;     "Set a breakpoint at the current line" t nil)
   )
 
-(provide-me "rdebug-")
+(provide-me "dbgr-rdebug-")
 
 

@@ -5,8 +5,7 @@
 (require 'load-relative)
 (require-relative-list '("../common/track-mode" "../common/cmds" 
 			 "../common/menu") "dbgr-")
-(require-relative-list '("../common/init/rdebug") "dbgr-init-")
-(require-relative-list '("core" "cmds") "rdebug-")
+(require-relative-list '("core" "cmds" "init") "dbgr-rdebug-")
 
 (dbgr-track-mode-vars "rdebug")
 (declare-function dbgr-track-mode(bool))
@@ -28,8 +27,4 @@
   (dbgr-track-mode-body "rdebug")
 )
 
-(provide-me "rdebug-")
-
-;;; Local variables:
-;;; eval:(put 'rbdbg-debug-enter 'lisp-indent-hook 1)
-;;; End:
+(provide-me "dbgr-rdebug-")

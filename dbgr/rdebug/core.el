@@ -4,6 +4,7 @@
 (require 'load-relative)
 (require-relative-list '("../common/track" "../common/core" "../common/lang")
 		       "dbgr-")
+(require-relative-list '("init") "dbgr-rdebug-")
 
 ;; FIXME: I think the following could be generalized and moved to 
 ;; dbgr-... probably via a macro.
@@ -132,13 +133,13 @@ NOTE: the above should have each item listed in quotes.
   "Display the location mentioned by the Ruby traceback line
 described by PT."
   (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "traceback" rdebug-pat-hash))
+  (dbgr-goto-line-for-pt-and-type pt "traceback" dbgr-rdebug-pat-hash))
 
 (defun rdebug-goto-dollarbang-traceback-line (pt)
   "Display the location mentioned by the Ruby $! traceback line
 described by PT."
   (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "dollar-bang" rdebug-pat-hash))
+  (dbgr-goto-line-for-pt-and-type pt "dollar-bang" dbgr-rdebug-pat-hash))
 
 (defun rdebug-reset ()
   "Rdebug cleanup - remove debugger's internal buffers (frame,
@@ -164,4 +165,4 @@ breakpoints, etc.)."
   (interactive)
   (customize-group 'rdebug))
 
-(provide-me "rdebug-")
+(provide-me "dbgr-rdebug-")

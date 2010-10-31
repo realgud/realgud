@@ -1,11 +1,11 @@
 (require 'test-unit)
-(load-file "../dbgr/common/init/rdebug.el")
+(load-file "../dbgr/rdebug/init.el")
 
 (test-unit-clear-contexts)
 
 
-(setq tb  (gethash "traceback" rdebug-pat-hash))
-(setq bps (gethash "brkpt-set" rdebug-pat-hash))
+(setq tb  (gethash "traceback" dbgr-rdebug-pat-hash))
+(setq bps (gethash "brkpt-set" dbgr-rdebug-pat-hash))
 
 (defun tb-loc-match(text) 
   (string-match (dbgr-loc-pat-regexp tb) text)
