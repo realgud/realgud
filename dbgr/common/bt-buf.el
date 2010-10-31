@@ -16,7 +16,13 @@
       (dbgr-cmdbuf-info-in-srcbuf?= dbgr-cmdbuf-info 
     				   (not (dbgr-cmdbuf? buffer)))
       (dbgr-cmdbuf-info-divert-output?= dbgr-cmdbuf-info 't)
-      (dbgr-send-command "backtrace")
+      (setq dbgr-track-divert-string nil)
+      (dbgr-command "backtrace" nil nil 't)
+      (while (and (eq 'run (process-status process))
+		    (null dbgr-track-divert-string))
+	  (sleep-for 0.001)
+	  )
+      ;; (message "+++4 %s" dbgr-track-divert-string)
       (let ((bt-buffer (get-buffer-create
 			(format "*%s backtrace*" (buffer-name))))
 	    (divert-string dbgr-track-divert-string)

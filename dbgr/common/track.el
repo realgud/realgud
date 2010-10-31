@@ -326,7 +326,7 @@ loc-regexp pattern"
   "Return a cons node of the part before the prompt-regexp and the part 
    after the prompt-regexp-prompt. If not found return nil."
   (with-current-buffer cmdbuf
-    ;; (message "+++3 %s %s" text (buffer-name))
+    ;; (message "+++3 %s, buf: %s" text (buffer-name))
     (if (dbgr-cmdbuf?)
 	(let* ((prompt-pat (dbgr-cmdbuf-pat "prompt"))
 	       (prompt-regexp (dbgr-loc-pat-regexp prompt-pat))
