@@ -16,7 +16,9 @@ check: $(CHECK_FILES)
 # FIGURE out how to DRY the run rules.
 test-bp.run:
 	(cd $(top_srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )
-test-cmdbuf.run:
+test-buf-bt.run:
+	(cd $(top_srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )
+test-buf-cmd.run:
 	(cd $(top_srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )
 test-core.run:
 	(cd $(top_srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )

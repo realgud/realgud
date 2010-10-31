@@ -4,8 +4,8 @@
 
 (test-unit-clear-contexts)
 
-(context "dbgr-cmdbuf"
-	 (tag dbgr-cmdbuf)
+(context "dbgr-buf-cmd"
+	 (tag dbgr-buf-cmd)
 	 (specify "dbgr-cmdbuf? before init"
 		  (assert-nil (dbgr-cmdbuf? (current-buffer))))
 
@@ -38,5 +38,5 @@
 		   ))
 	 )
 
-(test-unit "dbgr-cmdbuf")
+(test-unit "dbgr-buf-cmd")
 
