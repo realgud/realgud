@@ -32,6 +32,8 @@
                        ;; and line-group below will removed and stored here.
   srcbuf-list          ;; list of source buffers we have stopped at
   bp-list              ;; list of breakpoints
+  divert-output?       ;; Output is part of a conversation between front-end
+                       ;; debugger. 
 
   ;; FIXME: REMOVE THIS and use regexp-hash
   loc-regexp   ;; Location regular expression string
@@ -45,17 +47,17 @@
 
 (defalias 'dbgr-cmdbuf-info? 'dbgr-cmdbuf-info-p)
 
-(defun dbgr-cmdbuf-info-set? ()
-  "Return true if dbgr-cmdbuf-info is set."
-  (and (boundp 'dbgr-cmdbuf-info) 
-       dbgr-cmdbuf-info
-       (dbgr-cmdbuf-info? dbgr-cmdbuf-info)))
-
 (defun dbgr-cmdbuf? ( &optional buffer)
   "Return true if BUFFER is a debugger command buffer."
   (with-current-buffer-safe 
    (or buffer (current-buffer))
    (dbgr-cmdbuf-info-set?)))
+
+(defun dbgr-cmdbuf-info-set? ()
+  "Return true if dbgr-cmdbuf-info is set."
+  (and (boundp 'dbgr-cmdbuf-info) 
+       dbgr-cmdbuf-info
+       (dbgr-cmdbuf-info? dbgr-cmdbuf-info)))
 
 (defun dbgr-cmdbuf-add-srcbuf(srcbuf &optional cmdbuf)
   "Add SRCBUF to srcbuf-list field of INFO unless it is already included."
@@ -71,8 +73,18 @@
 
 ;; FIXME: DRY = access via a macro. See also analogous
 ;; code in dbgr-srcbuf
+(defun dbgr-cmdbuf-info-bp-list=(info value)
+  (if (dbgr-cmdbuf-info? info)
+      (setf (dbgr-cmdbuf-info-bp-list info) value)))
+
 (defun dbgr-cmdbuf-info-cmd-args=(info value)
   (setf (dbgr-cmdbuf-info-cmd-args info) value))
+
+(defun dbgr-cmdbuf-info-divert-output?=(info value)
+  (setf (dbgr-cmdbuf-info-divert-output? info) value))
+
+(defun dbgr-cmdbuf-info-frame-switch?=(info value)
+  (setf (dbgr-cmdbuf-info-frame-switch? info) value))
 
 (defun dbgr-cmdbuf-info-in-srcbuf?=(info value)
   (setf (dbgr-cmdbuf-info-in-srcbuf? info) value))
@@ -80,19 +92,12 @@
 (defun dbgr-cmdbuf-info-no-record?=(info value)
   (setf (dbgr-cmdbuf-info-no-record? info) value))
 
-(defun dbgr-cmdbuf-info-src-shortkey?=(info value)
-  (setf (dbgr-cmdbuf-info-src-shortkey? info) value))
-
-(defun dbgr-cmdbuf-info-frame-switch?=(info value)
-  (setf (dbgr-cmdbuf-info-frame-switch? info) value))
-
 (defun dbgr-cmdbuf-info-prior-prompt-regexp=(info value)
   (if (dbgr-cmdbuf-info? info)
       (setf (dbgr-cmdbuf-info-prior-prompt-regexp info) value)))
 
-(defun dbgr-cmdbuf-info-bp-list=(info value)
-  (if (dbgr-cmdbuf-info? info)
-      (setf (dbgr-cmdbuf-info-bp-list info) value)))
+(defun dbgr-cmdbuf-info-src-shortkey?=(info value)
+  (setf (dbgr-cmdbuf-info-src-shortkey? info) value))
 
 (defun dbgr-cmdbuf-command-string(cmd-buffer)
   "Get the command string invocation for this command buffer"

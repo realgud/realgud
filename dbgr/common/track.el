@@ -23,10 +23,7 @@
 (declare-function dbgr-loc?(loc))
 
 (make-variable-buffer-local 'dbgr-track-mode)
-(defvar dbgr-track-divert-output?)
-(make-variable-buffer-local 'dbgr-track-divert-output?)
 (defvar dbgr-track-divert-string)
-(make-variable-buffer-local 'dbgr-track-divert-string)
 
 (defun dbgr-track-comint-output-filter-hook(text)
   "An output-filter hook custom for comint shells.  Find
@@ -49,7 +46,7 @@ marks set in buffer-local variables to extract text"
 	     (last-output-start (max comint-last-input-end 
 				     (- last-output-end dbgr-track-char-range))))
 	(dbgr-track-from-region last-output-start 
-				last-output-end cmd-mark)))
+				last-output-end cmd-mark cmd-buff)))
   )
 
 (defun dbgr-track-eshell-output-filter-hook()
@@ -66,7 +63,7 @@ marks set in buffer-local variables to extract text"
 	(dbgr-track-loc-action loc cmd-buff)))
   )
 
-(defun dbgr-track-from-region(from to &optional cmd-mark)
+(defun dbgr-track-from-region(from to &optional cmd-mark opt-cmdbuf)
   "Find and position a buffer at the location found in the marked region.
 
 You might want to use this function interactively after marking a
@@ -83,22 +80,24 @@ evaluating (dbgr-cmdbuf-info-loc-regexp dbgr-cmdbuf-info)"
   (let* ((text (buffer-substring-no-properties from to))
 	 (loc (dbgr-track-loc text cmd-mark))
 	 (text-sans-loc)
-	 (before-after-pair)
 	 (bp-loc)
-	 (cmdbuf (current-buffer))
+	 (cmdbuf (or opt-cmdbuf (current-buffer)))
 	 )
     (if (dbgr-cmdbuf? cmdbuf)
-	(with-current-buffer cmdbuf
-	  (if dbgr-track-divert-output? (dbgr-track-divert-prompt text))
-	  (setq text-sans-loc (or (dbgr-track-loc-remaining text) text))
-	  (setq bp-loc (dbgr-track-bp-loc text-sans-loc cmd-mark cmdbuf))
-	  (if bp-loc 
-	      (let ((src-buffer (dbgr-loc-goto bp-loc)))
-		(dbgr-cmdbuf-add-srcbuf src-buffer cmdbuf)
-		(with-current-buffer src-buffer
-		  (dbgr-bp-add-info bp-loc)
-		  )))
-	  (if loc (dbgr-track-loc-action loc cmdbuf)))
+	(if (not (equal "" text))
+	    (with-current-buffer cmdbuf
+	      (if (dbgr-sget 'cmdbuf-info 'divert-output?)
+		  (dbgr-track-divert-prompt text cmdbuf))
+	      (setq text-sans-loc (or (dbgr-track-loc-remaining text) text))
+	      (setq bp-loc (dbgr-track-bp-loc text-sans-loc cmd-mark cmdbuf))
+	      (if bp-loc 
+		  (let ((src-buffer (dbgr-loc-goto bp-loc)))
+		    (dbgr-cmdbuf-add-srcbuf src-buffer cmdbuf)
+		    (with-current-buffer src-buffer
+		      (dbgr-bp-add-info bp-loc)
+		      )))
+	      (if loc (dbgr-track-loc-action loc cmdbuf)))
+	  )
       ;; else
       (error "Buffer %s is not a debugger command buffer" cmdbuf))
     )
@@ -323,24 +322,27 @@ loc-regexp pattern"
     nil)
   )
   
-(defun dbgr-track-divert-prompt(text)
+(defun dbgr-track-divert-prompt(text cmdbuf)
   "Return a cons node of the part before the prompt-regexp and the part 
    after the prompt-regexp-prompt. If not found return nil."
-  (if (dbgr-cmdbuf?)
-      (let* ((prompt-pat (dbgr-cmdbuf-pat "prompt"))
-  	     (prompt-regexp (dbgr-loc-pat-regexp prompt-pat))
-  	     )
-  	(if prompt-regexp
-  	    (if (string-match prompt-regexp text)
-		(progn 
-		  (setq dbgr-track-divert-string 
-			(substring text 0 (match-beginning 0)))
-		  ;; We've got desired output, so reset divert output.
-		  (setq dbgr-track-divert-output? nil)
-		  ;; FIXME: DELETE output. Or do elsewhere?
-		  )
+  (with-current-buffer cmdbuf
+    ;; (message "+++3 %s %s" text (buffer-name))
+    (if (dbgr-cmdbuf?)
+	(let* ((prompt-pat (dbgr-cmdbuf-pat "prompt"))
+	       (prompt-regexp (dbgr-loc-pat-regexp prompt-pat))
+	       )
+	  (if prompt-regexp
+	      (if (string-match prompt-regexp text)
+		  (progn 
+		    (setq dbgr-track-divert-string 
+			  (substring text 0 (match-beginning 0)))
+		    ;; We've got desired output, so reset divert output.
+		    (dbgr-cmdbuf-info-divert-output?= dbgr-cmdbuf-info nil)
+		    ;; FIXME: DELETE output. Or do elsewhere?
+		    )
 	      ))
-	)
+	  )
+      )
     )
   )
   

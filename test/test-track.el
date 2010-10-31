@@ -40,14 +40,14 @@
 		  (assert-equal bp-num (dbgr-loc-bp-num loc)))
 
 	 (specify "dbgr-track-divert-prompt"
-		  (setq dbgr-track-divert-output? 't)
+		  (dbgr-cmdbuf-info-divert-output?= dbgr-cmdbuf-info 't)
 		  (setq dbgr-track-divert-string "")
 		  (setq text 
 			"--> #0 TOP Object#<top /usr/local/bin/irb> in file /usr/local/bin/irb at line 9\n(trepan): ")
-		  (dbgr-track-divert-prompt text)
+		  (dbgr-track-divert-prompt text (current-buffer))
 		  (assert-equal "--> #0 TOP Object#<top /usr/local/bin/irb> in file /usr/local/bin/irb at line 9\n"
 				dbgr-track-divert-string)
-		  (assert-equal nil dbgr-track-divert-output?)
+		  (assert-equal nil (dbgr-sget 'cmdbuf-info 'divert-output?))
 		  )
 
 

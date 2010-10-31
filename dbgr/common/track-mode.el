@@ -42,10 +42,7 @@
   )
 
 ;; FIXME: this should have been picked up by require'ing track.
-(defvar dbgr-track-divert-output?)
-(make-variable-buffer-local 'dbgr-track-divert-output?)
 (defvar dbgr-track-divert-string)
-(make-variable-buffer-local 'dbgr-track-divert-string)
 
 (defun dbgr-track-mode-setup (mode-on?)
   "Called when entering or leaving `dbgr-track-mode'. Variable
@@ -57,7 +54,6 @@ of this mode."
 	  (setq dbgr-track-mode nil)
 	  (error "Can't find a process for buffer %s" (current-buffer)))
 
-	(setq dbgr-track-divert-output? nil)
 	(setq dbgr-track-divert-string "")
 
 	;; FIXME: save and chain process-sentinel via
@@ -70,6 +66,7 @@ of this mode."
 	    (progn
 	      (dbgr-cmdbuf-info-prior-prompt-regexp= 
 	       dbgr-cmdbuf-info comint-prompt-regexp)
+	      (dbgr-cmdbuf-info-divert-output?=  dbgr-cmdbuf-info nil)
 	      (let* ((regexp-hash
 		      (and (dbgr-cmdbuf-info? dbgr-cmdbuf-info)
 			   (dbgr-sget 'cmdbuf-info 'regexp-hash)))
@@ -105,8 +102,8 @@ of this mode."
      (defvar ,(intern (concat name "-track-mode")) nil
 	,(format "Non-nil if using %s-track-mode as a minor mode of some other mode.
 Use the command `%s-track-mode' to toggle or set this variable." name name))
-     (defvar  ,(intern (concat name "-minor-mode-map")) (make-sparse-keymap)
-       ,(format "Keymap used in %s-track-minor-mode'." name))
+     (defvar ,(intern (concat name "-track-minor-mode-map")) (make-sparse-keymap)
+       ,(format "Keymap used in `%s-track-minor-mode'." name))
     ))
 
 ;; FIXME: The below could be a macro? I have a hard time getting

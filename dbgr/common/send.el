@@ -2,10 +2,6 @@
 (require 'load-relative)
 (require-relative-list '("buffer" "window") "dbgr-")
 
-;; FIXME DRY with track.el
-(defvar dbgr-track-divert-output?)
-(make-variable-buffer-local 'dbgr-track-divert-output?)
-
 (defun dbgr-send-command-comint (process command-str)
   "Assume we are in a comint buffer. Insert COMMAND-STR and 
 send that input onto the process.  Parameter PROCESS not used."
