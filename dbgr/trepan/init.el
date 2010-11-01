@@ -60,18 +60,21 @@ dbgr-loc-pat struct")
        :file-group 1
        :line-group 2))
 
-
 (setf (gethash "font-lock-keywords" dbgr-trepan-pat-hash)
       '(
 	;; The frame number and first type name, if present.
-	("^\\(-->\\)? *#\\([0-9]+\\) \\([A-Z]+\\) *\\(\\([a-zA-Z_][a-zA-Z0-9_]*\\)\\)[#]\\([a-zA-Z_][a-zA-Z0-9_]*\\)?"
+	("^\\(-->\\)? *#\\([0-9]+\\) \\([A-Z]+\\) *\\([a-zA-Z_][a-zA-Z0-9_]*\\)[#]\\([a-zA-Z_][a-zA-Z_[0-9]]*\\)?"
 	 (2 font-lock-constant-face)
 	 ;; (2 font-lock-warning-face)  ;; for debug
 	 (3 font-lock-keyword-face)         ; e.g. METHOD, TOP
 	 (4 font-lock-type-face)
-	 (5 font-lock-function-name-face nil t))  ; t means optional
+	 (5 font-lock-function-name-face nil t))   ; t means optional
 	;; Instruction sequence
 	("<\\(.+\\)>"
+	 (1 font-lock-variable-name-face))
+	;; "::Type", which occurs in class name of function and in parameter list.
+	;; Parameter sequence
+	("(\\(.+\\))"
 	 (1 font-lock-variable-name-face))
 	;; "::Type", which occurs in class name of function and in parameter list.
 	("::\\([a-zA-Z_][a-zA-Z0-9_]*\\)"

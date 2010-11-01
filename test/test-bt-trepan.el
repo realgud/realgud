@@ -39,13 +39,15 @@
 		    (dolist (pair 
 			     '(
 			       ("#" .     font-lock-constant-face )
+			       ("METHO" . font-lock-keyword-face )
 			       ("Objec" . font-lock-type-face )
-			       ("gc"    . font-lock-function-name-face )
+			       ("#"     . font-lock-function-name-face )
 			       ("("     . font-lock-variable-name-face )
 			       ("/test" . dbgr-file-name)
 			       ("line " . dbgr-line-number)
 			       ("#"     . font-lock-constant-face)
 			       ("Objec" . font-lock-type-face )
+			       ("<top"  . font-lock-variable-name-face)
 			       ("/test" . dbgr-file-name)
 			       ("line " . dbgr-line-number)
 			       ))
