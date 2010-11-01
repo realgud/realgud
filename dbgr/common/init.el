@@ -1,6 +1,24 @@
 ;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
 
+(defface dbgr-line-number
+  '((t :inherit font-lock-variable-name-face))
+  "Face for displaying line numbers in."
+  :group 'compilation
+  :version "23.1")
+
+(defvar dbgr-line-number-face 'dbgr-line-number
+  "Face name to use for line numbers.")
+
+(defface dbgr-file-name
+  '((t :inherit font-lock-preprocessor-face))
+  "Face for displaying file names."
+  :group 'compilation
+  :version "23.1")
+
+(defvar dbgr-file-name-face 'dbgr-file-name
+  "Face name to use for file names.")
+
 (defun load-debuggers()
   (let*
       ((dir (file-name-directory (__FILE__)))

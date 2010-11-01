@@ -128,20 +128,27 @@
   "Initialize CMD-BUF for a working with a debugger.
 DEBUGGER-NAME is the name of the debugger.
 as a main program."
-  (with-current-buffer-safe
-   cmd-buf
-   (let ((dbgr-loc-pat (gethash "loc" regexp-hash)))
-     (setq dbgr-cmdbuf-info
-	   (make-dbgr-cmdbuf-info
-	    :debugger-name debugger-name
-	    :loc-regexp (dbgr-sget 'loc-pat 'regexp)
-	    :file-group (dbgr-sget 'loc-pat 'file-group)
-	    :line-group (dbgr-sget 'loc-pat 'line-group)
-	    :loc-hist (make-dbgr-loc-hist)
-	    :regexp-hash regexp-hash)))
-
-   (put 'dbgr-cmdbuf-info 'variable-documentation 
-	"Debugger object for a process buffer.")))
+  (with-current-buffer-safe cmd-buf
+    (let ((dbgr-loc-pat (gethash "loc" regexp-hash))
+	  (font-lock-keywords)
+	  )
+      (setq dbgr-cmdbuf-info
+	    (make-dbgr-cmdbuf-info
+	     :debugger-name debugger-name
+	     :loc-regexp (dbgr-sget 'loc-pat 'regexp)
+	     :file-group (dbgr-sget 'loc-pat 'file-group)
+	     :line-group (dbgr-sget 'loc-pat 'line-group)
+	     :loc-hist (make-dbgr-loc-hist)
+	     :regexp-hash regexp-hash))
+      (setq font-lock-keywords (dbgr-cmdbuf-pat "font-lock-keywords"))
+      (if font-lock-keywords
+	  (set (make-local-variable 'font-lock-defaults)
+	       (list font-lock-keywords)))
+      )
+    
+    (put 'dbgr-cmdbuf-info 'variable-documentation 
+	 "Debugger object for a process buffer."))
+  )
 
 (defun dbgr-cmdbuf-debugger-name (&optional cmd-buf)
   "Return the debugger name recorded in the debugger command-process buffer."

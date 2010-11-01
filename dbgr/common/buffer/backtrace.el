@@ -6,6 +6,15 @@
 (require-relative-list
  '("command") "dbgr-buffer-")
 
+(defstruct dbgr-backtrace-info
+  "debugger object/structure specific to a (top-level) Ruby file
+to be debugged."
+  cmdproc        ;; buffer of the associated debugger process
+  cur-pos        ;; If not nil, frame we are at
+)
+(make-variable-buffer-local 'dbgr-backtrace-info)
+
+
 ;: FIXME: not picked up from track. Why?
 (defvar dbgr-track-divert-string nil)
 
@@ -75,12 +84,15 @@
 	    (divert-string dbgr-track-divert-string)
 	    )
 	(with-current-buffer bt-buffer
+	  (set (make-local-variable 'dbgr-backtrace-info)
+	       (make-dbgr-backtrace-info
+		:cmdproc cmdbuf))
 	  (setq buffer-read-only nil)
 	  (delete-region (point-min) (point-max))
 	  (if divert-string 
 	      (progn
 		(insert divert-string)
-		(dbgr-backtrace-mode)
+		(dbgr-backtrace-mode cmdbuf)
 		)
 	    )
 	  )
@@ -89,7 +101,7 @@
   )
 )
 
-(defun dbgr-backtrace-mode ()
+(defun dbgr-backtrace-mode (&optional cmdbuf)
   "Major mode for displaying the stack frames.
 \\{dbgr-frames-mode-map}"
   (interactive)
@@ -102,10 +114,16 @@
   (use-local-map dbgr-backtrace-mode-map)
 
   ;; FIXME: make buffer specific
-  ;;(set (make-local-variable 'font-lock-defaults)
-  ;;     '(dbgr-frames-font-lock-keywords))
+  (if cmdbuf
+      (let* ((font-lock-keywords 
+	      (with-current-buffer cmdbuf
+		(dbgr-cmdbuf-pat "font-lock-keywords"))))
+	(if font-lock-keywords
+	    (set (make-local-variable 'font-lock-defaults)
+		 (list font-lock-keywords)))
+	))
   ;; (run-mode-hooks 'dbgr-backtrace-mode-hook)
-)
+  )
 
 (defun dbgr-goto-frame-n-internal (keys)
   (if (and (stringp keys)
