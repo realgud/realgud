@@ -63,21 +63,25 @@ dbgr-loc-pat struct")
 
 (setf (gethash "font-lock-keywords" dbgr-trepan-pat-hash)
       '(
-	;; Parameters and first type entry.
-	("\\<\\([a-zA-Z_][a-zA-Z0-9_]*\\)#\\([a-zA-Z_][a-zA-Z0-9_]*\\)\\>"
-	 (1 font-lock-variable-name-face)
-	 (2 font-lock-type-face))
+	;; The frame number and first type name, if present.
+	("^\\(-->\\)? *#\\([0-9]+\\) \\([A-Z]+\\) *\\(\\([a-zA-Z_][a-zA-Z0-9_]*\\)\\)[#]\\([a-zA-Z_][a-zA-Z0-9_]*\\)?"
+	 (2 font-lock-constant-face)
+	 ;; (2 font-lock-warning-face)  ;; for debug
+	 (3 font-lock-keyword-face)         ; e.g. METHOD, TOP
+	 (4 font-lock-type-face)
+	 (5 font-lock-function-name-face nil t))  ; t means optional
+	;; Instruction sequence
+	("<\\(.+\\)>"
+	 (1 font-lock-variable-name-face))
 	;; "::Type", which occurs in class name of function and in parameter list.
 	("::\\([a-zA-Z_][a-zA-Z0-9_]*\\)"
 	 (1 font-lock-type-face))
-	;; The frame number and first type name, if present.
-	("^\\(-->\\)? *#\\([0-9]+\\) *\\(\\([a-zA-Z_][a-zA-Z0-9_]*\\)[.:]\\)?"
-	 (2 font-lock-constant-face)
-	 (4 font-lock-type-face nil t))     ; t means optional.
-	;; File name and line number.
-	("at line \\(.*\\):\\([0-9]+\\)$"
-	 (1 dbgr-file-name-face)
-	 (2 dbgr-line-number-face))
+	;; File name.
+	("[ \t]+in file \\([^ ]+*\\)"
+	 (1 dbgr-file-name-face))
+	;; Line number.
+	("[ \t]+at line \\([0-9]+\\)$"
+	 (1 dbgr-line-number-face))
 	;; Function name.
 	("\\<\\([a-zA-Z_][a-zA-Z0-9_]*\\)\\.\\([a-zA-Z_][a-zA-Z0-9_]*\\)"
 	 (1 font-lock-type-face)
