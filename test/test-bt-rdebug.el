@@ -38,14 +38,14 @@
 		    (goto-char (point-min))
 		    (dolist (pair 
 			     '(
-			       ("#" .     font-lock-constant-face )
-			       ("Objec" . font-lock-type-face )
+			       ("#" .     dbgr-backtrace-number )
+			       ("Objec" . font-lock-constant-face )
 			       ("gc"    . font-lock-function-name-face )
 			       ("("     . font-lock-variable-name-face )
-			       ("Fixnu" . font-lock-type-face )
+			       ("Fixnu" . font-lock-constant-face )
 			       ("/test" . dbgr-file-name)
 			       (":"     . dbgr-line-number)
-			       ("#"     . font-lock-constant-face)
+			       ("#"     . dbgr-backtrace-number)
 			       ("/test" . dbgr-file-name)
 			       (":"     . dbgr-line-number)
 			       ))

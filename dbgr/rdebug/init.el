@@ -55,14 +55,14 @@ dbgr-loc-pat struct")
 	;; Parameters and first type entry.
 	("\\<\\([a-zA-Z_][a-zA-Z0-9_]*\\)#\\([a-zA-Z_][a-zA-Z0-9_]*\\)\\>"
 	 (1 font-lock-variable-name-face)
-	 (2 font-lock-type-face))
+	 (2 font-lock-constant-face))
 	;; "::Type", which occurs in class name of function and in parameter list.
 	("::\\([a-zA-Z_][a-zA-Z0-9_]*\\)"
 	 (1 font-lock-type-face))
 	;; The frame number and first type name, if present.
 	("^\\(-->\\)? *#\\([0-9]+\\) *\\(\\([a-zA-Z_][a-zA-Z0-9_]*\\)[.:]\\)?"
-	 (2 font-lock-constant-face)
-	 (4 font-lock-type-face nil t))     ; t means optional.
+	 (2 dbgr-backtrace-number-face)
+	 (4 font-lock-constant-face nil t))     ; t means optional.
 	;; File name and line number.
 	("at line \\(.*\\):\\([0-9]+\\)$"
 	 (1 dbgr-file-name-face)

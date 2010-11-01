@@ -56,6 +56,36 @@ The values of a hash entry is a dbgr-loc-pat struct")
        :regexp "^Deleted breakpoint \\([0-9]+\\)\n"
        :bp-num 1))
 
+(setf (gethash "font-lock-keywords" dbgr-pydbgr-pat-hash)
+      '(
+	;; Parameters and first type entry.
+	("\\<\\([a-zA-Z_][a-zA-Z0-9_]*\\)#\\([a-zA-Z_][a-zA-Z0-9_]*\\)\\>"
+	 (1 font-lock-variable-name-face)
+	 (2 font-lock-type-face))
+	;; "::Type", which occurs in class name of function and in parameter list.
+	("::\\([a-zA-Z_][a-zA-Z0-9_]*\\)"
+	 (1 font-lock-type-face))
+	;; The frame number and first type name, if present.
+	("^\\(->\\|##\\)\\([0-9]+\\) \\(<module>\\)? *\\(\\([a-zA-Z_][a-zA-Z0-9_]*\\)[.:]\\)?"
+	 (2 font-lock-constant-face)
+	 (4 font-lock-function-name-face nil t))     ; t means optional.
+	;; Parameter sequence
+	("(\\(.+\\))"
+	 (1 font-lock-variable-name-face))
+	;; File name.
+	("[ \t]+file '\\([^ ]+*\\)'"
+	 (1 dbgr-file-name-face))
+	;; Line number.
+	("[ \t]+at line \\([0-9]+\\)$"
+	 (1 dbgr-line-number-face))
+	;; Function name.
+	("\\<\\([a-zA-Z_][a-zA-Z0-9_]*\\)\\.\\([a-zA-Z_][a-zA-Z0-9_]*\\)"
+	 (1 font-lock-type-face)
+	 (2 font-lock-function-name-face))
+	;; (pydbgr-frames-match-current-line
+	;;  (0 pydbgr-frames-current-frame-face append))
+	))
+
 (setf (gethash "pydbgr" dbgr-pat-hash) dbgr-pydbgr-pat-hash)
 
 (provide-me "dbgr-pydbgr-")
