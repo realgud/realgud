@@ -12,7 +12,10 @@ to be debugged."
   cmdproc        ;; buffer of the associated debugger process
   cur-pos        ;; If not nil, frame we are at
 )
+
+(defvar dbgr-backtrace-info)
 (make-variable-buffer-local 'dbgr-backtrace-info)
+
 
 
 ;: FIXME: not picked up from track. Why?
