@@ -4,7 +4,8 @@
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
-(require-relative-list '("../common/regexp" "../common/loc") "dbgr-")
+(require-relative-list '("../common/regexp" "../common/loc" "../common/init")
+		       "dbgr-")
 
 (defvar dbgr-pat-hash)
 (declare-function make-dbgr-loc-pat (dbgr-loc))
@@ -58,26 +59,26 @@ The values of a hash entry is a dbgr-loc-pat struct")
 
 (setf (gethash "font-lock-keywords" dbgr-pydbgr-pat-hash)
       '(
-	;; Parameters and first type entry.
-	("\\<\\([a-zA-Z_][a-zA-Z0-9_]*\\)#\\([a-zA-Z_][a-zA-Z0-9_]*\\)\\>"
-	 (1 font-lock-variable-name-face)
-	 (2 font-lock-type-face))
-	;; "::Type", which occurs in class name of function and in parameter list.
-	("::\\([a-zA-Z_][a-zA-Z0-9_]*\\)"
-	 (1 font-lock-type-face))
 	;; The frame number and first type name, if present.
-	("^\\(->\\|##\\)\\([0-9]+\\) \\(<module>\\)? *\\(\\([a-zA-Z_][a-zA-Z0-9_]*\\)[.:]\\)?"
-	 (2 font-lock-constant-face)
+	("^\\(->\\|##\\)\\([0-9]+\\) \\(<module>\\)? *\\([a-zA-Z_][a-zA-Z0-9_]*\\)(\\(.+\\))?"
+	 (2 dbgr-backtrace-number-face)
 	 (4 font-lock-function-name-face nil t))     ; t means optional.
-	;; Parameter sequence
+
+	;; Parameter sequence, E.g. gcd(a=3, b=5)
+	;;                             ^^^^^^^^^
 	("(\\(.+\\))"
 	 (1 font-lock-variable-name-face))
-	;; File name.
+
+	;; File name. E.g  file '/test/gcd.py'
+	;;                 ------^^^^^^^^^^^^-
 	("[ \t]+file '\\([^ ]+*\\)'"
 	 (1 dbgr-file-name-face))
-	;; Line number.
+
+	;; Line number. E.g. at line 28
+        ;;                  ---------^^
 	("[ \t]+at line \\([0-9]+\\)$"
 	 (1 dbgr-line-number-face))
+
 	;; Function name.
 	("\\<\\([a-zA-Z_][a-zA-Z0-9_]*\\)\\.\\([a-zA-Z_][a-zA-Z0-9_]*\\)"
 	 (1 font-lock-type-face)

@@ -16,6 +16,8 @@ check: $(CHECK_FILES)
 # FIGURE out how to DRY the run rules.
 test-bp.run:
 	(cd $(top_srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )
+test-bt-pydbgr.run:
+	(cd $(top_srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )
 test-bt-rdebug.run:
 	(cd $(top_srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )
 test-bt-trepan.run:

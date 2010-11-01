@@ -2,7 +2,8 @@
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
-(require-relative-list '("../common/regexp" "../common/loc") "dbgr-")
+(require-relative-list '("../common/regexp" "../common/loc" "../common/init") 
+		       "dbgr-")
 
 (defvar dbgr-pat-hash)
 (declare-function make-dbgr-loc-pat (dbgr-loc))

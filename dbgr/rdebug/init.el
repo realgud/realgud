@@ -16,6 +16,7 @@ dbgr-loc-pat struct")
 
 ;; Regular expression that describes a rdebug location generally shown
 ;; before a command prompt.
+;; E.g. 
 (setf (gethash "loc" dbgr-rdebug-pat-hash)
       (make-dbgr-loc-pat
        :regexp "\\(?:source \\)?\\(\\(?:[a-zA-Z]:\\)?\\(?:.+\\)\\):\\([0-9]+\\).*\\(?:\n\\|$\\)"
@@ -36,6 +37,8 @@ dbgr-loc-pat struct")
        :line-group 2))
 
 ;;  Regular expression that describes a rdebug "breakpoint set" line
+;;  E.g. Breakpoint 1 file /test/gcd.rb, line 6
+;;       -----------^------^^^^^^^^^^^^-------^           
 (setf (gethash "brkpt-set" dbgr-rdebug-pat-hash)
       (make-dbgr-loc-pat
        :regexp "^Breakpoint \\([0-9]+\\) file \\(.+\\), line \\([0-9]+\\)\n"
@@ -52,21 +55,30 @@ dbgr-loc-pat struct")
 
 (setf (gethash "font-lock-keywords" dbgr-rdebug-pat-hash)
       '(
-	;; Parameters and first type entry.
+	;; Parameters and first type entry. E.g Object.gcd(a#Fixnum, b#Fixnum) 
+	;;                                                 ^-^^^^^^  ^-^^^^^^
 	("\\<\\([a-zA-Z_][a-zA-Z0-9_]*\\)#\\([a-zA-Z_][a-zA-Z0-9_]*\\)\\>"
 	 (1 font-lock-variable-name-face)
 	 (2 font-lock-constant-face))
-	;; "::Type", which occurs in class name of function and in parameter list.
+
+	;; "::Type", which occurs in class name of function and in
+	;; parameter list.
 	("::\\([a-zA-Z_][a-zA-Z0-9_]*\\)"
 	 (1 font-lock-type-face))
+
 	;; The frame number and first type name, if present.
+	;; E.g. --> #0 Object.gcd(a#Fixnum, b#Fixnum)
+        ;;      -----^-^^^^^^.^^^
 	("^\\(-->\\)? *#\\([0-9]+\\) *\\(\\([a-zA-Z_][a-zA-Z0-9_]*\\)[.:]\\)?"
 	 (2 dbgr-backtrace-number-face)
 	 (4 font-lock-constant-face nil t))     ; t means optional.
-	;; File name and line number.
+
+	;; File name and line number. E.g. at line /test/gcd.rb:6
+        ;;                                 -------^^^^^^^^^^^^^-^
 	("at line \\(.*\\):\\([0-9]+\\)$"
 	 (1 dbgr-file-name-face)
 	 (2 dbgr-line-number-face))
+
 	;; Function name.
 	("\\<\\([a-zA-Z_][a-zA-Z0-9_]*\\)\\.\\([a-zA-Z_][a-zA-Z0-9_]*\\)"
 	 (1 font-lock-type-face)
