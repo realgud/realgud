@@ -9,7 +9,7 @@
 
 (defvar dbgr-trepanx-pat-hash (make-hash-table :test 'equal)
   "Hash key is the what kind of pattern we want to match:
-traceback, prompt, etc.  The values of a hash entry is a
+backtrace, prompt, etc.  The values of a hash entry is a
 dbgr-loc-pat struct")
 
 ;; Regular expression that describes a trepanx location generally shown

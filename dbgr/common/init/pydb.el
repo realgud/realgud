@@ -10,7 +10,7 @@
 (declare-function make-dbgr-loc-pat (dbgr-loc))
 
 (defvar pydb-pat-hash (make-hash-table :test 'equal)
-  "Hash key is the what kind of pattern we want to match: traceback, prompt, etc. 
+  "Hash key is the what kind of pattern we want to match: backtrace, prompt, etc. 
 The values of a hash entry is a dbgr-loc-pat struct")
 
 (declare-function make-dbgr-loc "dbgr-loc" (a b c d e f))
@@ -22,7 +22,7 @@ The values of a hash entry is a dbgr-loc-pat struct")
 ;;   (/usr/bin/zonetab2pot.py:15): <module>
 ;; or MS Windows:
 ;;   (c:\\mydirectory\\gcd.py:10): <module>
-;;  and in tracebacks like this:
+;;  and in backtraces like this:
 ;;   (/usr/bin/zonetab2pot.py:15)
 (setf (gethash "loc" pydb-pat-hash)
       (make-dbgr-loc-pat
@@ -35,8 +35,8 @@ The values of a hash entry is a dbgr-loc-pat struct")
        :regexp   "^(Pydb) "
        ))
 
-;;  Regular expression that describes a Python traceback line.
-(setf (gethash "traceback" pydb-pat-hash)
+;;  Regular expression that describes a Python backtrace line.
+(setf (gethash "backtrace" pydb-pat-hash)
       (make-dbgr-loc-pat
        :regexp   "^[ \t]+File \"\\(.+\\)\", line \\([0-9]+\\)"
        :file-group 1

@@ -14,7 +14,7 @@
 
 (dbgr-populate-common-keys dbgr-gdb-track-minor-mode-map)
 (define-key dbgr-gdb-track-minor-mode-map 
-  (kbd "C-c !b") 'dbgr-gdb-goto-traceback-line)
+  (kbd "C-c !b") 'dbgr-gdb-goto-backtrace-line)
 
 (define-minor-mode dbgr-gdb-track-mode
   "Minor mode for tracking ruby debugging inside a process shell."

@@ -134,7 +134,7 @@ NOTE: the above should have each item listed in quotes.
 			   "ruby" "\\.rb$"))
 
 (defun trepan-goto-backtrace-line (pt)
-  "Display the location mentioned by the Ruby traceback line
+  "Display the location mentioned by the Ruby backtrace line
 described by PT."
   (interactive "d")
   (dbgr-goto-line-for-pt-and-type pt "backtrace" dbgr-trepan-pat-hash))
@@ -145,8 +145,8 @@ described by PT."
   (interactive "d")
   (dbgr-goto-line-for-pt-and-type pt "control-frame" dbgr-trepan-pat-hash))
 
-(defun trepan-goto-dollarbang-traceback-line (pt)
-  "Display the location mentioned by a Ruby $! traceback line
+(defun trepan-goto-dollarbang-backtrace-line (pt)
+  "Display the location mentioned by a Ruby $! backtrace line
 described by PT."
   (interactive "d")
   (dbgr-goto-line-for-pt-and-type pt "dollar-bang" dbgr-trepan-pat-hash))

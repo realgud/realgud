@@ -4,7 +4,7 @@
 (test-unit-clear-contexts)
 
 
-(setq tb  (gethash "traceback" dbgr-rdebug-pat-hash))
+(setq tb  (gethash "backtrace" dbgr-rdebug-pat-hash))
 (setq bps (gethash "brkpt-set" dbgr-rdebug-pat-hash))
 
 (defun tb-loc-match(text) 

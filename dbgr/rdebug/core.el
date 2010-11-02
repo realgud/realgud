@@ -129,14 +129,14 @@ NOTE: the above should have each item listed in quotes.
   (dbgr-suggest-invocation rdebug-command-name rdebug-minibuffer-history 
 			   "ruby" "\\.rb$"))
 
-(defun rdebug-goto-traceback-line (pt)
-  "Display the location mentioned by the Ruby traceback line
+(defun rdebug-goto-backtrace-line (pt)
+  "Display the location mentioned by the Ruby backtrace line
 described by PT."
   (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "traceback" dbgr-rdebug-pat-hash))
+  (dbgr-goto-line-for-pt-and-type pt "backtrace" dbgr-rdebug-pat-hash))
 
-(defun rdebug-goto-dollarbang-traceback-line (pt)
-  "Display the location mentioned by the Ruby $! traceback line
+(defun rdebug-goto-dollarbang-backtrace-line (pt)
+  "Display the location mentioned by the Ruby $! backtrace line
 described by PT."
   (interactive "d")
   (dbgr-goto-line-for-pt-and-type pt "dollar-bang" dbgr-rdebug-pat-hash))

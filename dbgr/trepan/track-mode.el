@@ -15,7 +15,7 @@
 
 (dbgr-populate-common-keys trepan-track-minor-mode-map)
 (define-key trepan-track-minor-mode-map 
-  (kbd "C-c !!") 'trepan-goto-dollarbang-traceback-line)
+  (kbd "C-c !!") 'trepan-goto-dollarbang-backtrace-line)
 (define-key trepan-track-minor-mode-map 
   (kbd "C-c !b") 'trepan-goto-backtrace-line)
 (define-key trepan-track-minor-mode-map 

@@ -15,7 +15,7 @@
 
 (dbgr-populate-common-keys pydbgr-track-minor-mode-map)
 (define-key pydbgr-track-minor-mode-map 
-  (kbd "C-c !b") 'pydbgr-goto-traceback-line)
+  (kbd "C-c !b") 'pydbgr-goto-backtrace-line)
 
 (define-minor-mode pydbgr-track-mode
   "Minor mode for tracking ruby debugging inside a process shell."

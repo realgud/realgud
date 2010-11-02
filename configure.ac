@@ -33,6 +33,7 @@ AC_CONFIG_FILES([Makefile \
 		 dbgr/common/Makefile \
 		 dbgr/common/buffer/Makefile \
 		 dbgr/common/init/Makefile \
+		 dbgr/lang/Makefile \
 		 dbgr/gdb/Makefile \
 		 dbgr/pydbgr/Makefile \
 		 dbgr/rbdbgr/Makefile \

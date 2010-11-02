@@ -14,7 +14,7 @@
 
 (dbgr-populate-common-keys zshdb-track-minor-mode-map)
 (define-key zshdb-track-minor-mode-map 
-  (kbd "C-c !!") 'zshdb-goto-dollarbang-traceback-line)
+  (kbd "C-c !!") 'zshdb-goto-dollarbang-backtrace-line)
 (define-key zshdb-track-minor-mode-map 
   (kbd "C-c !b") 'zshdb-goto-backtrace-line)
 (define-key zshdb-track-minor-mode-map 

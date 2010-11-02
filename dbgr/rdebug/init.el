@@ -5,13 +5,14 @@
 
 (require 'load-relative)
 (require-relative-list '("../common/regexp" "../common/loc") "dbgr-")
+(require-relative-list '("../lang/ruby") "dbgr-lang-")
 
 (defvar dbgr-pat-hash)
 (declare-function make-dbgr-loc-pat (dbgr-loc))
 
 (defvar dbgr-rdebug-pat-hash (make-hash-table :test 'equal)
   "Hash key is the what kind of pattern we want to match:
-traceback, prompt, etc.  The values of a hash entry is a
+backtrace, prompt, etc.  The values of a hash entry is a
 dbgr-loc-pat struct")
 
 ;; Regular expression that describes a rdebug location generally shown
@@ -29,12 +30,8 @@ dbgr-loc-pat struct")
        :regexp "^(rdb:[0-9]+) "
        ))
 
-;;  Regular expression that describes a Ruby traceback line.
-(setf (gethash "traceback" dbgr-rdebug-pat-hash)
-      (make-dbgr-loc-pat
-       :regexp "^[ \t]+from \\([^:]+\\):\\([0-9]+\\)\\(?: in `.*'\\)?"
-       :file-group 1
-       :line-group 2))
+;;  Regular expression that describes a Ruby backtrace line.
+(setf (gethash "backtrace" dbgr-rdebug-pat-hash) dbgr-ruby-backtrace-loc-pat)
 
 ;;  Regular expression that describes a rdebug "breakpoint set" line
 ;;  E.g. Breakpoint 1 file /test/gcd.rb, line 6

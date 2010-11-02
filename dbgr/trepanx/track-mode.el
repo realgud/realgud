@@ -15,9 +15,9 @@
 (dbgr-populate-common-keys trepanx-track-minor-mode-map)
 
 (define-key trepanx-track-minor-mode-map 
-  (kbd "C-c !!") 'trepanx-goto-dollarbang-traceback-line)
+  (kbd "C-c !!") 'trepanx-goto-dollarbang-backtrace-line)
 (define-key trepanx-track-minor-mode-map 
-  (kbd "C-c !b") 'trepanx-goto-traceback-line)
+  (kbd "C-c !b") 'trepanx-goto-backtrace-line)
 
 (define-minor-mode trepanx-track-mode
   "Minor mode for tracking ruby debugging inside a process shell."

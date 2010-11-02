@@ -133,7 +133,7 @@ NOTE: the above should have each item listed in quotes.
 			   "Shell-script" "\\.sh$"))
 
 (defun zshdb-goto-backtrace-line (pt)
-  "Display the location mentioned by the Ruby traceback line
+  "Display the location mentioned by the zshd backtrace line
 described by PT."
   (interactive "d")
   (dbgr-goto-line-for-pt-and-type pt "backtrace" dbgr-zshdb-pat-hash))
@@ -144,8 +144,8 @@ described by PT."
   (interactive "d")
   (dbgr-goto-line-for-pt-and-type pt "control-frame" dbgr-zshdb-pat-hash))
 
-(defun zshdb-goto-dollarbang-traceback-line (pt)
-  "Display the location mentioned by a Ruby $! traceback line
+(defun zshdb-goto-dollarbang-backtrace-line (pt)
+  "Display the location mentioned by a zshd backtrace line
 described by PT."
   (interactive "d")
   (dbgr-goto-line-for-pt-and-type pt "dollar-bang" dbgr-zshdb-pat-hash))

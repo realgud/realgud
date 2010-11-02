@@ -10,8 +10,9 @@
 (declare-function make-dbgr-loc-pat (dbgr-loc))
 
 (defvar dbgr-zshdb-pat-hash (make-hash-table :test 'equal)
-  "Hash key is the what kind of pattern we want to match: traceback, prompt, etc. 
-The values of a hash entry is a dbgr-loc-pat struct")
+  "Hash key is the what kind of pattern we want to match:
+backtrace, prompt, etc.  The values of a hash entry is a
+dbgr-loc-pat struct")
 
 (declare-function make-dbgr-loc "dbgr-loc" (a b c d e f))
 
