@@ -22,6 +22,8 @@ test-bt-rdebug.run:
 	(cd $(top_srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )
 test-bt-trepan.run:
 	(cd $(top_srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )
+test-bt-zshdb.run:
+	(cd $(top_srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )
 test-buf-bt.run:
 	(cd $(top_srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )
 test-buf-cmd.run:

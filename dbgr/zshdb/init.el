@@ -36,6 +36,31 @@ The values of a hash entry is a dbgr-loc-pat struct")
        :file-group 2
        :line-group 3))
 
+(setf (gethash "font-lock-keywords" dbgr-zshdb-pat-hash)
+      '(
+	;; The frame number and first type name, if present.
+	;; E.g. ->0 in file `/etc/init.d/apparmor' at line 35
+	;;      --^-
+	("^\\(->\\|##\\)\\([0-9]+\\) "
+	 (2 dbgr-backtrace-number-face))
+
+	;; File name.
+	;; E.g. ->0 in file `/etc/init.d/apparmor' at line 35
+	;;          ---------^^^^^^^^^^^^^^^^^^^^-
+	("[ \t]+\\(in\\|from\\) file `\\(.+\\)'"
+	 (2 dbgr-file-name-face))
+
+	;; File name.
+	;; E.g. ->0 in file `/etc/init.d/apparmor' at line 35
+	;;                                         --------^^
+	;; Line number.
+	("[ \t]+at line \\([0-9]+\\)$"
+	 (1 dbgr-line-number-face))
+	;; (trepan-frames-match-current-line
+	;;  (0 trepan-frames-current-frame-face append))
+	))
+
+
 (setf (gethash "zshdb" dbgr-pat-hash) dbgr-zshdb-pat-hash)
 
 (provide-me "dbgr-zshdb-")
