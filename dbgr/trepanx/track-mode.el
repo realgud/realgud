@@ -5,8 +5,7 @@
 (require 'load-relative)
 (require-relative-list '("../common/track-mode" "../common/cmds" 
 			 "../common/menu") "dbgr-")
-(require-relative-list '("../common/init/trepanx") "dbgr-init-")
-(require-relative-list '("core" "cmds") "trepanx-")
+(require-relative-list '("core" "cmds" "init") "dbgr-trepanx-")
 
 (dbgr-track-mode-vars "trepanx")
 (declare-function dbgr-track-mode(bool))
@@ -31,7 +30,7 @@
   (dbgr-track-mode-body "trepanx")
 )
 
-(provide-me "trepanx-")
+(provide-me "dbgr-trepanx-")
 
 ;;; Local variables:
 ;;; eval:(put 'trepan-debug-enter 'lisp-indent-hook 1)

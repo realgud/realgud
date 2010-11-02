@@ -14,6 +14,4 @@
       "Set a breakpoint at the current line" t nil)
   )
 
-(provide-me "trepanx-")
-
-
+(provide-me "dbgr-trepanx-")
