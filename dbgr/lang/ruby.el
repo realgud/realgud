@@ -5,11 +5,22 @@
 (require 'load-relative)
 (require-relative-list '("../common/regexp" "../common/loc") "dbgr-")
 
-;;  Regular expression that describes a Ruby backtrace (or traceback) line.
+
 (defconst dbgr-ruby-backtrace-loc-pat
   (make-dbgr-loc-pat
    :regexp "^[ \t]+from \\([^:]+\\):\\([0-9]+\\)\\(?: in `.*'\\)?"
    :file-group 1
-   :line-group 2))
+   :line-group 2)
+  "A dbgr-loc-pat struct that describes a Ruby backtrace (or
+traceback) line."  )
+
+(defconst dbgr-ruby-dollar-bang
+      (make-dbgr-loc-pat
+       :regexp "^[ \t]*[[]?\\(.+\\):\\([0-9]+\\):in `.*'"
+       :file-group 1
+       :line-group 2)
+  "A dbgr-loc-pat that struct that describes a Ruby $! string."
+)
+
 
 (provide-me "dbgr-lang-")

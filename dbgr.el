@@ -8,7 +8,6 @@
      "./dbgr/common/track-mode"
      "./dbgr/gdb/gdb"
      "./dbgr/pydbgr/pydbgr"
-     "./dbgr/rbdbgr/rbdbgr"
      "./dbgr/rdebug/rdebug"
      "./dbgr/trepan/trepan"
      "./dbgr/trepanx/trepanx"
@@ -34,7 +33,7 @@
 (defun dbgr-loaded-features()
   "Return a list of loaded debugger features. These are the
 features that start with 'dbgr-' and also include standalone debugger features
-like 'rbdbgr', 'pydbgr'."
+like 'pydbgr'."
   (let ((result nil))
     (dolist (feature features result) 
       (cond ((eq 't 
@@ -42,10 +41,6 @@ like 'rbdbgr', 'pydbgr'."
 	     (setq result (cons feature result)))
 	    ((eq 't
 		 (dbgr-feature-starts-with feature "pydbgr"))
-	     (setq result (cons feature result)))
-	    ((eq 't
-		 ;; No trailing '-' to get a plain "rbdbgr".
-		 (dbgr-feature-starts-with feature "rbdbgr")) 
 	     (setq result (cons feature result)))
 	    ((eq 't
 		 ;; No trailing '-' to get a plain "trepan".

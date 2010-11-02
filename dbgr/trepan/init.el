@@ -4,7 +4,7 @@
 (require 'load-relative)
 (require-relative-list '("../common/regexp" "../common/loc" "../common/init") 
 		       "dbgr-")
-(require-relative-list '("../../lang/ruby") "dbgr-lang-")
+(require-relative-list '("../lang/ruby") "dbgr-lang-")
 
 (defvar dbgr-pat-hash)
 (declare-function make-dbgr-loc-pat (dbgr-loc))
@@ -52,11 +52,7 @@ dbgr-loc-pat struct")
        :line-group 9))
 
 ;;  Regular expression that describes a Ruby $! string
-(setf (gethash "dollar-bang" dbgr-trepan-pat-hash)
-      (make-dbgr-loc-pat
-       :regexp "^[ \t]*[[]?\\(.+\\):\\([0-9]+\\):in `.*'"
-       :file-group 1
-       :line-group 2))
+(setf (gethash "dollar-bang" dbgr-trepan-pat-hash) dbgr-ruby-dollar-bang)
 
 (setf (gethash "font-lock-keywords" dbgr-trepan-pat-hash)
       '(

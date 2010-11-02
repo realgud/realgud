@@ -1,7 +1,7 @@
 SUBDIRS = buffer init
 MOSTLYCLEANFILES = *.elc
 
-lispdir = @lispdir_dbgr@/common
+lispdir = @lispdir_dbgr@/$(notdir $(subdir))
 lisp_files := $(wildcard *.el)
 
 EXTRA_DIST = $(lisp_files)

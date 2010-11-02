@@ -1,6 +1,6 @@
 (require 'test-unit)
 (load-file "../dbgr/common/buffer/command.el")
-(load-file "../dbgr/common/init.el")
+(load-file "../dbgr/trepan/init.el")
 
 (test-unit-clear-contexts)
 
@@ -13,12 +13,12 @@
 	 	  (assert-equal nil (dbgr-cmdbuf-command-string (current-buffer))))
 	 (specify "dbgr-cmdbuf-init"
 		  (setq temp-cmdbuf (generate-new-buffer "*cmdbuf-test*"))
-		  (assert-t (dbgr-cmdbuf-init temp-cmdbuf "rbdbgr" (gethash "rbdbgr" dbgr-pat-hash)))
+		  (assert-t (dbgr-cmdbuf-init temp-cmdbuf "trepan" (gethash "trepan" dbgr-pat-hash)))
 		  (with-current-buffer temp-cmdbuf
  		    (dbgr-cmdbuf-info-cmd-args= dbgr-cmdbuf-info '("command" "args"))
 		    (assert-equal "command args" 
 				  (dbgr-cmdbuf-command-string temp-cmdbuf))
-		    (assert-equal "rbdbgr" 
+		    (assert-equal "trepan" 
 				  (dbgr-cmdbuf-debugger-name))
 		    (assert-equal nil 
 				  (dbgr-cmdbuf-info-srcbuf-list 

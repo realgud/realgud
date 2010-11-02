@@ -1,16 +1,16 @@
 (require 'test-unit)
 (load-file "../dbgr/common/send.el")
 (load-file "../dbgr/common/regexp.el")
-(load-file "../dbgr/common/init.el")
+(load-file "../dbgr/trepan/init.el")
 (test-unit-clear-contexts)
 
 (defvar temp-cmdbuf nil)
 (defun setup ()
   (setq temp-cmdbuf (generate-new-buffer "*cmdbuf-test*"))
-  (dbgr-cmdbuf-init temp-cmdbuf "rbdbgr" (gethash "rbdbgr" dbgr-pat-hash))
+  (dbgr-cmdbuf-init temp-cmdbuf "trepan" (gethash "trepan" dbgr-pat-hash))
   (dbgr-srcbuf-init (current-buffer) temp-cmdbuf 
-		    "rbdbgr" 
-		    '("/bin/rbdbgr" "my-script" "arg1"))
+		    "trepan" 
+		    '("/bin/trepan" "my-script" "arg1"))
 )
 
 (defun tear-down()

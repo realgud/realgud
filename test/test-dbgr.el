@@ -12,7 +12,7 @@
 		  )
 	 (specify "dbgr-loaded-features"
 		  (setq dbgr-features (dbgr-loaded-features))
-		  (dolist (feature '(dbgr-rbdbgr dbgr-pydbgr dbgr-init-bashdb
+		  (dolist (feature '(dbgr-trepan dbgr-pydbgr dbgr-init-bashdb
 						 dbgr-core))
 		    (assert-t (not (not (member feature dbgr-features))))
 		    )

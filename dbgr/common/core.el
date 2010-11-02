@@ -49,8 +49,8 @@ If you happen to be in a debugger process buffer, the last command invocation
 for that first one suggested. Failing that, some amount of guessing is done
 to find a suitable file via SUGGEST-INVOCATION-FN.
 
-We also set filename completion and use a history of the prior rbdbgr
-invocations "
+We also set filename completion and use a history of the prior
+dbgr invocations "
   (let ((debugger (or opt-debugger
 		   (dbgr-sget 'srcbuf-info 'debugger-name))))
     (read-from-minibuffer

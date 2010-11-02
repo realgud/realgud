@@ -1,14 +1,14 @@
 (require 'test-unit)
-(load-file "../dbgr/common/init.el")
 (load-file "../dbgr/common/buffer/command.el")
+(load-file "../dbgr/trepan/init.el")
 
 (test-unit-clear-contexts)
 
 
 ; Some setup usually done in setting up the buffer.
-; We customize this for the debugger rbdbgr. Others may follow.
+; We customize this for the debugger trepan. Others may follow.
 ; FIXME: encapsulate this.
-(setq dbg-name "rbdbgr")
+(setq dbg-name "trepan")
 (setq loc-pat (gethash "loc" (gethash dbg-name dbgr-pat-hash)))
 
 (setq dbgr (make-dbgr-cmdbuf-info
@@ -62,7 +62,7 @@
 
 	   ;;
 	   (specify "unmatched location"
-	   	    (setq text "--> #0 METHOD Object#square(x) in file ./rbdbgr.rb at line 73")
+	   	    (setq text "--> #0 METHOD Object#square(x) in file ./trepan.rb at line 73")
 	   	    (assert-nil (numberp (loc-match text))))
 	   
 	   ))

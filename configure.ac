@@ -36,7 +36,6 @@ AC_CONFIG_FILES([Makefile \
 		 dbgr/lang/Makefile \
 		 dbgr/gdb/Makefile \
 		 dbgr/pydbgr/Makefile \
-		 dbgr/rbdbgr/Makefile \
 		 dbgr/rdebug/Makefile \
 		 dbgr/trepan/Makefile \
 		 dbgr/trepanx/Makefile \

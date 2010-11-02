@@ -44,11 +44,7 @@ dbgr-loc-pat struct")
        :line-group 3))
 
 ;;  Regular expression that describes a Ruby $! string
-(setf (gethash "dollar-bang" dbgr-rdebug-pat-hash)
-      (make-dbgr-loc-pat
-       :regexp "^[ \t]*[[]?\\(.+\\):\\([0-9]+\\):in `.*'"
-       :file-group 1
-       :line-group 2))
+(setf (gethash "dollar-bang" dbgr-rdebug-pat-hash) dbgr-ruby-dollar-bang)
 
 (setf (gethash "font-lock-keywords" dbgr-rdebug-pat-hash)
       '(

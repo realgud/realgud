@@ -6,7 +6,7 @@
 
 
 ; Some setup usually done in setting up the buffer.
-; We customize this for the debugger rbdbgr. Others may follow.
+; We customize this for the debugger trepan. Others may follow.
 ; FIXME: encapsulate this.
 (setq dbg-name "gdb")
 (setq loc-pat (gethash "loc" (gethash dbg-name dbgr-pat-hash)))
