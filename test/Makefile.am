@@ -3,9 +3,9 @@
 PHONY=check test all
 EXTRA_DIST=gcd.py gcd.rb
 
-all: check
+all: 
 
-%: 
+test: check
 
 test_files := $(wildcard test-*.el)
 

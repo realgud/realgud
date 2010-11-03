@@ -73,6 +73,7 @@ marginal icons is reset."
 	(message "Error running trepanx command"))
     )))
 
+(defalias 'trepanx 'dbgr-trepanx)
 
 (provide-me "dbgr-")
 

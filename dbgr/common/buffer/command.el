@@ -45,6 +45,7 @@
                ;; see dbgr-lochist
 )
 (make-variable-buffer-local 'dbgr-cmdbuf-info)
+(make-variable-buffer-local 'dbgr-last-output-start)
 
 (defalias 'dbgr-cmdbuf-info? 'dbgr-cmdbuf-info-p)
 

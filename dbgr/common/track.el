@@ -90,7 +90,7 @@ evaluating (dbgr-cmdbuf-info-loc-regexp dbgr-cmdbuf-info)"
 	(if (not (equal "" text))
 	    (with-current-buffer cmdbuf
 	      (if (dbgr-sget 'cmdbuf-info 'divert-output?)
-		  (dbgr-track-divert-prompt text cmdbuf))
+		  (dbgr-track-divert-prompt text cmdbuf to))
 	      (setq text-sans-loc (or (dbgr-track-loc-remaining text) text))
 	      (setq bp-loc (dbgr-track-bp-loc text-sans-loc cmd-mark cmdbuf))
 	      (if bp-loc 
@@ -325,7 +325,7 @@ loc-regexp pattern"
     nil)
   )
   
-(defun dbgr-track-divert-prompt(text cmdbuf)
+(defun dbgr-track-divert-prompt(text cmdbuf to)
   "Return a cons node of the part before the prompt-regexp and the part 
    after the prompt-regexp-prompt. If not found return nil."
   (with-current-buffer cmdbuf
@@ -341,6 +341,7 @@ loc-regexp pattern"
 			  (substring text 0 (match-beginning 0)))
 		    ;; We've got desired output, so reset divert output.
 		    (dbgr-cmdbuf-info-divert-output?= dbgr-cmdbuf-info nil)
+		    (kill-region dbgr-last-output-start to)
 		    ;; FIXME: DELETE output. Or do elsewhere?
 		    )
 	      ))

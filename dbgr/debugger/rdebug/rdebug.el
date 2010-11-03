@@ -128,5 +128,6 @@ marginal icons is reset."
 	(message "Error running rdebug command"))
     )))
 
+(defalias 'rdebug 'dbgr-rdebug)
 
 (provide-me "dbgr-")

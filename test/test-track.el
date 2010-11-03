@@ -45,7 +45,8 @@
 		  (setq dbgr-track-divert-string "")
 		  (setq text 
 			"--> #0 TOP Object#<top /usr/local/bin/irb> in file /usr/local/bin/irb at line 9\n(trepan): ")
-		  (dbgr-track-divert-prompt text (current-buffer))
+		  (setq dbgr-last-output-start (point-max))
+		  (dbgr-track-divert-prompt text (current-buffer) (point-max))
 		  (assert-equal "--> #0 TOP Object#<top /usr/local/bin/irb> in file /usr/local/bin/irb at line 9\n"
 				dbgr-track-divert-string)
 		  (assert-equal nil (dbgr-sget 'cmdbuf-info 'divert-output?))

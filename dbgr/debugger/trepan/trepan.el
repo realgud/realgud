@@ -31,7 +31,7 @@ This should be an executable on your path, or an absolute file name."
 ;;
 
 ;;;###autoload
-(defun trepan (&optional opt-command-line no-reset)
+(defun dbgr-trepan (&optional opt-command-line no-reset)
   "Invoke the trepan Ruby debugger and start the Emacs user interface.
 
 String COMMAND-LINE specifies how to run trepan.
@@ -73,6 +73,7 @@ marginal icons is reset."
 	(message "Error running trepan command"))
     )))
 
+(defalias 'trepan 'dbgr-trepan)
 
 (provide-me "dbgr-")
 

@@ -8,6 +8,7 @@
   "Assume we are in a comint buffer. Insert COMMAND-STR and 
 send that input onto the process.  Parameter PROCESS not used."
   (comint-goto-process-mark)
+  (setq dbgr-last-output-start (point-marker))
   (insert command-str)
   (comint-send-input))
 
