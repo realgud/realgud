@@ -5,7 +5,7 @@
 (require 'load-relative)
 (require-relative-list '("../../common/track-mode" 
 			 "../../common/cmds") "dbgr-")
-(require-relative-list '("core") "dbgr-gdb-")
+(require-relative-list '("core" "init") "dbgr-gdb-")
 
 (defalias 'dbgr-define-dbgr-gdb-commands 'dbgr-define-gdb-like-commands)
 (dbgr-track-mode-vars "dbgr-gdb")

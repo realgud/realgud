@@ -1,6 +1,6 @@
 (require 'test-unit)
-(load-file "../dbgr/common/init/gdb.el")
-(load-file "../dbgr/common/cmdbuf.el")
+e(load-file "../dbgr/common/buffer/command.el")
+(load-file "../dbgr/debugger/gdb/init.el")
 
 (test-unit-clear-contexts)
 
@@ -10,7 +10,7 @@
 ; FIXME: encapsulate this.
 (setq dbg-name "gdb")
 (setq loc-pat (gethash "loc" (gethash dbg-name dbgr-pat-hash)))
-(setq bps (gethash "brkpt-set" gdb-pat-hash))
+(setq bps (gethash "brkpt-set" dbgr-gdb-pat-hash))
 
 (setq dbgr (make-dbgr-cmdbuf-info
 		  :debugger-name dbg-name
