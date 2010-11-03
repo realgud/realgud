@@ -1,5 +1,5 @@
 (require 'test-unit)
-(load-file "../dbgr/trepanx/init.el")
+(load-file "../dbgr/debugger/trepanx/init.el")
 
 (test-unit-clear-contexts)
 

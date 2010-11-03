@@ -33,13 +33,14 @@ AC_CONFIG_FILES([Makefile \
 		 dbgr/common/Makefile \
 		 dbgr/common/buffer/Makefile \
 		 dbgr/common/init/Makefile \
+		 dbgr/debugger/Makefile \
+		 dbgr/debugger/gdb/Makefile \
+		 dbgr/debugger/pydbgr/Makefile \
+		 dbgr/debugger/rdebug/Makefile \
+		 dbgr/debugger/trepan/Makefile \
+		 dbgr/debugger/trepanx/Makefile \
+		 dbgr/debugger/zshdb/Makefile \
 		 dbgr/lang/Makefile \
-		 dbgr/gdb/Makefile \
-		 dbgr/pydbgr/Makefile \
-		 dbgr/rdebug/Makefile \
-		 dbgr/trepan/Makefile \
-		 dbgr/trepanx/Makefile \
-		 dbgr/zshdb/Makefile \
 		 test/Makefile \
 		 ])
 AC_OUTPUT

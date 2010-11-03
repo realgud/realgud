@@ -4,7 +4,7 @@
 (load-file "../dbgr/common/buffer/command.el")
 (load-file "../dbgr/common/buffer/backtrace.el")
 (load-file "../dbgr/common/init.el")
-(load-file "../dbgr/zshdb/init.el")
+(load-file "../dbgr/debugger/zshdb/init.el")
 
 (test-unit-clear-contexts)
 

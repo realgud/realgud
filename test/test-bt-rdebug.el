@@ -3,7 +3,7 @@
 
 (load-file "../dbgr/common/buffer/command.el")
 (load-file "../dbgr/common/buffer/backtrace.el")
-(load-file "../dbgr/rdebug/init.el")
+(load-file "../dbgr/debugger/rdebug/init.el")
 
 (test-unit-clear-contexts)
 

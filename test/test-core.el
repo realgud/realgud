@@ -1,7 +1,7 @@
-(setq trepan-core "../dbgr/trepan/core.el")
+(setq trepan-core "../dbgr/debugger/trepan/core.el")
 (require 'test-unit)
 (load-file "../dbgr/common/core.el")
-(load-file "../dbgr/trepan/core.el")
+(load-file "../dbgr/debugger/trepan/core.el")
 
 (test-unit-clear-contexts)
 

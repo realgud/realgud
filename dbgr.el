@@ -6,12 +6,12 @@
   (require-relative-list
    '(
      "./dbgr/common/track-mode"
-     "./dbgr/gdb/gdb"
-     "./dbgr/pydbgr/pydbgr"
-     "./dbgr/rdebug/rdebug"
-     "./dbgr/trepan/trepan"
-     "./dbgr/trepanx/trepanx"
-     "./dbgr/zshdb/zshdb"
+     "./dbgr/debugger/gdb/gdb"
+     "./dbgr/debugger/pydbgr/pydbgr"
+     "./dbgr/debugger/rdebug/rdebug"
+     "./dbgr/debugger/trepan/trepan"
+     "./dbgr/debugger/trepanx/trepanx"
+     "./dbgr/debugger/zshdb/zshdb"
      ) "dbgr-")
   )
 

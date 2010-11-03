@@ -1,5 +1,5 @@
 (require 'test-unit)
-(load-file "../dbgr/trepan/trepan.el")
+(load-file "../dbgr/debugger/trepan/trepan.el")
 (test-unit-clear-contexts)
 
 (defvar temp-cmdbuf nil)

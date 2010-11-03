@@ -1,7 +1,7 @@
 (require 'test-unit)
 (load-file "../dbgr/common/send.el")
 (load-file "../dbgr/common/regexp.el")
-(load-file "../dbgr/trepan/init.el")
+(load-file "../dbgr/debugger/trepan/init.el")
 (test-unit-clear-contexts)
 
 (defvar temp-cmdbuf nil)

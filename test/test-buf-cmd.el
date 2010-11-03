@@ -1,6 +1,6 @@
 (require 'test-unit)
 (load-file "../dbgr/common/buffer/command.el")
-(load-file "../dbgr/trepan/init.el")
+(load-file "../dbgr/debugger/trepan/init.el")
 
 (test-unit-clear-contexts)
 

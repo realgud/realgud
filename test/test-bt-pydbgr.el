@@ -4,7 +4,7 @@
 (load-file "../dbgr/common/buffer/command.el")
 (load-file "../dbgr/common/buffer/backtrace.el")
 (load-file "../dbgr/common/init.el")
-(load-file "../dbgr/pydbgr/init.el")
+(load-file "../dbgr/debugger/pydbgr/init.el")
 
 (test-unit-clear-contexts)
 

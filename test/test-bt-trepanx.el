@@ -3,7 +3,7 @@
 
 (load-file "../dbgr/common/buffer/command.el")
 (load-file "../dbgr/common/buffer/backtrace.el")
-(load-file "../dbgr/trepanx/init.el")
+(load-file "../dbgr/debugger/trepanx/init.el")
 
 (test-unit-clear-contexts)
 

@@ -1,5 +1,5 @@
 (require 'test-unit)
-(load-file "../dbgr/pydbgr/pydbgr.el")
+(load-file "../dbgr/debugger/pydbgr/pydbgr.el")
 
 (test-unit-clear-contexts)
 
