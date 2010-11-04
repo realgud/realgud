@@ -131,18 +131,6 @@ NOTE: the above should have each item listed in quotes.
   (dbgr-suggest-invocation rdebug-command-name rdebug-minibuffer-history 
 			   "ruby" "\\.rb$"))
 
-(defun rdebug-goto-backtrace-line (pt)
-  "Display the location mentioned by the Ruby backtrace line
-described by PT."
-  (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "backtrace" dbgr-rdebug-pat-hash))
-
-(defun rdebug-goto-dollarbang-backtrace-line (pt)
-  "Display the location mentioned by the Ruby $! backtrace line
-described by PT."
-  (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "dollar-bang" dbgr-rdebug-pat-hash))
-
 (defun rdebug-reset ()
   "Rdebug cleanup - remove debugger's internal buffers (frame,
 breakpoints, etc.)."

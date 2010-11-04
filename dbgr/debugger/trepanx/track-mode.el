@@ -10,14 +10,8 @@
 (dbgr-track-mode-vars "trepanx")
 (declare-function dbgr-track-mode(bool))
 
-;;; FIXME: The following could be more DRY.
-
 (dbgr-populate-common-keys trepanx-track-minor-mode-map)
-
-(define-key trepanx-track-minor-mode-map 
-  (kbd "C-c !!") 'trepanx-goto-dollarbang-backtrace-line)
-(define-key trepanx-track-minor-mode-map 
-  (kbd "C-c !b") 'trepanx-goto-backtrace-line)
+(dbgr-ruby-populate-command-keys trepanx-track-minor-mode-map)
 
 (define-minor-mode trepanx-track-mode
   "Minor mode for tracking ruby debugging inside a process shell."
@@ -32,8 +26,3 @@
 
 (provide-me "dbgr-trepanx-")
 
-;;; Local variables:
-;;; eval:(put 'trepan-debug-enter 'lisp-indent-hook 1)
-;;; End:
-
-;;; trepanx-track.el ends here

@@ -390,9 +390,23 @@ debugger with that information"
 	nil)
       )))
 
+;; FIXME: need better name for this and next fn.
 (defun dbgr-goto-line-for-pt-and-type (pt type pat-hash)
   "Display the location mentioned for PT given type PAT-HASH indexed TYPE."
   (dbgr-goto-line-for-loc-pat pt (gethash type pat-hash)))
+
+
+(defun dbgr-goto-line-for-pt (pt pattern-key)
+  "Display the location mentioned by a Ruby $! backtrace line
+described by PT."
+  (interactive "d")
+  (unless (dbgr-cmdbuf?)
+    (error "You need to be in a debugger command buffer to run this"))
+  (let* ((debugger-name (dbgr-cmdbuf-debugger-name))
+	 (debugger-pat-hash (gethash debugger-name dbgr-pat-hash)))
+    (dbgr-goto-line-for-pt-and-type pt pattern-key debugger-pat-hash)
+    )
+  )
 
   
 (provide-me "dbgr-")

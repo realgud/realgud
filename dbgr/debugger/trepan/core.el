@@ -135,24 +135,6 @@ NOTE: the above should have each item listed in quotes.
   (dbgr-suggest-invocation trepan-command-name trepan-minibuffer-history 
 			   "ruby" "\\.rb$"))
 
-(defun trepan-goto-backtrace-line (pt)
-  "Display the location mentioned by the Ruby backtrace line
-described by PT."
-  (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "backtrace" dbgr-trepan-pat-hash))
-
-(defun trepan-goto-control-frame-line (pt)
-  "Display the location mentioned by a control-frame line
-described by PT."
-  (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "control-frame" dbgr-trepan-pat-hash))
-
-(defun trepan-goto-dollarbang-backtrace-line (pt)
-  "Display the location mentioned by a Ruby $! backtrace line
-described by PT."
-  (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "dollar-bang" dbgr-trepan-pat-hash))
-
 (defun trepan-reset ()
   "Trepan cleanup - remove debugger's internal buffers (frame,
 breakpoints, etc.)."
