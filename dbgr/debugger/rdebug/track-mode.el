@@ -11,9 +11,10 @@
 (dbgr-track-mode-vars "rdebug")
 (declare-function dbgr-track-mode(bool))
 
-;;; FIXME: The following could be more DRY.
-
+;;; FIXME: The following could be more DRY. Also use parnet-maps.
 (dbgr-populate-common-keys rdebug-track-minor-mode-map)
+(dbgr-ruby-populate-command-keys rdebug-track-minor-mode-map)
+
 (define-key rdebug-track-minor-mode-map 
   (kbd "C-c !b") 'rdebug-goto-backtrace-line)
 

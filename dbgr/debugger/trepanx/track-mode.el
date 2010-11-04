@@ -10,6 +10,7 @@
 (dbgr-track-mode-vars "trepanx")
 (declare-function dbgr-track-mode(bool))
 
+;;; FIXME: The following could be more DRY. Also use parnet-maps.
 (dbgr-populate-common-keys trepanx-track-minor-mode-map)
 (dbgr-ruby-populate-command-keys trepanx-track-minor-mode-map)
 
