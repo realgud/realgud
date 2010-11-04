@@ -6,6 +6,7 @@
 (require-relative-list '("../../common/track-mode" "../../common/cmds" 
 			 "../../common/menu") "dbgr-")
 (require-relative-list '("core" "cmds" "init") "dbgr-trepanx-")
+(require-relative-list '("../../lang/ruby") "dbgr-lang-")
 
 (dbgr-track-mode-vars "trepanx")
 (declare-function dbgr-track-mode(bool))

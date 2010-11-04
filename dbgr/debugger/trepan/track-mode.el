@@ -11,6 +11,7 @@
 			 ) 
 		       "dbgr-")
 (require-relative-list '("core" "cmds" "init") "dbgr-trepan-")
+(require-relative-list '("../../lang/ruby") "dbgr-lang-")
 
 (dbgr-track-mode-vars "trepan")
 (declare-function dbgr-track-mode(bool))
@@ -19,13 +20,10 @@
   "Display the location mentioned by a control-frame line
 described by PT."
   (interactive "d")
-  (dbgr-goto-pat-line-for-pt pt "control-frame"))
+  (dbgr-goto-line-for-pt pt "control-frame"))
 
 (dbgr-populate-common-keys trepan-track-minor-mode-map)
 (dbgr-ruby-populate-command-keys trepan-track-minor-mode-map)
-
-(define-key trepan-track-minor-mode-map 
-  (kbd "C-c !c") 'dbgr-trepan-goto-control-frame-line)
 
 (defun trepan-track-mode-hook()
   (use-local-map trepan-track-minor-mode-map)
