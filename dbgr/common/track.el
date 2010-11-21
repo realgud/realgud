@@ -119,14 +119,15 @@ unshown."
   (let ((cmdbuf (dbgr-get-cmdbuf (current-buffer))))
     (if cmdbuf
 	(let* ((loc-hist (dbgr-cmdbuf-loc-hist cmdbuf))
-	       (srcbuf (dbgr-get-srcbuf-from-cmdbuf cmdbuf)) 
 	       (window (selected-window))
 	       (position (funcall fn loc-hist))
 	       (stay-in-cmdbuf?
 		(or (eq (current-buffer) cmdbuf)
 		    (with-current-buffer cmdbuf
 		      (not (dbgr-sget 'cmdbuf-info 'in-srcbuf?)))))
-	       (loc (dbgr-loc-hist-item loc-hist)))
+	       (loc (dbgr-loc-hist-item loc-hist))
+	       (srcbuf (dbgr-get-srcbuf-from-cmdbuf cmdbuf loc)) 
+	       )
 	  (set-buffer (dbgr-loc-goto loc))
 
 	  ;; Make sure command buffer is updated

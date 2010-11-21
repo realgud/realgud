@@ -15,7 +15,7 @@ assumed to be a source-code buffer."
 	  (dbgr-sget 'srcbuf-info 'cmdproc))
       nil)))
 
-(defun dbgr-get-srcbuf-from-cmdbuf ( &optional opt-buffer)
+(defun dbgr-get-srcbuf-from-cmdbuf ( &optional opt-buffer opt-loc)
   "Return the source-code buffer associated with command
 OPT-BUFFER or if that is ommited `current-buffer' which is
 assumed to be a process-command buffer."
@@ -30,7 +30,7 @@ assumed to be a process-command buffer."
 	    ))
       nil)))
 
-(defun dbgr-get-srcbuf( &optional opt-buffer)
+(defun dbgr-get-srcbuf( &optional opt-buffer opt-loc)
   "Return source-code buffer associated with OPT-BUFFER or
 `current-buffer' if that is omitted. nil is returned if we don't
 find anything. If we started out with a buffer that is set up to
@@ -45,7 +45,7 @@ using. See also `dbgr-get-current-srcbuf'."
        ((dbgr-srcbuf? buffer) buffer)
        ;; Perhaps buffer is a process-command buffer.
        ((dbgr-cmdbuf? buffer)
-	(dbgr-get-srcbuf-from-cmdbuf buffer))
+	(dbgr-get-srcbuf-from-cmdbuf buffer opt-loc))
        (t nil)))))
 
 (defun dbgr-get-current-srcbuf( &optional opt-buffer)
