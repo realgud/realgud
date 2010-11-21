@@ -22,8 +22,10 @@ assumed to be a process-command buffer."
   (let ((buffer (or opt-buffer (current-buffer))))
     (if (dbgr-cmdbuf? buffer)
 	(with-current-buffer-safe buffer
-	  (let ((loc (dbgr-loc-hist-item 
-		      (dbgr-cmdbuf-info-loc-hist dbgr-cmdbuf-info))))
+	  (let ((loc 
+		 (or opt-loc
+		     (dbgr-loc-hist-item 
+		      (dbgr-cmdbuf-info-loc-hist dbgr-cmdbuf-info)))))
 	    (if loc
 		(marker-buffer (dbgr-loc-marker loc))
 	      nil)
