@@ -21,7 +21,7 @@
 (define-key pydbgr-track-mode-map 
   (kbd "C-c !b") 'pydbgr-goto-backtrace-line)
 
-(defun trepan-track-mode-hook()
+(defun pydbgr-track-mode-hook()
   (use-local-map pydbgr-track-mode-map)
   (message "pydbgr track-mode-hook called")
 )
@@ -38,7 +38,7 @@
   (if pydbgr-track-mode
       (progn 
 	(dbgr-track-mode 't)
-	(run-mode-hooks (intern (trepan-track-mode-hook))))
+	(run-mode-hooks (intern (pydbgr-track-mode-hook))))
     (progn 
       (dbgr-track-mode nil)
       ))

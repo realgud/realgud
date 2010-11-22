@@ -154,8 +154,10 @@ as a main program."
 (defun dbgr-cmdbuf-debugger-name (&optional cmd-buf)
   "Return the debugger name recorded in the debugger command-process buffer."
   (with-current-buffer-safe (or cmd-buf (current-buffer))
-    (dbgr-sget 'cmdbuf-info 'debugger-name))
-)
+    (if (dbgr-cmdbuf?)
+	(dbgr-sget 'cmdbuf-info 'debugger-name)
+      nil))
+  )
 
 (defun dbgr-cmdbuf-pat(key)
   "Extract regexp stored under KEY in a dbgr-cmdbuf via dbgr-cmdbuf-info"
