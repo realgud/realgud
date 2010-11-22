@@ -26,8 +26,12 @@
   (kbd "C-c !c") 'zshdb-goto-control-frame-line)
 
 (defun zshdb-track-mode-hook()
-  (use-local-map zshdb-track-mode-map)
-  (message "zshdb track-mode-hook called")
+  (if zshdb-track-mode
+      (progn
+	(use-local-map zshdb-track-mode-map)
+	(message "using zshdb mode map")
+	)
+    (message "zshdb track-mode-hook disable called"))
 )
 
 (define-minor-mode zshdb-track-mode

@@ -385,7 +385,14 @@ debugger with that information"
   (interactive "sDebugger name: ")
   (let ((regexp-hash (gethash debugger-name dbgr-pat-hash)))
     (if regexp-hash
-	(dbgr-cmdbuf-init (current-buffer) debugger-name regexp-hash)
+	(let* ((specific-track-mode 
+	       (intern (concat debugger-name "-track-mode")))
+	       )
+	  (dbgr-cmdbuf-init (current-buffer) debugger-name regexp-hash)
+	  (if (and (not (eval specific-track-mode))
+		   (functionp specific-track-mode))
+	      (funcall specific-track-mode 't))
+	  )
       (progn 
 	(message "I Don't have %s listed as a debugger." debugger-name)
 	nil)

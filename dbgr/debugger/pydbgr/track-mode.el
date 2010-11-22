@@ -22,8 +22,13 @@
   (kbd "C-c !b") 'pydbgr-goto-backtrace-line)
 
 (defun pydbgr-track-mode-hook()
-  (use-local-map pydbgr-track-mode-map)
-  (message "pydbgr track-mode-hook called")
+  (if pydbgr-track-mode
+      (progn
+	(use-local-map pydbgr-track-mode-map)
+	(message "using pydbgr mode map")
+	)
+    (message "pydbgr track-mode-hook disable called")
+    )
 )
 
 (define-minor-mode pydbgr-track-mode

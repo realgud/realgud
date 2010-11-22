@@ -27,8 +27,12 @@ described by PT."
 (dbgr-ruby-populate-command-keys trepan-track-mode-map)
 
 (defun trepan-track-mode-hook()
-  (use-local-map trepan-track-mode-map)
-  (message "trepan track-mode-hook called")
+  (if trepan-track-mode
+      (progn
+	(use-local-map trepan-track-mode-map)
+	(message "using trepan mode map")
+	)
+    (message "trepan track-mode-hook disable called"))
 )
 
 (define-minor-mode trepan-track-mode
