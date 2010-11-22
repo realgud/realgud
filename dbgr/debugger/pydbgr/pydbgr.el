@@ -33,7 +33,7 @@ This should be an executable on your path, or an absolute file name."
 
 ;;;###autoload
 (defun dbgr-pydbgr (&optional opt-command-line no-reset)
-  "Invoke the pydbgr Ruby debugger and start the Emacs user interface.
+  "Invoke the pydbgr Python debugger and start the Emacs user interface.
 
 String COMMAND-LINE specifies how to run pydbgr.
 

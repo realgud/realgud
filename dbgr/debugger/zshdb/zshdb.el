@@ -31,7 +31,7 @@ This should be an executable on your path, or an absolute file name."
 
 ;;;###autoload
 (defun dbgr-zshdb (&optional opt-command-line no-reset)
-  "Invoke the zshdb Ruby debugger and start the Emacs user interface.
+  "Invoke the zshdb Z-shell debugger and start the Emacs user interface.
 
 String COMMAND-LINE specifies how to run zshdb.
 
