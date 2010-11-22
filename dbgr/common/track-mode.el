@@ -105,8 +105,8 @@ of this mode."
      (defvar ,(intern (concat name "-track-mode")) nil
 	,(format "Non-nil if using %s-track-mode as a minor mode of some other mode.
 Use the command `%s-track-mode' to toggle or set this variable." name name))
-     (defvar ,(intern (concat name "-track-minor-mode-map")) (make-sparse-keymap)
-       ,(format "Keymap used in `%s-track-minor-mode'." name))
+     (defvar ,(intern (concat name "-track-mode-map")) (make-sparse-keymap)
+       ,(format "Keymap used in `%s-track-mode'." name))
     ))
 
 ;; FIXME: The below could be a macro? I have a hard time getting

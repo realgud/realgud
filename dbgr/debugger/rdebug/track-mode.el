@@ -13,8 +13,8 @@
 (declare-function dbgr-track-mode(bool))
 
 ;;; FIXME: The following could be more DRY. Also use parnet-maps.
-(dbgr-populate-common-keys rdebug-track-minor-mode-map)
-(dbgr-ruby-populate-command-keys rdebug-track-minor-mode-map)
+(dbgr-populate-common-keys rdebug-track-mode-map)
+(dbgr-ruby-populate-command-keys rdebug-track-mode-map)
 
 (define-minor-mode rdebug-track-mode
   "Minor mode for tracking ruby debugging inside a process shell."
@@ -23,7 +23,7 @@
   ;; The minor mode bindings.
   :global nil
   :group 'rdebug
-  :keymap rdebug-track-minor-mode-map
+  ;; :keymap rdebug-track-mode-map
   (dbgr-track-mode-body "rdebug")
 )
 

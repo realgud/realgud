@@ -14,8 +14,8 @@
 
 ;;; FIXME: The following could be more DRY.
 
-(dbgr-populate-common-keys pydbgr-track-minor-mode-map)
-(define-key pydbgr-track-minor-mode-map 
+(dbgr-populate-common-keys pydbgr-track-mode-map)
+(define-key pydbgr-track-mode-map 
   (kbd "C-c !b") 'pydbgr-goto-backtrace-line)
 
 (define-minor-mode pydbgr-track-mode
@@ -25,7 +25,7 @@
   ;; The minor mode bindings.
   :global nil
   :group 'pydbgr
-  :keymap pydbgr-track-minor-mode-map
+  ;; :keymap pydbgr-track-mode-map
   (dbgr-track-mode-body "pydbgr")
 )
 

@@ -45,7 +45,7 @@ position.")
 ;; FIXME: since overlay overlay-arrow-list can be global, and perhaps
 ;; has to stay that way since some Emacs code may expect that, we
 ;; should use different global overlay arrow variables for the
-;; different debuggers. E.g. rbdbgr-overlay-arrow1,
+;; different debuggers. E.g. trepan-overlay-arrow1,
 ;; pydbgr-overlay-arrow1 and so on. That way, if those debuggers are
 ;; running concurrently, the fringe for one doesn't interfere with the
 ;; fringe for another.

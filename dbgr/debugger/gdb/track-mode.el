@@ -13,8 +13,8 @@
 
 ;;; FIXME: The following could be more DRY.
 
-(dbgr-populate-common-keys dbgr-gdb-track-minor-mode-map)
-(define-key dbgr-gdb-track-minor-mode-map 
+(dbgr-populate-common-keys dbgr-gdb-track-mode-map)
+(define-key dbgr-gdb-track-mode-map 
   (kbd "C-c !b") 'dbgr-gdb-goto-backtrace-line)
 
 (define-minor-mode dbgr-gdb-track-mode
@@ -24,7 +24,7 @@
   ;; The minor mode bindings.
   :global nil
   :group 'dbgr-gdb
-  :keymap dbgr-gdb-track-minor-mode-map
+  ;; :keymap dbgr-gdb-track-mode-map
   (dbgr-track-mode-body "dbgr-gdb")
 )
 

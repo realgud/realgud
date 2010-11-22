@@ -38,9 +38,9 @@
   
   (specify "track-mode-vars"
 	   (makunbound 'foo-track-mode)
-	   (makunbound 'foo-track-minor-mode-map)
+	   (makunbound 'foo-track-mode-map)
 	   (dbgr-track-mode-vars "foo")
-	   (dolist (var '("foo-track-minor-mode-map" "foo-track-mode"))
+	   (dolist (var '("foo-track-mode-map" "foo-track-mode"))
 	     (let ((var-sym (intern var)))
 	       (assert-t (boundp var-sym))
 	       (assert-t (stringp (get var-sym 'variable-documentation)))

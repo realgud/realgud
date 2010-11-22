@@ -12,8 +12,8 @@
 (declare-function dbgr-track-mode(bool))
 
 ;;; FIXME: The following could be more DRY. Also use parnet-maps.
-(dbgr-populate-common-keys trepanx-track-minor-mode-map)
-(dbgr-ruby-populate-command-keys trepanx-track-minor-mode-map)
+(dbgr-populate-common-keys trepanx-track-mode-map)
+(dbgr-ruby-populate-command-keys trepanx-track-mode-map)
 
 (define-minor-mode trepanx-track-mode
   "Minor mode for tracking ruby debugging inside a process shell."
@@ -22,7 +22,7 @@
   ;; The minor mode bindings.
   :global nil
   :group 'trepanx
-  :keymap trepanx-track-minor-mode-map
+  ;; :keymap trepanx-track-minor-mode-map
   (dbgr-track-mode-body "trepanx")
 )
 

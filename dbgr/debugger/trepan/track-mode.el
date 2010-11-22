@@ -22,11 +22,11 @@ described by PT."
   (interactive "d")
   (dbgr-goto-line-for-pt pt "control-frame"))
 
-(dbgr-populate-common-keys trepan-track-minor-mode-map)
-(dbgr-ruby-populate-command-keys trepan-track-minor-mode-map)
+(dbgr-populate-common-keys trepan-track-mode-map)
+(dbgr-ruby-populate-command-keys trepan-track-mode-map)
 
 (defun trepan-track-mode-hook()
-  (use-local-map trepan-track-minor-mode-map)
+  (use-local-map trepan-track-mode-map)
   (message "trepan track-mode-hook called")
 )
 
@@ -37,7 +37,7 @@ described by PT."
   ;; The minor mode bindings.
   :global nil
   :group 'trepan
-  :keymap trepan-track-minor-mode-map
+  ;; :keymap trepan-track-mode-map
   (dbgr-track-mode-body "trepan")
 )
 
