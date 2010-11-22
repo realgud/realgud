@@ -2,7 +2,7 @@
 ;;  tracks shell output 
 
 (eval-when-compile (require 'cl))
-(require 'comint)
+(require 'shell)
 
 (require 'load-relative)
 (require-relative-list
@@ -24,7 +24,7 @@
     map)
   "Keymap used in `dbgr-track-minor-mode'.")
 
-(set-keymap-parent dbgr-track-mode-map comint-mode-map)
+(set-keymap-parent dbgr-track-mode-map shell-mode-map)
 
 
 ;; FIXME figure out if I can put this in something like a header file.

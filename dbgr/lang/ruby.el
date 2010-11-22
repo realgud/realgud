@@ -15,6 +15,14 @@
   "A dbgr-loc-pat struct that describes a Ruby backtrace (or
 traceback) line."  )
 
+(defconst dbgr-rubinius-backtrace-loc-pat
+  (make-dbgr-loc-pat
+   :regexp "^\\(\\[0;3[1-4]m\\)?[ \t]+.* at \\([^:]+\\):\\([0-9]+\\)"
+   :file-group 2
+   :line-group 3)
+  "A dbgr-loc-pat struct that describes a Rubinius backtrace (or
+traceback) line."  )
+
 (defconst dbgr-ruby-dollar-bang
       (make-dbgr-loc-pat
        :regexp "^[ \t]*[[]?\\(.+\\):\\([0-9]+\\):in `.*'"

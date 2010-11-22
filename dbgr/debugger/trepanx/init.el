@@ -27,8 +27,9 @@ dbgr-loc-pat struct")
        :regexp "^(+trepanx\\(@[0-9]+\\|@main\\)?)+: "
        ))
 
-;;  Regular expression that describes a Ruby backtrace line.
-(setf (gethash "backtrace" dbgr-trepanx-pat-hash) dbgr-ruby-backtrace-loc-pat)
+;;  Regular expression that describes a Rubinius backtrace line.
+(setf (gethash "backtrace" dbgr-trepanx-pat-hash) 
+      dbgr-rubinius-backtrace-loc-pat)
 
 ;;  Regular expression that describes a "breakpoint set" line
 (setf (gethash "brkpt-set" dbgr-trepanx-pat-hash)
