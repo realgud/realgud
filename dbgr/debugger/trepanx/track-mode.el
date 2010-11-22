@@ -3,18 +3,27 @@
 
 (eval-when-compile (require 'cl))
 (require 'load-relative)
-(require-relative-list '("../../common/track-mode" "../../common/cmds" 
-			 "../../common/menu") "dbgr-")
+(require-relative-list '(
+			 "../../common/cmds" 
+			 "../../common/menu"
+			 "../../common/track"
+			 "../../common/track-mode"
+			 ) 
+		       "dbgr-")
 (require-relative-list '("core" "cmds" "init") "dbgr-trepanx-")
 (require-relative-list '("../../lang/ruby") "dbgr-lang-")
 
 (dbgr-track-mode-vars "trepanx")
+(set-keymap-parent trepanx-track-mode-map dbgr-track-mode-map)
+
 (declare-function dbgr-track-mode(bool))
 
-;;; FIXME: The following could be more DRY. Also use parnet-maps.
-(dbgr-populate-common-keys trepanx-track-mode-map)
 (dbgr-ruby-populate-command-keys trepanx-track-mode-map)
 
+(defun trepanx-track-mode-hook()
+  (use-local-map trepanx-track-mode-map)
+  (message "trepanx track-mode-hook called")
+)
 (define-minor-mode trepanx-track-mode
   "Minor mode for tracking ruby debugging inside a process shell."
   :init-value nil
@@ -22,8 +31,16 @@
   ;; The minor mode bindings.
   :global nil
   :group 'trepanx
-  ;; :keymap trepanx-track-minor-mode-map
-  (dbgr-track-mode-body "trepanx")
+  :keymap trepanx-track-mode-map
+
+  (dbgr-track-set-debugger "trepanx")
+  (if trepanx-track-mode
+      (progn 
+	(dbgr-track-mode 't)
+	(run-mode-hooks (intern (trepanx-track-mode-hook))))
+    (progn 
+      (dbgr-track-mode nil)
+      ))
 )
 
 (provide-me "dbgr-trepanx-")

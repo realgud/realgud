@@ -3,18 +3,27 @@
 
 (eval-when-compile (require 'cl))
 (require 'load-relative)
-(require-relative-list '("../../common/track-mode" 
+(require-relative-list '(
 			 "../../common/cmds" 
-			 "../../common/menu") "dbgr-")
+			 "../../common/menu"
+			 "../../common/track"
+			 "../../common/track-mode"
+			 ) 
+		       "dbgr-")
 (require-relative-list '("core" "cmds" "init") "dbgr-rdebug-")
 (require-relative-list '("../../lang/ruby") "dbgr-lang-")
 
 (dbgr-track-mode-vars "rdebug")
+(set-keymap-parent rdebug-track-mode-map dbgr-track-mode-map)
+
 (declare-function dbgr-track-mode(bool))
 
-;;; FIXME: The following could be more DRY. Also use parnet-maps.
-(dbgr-populate-common-keys rdebug-track-mode-map)
 (dbgr-ruby-populate-command-keys rdebug-track-mode-map)
+
+(defun rdebug-track-mode-hook()
+  (use-local-map rdebug-track-mode-map)
+  (message "rdebug track-mode-hook called")
+)
 
 (define-minor-mode rdebug-track-mode
   "Minor mode for tracking ruby debugging inside a process shell."
@@ -23,8 +32,15 @@
   ;; The minor mode bindings.
   :global nil
   :group 'rdebug
-  ;; :keymap rdebug-track-mode-map
-  (dbgr-track-mode-body "rdebug")
+  :keymap rdebug-track-mode-map
+  (dbgr-track-set-debugger "rdebug")
+  (if rdebug-track-mode
+      (progn 
+	(dbgr-track-mode 't)
+	(run-mode-hooks (intern (rdebug-track-mode-hook))))
+    (progn 
+      (dbgr-track-mode nil)
+      ))
 )
 
 (provide-me "dbgr-rdebug-")

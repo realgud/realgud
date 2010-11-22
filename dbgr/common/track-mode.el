@@ -2,6 +2,7 @@
 ;;  tracks shell output 
 
 (eval-when-compile (require 'cl))
+(require 'comint)
 
 (require 'load-relative)
 (require-relative-list
@@ -22,6 +23,9 @@
     (dbgr-populate-debugger-menu map)
     map)
   "Keymap used in `dbgr-track-minor-mode'.")
+
+(set-keymap-parent dbgr-track-mode-map comint-mode-map)
+
 
 ;; FIXME figure out if I can put this in something like a header file.
 (declare-function dbgr-track-set-debugger (debugger-name &optional hash))
