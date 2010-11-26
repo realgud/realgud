@@ -16,8 +16,6 @@
      ) "dbgr-")
   )
 
-(require-relative-list  '("dbgr/common/buffer/backtrace") "dbgr-buffer-")
-
 ;; Really should be part of GNU Emacs. But until then...
 (defmacro dbgr-string-starts-with(string prefix)
   "compare-strings on STRING anchored from the beginning and up

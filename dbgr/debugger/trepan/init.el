@@ -69,27 +69,41 @@ dbgr-loc-pat struct")
 ;;  Regular expression that describes a Ruby $! string
 (setf (gethash "dollar-bang" dbgr-trepan-pat-hash) dbgr-ruby-dollar-bang)
 
+
+(defconst dbgr-trepan-frame-start-regexp
+  "\\(?:^\\|\n\\)\\(?:-->\\|   \\)")
+
+(defconst dbgr-trepan-frame-num-regexp
+  "#\\([0-9]+\\)")
+
+(defconst dbgr-trepan-frame-file-regexp
+  "[ \t\n]+in file \\(.+\\)\\(?:[ \n]?\\|$\\)")
+
+(defconst dbgr-trepan-frame-line-regexp
+  "[ \t\n]+at line \\([0-9]+\\)")
+
+
 ;;  Regular expression that describes trepan "frame" line.
 ;;  e.g.
 ;; --> #0 METHOD Object#require(path) in file <internal:lib/require> at line 28
 ;;     #1 TOP Object#<top /tmp/linecache.rb> in file /tmp/linecache.rb
 (setf (gethash "frame" dbgr-trepan-pat-hash)
       (make-dbgr-loc-pat
-       :regexp 	"^\\(-->\\)? *#\\([0-9]+\\) \\([A-Z]+\\) *\\([A-Z_][a-zA-Z0-9_]*\\)[#]\\([a-zA-Z_][a-zA-Z_[0-9]]*\\)?"
-       :num 2))
-
-;;  Regular expression that describes the 2nd part of a trepan "frame" line.
-;;  e.g.
-;;	at line 64
-(setf (gethash "frame2" dbgr-trepan-pat-hash)
-      (make-dbgr-loc-pat
-       :regexp 	"[ \t]+at line \\([0-9]+\\)$"
-       :line-group 1))
+       :regexp 	(concat dbgr-trepan-frame-start-regexp " "
+			dbgr-trepan-frame-num-regexp " "
+			"\\([A-Z]+\\) *\\([A-Z_][a-zA-Z0-9_]*\\)[#]\\(.*\\)"
+			dbgr-trepan-frame-file-regexp
+			"\\(?:" dbgr-trepan-frame-line-regexp "\\)?"
+			)
+       :num 1
+       :file-group 5
+       :line-group 6)
+      )
 
 (setf (gethash "font-lock-keywords" dbgr-trepan-pat-hash)
       '(
 	;; The frame number and first type name, if present.
-	("^\\(-->\\)? *#\\([0-9]+\\) \\([A-Z]+\\) *\\([A-Z_][a-zA-Z0-9_]*\\)[#]\\([a-zA-Z_][a-zA-Z_[0-9]]*\\)?"
+	("^\\(-->\\|   \\)? #\\([0-9]+\\) \\([A-Z]+\\) *\\([A-Z_][a-zA-Z0-9_]*\\)[#]\\([a-zA-Z_][a-zA-Z_[0-9]]*\\)?"
 	 (2 dbgr-backtrace-number-face)
 	 (3 font-lock-keyword-face)         ; e.g. METHOD, TOP
 	 (4 font-lock-constant-face)        ; e.g. Object
@@ -117,6 +131,39 @@ dbgr-loc-pat struct")
 	;; (trepan-frames-match-current-line
 	;;  (0 trepan-frames-current-frame-face append))
 	))
+
+;; (setf (gethash "font-lock-keywords" dbgr-trepan-pat-hash)
+;;       '(
+;; 	;; The frame number and first type name, if present.
+;; 	((concat dbgr-trepan-frame-start-regexp " " 
+;; 			dbgr-trepan-frame-num-regexp " "
+;; 			"\\([A-Z]+\\) *\\([A-Z_][a-zA-Z0-9_]*\\)[#]\\([a-zA-Z_][a-zA-Z_[0-9]]*\\)?")
+;; 	 (2 dbgr-backtrace-number-face)
+;; 	 (3 font-lock-keyword-face)         ; e.g. METHOD, TOP
+;; 	 (4 font-lock-constant-face)        ; e.g. Object
+;; 	 (5 font-lock-function-name-face nil t))   ; t means optional
+;; 	;; Instruction sequence
+;; 	("<\\(.+\\)>"
+;; 	 (1 font-lock-variable-name-face))
+;; 	;; "::Type", which occurs in class name of function and in
+;; 	;; parameter list.  Parameter sequence
+;; 	("(\\(.+\\))"
+;; 	 (1 font-lock-variable-name-face))
+;; 	;; "::Type", which occurs in class name of function and in
+;; 	;; parameter list.
+;; 	("::\\([a-zA-Z_][a-zA-Z0-9_]*\\)"
+;; 	 (1 font-lock-type-face))
+;; 	;; File name.
+;; 	(dbgr-trepan-frame-file-regexp (1 dbgr-file-name-face))
+;; 	;; Line number.
+;; 	(dbgr-trepan-frame-line-regexp (1 dbgr-line-number-face))
+;; 	;; Function name.
+;; 	("\\<\\([a-zA-Z_][a-zA-Z0-9_]*\\)\\.\\([a-zA-Z_][a-zA-Z0-9_]*\\)"
+;; 	 (1 font-lock-type-face)
+;; 	 (2 font-lock-function-name-face))
+;; 	;; (trepan-frames-match-current-line
+;; 	;;  (0 trepan-frames-current-frame-face append))
+;; 	))
 
 (setf (gethash "trepan" dbgr-pat-hash) dbgr-trepan-pat-hash)
 

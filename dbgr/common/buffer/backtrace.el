@@ -2,21 +2,19 @@
 ;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
 (require-relative-list
- '("../send" "../track" "../key") "dbgr-")
+ '("../key") "dbgr-")
 (require-relative-list
  '("command") "dbgr-buffer-")
 
 (defstruct dbgr-backtrace-info
   "debugger object/structure specific to a (top-level) Ruby file
 to be debugged."
-  cmdproc        ;; buffer of the associated debugger process
+  cmdbuf        ;; buffer of the associated debugger process
   cur-pos        ;; If not nil, frame we are at
 )
 
 (defvar dbgr-backtrace-info)
 (make-variable-buffer-local 'dbgr-backtrace-info)
-
-
 
 ;: FIXME: not picked up from track. Why?
 (defvar dbgr-track-divert-string nil)
@@ -88,23 +86,41 @@ to be debugged."
 	      (divert-string dbgr-track-divert-string)
 	      )
 	  (with-current-buffer bt-buffer
-	    (set (make-local-variable 'dbgr-backtrace-info)
-		 (make-dbgr-backtrace-info
-		  :cmdproc cmdbuf))
 	    (setq buffer-read-only nil)
 	    (delete-region (point-min) (point-max))
 	    (if divert-string 
 		(progn
-		  (insert (dbgr-backtrace-propertize-string frame-pat
-							    divert-string))
+		  (insert (dbgr-backtrace-add-text-properties frame-pat
+							      divert-string))
 		  (dbgr-backtrace-mode cmdbuf))
 	      )
+	    ;; dbgr-backtrace-mode kills all local variables so
+	    ;; we set this after. Alternatively cahnge dbgr-backtrace-mode.
+	    (set (make-local-variable 'dbgr-backtrace-info)
+		 (make-dbgr-backtrace-info
+		  :cmdbuf cmdbuf))
 	    )
 	  )
 	)
       )
     )
   )
+
+(defun dbgr-backtrace? ( &optional buffer)
+  "Return true if BUFFER is a debugger command buffer."
+  (with-current-buffer-safe 
+   (or buffer (current-buffer))
+   (dbgr-backtrace-info-set?)))
+
+
+(defalias 'dbgr-backtrace-info? 'dbgr-backtrace-info-p)
+
+(defun dbgr-backtrace-info-set? ()
+  "Return true if dbgr-backtrace-info is set."
+  (and (boundp 'dbgr-backtrace-info) 
+       dbgr-backtrace-info
+       (dbgr-backtrace-info? dbgr-backtrace-info)))
+
 
 (defun dbgr-backtrace-mode (&optional cmdbuf)
   "Major mode for displaying the stack frames.
@@ -190,6 +206,18 @@ non-digit will start entry number from the beginning again."
       (setq dbgr-goto-entry-acc ""))
   (dbgr-goto-entry-n-internal (this-command-keys)))
 
+(defun dbgr-goto-frame ()
+  "Go to the frame number. We get the frame number from the
+'frame-num property"
+  (interactive)
+  (let ((frame-num (get-text-property (point) 'frame-num)))
+    (if frame-num 
+	(dbgr-cmd-frame frame-num)
+      (message "No frame property found at this point")
+      )
+    )
+  )
+
 (defun dbgr-goto-frame-n ()
   "Go to the frame number indicated by the accumulated numeric keys just entered.
 
@@ -203,22 +231,30 @@ non-digit will start entry number from the beginning again."
       (setq dbgr-goto-entry-acc ""))
   (dbgr-goto-frame-n-internal (this-command-keys)))
 
-(defun dbgr-backtrace-propertize-string  (frame-pat &optional opt-string)
+(defun dbgr-backtrace-add-text-properties  (frame-pat &optional opt-string)
   "Parse STRING and add properties for that"
 
   (let (
 	 (string (or opt-string 
-		     (buffer-substring (line-beginning-position)
-				       (line-end-position))))
+		     (buffer-substring (point-min) (point-max))
+		     ))
 	 (frame-regexp (dbgr-loc-pat-regexp frame-pat))
-	 (frame-num (dbgr-loc-pat-num frame-pat))
+	 (frame-group-pat (dbgr-loc-pat-num frame-pat))
+	 (last-pos 0)
 	 )
-  (if (string-match frame-regexp string)
-      (progn
-	(add-text-properties (match-beginning frame-num) (match-end frame-num)
+  (while (string-match frame-regexp string last-pos)
+      (let* ((frame-num-str 
+	      (substring string (match-beginning frame-group-pat)
+			 (match-end frame-group-pat)))
+	     (frame-num (string-to-number frame-num-str)))
+	(put-text-property (match-beginning 0) (match-end 0)
+			    'frame-num  frame-num string)
+	(add-text-properties (match-beginning frame-group-pat) 
+			     (match-end frame-group-pat)
 			     '(mouse-face highlight 
 					  help-echo "mouse-2: goto this frame")
 			     string)
+	(setq last-pos (match-end 0))
 	))
   string)
   )

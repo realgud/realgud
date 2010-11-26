@@ -1,9 +1,19 @@
 ;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
 (require-relative-list '("../fringe" "../helper") "dbgr-")
-(require-relative-list '("command" "source") "dbgr-buffer-")
+(require-relative-list '("command" "source" "backtrace") "dbgr-buffer-")
 
 (defvar dbgr-cmdbuf-info)
+
+(defun dbgr-get-cmdbuf-from-backtrace ( &optional opt-buffer)
+  "Return the command buffer associated with source
+OPT-BUFFER or if that is ommited `current-buffer' which is
+assumed to be a source-code buffer."
+  (let ((buffer (or opt-buffer (current-buffer))))
+    (if (dbgr-backtrace? buffer)
+	(with-current-buffer-safe buffer
+	  (dbgr-sget 'backtrace-info 'cmdproc))
+      nil)))
 
 (defun dbgr-get-cmdbuf-from-srcbuf ( &optional opt-buffer)
   "Return the command buffer associated with source
@@ -78,9 +88,12 @@ if we don't find anything."
       (cond 
        ;; Perhaps buffer is a process-command buffer?
        ((dbgr-cmdbuf? buffer) buffer)
-       ;; Perhaps buffer is a source-code buffer.
+       ;; Perhaps buffer is a source-code buffer?
        ((dbgr-srcbuf? buffer)
 	(dbgr-get-cmdbuf-from-srcbuf buffer))
+       ;; Perhaps buffer is a backtrace buffer?
+       ((dbgr-backtrace? buffer)
+	(dbgr-get-cmdbuf-from-backtrace buffer))
        (t nil)))))
 
 (defun dbgr-get-process (&optional opt-buffer)
