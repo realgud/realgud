@@ -34,7 +34,7 @@ dbgr-loc-pat struct")
 (setf (gethash "brkpt-set" dbgr-gdb-pat-hash)
       (make-dbgr-loc-pat
        :regexp "^Breakpoint \\([0-9]+\\) at 0x\\([0-9a-f]*\\): file \\(.+\\), line \\([0-9]+\\).\n"
-       :bp-num 1
+       :num 1
        :file-group 3
        :line-group 4))
 

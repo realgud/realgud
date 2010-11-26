@@ -70,39 +70,41 @@ to be debugged."
   	(process)
   	)
     (with-current-buffer-safe cmdbuf
-      (setq process (get-buffer-process (current-buffer)))
-      (dbgr-cmdbuf-info-in-srcbuf?= dbgr-cmdbuf-info 
-    				   (not (dbgr-cmdbuf? buffer)))
-      (dbgr-cmdbuf-info-divert-output?= dbgr-cmdbuf-info 't)
-      (setq dbgr-track-divert-string nil)
-      (dbgr-command "backtrace" nil nil 't)
-      (while (and (eq 'run (process-status process))
+      (let ((frame-pat (dbgr-cmdbuf-pat "frame")))
+	(setq process (get-buffer-process (current-buffer)))
+	(dbgr-cmdbuf-info-in-srcbuf?= dbgr-cmdbuf-info 
+				      (not (dbgr-cmdbuf? buffer)))
+	(dbgr-cmdbuf-info-divert-output?= dbgr-cmdbuf-info 't)
+	(setq dbgr-track-divert-string nil)
+	(dbgr-command "backtrace" nil nil 't)
+	(while (and (eq 'run (process-status process))
 		    (null dbgr-track-divert-string))
 	  (sleep-for 0.001)
 	  )
-      ;; (message "+++4 %s" dbgr-track-divert-string)
-      (let ((bt-buffer (get-buffer-create
-			(format "*%s backtrace*" 
-				(dbgr-remove-surrounding-stars (buffer-name)))))
-	    (divert-string dbgr-track-divert-string)
-	    )
-	(with-current-buffer bt-buffer
-	  (set (make-local-variable 'dbgr-backtrace-info)
-	       (make-dbgr-backtrace-info
-		:cmdproc cmdbuf))
-	  (setq buffer-read-only nil)
-	  (delete-region (point-min) (point-max))
-	  (if divert-string 
-	      (progn
-		(insert divert-string)
-		(dbgr-backtrace-mode cmdbuf)
-		)
+	;; (message "+++4 %s" dbgr-track-divert-string)
+	(let ((bt-buffer (get-buffer-create
+			  (format "*%s backtrace*" 
+				  (dbgr-remove-surrounding-stars (buffer-name)))))
+	      (divert-string dbgr-track-divert-string)
+	      )
+	  (with-current-buffer bt-buffer
+	    (set (make-local-variable 'dbgr-backtrace-info)
+		 (make-dbgr-backtrace-info
+		  :cmdproc cmdbuf))
+	    (setq buffer-read-only nil)
+	    (delete-region (point-min) (point-max))
+	    (if divert-string 
+		(progn
+		  (insert (dbgr-backtrace-propertize-string frame-pat
+							    divert-string))
+		  (dbgr-backtrace-mode cmdbuf))
+	      )
 	    )
 	  )
 	)
+      )
     )
   )
-)
 
 (defun dbgr-backtrace-mode (&optional cmdbuf)
   "Major mode for displaying the stack frames.
@@ -200,5 +202,25 @@ non-digit will start entry number from the beginning again."
   (if (not (eq last-command 'dbgr-goto-frame-n))
       (setq dbgr-goto-entry-acc ""))
   (dbgr-goto-frame-n-internal (this-command-keys)))
+
+(defun dbgr-backtrace-propertize-string  (frame-pat &optional opt-string)
+  "Parse STRING and add properties for that"
+
+  (let (
+	 (string (or opt-string 
+		     (buffer-substring (line-beginning-position)
+				       (line-end-position))))
+	 (frame-regexp (dbgr-loc-pat-regexp frame-pat))
+	 (frame-num (dbgr-loc-pat-num frame-pat))
+	 )
+  (if (string-match frame-regexp string)
+      (progn
+	(add-text-properties (match-beginning frame-num) (match-end frame-num)
+			     '(mouse-face highlight 
+					  help-echo "mouse-2: goto this frame")
+			     string)
+	))
+  string)
+  )
 
 (provide-me "dbgr-buffer-")

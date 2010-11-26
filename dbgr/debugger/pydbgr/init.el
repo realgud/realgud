@@ -50,7 +50,7 @@ dbgr-loc-pat struct")
 (setf (gethash "brkpt-set" dbgr-pydbgr-pat-hash)
       (make-dbgr-loc-pat
        :regexp "^Breakpoint \\([0-9]+\\) set at line \\([0-9]+\\)[ \t\n]+of file \\(.+\\)\\(\n\\|$\\)"
-       :bp-num 1
+       :num 1
        :file-group 3
        :line-group 2))
 
@@ -58,7 +58,7 @@ dbgr-loc-pat struct")
 (setf (gethash "brkpt-del" dbgr-pydbgr-pat-hash)
       (make-dbgr-loc-pat
        :regexp "^Deleted breakpoint \\([0-9]+\\)\n"
-       :bp-num 1))
+       :num 1))
 
 (setf (gethash "font-lock-keywords" dbgr-pydbgr-pat-hash)
       '(

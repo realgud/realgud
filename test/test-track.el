@@ -38,7 +38,7 @@
 
 	 (specify "bp-loc extracted"
 		  (assert-t (dbgr-loc-p loc))
-		  (assert-equal bp-num (dbgr-loc-bp-num loc)))
+		  (assert-equal bp-num (dbgr-loc-num loc)))
 
 	 (specify "dbgr-track-divert-prompt"
 		  (dbgr-cmdbuf-info-divert-output?= dbgr-cmdbuf-info 't)

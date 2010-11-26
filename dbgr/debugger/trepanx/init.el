@@ -35,7 +35,7 @@ dbgr-loc-pat struct")
 (setf (gethash "brkpt-set" dbgr-trepanx-pat-hash)
       (make-dbgr-loc-pat
        :regexp "^Breakpoint \\([0-9]+\\) set at line \\([0-9]+\\)[ \t\n]+in file \\(.+\\),\n"
-       :bp-num 1
+       :num 1
        :file-group 3
        :line-group 2))
 
@@ -43,7 +43,7 @@ dbgr-loc-pat struct")
 (setf (gethash "brkpt-del" dbgr-trepanx-pat-hash)
       (make-dbgr-loc-pat
        :regexp "^Deleted breakpoint \\([0-9]+\\)\n"
-       :bp-num 1))
+       :num 1))
 
 (setf (gethash "control-frame" dbgr-trepanx-pat-hash)
       (make-dbgr-loc-pat

@@ -18,34 +18,47 @@ dbgr-loc-pat struct")
 
 ;; Regular expression that describes a trepan location generally shown
 ;; before a command prompt.
+;; For example: 
+;; -- (/tmp/linecache.rb:64)
+;; C> (/tmp/eval.rb:2)
 (setf (gethash "loc" dbgr-trepan-pat-hash)
       (make-dbgr-loc-pat
        :regexp ".. (\\(?:.+ \\(?:via\\|remapped\\) \\)?\\(.+\\):\\([0-9]+\\))"
        :file-group 1
        :line-group 2))
 
-;;  Regular expression that describes a trepan command prompt
+;; Regular expression that describes a trepan command prompt
+;; For example: 
+;;   (trepan): 
+;;   ((trepan)):
 (setf (gethash "prompt" dbgr-trepan-pat-hash)
       (make-dbgr-loc-pat
        :regexp "^(+trepan\\(@[0-9]+\\|@main\\)?)+: "
        ))
 
-;;  Regular expression that describes a Ruby backtrace line.
+;; Regular expression that describes a Ruby backtrace line.
 (setf (gethash "backtrace" dbgr-trepan-pat-hash) dbgr-ruby-backtrace-loc-pat)
 
-;;  Regular expression that describes a "breakpoint set" line
+;; Regular expression that describes a "breakpoint set" line. 
+;; For example: 
+;;   Breakpoint 1 set at VM offset 2 of instruction sequence "require",
+;;	line 29 in file <internal:lib/rubygems/custom_require>.
+;;   Breakpoint 2 set at VM offset 29 of instruction sequence "<top /xx.rb>",
+;;	line 64 in file /src/external-vcs/linecache/trunk/lib/linecache.rb.
 (setf (gethash "brkpt-set" dbgr-trepan-pat-hash)
       (make-dbgr-loc-pat
        :regexp "^Breakpoint \\([0-9]+\\) set at line \\([0-9]+\\)[ \t\n]+in file \\(.+\\),\n"
-       :bp-num 1
+       :num 1
        :file-group 3
        :line-group 2))
 
 ;;  Regular expression that describes a "delete breakpoint" line
+;; For example:
+;;   Deleted breakpoint 1.
 (setf (gethash "brkpt-del" dbgr-trepan-pat-hash)
       (make-dbgr-loc-pat
        :regexp "^Deleted breakpoint \\([0-9]+\\)\n"
-       :bp-num 1))
+       :num 1))
 
 (setf (gethash "control-frame" dbgr-trepan-pat-hash)
       (make-dbgr-loc-pat
@@ -55,6 +68,23 @@ dbgr-loc-pat struct")
 
 ;;  Regular expression that describes a Ruby $! string
 (setf (gethash "dollar-bang" dbgr-trepan-pat-hash) dbgr-ruby-dollar-bang)
+
+;;  Regular expression that describes trepan "frame" line.
+;;  e.g.
+;; --> #0 METHOD Object#require(path) in file <internal:lib/require> at line 28
+;;     #1 TOP Object#<top /tmp/linecache.rb> in file /tmp/linecache.rb
+(setf (gethash "frame" dbgr-trepan-pat-hash)
+      (make-dbgr-loc-pat
+       :regexp 	"^\\(-->\\)? *#\\([0-9]+\\) \\([A-Z]+\\) *\\([A-Z_][a-zA-Z0-9_]*\\)[#]\\([a-zA-Z_][a-zA-Z_[0-9]]*\\)?"
+       :num 2))
+
+;;  Regular expression that describes the 2nd part of a trepan "frame" line.
+;;  e.g.
+;;	at line 64
+(setf (gethash "frame2" dbgr-trepan-pat-hash)
+      (make-dbgr-loc-pat
+       :regexp 	"[ \t]+at line \\([0-9]+\\)$"
+       :line-group 1))
 
 (setf (gethash "font-lock-keywords" dbgr-trepan-pat-hash)
       '(

@@ -270,7 +270,7 @@ Otherwise return nil."
     (if (dbgr-cmdbuf?)
 	(let* ((loc-pat (dbgr-cmdbuf-pat "brkpt-set")))
 	  (if loc-pat
-	      (let ((bp-num-group (dbgr-loc-pat-bp-num loc-pat))
+	      (let ((bp-num-group (dbgr-loc-pat-num loc-pat))
 		    (loc-regexp   (dbgr-loc-pat-regexp loc-pat))
 		    (file-group   (dbgr-loc-pat-file-group loc-pat))
 		    (line-group   (dbgr-loc-pat-line-group loc-pat)))

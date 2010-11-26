@@ -82,7 +82,7 @@ static char *magick[] = {
   "Record bp information for location LOC."
   (if (dbgr-loc? loc) 
       (let* ((marker (dbgr-loc-marker loc))
-	     (bp-num (dbgr-loc-bp-num loc))
+	     (bp-num (dbgr-loc-num loc))
 	     )
 	(dbgr-bp-put-icon marker 't bp-num)
 	)

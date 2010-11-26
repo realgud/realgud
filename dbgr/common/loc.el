@@ -15,8 +15,9 @@ file-name (via a buffer) and a line number (via an offset), we
 want to save the values that were seen/requested originally."
    id            ;; Unique id -- is the total number of locations seen
 	         ;; when this one was created.
-   bp-num        ;; If there is a breakpoint associated with this location
-                 ;; this is the breakpoint number. Nil otherwise.
+   num           ;; If there is a number such as a breakpoint or frame
+		 ;; number associated with this location this is set.
+		 ;; Nil otherwise.
    filename  
    line-number
    column-number ;; Column offset within line

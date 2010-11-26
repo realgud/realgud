@@ -30,7 +30,7 @@ problem as best as we can determine."
 			; And you thought we'd never get around to
 			; doing something other than validation? 
 			(make-dbgr-loc 
-			 :bp-num      bp-num
+			 :num         bp-num
 			 :cmd-marker  cmd-marker
 			 :filename    filename 
 			 :line-number line-number
