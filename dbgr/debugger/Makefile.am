@@ -1,4 +1,4 @@
-SUBDIRS = gdb pydbgr rdebug trepan trepanx zshdb
+SUBDIRS = bashdb gdb pydbgr rdebug trepan trepanx zshdb
 EXTRA_DIST = common.mk
 
 .PHONY: check all

@@ -34,6 +34,7 @@ AC_CONFIG_FILES([Makefile \
 		 dbgr/common/buffer/Makefile \
 		 dbgr/common/init/Makefile \
 		 dbgr/debugger/Makefile \
+		 dbgr/debugger/bashdb/Makefile \
 		 dbgr/debugger/gdb/Makefile \
 		 dbgr/debugger/pydbgr/Makefile \
 		 dbgr/debugger/rdebug/Makefile \

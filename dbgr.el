@@ -6,6 +6,7 @@
   (require-relative-list
    '(
      "./dbgr/common/track-mode"
+     "./dbgr/debugger/bashdb/bashdb"
      "./dbgr/debugger/gdb/gdb"
      "./dbgr/debugger/pydbgr/pydbgr"
      "./dbgr/debugger/rdebug/rdebug"

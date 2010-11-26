@@ -3,50 +3,50 @@
   
 (require 'load-relative)
 (require-relative-list '("../../common/track" "../../common/core") "dbgr-")
-(require-relative-list '("init") "dbgr-zshdb-")
+(require-relative-list '("init") "dbgr-bashdb-")
 
 ;; FIXME: I think the following could be generalized and moved to 
 ;; dbgr-... probably via a macro.
-(defvar zshdb-minibuffer-history nil
-  "minibuffer history list for the command `zshdb'.")
+(defvar bashdb-minibuffer-history nil
+  "minibuffer history list for the command `bashdb'.")
 
-(easy-mmode-defmap zshdb-minibuffer-local-map
+(easy-mmode-defmap bashdb-minibuffer-local-map
   '(("\C-i" . comint-dynamic-complete-filename))
   "Keymap for minibuffer prompting of gud startup command."
   :inherit minibuffer-local-map)
 
 ;; FIXME: I think this code and the keymaps and history
 ;; variable chould be generalized, perhaps via a macro.
-(defun zshdb-query-cmdline (&optional opt-debugger)
+(defun bashdb-query-cmdline (&optional opt-debugger)
   (dbgr-query-cmdline 
-   'zshdb-suggest-invocation
-   zshdb-minibuffer-local-map
-   'zshdb-minibuffer-history
+   'bashdb-suggest-invocation
+   bashdb-minibuffer-local-map
+   'bashdb-minibuffer-history
    opt-debugger))
 
-(defun zshdb-parse-cmd-args (orig-args)
+(defun bashdb-parse-cmd-args (orig-args)
   "Parse command line ARGS for the annotate level and name of script to debug.
 
 ARGS should contain a tokenized list of the command line to run.
 
 We return the a list containing
-- the command processor (e.g. zshdb) and it's arguments if any - a list of strings
-- the name of the debugger given (e.g. zshdb) and its arguments - a list of strings
+- the command processor (e.g. bashdb) and it's arguments if any - a list of strings
+- the name of the debugger given (e.g. bashdb) and its arguments - a list of strings
 - the script name and its arguments - list of strings
 - whether the annotate or emacs option was given ('-A', '--annotate' or '--emacs) - a boolean
 
 For example for the following input 
   (map 'list 'symbol-name
-   '(zsh -W -C /tmp zshdb --emacs ./gcd.rb a b))
+   '(zsh -W -C /tmp bashdb --emacs ./gcd.rb a b))
 
 we might return:
-   ((zsh -W -C) (zshdb --emacs) (./gcd.rb a b) 't)
+   ((zsh -W -C) (bashdb --emacs) (./gcd.rb a b) 't)
 
 NOTE: the above should have each item listed in quotes.
 "
 
   ;; Parse the following kind of pattern:
-  ;;  [zsh zsh-options] zshdb zshdb-options script-name script-options
+  ;;  [zsh zsh-options] bashdb bashdb-options script-name script-options
   (let (
 	(args orig-args)
 	(pair)          ;; temp return from 
@@ -56,10 +56,10 @@ NOTE: the above should have each item listed in quotes.
 
 	;; One dash is added automatically to the below, so
 	;; h is really -h and -host is really --host.
-	(zshdb-two-args '("A" "-annotate" "l" "-library"
+	(bashdb-two-args '("A" "-annotate" "l" "-library"
 			   "c" "-command" "-t" "-tty"
 			   "x" "-eval-command"))
-	(zshdb-opt-two-args '())
+	(bashdb-opt-two-args '())
 	(interp-regexp 
 	 (if (member system-type (list 'windows-nt 'cygwin 'msdos))
 	     "^zsh*\\(.exe\\)?$"
@@ -91,13 +91,13 @@ NOTE: the above should have each item listed in quotes.
 	  (nconc interpreter-args (car pair))
 	  (setq args (cadr pair))))
 
-      ;; Remove "zshdb" from "zshdb --zshdb-options script
+      ;; Remove "bashdb" from "bashdb --bashdb-options script
       ;; --script-options"
       (setq debugger-name (file-name-sans-extension
 			   (file-name-nondirectory (car args))))
-      (unless (string-match "^zshdb$" debugger-name)
+      (unless (string-match "^bashdb$" debugger-name)
 	(message 
-	 "Expecting debugger name `%s' to be `zshdb'"
+	 "Expecting debugger name `%s' to be `bashdb'"
 	 debugger-name))
       (setq debugger-args (list (pop args)))
 
@@ -117,7 +117,7 @@ NOTE: the above should have each item listed in quotes.
 	   ;; Options with arguments.
 	   ((string-match "^-" arg)
 	    (setq pair (dbgr-parse-command-arg 
-			args zshdb-two-args zshdb-opt-two-args))
+			args bashdb-two-args bashdb-opt-two-args))
 	    (nconc debugger-args (car pair))
 	    (setq args (cadr pair)))
 	   ;; Anything else must be the script to debug.
@@ -126,52 +126,52 @@ NOTE: the above should have each item listed in quotes.
 	   )))
       (list interpreter-args debugger-args script-args annotate-p))))
 
-(defvar zshdb-command-name) ; # To silence Warning: reference to free variable
-(defun zshdb-suggest-invocation (debugger-name)
-  "Suggest a zshdb command invocation via `dbgr-suggest-invocaton'"
-  (dbgr-suggest-invocation zshdb-command-name zshdb-minibuffer-history 
+(defvar bashdb-command-name) ; # To silence Warning: reference to free variable
+(defun bashdb-suggest-invocation (debugger-name)
+  "Suggest a bashdb command invocation via `dbgr-suggest-invocaton'"
+  (dbgr-suggest-invocation bashdb-command-name bashdb-minibuffer-history 
 			   "Shell-script" "\\.sh$"))
 
-(defun zshdb-goto-backtrace-line (pt)
+(defun bashdb-goto-backtrace-line (pt)
   "Display the location mentioned by the zshd backtrace line
 described by PT."
   (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "backtrace" dbgr-zshdb-pat-hash))
+  (dbgr-goto-line-for-pt-and-type pt "backtrace" dbgr-bashdb-pat-hash))
 
-(defun zshdb-goto-control-frame-line (pt)
+(defun bashdb-goto-control-frame-line (pt)
   "Display the location mentioned by a control-frame line
 described by PT."
   (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "control-frame" dbgr-zshdb-pat-hash))
+  (dbgr-goto-line-for-pt-and-type pt "control-frame" dbgr-bashdb-pat-hash))
 
-(defun zshdb-goto-dollarbang-backtrace-line (pt)
+(defun bashdb-goto-dollarbang-backtrace-line (pt)
   "Display the location mentioned by a zshd backtrace line
 described by PT."
   (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "dollar-bang" dbgr-zshdb-pat-hash))
+  (dbgr-goto-line-for-pt-and-type pt "dollar-bang" dbgr-bashdb-pat-hash))
 
-(defun zshdb-reset ()
-  "Zshdb cleanup - remove debugger's internal buffers (frame,
+(defun bashdb-reset ()
+  "Bashdb cleanup - remove debugger's internal buffers (frame,
 breakpoints, etc.)."
   (interactive)
-  ;; (zshdb-breakpoint-remove-all-icons)
+  ;; (bashdb-breakpoint-remove-all-icons)
   (dolist (buffer (buffer-list))
-    (when (string-match "\\*zshdb-[a-z]+\\*" (buffer-name buffer))
+    (when (string-match "\\*bashdb-[a-z]+\\*" (buffer-name buffer))
       (let ((w (get-buffer-window buffer)))
         (when w
           (delete-window w)))
       (kill-buffer buffer))))
 
-;; (defun zshdb-reset-keymaps()
+;; (defun bashdb-reset-keymaps()
 ;;   "This unbinds the special debugger keys of the source buffers."
 ;;   (interactive)
-;;   (setcdr (assq 'zshdb-debugger-support-minor-mode minor-mode-map-alist)
-;; 	  zshdb-debugger-support-minor-mode-map-when-deactive))
+;;   (setcdr (assq 'bashdb-debugger-support-minor-mode minor-mode-map-alist)
+;; 	  bashdb-debugger-support-minor-mode-map-when-deactive))
 
 
-(defun zshdb-customize ()
-  "Use `customize' to edit the settings of the `zshdb' debugger."
+(defun bashdb-customize ()
+  "Use `customize' to edit the settings of the `bashdb' debugger."
   (interactive)
-  (customize-group 'zshdb))
+  (customize-group 'bashdb))
 
-(provide-me "dbgr-zshdb-")
+(provide-me "dbgr-bashdb-")
