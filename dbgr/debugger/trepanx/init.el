@@ -47,7 +47,7 @@ dbgr-loc-pat struct")
        :file-group 2
        :line-group 3))
 
-;; Regular expression that describes a "delete breakpoint" line
+;; Regular expression that describes a debugger "delete" (breakpoint) response.
 ;; For example:'
 ;;   Deleted breakpoint 1.
 (setf (gethash "brkpt-del" dbgr-trepanx-pat-hash)
@@ -63,14 +63,17 @@ dbgr-loc-pat struct")
 (defconst dbgr-trepanx-frame-file-line-regexp
   " at \\(.*\\):\\([0-9]+\\)$")
 
-;;  Regular expression that describes trepan "frame" line.
+(defconst dbgr-trepanx-frame-start-regexp dbgr-trepan-frame-start-regexp)
+(defconst dbgr-trepanx-frame-num-regexp   dbgr-trepan-frame-start-regexp)
+
+;;  Regular expression that describes a debugger "backtrace" command line.
 ;;  e.g.
 ;; --> #0 Rubinius::Scope#my_method at kernel/common/variable_scope.rb:134
 ;;     #1 main.__script__ at /tmp/fact.rb:1
 (setf (gethash "frame" dbgr-trepanx-pat-hash)
       (make-dbgr-loc-pat
-       :regexp 	(concat dbgr-trepan-frame-start-regexp " " ; note common trepan
-			dbgr-trepan-frame-num-regexp " "   ; note common trepan
+       :regexp 	(concat dbgr-trepanx-frame-start-regexp " "
+			dbgr-trepanx-frame-num-regexp " " 
 			"\\([A-Z_][a-zA-Z0-9_:]*\\)[#.]\\(.*\\)"
 			dbgr-trepanx-frame-file-line-regexp
 			)

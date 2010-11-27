@@ -17,14 +17,18 @@ dbgr-loc-pat struct")
 
 ;; Regular expression that describes a rdebug location generally shown
 ;; before a command prompt.
-;; E.g. 
+;; For example:
+;;  /usr/lib/ruby/1.8/rubygems/custom_require.rb:31  # in Emacs
+;; /usr/bin/irb:12
 (setf (gethash "loc" dbgr-rdebug-pat-hash)
       (make-dbgr-loc-pat
        :regexp "\\(?:source \\)?\\(\\(?:[a-zA-Z]:\\)?\\(?:.+\\)\\):\\([0-9]+\\).*\\(?:\n\\|$\\)"
        :file-group 1
        :line-group 2))
 
-;;  Regular expression that describes a rdebug command prompt
+;; Regular expression that describes a rdebug command prompt
+;; For example:
+;;   (rdb:1) 
 (setf (gethash "prompt" dbgr-rdebug-pat-hash)
       (make-dbgr-loc-pat
        :regexp "^(rdb:[0-9]+) "
@@ -33,9 +37,10 @@ dbgr-loc-pat struct")
 ;;  Regular expression that describes a Ruby backtrace line.
 (setf (gethash "backtrace" dbgr-rdebug-pat-hash) dbgr-ruby-backtrace-loc-pat)
 
-;;  Regular expression that describes a rdebug "breakpoint set" line
-;;  E.g. Breakpoint 1 file /test/gcd.rb, line 6
-;;       -----------^------^^^^^^^^^^^^-------^           
+;; Regular expression that describes a rdebug "breakpoint set" line
+;; For example:
+;;   Breakpoint 1 file /test/gcd.rb, line 6
+;;   -----------^------^^^^^^^^^^^^-------^           
 (setf (gethash "brkpt-set" dbgr-rdebug-pat-hash)
       (make-dbgr-loc-pat
        :regexp "^Breakpoint \\([0-9]+\\) file \\(.+\\), line \\([0-9]+\\)\n"
@@ -43,8 +48,32 @@ dbgr-loc-pat struct")
        :file-group 2
        :line-group 3))
 
+(defconst dbgr-rdebug-frame-file-line-regexp 
+  "[ \t\n]+at line \\(.*\\):\\([0-9]+\\)$")
+
+(defconst dbgr-rdebug-frame-start-regexp dbgr-trepan-frame-start-regexp)
+(defconst dbgr-rdebug-frame-num-regexp   dbgr-trepan-frame-num-regexp)
+
 ;;  Regular expression that describes a Ruby $! string
 (setf (gethash "dollar-bang" dbgr-rdebug-pat-hash) dbgr-ruby-dollar-bang)
+
+;;  Regular expression that describes debugger "backtrace" command line.
+;;  e.g.
+;; --> #0 at line /usr/bin/irb:12
+;;     #1 main.__script__ at /tmp/fact.rb:1
+;;     #1 main.__script__ at /tmp/fact.rb:1
+;;     #0 IRB.start(ap_path#String) at line /usr/lib/ruby/1.8/irb.rb:52
+(setf (gethash "frame" dbgr-rdebug-pat-hash)
+      (make-dbgr-loc-pat
+       :regexp 	(concat dbgr-rdebug-frame-start-regexp " "
+			dbgr-rdebug-frame-num-regexp
+			"\\(?: \\(?:\\(.+\\)(\\(.*\\))\\)\\)?"
+			dbgr-rdebug-frame-file-line-regexp
+			)
+       :num 1
+       :file-group 4
+       :line-group 5)
+      )
 
 (setf (gethash "font-lock-keywords" dbgr-rdebug-pat-hash)
       '(

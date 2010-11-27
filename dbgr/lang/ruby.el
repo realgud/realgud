@@ -61,5 +61,8 @@ described by PT."
 (defconst dbgr-trepan-frame-num-regexp
   "#\\([0-9]+\\)")
 
+(defconst dbgr-trepan-frame-line-regexp
+  "[ \t\n]+at line \\([0-9]+\\)$")
+
 
 (provide-me "dbgr-lang-")
