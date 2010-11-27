@@ -69,18 +69,11 @@ dbgr-loc-pat struct")
 ;;  Regular expression that describes a Ruby $! string
 (setf (gethash "dollar-bang" dbgr-trepan-pat-hash) dbgr-ruby-dollar-bang)
 
-
-(defconst dbgr-trepan-frame-start-regexp
-  "\\(?:^\\|\n\\)\\(?:-->\\|   \\)")
-
-(defconst dbgr-trepan-frame-num-regexp
-  "#\\([0-9]+\\)")
-
 (defconst dbgr-trepan-frame-file-regexp
   "[ \t\n]+in file \\(.+\\)\\(?:[ \n]?\\|$\\)")
 
 (defconst dbgr-trepan-frame-line-regexp
-  "[ \t\n]+at line \\([0-9]+\\)")
+  "[ \t\n]+at line \\([0-9]+\\)$")
 
 
 ;;  Regular expression that describes trepan "frame" line.

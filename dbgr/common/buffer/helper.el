@@ -12,7 +12,7 @@ assumed to be a source-code buffer."
   (let ((buffer (or opt-buffer (current-buffer))))
     (if (dbgr-backtrace? buffer)
 	(with-current-buffer-safe buffer
-	  (dbgr-sget 'backtrace-info 'cmdproc))
+	  (dbgr-sget 'backtrace-info 'cmdbuf))
       nil)))
 
 (defun dbgr-get-cmdbuf-from-srcbuf ( &optional opt-buffer)

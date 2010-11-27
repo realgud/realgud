@@ -54,5 +54,12 @@ described by PT."
   )
 
 
+;; Some things common to all trepan debuggers (Rubinius and Ruby 1.9.2)
+(defconst dbgr-trepan-frame-start-regexp
+  "\\(?:^\\|\n\\)\\(?:-->\\|   \\)")
+
+(defconst dbgr-trepan-frame-num-regexp
+  "#\\([0-9]+\\)")
+
 
 (provide-me "dbgr-lang-")
