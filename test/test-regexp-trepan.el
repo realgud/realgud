@@ -4,21 +4,22 @@
 (test-unit-clear-contexts)
 
 
-(setq bps    (gethash "brkpt-set"     dbgr-trepan-pat-hash))
-(setq prompt (gethash "prompt"        dbgr-trepan-pat-hash))
-(setq tb     (gethash "backtrace"     dbgr-trepan-pat-hash))
-(setq ctrl   (gethash "control-frame" dbgr-trepan-pat-hash))
+(setq bps-pat    (gethash "brkpt-set"     dbgr-trepan-pat-hash))
+(setq frame-pat  (gethash "frame"         dbgr-trepan-pat-hash))
+(setq prompt     (gethash "prompt"        dbgr-trepan-pat-hash))
+(setq tb-pat     (gethash "backtrace"     dbgr-trepan-pat-hash))
+(setq ctrl-pat   (gethash "control-frame" dbgr-trepan-pat-hash))
 
 (defun tb-loc-match(text) 
-  (string-match (dbgr-loc-pat-regexp tb) text)
+  (string-match (dbgr-loc-pat-regexp tb-pat) text)
 )
 
 (defun bp-loc-match(text) 
-  (string-match (dbgr-loc-pat-regexp bps) text)
+  (string-match (dbgr-loc-pat-regexp bps-pat) text)
 )
 
 (defun ctrl-frame-match(text) 
-  (string-match (dbgr-loc-pat-regexp ctrl) text)
+  (string-match (dbgr-loc-pat-regexp ctrl-pat) text)
 )
 
 ;; FIXME: we get a void variable somewhere in here when running
@@ -32,13 +33,45 @@
 		    (assert-t (numberp (tb-loc-match text))))
 	   (specify "extract traceback file name"
 	   	    (assert-equal "/usr/local/bin/irb"
-				  (match-string (dbgr-loc-pat-file-group tb)
+				  (match-string (dbgr-loc-pat-file-group tb-pat)
 	   				  text)))
 	   (specify "extract traceback line number"
 	   	    (assert-equal "12"
-				  (match-string (dbgr-loc-pat-line-group tb)
+				  (match-string (dbgr-loc-pat-line-group tb-pat)
 						text)))
 	   )
+
+	   (specify "frame"
+		    (setq s1 "--> #0 METHOD Object#require(path) in file <internal:lib/require> at line 28
+    #1 TOP Object#<top /tmp/linecache.rb> in file /tmp/linecache.rb
+")
+		    (setq frame-re (dbgr-loc-pat-regexp frame-pat))
+		    (setq num-group (dbgr-loc-pat-num frame-pat))
+		    (setq file-group (dbgr-loc-pat-file-group frame-pat))
+		    (setq line-group (dbgr-loc-pat-line-group frame-pat))
+	   	    (assert-equal 0 (string-match frame-re s1))
+		    (assert-equal "0" (substring s1 
+						 (match-beginning num-group)
+						 (match-end num-group)))
+		    (assert-equal "<internal:lib/require>"
+				  (substring s1 
+					     (match-beginning file-group)
+					     (match-end file-group)))
+		    (assert-equal "28"
+				  (substring s1 
+					     (match-beginning line-group)
+					     (match-end line-group)))
+		    (setq pos (match-end 0))
+
+	   	    (assert-equal 77 (string-match frame-re s1 pos))
+		    (assert-equal "1" (substring s1 
+						 (match-beginning num-group)
+						 (match-end num-group)))
+		    (assert-equal "/tmp/linecache.rb"
+				  (substring s1 
+					     (match-beginning file-group)
+					     (match-end file-group)))
+		    )
 
 	   (specify "prompt"
 	   	    (assert-equal 0 (string-match (dbgr-loc-pat-regexp prompt)
@@ -73,12 +106,12 @@
 		      (assert-t (numberp (bp-loc-match text))))
 	     (specify "extract breakpoint file name"
 		      (assert-equal "/usr/local/bin/irb"
-				    (match-string (dbgr-loc-pat-file-group bps)
-						  text)))
+				    (match-string (dbgr-loc-pat-file-group 
+						   bps-pat) text)))
 	     (specify "extract breakpoint line number"
 		      (assert-equal "9"
-				    (match-string (dbgr-loc-pat-line-group bps)
-						  text)))
+				    (match-string (dbgr-loc-pat-line-group 
+						   bps-pat) text)))
 	     )
 	   )
 

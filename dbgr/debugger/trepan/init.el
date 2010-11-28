@@ -31,6 +31,8 @@ dbgr-loc-pat struct")
 ;; For example: 
 ;;   (trepan): 
 ;;   ((trepan)):
+;;   (trepan@main):
+;;   (trepan@55):
 (setf (gethash "prompt" dbgr-trepan-pat-hash)
       (make-dbgr-loc-pat
        :regexp "^(+trepan\\(@[0-9]+\\|@main\\)?)+: "
@@ -70,7 +72,7 @@ dbgr-loc-pat struct")
 (setf (gethash "dollar-bang" dbgr-trepan-pat-hash) dbgr-ruby-dollar-bang)
 
 (defconst dbgr-trepan-frame-file-regexp
-  "[ \t\n]+in file \\(.+\\)\\(?:[ \n]?\\|$\\)")
+  "[ \t\n]+in file \\([^ \n]+\\)")
 
 ;;  Regular expression that describes debugger "backtrace" command line.
 ;;  e.g.
