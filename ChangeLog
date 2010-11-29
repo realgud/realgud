@@ -1,3 +1,710 @@
+2010-11-27  rocky <rocky@gnu.org>
+
+	* dbgr/debugger/trepan/init.el, dbgr/lang/ruby.el,
+	test/test-regexp-trepan.el: Add trepan frame regexp tests.
+
+2010-11-27  rocky <rocky@gnu.org>
+
+	* dbgr/debugger/rdebug/init.el, dbgr/debugger/trepan/init.el,
+	dbgr/debugger/trepanx/init.el, dbgr/lang/ruby.el: Go over rdebug for
+	backtrace buffer regexp and improve other regexps.
+
+2010-11-27  rocky <rocky@gnu.org>
+
+	* dbgr/common/buffer/helper.el, dbgr/debugger/trepan/init.el,
+	dbgr/debugger/trepanx/init.el, dbgr/lang/ruby.el: Work on trepanx
+	regexps for backtrace. (Might have broken trepan regexps)
+
+2010-11-26  rocky <rocky@gnu.org>
+
+	* dbgr.el, dbgr/common/buffer/backtrace.el,
+	dbgr/common/buffer/helper.el, dbgr/debugger/trepan/init.el: Parses
+	backtrace lines (more) correctly now. Add text property for frame
+	number and. goto-frame now works.
+
+2010-11-26  rocky <rocky@gnu.org>
+
+	* dbgr.el, dbgr/common/bp.el, dbgr/common/buffer/backtrace.el,
+	dbgr/common/file.el, dbgr/common/init/kshdb.el, dbgr/common/loc.el,
+	dbgr/common/regexp.el, dbgr/common/track.el,
+	dbgr/debugger/bashdb/init.el, dbgr/debugger/gdb/init.el,
+	dbgr/debugger/pydbgr/init.el, dbgr/debugger/rdebug/init.el,
+	dbgr/debugger/trepan/init.el, dbgr/debugger/trepanx/init.el,
+	dbgr/debugger/zshdb/init.el, test/test-track.el: Start to add text
+	properties to backtrace buffer. Much more is needed. Start adding
+	string examples of things matching trepan regexps.
+
+2010-11-26  rocky <rocky@gnu.org>
+
+	* configure.ac, dbgr.el, dbgr/common/init/bashdb.el,
+	dbgr/debugger/Makefile.am, dbgr/debugger/bashdb/.gitignore,
+	dbgr/debugger/bashdb/Makefile.am, dbgr/debugger/bashdb/bashdb.el,
+	dbgr/debugger/bashdb/cmds.el, dbgr/debugger/bashdb/core.el,
+	dbgr/debugger/bashdb/init.el, dbgr/debugger/bashdb/track-mode.el,
+	dbgr/debugger/zshdb/core.el, dbgr/debugger/zshdb/init.el,
+	test/test-dbgr.el: Add emacs debugger as a full-fledged front-end.
+
+2010-11-22  rocky <rocky@gnu.org>
+
+	* test/test-regexp-trepanx.el: Work on trepanx regexp test
+
+2010-11-22  rocky <rocky@gnu.org>
+
+	* dbgr/debugger/pydbgr/pydbgr.el, dbgr/debugger/zshdb/zshdb.el: 
+	Small Doc string fixes from cut-and-paste.
+
+2010-11-22  rocky <rocky@gnu.org>
+
+	* dbgr/common/track.el, dbgr/debugger/pydbgr/track-mode.el,
+	dbgr/debugger/trepan/track-mode.el,
+	dbgr/debugger/zshdb/track-mode.el: track.el: call up
+	debugger-specific track mode track-mode.el: experiment with more
+	robust mode hook.
+
+2010-11-22  rocky <rocky@gnu.org>
+
+	* dbgr/common/track-mode.el, dbgr/debugger/trepanx/init.el,
+	dbgr/lang/ruby.el: Parent map of track-mode come from shell, not
+	comint. Correct rubinius backtrace regexp.
+
+2010-11-21  rocky <rocky@gnu.org>
+
+	* dbgr/common/buffer/command.el, dbgr/debugger/pydbgr/track-mode.el: 
+	Fix some small bugs
+
+2010-11-21  rocky <rocky@gnu.org>
+
+	* dbgr/common/track-mode.el, dbgr/debugger/gdb/track-mode.el,
+	dbgr/debugger/pydbgr/track-mode.el,
+	dbgr/debugger/rdebug/track-mode.el,
+	dbgr/debugger/trepan/track-mode.el,
+	dbgr/debugger/trepanx/track-mode.el,
+	dbgr/debugger/zshdb/track-mode.el: keybindings now work properly for
+	specific debugger track modes. Could be better, but this is a start
+	and a big improvement.
+
+2010-11-21  rocky <rocky@gnu.org>
+
+	* dbgr/common/fringe.el, dbgr/common/track-mode.el,
+	dbgr/debugger/gdb/track-mode.el,
+	dbgr/debugger/pydbgr/track-mode.el,
+	dbgr/debugger/rdebug/track-mode.el,
+	dbgr/debugger/trepan/track-mode.el,
+	dbgr/debugger/trepanx/track-mode.el, test/test-track-mode.el: Keymap
+	definition (which was probably improper) is messing up
+	define-minor-mode so leave that out for now. rename keymap variable
+	to a value which I hope is picked up automagically.
+
+2010-11-21  rocky <rocky@gnu.org>
+
+	* dbgr/common/buffer/helper.el: This time, for sure?
+
+2010-11-21  rocky <rocky@gnu.org>
+
+	* dbgr/common/buffer/helper.el, dbgr/common/track.el: Fix an
+	annoying bug where we weren't tracking changes in the source buffer.
+
+
+2010-11-04  rocky <rockyb@rubyforge.org>
+
+	* dbgr/debugger/rdebug/track-mode.el,
+	dbgr/debugger/trepan/track-mode.el,
+	dbgr/debugger/trepanx/track-mode.el: This time, for sure!
+
+2010-11-04  rocky <rockyb@rubyforge.org>
+
+	* dbgr/debugger/rdebug/track-mode.el: Now redundant (and wrong)
+	line.
+
+2010-11-04  rocky <rockyb@rubyforge.org>
+
+	* dbgr/debugger/rdebug/track-mode.el,
+	dbgr/debugger/trepanx/track-mode.el: One more place to fold in
+	ruby-specific traceback key bindings.
+
+2010-11-04  rocky <rockyb@rubyforge.org>
+
+	* dbgr/common/track.el, dbgr/debugger/rdebug/core.el,
+	dbgr/debugger/trepan/core.el, dbgr/debugger/trepan/track-mode.el,
+	dbgr/debugger/trepanx/core.el, dbgr/debugger/trepanx/track-mode.el,
+	dbgr/lang/ruby.el: Dry some code bound to ruby keys. Should do the
+	same for others...
+
+2010-11-03  rocky <rocky@gnu.org>
+
+	* dbgr/common/buffer/command.el, dbgr/common/init/Makefile.am,
+	dbgr/common/send.el, dbgr/common/track.el,
+	dbgr/debugger/.gitignore, dbgr/debugger/Makefile.am,
+	dbgr/debugger/pydbgr/pydbgr.el, dbgr/debugger/rdebug/rdebug.el,
+	dbgr/debugger/trepan/trepan.el, dbgr/debugger/trepanx/trepanx.el,
+	dbgr/debugger/zshdb/zshdb.el, test/Makefile.am, test/test-track.el: 
+	Remove output for internal-status commands like dbgr-backtrace-init.
+	Front-end command names now universally start dbgr-, e.g.
+	dbgr-trepan with most having aliases to shorter name, e.g. trepan.
+	The exception is "gdb" which doesn't have an alias, since "gdb" is a
+	well-established and Emacs command. Go over Makefile's yet again.
+
+2010-11-03  rocky <rocky@gnu.org>
+
+	* dbgr/common/init/gdb.el, dbgr/debugger/gdb/init.el,
+	dbgr/debugger/gdb/track-mode.el, test/test-regexp-gdb.el: 
+	common/init/gdb.el -> debugger/gdb/init.el gdb-pat-hash ->
+	dbgr-gdb-pat-hash
+
+2010-11-02  rocky <rockyb@rubyforge.org>
+
+	* configure.ac, dbgr.el, dbgr/Makefile.am, dbgr/common.mk,
+	dbgr/common/Makefile.am, dbgr/common/buffer/Makefile.am,
+	dbgr/debugger/.gitignore, dbgr/debugger/Makefile.am,
+	dbgr/debugger/common.mk, dbgr/debugger/gdb/.gitignore,
+	dbgr/debugger/gdb/Makefile.am, dbgr/debugger/gdb/core.el,
+	dbgr/debugger/gdb/gdb.el, dbgr/debugger/gdb/track-mode.el,
+	dbgr/debugger/pydbgr/.gitignore, dbgr/debugger/pydbgr/Makefile.am,
+	dbgr/debugger/pydbgr/cmds.el, dbgr/debugger/pydbgr/core.el,
+	dbgr/debugger/pydbgr/init.el, dbgr/debugger/pydbgr/pydbgr.el,
+	dbgr/debugger/pydbgr/track-mode.el,
+	dbgr/debugger/rdebug/.gitignore, dbgr/debugger/rdebug/Makefile.am,
+	dbgr/debugger/rdebug/cmds.el, dbgr/debugger/rdebug/core.el,
+	dbgr/debugger/rdebug/init.el, dbgr/debugger/rdebug/rdebug.el,
+	dbgr/debugger/rdebug/track-mode.el,
+	dbgr/debugger/trepan/.gitignore, dbgr/debugger/trepan/Makefile.am,
+	dbgr/debugger/trepan/cmds.el, dbgr/debugger/trepan/core.el,
+	dbgr/debugger/trepan/init.el, dbgr/debugger/trepan/track-mode.el,
+	dbgr/debugger/trepan/trepan.el, dbgr/debugger/trepanx/.gitignore,
+	dbgr/debugger/trepanx/Makefile.am, dbgr/debugger/trepanx/cmds.el,
+	dbgr/debugger/trepanx/core.el, dbgr/debugger/trepanx/init.el,
+	dbgr/debugger/trepanx/track-mode.el,
+	dbgr/debugger/trepanx/trepanx.el, dbgr/debugger/zshdb/.gitignore,
+	dbgr/debugger/zshdb/Makefile.am, dbgr/debugger/zshdb/cmds.el,
+	dbgr/debugger/zshdb/core.el, dbgr/debugger/zshdb/init.el,
+	dbgr/debugger/zshdb/track-mode.el, dbgr/debugger/zshdb/zshdb.el,
+	dbgr/gdb/.gitignore, dbgr/gdb/Makefile.am, dbgr/gdb/core.el,
+	dbgr/gdb/gdb.el, dbgr/gdb/track-mode.el, dbgr/lang/Makefile.am,
+	dbgr/pydbgr/.gitignore, dbgr/pydbgr/Makefile.am,
+	dbgr/pydbgr/cmds.el, dbgr/pydbgr/core.el, dbgr/pydbgr/init.el,
+	dbgr/pydbgr/pydbgr.el, dbgr/pydbgr/track-mode.el,
+	dbgr/rdebug/.gitignore, dbgr/rdebug/Makefile.am,
+	dbgr/rdebug/cmds.el, dbgr/rdebug/core.el, dbgr/rdebug/init.el,
+	dbgr/rdebug/rdebug.el, dbgr/rdebug/track-mode.el,
+	dbgr/trepan/.gitignore, dbgr/trepan/Makefile.am,
+	dbgr/trepan/cmds.el, dbgr/trepan/core.el, dbgr/trepan/init.el,
+	dbgr/trepan/track-mode.el, dbgr/trepan/trepan.el,
+	dbgr/trepanx/.gitignore, dbgr/trepanx/Makefile.am,
+	dbgr/trepanx/cmds.el, dbgr/trepanx/core.el, dbgr/trepanx/init.el,
+	dbgr/trepanx/track-mode.el, dbgr/trepanx/trepanx.el,
+	dbgr/zshdb/.gitignore, dbgr/zshdb/Makefile.am, dbgr/zshdb/cmds.el,
+	dbgr/zshdb/core.el, dbgr/zshdb/init.el, dbgr/zshdb/track-mode.el,
+	dbgr/zshdb/zshdb.el, test/test-bt-pydbgr.el,
+	test/test-bt-rdebug.el, test/test-bt-trepan.el,
+	test/test-bt-trepanx.el, test/test-bt-zshdb.el,
+	test/test-buf-cmd.el, test/test-core.el, test/test-pydbgr.el,
+	test/test-rdebug.el, test/test-regexp-pydbgr.el,
+	test/test-regexp-rdebug.el, test/test-regexp-trepan.el,
+	test/test-regexp-trepanx.el, test/test-regexp.el,
+	test/test-send.el, test/test-srcbuf.el, test/test-track-mode.el,
+	test/test-track.el: move debugger-specific code down to a debugger
+	directory.
+
+2010-11-02  rocky <rockyb@rubyforge.org>
+
+	* dbgr/Makefile.am, dbgr/common.mk, dbgr/gdb/Makefile.am,
+	dbgr/lang/Makefile.am, dbgr/pydbgr/Makefile.am,
+	dbgr/rdebug/Makefile.am, dbgr/trepan/Makefile.am,
+	dbgr/trepanx/Makefile.am, dbgr/zshdb/Makefile.am: DRY Makefile.am
+	code.
+
+2010-11-02  rocky <rockyb@rubyforge.org>
+
+	* configure.ac, dbgr.el, dbgr/Makefile.am, dbgr/common/Makefile.am,
+	dbgr/common/buffer/Makefile.am, dbgr/common/core.el,
+	dbgr/common/init/rbdbgr.el, dbgr/gdb/Makefile.am,
+	dbgr/lang/Makefile.am, dbgr/lang/ruby.el, dbgr/rbdbgr/.gitignore,
+	dbgr/rbdbgr/Makefile.am, dbgr/rbdbgr/cmds.el, dbgr/rbdbgr/core.el,
+	dbgr/rbdbgr/rbdbgr.el, dbgr/rbdbgr/track-mode.el,
+	dbgr/rdebug/init.el, dbgr/trepan/init.el, test/Makefile.am,
+	test/test-buf-cmd.el, test/test-dbgr.el, test/test-regexp-gdb.el,
+	test/test-regexp-rbdbgr.el, test/test-regexp.el, test/test-send.el,
+	test/test-srcbuf.el: Remove rbdbgr. Nevering-ending struggle to DRY
+	code more.
+
+2010-11-02  rocky <rockyb@rubyforge.org>
+
+	* configure.ac, dbgr/Makefile.am, dbgr/common/init/bashdb.el,
+	dbgr/common/init/gdb.el, dbgr/common/init/kshdb.el,
+	dbgr/common/init/pydb.el, dbgr/common/init/rbdbgr.el,
+	dbgr/common/init/remake.el, dbgr/gdb/track-mode.el,
+	dbgr/lang/.gitignore, dbgr/lang/Makefile.am, dbgr/lang/ruby.el,
+	dbgr/pydbgr/core.el, dbgr/pydbgr/init.el,
+	dbgr/pydbgr/track-mode.el, dbgr/rbdbgr/core.el,
+	dbgr/rdebug/core.el, dbgr/rdebug/init.el,
+	dbgr/rdebug/track-mode.el, dbgr/trepan/core.el,
+	dbgr/trepan/init.el, dbgr/trepan/track-mode.el,
+	dbgr/trepanx/core.el, dbgr/trepanx/init.el,
+	dbgr/trepanx/track-mode.el, dbgr/zshdb/core.el, dbgr/zshdb/init.el,
+	dbgr/zshdb/track-mode.el, test/test-regexp-rdebug.el: 
+	traceback->backtrace Start to DRY common language regular
+	expressions.
+
+2010-11-02  rocky <rocky@gnu.org>
+
+	* dbgr/common/init/trepanx.el, dbgr/trepanx/cmds.el,
+	dbgr/trepanx/core.el, dbgr/trepanx/init.el,
+	dbgr/trepanx/track-mode.el, dbgr/trepanx/trepanx.el,
+	test/Makefile.am, test/test-bt-trepanx.el,
+	test/test-regexp-trepanx.el: common/init/trepanx.el ->
+	trepanx/init.el Add font-lock-default test.
+
+2010-11-01  rocky <rockyb@rubyforge.org>
+
+	* dbgr/zshdb/init.el, test/Makefile.am, test/test-bt-zshdb.el: Start
+	font lock for zshdb.
+
+2010-11-01  rocky <rockyb@rubyforge.org>
+
+	* dbgr/pydbgr/init.el, dbgr/rdebug/init.el, dbgr/trepan/init.el,
+	test/Makefile.am, test/test-bt-pydbgr.el: Work on pydbgr
+	font-lock-defaults. Comments regexps better.
+
+2010-11-01  rocky <rockyb@rubyforge.org>
+
+	* dbgr/common/init.el, dbgr/pydbgr/init.el, dbgr/rdebug/init.el,
+	dbgr/trepan/init.el, test/test-bt-rdebug.el, test/test-bt-trepan.el: 
+	Better backtrace font-lock defaults. Start working on pydbgr
+	backtrace font-lock.
+
+2010-11-01  rocky <rockyb@rubyforge.org>
+
+	* dbgr/trepan/init.el, test/Makefile.am, test/test-bt-trepan.el: 
+	trepan backtrace font-lock-default is more correct.
+
+2010-11-01  rocky <rockyb@rubyforge.org>
+
+	* dbgr/trepan/init.el, test/Makefile.am, test/test-bt-rdebug.el,
+	test/test-bt-trepan.el, test/test-buf-bt.el: More regourous rdebug
+	backtrace font-lock-default tests. Start work on trepan backtrace
+	font-lock-default.
+
+2010-11-01  rocky <rockyb@rubyforge.org>
+
+	* dbgr/common/buffer/backtrace.el, test/test-buf-bt.el: Add 1st
+	fontify test.
+
+2010-10-31  rocky <rockyb@rubyforge.org>
+
+	* dbgr/common/buffer/backtrace.el, dbgr/common/buffer/command.el,
+	dbgr/common/init.el, dbgr/rdebug/init.el, dbgr/trepan/init.el: Add
+	font-lock faces to backtrace buffer. Attempt to do for command, but
+	more work is needed.
+
+2010-10-31  rocky <rocky@gnu.org>
+
+	* dbgr/common/buffer/backtrace.el, dbgr/common/init/trepan.el,
+	dbgr/trepan/cmds.el, dbgr/trepan/core.el, dbgr/trepan/init.el,
+	dbgr/trepan/track-mode.el, dbgr/trepan/trepan.el,
+	test/test-regexp-trepan.el, test/test-track.el: 
+	common/init/trepan.el -> trepan/init.el backtrace.el: remove compile
+	warnings by commenting out future code
+
+2010-10-31  rocky <rockyb@rubyforge.org>
+
+	* dbgr/common/buffer/backtrace.el, test/Makefile.am,
+	test/test-buf-bt.el, test/test-buf-cmd.el, test/test-cmdbuf.el: Work
+	on backtrace buffer and mode. More to come...
+
+2010-10-31  rocky <rockyb@rubyforge.org>
+
+	* dbgr/common/init/rdebug.el, dbgr/rdebug/cmds.el,
+	dbgr/rdebug/core.el, dbgr/rdebug/init.el, dbgr/rdebug/rdebug.el,
+	dbgr/rdebug/track-mode.el, test/test-regexp-rdebug.el: 
+	common/init/rdebug.el -> rdebug/init.el
+
+2010-10-31  rocky <rocky@gnu.org>
+
+	* dbgr/common/buffer/backtrace.el, dbgr/common/init/pydbgr.el,
+	dbgr/pydbgr/cmds.el, dbgr/pydbgr/core.el, dbgr/pydbgr/init.el,
+	dbgr/pydbgr/pydbgr.el, dbgr/pydbgr/track-mode.el,
+	dbgr/zshdb/core.el, dbgr/zshdb/init.el, dbgr/zshdb/track-mode.el,
+	test/test-regexp-pydbgr.el: Move init/pydbgr.el to pydbgr/init.el.
+	zshdb/*.el: Correct some mistakes in moving from before.
+	buffer/backtrace.el: Make this loadable without error.
+
+2010-10-31  rocky <rocky@gnu.org>
+
+	* dbgr/common/init/zshdb.el, dbgr/zshdb/cmds.el,
+	dbgr/zshdb/core.el, dbgr/zshdb/init.el, dbgr/zshdb/track-mode.el,
+	dbgr/zshdb/zshdb.el: Start to move init/*.el into respective
+	debugger-specific directories.
+
+2010-10-31  rocky <rockyb@rubyforge.org>
+
+	* configure.ac, dbgr/common/Makefile.am, dbgr/common/bt-buf.el,
+	dbgr/common/buffer.el, dbgr/common/buffer/.gitignore,
+	dbgr/common/buffer/Makefile.am, dbgr/common/buffer/backtrace.el,
+	dbgr/common/buffer/command.el, dbgr/common/buffer/helper.el,
+	dbgr/common/buffer/source.el, dbgr/common/cmdbuf.el,
+	dbgr/common/cmds.el, dbgr/common/core.el, dbgr/common/reset.el,
+	dbgr/common/send.el, dbgr/common/shortkey.el,
+	dbgr/common/srcbuf.el, dbgr/common/track-mode.el,
+	dbgr/common/track.el, dbgr/common/window.el, test/test-cmdbuf.el,
+	test/test-regexp.el, test/test-srcbuf.el: Move buffer-related files
+	into a separate directory. Will help future growth.
+
+2010-10-31  rocky <rockyb@rubyforge.org>
+
+	* dbgr.el, dbgr/zshdb/Makefile.am, dbgr/zshdb/core.el: Administrivia
+	around adding zshdb properly.
+
+2010-10-31  rocky <rockyb@rubyforge.org>
+
+	* configure.ac, dbgr/Makefile.am, dbgr/zshdb/.gitignore,
+	dbgr/zshdb/Makefile.am, dbgr/zshdb/cmds.el, dbgr/zshdb/core.el,
+	dbgr/zshdb/track-mode.el, dbgr/zshdb/zshdb.el: Start zshdb debugger
+	support.
+
+2010-10-31  rocky <rockyb@rubyforge.org>
+
+	* dbgr.el, dbgr/common/bp.el, dbgr/common/bt-buf.el,
+	dbgr/common/buffer.el, dbgr/common/cmdbuf.el, dbgr/common/cmds.el,
+	dbgr/common/core.el, dbgr/common/custom.el, dbgr/common/file.el,
+	dbgr/common/fringe.el, dbgr/common/helper.el, dbgr/common/init.el,
+	dbgr/common/init/bashdb.el, dbgr/common/init/gdb.el,
+	dbgr/common/init/kshdb.el, dbgr/common/init/pydb.el,
+	dbgr/common/init/pydbgr.el, dbgr/common/init/rbdbgr.el,
+	dbgr/common/init/rdebug.el, dbgr/common/init/remake.el,
+	dbgr/common/init/trepan.el, dbgr/common/init/trepanx.el,
+	dbgr/common/init/zshdb.el, dbgr/common/key.el, dbgr/common/lang.el,
+	dbgr/common/loc.el, dbgr/common/lochist.el, dbgr/common/menu.el,
+	dbgr/common/regexp.el, dbgr/common/reset.el, dbgr/common/send.el,
+	dbgr/common/shortkey.el, dbgr/common/srcbuf.el,
+	dbgr/common/track-mode.el, dbgr/common/window.el, dbgr/gdb/core.el,
+	dbgr/gdb/gdb.el, dbgr/gdb/track-mode.el, dbgr/pydbgr/cmds.el,
+	dbgr/pydbgr/core.el, dbgr/pydbgr/pydbgr.el,
+	dbgr/pydbgr/track-mode.el, dbgr/rdebug/cmds.el,
+	dbgr/rdebug/core.el, dbgr/rdebug/rdebug.el,
+	dbgr/rdebug/track-mode.el, dbgr/trepan/cmds.el,
+	dbgr/trepan/core.el, dbgr/trepan/track-mode.el,
+	dbgr/trepan/trepan.el, dbgr/trepanx/cmds.el, dbgr/trepanx/core.el,
+	dbgr/trepanx/track-mode.el, dbgr/trepanx/trepanx.el: Start to add
+	copyright.
+
+2010-10-31  rocky <rockyb@rubyforge.org>
+
+	* dbgr/common/bt-buf.el, dbgr/common/track.el: Fix problem with
+	divert-output sequencing problem which caused old output to be used.
+
+
+2010-10-30  rocky <rockyb@rubyforge.org>
+
+	* dbgr/common/bt-buf.el, dbgr/common/cmdbuf.el,
+	dbgr/common/send.el, dbgr/common/tb-buf.el,
+	dbgr/common/track-mode.el, dbgr/common/track.el,
+	test/test-track-mode.el, test/test-track.el: More progress on
+	diverting output.
+
+2010-10-30  rocky <rockyb@rubyforge.org>
+
+	* dbgr.el: Add dbgr-reload-features which is really what we probably
+	want rather than dbgr-unload-features.
+
+2010-10-30  rocky <rockyb@rubyforge.org>
+
+	* dbgr/common/track-mode.el, test/test-track-mode.el: Fix
+	dbgr-track-mode-vars macro.
+
+2010-10-30  rocky <rocky@gnu.org>
+
+	* dbgr/common/send.el, dbgr/common/tb-buf.el, dbgr/common/track.el: 
+	Work on sending commands for status whose output needs to be
+	diverted and sent to a special buffer, like "backtrace"
+
+2010-10-29  rocky <rocky@gnu.org>
+
+	* dbgr/common/track-mode.el, dbgr/common/track.el,
+	test/test-track.el: Start working on commands that divert output. We
+	will use this for auxiliary status buffers for breakponts or
+	backtrace, etc.
+
+2010-10-16  rocky <rocky@gnu.org>
+
+	* dbgr/pydbgr/core.el: Small bug in recognizing if pydbgr or cli.py
+	given
+
+2010-10-16  rocky <rocky@gnu.org>
+
+	* dbgr/common/core.el, dbgr/common/lang.el, dbgr/gdb/core.el,
+	dbgr/pydbgr/core.el, dbgr/rbdbgr/core.el, dbgr/rdebug/core.el,
+	dbgr/trepan/core.el, dbgr/trepanx/core.el, test/Makefile.am,
+	test/test-core.el, test/test-lang.el, test/test-pydbgr.el,
+	test/test-rdebug.el: DRY via dbgr-suggest-lang-file. Fix up tests
+	related to this region.
+
+2010-10-16  rocky <rockyb@rubyforge.org>
+
+	* dbgr/common/lang.el, dbgr/pydbgr/core.el, dbgr/rbdbgr/core.el,
+	dbgr/rdebug/core.el, dbgr/trepan/core.el, dbgr/trepanx/core.el,
+	test/test-core.el, test/test-pydbgr.el, test/test-rdebug.el: Better
+	initial suggestion of language file to debug by searching visited
+	buffers.  DRY some of the code a little. Much much much more is
+	DRYness is needed. Start putting in Programming-language-specific
+	code into common/lang.el
+
+2010-10-06  rocky <rockyb@rubyforge.org>
+
+	* dbgr/trepan/core.el: Tolerate .exe on ruby interpreter for
+	Microsoft.
+
+2010-10-06  rocky <rockyb@rubyforge.org>
+
+	* dbgr/common/cmds.el, dbgr/common/core.el,
+	dbgr/common/shortkey.el, dbgr/pydbgr/cmds.el, dbgr/rdebug/cmds.el,
+	dbgr/trepan/cmds.el, dbgr/trepanx/cmds.el: Work on terminating
+	gracefully. cmds.el: Add dbgr-terminate (reset debugger information)
+	to dbgr-cmd-quit. core.el: Create dbgr-terminate to encapsulate what
+	needs to be done on reset. shortkey.el: use 0 to turn off mode.
+	debugger/cmds.el: call define-gdb-like-commands explicitly
+	trepan/cmds.el: use quit! instead of quit.
+
+2010-10-05  rocky <rocky@gnu.org>
+
+	* dbgr/common/core.el: Suppress and emacs warning.
+
+2010-10-05  rocky <rockyb@rubyforge.org>
+
+	* dbgr/pydbgr/core.el, dbgr/rdebug/.gitignore,
+	dbgr/rdebug/elc-stamp: core.el: Allow python.exe as an interpreter
+	name on Microsoft.          Allow cli.py as alternative to pydbgr
+	rdebug/*: Adminstrivia
+
+2010-10-01  rocky <rockyb@rubyforge.org>
+
+	* dbgr/common/cmdbuf.el, dbgr/common/track.el: short-key-on-tracing?
+	-> dbgr-short-key-on-tracing?
+
+2010-10-01  rocky <rockyb@rubyforge.org>
+
+	* dbgr/common/cmdbuf.el, dbgr/common/core.el: Do better with respect
+	to cleaning up on process end: Remove fringe arrows, short-key-mode
+	and breakpoints in source buffers.
+
+2010-09-30  rocky <rockyb@rubyforge.org>
+
+	* dbgr/common/shortkey.el, dbgr/common/srcbuf.el,
+	dbgr/common/track.el, dbgr/trepan/track-mode.el: Add customizable
+	variable "short-key-on-tracing?" which will set short-key mode for
+	any source buffer that is traced into.
+
+2010-09-30  rocky <rockyb@rubyforge.org>
+
+	* dbgr/common/cmds.el, dbgr/common/key.el,
+	dbgr/common/track-mode.el, dbgr/gdb/core.el, dbgr/gdb/gdb.el,
+	dbgr/gdb/track-mode.el, dbgr/pydbgr/track-mode.el,
+	dbgr/rbdbgr/cmds.el, dbgr/rdebug/track-mode.el,
+	dbgr/trepan/track-mode.el, dbgr/trepanx/track-mode.el: Use expanded
+	file name in 'break' command. See also previous commit message since
+	it appears that many changes didn't get pushed from that.
+
+2010-09-29  rocky <rockyb@rubyforge.org>
+
+	* dbgr/pydbgr/cmds.el: DRY track mode code. Add M-kp-up and
+	M-kp-down in standard keys.
+
+2010-09-29  rocky <rockyb@rubyforge.org>
+
+	* README.textile: rbdbgr -> trepanning
+
+2010-09-29  rocky <rockyb@rubyforge.org>
+
+	* dbgr/common/key.el, dbgr/gdb/track-mode.el, dbgr/pydbgr/core.el,
+	dbgr/pydbgr/track-mode.el, dbgr/rdebug/track-mode.el,
+	dbgr/trepan/track-mode.el, dbgr/trepanx/track-mode.el: Work on
+	getting debugger-specific minor-mode keymaps working. Some of the
+	prior workarounds were remove. Still really need to DRY code. Try
+	C-c SPC for break.
+
+2010-09-29  rocky <rockyb@rubyforge.org>
+
+	* dbgr/common/srcbuf.el, dbgr/gdb/track-mode.el,
+	dbgr/pydbgr/track-mode.el, dbgr/rbdbgr/track-mode.el,
+	dbgr/rdebug/track-mode.el, dbgr/trepan/track-mode.el,
+	dbgr/trepanx/track-mode.el: Debugger common keys are now set in
+	source-code windows. Figured out how to use debugger keymaps in
+	command window, and setting debugger-specific command buffer keys.
+	However more work is needed here and we really need to DRY code.
+
+2010-09-29  rocky <rockyb@rubyforge.org>
+
+	* dbgr/common/init/pydbgr.el, dbgr/common/key.el,
+	dbgr/pydbgr/core.el, dbgr/pydbgr/track-mode.el,
+	test/test-rdebug.el, test/test-regexp-pydbgr.el: key.el: Add "b" for
+	break in shortkey mode. test-rdebug.el: fix up faulty cut-n-paste:
+	python -> ruby; pydbgr => rdebug pydbgr.el, test-regexp-pydbgr.el
+	traceback -> backtrace
+
+2010-09-24  rocky <rocky@gnu.org>
+
+	* dbgr.el, dbgr/trepan/.gitignore, dbgr/trepanx/rbdbgr.el,
+	dbgr/trepanx/trepanx.el, test/test-regexp-trepan.el,
+	test/test-regexp-trepanx.el: Growing pains related to adding
+	trepan(x).
+
+2010-09-24  rocky <rocky@gnu.org>
+
+	* configure.ac, dbgr/Makefile.am, dbgr/common/init/trepan.el,
+	dbgr/common/init/trepanx.el, dbgr/trepan/.gitignore,
+	dbgr/trepan/Makefile.am, dbgr/trepan/cmds.el, dbgr/trepan/core.el,
+	dbgr/trepan/track-mode.el, dbgr/trepan/trepan.el,
+	dbgr/trepanx/.gitignore, dbgr/trepanx/Makefile.am,
+	dbgr/trepanx/cmds.el, dbgr/trepanx/core.el, dbgr/trepanx/rbdbgr.el,
+	dbgr/trepanx/track-mode.el, test/Makefile.am: Add trepan and trepanx
+	debuggers.
+
+2010-09-24  rocky <rockyb@rubyforge.org>
+
+	* dbgr/gdb/core.el, dbgr/pydbgr/core.el, dbgr/pydbgr/pydbgr.el,
+	dbgr/rbdbgr/core.el, dbgr/rdebug/core.el: Wasn't picking up variable
+	set by xxx-command-name. See comment in
+	http://stackoverflow.com/questions/3764575/using-pydbgr-with-emacs
+
+2010-09-18  rocky <rockyb@rubyforge.org>
+
+	* test/test-regexp-pydbgr.el: Add <module> onto the end - just in
+	case.
+
+2010-09-18  rocky <rockyb@rubyforge.org>
+
+	* test/test-regexp-pydbgr.el: Add test for MS prompt locations (with
+	drive letter and backslash) and non-MS prompt location without drive
+	and forward slash.
+
+2010-09-09  rocky <rocky@gnu.org>
+
+	* dbgr/Makefile.am, dbgr/common/Makefile.am,
+	dbgr/common/init/Makefile.am, dbgr/common/init/rbdbgr.el,
+	test/test-regexp-rbdbgr.el: init/rbdbgr.el: lfp and dfp are *hex*
+	addresses. Makefile.am: clean now removes compiled lisp files
+	teste-regexp-rbdbgr.el: previously renamed key from traceback to
+	backtrace -- Ooops
+
+2010-08-27  rocky <rocky@gnu.org>
+
+	* dbgr/rdebug/track-mode.el: Found one more C-c! -> C-c!!
+
+2010-08-22  rocky <rockyb@rubyforge.org>
+
+	* dbgr/common/key.el: More keys for M-up. My PC keyboard has a
+	messed-up up-arrow. So allow Kp-up as well.
+
+2010-08-20  R. Bernstein <rocky@gnu.org>
+
+	* dbgr/common/init/rbdbgr.el, dbgr/rbdbgr/core.el,
+	dbgr/rbdbgr/track-mode.el: traceback -> backtrace which is what I
+	think it's called in Ruby (i.e. rb_backtrace) and use C-c!b which I
+	think is more mnemonic than C-c!e.
+
+2010-08-20  R. Bernstein <rocky@gnu.org>
+
+	* dbgr/rbdbgr/core.el: rbdbgr/core.el Match function name listed in
+	init/rbdbgr.el
+
+2010-08-20  R. Bernstein <rocky@gnu.org>
+
+	* dbgr/common/init/rbdbgr.el, dbgr/rbdbgr/core.el,
+	dbgr/rbdbgr/track-mode.el, test/test-regexp-rbdbgr.el: Add command
+	to position on control-frame traceback.
+
+2010-08-17  R. Bernstein <rocky@gnu.org>
+
+	* INSTALL, dbgr/common/key.el: Customize more for Emacs.
+
+2010-08-17  rocky <rockyb@rubyforge.org>
+
+	* configure.ac: Check for required prerequisite packages.
+
+2010-08-17  rocky <rockyb@rubyforge.org>
+
+	* configure.ac: Set default value for EMACS to, well, "emacs".
+
+2010-08-17  rocky <rockyb@rubyforge.org>
+
+	* configure.ac: Test to make sure we have emacs 23 or greater.
+
+2010-08-13  R. Bernstein <rocky@gnu.org>
+
+	* .gitignore, INSTALL: More specific installation instructions.
+
+2010-08-12  rocky <rockyb@rubyforge.org>
+
+	* README.textile: Typo
+
+2010-08-12  rocky <rockyb@rubyforge.org>
+
+	* README.textile: Better textile linking.
+
+2010-08-12  rocky <rockyb@rubyforge.org>
+
+	* README.textile: Add link to detailed installation instructions.
+	Thanks to Andrea Crotti for the suggestion.
+
+2010-08-09  R. Bernstein <rocky@gnu.org>
+
+	* dbgr/common/shortkey.el: M-[insert] toggles dbgr-short-key-mode as
+	well. And when you aren't in short-key mode, it works too --
+	provided the buffer has an associated debugger.
+
+2010-08-05  rocky <rocky@gnu.org>
+
+	* dbgr/common/shortkey.el: shortkey.el: Add 'c' for 'continue.
+
+2010-08-05  rocky <rocky@gnu.org>
+
+	* dbgr/common/init/pydbgr.el, dbgr/common/init/rbdbgr.el,
+	dbgr/common/shortkey.el, test/test-regexp-pydbgr.el: shortkey.el:
+	Shortkey 'b' to set a breakpoint. (Don't have delete or toggle yet).
+	pydbgr.el Add regexp for breakpoint set and deleted.
+
+2010-08-04  rocky <rocky@gnu.org>
+
+	* dbgr/pydbgr/core.el: .rb -> .py
+
+2010-08-03  rocky <rocky@gnu.org>
+
+	* dbgr/pydbgr/core.el, test/Makefile.am, test/gcd.py, test/gcd.rb,
+	test/test-pydbgr.el, test/test-rdebug.el: As suggesting a Ruby file
+	in pydbgr. Add test for this now.
+
+2010-08-01  rocky <rocky@gnu.org>
+
+	* dbgr/rdebug/rdebug.el: M-x rdebug -> M-x dbgr-rdebug so as not to
+	conflict with the older rdebug code.
+
+2010-06-15  rocky <rocky@gnu.org>
+
+	* .gitignore, autogen.sh, test/test-track-mode.el: automess needs a
+	README.
+
+2010-06-11  rocky <rockyb@rubyforge.org>
+
+	Merge branch 'master' of github.com:rocky/emacs-dbgr
+
+2010-06-11  rocky <rockyb@rubyforge.org>
+
+	* README, README.textile: Update README to note dependencies and
+	what debugger's we've got.
+
+2010-06-07  R. Bernstein <rocky@gnu.org>
+
+	* dbgr/common/init/rdebug.el: Comment typo
+
+2010-05-23  rocky <rocky@gnu.org>
+
+	* dbgr/rdebug/rdebug.el, test/Makefile.am, test/test-rdebug.el: Add
+	routine from rdebug to parse out command line options and get script
+	name.
+
+2010-05-22  rocky <rocky@gnu.org>
+
+	* ChangeLog, dbgr/common/init/pydb.el: Add "provide-me" for pydb
+
 2010-05-06  rocky <rocky@gnu.org>
 
 	* dbgr/common/init/bashdb.el, dbgr/common/init/kshdb.el,
@@ -15,6 +722,7 @@
 	* dbgr.el, dbgr/gdb/gdb.el, dbgr/pydbgr/pydbgr.el,
 	dbgr/rbdbgr/rbdbgr.el, dbgr/rdebug/rdebug.el: Add "dbgr-" prefix to
 	keep namespace separate from other standalones, e.g. dbg-gdb vs gdb.
+
 
 2010-03-19  rocky <rockyb@rubyforge.org>
 
@@ -72,7 +780,7 @@
 	test/test-regexp.el, test/test-send.el, test/test-shortkey.el,
 	test/test-srcbuf.el, test/test-track.el: All common code now pushed
 	to common directory one level don. First part an overall filesystem
-	reorganization.  Later on we will remove init, and rename python to
+	reorganization. Later on we will remove init, and rename python to
 	pydbgr, and add pydb.
 
 2010-03-13  rocky <rockyb@rubyforge.org>
@@ -108,15 +816,18 @@
 	* dbgr/cmdbuf.el, dbgr/cmds.el, dbgr/key.el, dbgr/menu.el,
 	dbgr/ruby/core.el, dbgr/ruby/rbdbgr.el, dbgr/ruby/track-mode.el,
 	dbgr/track.el, test/test-core.el: Move forward on breakpoints. Add
-	breakpoint list to cmdbuf and menu items for breakpoint track.el Reduce use of depreciated fields in cmdbuf ruby/*.el: simplify names.
+	breakpoint list to cmdbuf and menu items for breakpoint  track.el
+	Reduce use of depreciated fields in cmdbuf  ruby/*.el: simplify
+	names.
 
 2010-01-31  rocky <rockyb@rubyforge.org>
 
 	* dbgr/ruby/cmds.el, dbgr/ruby/core.el, dbgr/ruby/rbdbgr-core.el,
 	dbgr/ruby/rbdbgr-track-mode.el, dbgr/ruby/track-mode.el: Move
 	forward towards handling breakpoints: Keep a list of breakpoints in
-	cmdbuf, add menu item to set a breakpoint ruby/*: simplify names track.el: reduce use of depricated loc-regex,
-	file-group, line-group fields.
+	cmdbuf, add menu item to set a breakpoint  ruby/*: simplify names
+	track.el: reduce use of depricated loc-regex, file-group, line-group
+	fields.
 
 2010-01-30  rocky <rockyb@rubyforge.org>
 
@@ -132,8 +843,8 @@
 
 	* dbgr.el, dbgr/bp.el, test/Makefile.am, test/test-bp.el,
 	test/test-dbgr.el: dbgr.el test-dbgr.el: Add ability to get list of
-	feature loaded with dbgr and unload them.  This makes it possible to
-	reload dbgr without leaving the Emacs.  bp.el: More work needed on
+	feature loaded with dbgr and unload them. This makes it possible to
+	reload dbgr without leaving the Emacs. bp.el: More work needed on
 	testing.
 
 2010-01-27  rocky <rocky@gnu.org>
@@ -150,7 +861,7 @@
 
 	* dbgr/cmdbuf.el, dbgr/track.el, test/test-cmdbuf.el,
 	test/test-track.el: cmdbuf.el: Save source buffers associated with a
-	given command buffer.  track.el: ditto. dbgr-track-from-region():
+	given command buffer. track.el: ditto. dbgr-track-from-region():
 	check that cmdbuf is a cmdbuf.
 
 2010-01-24  rocky <rockyb@rubyforge.org>
@@ -192,7 +903,7 @@
 
 	* dbgr/bp.el, dbgr/track.el, test/test-track.el: Breakpont fixes.
 	Show only one breakpoint icon in margin. Store breakpoint number as
-	a number, not a string.  Show breakpoint in help string. Add a
+	a number, not a string. Show breakpoint in help string. Add a
 	dbgr-track-bp-loc test.
 
 2010-01-02  rocky <rockyb@rubyforge.org>
@@ -270,7 +981,7 @@
 2009-12-16  rocky <rockyb@rubyforge.org>
 
 	* dbgr/loc.el: Use loc-changes-goto of new package loc-changes to
-	find line number positions.  loc-changes-goto is more tolerant of
+	find line number positions. loc-changes-goto is more tolerant of
 	buffer modifications.
 
 2009-12-16  rocky <rockyb@rubyforge.org>
@@ -304,8 +1015,8 @@
 	test/test-regexp-ruby.el, test/test-regexp.el, test/test-send.el,
 	test/test-shortkey.el, test/test-srcbuf.el, test/test-track.el,
 	track-mode.el, track.el, window.el: dbgr.el - loads everything (via
-	load-relative).  Push dbgr source files into dbgr which is where
-	they are installed. Cleaner this way.
+	load-relative). Push dbgr source files into dbgr which is where they
+	are installed. Cleaner this way.
 
 2009-12-14  rocky <rockyb@rubyforge.org>
 
@@ -363,22 +1074,23 @@
 	indicate whether to record history, and whether we have a
 	frame-changing command. Do more error checking in command-send for
 	running processes and so on. Add more commands and keys bindings to
-	short-key.  core.el: consider source and command buffer past history *only* if
-	it was run with the same debugger as we want to currently run.
+	short-key.  core.el: consider source and command buffer past history
+	*only* if it was run with the same debugger as we want to currently
+	run.
 
 2009-11-29  rocky <rockyb@rubyforge.org>
 
 	* cmds.el, helper.el, key.el, send.el, test/test-send.el: Make gdb
 	commands more short-key friendly - that is can be called from the
-	source window.  Add newer-frame: "<" and older frame ">".
+	source window. Add newer-frame: "<" and older frame ">".
 
 2009-11-29  rocky <rockyb@rubyforge.org>
 
 	* fringe.el, track-mode.el, track.el: Handle some error cases, and
-	fix source tracking created in DRYing code.  fringe.el: handle
+	fix source tracking created in DRYing code. fringe.el: handle
 	deleting the buffer we are trying to update the fringe arrow for
 	track-mode.el: handle error case where we invoke dbgr-track-mode in
-	a non-process buffer.  track.el: need to switch to source buffer to
+	a non-process buffer. track.el: need to switch to source buffer to
 	query overlay arrow.
 
 2009-11-29  rocky <rockyb@rubyforge.org>
@@ -386,7 +1098,7 @@
 	* shortkey.el, track.el, window.el: Keep command buffer position and
 	source location position in sync when moving back in the history of
 	positions. See docstring of dbgr-track-hist-fn-internal for which
-	windows get displayed.  DRY code a little.
+	windows get displayed. DRY code a little.
 
 2009-11-29  rocky <rocky@gnu.org>
 
@@ -394,16 +1106,22 @@
 	srcbuf.el, test/behave.el, test/test-file.el,
 	test/test-shortkey.el, track-mode.el, track.el, window.el: Fix up
 	and simplify short-key mode so the setting is saved in the process
-	buffer and propagated to the source buffers encountered.  key.el: add 's' for step.  test/behave.el: add assert-raises! track-mode.el: use standard name -setup instead of -body. Pass an
-	explicit parameter.  window.el: remove older, now-unused code.
+	buffer and propagated to the source buffers encountered.  key.el:
+	add 's' for step. test/behave.el: add assert-raises!  track-mode.el:
+	use standard name -setup instead of -body. Pass an explicit
+	parameter.  window.el: remove older, now-unused code.
 
 2009-11-27  rocky <rocky@gnu.org>
 
 	* cmdbuf.el, cmds.el, file.el, loc.el, shortkey.el,
 	test/test-cmdbuf.el, track.el, window.el: Bang on (source) window
 	update and display. Less disruption of windows on update. Add
-	variable in cmdbuf to track shortkey mode.  file.el (dbgr-file-line-count): remove bug. save-current isn't what
-	we want. Use find-file-noselect so we don't disrupt current buffer.  cmdbuf.el, cmds,el: at ? to ends of boolean variables.  loc.el: don't change the selected buffer.  test-cmdbuf.el: fix improper call to dbgr-cmdbuf-info-cmd-args=
+	variable in cmdbuf to track shortkey mode.  file.el
+	(dbgr-file-line-count): remove bug. save-current isn't what we want.
+	Use find-file-noselect so we don't disrupt current buffer.
+	cmdbuf.el, cmds,el: at ? to ends of boolean variables.  loc.el:
+	don't change the selected buffer.  test-cmdbuf.el: fix improper call
+	to dbgr-cmdbuf-info-cmd-args=
 
 2009-11-26  rocky <rocky@gnu.org>
 
@@ -413,12 +1131,12 @@
 
 	* Makefile.am, elisp-comp, helper.el, test/test-cmdbuf.el: 
 	elisp-comp: remove temp script. Makefile.am: Wasn't running cmdbuf
-	test.  helper.el: current best guess at a setter method.
+	test. helper.el: current best guess at a setter method.
 
 2009-11-25  rocky <rocky@gnu.org>
 
 	* test/behave.el, test/test-send.el: behave.el: fix incorrect
-	initializion of assert count.  test-send.el: Check docstring is set
+	initializion of assert count. test-send.el: Check docstring is set
 	on dbgr-define-command
 
 2009-11-24  rocky <rocky@gnu.org>
@@ -489,9 +1207,8 @@
 	* dbgr-buffer.el, dbgr-cmdbuf.el, dbgr-core.el, dbgr-custom.el,
 	dbgr-file.el, dbgr-helper.el, dbgr-key.el, dbgr-send.el,
 	dbgr-shortkey.el, dbgr-srcbuf.el, dbgr-track.el: (provide 'xxx) ->
-	(provide-me). This ensures we get it right.  Start to fold in
-	Anders' shortkey mode and keybindings and all that other great
-	stuff.
+	(provide-me). This ensures we get it right. Start to fold in Anders'
+	shortkey mode and keybindings and all that other great stuff.
 
 2009-11-20  rocky <rockyb@rubyforge.org>
 
@@ -587,10 +1304,11 @@
 	python/pydbgr-core.el, python/pydbgr-track-mode.el,
 	python/pydbgr.el, ruby/rbdbgr-core.el, ruby/rbdbgr.el,
 	test/test-send.el, test/test-track.el: Correct bugs in and clean up
-	track-mode setting and debugger invocation.  Suggested debugger invocation command is now the last invocation
-	unless the buffer has a better idea.  elisp-comp: we now need our own since we don't want to compile in a
-	directory.  Makefile.am: no subdirs until I have more time to go
-	over this.
+	track-mode setting and debugger invocation.  Suggested debugger
+	invocation command is now the last invocation unless the buffer has
+	a better idea.  elisp-comp: we now need our own since we don't want
+	to compile in a directory. Makefile.am: no subdirs until I have more
+	time to go over this.
 
 2009-11-17  rocky <rockyb@rubyforge.org>
 
@@ -607,7 +1325,8 @@
 	Each debugger has a regular expression to match a prompt location
 	and a regular expression for the prompt string that comint uses.
 	However there may be other regular expressions for things like stack
-	traces.  Part of a long-needed refactoring. More to follow. Expect breakage.
+	traces.  Part of a long-needed refactoring. More to follow. Expect
+	breakage.
 
 2009-11-17  R. Bernstein <rocky@gnu.org>
 
@@ -659,7 +1378,7 @@
 
 	* dbgr-buffer.el, dbgr-cmdbuf.el, dbgr-core.el, dbgr-srcbuf.el,
 	python/pydbgr-core.el, ruby/rbdbgr-core.el: Push forward with
-	simpler access to struct fields.  pydbgr, rbdbgr: remove compilation
+	simpler access to struct fields. pydbgr, rbdbgr: remove compilation
 	bug/warning.
 
 2009-11-16  R. Bernstein <rocky@gnu.org>
@@ -683,6 +1402,7 @@
 	ruby/rbdbgr-regexp.el, ruby/rbdbgr-track-mode.el: dbgr-command-send
 	now echos its output. prompt is set correctly for rbdbgr and pydbgr.
 
+
 2009-11-15  rocky <rockyb@rubyforge.org>
 
 	* Makefile.am, dbgr-buffer.el, dbgr-cmdbuf.el, dbgr-core.el,
@@ -691,14 +1411,14 @@
 	python/pydbgr-core.el, python/pydbgr-regexp.el, python/pydbgr.el,
 	ruby/rbdbgr-core.el, ruby/rbdbgr-regexp.el, ruby/rbdbgr.el,
 	test/test-scriptbuf.el, test/test-srcbuf.el: Bug fix: minibuffer
-	history was not saving prior of debugger invocations.  scriptbuf ->
+	history was not saving prior of debugger invocations. scriptbuf ->
 	srcbuf.
 
 2009-11-15  rocky <rockyb@rubyforge.org>
 
 	* test/test-helper.el, test/test-regexp-ruby.el,
 	test/test-regexp2.el: Add with-current-buffer-safe to guard against
-	deleted buffers.  Set/save comint-prompt-regexp. Correct debugger
+	deleted buffers. Set/save comint-prompt-regexp. Correct debugger
 	prompts which are not the same as location matching patterns.
 	Workaround problem in loading pydbg/rbdbgr not pulling in all files.
 	Include python regexp test.
@@ -745,7 +1465,7 @@
 2009-11-13  rockyb <rocky@gnu.org>
 
 	* dbgr-core.el, python/pydbgr-track-mode.el, python/pydbgr.el,
-	ruby/rbdbgr.el: Sentinel should detect deleted buffers.  comint
+	ruby/rbdbgr.el: Sentinel should detect deleted buffers. comint
 	output hooks were not installed in pydbgr and rbdbgr.
 
 2009-11-13  R. Bernstein <rocky@gnu.org>
@@ -781,7 +1501,7 @@
 	* dbgr-cmdbuf.el, dbgr-core.el, dbgr-helper.el,
 	python/pydbgr-core.el, python/pydbgr.el, ruby/rbdbgr-core.el,
 	ruby/rbdbgr.el, test/test-scriptbuf.el: */*-core.el Common routine
-	to query for command line.  dbgr-cmdf.el: fix bugs in command-line
+	to query for command line. dbgr-cmdf.el: fix bugs in command-line
 	retrieval.
 
 2009-11-11  R. Bernstein <rocky@gnu.org>
@@ -803,8 +1523,8 @@
 	dbgr-track.el, dbgr-window.el, test/.gitignore, test/behave.el,
 	test/test-helper.el, test/test-scriptbuf.el: behave.el: was not
 	passing assertion message to assert-t Store debugger name inside
-	script buffers. Command invocation to come...  dbgr-window.el: add
-	provide for my name.  Start helper file. xx-p -> xx? because it is
+	script buffers. Command invocation to come... dbgr-window.el: add
+	provide for my name. Start helper file. xx-p -> xx? because it is
 	cooler.
 
 2009-11-10  rocky <rockyb@rubyforge.org>
@@ -824,7 +1544,7 @@
 
 	* dbgr-loc.el, dbgr-lochist.el, dbgr-procbuf.el, dbgr-track.el: Keep
 	(historical) process buffer position in sync with historical source
-	buffer position.  Warning: this needs refactorization.
+	buffer position. Warning: this needs refactorization.
 
 2009-11-10  rocky <rockyb@rubyforge.org>
 
@@ -852,6 +1572,7 @@
 	* ruby/rbdbgr-core.el, ruby/rbdbgr-regexp.el,
 	ruby/rbdbgr-track-mode.el, ruby/rbdbgr.el: Use require-relative now.
 
+
 2009-11-09  rocky <rockyb@rubyforge.org>
 
 	* dbgr-core.el, dbgr-file.el, dbgr-procbuf.el, dbgr-track.el: Use
@@ -875,7 +1596,7 @@
 	* Makefile.am, dbgr-arrow.el, dbgr-core.el, dbgr-scriptbuf-var.el,
 	dbgr-scriptbuf.el, dbgr-track.el, python/pydbgr-core.el,
 	ruby/rbdbgr-core.el, test/test-scriptbuf.el: Set debugger
-	buffer-local variables for command/process and source buffers.  Set
+	buffer-local variables for command/process and source buffers. Set
 	default directory in command buffer. Source buffer now has last
 	command invocation and a pointer to the process buffer.
 
@@ -890,7 +1611,7 @@
 2009-11-02  rocky <rockyb@rubyforge.org>
 
 	* dbgr-regexp.el, dbgr-track-mode.el, dbgr-track.el: dbgr-regexp.el:
-	regexp bug fixes for rdebug.  dbgr-track-mode.el: docstring typo
+	regexp bug fixes for rdebug. dbgr-track-mode.el: docstring typo
 	dbgr-track.el: don't run hooks if dbgr-track-mode is not set.
 
 2009-11-02  R. Bernstein <rocky@gnu.org>
@@ -898,7 +1619,7 @@
 	* dbgr-file.el, dbgr-track.el, python/pydbgr-core.el,
 	ruby/rbdbgr-core.el, ruby/rbdbgr-regexp.el: Keep history of pydbgr,
 	rbdbgr invocations and modify minibuffer mode map to do filename
-	completion.  FIXME: need to DRY this code.
+	completion. FIXME: need to DRY this code.
 
 2009-11-02  rocky <rockyb@rubyforge.org>
 
@@ -998,8 +1719,9 @@
 	* dbgr-track-mode.el, dbgr-track.el, ruby/rbdbgr-core.el,
 	ruby/rbdbgr-regexp.el, ruby/rbdbgr-track-mode.el: 
 	dbgr-track-mode.el: simplify mode hook code by using
-	define-minor-mode macro more effectively.  dbgr-track.el: we'll see if we can get away with not having dbg-info
-	global.  ruby/*.el: rbdbgr-track-mode now works again
+	define-minor-mode macro more effectively.  dbgr-track.el: we'll see
+	if we can get away with not having dbg-info global.  ruby/*.el:
+	rbdbgr-track-mode now works again
 
 2009-10-28  rocky <rocky@sanchez.(none)>
 

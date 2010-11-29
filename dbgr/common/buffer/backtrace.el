@@ -9,9 +9,17 @@
 (defstruct dbgr-backtrace-info
   "debugger object/structure specific to a (top-level) Ruby file
 to be debugged."
-  cmdbuf        ;; buffer of the associated debugger process
-  cur-pos        ;; If not nil, frame we are at
+  (cmdbuf    nil)  ;; buffer of the associated debugger process
+  (cur-pos   0)    ;; Frame we are at
+  frame-ring       ;; ring of marks in buffer of frame numbers. The 
+                   ;; text at that marker has additional properties about the
+                   ;; frame
 )
+
+(declare-function dbgr-cmd-frame(num))
+(declare-function dbgr-get-cmdbuf(&optional opt-buffer))
+(declare-function dbgr-command (fmt &optional arg no-record? 
+				    frame-switch? dbgr-prompts?))
 
 (defvar dbgr-backtrace-info)
 (make-variable-buffer-local 'dbgr-backtrace-info)
@@ -26,6 +34,10 @@ to be debugged."
     (define-key map [double-mouse-1] 'dbgr-goto-frame-mouse)
     (define-key map [mouse-2] 'dbgr-goto-frame-mouse)
     (define-key map [mouse-3] 'dbgr-goto-frame-mouse)
+    (define-key map [up]      'dbgr-backtrace-moveto-frame-prev)
+    (define-key map [down]    'dbgr-backtrace-moveto-frame-next)
+    (define-key map "n"       'dbgr-backtrace-moveto-frame-next)
+    (define-key map "p"       'dbgr-backtrace-moveto-frame-prev)
     (define-key map [(control m)] 'dbgr-goto-frame)
     (define-key map "0" 'dbgr-goto-frame-n)
     (define-key map "1" 'dbgr-goto-frame-n)
@@ -68,7 +80,10 @@ to be debugged."
   	(process)
   	)
     (with-current-buffer-safe cmdbuf
-      (let ((frame-pat (dbgr-cmdbuf-pat "frame")))
+      (let ((frame-pat (dbgr-cmdbuf-pat "frame"))
+	    (selected-frame-num)
+	    (frame-pos-ring)
+	    )
 	(setq process (get-buffer-process (current-buffer)))
 	(dbgr-cmdbuf-info-in-srcbuf?= dbgr-cmdbuf-info 
 				      (not (dbgr-cmdbuf? buffer)))
@@ -89,16 +104,31 @@ to be debugged."
 	    (setq buffer-read-only nil)
 	    (delete-region (point-min) (point-max))
 	    (if divert-string 
-		(progn
-		  (insert (dbgr-backtrace-add-text-properties frame-pat
+		(let* ((triple 
+			(dbgr-backtrace-add-text-properties frame-pat
 							      divert-string))
-		  (dbgr-backtrace-mode cmdbuf))
+		       (string-with-props (car triple))
+		       (frame-num-pos-list (caddr triple))
+		       )
+		  (setq selected-frame-num (cadr triple))
+		  (insert string-with-props)
+		  ;; add marks for each position
+		  (dbgr-backtrace-mode cmdbuf)
+		  (setq frame-pos-ring (make-ring (length frame-num-pos-list)))
+		  (dolist (pos frame-num-pos-list)
+		    (goto-char pos)
+		    (ring-insert-at-beginning frame-pos-ring (point-marker))
+		    )
+		  )
 	      )
 	    ;; dbgr-backtrace-mode kills all local variables so
-	    ;; we set this after. Alternatively cahnge dbgr-backtrace-mode.
+	    ;; we set this after. Alternatively change dbgr-backtrace-mode.
 	    (set (make-local-variable 'dbgr-backtrace-info)
 		 (make-dbgr-backtrace-info
-		  :cmdbuf cmdbuf))
+		  :cmdbuf cmdbuf
+		  :frame-ring frame-pos-ring
+		  ))
+	    (dbgr-backtrace-moveto-frame selected-frame-num)
 	    )
 	  )
 	)
@@ -146,6 +176,38 @@ to be debugged."
   ;; (run-mode-hooks 'dbgr-backtrace-mode-hook)
   )
 
+(defun dbgr-backtrace-moveto-frame (num &optional opt-buffer)
+  (if (dbgr-backtrace?)
+      (let* ((ring (dbgr-sget 'backtrace-info 'frame-ring))
+	     (marker (ring-ref ring num)))
+	(setf (dbgr-backtrace-info-cur-pos dbgr-backtrace-info) num)
+	(goto-char marker)
+      )
+    )
+  )
+
+(defun dbgr-backtrace-moveto-frame-next ()
+  (interactive)
+  (if (dbgr-backtrace?)
+      (let* ((cur-pos (dbgr-sget 'backtrace-info 'cur-pos))
+	     (ring-size (ring-size (dbgr-sget 'backtrace-info 'frame-ring)))
+	     )
+	(dbgr-backtrace-moveto-frame (ring-plus1 cur-pos ring-size))
+      )
+    )
+  )
+
+(defun dbgr-backtrace-moveto-frame-prev ()
+  (interactive)
+  (if (dbgr-backtrace?)
+      (let* ((cur-pos (dbgr-sget 'backtrace-info 'cur-pos))
+	     (ring-size (ring-size (dbgr-sget 'backtrace-info 'frame-ring)))
+	     )
+	(dbgr-backtrace-moveto-frame (ring-minus1 cur-pos ring-size))
+      )
+    )
+  )
+
 (defun dbgr-goto-frame-n-internal (keys)
   (if (and (stringp keys)
            (= (length keys) 1))
@@ -161,8 +223,9 @@ to be debugged."
               (setq acc "")))))
     (message "`dbgr-goto-frame-n' must be bound to a number key")))
 
+;; FIXME: replace with ring.
 (defun dbgr-goto-entry-try (str)
-  "See if thre is an entry with number STR.  If not return nil."
+  "See if there is an entry with number STR.  If not return nil."
   (goto-char (point-min))
   (if (re-search-forward (concat "^[^0-9]*\\(" str "\\)[^0-9]") nil t)
       (progn
@@ -210,11 +273,13 @@ non-digit will start entry number from the beginning again."
   "Go to the frame number. We get the frame number from the
 'frame-num property"
   (interactive)
-  (let ((frame-num (get-text-property (point) 'frame-num)))
-    (if frame-num 
-	(dbgr-cmd-frame frame-num)
-      (message "No frame property found at this point")
-      )
+  (if (dbgr-backtrace?)
+      (let ((frame-num (get-text-property (point) 'frame-num)))
+	(if frame-num 
+	    (dbgr-cmd-frame frame-num)
+	  (message "No frame property found at this point")
+	  )
+	)
     )
   )
 
@@ -241,22 +306,39 @@ non-digit will start entry number from the beginning again."
 	 (frame-regexp (dbgr-loc-pat-regexp frame-pat))
 	 (frame-group-pat (dbgr-loc-pat-num frame-pat))
 	 (last-pos 0)
+	 (selected-frame-num 0)
+	 (frame-num-pos-list '())
 	 )
-  (while (string-match frame-regexp string last-pos)
+    (while (string-match frame-regexp string last-pos)
       (let* ((frame-num-str 
 	      (substring string (match-beginning frame-group-pat)
 			 (match-end frame-group-pat)))
-	     (frame-num (string-to-number frame-num-str)))
+	     (frame-num (string-to-number frame-num-str))
+
+	     ;; FIXME: Sort of a hack that 1 is always the frame indicator.
+	     (frame-indicator 
+	      (substring string (match-beginning 1) (match-end 1)))
+
+	     (frame-num-pos (match-beginning frame-group-pat))
+	     )
+	(add-to-list 'frame-num-pos-list frame-num-pos 't)
 	(put-text-property (match-beginning 0) (match-end 0)
-			    'frame-num  frame-num string)
+			   'frame-num  frame-num string)
 	(add-text-properties (match-beginning frame-group-pat) 
 			     (match-end frame-group-pat)
 			     '(mouse-face highlight 
 					  help-echo "mouse-2: goto this frame")
 			     string)
 	(setq last-pos (match-end 0))
+
+	;; FIXME: Sort of a hack, but we'll assume any non-blank means selected
+	;; frame.
+	(unless (string-match "^[ \t\n]+$" frame-indicator)
+	  (setq selected-frame-num frame-num))
 	))
-  string)
+
+    (list string selected-frame-num frame-num-pos-list)
+    )
   )
 
 (provide-me "dbgr-buffer-")

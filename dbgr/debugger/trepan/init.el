@@ -86,9 +86,9 @@ dbgr-loc-pat struct")
 			dbgr-trepan-frame-file-regexp
 			"\\(?:" dbgr-trepan-frame-line-regexp "\\)?"
 			)
-       :num 1
-       :file-group 5
-       :line-group 6)
+       :num 2
+       :file-group 6
+       :line-group 7)
       )
 
 (setf (gethash "font-lock-keywords" dbgr-trepan-pat-hash)

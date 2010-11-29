@@ -77,9 +77,9 @@ dbgr-loc-pat struct")
 			"\\([A-Z_][a-zA-Z0-9_:]*\\)[#.]\\(.*\\)"
 			dbgr-trepanx-frame-file-line-regexp
 			)
-       :num 1
-       :file-group 5
-       :line-group 6)
+       :num 2
+       :file-group 6
+       :line-group 7)
       )
 
 (setf (gethash "font-lock-keywords" dbgr-trepanx-pat-hash)
