@@ -31,6 +31,8 @@ to be debugged."
 
 (defvar dbgr-backtrace-mode-map
   (let ((map (make-sparse-keymap)))
+    (define-key map "."       'dbgr-backtrace-moveto-frame-selected)
+    (define-key map "r"       'dbgr-backtrace-init)
     (define-key map [double-mouse-1] 'dbgr-goto-frame-mouse)
     (define-key map [mouse-2] 'dbgr-goto-frame-mouse)
     (define-key map [mouse-3] 'dbgr-goto-frame-mouse)
@@ -83,7 +85,11 @@ to be debugged."
       (let ((frame-pat (dbgr-cmdbuf-pat "frame"))
 	    (selected-frame-num)
 	    (frame-pos-ring)
+	    (sleep-count 0)
 	    )
+	(unless frame-pat
+	  (error "No 'frame' regular expression recorded for debugger %s"
+		 (dbgr-cmdbuf-debugger-name)))
 	(setq process (get-buffer-process (current-buffer)))
 	(dbgr-cmdbuf-info-in-srcbuf?= dbgr-cmdbuf-info 
 				      (not (dbgr-cmdbuf? buffer)))
@@ -91,48 +97,58 @@ to be debugged."
 	(setq dbgr-track-divert-string nil)
 	(dbgr-command "backtrace" nil nil 't)
 	(while (and (eq 'run (process-status process))
-		    (null dbgr-track-divert-string))
+		    (null dbgr-track-divert-string)
+		    (> 1000 (setq sleep-count (1+ sleep-count))))
 	  (sleep-for 0.001)
 	  )
-	;; (message "+++4 %s" dbgr-track-divert-string)
-	(let ((bt-buffer (get-buffer-create
-			  (format "*%s backtrace*" 
-				  (dbgr-remove-surrounding-stars (buffer-name)))))
-	      (divert-string dbgr-track-divert-string)
-	      )
-	  (with-current-buffer bt-buffer
-	    (setq buffer-read-only nil)
-	    (delete-region (point-min) (point-max))
-	    (if divert-string 
-		(let* ((triple 
-			(dbgr-backtrace-add-text-properties frame-pat
+	(if (>= sleep-count 1000)
+	    (message "Timeout on running debugger command")
+	  ;; else
+	  ;; (message "+++4 %s" dbgr-track-divert-string)
+	  (let ((bt-buffer (get-buffer-create
+			    (format "*%s backtrace*" 
+				    (dbgr-remove-surrounding-stars 
+				     (buffer-name)))))
+		(divert-string dbgr-track-divert-string)
+		)
+	    (with-current-buffer bt-buffer
+	      (setq buffer-read-only nil)
+	      (delete-region (point-min) (point-max))
+	      (if divert-string 
+		  (let* ((triple 
+			  (dbgr-backtrace-add-text-properties frame-pat
 							      divert-string))
-		       (string-with-props (car triple))
-		       (frame-num-pos-list (caddr triple))
-		       )
-		  (setq selected-frame-num (cadr triple))
-		  (insert string-with-props)
-		  ;; add marks for each position
-		  (dbgr-backtrace-mode cmdbuf)
-		  (setq frame-pos-ring (make-ring (length frame-num-pos-list)))
-		  (dolist (pos frame-num-pos-list)
-		    (goto-char pos)
-		    (ring-insert-at-beginning frame-pos-ring (point-marker))
+			 (string-with-props (car triple))
+			 (frame-num-pos-list (caddr triple))
+			 )
+		    (setq selected-frame-num (cadr triple))
+		    (insert string-with-props)
+		    ;; add marks for each position
+		    (dbgr-backtrace-mode cmdbuf)
+		    (setq frame-pos-ring 
+			  (make-ring (length frame-num-pos-list)))
+		    (dolist (pos frame-num-pos-list)
+		      (goto-char (1+ pos))
+		      (ring-insert-at-beginning frame-pos-ring (point-marker))
+		      )
 		    )
-		  )
+		)
+	      ;; dbgr-backtrace-mode kills all local variables so
+	      ;; we set this after. Alternatively change dbgr-backtrace-mode.
+	      (set (make-local-variable 'dbgr-backtrace-info)
+		   (make-dbgr-backtrace-info
+		    :cmdbuf cmdbuf
+		    :frame-ring frame-pos-ring
+		    ))
+	      (if selected-frame-num
+		  (dbgr-backtrace-moveto-frame selected-frame-num))
 	      )
-	    ;; dbgr-backtrace-mode kills all local variables so
-	    ;; we set this after. Alternatively change dbgr-backtrace-mode.
-	    (set (make-local-variable 'dbgr-backtrace-info)
-		 (make-dbgr-backtrace-info
-		  :cmdbuf cmdbuf
-		  :frame-ring frame-pos-ring
-		  ))
-	    (dbgr-backtrace-moveto-frame selected-frame-num)
 	    )
 	  )
 	)
       )
+    (unless cmdbuf
+      (message "Unable to find debugger command buffer for %s" buffer))
     )
   )
 
@@ -176,34 +192,68 @@ to be debugged."
   ;; (run-mode-hooks 'dbgr-backtrace-mode-hook)
   )
 
-(defun dbgr-backtrace-moveto-frame (num &optional opt-buffer)
+(defun dbgr-backtrace-moveto-frame-selected ()
+  "Set point to the selected frame."
+  (interactive)
   (if (dbgr-backtrace?)
-      (let* ((ring (dbgr-sget 'backtrace-info 'frame-ring))
-	     (marker (ring-ref ring num)))
-	(setf (dbgr-backtrace-info-cur-pos dbgr-backtrace-info) num)
-	(goto-char marker)
-      )
+      (let* ((cur-pos (dbgr-sget 'backtrace-info 'cur-pos))
+	     (ring-size (ring-size (dbgr-sget 'backtrace-info 'frame-ring)))
+	     )
+	(if (and cur-pos (> ring-size 0))
+	    (dbgr-backtrace-moveto-frame cur-pos)
+	  ;else
+	  (message "No frame information recorded")
+	  )
+	)
+    )
+  )
+
+(defun dbgr-backtrace-moveto-frame (num &optional opt-buffer)
+  (if (integerp num)
+      (if (dbgr-backtrace?)
+	  (let* ((ring (dbgr-sget 'backtrace-info 'frame-ring))
+		 (marker (ring-ref ring num)))
+	    (setf (dbgr-backtrace-info-cur-pos dbgr-backtrace-info) num)
+	    (goto-char marker)
+	    )
+	)
+    ; else
+    (message "frame number %s is not an integer" num)
     )
   )
 
 (defun dbgr-backtrace-moveto-frame-next ()
+  "Set point to the next frame. If we are at the end, wrap to the
+beginning. Note that we are just moving in the backtrace buffer,
+not updating the frame stack."
   (interactive)
   (if (dbgr-backtrace?)
       (let* ((cur-pos (dbgr-sget 'backtrace-info 'cur-pos))
 	     (ring-size (ring-size (dbgr-sget 'backtrace-info 'frame-ring)))
 	     )
-	(dbgr-backtrace-moveto-frame (ring-plus1 cur-pos ring-size))
-      )
+	(if (and cur-pos (> ring-size 0))
+	    (dbgr-backtrace-moveto-frame (ring-plus1 cur-pos ring-size))
+	  ;else
+	  (message "No frame information recorded")
+	  )
+	)
     )
   )
 
 (defun dbgr-backtrace-moveto-frame-prev ()
+  "Set point to the next frame. If we are at the beginning, wrap to the
+end. Note that we are just moving in the backtrace buffer,
+not updating the frame stack."
   (interactive)
   (if (dbgr-backtrace?)
       (let* ((cur-pos (dbgr-sget 'backtrace-info 'cur-pos))
 	     (ring-size (ring-size (dbgr-sget 'backtrace-info 'frame-ring)))
 	     )
-	(dbgr-backtrace-moveto-frame (ring-minus1 cur-pos ring-size))
+	(if (and cur-pos (> ring-size 0))
+	    (dbgr-backtrace-moveto-frame (ring-minus1 cur-pos ring-size))
+	  ;else
+	  (message "No frame information recorded")
+	  )
       )
     )
   )
@@ -306,7 +356,7 @@ non-digit will start entry number from the beginning again."
 	 (frame-regexp (dbgr-loc-pat-regexp frame-pat))
 	 (frame-group-pat (dbgr-loc-pat-num frame-pat))
 	 (last-pos 0)
-	 (selected-frame-num 0)
+	 (selected-frame-num nil)
 	 (frame-num-pos-list '())
 	 )
     (while (string-match frame-regexp string last-pos)
@@ -331,9 +381,9 @@ non-digit will start entry number from the beginning again."
 			     string)
 	(setq last-pos (match-end 0))
 
-	;; FIXME: Sort of a hack, but we'll assume any non-blank means selected
-	;; frame.
-	(unless (string-match "^[ \t\n]+$" frame-indicator)
+	;; FIXME: Sort of a hack, indicator has '->' somewhere in it if it is
+	;; selected.
+	(if (string-match "->" frame-indicator)
 	  (setq selected-frame-num frame-num))
 	))
 

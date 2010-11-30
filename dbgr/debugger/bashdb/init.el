@@ -4,7 +4,11 @@
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
-(require-relative-list '("../../common/regexp" "../../common/loc") "dbgr-")
+(require-relative-list '("../../common/regexp" 
+			 "../../common/loc" 
+			 "../../common/init") 
+		       "dbgr-")
+(require-relative-list '("../../lang/posix-shell") "dbgr-lang-")
 
 (defvar dbgr-pat-hash)
 (declare-function make-dbgr-loc-pat (dbgr-loc))
@@ -14,19 +18,24 @@
 backtrace, prompt, etc.  The values of a hash entry is a
 dbgr-loc-pat struct")
 
-(declare-function make-dbgr-loc "dbgr-loc" (a b c d e f))
-
 ;; Regular expression that describes a bashdb location generally shown
 ;; before a command prompt.
+;; For example:
+;;   (/etc/init.d/apparmor:35):
 (setf (gethash "loc" dbgr-bashdb-pat-hash)
       (make-dbgr-loc-pat
        :regexp "\\(^\\|\n\\)(\\([^:]+\\):\\([0-9]*\\))"
        :file-group 2
        :line-group 3))
 
+;; Regular expression that describes a bashdb command prompt
+;; For example: 
+;;   bashdb<10>
+;;   bashdb<(5)> 
+;;   bashdb<<1>>
 (setf (gethash "prompt" dbgr-bashdb-pat-hash)
       (make-dbgr-loc-pat
-       :regexp   "^bashdb<[(]*[0-9]+[)]*> "
+       :regexp   "^bashdb[<]+[(]*\\([0-9]+\\)[)]*[>]+ "
        ))
 
 ;;  Regular expression that describes a "breakpoint set" line
@@ -36,6 +45,32 @@ dbgr-loc-pat struct")
        :num 1
        :file-group 2
        :line-group 3))
+
+;; Regular expression that describes a debugger "delete" (breakpoint) response.
+;; For example:
+;;   Removed 1 breakpoint(s).
+(setf (gethash "brkpt-del" dbgr-bashdb-pat-hash)
+      (make-dbgr-loc-pat
+       :regexp "^Removed \\([0-9]+\\) breakpoints(s).\n"
+       :num 1))
+
+;;  Regular expression that describes a debugger "backtrace" command line.
+;;  e.g.
+;; ->0 in file `../bashdb/test/example/subshell.sh' at line 6
+;; ##1 source("../bashdb/shell.sh") called from file `/bin/bashdb' at line 140
+;; ##2 main() called from file `/bin/bashdb' at line 0
+(setf (gethash "frame" dbgr-bashdb-pat-hash)
+      (make-dbgr-loc-pat
+       :regexp 	(concat dbgr-shell-frame-start-regexp
+			dbgr-shell-frame-num-regexp "[ ]?"
+			"\\(.*\\)"
+			dbgr-shell-frame-file-regexp
+			"\\(?:" dbgr-shell-frame-line-regexp "\\)?"
+			)
+       :num 2
+       :file-group 4
+       :line-group 5)
+      )
 
 (setf (gethash "font-lock-keywords" dbgr-bashdb-pat-hash)
       '(
@@ -57,8 +92,6 @@ dbgr-loc-pat struct")
 	;; Line number.
 	("[ \t]+at line \\([0-9]+\\)$"
 	 (1 dbgr-line-number-face))
-	;; (trepan-frames-match-current-line
-	;;  (0 trepan-frames-current-frame-face append))
 	))
 
 (setf (gethash "bashdb" dbgr-pat-hash) dbgr-bashdb-pat-hash)

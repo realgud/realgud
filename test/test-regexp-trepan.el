@@ -6,7 +6,7 @@
 
 (setq bps-pat    (gethash "brkpt-set"     dbgr-trepan-pat-hash))
 (setq frame-pat  (gethash "frame"         dbgr-trepan-pat-hash))
-(setq prompt     (gethash "prompt"        dbgr-trepan-pat-hash))
+(setq prompt-pat (gethash "prompt"        dbgr-trepan-pat-hash))
 (setq tb-pat     (gethash "backtrace"     dbgr-trepan-pat-hash))
 (setq ctrl-pat   (gethash "control-frame" dbgr-trepan-pat-hash))
 
@@ -21,6 +21,12 @@
 (defun ctrl-frame-match(text) 
   (string-match (dbgr-loc-pat-regexp ctrl-pat) text)
 )
+
+(defun prompt-match(prompt-str) 
+  (assert-equal 0 (string-match (dbgr-loc-pat-regexp prompt-pat)
+				prompt-str))
+)
+
 
 ;; FIXME: we get a void variable somewhere in here when running
 ;;        even though we define it in lexical-let. Dunno why.
@@ -74,14 +80,10 @@
 		    )
 
 	   (specify "prompt"
-	   	    (assert-equal 0 (string-match (dbgr-loc-pat-regexp prompt)
-						  "(trepan): "))
-	   	    (assert-equal 0 (string-match (dbgr-loc-pat-regexp prompt)
-						  "((trepan)): "))
-	   	    (assert-equal 0 (string-match (dbgr-loc-pat-regexp prompt)
-						  "((trepan@55)): "))
-	   	    (assert-equal 0 (string-match (dbgr-loc-pat-regexp prompt)
-						  "((trepan@main)): "))
+		    (prompt-match "(trepan): ")
+	   	    (prompt-match "((trepan)): ")
+	   	    (prompt-match "((trepan@55)): ")
+		    (prompt-match "((trepan@main)): ")
 		    )
 
 	   (specify "control-frame"

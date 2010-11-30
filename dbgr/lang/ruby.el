@@ -1,5 +1,5 @@
 ;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
-;;; Common Ruby regular expressions and things
+;;; Common Ruby constants and regular expressions.
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)

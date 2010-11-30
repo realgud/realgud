@@ -70,9 +70,9 @@ dbgr-loc-pat struct")
 			"\\(?: \\(?:\\(.+\\)(\\(.*\\))\\)\\)?"
 			dbgr-rdebug-frame-file-line-regexp
 			)
-       :num 1
-       :file-group 4
-       :line-group 5)
+       :num 2
+       :file-group 5
+       :line-group 6)
       )
 
 (setf (gethash "font-lock-keywords" dbgr-rdebug-pat-hash)
