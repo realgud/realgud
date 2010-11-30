@@ -36,6 +36,7 @@ dbgr-loc-pat struct")
 (setf (gethash "prompt" dbgr-bashdb-pat-hash)
       (make-dbgr-loc-pat
        :regexp   "^bashdb[<]+[(]*\\([0-9]+\\)[)]*[>]+ "
+       :num 1
        ))
 
 ;;  Regular expression that describes a "breakpoint set" line
@@ -54,11 +55,11 @@ dbgr-loc-pat struct")
        :regexp "^Removed \\([0-9]+\\) breakpoints(s).\n"
        :num 1))
 
-;;  Regular expression that describes a debugger "backtrace" command line.
-;;  e.g.
-;; ->0 in file `../bashdb/test/example/subshell.sh' at line 6
-;; ##1 source("../bashdb/shell.sh") called from file `/bin/bashdb' at line 140
-;; ##2 main() called from file `/bin/bashdb' at line 0
+;; Regular expression that describes a debugger "backtrace" command line.
+;; For example:
+;;   ->0 in file `../bashdb/test/example/subshell.sh' at line 6
+;;   ##1 source("../bashdb/shell.sh") called from file `/bin/bashdb' at line 140
+;;   ##2 main() called from file `/bin/bashdb' at line 0
 (setf (gethash "frame" dbgr-bashdb-pat-hash)
       (make-dbgr-loc-pat
        :regexp 	(concat dbgr-shell-frame-start-regexp

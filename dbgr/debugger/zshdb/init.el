@@ -4,7 +4,11 @@
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
-(require-relative-list '("../../common/regexp" "../../common/loc") "dbgr-")
+(require-relative-list '("../../common/regexp" 
+			 "../../common/loc" 
+			 "../../common/init") 
+		       "dbgr-")
+(require-relative-list '("../../lang/posix-shell") "dbgr-lang-")
 
 (defvar dbgr-pat-hash)
 (declare-function make-dbgr-loc-pat (dbgr-loc))
@@ -14,19 +18,24 @@
 backtrace, prompt, etc.  The values of a hash entry is a
 dbgr-loc-pat struct")
 
-(declare-function make-dbgr-loc "dbgr-loc" (a b c d e f))
-
 ;; Regular expression that describes a zshdb location generally shown
 ;; before a command prompt.
+;; For example:
+;;   (/etc/init.d/apparmor:35):
 (setf (gethash "loc" dbgr-zshdb-pat-hash)
       (make-dbgr-loc-pat
        :regexp "\\(^\\|\n\\)(\\([^:]+\\):\\([0-9]*\\))"
        :file-group 2
        :line-group 3))
 
+;; For example: 
+;;   zshdb<10>
+;;   zshdb<(5)> 
+;;   zshdb<<1>>
 (setf (gethash "prompt" dbgr-zshdb-pat-hash)
       (make-dbgr-loc-pat
-       :regexp   "^zshdb<[(]*[0-9]+[)]*> "
+       :regexp   "^zshdb[<]+[(]*\\([0-9]+\\)[)]*[>]+ "
+       :num 1
        ))
 
 ;;  Regular expression that describes a "breakpoint set" line
@@ -36,6 +45,32 @@ dbgr-loc-pat struct")
        :num 1
        :file-group 2
        :line-group 3))
+
+;; Regular expression that describes a debugger "delete" (breakpoint) response.
+;; For example:
+;;   Removed 1 breakpoint(s).
+(setf (gethash "brkpt-del" dbgr-zshdb-pat-hash)
+      (make-dbgr-loc-pat
+       :regexp "^Removed \\([0-9]+\\) breakpoints(s).\n"
+       :num 1))
+
+;; Regular expression that describes a debugger "backtrace" command line.
+;; For example:
+;;   ->0 in file `/etc/apparmor/fns' at line 24
+;;   ##1 /etc/apparmor/fns called from file `/etc/init.d/apparmor' at line 35
+;;   ##2 /etc/init.d/apparmor called from file `/usr/bin/zshdb' at line 129
+(setf (gethash "frame" dbgr-zshdb-pat-hash)
+      (make-dbgr-loc-pat
+       :regexp 	(concat dbgr-shell-frame-start-regexp
+			dbgr-shell-frame-num-regexp "[ ]?"
+			"\\(.*\\)"
+			dbgr-shell-frame-file-regexp
+			"\\(?:" dbgr-shell-frame-line-regexp "\\)?"
+			)
+       :num 2
+       :file-group 4
+       :line-group 5)
+      )
 
 (setf (gethash "font-lock-keywords" dbgr-zshdb-pat-hash)
       '(
