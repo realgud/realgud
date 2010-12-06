@@ -23,7 +23,7 @@ dbgr-loc-pat struct")
 ;; C> (/tmp/eval.rb:2)
 (setf (gethash "loc" dbgr-trepan-pat-hash)
       (make-dbgr-loc-pat
-       :regexp ".. (\\(?:.+ \\(?:via\\|remapped\\) \\)?\\(.+\\):\\([0-9]+\\))"
+       :regexp ".. (\\(?:.+ \\(?:via\\|remapped\\) \\)?\\(.+\\):\\([0-9]+\\)\\(?: @[0-9]+\\)?)"
        :file-group 1
        :line-group 2))
 
