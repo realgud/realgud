@@ -20,7 +20,7 @@
 ;; FIXME: we get a void variable somewhere in here when running
 ;;        even though we define it in lexical-let. Dunno why.
 ;;        setq however will workaround this.
-(setq text" [0;31m                       Object#boom at tmp/boom.rb:2[0m")
+(setq text " [0;31m                       Object#boom at tmp/boom.rb:2[0m")
 
 (context "traceback location matching"
 	 (tag regexp-trepanx)

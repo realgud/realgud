@@ -20,7 +20,7 @@ dbgr-loc-pat struct")
 ;;  -- (kernel/common/scope.rb:134 remapped /tmp/scope.rb:134)
 (setf (gethash "loc" dbgr-trepanx-pat-hash)
       (make-dbgr-loc-pat
-       :regexp ".. (\\(?:.+ \\(?:via\\|remapped\\) \\)?\\(.+\\):\\([0-9]+\\))"
+       :regexp ".. (\\(?:.+ \\(?:via\\|remapped\\) \\)?\\(.+\\):\\([0-9]+\\)\\(?: @[0-9]+\\)?)"
        :file-group 1
        :line-group 2))
 
