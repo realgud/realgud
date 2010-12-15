@@ -31,7 +31,7 @@ This should be an executable on your path, or an absolute file name."
 ;;
 
 ;;;###autoload
-(defun trepanx (&optional opt-command-line no-reset)
+(defun dbgr-trepanx (&optional opt-command-line no-reset)
   "Invoke the trepanx Ruby debugger and start the Emacs user interface.
 
 String COMMAND-LINE specifies how to run trepanx.
