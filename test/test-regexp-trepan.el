@@ -10,23 +10,13 @@
 (setq tb-pat     (gethash "backtrace"     dbgr-trepan-pat-hash))
 (setq ctrl-pat   (gethash "control-frame" dbgr-trepan-pat-hash))
 
-(defun tb-loc-match(text) 
-  (string-match (dbgr-loc-pat-regexp tb-pat) text)
-)
-
-(defun bp-loc-match(text) 
-  (string-match (dbgr-loc-pat-regexp bps-pat) text)
-)
-
-(defun ctrl-frame-match(text) 
-  (string-match (dbgr-loc-pat-regexp ctrl-pat) text)
+(defun loc-match(text var) 
+  (string-match (dbgr-loc-pat-regexp var) text)
 )
 
 (defun prompt-match(prompt-str) 
-  (assert-equal 0 (string-match (dbgr-loc-pat-regexp prompt-pat)
-				prompt-str))
+  (assert-equal 0 (loc-match prompt-str prompt-pat))
 )
-
 
 ;; FIXME: we get a void variable somewhere in here when running
 ;;        even though we define it in lexical-let. Dunno why.
@@ -36,7 +26,7 @@
 	 (tag regexp-trepan)
 	 (lexical-let ((text "	from /usr/local/bin/irb:12:in `<main>'"))
 	   (specify "basic traceback location"
-		    (assert-t (numberp (tb-loc-match text))))
+		    (assert-t (numberp (loc-match text tb-pat))))
 	   (specify "extract traceback file name"
 	   	    (assert-equal "/usr/local/bin/irb"
 				  (match-string (dbgr-loc-pat-file-group tb-pat)
@@ -87,17 +77,17 @@
 		    )
 
 	   (specify "control-frame"
-	   	    (assert-equal 0 (ctrl-frame-match 
+	   	    (assert-equal 0 (loc-match 
 				     "c:0026 p:0181 s:0136 b:0136 l:000135 d:000135 METHOD /trepan-0.0.1/app/frame.rb:132 "
-				     )
+				     ctrl-pat)
 				  )
-	   	    (assert-equal 0 (ctrl-frame-match 
+	   	    (assert-equal 0 (loc-match 
 				     "c:0030 p:0041 s:0144 b:0144 l:00226c d:00226c METHOD /gems/trepan-0.0.1/processor/eval.rb:15 "
-				     )
+				     ctrl-pat)
 				  )
-	   	    (assert-equal 0 (ctrl-frame-match 
+	   	    (assert-equal 0 (loc-match 
 				     "c:0015 p:0139 s:0070 b:0070 l:000063 d:000069 BLOCK  /gems/app/core.rb:121"
-				     )
+				     ctrl-pat)
 				  )
 		    )
 	   
@@ -105,7 +95,7 @@
 	in file /usr/local/bin/irb,
 	VM offset 2 of instruction sequence <top (required)>."))
 	     (specify "basic breakpoint location"
-		      (assert-t (numberp (bp-loc-match text))))
+		      (assert-t (numberp (loc-match text bps-pat))))
 	     (specify "extract breakpoint file name"
 		      (assert-equal "/usr/local/bin/irb"
 				    (match-string (dbgr-loc-pat-file-group 

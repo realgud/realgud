@@ -57,6 +57,10 @@ dbgr-loc-pat struct")
 ;;  Regular expression that describes a Ruby $! string
 (setf (gethash "dollar-bang" dbgr-rdebug-pat-hash) dbgr-ruby-dollar-bang)
 
+;;  Regular expression that describes a Ruby $! string
+(setf (gethash "rails-backtrace" dbgr-rdebug-pat-hash) 
+      dbgr-rails-backtrace-loc-pat)
+
 ;;  Regular expression that describes debugger "backtrace" command line.
 ;;  e.g.
 ;; --> #0 at line /usr/bin/irb:12

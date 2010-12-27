@@ -122,7 +122,8 @@ in it with those from CMDPROC-BUFFER"
      (setq debugger-name (dbgr-sget 'cmdbuf-info 'debugger-name))
      (setq cmd-args (dbgr-cmdbuf-info-cmd-args dbgr-cmdbuf-info)))
   (with-current-buffer-safe src-buffer
-    (dbgr-populate-common-keys (current-local-map))
+    (dbgr-populate-common-keys 
+     (or (current-local-map) (use-local-map (make-sparse-keymap))))
     (if (dbgr-srcbuf-info? dbgr-srcbuf-info)
 	(progn
 	  (dbgr-srcbuf-info-cmdproc= dbgr-srcbuf-info cmdproc-buffer)

@@ -8,16 +8,8 @@
 (setq loc    (gethash "loc"       dbgr-pydbgr-pat-hash))
 (setq tb     (gethash "backtrace" dbgr-pydbgr-pat-hash))
 
-(defun tb-loc-match(text) 
-  (string-match (dbgr-loc-pat-regexp tb) text)
-)
-
-(defun bp-loc-match(text) 
-  (string-match (dbgr-loc-pat-regexp bps) text)
-)
-
-(defun prompt-loc-match(text) 
-  (string-match (dbgr-loc-pat-regexp loc) text)
+(defun loc-match(text var) 
+  (string-match (dbgr-loc-pat-regexp var) text)
 )
 
 ;; FIXME: we get a void variable somewhere in here when running
@@ -27,7 +19,7 @@
 (context "traceback location matching"
 	 (tag regexp-pydbgr)
 	 (specify "basic traceback location"
-		  (assert-t (numberp (tb-loc-match text))))
+		  (assert-t (numberp (loc-match text tb))))
 	 (specify "extract file name"
 		  (assert-equal "/usr/lib/python2.6/code.py"
 				(match-string (dbgr-loc-pat-file-group tb)
@@ -44,7 +36,7 @@
 	 (tag regexp-pydbgr)
 	 (lexical-let ((text "Breakpoint 1 set at line 13 of file /src/git/code/gcd.py"))
 	   (specify "basic breakpoint location"
-		    (assert-t (numberp (bp-loc-match text))))
+		    (assert-t (numberp (loc-match text bps))))
 	   (specify "extract breakpoint file name"
 	   	    (assert-equal "/src/git/code/gcd.py"
 				  (match-string (dbgr-loc-pat-file-group bps)
@@ -56,11 +48,11 @@
 	   )
 	 )
 
-(context "promp matching"
+(context "prompt matching"
 	 (tag regexp-pydbgr)
 	 (lexical-let ((text "(c:\\working\\python\\helloworld.py:30): <module>"))
 	   (specify "MS DOS position location"
-		    (assert-t (numberp (prompt-loc-match text))))
+		    (assert-t (numberp (loc-match text loc))))
 	   (specify "extract file name"
 		    (assert-equal "c:\\working\\python\\helloworld.py"
 				(match-string (dbgr-loc-pat-file-group loc)
@@ -75,7 +67,7 @@
 	   )
 	 (lexical-let ((text "(/usr/bin/ipython:24): <module>"))
 	   (specify "position location"
-		    (assert-t (numberp (prompt-loc-match text))))
+		    (assert-t (numberp (loc-match text loc))))
 	   (specify "extract file name"
 		    (assert-equal "/usr/bin/ipython"
 				(match-string (dbgr-loc-pat-file-group loc)
