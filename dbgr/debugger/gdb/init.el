@@ -1,10 +1,10 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 ;;; gdb debugger
 
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
-(require-relative-list '("../regexp" "../loc") "dbgr-")
+(require-relative-list '("../../common/regexp" "../../common/loc") "dbgr-")
 
 (defvar dbgr-pat-hash)
 (declare-function make-dbgr-loc-pat (dbgr-loc))

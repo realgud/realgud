@@ -385,8 +385,9 @@ debugger with that information"
   (interactive "sDebugger name: ")
   (let ((regexp-hash (gethash debugger-name dbgr-pat-hash)))
     (if regexp-hash
-	(let* ((specific-track-mode 
-	       (intern (concat debugger-name "-track-mode")))
+	(let* ((prefix 
+		(if (equal debugger-name "gdb") "dbgr-gdb" debugger-name))
+	       (specific-track-mode (intern (concat prefix "-track-mode")))
 	       )
 	  (dbgr-cmdbuf-init (current-buffer) debugger-name regexp-hash)
 	  (if (and (not (eval specific-track-mode))
