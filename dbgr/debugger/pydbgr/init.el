@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 ;;; pydbgr: Python 2.5 and beyond 
 
 (eval-when-compile (require 'cl))
@@ -8,6 +8,7 @@
 			 "../../common/loc" 
 			 "../../common/init")
 		       "dbgr-")
+(require-relative-list '("../../lang/python") "dbgr-lang-")
 
 (defvar dbgr-pat-hash)
 (declare-function make-dbgr-loc-pat (dbgr-loc))
@@ -40,11 +41,7 @@ dbgr-loc-pat struct")
        ))
 
 ;;  Regular expression that describes a Python backtrace line.
-(setf (gethash "backtrace" dbgr-pydbgr-pat-hash)
-      (make-dbgr-loc-pat
-       :regexp   "^[ \t]+File \"\\(.+\\)\", line \\([0-9]+\\)"
-       :file-group 1
-       :line-group 2))
+(setf (gethash "backtrace" dbgr-pydbgr-pat-hash) dbgr-python-backtrace-loc-pat)
 
 ;;  Regular expression that describes a "breakpoint set" line
 (setf (gethash "brkpt-set" dbgr-pydbgr-pat-hash)

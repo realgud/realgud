@@ -18,8 +18,7 @@
 
 (declare-function dbgr-track-mode(bool))
 
-(define-key pydbgr-track-mode-map 
-  (kbd "C-c !b") 'pydbgr-goto-backtrace-line)
+(dbgr-python-populate-command-keys pydbgr-track-mode-map)
 
 (defun pydbgr-track-mode-hook()
   (if pydbgr-track-mode
