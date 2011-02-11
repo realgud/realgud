@@ -20,6 +20,9 @@
 
 (dbgr-ruby-populate-command-keys trepanx-track-mode-map)
 
+(define-key trepanx-track-mode-map 
+  (kbd "C-c !x") 'dbgr-rubinius-goto-Xagent-backtrace-line)
+
 (defun trepanx-track-mode-hook()
   (use-local-map trepanx-track-mode-map)
   (message "trepanx track-mode-hook called")

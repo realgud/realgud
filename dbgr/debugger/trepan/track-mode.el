@@ -25,6 +25,8 @@ described by PT."
   (dbgr-goto-line-for-pt pt "control-frame"))
 
 (dbgr-ruby-populate-command-keys trepan-track-mode-map)
+(define-key trepan-track-mode-map 
+  (kbd "C-c !c") 'dbgr-trepan-goto-control-frame-line)
 
 (defun trepan-track-mode-hook()
   (if trepan-track-mode
