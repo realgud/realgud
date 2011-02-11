@@ -25,10 +25,18 @@ traceback) line."  )
 
 (defconst dbgr-rubinius-backtrace-loc-pat
   (make-dbgr-loc-pat
-   :regexp "^\\(\\[0;3[1-4]m\\)?[ \t]+.* at \\([^:]+\\):\\([0-9]+\\)"
-   :file-group 2
-   :line-group 3)
+   :regexp "^\\(?:\\[0;3[1-4]m\\)?[ \t]+.* at \\([^:]+\\):\\([0-9]+\\)"
+   :file-group 1
+   :line-group 2)
   "A dbgr-loc-pat struct that describes a Rubinius backtrace (or
+traceback) line."  )
+
+(defconst dbgr-rubinius-Xagent-backtrace-loc-pat
+  (make-dbgr-loc-pat
+   :regexp "^\\(?:\\[0;3[1-4]m\\)?0x[a-f0-9]\\{8\\}: .* in \\([^:]+\\):\\([0-9]+\\) ([+][0-9]+)"
+   :file-group 1
+   :line-group 2)
+  "A dbgr-loc-pat struct that describes a Rubinius Xagent backtrace (or
 traceback) line."  )
 
 (defconst dbgr-ruby-dollar-bang
@@ -42,10 +50,16 @@ traceback) line."  )
 ;; FIXME: there is probably a less redundant way to do the following
 ;; FNS. 
 (defun dbgr-rails-goto-backtrace-line (pt)
-  "Display the location mentioned by the Ruby backtrace line
+  "Display the location mentioned by the Rails backtrace line
 described by PT."
   (interactive "d")
   (dbgr-goto-line-for-pt pt "rails-backtrace"))
+
+(defun dbgr-rubinius-goto-Xagent-backtrace-line (pt)
+  "Display the location mentioned by the Rubinius Xagent- backtrace line
+described by PT."
+  (interactive "d")
+  (dbgr-goto-line-for-pt pt "rubinius-backtrace-Xagent"))
 
 (defun dbgr-ruby-goto-backtrace-line (pt)
   "Display the location mentioned by the Ruby backtrace line

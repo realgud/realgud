@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
@@ -36,6 +36,11 @@ dbgr-loc-pat struct")
 ;;  Regular expression that describes a Rubinius backtrace line.
 (setf (gethash "backtrace" dbgr-trepanx-pat-hash) 
       dbgr-rubinius-backtrace-loc-pat)
+
+;;  Regular expression that describes a Rubinius X-agent backtrace
+;;  line. 
+(setf (gethash "rubinius-backtrace-Xagent" dbgr-trepanx-pat-hash) 
+      dbgr-rubinius-Xagent-backtrace-loc-pat)
 
 ;; Regular expression that describes a "breakpoint set" line
 ;; For example: 
