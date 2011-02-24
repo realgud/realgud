@@ -38,6 +38,7 @@ AC_CONFIG_FILES([Makefile \
 		 dbgr/debugger/gdb/Makefile \
 		 dbgr/debugger/pydbgr/Makefile \
 		 dbgr/debugger/rdebug/Makefile \
+		 dbgr/debugger/remake/Makefile \
 		 dbgr/debugger/trepan/Makefile \
 		 dbgr/debugger/trepanx/Makefile \
 		 dbgr/debugger/zshdb/Makefile \

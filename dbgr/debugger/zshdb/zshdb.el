@@ -18,7 +18,7 @@
 (defcustom zshdb-command-name
   ;;"zshdb --emacs 3"
   "zshdb"
-  "File name for executing the Ruby debugger and command options.
+  "File name for executing the zshdb and its command options.
 This should be an executable on your path, or an absolute file name."
   :type 'string
   :group 'zshdb)
