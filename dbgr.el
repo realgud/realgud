@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 ;;; Things related to loading and loading the dbgr package.
 (require 'load-relative)
 
@@ -8,6 +8,7 @@
      "./dbgr/common/track-mode"
      "./dbgr/debugger/bashdb/bashdb"
      "./dbgr/debugger/gdb/gdb"
+     "./dbgr/debugger/kshdb/kshdb"
      "./dbgr/debugger/pydbgr/pydbgr"
      "./dbgr/debugger/rdebug/rdebug"
      "./dbgr/debugger/trepan/trepan"

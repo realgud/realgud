@@ -1,4 +1,4 @@
-;;; Ruby "zshdb" Debugger tracking a comint or eshell buffer.
+;;; "zshdb" Debugger tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))
 (require 'load-relative)
