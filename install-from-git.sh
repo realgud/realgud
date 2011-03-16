@@ -20,8 +20,7 @@ for program in git make $need_sudo ; do
     fi
 done
 
-# for pkg in emacs-{test-unit,load-relative,loc-changes,dbgr} ; do 
-for pkg in emacs-{test-unit,load-relative} ; do 
+for pkg in emacs-{test-unit,load-relative,loc-changes,dbgr} ; do 
     echo '******************************************'
     echo Trying to install ${pkg}...
     echo '******************************************'
