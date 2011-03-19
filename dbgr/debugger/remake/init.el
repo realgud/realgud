@@ -41,16 +41,17 @@ dbgr-loc-pat struct")
 ;;  Regular expression that describes a "breakpoint set" line
 (setf (gethash "brkpt-set" dbgr-remake-pat-hash)
       (make-dbgr-loc-pat
-       :regexp "^Breakpoint \\([0-9]+\\) on target \\(.+\\) set.\n"
+       :regexp "^Breakpoint \\([0-9]+\\) on target \\([^:]*\\): file \\(.+\\), line \\([0-9]+\\).\n"
        :num 1
-       :file-group 2))
+       :file-group 3
+       :line-group 4))
 
 ;; Regular expression that describes a debugger "delete" (breakpoint) response.
 ;; For example:
 ;;   Removed 1 breakpoint(s).
 (setf (gethash "brkpt-del" dbgr-remake-pat-hash)
       (make-dbgr-loc-pat
-       :regexp "^Breakpint \\([0-9]+\\) on target .* cleared\n"
+       :regexp "^Breakpoint \\([0-9]+\\) on target .* cleared\n"
        :num 1))
 
 ;; FIXME: add these.
