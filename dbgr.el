@@ -11,6 +11,7 @@
      "./dbgr/debugger/kshdb/kshdb"
      "./dbgr/debugger/pydbgr/pydbgr"
      "./dbgr/debugger/rdebug/rdebug"
+     "./dbgr/debugger/remake/remake"
      "./dbgr/debugger/trepan/trepan"
      "./dbgr/debugger/trepanx/trepanx"
      "./dbgr/debugger/zshdb/zshdb"
