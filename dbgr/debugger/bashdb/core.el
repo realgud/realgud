@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 (eval-when-compile (require 'cl))
   
 (require 'load-relative)
@@ -37,22 +37,22 @@ We return the a list containing
 
 For example for the following input 
   (map 'list 'symbol-name
-   '(zsh -W -C /tmp bashdb --emacs ./gcd.rb a b))
+   '(bash -W -C /tmp bashdb --emacs ./gcd.rb a b))
 
 we might return:
-   ((zsh -W -C) (bashdb --emacs) (./gcd.rb a b) 't)
+   ((bash -W -C) (bashdb --emacs) (./gcd.rb a b) 't)
 
 NOTE: the above should have each item listed in quotes.
 "
 
   ;; Parse the following kind of pattern:
-  ;;  [zsh zsh-options] bashdb bashdb-options script-name script-options
+  ;;  [bash bash-options] bashdb bashdb-options script-name script-options
   (let (
 	(args orig-args)
 	(pair)          ;; temp return from 
-	;; zsh doesn't have any optional two-arg options
-	(zsh-opt-two-args '())
-	(zsh-two-args '("o" "c"))
+	;; bash doesn't have any optional two-arg options
+	(bash-opt-two-args '())
+	(bash-two-args '("o" "c"))
 
 	;; One dash is added automatically to the below, so
 	;; h is really -h and -host is really --host.
@@ -62,8 +62,8 @@ NOTE: the above should have each item listed in quotes.
 	(bashdb-opt-two-args '())
 	(interp-regexp 
 	 (if (member system-type (list 'windows-nt 'cygwin 'msdos))
-	     "^zsh*\\(.exe\\)?$"
-	   "^zsh*$"))
+	     "^bash*\\(.exe\\)?$"
+	   "^bash*$"))
 
 	;; Things returned
 	(script-name nil)
@@ -87,7 +87,7 @@ NOTE: the above should have each item listed in quotes.
 	(while (and args
 		    (string-match "^-" (car args)))
 	  (setq pair (dbgr-parse-command-arg 
-		      args zsh-two-args zsh-opt-two-args))
+		      args bash-two-args bash-opt-two-args))
 	  (nconc interpreter-args (car pair))
 	  (setq args (cadr pair))))
 
@@ -133,7 +133,7 @@ NOTE: the above should have each item listed in quotes.
 			   "Shell-script" "\\.sh$"))
 
 (defun bashdb-goto-backtrace-line (pt)
-  "Display the location mentioned by the zshd backtrace line
+  "Display the location mentioned by the bashdb backtrace line
 described by PT."
   (interactive "d")
   (dbgr-goto-line-for-pt-and-type pt "backtrace" dbgr-bashdb-pat-hash))
@@ -143,12 +143,6 @@ described by PT."
 described by PT."
   (interactive "d")
   (dbgr-goto-line-for-pt-and-type pt "control-frame" dbgr-bashdb-pat-hash))
-
-(defun bashdb-goto-dollarbang-backtrace-line (pt)
-  "Display the location mentioned by a zshd backtrace line
-described by PT."
-  (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "dollar-bang" dbgr-bashdb-pat-hash))
 
 (defun bashdb-reset ()
   "Bashdb cleanup - remove debugger's internal buffers (frame,

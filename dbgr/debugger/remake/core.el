@@ -65,7 +65,7 @@
 			   "Shell-script" "\\.sh$"))
 
 (defun remake-goto-backtrace-line (pt)
-  "Display the location mentioned by the zshd backtrace line
+  "Display the location mentioned by the remake backtrace line
 described by PT."
   (interactive "d")
   (dbgr-goto-line-for-pt-and-type pt "backtrace" dbgr-remake-pat-hash))
@@ -75,12 +75,6 @@ described by PT."
 described by PT."
   (interactive "d")
   (dbgr-goto-line-for-pt-and-type pt "control-frame" dbgr-remake-pat-hash))
-
-(defun remake-goto-dollarbang-backtrace-line (pt)
-  "Display the location mentioned by a zshd backtrace line
-described by PT."
-  (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "dollar-bang" dbgr-remake-pat-hash))
 
 (defun remake-reset ()
   "Remake cleanup - remove debugger's internal buffers (frame,

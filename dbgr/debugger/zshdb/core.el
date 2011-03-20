@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 (eval-when-compile (require 'cl))
   
 (require 'load-relative)
@@ -133,7 +133,7 @@ NOTE: the above should have each item listed in quotes.
 			   "Shell-script" "\\.sh$"))
 
 (defun zshdb-goto-backtrace-line (pt)
-  "Display the location mentioned by the zshd backtrace line
+  "Display the location mentioned by the zshdb backtrace line
 described by PT."
   (interactive "d")
   (dbgr-goto-line-for-pt-and-type pt "backtrace" dbgr-zshdb-pat-hash))
@@ -143,12 +143,6 @@ described by PT."
 described by PT."
   (interactive "d")
   (dbgr-goto-line-for-pt-and-type pt "control-frame" dbgr-zshdb-pat-hash))
-
-(defun zshdb-goto-dollarbang-backtrace-line (pt)
-  "Display the location mentioned by a zshd backtrace line
-described by PT."
-  (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "dollar-bang" dbgr-zshdb-pat-hash))
 
 (defun zshdb-reset ()
   "Zshdb cleanup - remove debugger's internal buffers (frame,
