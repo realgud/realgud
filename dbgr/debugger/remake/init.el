@@ -21,17 +21,17 @@ dbgr-loc-pat struct")
 ;; Regular expression that describes a remake location generally shown
 ;; before a command prompt.
 ;; For example:
-;;   (emacs-dbgr/dbgr/debugger/Makefile:168)
+;; -- (emacs-dbgr/dbgr/debugger/Makefile:168)
 (setf (gethash "loc" dbgr-remake-pat-hash)
       (make-dbgr-loc-pat
-       :regexp "\\(?:^\\|\n\\)(\\(\\(?:[a-zA-Z]:\\)?[-a-zA-Z0-9_/.\\\\ ]+\\):\\([0-9]+\\))"
+       :regexp ".. \\(?:^\\|\n\\)(\\(\\(?:[a-zA-Z]:\\)?[-a-zA-Z0-9_/.\\\\ ]+\\):\\([0-9]+\\))"
        :file-group 1
        :line-group 2))
 
 ;; For example: 
-;;   remake<10>
-;;   remake<(5)> 
-;;   remake<<1>>
+;;   mdb<10>
+;;   mdb<(5)> 
+;;   mdb<<1>>
 (setf (gethash "prompt" dbgr-remake-pat-hash)
       (make-dbgr-loc-pat
        :regexp   "^mdb<\\([0-9]\\)+> "
