@@ -24,7 +24,7 @@ dbgr-loc-pat struct")
 ;; -- (emacs-dbgr/dbgr/debugger/Makefile:168)
 (setf (gethash "loc" dbgr-remake-pat-hash)
       (make-dbgr-loc-pat
-       :regexp ".. \\(?:^\\|\n\\)(\\(\\(?:[a-zA-Z]:\\)?[-a-zA-Z0-9_/.\\\\ ]+\\):\\([0-9]+\\))"
+       :regexp "\\(?:^\\|\n\\)\\(?:.. \\)?(\\(\\(?:[a-zA-Z]:\\)?[-a-zA-Z0-9_/.\\\\ ]+\\):\\([0-9]+\\))"
        :file-group 1
        :line-group 2))
 
