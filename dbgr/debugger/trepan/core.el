@@ -33,10 +33,17 @@
 ARGS should contain a tokenized list of the command line to run.
 
 We return the a list containing
-- the command processor (e.g. ruby) and it's arguments if any - a list of strings
-- the name of the debugger given (e.g. trepan) and its arguments - a list of strings
+
+- the command processor (e.g. ruby) and it's arguments if any - a
+  list of strings
+
+- the name of the debugger given (e.g. trepan) and its arguments
+  - a list of strings
+
 - the script name and its arguments - list of strings
-- whether the annotate or emacs option was given ('-A', '--annotate' or '--emacs) - a boolean
+
+- whether the annotate or emacs option was given ('-A',
+  '--annotate' or '--emacs) - a boolean
 
 For example for the following input 
   (map 'list 'symbol-name

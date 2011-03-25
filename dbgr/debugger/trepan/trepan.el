@@ -60,7 +60,7 @@ marginal icons is reset."
 	(setq cmd-buf 
 	      (apply 'dbgr-exec-shell "trepan" script-name
 		     (car cmd-args) no-reset (cdr cmd-args)))
-    (error nil))
+      (error nil))
     ;; FIXME: Is there probably is a way to remove the
     ;; below test and combine in condition-case? 
     (let ((process (get-buffer-process cmd-buf)))
