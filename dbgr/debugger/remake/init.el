@@ -29,12 +29,12 @@ dbgr-loc-pat struct")
        :line-group 2))
 
 ;; For example: 
-;;   mdb<10>
-;;   mdb<(5)> 
-;;   mdb<<1>>
+;;   remake<10>
+;;   remake<(5)> 
+;;   remake<<1>>
 (setf (gethash "prompt" dbgr-remake-pat-hash)
       (make-dbgr-loc-pat
-       :regexp   "^mdb<\\([0-9]\\)+> "
+       :regexp   "^remake<\\([0-9]\\)+> "
        :num 1
        ))
 

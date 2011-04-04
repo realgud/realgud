@@ -406,7 +406,7 @@ debugger with that information"
 
 
 (defun dbgr-goto-line-for-pt (pt pattern-key)
-  "Display the location mentioned by a Ruby $! backtrace line
+  "Display the location mentioned by a backtrace line (e.g. Ruby $!)
 described by PT."
   (interactive "d")
   (unless (dbgr-cmdbuf?)

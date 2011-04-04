@@ -6,7 +6,7 @@ e(load-file "../dbgr/common/buffer/command.el")
 
 
 ; Some setup usually done in setting up the buffer.
-; We customize this for the debugger trepan. Others may follow.
+; We customize this for this debugger.
 ; FIXME: encapsulate this.
 (setq dbg-name "gdb")
 (setq loc-pat (gethash "loc" (gethash dbg-name dbgr-pat-hash)))
@@ -15,8 +15,8 @@ e(load-file "../dbgr/common/buffer/command.el")
 (setq dbgr (make-dbgr-cmdbuf-info
 		  :debugger-name dbg-name
 		  :loc-regexp (dbgr-loc-pat-regexp loc-pat)
-		  :file-group (dbgr-loc-pat-file-group  loc-pat)
-		  :line-group (dbgr-loc-pat-line-group  loc-pat)))
+		  :file-group (dbgr-loc-pat-file-group loc-pat)
+		  :line-group (dbgr-loc-pat-line-group loc-pat)))
 
 (defun loc-match(text) 
   (string-match (dbgr-cmdbuf-info-loc-regexp dbgr) text)
