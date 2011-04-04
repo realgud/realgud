@@ -28,4 +28,10 @@ a string output by a debugger inside a process shell"
   "Hash key is the debugger name, a string. The values of a hash entry
   is a dbgr-loc-pat struct")
 
+(defvar dbgr-command-hash (make-hash-table :test 'equal)
+  "Hash key is the debugger name, a string. The values of a hash
+  entry is a hash table mapping cannonic command name
+  debugger-specific command name. For example, for trepanning:
+  'quit' -> 'quit!'")
+
 (provide 'dbgr-regexp)

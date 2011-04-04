@@ -383,13 +383,16 @@ pattern found via dbgr-cmdbuf information."
 the buffer process. This info is returned or nil if we can't find a 
 debugger with that information"
   (interactive "sDebugger name: ")
-  (let ((regexp-hash (gethash debugger-name dbgr-pat-hash)))
+  (let ((regexp-hash (gethash debugger-name dbgr-pat-hash))
+	(command-hash (gethash debugger-name dbgr-command-hash))
+	)
     (if regexp-hash
 	(let* ((prefix 
 		(if (equal debugger-name "gdb") "dbgr-gdb" debugger-name))
 	       (specific-track-mode (intern (concat prefix "-track-mode")))
 	       )
-	  (dbgr-cmdbuf-init (current-buffer) debugger-name regexp-hash)
+	  (dbgr-cmdbuf-init (current-buffer) debugger-name regexp-hash
+			    command-hash)
 	  (if (and (not (eval specific-track-mode))
 		   (functionp specific-track-mode))
 	      (funcall specific-track-mode 't))

@@ -35,6 +35,8 @@
   bp-list              ;; list of breakpoints
   divert-output?       ;; Output is part of a conversation between front-end
                        ;; debugger. 
+  cmd-hash             ;; Allows us to remap command names like 
+                       ;; quit => quit!
 
   ;; FIXME: REMOVE THIS and use regexp-hash
   loc-regexp   ;; Location regular expression string
@@ -49,7 +51,21 @@
 
 (defalias 'dbgr-cmdbuf-info? 'dbgr-cmdbuf-info-p)
 
-(defun dbgr-cmdbuf? ( &optional buffer)
+(defun dbgr-cmdbuf-info-describe ()
+  (interactive "")
+  (message "debugger-name: %s" 
+	   (dbgr-cmdbuf-info-debugger-name dbgr-cmdbuf-info))
+  (message "in source or command buffer: %s" 
+	   (dbgr-cmdbuf-info-in-srcbuf? dbgr-cmdbuf-info))
+  (message "command-line args: %s" 
+	   (dbgr-cmdbuf-info-cmd-args dbgr-cmdbuf-info))
+  (message "source should go into shortkey?: %s"
+	   (dbgr-cmdbuf-info-src-shortkey? dbgr-cmdbuf-info))
+  (message "command hash: %s"
+	   (dbgr-cmdbuf-info-cmd-hash dbgr-cmdbuf-info))
+  )
+
+(defun dbgr-cmdbuf? (&optional buffer)
   "Return true if BUFFER is a debugger command buffer."
   (with-current-buffer-safe 
    (or buffer (current-buffer))
@@ -78,6 +94,16 @@
 (defun dbgr-cmdbuf-info-bp-list=(info value)
   (if (dbgr-cmdbuf-info? info)
       (setf (dbgr-cmdbuf-info-bp-list info) value)))
+
+(defun dbgr-cmdbuf-set-shortkey(&optional cmdbuf unset)
+  (interactive "")
+  (setq cmdbuf (or cmdbuf (current-buffer)))
+  (if (dbgr-cmdbuf? cmdbuf)
+      (with-current-buffer-safe cmdbuf
+	(setf (dbgr-cmdbuf-info-src-shortkey? dbgr-cmdbuf-info) (not unset))
+	(message "Set source to shortkey is now %s" (not unset))
+	))
+  )
 
 (defun dbgr-cmdbuf-info-cmd-args=(info value)
   (setf (dbgr-cmdbuf-info-cmd-args info) value))
@@ -125,7 +151,7 @@
 ;; removed.
 
 (defun dbgr-cmdbuf-init
-  (cmd-buf debugger-name regexp-hash)
+  (cmd-buf debugger-name regexp-hash &optional cmd-hash)
   "Initialize CMD-BUF for a working with a debugger.
 DEBUGGER-NAME is the name of the debugger.
 as a main program."
@@ -135,12 +161,16 @@ as a main program."
 	  )
       (setq dbgr-cmdbuf-info
 	    (make-dbgr-cmdbuf-info
+	     :in-srcbuf? nil
 	     :debugger-name debugger-name
 	     :loc-regexp (dbgr-sget 'loc-pat 'regexp)
 	     :file-group (dbgr-sget 'loc-pat 'file-group)
 	     :line-group (dbgr-sget 'loc-pat 'line-group)
 	     :loc-hist (make-dbgr-loc-hist)
-	     :regexp-hash regexp-hash))
+	     :regexp-hash regexp-hash
+	     :cmd-hash cmd-hash
+	     :src-shortkey? 't
+	     ))
       (setq font-lock-keywords (dbgr-cmdbuf-pat "font-lock-keywords"))
       (if font-lock-keywords
 	  (set (make-local-variable 'font-lock-defaults)

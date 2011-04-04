@@ -158,4 +158,11 @@ dbgr-loc-pat struct")
 
 (setf (gethash "trepan" dbgr-pat-hash) dbgr-trepan-pat-hash)
 
+(defvar dbgr-trepan-command-hash (make-hash-table :test 'equal)
+  "Hash key is command name like 'quit' and the value is 
+  the trepan command to use, like 'quit!'")
+
+(setf (gethash "quit" dbgr-trepan-command-hash) "quit!")
+(setf (gethash "trepan" dbgr-command-hash) dbgr-trepan-command-hash)
+
 (provide-me "dbgr-trepan-")

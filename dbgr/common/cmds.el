@@ -68,25 +68,32 @@ If no argument specified use 0 or the most recent frame." t t)
       'continue "continue" "c" 
       "Continue execution.")
 
-  (defun dbgr-cmd-quit (arg)
-    "Gently terminate execution of the debugged program."
-    (interactive "p")
-    (let ((buffer (current-buffer))
-	  (cmdbuf (dbgr-get-cmdbuf)))
-      (with-current-buffer-safe cmdbuf
-	(dbgr-cmdbuf-info-in-srcbuf?= dbgr-cmdbuf-info 
-				      (not (dbgr-cmdbuf? buffer))))
-      (dbgr-command "quit" arg 't)
-      (if cmdbuf (dbgr-terminate cmdbuf))
-      )
-    )
-  (local-set-key "\C-cq" 'dbgr-cmd-quit)
-
-
   (dbgr-define-command 
       'restart "run" "R" 
       "Restart execution."
       't nil 't)
 )
+
+(defun dbgr-cmd-quit (arg)
+  "Gently terminate execution of the debugged program."
+  (interactive "p")
+  (let ((buffer (current-buffer))
+	(cmdbuf (dbgr-get-cmdbuf))
+	(cmd-hash)
+	(quit-cmd)
+	)
+    (with-current-buffer-safe cmdbuf
+      (dbgr-cmdbuf-info-in-srcbuf?= dbgr-cmdbuf-info 
+				    (not (dbgr-cmdbuf? buffer)))
+      (setq cmd-hash (dbgr-cmdbuf-info-cmd-hash dbgr-cmdbuf-info))
+      (unless (and cmd-hash (setq quit-cmd (gethash "quit" cmd-hash)))
+	(setq quit-cmd "quit"))
+      )
+    (dbgr-command quit-cmd arg 't)
+    (if cmdbuf (dbgr-terminate cmdbuf))
+    )
+  )
+(local-set-key "\C-cq" 'dbgr-cmd-quit)
+
 
 (provide-me "dbgr-")

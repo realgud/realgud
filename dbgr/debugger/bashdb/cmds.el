@@ -15,19 +15,11 @@
       "Set a breakpoint at the current line" t nil)
   )
 
-(defun dbgr-cmd-quit (arg)
-  "Gently terminate execution of the debugged program."
-  (interactive "p")
-  (let ((buffer (current-buffer))
-	(cmdbuf (dbgr-get-cmdbuf)))
-    (with-current-buffer-safe cmdbuf
-      (dbgr-cmdbuf-info-in-srcbuf?= dbgr-cmdbuf-info 
-				    (not (dbgr-cmdbuf? buffer))))
-    (dbgr-command "quit!" arg 't, 't)
-    (if cmdbuf (dbgr-terminate cmdbuf))
-    )
-  )
-(local-set-key "\C-cq" 'dbgr-cmd-quit)
+(defvar dbgr-bashdb-command-hash (make-hash-table :test 'equal)
+  "Hash key is command name like 'quit' and the value is 
+  the bashdb command to use, like 'quit!'")
 
+(setf (gethash "quit" dbgr-bashdb-command-hash) "quit!")
+(setf (gethash "bashdb" dbgr-command-hash dbgr-bashdb-command-hash))
 
 (provide-me "dbgr-bashdb-")

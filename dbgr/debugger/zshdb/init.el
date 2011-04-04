@@ -96,6 +96,13 @@ dbgr-loc-pat struct")
 	;;  (0 trepan-frames-current-frame-face append))
 	))
 
+(defvar dbgr-zshdb-command-hash (make-hash-table :test 'equal)
+  "Hash key is command name like 'quit' and the value is 
+  the trepan command to use, like 'quit!'")
+
+(setf (gethash "quit" dbgr-zshdb-command-hash) "quit!")
+(setf (gethash "zshdb" dbgr-command-hash dbgr-zshdb-command-hash))
+
 (setf (gethash "zshdb" dbgr-pat-hash) dbgr-zshdb-pat-hash)
 
 (provide-me "dbgr-zshdb-")
