@@ -14,6 +14,22 @@
 	 (specify "remake-suggest-Makefile"
 	      (assert-equal "Makefile" (remake-suggest-Makefile))
 	      )
+
+	 (specify "remake-file-suggest-priority"
+	      (assert-equal 2 (remake-suggest-file-priority "foo"))
+	      (let ((buffer (get-file-buffer "Makefile.am")))
+	 	(if buffer (kill-buffer buffer))
+	 	(assert-equal 2 (remake-suggest-file-priority "Makefile.am"))
+	 	(setq buffer (find-file-noselect "Makefile.am"))
+	 	(assert-equal 5 (remake-suggest-file-priority "Makefile.am"))
+	 	(kill-buffer buffer)
+	 	(setq buffer (get-file-buffer "Makefile"))
+	 	(if buffer (kill-buffer buffer))
+	 	(assert-equal 6 (remake-suggest-file-priority "Makefile"))
+	 	(setq buffer (find-file-noselect "Makefile"))
+	 	(assert-equal 8 (remake-suggest-file-priority "Makefile"))
+	 	(kill-buffer buffer)
+	      ))
 	 )
 
 (test-unit "remake")

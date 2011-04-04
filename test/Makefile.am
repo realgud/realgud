@@ -13,10 +13,8 @@ CHECK_FILES = $(notdir $(test_files:.el=.run))
 
 check: $(CHECK_FILES)
 
-$(CHECK_FILES):
+test-%.run:
 	(cd $(top_srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )
-
-.PHONY: $(CHECK_FILES)
 
 %: 
 	$(MAKE) -C .. $@

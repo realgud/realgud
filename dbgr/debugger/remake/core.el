@@ -91,21 +91,55 @@ we might return:
 	   ('t (setq remake-args (nconc remake-args (list arg))))
 	   )))
       (list remake-name makefile-name remake-args))))
+	   
+(defconst dbgr-remake-auto-suffix-regexp 
+  "\\.\\(am\\|in\\)$"
+  "Common automake and autoconf Makefile suffixes"
+)
+
+(defconst dbgr-remake-makefile-regexp 
+  "\\(^[Mm]akefile$\\|\\.Makefile$\\|\\.mk\\)$"
+  "Regular expression matching common Makefile names"
+)
+
+(defun remake-suggest-file-priority(filename)
+  (let ((priority 2))
+    (if (dbgr-lang-mode? filename "makefile")
+	(progn 
+	  (if (string-match dbgr-remake-makefile-regexp filename)
+	      (setq priority 8)
+	    (if (string-match dbgr-remake-auto-suffix-regexp filename)
+		(setq priority 5)
+	      (setq priority 7)))
+	  ))
+    ;; The file isn't in a makefile-mode buffer,
+    ;; Check for an executable file with a .mk extension.
+    (if (setq is-not-directory (not (file-directory-p filename)))
+	(if (and (string-match dbgr-remake-makefile-regexp filename))
+	    (if (< priority 6)
+		(progn
+		  (setq priority 6)))))
+    priority
+    )
+)
 
 (defun remake-suggest-Makefile ()
  "Suggest a Makefile to debug. 
 
 The first priority is given to the current buffer. If the major
-mode matches GNUMakefile, then we are done. If not, we'll set
-priority 2 (a low or easily overridden priority) and we keep
-going.  Then we will try files in the default-directory. Of those
-that we are visiting we check the major mode. The first one we
-find we will return.  Failing this, we see if the file is
-and matches REGEXP. These have priority 8.  Within a given
-priority, we use the first one we find."
+mode matches GNUMakefile and doesn't end in .am or .in, then we
+are done. If not, we'll set priority 2 (a low or easily
+overridden priority) and we keep going.  Then we will try files
+in the default-directory. Of those that we are visiting we check
+the major mode. There are demerits for a file ending in .in or
+.am which are used by 'configure' and 'automake' respectively.
+
+If the current buffer isn't a success, we see if the file matches
+REGEXP. These have priority 9, 8 or 7 depending on whether there
+is a .in or .am sufifx and there is a REGEXP match'.  Within a
+given priority, we use the first one we find."
     (let* ((file)
 	   (file-list (directory-files default-directory))
-	   (makefile-regexp "\\(^[Mm]akefile$\\|\\.Makefile$\\|\\.mk\\)$")
 	   (priority 2)
 	   (is-not-directory)
 	   (result (buffer-file-name)))
@@ -113,25 +147,13 @@ priority, we use the first one we find."
 	  (progn 
 	    (while (and (setq file (car-safe file-list)) (< priority 8))
 	      (setq file-list (cdr file-list))
-	      (if (dbgr-lang-mode? file "makefile")
-		  (progn 
-		    (setq result file)
-		    (if (string-match makefile-regexp file)
-			(setq priority 8)
-		      (setq priority 7))
-		    ))
-	      ;; The file isn't in a makefile-mode buffer,
-	      ;; Check for an executable file with a .mk extension.
-	      (if (setq is-not-directory (not (file-directory-p file)))
-		  (if (and (string-match makefile-regexp file))
-		      (if (< priority 6)
-			  (progn
-			    (setq result file)
-			    (setq priority 6)))))
-	    ;; (if (and (< priority 6)
-	    ;; 	     (setq file (dbgr-suggest-file-from-buffer lang-str)))
-	    ;; 	(setq result file))
-	    )))
+	      (let ((try-priority (remake-suggest-file-priority file)))
+		(if (> try-priority priority) 
+		    (progn 
+		      (setq priority try-priority)
+		      (setq result file)))
+		))
+	    ))
       result)
     )
 
