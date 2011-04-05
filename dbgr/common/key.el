@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
 
 (defcustom dbgr-populate-common-fn-keys-function
@@ -87,6 +87,7 @@ Nor does it touch prefix keys; for that see `dbgr-populate-keys-standard'"
     (define-key map "r" 'dbgr-cmd-restart)
     (define-key map "R" 'dbgr-cmd-restart)
     (define-key map "s" 'dbgr-cmd-step)
+    (define-key map "S" 'dbgr-cmd-shell)
     (define-key map [M-down]    'dbgr-track-hist-newer)
     (define-key map [M-kp-2]    'dbgr-track-hist-newer)
     (define-key map [M-up]      'dbgr-track-hist-older)

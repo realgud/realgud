@@ -47,7 +47,7 @@ dbgr-loc-pat struct")
 ;; Set breakpoint 1: /tmp/fact.rb:1 (@0)
 (setf (gethash "brkpt-set" dbgr-trepanx-pat-hash)
       (make-dbgr-loc-pat
-       :regexp "^Breakpoint \\([0-9]+\\): \\(.+\\):\\([0-9]+\\) (@[0-9]+)\n"
+       :regexp "^Set breakpoint \\([0-9]+\\): .+ at \\(.+\\):\\([0-9]+\\) (@[0-9]+)"
        :num 1
        :file-group 2
        :line-group 3))
@@ -120,5 +120,15 @@ dbgr-loc-pat struct")
 	;; (trepan-frames-match-current-line
 	;;  (0 trepan-frames-current-frame-face append))
 	))
+
+(setf (gethash "trepanx" dbgr-pat-hash) dbgr-trepanx-pat-hash)
+
+(defvar dbgr-trepanx-command-hash (make-hash-table :test 'equal)
+  "Hash key is command name like 'quit' and the value is 
+  the trepanx command to use, like 'quit!'")
+
+(setf (gethash "quit" dbgr-trepanx-command-hash) "quit!")
+(setf (gethash "shell" dbgr-trepanx-command-hash) "irb")
+(setf (gethash "trepan" dbgr-command-hash) dbgr-trepanx-command-hash)
 
 (provide-me "dbgr-trepanx-")

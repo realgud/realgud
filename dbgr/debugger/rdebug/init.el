@@ -116,4 +116,12 @@ dbgr-loc-pat struct")
 
 (setf (gethash "rdebug" dbgr-pat-hash) dbgr-rdebug-pat-hash)
 
+(defvar dbgr-rdebug-command-hash (make-hash-table :test 'equal)
+  "Hash key is command name like 'quit' and the value is 
+  the trepanx command to use, like 'quit!'")
+
+(setf (gethash "quit" dbgr-rdebug-command-hash) "quit!")
+(setf (gethash "shell" dbgr-rdebug-command-hash) "irb")
+(setf (gethash "trepan" dbgr-command-hash) dbgr-rdebug-command-hash)
+
 (provide-me "dbgr-rdebug-")

@@ -89,4 +89,12 @@ dbgr-loc-pat struct")
 
 (setf (gethash "pydbgr" dbgr-pat-hash) dbgr-pydbgr-pat-hash)
 
+(defvar dbgr-pydbgr-command-hash (make-hash-table :test 'equal)
+  "Hash key is command name like 'quit' and the value is 
+  the pydbgr command to use, like 'quit!'")
+
+(setf (gethash "quit" dbgr-pydbgr-command-hash) "quit!")
+(setf (gethash "shell" dbgr-pydbgr-command-hash) "python")
+(setf (gethash "pydbgr" dbgr-command-hash) dbgr-pydbgr-command-hash)
+
 (provide-me "dbgr-pydbgr-")

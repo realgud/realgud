@@ -49,7 +49,7 @@ dbgr-loc-pat struct")
 ;;	line 64 in file /src/external-vcs/linecache/trunk/lib/linecache.rb.
 (setf (gethash "brkpt-set" dbgr-trepan-pat-hash)
       (make-dbgr-loc-pat
-       :regexp "^Breakpoint \\([0-9]+\\) set at line \\([0-9]+\\)[ \t\n]+in file \\(.+\\),\n"
+       :regexp "^Breakpoint \\([0-9]+\\) set at .*[\n\t ]+line \\([0-9]+\\)[ \t\n]+in file \\(.+\\)."
        :num 1
        :file-group 3
        :line-group 2))
@@ -163,6 +163,7 @@ dbgr-loc-pat struct")
   the trepan command to use, like 'quit!'")
 
 (setf (gethash "quit" dbgr-trepan-command-hash) "quit!")
+(setf (gethash "shell" dbgr-trepan-command-hash) "irb")
 (setf (gethash "trepan" dbgr-command-hash) dbgr-trepan-command-hash)
 
 (provide-me "dbgr-trepan-")

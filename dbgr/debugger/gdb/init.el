@@ -52,4 +52,3 @@ dbgr-loc-pat struct")
 (setf (gethash "gdb" dbgr-pat-hash) dbgr-gdb-pat-hash)
 
 (provide-me "dbgr-gdb-")
-

@@ -98,4 +98,13 @@ dbgr-loc-pat struct")
 
 (setf (gethash "kshdb" dbgr-pat-hash) dbgr-kshdb-pat-hash)
 
+(defvar dbgr-kshdb-command-hash (make-hash-table :test 'equal)
+  "Hash key is command name like 'quit' and the value is 
+  the trepan command to use, like 'quit!'")
+
+;; (setf (gethash "quit" dbgr-kshdb-command-hash) "quit!")
+(setf (gethash "kshdb" dbgr-command-hash dbgr-kshdb-command-hash))
+
+(setf (gethash "kshdb" dbgr-pat-hash) dbgr-kshdb-pat-hash)
+
 (provide-me "dbgr-kshdb-")

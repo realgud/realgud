@@ -91,9 +91,9 @@
 				  )
 		    )
 	   
-	   (lexical-let ((text "Breakpoint 1 set at line 9
-	in file /usr/local/bin/irb,
-	VM offset 2 of instruction sequence <top (required)>."))
+	   (lexical-let ((text "Breakpoint 1 set at VM offset 2 of instruction sequence \"<top /usr/local/bin/irb>\",
+	line 9 in file /usr/local/bin/irb.
+"))
 	     (specify "basic breakpoint location"
 		      (assert-t (numberp (loc-match text bps-pat))))
 	     (specify "extract breakpoint file name"
