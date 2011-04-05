@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 ;;;
 ;;; Common POSIX-Shell like constants and regular expressions.
 ;;; Actually a lot of this is not about POSIX shell as it is about the
@@ -8,7 +8,8 @@
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
-(require-relative-list '("../common/regexp" "../common/loc" "../common/track") 
+(require-relative-list '("../common/regexp" "../common/loc" 
+			 "../common/track" "../common/send") 
 		       "dbgr-")
 
 (defconst dbgr-shell-backtrace-loc-pat
@@ -30,5 +31,19 @@ traceback) line."  )
 
 (defconst dbgr-shell-frame-line-regexp
   "[ \t\n]+at line \\([0-9]+\\)\\(?:\n\\|$\\)")
+
+(dbgr-define-command 
+    'shell "shell" "s" 
+      "Go into the shell with the current environment" 
+  )
+
+(defun dbgr-posix-shell-populate-command-keys (&optional map)
+  "Bind the debugger function key layout used by many debuggers.
+
+\\{dbgr-example-map-standard}"
+  (define-key map (kbd "C-c !b") 'dbgr-dbgr-goto-backtrace-line)
+  (define-key map (kbd "C-c S")  'dbgr-cmd-shell)
+  )
+
 
 (provide-me "dbgr-lang-")

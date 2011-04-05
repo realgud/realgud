@@ -13,11 +13,10 @@
 
 (dbgr-track-mode-vars "zshdb")
 (set-keymap-parent zshdb-track-mode-map dbgr-track-mode-map)
+(dbgr-posix-shell-populate-command-keys zshdb-track-mode-map)
 
 (declare-function dbgr-track-mode(bool))
 
-(define-key zshdb-track-mode-map 
-  (kbd "C-c !b") 'dbgr-goto-backtrace-line)
 
 (defun zshdb-track-mode-hook()
   (if zshdb-track-mode

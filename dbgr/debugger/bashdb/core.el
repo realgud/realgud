@@ -132,18 +132,6 @@ NOTE: the above should have each item listed in quotes.
   (dbgr-suggest-invocation bashdb-command-name bashdb-minibuffer-history 
 			   "Shell-script" "\\.sh$"))
 
-(defun bashdb-goto-backtrace-line (pt)
-  "Display the location mentioned by the bashdb backtrace line
-described by PT."
-  (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "backtrace" dbgr-bashdb-pat-hash))
-
-(defun bashdb-goto-control-frame-line (pt)
-  "Display the location mentioned by a control-frame line
-described by PT."
-  (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "control-frame" dbgr-bashdb-pat-hash))
-
 (defun bashdb-reset ()
   "Bashdb cleanup - remove debugger's internal buffers (frame,
 breakpoints, etc.)."

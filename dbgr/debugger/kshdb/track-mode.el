@@ -13,11 +13,9 @@
 
 (dbgr-track-mode-vars "kshdb")
 (set-keymap-parent kshdb-track-mode-map dbgr-track-mode-map)
+(dbgr-posix-shell-populate-command-keys kshdb-track-mode-map)
 
 (declare-function dbgr-track-mode(bool))
-
-(define-key kshdb-track-mode-map 
-  (kbd "C-c !b") 'dbgr-goto-backtrace-line)
 
 (defun kshdb-track-mode-hook()
   (if kshdb-track-mode
