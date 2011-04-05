@@ -212,7 +212,9 @@ meanings."
 ;;  "This documents the dbgr-cmd-foo."  
 ;;  (interactive "p")
 ;;  (let ((buffer (current-buffer))
-;;	(cmdbuf (dbgr-get-cmdbuf)))
+;;	(cmdbuf (dbgr-get-cmdbuf))
+;;	(cmd-hash)
+;;	(cmd))
 ;;    (with-current-buffer-safe cmdbuf
 ;;      (dbgr-cmdbuf-info-in-srcbuf?= dbgr-cmdbuf-info 
 ;;				   (not (dbgr-cmdbuf? buffer))))
@@ -225,11 +227,17 @@ meanings."
 	     ,doc
 	     (interactive "p")
 	     (let ((buffer (current-buffer))
-		   (cmdbuf (dbgr-get-cmdbuf)))
+		   (cmdbuf (dbgr-get-cmdbuf))
+	           (cmd-hash)
+   	           (cmd))
 	       (with-current-buffer-safe cmdbuf
 		 (dbgr-cmdbuf-info-in-srcbuf?= dbgr-cmdbuf-info 
-					       (not (dbgr-cmdbuf? buffer))))
-	       (dbgr-command ,cmd arg ,no-record? ,frame-switch? 
+					       (not (dbgr-cmdbuf? buffer)))
+		 (setq cmd-hash (dbgr-cmdbuf-info-cmd-hash dbgr-cmdbuf-info))
+		 (unless (and cmd-hash (setq cmd (gethash ,cmd cmd-hash)))
+		   (setq cmd ,cmd ))
+		 )
+	       (dbgr-command cmd arg ,no-record? ,frame-switch? 
 			     ,dbgr-prompts?))))
        ,(if key `(local-set-key ,(concat "\C-c" key) 
 				(intern (concat "dbgr-cmd-" (symbol-name ,func)))))

@@ -388,7 +388,10 @@ debugger with that information"
 	)
     (if regexp-hash
 	(let* ((prefix 
-		(if (equal debugger-name "gdb") "dbgr-gdb" debugger-name))
+		(cond 
+		 ((equal debugger-name "gdb") "dbgr-gdb")
+		 ((equal debugger-name "perldb") "dbgr-perldb")
+		 ('t debugger-name)))
 	       (specific-track-mode (intern (concat prefix "-track-mode")))
 	       )
 	  (dbgr-cmdbuf-init (current-buffer) debugger-name regexp-hash
@@ -419,6 +422,11 @@ described by PT."
     (dbgr-goto-line-for-pt-and-type pt pattern-key debugger-pat-hash)
     )
   )
-
   
+(defun dbgr-goto-backtrace-line (pt)
+  "Display the location mentioned by the Perl backtrace line
+described by PT."
+  (interactive "d")
+  (dbgr-goto-line-for-pt pt "frame"))
+
 (provide-me "dbgr-")

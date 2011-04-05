@@ -2,6 +2,7 @@
 ;;; Things related to loading and loading the dbgr package.
 (require 'load-relative)
 
+;; FIXME: extend require-relative for "autoload".
 (defun dbgr-load-features()
   (require-relative-list
    '(
@@ -10,6 +11,7 @@
      "./dbgr/debugger/gdb/gdb"
      "./dbgr/debugger/kshdb/kshdb"
      "./dbgr/debugger/pydbgr/pydbgr"
+     "./dbgr/debugger/perldb/perldb"
      "./dbgr/debugger/rdebug/rdebug"
      "./dbgr/debugger/remake/remake"
      "./dbgr/debugger/trepan/trepan"

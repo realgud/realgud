@@ -65,35 +65,60 @@ With a numeric argument move that many levels back." t t)
 If no argument specified use 0 or the most recent frame." t t)
 
   (dbgr-define-command 
-      'continue "continue" "c" 
+      'continue "continue" "continue %p" 
       "Continue execution.")
 
   (dbgr-define-command 
-      'restart "run" "R" 
+      'restart "run" "run" 
       "Restart execution."
       't nil 't)
-)
 
-(defun dbgr-cmd-quit (arg)
-  "Gently terminate execution of the debugged program."
-  (interactive "p")
-  (let ((buffer (current-buffer))
-	(cmdbuf (dbgr-get-cmdbuf))
-	(cmd-hash)
-	(quit-cmd)
+  (defun dbgr-cmd-step(arg)
+    "Step one source line. 
+
+With a numeric argument, step that many times.
+This command is often referred to as 'step into' as opposed to
+'step over' or 'step out'.
+
+The definition of 'step' is debugger specific so, see the
+debugger documentation for a more complete definition of what is
+getting stepped."
+    (interactive "p")
+    (let ((buffer (current-buffer))
+	  (cmdbuf (dbgr-get-cmdbuf))
+	  (cmd-hash)
+	  (cmd)
+	  )
+      (with-current-buffer-safe cmdbuf
+	(dbgr-cmdbuf-info-in-srcbuf?= dbgr-cmdbuf-info 
+				      (not (dbgr-cmdbuf? buffer)))
+	(setq cmd-hash (dbgr-cmdbuf-info-cmd-hash dbgr-cmdbuf-info))
+	(unless (and cmd-hash (setq cmd (gethash "step" cmd-hash)))
+	  (setq cmd "step %p"))
 	)
-    (with-current-buffer-safe cmdbuf
-      (dbgr-cmdbuf-info-in-srcbuf?= dbgr-cmdbuf-info 
-				    (not (dbgr-cmdbuf? buffer)))
-      (setq cmd-hash (dbgr-cmdbuf-info-cmd-hash dbgr-cmdbuf-info))
-      (unless (and cmd-hash (setq quit-cmd (gethash "quit" cmd-hash)))
-	(setq quit-cmd "quit"))
-      )
-    (dbgr-command quit-cmd arg 't)
-    (if cmdbuf (dbgr-terminate cmdbuf))
-    )
-  )
-(local-set-key "\C-cq" 'dbgr-cmd-quit)
+      (dbgr-command cmd arg 't)
+      ))
 
+  (defun dbgr-cmd-quit (arg)
+    "Gently terminate execution of the debugged program."
+    (interactive "p")
+    (let ((buffer (current-buffer))
+	  (cmdbuf (dbgr-get-cmdbuf))
+	  (cmd-hash)
+	  (cmd)
+	  )
+      (with-current-buffer-safe cmdbuf
+	(dbgr-cmdbuf-info-in-srcbuf?= dbgr-cmdbuf-info 
+				      (not (dbgr-cmdbuf? buffer)))
+	(setq cmd-hash (dbgr-cmdbuf-info-cmd-hash dbgr-cmdbuf-info))
+	(unless (and cmd-hash (setq cmd (gethash "quit" cmd-hash)))
+	  (setq cmd "quit"))
+	)
+      (dbgr-command cmd arg 't)
+      (if cmdbuf (dbgr-terminate cmdbuf))
+      )
+    )
+  (local-set-key "\C-cq" 'dbgr-cmd-quit)
+)
 
 (provide-me "dbgr-")

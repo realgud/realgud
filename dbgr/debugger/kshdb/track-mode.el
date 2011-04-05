@@ -17,13 +17,7 @@
 (declare-function dbgr-track-mode(bool))
 
 (define-key kshdb-track-mode-map 
-  (kbd "C-c !!") 'kshdb-goto-dollarbang-backtrace-line)
-(define-key kshdb-track-mode-map 
-  (kbd "C-c !b") 'kshdb-goto-backtrace-line)
-(define-key kshdb-track-mode-map 
-  (kbd "C-c !c") 'kshdb-goto-control-frame-line)
-(define-key kshdb-track-mode-map 
-  (kbd "C-c !c") 'kshdb-goto-control-frame-line)
+  (kbd "C-c !b") 'dbgr-goto-backtrace-line)
 
 (defun kshdb-track-mode-hook()
   (if kshdb-track-mode

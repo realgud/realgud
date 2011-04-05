@@ -103,7 +103,9 @@ we might return:
 )
 
 (defun remake-suggest-file-priority(filename)
-  (let ((priority 2))
+  (let ((priority 2)
+	(is-not-directory)
+	)
     (if (dbgr-lang-mode? filename "makefile")
 	(progn 
 	  (if (string-match dbgr-remake-makefile-regexp filename)

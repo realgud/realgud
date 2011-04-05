@@ -38,6 +38,17 @@ dbgr-loc-pat struct")
        :file-group 3
        :line-group 4))
 
+(defvar dbgr-gdb-command-hash (make-hash-table :test 'equal)
+  "Hash key is command name like 'continue' and the value is 
+  the gdb command to use, like 'continue'")
+
+(setf (gethash "break"    dbgr-gdb-command-hash) "break %l")
+(setf (gethash "continue" dbgr-gdb-command-hash) "continue")
+(setf (gethash "quit"     dbgr-gdb-command-hash) "quit")
+(setf (gethash "run"      dbgr-gdb-command-hash) "run")
+(setf (gethash "step"     dbgr-gdb-command-hash) "step %p")
+(setf (gethash "gdb" dbgr-command-hash) dbgr-gdb-command-hash)
+
 (setf (gethash "gdb" dbgr-pat-hash) dbgr-gdb-pat-hash)
 
 (provide-me "dbgr-gdb-")

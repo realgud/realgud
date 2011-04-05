@@ -8,11 +8,7 @@
 
 (defun dbgr-define-bashdb-commands ()
   "(Re)define a bunch of bashdb commands"
-  ;; bashdb doesn't allow for the more general file:line breakpoint yet.
   (dbgr-define-gdb-like-commands)
-  (dbgr-define-command 
-      'break "break %l" "\C-b" 
-      "Set a breakpoint at the current line" t nil)
   )
 
 (defvar dbgr-bashdb-command-hash (make-hash-table :test 'equal)
