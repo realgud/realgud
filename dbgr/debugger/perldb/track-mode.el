@@ -13,7 +13,6 @@
 (require-relative-list '("core" "cmds" "init") "dbgr-perldb-")
 
 (dbgr-track-mode-vars "dbgr-perldb")
-(set-keymap-parent dbgr-perldb-track-mode-map dbgr-track-mode-map)
 
 (define-key dbgr-track-mode-map (kbd "C-c !b")
   'dbgr-goto-backtrace-line)

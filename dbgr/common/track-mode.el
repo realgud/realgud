@@ -104,6 +104,9 @@ of this mode."
     )
 )
 
+;; For name == "trepan", produces: 
+;;   (defvar trepan-tack-mode-map (make-sparse-keymap))
+;;   (set-keymap-parent trepan-track-mode-map dbgr-track-mode-map)
 (defmacro dbgr-track-mode-vars (name)
   `(progn
      (defvar ,(intern (concat name "-track-mode")) nil
@@ -111,6 +114,7 @@ of this mode."
 Use the command `%s-track-mode' to toggle or set this variable." name name))
      (defvar ,(intern (concat name "-track-mode-map")) (make-sparse-keymap)
        ,(format "Keymap used in `%s-track-mode'." name))
+     (defvar ,(intern (concat name "-track-mode-map")) dbgr-track-mode-map)
     ))
 
 ;; FIXME: The below could be a macro? I have a hard time getting

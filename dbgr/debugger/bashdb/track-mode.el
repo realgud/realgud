@@ -12,7 +12,6 @@
 (require-relative-list '("core" "cmds" "init") "dbgr-bashdb-")
 
 (dbgr-track-mode-vars "bashdb")
-(set-keymap-parent bashdb-track-mode-map dbgr-track-mode-map)
 (dbgr-posix-shell-populate-command-keys bashdb-track-mode-map)
 
 (declare-function dbgr-track-mode(bool))

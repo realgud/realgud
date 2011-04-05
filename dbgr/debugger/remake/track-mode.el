@@ -12,7 +12,6 @@
 (require-relative-list '("core" "cmds" "init") "dbgr-remake-")
 
 (dbgr-track-mode-vars "remake")
-(set-keymap-parent remake-track-mode-map dbgr-track-mode-map)
 
 (declare-function dbgr-track-mode(bool))
 

@@ -14,7 +14,6 @@
 (require-relative-list '("../../lang/ruby") "dbgr-lang-")
 
 (dbgr-track-mode-vars "trepan")
-(set-keymap-parent trepan-track-mode-map dbgr-track-mode-map)
 
 (declare-function dbgr-track-mode(bool))
 

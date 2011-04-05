@@ -12,7 +12,6 @@
 (require-relative-list '("core" "cmds" "init") "dbgr-zshdb-")
 
 (dbgr-track-mode-vars "zshdb")
-(set-keymap-parent zshdb-track-mode-map dbgr-track-mode-map)
 (dbgr-posix-shell-populate-command-keys zshdb-track-mode-map)
 
 (declare-function dbgr-track-mode(bool))

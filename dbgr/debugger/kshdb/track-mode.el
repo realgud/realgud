@@ -12,7 +12,6 @@
 (require-relative-list '("core" "cmds" "init") "dbgr-kshdb-")
 
 (dbgr-track-mode-vars "kshdb")
-(set-keymap-parent kshdb-track-mode-map dbgr-track-mode-map)
 (dbgr-posix-shell-populate-command-keys kshdb-track-mode-map)
 
 (declare-function dbgr-track-mode(bool))

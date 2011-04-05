@@ -14,7 +14,6 @@
 (require-relative-list '("core" "cmds" "init") "dbgr-pydbgr-")
 
 (dbgr-track-mode-vars "pydbgr")
-(set-keymap-parent pydbgr-track-mode-map dbgr-track-mode-map)
 
 (declare-function dbgr-track-mode(bool))
 

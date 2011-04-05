@@ -14,7 +14,6 @@
 
 (defalias 'dbgr-define-dbgr-gdb-commands 'dbgr-define-gdb-like-commands)
 (dbgr-track-mode-vars "dbgr-gdb")
-(set-keymap-parent dbgr-gdb-track-mode-map dbgr-track-mode-map)
 
 (declare-function dbgr-track-mode(bool))
 
