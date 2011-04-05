@@ -65,11 +65,11 @@ With a numeric argument move that many levels back." t t)
 If no argument specified use 0 or the most recent frame." t t)
 
   (dbgr-define-command 
-      'continue "continue" "continue %p" 
+      'continue "continue %p" "c" 
       "Continue execution.")
 
   (dbgr-define-command 
-      'restart "run" "run" 
+      'restart "run" "R" 
       "Restart execution."
       't nil 't)
 
