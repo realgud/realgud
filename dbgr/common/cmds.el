@@ -31,7 +31,7 @@ getting stepped.")
       "Step one source line at current call level.  
 
 With a numeric argument, step that many times. This command is
-often referred to as 'step over' as opposed to 'step into' or
+often referred to as 'step through' as opposed to 'step into' or
 'step out'.
 
 The definition of 'step' is debugger specific so, see the

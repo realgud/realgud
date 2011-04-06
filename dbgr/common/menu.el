@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 ;; -------------------------------------------------------------------
 ;; Menu support.
 ;;
@@ -45,7 +45,7 @@ menu. (The common map typically contains function key bindings.)"
   "Populate the 'Dbgr' menu by creating a keymap whose parent is PARENT-MAP."
   (let ((menu-map (make-sparse-keymap)))
 
-    (define-key menu-map [menu-bar debugger] (cons "Dbgr" menu-map))
+    (define-key menu-map [menu-bar debugger] (cons "Debugger" menu-map))
     (set-keymap-parent parent-map menu-map)
 
     ;; FIXME: Dry define-key menu-map ... with a macro.
@@ -79,7 +79,7 @@ menu. (The common map typically contains function key bindings.)"
 			))
 
     (define-key menu-map [next]
-      (dbgr-menu-item menu-map "next (step over)" 'dbgr-cmd-next
+      (dbgr-menu-item menu-map "next (step through)" 'dbgr-cmd-next
                         :enable '(dbgr-get-process)
 			:help (documentation 'dbgr-cmd-next)
 			))

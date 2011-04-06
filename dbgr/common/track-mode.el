@@ -13,14 +13,13 @@
 (require-relative-list  '("buffer/command") "dbgr-buffer-")
 
 (defvar dbgr-track-mode-map
-  (let ((map (make-sparse-keymap)))
+  (let ((map  (dbgr-populate-debugger-menu (make-sparse-keymap))))
     (define-key map [M-right]	'dbgr-track-hist-newest)
     (define-key map [M-down]	'dbgr-track-hist-newer)
     (define-key map [M-up]	'dbgr-track-hist-older)
     (define-key map [M-print]	'dbgr-track-hist-older)
     (define-key map [M-S-down]	'dbgr-track-hist-newest)
     (define-key map [M-S-up]	'dbgr-track-hist-oldest)
-    (dbgr-populate-debugger-menu map)
     map)
   "Keymap used in `dbgr-track-minor-mode'.")
 
@@ -105,7 +104,7 @@ of this mode."
 )
 
 ;; For name == "trepan", produces: 
-;;   (defvar trepan-tack-mode-map (make-sparse-keymap))
+;;   (defvar trepan-track-mode-map (make-sparse-keymap))
 ;;   (set-keymap-parent trepan-track-mode-map dbgr-track-mode-map)
 (defmacro dbgr-track-mode-vars (name)
   `(progn
