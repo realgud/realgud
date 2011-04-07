@@ -9,7 +9,7 @@
 			 "../../common/track-mode"
 			 ) 
 		       "dbgr-")
-(require-relative-list '("core" "cmds" "init") "dbgr-kshdb-")
+(require-relative-list '("core" "init") "dbgr-kshdb-")
 
 (dbgr-track-mode-vars "kshdb")
 (dbgr-posix-shell-populate-command-keys kshdb-track-mode-map)

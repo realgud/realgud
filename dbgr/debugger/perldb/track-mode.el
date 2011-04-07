@@ -10,7 +10,7 @@
 			 "../../common/track-mode"
 			 ) 
 		       "dbgr-")
-(require-relative-list '("core" "cmds" "init") "dbgr-perldb-")
+(require-relative-list '("core" "init") "dbgr-perldb-")
 
 (dbgr-track-mode-vars "dbgr-perldb")
 

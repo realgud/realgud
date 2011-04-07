@@ -8,7 +8,6 @@
 ;; We want the doc strings from gdb-like commands for our help
 ;; menus.
 (require-relative-list '("cmds") "dbgr-")
-(dbgr-define-gdb-like-commands)
 
 ;; Note: We want the key binding to show in the menu. However, our
 ;; situation is a little bit complex:
@@ -116,6 +115,12 @@ menu. (The common map typically contains function key bindings.)"
       (dbgr-menu-item menu-map "restart" 'dbgr-cmd-restart
 		      :enable '(dbgr-get-process)
 		      :help (documentation 'dbgr-cmd-restart)
+		      ))
+
+    (define-key menu-map [recenter]
+      (dbgr-menu-item menu-map "recenter" 'dbgr-recenter-arrow
+		      :enable '(dbgr-get-process)
+		      :help (documentation 'dbgr-recenter-arrow)
 		      ))
 
     (define-key menu-map [menu-bar debugger line2] '(menu-item "--"))

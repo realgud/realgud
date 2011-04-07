@@ -10,7 +10,7 @@
 			 "../../common/backtrack-mode"
 			 ) 
 		       "dbgr-")
-(require-relative-list '("core" "cmds" "init") "dbgr-trepan-")
+(require-relative-list '("core" "init") "dbgr-trepan-")
 (require-relative-list '("../../lang/ruby") "dbgr-lang-")
 
 (dbgr-backtrack-mode-vars "trepan")

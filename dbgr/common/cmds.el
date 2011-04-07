@@ -1,23 +1,41 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
 (require-relative-list  '("send") "dbgr-")
 (require-relative-list  '("buffer/command") "dbgr-buffer-")
 
 (declare-function dbgr-terminate &optional cmdbuf)
 
-;; Note dbgr-define-command docstrings may appear in menu help, but only
-;; the first line will appears. So be careful about where to put line
-;; breaks in the docstrings below.
-(defun dbgr-define-gdb-like-commands ()
+(defun dbgr-cmd-remap(arg cmd-name default-cmd-template key
+			  &optional no-record? frame-switch? dbgr-prompts?)
+  "Run debugger command CMD-NAME using DEFAULT-CMD-TEMPLATE
+if none has been set in the command hash."
+  (let ((buffer (current-buffer))
+	(cmdbuf (dbgr-get-cmdbuf))
+	(cmd-hash)
+	(cmd)
+	)
+    (with-current-buffer-safe cmdbuf
+      (dbgr-cmdbuf-info-in-srcbuf?= dbgr-cmdbuf-info 
+				    (not (dbgr-cmdbuf? buffer)))
+      (setq cmd-hash (dbgr-cmdbuf-info-cmd-hash dbgr-cmdbuf-info))
+      (unless (and cmd-hash (setq cmd (gethash cmd-name cmd-hash)))
+	(setq cmd default-cmd-template))
+      )
+    (dbgr-command cmd arg no-record? frame-switch? dbgr-prompts?)
+    )
+  ;; FIXME: this is a one-time thing. Put in caller.
+  (local-set-key (format "\C-c%s" key) 
+		 (intern (format "dbgr-cmd-%s" cmd-name)))
+  )
 
-  "Define a bunch of gdb-command that we expect most debuggers to have"
-  (dbgr-define-command 
-      'break "break %X:%l" "\C-b" 
-      "Set a breakpoint at the current line")
+(defun dbgr-cmd-break(arg)
+  "Set a breakpoint at the current line"
+  (interactive "p")
+  (dbgr-cmd-remap arg "break" "break %X:l" "b")
+  )
 
-  (dbgr-define-command 
-      'step "step %p" "s" 
-      "Step one source line. 
+(defun dbgr-cmd-step(&optional arg)
+    "Step one source line. 
 
 With a numeric argument, step that many times.
 This command is often referred to as 'step into' as opposed to
@@ -25,11 +43,13 @@ This command is often referred to as 'step into' as opposed to
 
 The definition of 'step' is debugger specific so, see the
 debugger documentation for a more complete definition of what is
-getting stepped.")
+getting stepped."
+    (interactive "p")
+    (dbgr-cmd-remap arg "step" "step %p" "s")
+)
 
-  (dbgr-define-command 
-      'next "next %p" "n" 
-      "Step one source line at current call level.  
+(defun dbgr-cmd-next(&optional arg)
+    "Step one source line at current call level.  
 
 With a numeric argument, step that many times. This command is
 often referred to as 'step through' as opposed to 'step into' or
@@ -37,74 +57,60 @@ often referred to as 'step through' as opposed to 'step into' or
 
 The definition of 'step' is debugger specific so, see the
 debugger documentation for a more complete definition of what is
-getting stepped.")
+getting stepped."
+    (interactive "p")
+    (dbgr-cmd-remap arg "next" "next %p" "n")
+)
 
-  (dbgr-define-command 
-      'finish "finish" "F" 
-      "Run until the completion of the current stack frame.
+(defun dbgr-cmd-finish(&optional arg)
+    "Run until the completion of the current stack frame.
 
 This command is often referred to as 'step out' as opposed to
 'step over' or 'step into'.
-")
-
-  (dbgr-define-command 
-      'newer-frame "down %p" "<" 
-"Move the current frame to a newer (more recent) frame. 
-
-With a numeric argument move that many levels forward." t t)
-
-  (dbgr-define-command 
-      'older-frame "up %p" ">" 
-"Move the current frame to an older (less recent) frame. 
-
-With a numeric argument move that many levels back." t t)
-
-  (dbgr-define-command 
-      'frame "frame %p" "f" 
-"Change the current frame number to the value of the numeric argument.
-
-If no argument specified use 0 or the most recent frame." t t)
-
-  (dbgr-define-command 
-      'continue "continue" "c" 
-      "Continue execution.")
-
-  (dbgr-define-command 
-      'restart "run" "R" 
-      "Restart execution."
-      't nil 't)
-
-  (dbgr-define-command 
-      'restart "shell" "S" 
-      "Run an interactive shell using the current environment."
-      't nil 't)
-
-  (defun dbgr-cmd-quit (arg)
-    "Gently terminate execution of the debugged program."
+"
     (interactive "p")
-    (let ((buffer (current-buffer))
-	  (cmdbuf (dbgr-get-cmdbuf))
-	  (cmd-hash)
-	  (cmd)
-	  )
-      (with-current-buffer-safe cmdbuf
-	(dbgr-cmdbuf-info-in-srcbuf?= dbgr-cmdbuf-info 
-				      (not (dbgr-cmdbuf? buffer)))
-	(setq cmd-hash (dbgr-cmdbuf-info-cmd-hash dbgr-cmdbuf-info))
-	(unless (and cmd-hash (setq cmd (gethash "quit" cmd-hash)))
-	  (setq cmd "quit"))
-	)
-      (dbgr-command cmd arg 't)
-      (if cmdbuf (dbgr-terminate cmdbuf))
-      )
-    )
-
-  (local-set-key "\C-cq" 'dbgr-cmd-quit)
+    (dbgr-cmd-remap arg "finish" "finish" "F")
 )
 
+(defun dbgr-cmd-newer-frame(&optional arg)
+    "Move the current frame to a newer (more recent) frame. 
+With a numeric argument move that many levels forward."
+    (interactive "p")
+    (dbgr-cmd-remap arg "down" "down %p" "<" t t)
+)
 
-(defun dbgr-cmd-break(arg)
-  "Set a breakpoint at the current line"
+(defun dbgr-cmd-older-frame(&optional arg)
+  "Move the current frame to an older (less recent) frame. 
+With a numeric argument move that many levels back."
+    (interactive "p")
+    (dbgr-cmd-remap arg "up" "up %p" ">" t t)
+)
+
+(defun dbgr-cmd-frame(&optional arg)
+    "Change the current frame number to the value of the numeric argument.
+If no argument specified use 0 or the most recent frame."
+    (dbgr-cmd-remap arg "frame" "frame %p" "f" t t)
+)
+
+(defun dbgr-cmd-continue(&optional arg)
+    "Continue execution."
+    (interactive "p")
+    (dbgr-cmd-remap arg "continue" "continue" "c")
+)
+
+(defun dbgr-cmd-restart(&optional arg)
+    "Restart execution."
+    (interactive "p")
+    (dbgr-cmd-remap arg "restart" "run" "R" 't nil 't)
+)
+
+(defun dbgr-cmd-shell(&optional arg)
+    "Restart execution."
+    (dbgr-cmd-remap arg "shell" "shell" "S")
+)
+
+(defun dbgr-cmd-quit (&optional arg)
+  "Gently terminate execution of the debugged program."
   (interactive "p")
   (let ((buffer (current-buffer))
 	(cmdbuf (dbgr-get-cmdbuf))
@@ -115,11 +121,14 @@ If no argument specified use 0 or the most recent frame." t t)
       (dbgr-cmdbuf-info-in-srcbuf?= dbgr-cmdbuf-info 
 				    (not (dbgr-cmdbuf? buffer)))
       (setq cmd-hash (dbgr-cmdbuf-info-cmd-hash dbgr-cmdbuf-info))
-      (unless (and cmd-hash (setq cmd (gethash "break" cmd-hash)))
-	(setq cmd "break %X:%l"))
+      (unless (and cmd-hash (setq cmd (gethash "quit" cmd-hash)))
+	(setq cmd "quit"))
       )
     (dbgr-command cmd arg 't)
+    (if cmdbuf (dbgr-terminate cmdbuf))
     )
   )
+
+(local-set-key "\C-cq" 'dbgr-cmd-quit)
 
 (provide-me "dbgr-")

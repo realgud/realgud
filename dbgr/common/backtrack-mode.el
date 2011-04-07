@@ -80,7 +80,6 @@ the name of the debugger which is used to preface variables."
   (funcall (intern (concat "dbgr-define-" name "-commands")))
   (if (intern (concat name "-backtrack-mode"))
       (progn 
-	(dbgr-define-gdb-like-commands) ;; FIXME: unless already defined
 	(dbgr-backtrack-mode 't)
 	(run-mode-hooks (intern (concat name "-backtrack-mode-hook"))))
     (progn 

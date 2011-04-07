@@ -12,7 +12,6 @@
 		       "dbgr-")
 (require-relative-list '("core" "init") "dbgr-gdb-")
 
-(defalias 'dbgr-define-dbgr-gdb-commands 'dbgr-define-gdb-like-commands)
 (dbgr-track-mode-vars "dbgr-gdb")
 
 (declare-function dbgr-track-mode(bool))

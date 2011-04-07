@@ -9,7 +9,7 @@
 			 "../../common/track-mode"
 			 ) 
 		       "dbgr-")
-(require-relative-list '("core" "cmds" "init") "dbgr-remake-")
+(require-relative-list '("core" "init") "dbgr-remake-")
 
 (dbgr-track-mode-vars "remake")
 

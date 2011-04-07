@@ -125,7 +125,6 @@ the name of the debugger which is used to preface variables."
   (funcall (intern (concat "dbgr-define-" name "-commands")))
   (if (intern (concat name "-track-mode"))
       (progn 
-	(dbgr-define-gdb-like-commands) ;; FIXME: unless already defined
 	(dbgr-track-mode 't)
 	(run-mode-hooks (intern (concat name "-track-mode-hook"))))
     (progn 

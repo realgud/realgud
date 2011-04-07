@@ -9,7 +9,7 @@
 			 "../../common/track-mode"
 			 ) 
 		       "dbgr-")
-(require-relative-list '("core" "cmds" "init") "dbgr-zshdb-")
+(require-relative-list '("core" "init") "dbgr-zshdb-")
 
 (dbgr-track-mode-vars "zshdb")
 (dbgr-posix-shell-populate-command-keys zshdb-track-mode-map)

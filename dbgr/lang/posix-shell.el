@@ -32,11 +32,6 @@ traceback) line."  )
 (defconst dbgr-shell-frame-line-regexp
   "[ \t\n]+at line \\([0-9]+\\)\\(?:\n\\|$\\)")
 
-(dbgr-define-command 
-    'shell "shell" "s" 
-      "Go into the shell with the current environment" 
-  )
-
 (defun dbgr-posix-shell-populate-command-keys (&optional map)
   "Bind the debugger function key layout used by many debuggers.
 

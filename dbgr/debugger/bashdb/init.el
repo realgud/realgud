@@ -97,5 +97,12 @@ dbgr-loc-pat struct")
 
 (setf (gethash "bashdb" dbgr-pat-hash) dbgr-bashdb-pat-hash)
 
+(defvar dbgr-bashdb-command-hash (make-hash-table :test 'equal)
+  "Hash key is command name like 'quit' and the value is 
+  the bashdb command to use, like 'quit!'")
+
+(setf (gethash "quit" dbgr-bashdb-command-hash) "quit!")
+(setf (gethash "bashdb" dbgr-command-hash dbgr-bashdb-command-hash))
+
 (provide-me "dbgr-bashdb-")
 

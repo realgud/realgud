@@ -47,7 +47,7 @@ marginal icons is reset."
 	 (cmd-str (or opt-command-line (dbgr-perldb-query-cmdline "perldb")))
 	 (cmd-args (split-string-and-unquote cmd-str))
 	 (parsed-args (dbgr-perldb-parse-cmd-args cmd-args))
-	 (script-args (cdr cmd-args))
+	 (script-args (cadr parsed-args))
 	 (script-name (car script-args))
 	 (cmd-buf))
   

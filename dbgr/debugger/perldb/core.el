@@ -41,10 +41,10 @@ We return the a list containing
 
 For example for the following input 
   (map 'list 'symbol-name
-   '(perl -W -C /tmp perldb --emacs ./gcd.rb a b))
+   '(perl -W -C /tmp -d ./gcd.rb a b))
 
 we might return:
-   ((perl -W -C) (./gcd.rb a b))
+   ((perl -W -C -d) (./gcd.rb a b))
 
 NOTE: the above should have each item listed in quotes.
 "
@@ -66,7 +66,7 @@ NOTE: the above should have each item listed in quotes.
 	(interp-regexp 
 	 (if (member system-type (list 'windows-nt 'cygwin 'msdos))
 	     "^perl\\(?:5[0-9.]*\\)\\(.exe\\)?$"
-	   "^perl\\(?:5[0-9.]*\\)$"))
+	   "^perl\\(?:5[0-9.]*\\)?$"))
 
 	;; Things returned
 	(script-name nil)

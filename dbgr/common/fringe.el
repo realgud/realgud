@@ -132,7 +132,7 @@ session which should also erase those fringe arrows."
   (setq dbgr-overlay-arrow3 nil))
 
 (defun dbgr-recenter-arrow1()
-  "If the current buffer conntains dbgr-overlay-arrow1 go to that position"
+  "If the current buffer contains dbgr-overlay-arrow1 go to that position"
   (interactive "")
   (if (and dbgr-overlay-arrow1 
 	   (eq (marker-buffer dbgr-overlay-arrow1) (current-buffer)))
@@ -140,8 +140,8 @@ session which should also erase those fringe arrows."
   )
 
 (defun dbgr-recenter-arrow()
-  "If the current buffer conntains dbgr-overlay-arrows 1, 2 or 3 
-   recenter that"
+  "If the current buffer contains dbgr-overlay-arrows 1, 2 or 3 
+   recenter window to show that"
   (interactive "")
   (if (and dbgr-overlay-arrow1 
 	   (eq (marker-buffer dbgr-overlay-arrow1) (current-buffer)))

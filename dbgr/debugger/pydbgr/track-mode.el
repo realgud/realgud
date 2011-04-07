@@ -11,7 +11,7 @@
 			 "../../common/track-mode"
 			 ) 
 		       "dbgr-")
-(require-relative-list '("core" "cmds" "init") "dbgr-pydbgr-")
+(require-relative-list '("core" "init") "dbgr-pydbgr-")
 
 (dbgr-track-mode-vars "pydbgr")
 
