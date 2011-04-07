@@ -117,10 +117,33 @@ menu. (The common map typically contains function key bindings.)"
 		      :help (documentation 'dbgr-cmd-restart)
 		      ))
 
+    (define-key menu-map [eval]
+      (dbgr-menu-item menu-map "eval" 'dbgr-cmd-eval-region
+                        :enable '(dbgr-get-process)
+			:help (documentation 'dbgr-cmd-eval-region)
+			))
+
     (define-key menu-map [recenter]
       (dbgr-menu-item menu-map "recenter" 'dbgr-recenter-arrow
 		      :enable '(dbgr-get-process)
 		      :help (documentation 'dbgr-recenter-arrow)
+		      ))
+    (define-key menu-map [1]
+      (dbgr-menu-item menu-map "arrow 1" 'dbgr-goto-arrow1
+		      :enable '(dbgr-get-process)
+		      :help (documentation 'dbgr-goto-arrow1)
+		      ))
+
+    (define-key menu-map [2]
+      (dbgr-menu-item menu-map "arrow 2" 'dbgr-goto-arrow2
+		      :enable '(dbgr-get-process)
+		      :help (documentation 'dbgr-goto-arrow2)
+		      ))
+
+    (define-key menu-map [3]
+      (dbgr-menu-item menu-map "arrow 3" 'dbgr-goto-arrow3
+		      :enable '(dbgr-get-process)
+		      :help (documentation 'dbgr-goto-arrow3)
 		      ))
 
     (define-key menu-map [menu-bar debugger line2] '(menu-item "--"))

@@ -7,9 +7,17 @@
   "Keymap used in `dbgr-short-key-mode'.")
 
 (define-key dbgr-short-key-mode-map
+  (kbd "1") 'dbgr-goto-arrow1)
+(define-key dbgr-short-key-mode-map
+  (kbd "2") 'dbgr-goto-arrow2)
+(define-key dbgr-short-key-mode-map
+  (kbd "3") 'dbgr-goto-arrow3)
+(define-key dbgr-short-key-mode-map
   (kbd "b") 'dbgr-cmd-break)
 (define-key dbgr-short-key-mode-map
   (kbd "c") 'dbgr-cmd-continue)
+(define-key dbgr-short-key-mode-map
+  (kbd "e") 'dbgr-cmd-eval-region)
 (define-key dbgr-short-key-mode-map
   (kbd "<") 'dbgr-cmd-newer-frame)
 (define-key dbgr-short-key-mode-map

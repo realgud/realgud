@@ -131,6 +131,27 @@ session which should also erase those fringe arrows."
   (setq dbgr-overlay-arrow2 nil)
   (setq dbgr-overlay-arrow3 nil))
 
+(defun dbgr-goto-arrow1()
+  "Goto the position stored in dbgr-overlay-arrow1"
+  (interactive "")
+  (switch-to-buffer (marker-buffer dbgr-overlay-arrow1))
+  (goto-char dbgr-overlay-arrow1)
+  )
+
+(defun dbgr-goto-arrow2()
+  "Goto the position stored in dbgr-overlay-arrow2"
+  (interactive "")
+  (switch-to-buffer (marker-buffer dbgr-overlay-arrow2))
+  (goto-char dbgr-overlay-arrow2)
+  )
+
+(defun dbgr-goto-arrow3()
+  "Goto the position stored in dbgr-overlay-arrow3"
+  (interactive "")
+  (switch-to-buffer (marker-buffer dbgr-overlay-arrow3))
+  (goto-char dbgr-overlay-arrow3)
+  )
+
 (defun dbgr-recenter-arrow1()
   "If the current buffer contains dbgr-overlay-arrow1 go to that position"
   (interactive "")

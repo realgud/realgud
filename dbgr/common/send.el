@@ -63,9 +63,9 @@ results into the command buffer."
   (dbgr-send-command command-str (function dbgr-send-command-process)))
 
 
-(defun dbgr-expand-format (fmt-str &optional opt-num-str opt-buffer)
+(defun dbgr-expand-format (fmt-str &optional opt-str opt-buffer)
   "Expands commands format characters inside FMT-STRING using values
-from the debugging session. OPT-NUM-STR is an optional number string.
+from the debugging session. OPT-STR is an optional string.
 Some %-escapes in the string arguments are expanded. These are:
 
   %f -- Name without directory of current source file.
@@ -76,15 +76,16 @@ Some %-escapes in the string arguments are expanded. These are:
   %l -- Number of current source line.
   %p -- Numeric prefix argument converted to a string
         If no prefix argument %p is the null string.
+  %s -- value of opt-str.
+
 "
   (let* ((buffer (or opt-buffer (current-buffer)))
 	 (srcbuf (dbgr-get-srcbuf buffer))
 	 (src-file-name (and srcbuf (buffer-file-name srcbuf)))
-	 (num-arg (and opt-num-str (int-to-string opt-num-str)))
 	 result)
     (while (and fmt-str
 		(let ((case-fold-search nil))
-		  (string-match "\\([^%]*\\)%\\([dfFlpxX]\\)" fmt-str)))
+		  (string-match "\\([^%]*\\)%\\([dfFlpxXs]\\)" fmt-str)))
       (let* ((key-str (match-string 2 fmt-str))
 	     (key (string-to-char key-str)))
 	(setq result 
@@ -125,7 +126,8 @@ Some %-escapes in the string arguments are expanded. These are:
 		;;  (gud-read-address))
 		;; ((eq key ?c)
 		;;   (gud-find-class srcbuf))
-		((eq key ?p) num-arg)
+		((eq key ?p) (if opt-str (int-to-string opt-str) ""))
+		((eq key ?s) opt-str)
 		(t key)))))
       (setq fmt-str (substring fmt-str (match-end 2))))
     ;; There might be text left in FMT-STR when the loop ends.
