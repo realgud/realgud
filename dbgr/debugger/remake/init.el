@@ -104,6 +104,7 @@ dbgr-loc-pat struct")
   the remake command to use, like 'q'")
 
 (setf (gethash "break"  dbgr-remake-command-hash) "break %l")
+(setf (gethash "eval"   dbgr-remake-command-hash) "expand %s")
 (setf (gethash "remake" dbgr-command-hash) dbgr-remake-command-hash)
 
 

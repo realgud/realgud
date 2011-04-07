@@ -28,6 +28,10 @@
 	 (specify "format %l - without arg"
 		  (assert-equal "line " (dbgr-expand-format "line %p")))
 
+	 (specify "format %s"
+		  (assert-equal "hi, rocky!" 
+				(dbgr-expand-format "h%s!" "i, rocky")))
+
 	 (setup)
 	 ;; Current buffer is now set up as a source buffer
 	 (setq file-name (buffer-file-name))
@@ -46,22 +50,6 @@
 
 	 (specify "dbgr-dbgr-command - not a command buffer"
 		  (assert-raises error (dbgr-command "testing")))
-
-	 (specify "dbgr-define-command"
-	 	  (defalias 'dbgr-command-orig
-	 	    (symbol-function 'dbgr-command))
-	 	  (defun dbgr-command (str &optional arg no-record? 
-					   frame-switch? dbgr-prompts?)
-	 	    (assert-equal "testing" str))
-	 	  (dbgr-define-command 'my-test "testing" "a" "my documentation")
-	 	  (assert-t (functionp 'dbgr-cmd-my-test))
-	 	  (assert-equal "my documentation" (documentation 'dbgr-cmd-my-test))
-	 	  (assert-equal 'dbgr-cmd-my-test (lookup-key (current-local-map) "\C-ca"))
-		  ;; FIXME: figure out what this was doing and why it
-		  ;; now fails
-	 	  ;;(dbgr-cmd-my-test "abc")
-	 	  (fset 'dbgr-command (symbol-function 'dbgr-command-orig))
-	 	  )
 
 )
 

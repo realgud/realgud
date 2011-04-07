@@ -37,7 +37,6 @@ traceback) line."  )
 
 \\{dbgr-example-map-standard}"
   (define-key map (kbd "C-c !b") 'dbgr-dbgr-goto-backtrace-line)
-  (define-key map (kbd "C-c S")  'dbgr-cmd-shell)
   )
 
 

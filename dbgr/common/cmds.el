@@ -34,18 +34,46 @@ if none has been set in the command hash."
   (dbgr-cmd-remap arg "break" "break %X:l" "b")
   )
 
-(defun dbgr-cmd-step(&optional arg)
-    "Step one source line. 
+(defun dbgr-cmd-continue(&optional arg)
+    "Continue execution."
+    (interactive "MContinue args: ")
+    (dbgr-cmd-remap arg "continue" "continue" "c")
+)
 
-With a numeric argument, step that many times.
-This command is often referred to as 'step into' as opposed to
-'step over' or 'step out'.
+(defun dbgr-cmd-eval(arg)
+    "Exaluate an expression."
+    (interactive "MEval expesssion: ")
+    (dbgr-cmd-remap arg "eval" "eval %s" "e")
+)
 
-The definition of 'step' is debugger specific so, see the
-debugger documentation for a more complete definition of what is
-getting stepped."
+(defun dbgr-cmd-eval-region(start end)
+    (interactive "r")
+    (let ((text (buffer-substring-no-properties start end)))
+      (dbgr-cmd-remap text "eval" "eval %s" "e")
+      )
+    )
+
+(defun dbgr-cmd-finish(&optional arg)
+    "Run until the completion of the current stack frame.
+
+This command is often referred to as 'step out' as opposed to
+'step over' or 'step into'.
+"
     (interactive "p")
-    (dbgr-cmd-remap arg "step" "step %p" "s")
+    (dbgr-cmd-remap arg "finish" "finish" "F")
+)
+
+(defun dbgr-cmd-frame(&optional arg)
+    "Change the current frame number to the value of the numeric argument.
+If no argument specified use 0 or the most recent frame."
+    (dbgr-cmd-remap arg "frame" "frame %p" "f" t t)
+)
+
+(defun dbgr-cmd-newer-frame(&optional arg)
+    "Move the current frame to a newer (more recent) frame. 
+With a numeric argument move that many levels forward."
+    (interactive "p")
+    (dbgr-cmd-remap arg "down" "down %p" "<" t t)
 )
 
 (defun dbgr-cmd-next(&optional arg)
@@ -62,23 +90,6 @@ getting stepped."
     (dbgr-cmd-remap arg "next" "next %p" "n")
 )
 
-(defun dbgr-cmd-finish(&optional arg)
-    "Run until the completion of the current stack frame.
-
-This command is often referred to as 'step out' as opposed to
-'step over' or 'step into'.
-"
-    (interactive "p")
-    (dbgr-cmd-remap arg "finish" "finish" "F")
-)
-
-(defun dbgr-cmd-newer-frame(&optional arg)
-    "Move the current frame to a newer (more recent) frame. 
-With a numeric argument move that many levels forward."
-    (interactive "p")
-    (dbgr-cmd-remap arg "down" "down %p" "<" t t)
-)
-
 (defun dbgr-cmd-older-frame(&optional arg)
   "Move the current frame to an older (less recent) frame. 
 With a numeric argument move that many levels back."
@@ -86,27 +97,30 @@ With a numeric argument move that many levels back."
     (dbgr-cmd-remap arg "up" "up %p" ">" t t)
 )
 
-(defun dbgr-cmd-frame(&optional arg)
-    "Change the current frame number to the value of the numeric argument.
-If no argument specified use 0 or the most recent frame."
-    (dbgr-cmd-remap arg "frame" "frame %p" "f" t t)
-)
-
-(defun dbgr-cmd-continue(&optional arg)
-    "Continue execution."
-    (interactive "p")
-    (dbgr-cmd-remap arg "continue" "continue" "c")
-)
-
 (defun dbgr-cmd-restart(&optional arg)
     "Restart execution."
-    (interactive "p")
+    (interactive "MRestart args: ")
     (dbgr-cmd-remap arg "restart" "run" "R" 't nil 't)
 )
 
 (defun dbgr-cmd-shell(&optional arg)
     "Restart execution."
+    (interactive "p")
     (dbgr-cmd-remap arg "shell" "shell" "S")
+)
+
+(defun dbgr-cmd-step(&optional arg)
+    "Step one source line. 
+
+With a numeric argument, step that many times.
+This command is often referred to as 'step into' as opposed to
+'step over' or 'step out'.
+
+The definition of 'step' is debugger specific so, see the
+debugger documentation for a more complete definition of what is
+getting stepped."
+    (interactive "p")
+    (dbgr-cmd-remap arg "step" "step %p" "s")
 )
 
 (defun dbgr-cmd-quit (&optional arg)
