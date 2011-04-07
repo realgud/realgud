@@ -11,9 +11,15 @@
 (define-key dbgr-short-key-mode-map
   (kbd "c") 'dbgr-cmd-continue)
 (define-key dbgr-short-key-mode-map
-  (kbd "S") 'dbgr-cmd-shell)
+  (kbd "<") 'dbgr-cmd-newer-frame)
+(define-key dbgr-short-key-mode-map
+  (kbd ">") 'dbgr-cmd-older-frame)
+(define-key dbgr-short-key-mode-map
+  (kbd "l") 'dbgr-recenter-arrow)
 (define-key dbgr-short-key-mode-map
   (kbd "R") 'dbgr-cmd-restart)
+(define-key dbgr-short-key-mode-map
+  (kbd "S") 'dbgr-cmd-shell)
 (define-key dbgr-short-key-mode-map [insert] 'dbgr-short-key-mode)
 (define-key dbgr-short-key-mode-map [M-insert] 'dbgr-short-key-mode)
 (dbgr-populate-common-keys dbgr-short-key-mode-map)

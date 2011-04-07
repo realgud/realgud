@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
 (require-relative-list
  '("../../common/send") "dbgr-")
@@ -17,5 +17,8 @@
 
 (setf (gethash "quit" dbgr-kshdb-command-hash) "quit!")
 (setf (gethash "kshdb" dbgr-command-hash dbgr-kshdb-command-hash))
+
+;; Break can only handle line number right now.
+(setf (gethash "break" dbgr-kshdb-command-hash) "break %l")
 
 (provide-me "dbgr-kshdb-")
