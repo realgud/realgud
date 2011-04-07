@@ -4,15 +4,17 @@ Towards a modular framework for interacting with external debuggers.
 
 Debuggers we currently support are:
 
- * bashdb  (BASH)
+ * "bashdb":http://bashdb.sf.net  (BASH)
  * gdb  
- * kshdb (Korn Shell)
- * pydb (Python)
- * pydbgr (Python)
- * trepanning (Ruby 1.9)
- * remake (GNU Make)
+ * "kshdb":https://github.com/rocky/kshdb/wiki (Korn Shell)
+ * perldb (Perl)
+ * "pydb":http://bashdb.sourceforge.net/pydb/ (Python)
+ * "pydbgr":http://code.google.com/p/pydbgr/ (Python)
+ * "trepanning":https://github.com/rocky/rb-trepanning/wiki (Ruby 1.9)
+ * "rbx-trepanning":https://github.com/rocky/rbx-trepanning/wiki (for Rubinius)
+ * "remake":http//bashdb.sf.net/remake (GNU Make)
  * ruby-debug (Ruby)
- * zshdb (Zsh)
+ * "zshdb":https://github.com/rocky/zshdb/wiki (Zsh)
 
 The debugger is run out of a comint process buffer, or you can use a "track-mode" inside an existing shell.
 
