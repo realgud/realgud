@@ -41,8 +41,9 @@ menu. (The common map typically contains function key bindings.)"
 ;; Remember, all menu items are added in the reverse order!
 
 (defun dbgr-populate-debugger-menu (parent-map)
-  "Populate the 'Dbgr' menu by creating a keymap whose parent is PARENT-MAP."
-  (let ((menu-map (make-sparse-keymap)))
+  "Populate the 'Debugger' menu by creating a keymap whose parent is PARENT-MAP."
+  (let ((menu-map (make-sparse-keymap))
+	)
 
     (define-key menu-map [menu-bar debugger] (cons "Debugger" menu-map))
     (set-keymap-parent parent-map menu-map)
@@ -59,28 +60,58 @@ menu. (The common map typically contains function key bindings.)"
     ;;                     'dbgr-toggle-source-breakpoint
     ;;                     :enable '(dbgr-get-process)))
 
+    (define-key menu-map [command]
+      (dbgr-menu-item menu-map "command" 'dbgr-window-cmd-undisturb-src
+		      :enable '(dbgr-get-process)
+		      :help (documentation 'dbgr-window-cmd-undisturb-src)
+		      ))
+
+    (define-key menu-map [source]
+      (dbgr-menu-item menu-map "source" 'dbgr-window-src-undisturb-cmd
+		      :enable '(dbgr-get-process)
+		      :help (documentation 'dbgr-window-src-undisturb-cmd)
+		      ))
+
+    (define-key menu-map [arrow3]
+      (dbgr-menu-item menu-map "arrow 3" 'dbgr-goto-arrow3
+		      :enable '(dbgr-get-process)
+		      :help (documentation 'dbgr-goto-arrow3)
+		      ))
+
+    (define-key menu-map [arrow2]
+      (dbgr-menu-item menu-map "arrow 2" 'dbgr-goto-arrow2
+		      :enable '(dbgr-get-process)
+		      :help (documentation 'dbgr-goto-arrow2)
+		      ))
+
+    (define-key menu-map [arrow1]
+      (dbgr-menu-item menu-map "arrow 1" 'dbgr-goto-arrow1
+		      :enable '(dbgr-get-process)
+		      :help (documentation 'dbgr-goto-arrow1)
+		      ))
+
     (define-key menu-map [break]
       (dbgr-menu-item menu-map "Set breakpoint" 'dbgr-cmd-break
                         :enable '(dbgr-get-process)
 			:help (documentation 'dbgr-cmd-break)
 			))
 
-    (define-key menu-map [cont]
+    (define-key menu-map [continue]
       (dbgr-menu-item menu-map "continue" 'dbgr-cmd-continue
                         :enable '(dbgr-get-process)
 			:help (documentation 'dbgr-cmd-continue)
-			))
-
-    (define-key menu-map [finish]
-      (dbgr-menu-item menu-map "finish (step out)" 'dbgr-cmd-finish
-                        :enable '(dbgr-get-process)
-			:help (documentation 'dbgr-cmd-finish)
 			))
 
     (define-key menu-map [next]
       (dbgr-menu-item menu-map "next (step through)" 'dbgr-cmd-next
                         :enable '(dbgr-get-process)
 			:help (documentation 'dbgr-cmd-next)
+			))
+
+    (define-key menu-map [finish]
+      (dbgr-menu-item menu-map "finish (step out)" 'dbgr-cmd-finish
+                        :enable '(dbgr-get-process)
+			:help (documentation 'dbgr-cmd-finish)
 			))
 
     (define-key menu-map [step]
@@ -105,13 +136,13 @@ menu. (The common map typically contains function key bindings.)"
 
     (define-key menu-map [menu-bar debugger line1] '(menu-item "--"))
 
-    (define-key menu-map [stop]
+    (define-key menu-map [quit]
       (dbgr-menu-item menu-map "quit" 'dbgr-cmd-quit
 		      :enable '(dbgr-get-process)
 		      :help (documentation 'dbgr-cmd-quit)
 		      ))
 
-    (define-key menu-map [start]
+    (define-key menu-map [restart]
       (dbgr-menu-item menu-map "restart" 'dbgr-cmd-restart
 		      :enable '(dbgr-get-process)
 		      :help (documentation 'dbgr-cmd-restart)
@@ -127,23 +158,6 @@ menu. (The common map typically contains function key bindings.)"
       (dbgr-menu-item menu-map "recenter" 'dbgr-recenter-arrow
 		      :enable '(dbgr-get-process)
 		      :help (documentation 'dbgr-recenter-arrow)
-		      ))
-    (define-key menu-map [1]
-      (dbgr-menu-item menu-map "arrow 1" 'dbgr-goto-arrow1
-		      :enable '(dbgr-get-process)
-		      :help (documentation 'dbgr-goto-arrow1)
-		      ))
-
-    (define-key menu-map [2]
-      (dbgr-menu-item menu-map "arrow 2" 'dbgr-goto-arrow2
-		      :enable '(dbgr-get-process)
-		      :help (documentation 'dbgr-goto-arrow2)
-		      ))
-
-    (define-key menu-map [3]
-      (dbgr-menu-item menu-map "arrow 3" 'dbgr-goto-arrow3
-		      :enable '(dbgr-get-process)
-		      :help (documentation 'dbgr-goto-arrow3)
 		      ))
 
     (define-key menu-map [menu-bar debugger line2] '(menu-item "--"))
