@@ -9,6 +9,7 @@
 ;; the first line will appears. So be careful about where to put line
 ;; breaks in the docstrings below.
 (defun dbgr-define-gdb-like-commands ()
+
   "Define a bunch of gdb-command that we expect most debuggers to have"
   (dbgr-define-command 
       'break "break %X:%l" "\C-b" 
@@ -97,7 +98,28 @@ If no argument specified use 0 or the most recent frame." t t)
       (if cmdbuf (dbgr-terminate cmdbuf))
       )
     )
+
   (local-set-key "\C-cq" 'dbgr-cmd-quit)
 )
+
+
+(defun dbgr-cmd-break(arg)
+  "Set a breakpoint at the current line"
+  (interactive "p")
+  (let ((buffer (current-buffer))
+	(cmdbuf (dbgr-get-cmdbuf))
+	(cmd-hash)
+	(cmd)
+	)
+    (with-current-buffer-safe cmdbuf
+      (dbgr-cmdbuf-info-in-srcbuf?= dbgr-cmdbuf-info 
+				    (not (dbgr-cmdbuf? buffer)))
+      (setq cmd-hash (dbgr-cmdbuf-info-cmd-hash dbgr-cmdbuf-info))
+      (unless (and cmd-hash (setq cmd (gethash "break" cmd-hash)))
+	(setq cmd "break %X:%l"))
+      )
+    (dbgr-command cmd arg 't)
+    )
+  )
 
 (provide-me "dbgr-")

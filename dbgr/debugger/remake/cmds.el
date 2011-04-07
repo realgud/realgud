@@ -6,13 +6,9 @@
 (declare-function dbgr-terminate &optional arg)
 (declare-function dbgr-define-gdb-like-commands())
 
-;; (defun dbgr-define-remake-commands ()
-;;   "(Re)define a bunch of remake commands"
-;;   ;; remake doesn't allow for the more general file:line breakpoint yet.
-;;   (dbgr-define-gdb-like-commands)
-;;   (dbgr-define-command 
-;;       'break "break %l" "\C-b" 
-;;       "Set a breakpoint at the current line" t nil)
-;;   )
+(defun dbgr-define-remake-commands ()
+  "(Re)define a bunch of remake commands"
+  (dbgr-define-gdb-like-commands)
+)
 
 (provide-me "dbgr-remake-")

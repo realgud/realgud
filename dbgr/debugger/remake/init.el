@@ -99,4 +99,12 @@ dbgr-loc-pat struct")
 
 (setf (gethash "remake" dbgr-pat-hash) dbgr-remake-pat-hash)
 
+(defvar dbgr-remake-command-hash (make-hash-table :test 'equal)
+  "Hash key is command name like 'quit' and the value is 
+  the remake command to use, like 'q'")
+
+(setf (gethash "break"  dbgr-remake-command-hash) "break %l")
+(setf (gethash "remake" dbgr-command-hash) dbgr-remake-command-hash)
+
+
 (provide-me "dbgr-remake-")

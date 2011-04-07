@@ -7,8 +7,7 @@
 (declare-function dbgr-define-gdb-like-commands())
 
 (defun dbgr-define-perldb-commands ()
-  "(Re)define a bunch of trepan commands have"
-  ;; trepan doesn't allow for the more general file:line breakpoint yet.
+  "(Re)define a bunch of trepan commands"
   (dbgr-define-gdb-like-commands)
 )
 

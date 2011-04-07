@@ -63,7 +63,7 @@ menu. (The common map typically contains function key bindings.)"
     (define-key menu-map [break]
       (dbgr-menu-item menu-map "Set breakpoint" 'dbgr-cmd-break
                         :enable '(dbgr-get-process)
-			:help (documentation 'dbgr-cmd-continue)
+			:help (documentation 'dbgr-cmd-break)
 			))
 
     (define-key menu-map [cont]
@@ -89,6 +89,20 @@ menu. (The common map typically contains function key bindings.)"
                         :enable '(dbgr-get-process)
 			:help (documentation 'dbgr-cmd-step)
 			))
+
+    (define-key menu-map [menu-bar debugger line1] '(menu-item "--"))
+
+    (define-key menu-map [up]
+      (dbgr-menu-item menu-map "up" 'dbgr-cmd-newer-frame
+		      :enable '(dbgr-get-process)
+		      :help (documentation 'dbgr-cmd-newer-frame)
+		      ))
+
+    (define-key menu-map [down]
+      (dbgr-menu-item menu-map "down" 'dbgr-cmd-older-frame
+		      :enable '(dbgr-get-process)
+		      :help (documentation 'dbgr-cmd-older-frame)
+		      ))
 
     (define-key menu-map [menu-bar debugger line1] '(menu-item "--"))
 
