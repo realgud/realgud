@@ -17,6 +17,8 @@
 (define-key dbgr-short-key-mode-map
   (kbd "l") 'dbgr-recenter-arrow)
 (define-key dbgr-short-key-mode-map
+  (kbd "C") 'dbgr-window-cmd-undisturb-src)
+(define-key dbgr-short-key-mode-map
   (kbd "R") 'dbgr-cmd-restart)
 (define-key dbgr-short-key-mode-map
   (kbd "S") 'dbgr-cmd-shell)
