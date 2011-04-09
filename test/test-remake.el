@@ -1,35 +1,33 @@
 (require 'test-unit)
-(load-file "../dbgr/debugger/remake/core.el")
+(load-file "../dbgr/common/core.el") ;; for dbgr-exec-shell
+(load-file "../dbgr/debugger/remake/remake.el")
 
 (test-unit-clear-contexts)
+
+(defun dbgr-exec-shell (debugger-name script-filename program 
+				      &optional no-reset &rest args)
+  "Mock for dbgr-exec-shell. We copy the part of the real dbgr-exec-shell
+file-name-directory that was failing"
+  (let ((cmdproc-buffer (get-buffer-create "foo"))
+	(starting-directory
+		(or (file-name-directory script-filename)
+		    default-directory "./")))
+    (start-process "my-process" cmdproc-buffer "sleep" "10000")
+    cmdproc-buffer
+    )
+  )
 
 (context "remake"
 	 (tag remake)
 
-	 (specify "remake-parse-cmd-args"
-	      (assert-equal '("remake" "Makefile" ("-X" "-f" "Makefile"))
-			    (remake-parse-cmd-args 
-			     '("remake" "-X" "-f" "Makefile")))
+	 (specify "can deal with no Makefile name"
+		  ;; If dbgr-remake is successful we switch buffers
+		  (setq my-buf (current-buffer))
+		  (dbgr-remake "remake --debugger")
+		  (assert-t (not (eq (current-buffer) my-buf)))
+		  (delete-process "foo")
+		  (switch-to-buffer my-buf)
 	      )
-	 (specify "remake-suggest-Makefile"
-	      (assert-equal "Makefile" (remake-suggest-Makefile))
-	      )
-
-	 (specify "remake-file-suggest-priority"
-	      (assert-equal 2 (remake-suggest-file-priority "foo"))
-	      (let ((buffer (get-file-buffer "Makefile.am")))
-	 	(if buffer (kill-buffer buffer))
-	 	(assert-equal 2 (remake-suggest-file-priority "Makefile.am"))
-	 	(setq buffer (find-file-noselect "Makefile.am"))
-	 	(assert-equal 5 (remake-suggest-file-priority "Makefile.am"))
-	 	(kill-buffer buffer)
-	 	(setq buffer (get-file-buffer "Makefile"))
-	 	(if buffer (kill-buffer buffer))
-	 	(assert-equal 6 (remake-suggest-file-priority "Makefile"))
-	 	(setq buffer (find-file-noselect "Makefile"))
-	 	(assert-equal 8 (remake-suggest-file-priority "Makefile"))
-	 	(kill-buffer buffer)
-	      ))
 	 )
 
 (test-unit "remake")
