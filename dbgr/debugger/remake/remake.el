@@ -49,7 +49,7 @@ marginal icons is reset."
 	 (cmd-args (split-string-and-unquote cmd-str))
 	 (parsed-args (remake-parse-cmd-args cmd-args))
 	 (remake-program (car parsed-args))
-	 (makefile-name (cadr parsed-args))
+	 (makefile-name (or (cadr parsed-args) "Makefile"))
 	 (makefile-args (caddr parsed-args))
 	 (cmd-buf))
   
