@@ -115,7 +115,6 @@ file. However it is possible in shortkey mode to show only the
 source code window, even the commmand buffer is updated albeit
 unshown."
 
-  (interactive)
   (let ((cmdbuf (dbgr-get-cmdbuf (current-buffer))))
     (if cmdbuf
 	(let* ((loc-hist (dbgr-cmdbuf-loc-hist cmdbuf))
