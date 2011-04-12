@@ -60,7 +60,7 @@ dbgr-loc-pat struct")
 ;;   ->0 in file `../bashdb/test/example/subshell.sh' at line 6
 ;;   ##1 source("../bashdb/shell.sh") called from file `/bin/bashdb' at line 140
 ;;   ##2 main() called from file `/bin/bashdb' at line 0
-(setf (gethash "frame" dbgr-bashdb-pat-hash)
+(setf (gethash "debugger-backtrace" dbgr-bashdb-pat-hash)
       (make-dbgr-loc-pat
        :regexp 	(concat dbgr-shell-frame-start-regexp
 			dbgr-shell-frame-num-regexp "[ ]?"

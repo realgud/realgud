@@ -38,7 +38,7 @@ The values of a hash entry is a dbgr-loc-pat struct")
 ;;  Regular expression that describes a Perl backtrace line.
 ;; $ = main::top_navigation_panel called from file `./latex2html' line 7400
 ;; $ = main::BEGIN() called from file `(eval 19)[/usr/bin/latex2html:126]' line 2
-(setf (gethash "frame" dbgr-perldb-pat-hash)
+(setf (gethash "debugger-backtrace" dbgr-perldb-pat-hash)
       (make-dbgr-loc-pat
        :regexp   "\s+called from file `\\(.+\\)' line \\([0-9]+\\)"
        :file-group 1

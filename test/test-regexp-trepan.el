@@ -5,7 +5,7 @@
 
 
 (setq bps-pat    (gethash "brkpt-set"     dbgr-trepan-pat-hash))
-(setq frame-pat  (gethash "frame"         dbgr-trepan-pat-hash))
+(setq frame-pat  (gethash "debugger-backtrace" dbgr-trepan-pat-hash))
 (setq prompt-pat (gethash "prompt"        dbgr-trepan-pat-hash))
 (setq tb-pat     (gethash "backtrace"     dbgr-trepan-pat-hash))
 (setq ctrl-pat   (gethash "control-frame" dbgr-trepan-pat-hash))
@@ -37,7 +37,7 @@
 						text)))
 	   )
 
-	   (specify "frame"
+	   (specify "debugger-backtrace"
 		    (setq s1 "--> #0 METHOD Object#require(path) in file <internal:lib/require> at line 28
     #1 TOP Object#<top /tmp/linecache.rb> in file /tmp/linecache.rb
 ")

@@ -3,8 +3,8 @@
 
 (test-unit-clear-contexts)
 
-(setq prompt-pat (gethash "prompt"        dbgr-remake-pat-hash))
-(setq frame-pat  (gethash "frame"         dbgr-remake-pat-hash))
+(setq prompt-pat (gethash "prompt"             dbgr-remake-pat-hash))
+(setq frame-pat  (gethash "debugger-backtrace" dbgr-remake-pat-hash))
 
 (defun prompt-match(prompt-str num-str) 
   (assert-equal 0 (string-match (dbgr-loc-pat-regexp prompt-pat)
@@ -24,7 +24,7 @@
 (context "remake frame matching"
 	 (tag regexp-remake)
 
-	 (specify "frame"
+	 (specify "debugger-backtrace"
 		  (setq s1
 			"=>#0  Makefile.in at /tmp/Makefile:216
   #1  Makefile at /tmp/Makefile:230

@@ -67,7 +67,7 @@ dbgr-loc-pat struct")
 ;;     #1 main.__script__ at /tmp/fact.rb:1
 ;;     #1 main.__script__ at /tmp/fact.rb:1
 ;;     #0 IRB.start(ap_path#String) at line /usr/lib/ruby/1.8/irb.rb:52
-(setf (gethash "frame" dbgr-rdebug-pat-hash)
+(setf (gethash "debugger-backtrace" dbgr-rdebug-pat-hash)
       (make-dbgr-loc-pat
        :regexp 	(concat dbgr-rdebug-frame-start-regexp " "
 			dbgr-rdebug-frame-num-regexp

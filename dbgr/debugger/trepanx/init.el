@@ -75,7 +75,7 @@ dbgr-loc-pat struct")
 ;;  e.g.
 ;; --> #0 Rubinius::Scope#my_method at kernel/common/variable_scope.rb:134
 ;;     #1 main.__script__ at /tmp/fact.rb:1
-(setf (gethash "frame" dbgr-trepanx-pat-hash)
+(setf (gethash "debugger-backtrace" dbgr-trepanx-pat-hash)
       (make-dbgr-loc-pat
        :regexp 	(concat dbgr-trepanx-frame-start-regexp " "
 			dbgr-trepanx-frame-num-regexp " " 

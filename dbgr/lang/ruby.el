@@ -77,8 +77,8 @@ described by PT."
   "Bind the debugger function key layout used by many debuggers.
 
 \\{dbgr-example-map-standard}"
-  (define-key map (kbd "C-c !!") 'dbgr-ruby-goto-dollarbang-backtrace-line)
-  (define-key map (kbd "C-c !b") 'dbgr-ruby-goto-backtrace-line)
+  (define-key map (kbd "C-c !!") 'dbgr-goto-lang-backtrace-line)
+  (define-key map (kbd "C-c !b") 'dbgr-goto-debugger-backtrace-line)
   (define-key map (kbd "C-c !r") 'dbgr-rails-goto-backtrace-line)
   )
 

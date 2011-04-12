@@ -78,7 +78,7 @@ dbgr-loc-pat struct")
 ;;  e.g.
 ;; --> #0 METHOD Object#require(path) in file <internal:lib/require> at line 28
 ;;     #1 TOP Object#<top /tmp/linecache.rb> in file /tmp/linecache.rb
-(setf (gethash "frame" dbgr-trepan-pat-hash)
+(setf (gethash "debugger-backtrace" dbgr-trepan-pat-hash)
       (make-dbgr-loc-pat
        :regexp 	(concat dbgr-trepan-frame-start-regexp " "
 			dbgr-trepan-frame-num-regexp " "

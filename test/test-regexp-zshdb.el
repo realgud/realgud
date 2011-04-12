@@ -4,7 +4,7 @@
 (test-unit-clear-contexts)
 
 (setq prompt-pat (gethash "prompt"        dbgr-zshdb-pat-hash))
-(setq frame-pat  (gethash "frame"         dbgr-zshdb-pat-hash))
+(setq frame-pat  (gethash "debugger-backtrace" dbgr-zshdb-pat-hash))
 
 (defun prompt-match(prompt-str num-str) 
   (assert-equal 0 (string-match (dbgr-loc-pat-regexp prompt-pat)
@@ -25,7 +25,7 @@
 (context "zshdb frame matching"
 	 (tag regexp-zshdb)
 
-	 (specify "frame"
+	 (specify "debugger-backtrace"
 		  (setq s1
 			"->0 in file `/etc/apparmor/functions' at line 24
 ##1 /etc/apparmor/functions called from file `/etc/init.d/apparmor' at line 35

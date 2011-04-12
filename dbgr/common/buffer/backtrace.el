@@ -52,7 +52,7 @@ to be debugged."
   	(process)
   	)
     (with-current-buffer-safe cmdbuf
-      (let ((frame-pat (dbgr-cmdbuf-pat "frame"))
+      (let ((frame-pat (dbgr-cmdbuf-pat "debugger-backtrace"))
 	    (selected-frame-num)
 	    (frame-pos-ring)
 	    (sleep-count 0)

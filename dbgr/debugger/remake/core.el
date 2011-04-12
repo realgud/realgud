@@ -212,12 +212,6 @@ given priority, we use the first one we find."
     )
   )
 
-(defun remake-goto-backtrace-line (pt)
-  "Display the location mentioned by the remake backtrace line
-described by PT."
-  (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "backtrace" dbgr-remake-pat-hash))
-
 (defun remake-reset ()
   "Remake cleanup - remove debugger's internal buffers (frame,
 breakpoints, etc.)."

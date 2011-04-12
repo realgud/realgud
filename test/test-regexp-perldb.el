@@ -9,7 +9,7 @@
 ; FIXME: encapsulate this.
 (setq dbg-name "perldb")
 (setq loc-pat    (gethash "loc"    (gethash dbg-name dbgr-pat-hash)))
-(setq frame-pat  (gethash "frame"  dbgr-perldb-pat-hash))
+(setq frame-pat  (gethash "debugger-backtrace"  dbgr-perldb-pat-hash))
 (setq prompt-pat (gethash "prompt" dbgr-perldb-pat-hash))
 
 (setq dbgr (make-dbgr-cmdbuf-info
@@ -62,7 +62,7 @@
 				(match-string (dbgr-cmdbuf-info-line-group dbgr)
 					      text)))
 
-	 (specify "frame"
+	 (specify "debugger-backtrace"
 		  (setq s1
 			"$ = main::top_navigation_panel called from file `./latex2html' line 7400
 ")

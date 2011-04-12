@@ -59,7 +59,7 @@ dbgr-loc-pat struct")
 ;;   ->0 in file `/etc/apparmor/fns' at line 24
 ;;   ##1 /etc/apparmor/fns called from file `/etc/init.d/apparmor' at line 35
 ;;   ##2 /etc/init.d/apparmor called from file `/usr/bin/zshdb' at line 129
-(setf (gethash "frame" dbgr-zshdb-pat-hash)
+(setf (gethash "debugger-backtrace" dbgr-zshdb-pat-hash)
       (make-dbgr-loc-pat
        :regexp 	(concat dbgr-shell-frame-start-regexp
 			dbgr-shell-frame-num-regexp "[ ]?"

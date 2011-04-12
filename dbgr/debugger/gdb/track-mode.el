@@ -17,7 +17,7 @@
 (declare-function dbgr-track-mode(bool))
 
 (define-key dbgr-gdb-track-mode-map 
-  (kbd "C-c !b") 'dbgr-gdb-goto-backtrace-line)
+  (kbd "C-c !b") 'dbgr-goto-debugger-backtrace-line)
 
 (defun dbgr-gdb-track-mode-hook()
   (use-local-map dbgr-gdb-track-mode-map)

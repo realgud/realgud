@@ -66,7 +66,7 @@ dbgr-loc-pat struct")
 ;; For example:
 ;; #0  Makefile.in at /tmp/Makefile:216
 ;; #1  Makefile at /tmp/Makefile:230
-;; Compare with a *debugger* backtrace line, called "frame"
+;; Compare with a *debugger* backtrace line, called "debugger-backtrace"
 (setf (gethash "backtrace" dbgr-remake-pat-hash)
       (make-dbgr-loc-pat
        :regexp 	(concat dbgr-remake-frame-start-regexp 
@@ -83,7 +83,7 @@ dbgr-loc-pat struct")
 ;; For example:
 ;; =>#0  Makefile.in at /tmp/Makefile:216
 ;;   #1  Makefile at /tmp/Makefile:230
-(setf (gethash "frame" dbgr-remake-pat-hash)
+(setf (gethash "debugger-backtrace" dbgr-remake-pat-hash)
       (make-dbgr-loc-pat
        :regexp 	(concat dbgr-remake-frame-start-regexp
 			dbgr-remake-frame-arrow

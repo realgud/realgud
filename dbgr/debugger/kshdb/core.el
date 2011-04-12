@@ -138,14 +138,8 @@ described by PT."
   (interactive "d")
   (dbgr-goto-line-for-pt-and-type pt "backtrace" dbgr-kshdb-pat-hash))
 
-(defun kshdb-goto-control-frame-line (pt)
-  "Display the location mentioned by a control-frame line
-described by PT."
-  (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "control-frame" dbgr-kshdb-pat-hash))
-
 (defun kshdb-goto-dollarbang-backtrace-line (pt)
-  "Display the location mentioned by a zshd backtrace line
+  "Display the location mentioned by a ksh backtrace line
 described by PT."
   (interactive "d")
   (dbgr-goto-line-for-pt-and-type pt "dollar-bang" dbgr-kshdb-pat-hash))
