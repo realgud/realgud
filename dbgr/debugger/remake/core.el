@@ -218,12 +218,6 @@ described by PT."
   (interactive "d")
   (dbgr-goto-line-for-pt-and-type pt "backtrace" dbgr-remake-pat-hash))
 
-(defun remake-goto-control-frame-line (pt)
-  "Display the location mentioned by a control-frame line
-described by PT."
-  (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "control-frame" dbgr-remake-pat-hash))
-
 (defun remake-reset ()
   "Remake cleanup - remove debugger's internal buffers (frame,
 breakpoints, etc.)."

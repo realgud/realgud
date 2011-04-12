@@ -138,12 +138,6 @@ NOTE: the above should have each item listed in quotes.
   (dbgr-suggest-invocation pydbgr-command-name pydbgr-minibuffer-history 
 			   "python" "\\.py"))
 
-(defun pydbgr-goto-backtrace-line (pt)
-  "Display the location mentioned by the Python backtrace line
-described by PT."
-  (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "backtrace" dbgr-pydbgr-pat-hash))
-
 (defun pydbgr-reset ()
   "Pydbgr cleanup - remove debugger's internal buffers (frame,
 breakpoints, etc.)."

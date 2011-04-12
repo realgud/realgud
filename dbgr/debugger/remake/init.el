@@ -53,11 +53,31 @@ dbgr-loc-pat struct")
        :num 1))
 
 (defconst dbgr-remake-frame-start-regexp
-  "\\(?:^\\|\n\\)\\(=>\\|  \\)")
+  "\\(?:^\\|\n\\)")
+
+(defconst dbgr-remake-frame-arrow "\\(=>\\|  \\)")
 (defconst dbgr-remake-frame-num-regexp
   "#\\([0-9]+\\)  ")
 
 (defconst dbgr-remake-frame-file-regexp " at \\(.*\\):\\([0-9]+\\)")
+
+;; FIXME: change to terms like "backtrace" and "debugger-backtrace"? 
+;; Regular expression that describes a remake "backtrace" command line.
+;; For example:
+;; #0  Makefile.in at /tmp/Makefile:216
+;; #1  Makefile at /tmp/Makefile:230
+;; Compare with a *debugger* backtrace line, called "frame"
+(setf (gethash "backtrace" dbgr-remake-pat-hash)
+      (make-dbgr-loc-pat
+       :regexp 	(concat dbgr-remake-frame-start-regexp 
+			dbgr-remake-frame-num-regexp
+			"\\(.*\\)"
+			dbgr-remake-frame-file-regexp
+			)
+       :num 1
+       :file-group 3
+       :line-group 4)
+      )
 
 ;; Regular expression that describes a debugger "backtrace" command line.
 ;; For example:
@@ -66,6 +86,7 @@ dbgr-loc-pat struct")
 (setf (gethash "frame" dbgr-remake-pat-hash)
       (make-dbgr-loc-pat
        :regexp 	(concat dbgr-remake-frame-start-regexp
+			dbgr-remake-frame-arrow
 			dbgr-remake-frame-num-regexp
 			"\\(.*\\)"
 			dbgr-remake-frame-file-regexp

@@ -1,4 +1,4 @@
-;;; Backtrace buffer mode settings
+;;; Debugger Backtrace buffer mode settings
 ;;; Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
 (require-relative-list  '("menu") "dbgr-")

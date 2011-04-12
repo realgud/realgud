@@ -17,12 +17,11 @@
 
 ;; (define-key remake-track-mode-map 
 ;;   (kbd "C-c !!") 'remake-goto-dollarbang-backtrace-line)
-;; (define-key remake-track-mode-map 
-;;   (kbd "C-c !b") 'remake-goto-backtrace-line)
-;; (define-key remake-track-mode-map 
-;;   (kbd "C-c !c") 'remake-goto-control-frame-line)
+(define-key remake-track-mode-map 
+  (kbd "C-c !b") 'remake-goto-backtrace-line)
 ;; (define-key remake-track-mode-map 
 ;;   (kbd "C-c !c") 'remake-goto-control-frame-line)
+;; (define-key remake-track-mode-map 
 
 (defun remake-track-mode-hook()
   (if remake-track-mode

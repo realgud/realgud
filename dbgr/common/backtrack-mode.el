@@ -1,6 +1,8 @@
-;;; Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org>
-;;;  Used to parse backtrace-like tracks output. In contrast to 
-;;; track-mode, there doesn't have to be a process shell arround 
+;;; Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org> Used to parse
+;;;  programming-language backtrace-like tracks output. In contrast to
+;;;  track-mode, there doesn't have to be a process shell arround
+;;; Compare with backtrace-mode.el which handles backtraces inside the
+;;; debugger
 
 (eval-when-compile (require 'cl))
 (require 'shell)
