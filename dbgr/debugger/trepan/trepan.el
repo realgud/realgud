@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 ;;  `trepan' Main interface to trepan via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "dbgr-")
@@ -68,7 +68,7 @@ marginal icons is reset."
 	  (progn
 	    (switch-to-buffer cmd-buf)
 	    (trepan-track-mode 't)
-	    (dbgr-cmdbuf-info-cmd-args= dbgr-cmdbuf-info cmd-args)
+	    (dbgr-cmdbuf-info-cmd-args= cmd-args)
 	    )
 	(message "Error running trepan command"))
     )))

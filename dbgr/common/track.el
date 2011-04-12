@@ -298,7 +298,6 @@ Otherwise return nil."
 				  (progn 
 				    ;; Add breakpoint to list of breakpoints
 				    (dbgr-cmdbuf-info-bp-list= 
-				     dbgr-cmdbuf-info 
 				     (cons loc-or-error (dbgr-sget 'cmdbuf-info 'bp-list)))
 				    ;; Set to return location
 				    loc-or-error)))

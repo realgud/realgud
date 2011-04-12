@@ -1,5 +1,5 @@
 ;;; process-command buffer things
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 
 (require 'load-relative)
 (require-relative-list
@@ -17,8 +17,8 @@
 
 (defstruct dbgr-cmdbuf-info
   "The debugger object/structure specific to a process buffer."
-  in-srcbuf?           ;; Should the selected window be the source buffer or
-		       ;; command buffer?
+  in-srcbuf?           ;; If true, selected window be the source buffer.
+		       ;; Otherwise, the command buffer?
   debugger-name        ;; Name of debugger
   frame-switch?        ;; Should the selected window be the source buffer or
 		       ;; command buffer?
@@ -32,6 +32,7 @@
                        ;; this debugger. Eventually loc-regexp, file-group
                        ;; and line-group below will removed and stored here.
   srcbuf-list          ;; list of source buffers we have stopped at
+  bt-buf               ;; backtrace buffer if it exists
   bp-list              ;; list of breakpoints
   divert-output?       ;; Output is part of a conversation between front-end
                        ;; debugger. 
@@ -63,6 +64,8 @@
 	   (dbgr-cmdbuf-info-src-shortkey? dbgr-cmdbuf-info))
   (message "command hash: %s"
 	   (dbgr-cmdbuf-info-cmd-hash dbgr-cmdbuf-info))
+  (message "backtrace-buffer: %s"
+	   (dbgr-cmdbuf-info-bt-buf dbgr-cmdbuf-info))
   )
 
 (defun dbgr-cmdbuf? (&optional buffer)
@@ -89,12 +92,6 @@
     )
   )
 
-;; FIXME: DRY = access via a macro. See also analogous
-;; code in dbgr-srcbuf
-(defun dbgr-cmdbuf-info-bp-list=(info value)
-  (if (dbgr-cmdbuf-info? info)
-      (setf (dbgr-cmdbuf-info-bp-list info) value)))
-
 (defun dbgr-cmdbuf-set-shortkey(&optional cmdbuf unset)
   (interactive "")
   (setq cmdbuf (or cmdbuf (current-buffer)))
@@ -105,8 +102,14 @@
 	))
   )
 
-(defun dbgr-cmdbuf-info-cmd-args=(info value)
-  (setf (dbgr-cmdbuf-info-cmd-args info) value))
+;; FIXME: DRY = access via a macro. See also analogous
+;; code in dbgr-srcbuf
+(defun dbgr-cmdbuf-info-bp-list=(value)
+  (if (dbgr-cmdbuf-info? dbgr-cmdbuf-info)
+      (setf (dbgr-cmdbuf-info-bp-list dbgr-cmdbuf-info) value)))
+
+(defun dbgr-cmdbuf-info-cmd-args=(value)
+  (setf (dbgr-cmdbuf-info-cmd-args dbgr-cmdbuf-info) value))
 
 (defun dbgr-cmdbuf-info-divert-output?=(info value)
   (setf (dbgr-cmdbuf-info-divert-output? info) value))
@@ -119,6 +122,9 @@
 
 (defun dbgr-cmdbuf-info-no-record?=(info value)
   (setf (dbgr-cmdbuf-info-no-record? info) value))
+
+(defun dbgr-cmdbuf-info-bt-buf=(info value)
+  (setf (dbgr-cmdbuf-info-bt-buf info) value))
 
 (defun dbgr-cmdbuf-info-prior-prompt-regexp=(info value)
   (if (dbgr-cmdbuf-info? info)

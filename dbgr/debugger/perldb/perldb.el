@@ -64,7 +64,7 @@ marginal icons is reset."
 	  (progn
 	    (switch-to-buffer cmd-buf)
 	    (dbgr-perldb-track-mode 't)
-	    (dbgr-cmdbuf-info-cmd-args= dbgr-cmdbuf-info cmd-args)
+	    (dbgr-cmdbuf-info-cmd-args= cmd-args)
 	    )
 	(message "Error running perldb command"))
     )))

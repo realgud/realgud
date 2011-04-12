@@ -10,12 +10,17 @@
 	 (tag dbgr-buf-bt)
 	 (specify "remove buffer stars"
 		  (assert-equal "abc" 
-				(dbgr-remove-surrounding-stars "*abc*")
+				(dbgr-get-buffer-base-name "*abc*")
 				)
 		  )
 	 (specify "no buffer stars"
 		  (assert-equal "abc" 
-				(dbgr-remove-surrounding-stars "*abc*")
+				(dbgr-get-buffer-base-name "abc")
+				)
+		  )
+	 (specify "remove buffer stars and shell"
+		  (assert-equal "abc" 
+				(dbgr-get-buffer-base-name "*abc shell*")
 				)
 		  )
 	 )

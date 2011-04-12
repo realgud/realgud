@@ -1,3 +1,4 @@
+;;; Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org>
 ;;  `kshdb' Main interface to kshdb via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "dbgr-")
@@ -67,7 +68,7 @@ marginal icons is reset."
 	  (progn
 	    (switch-to-buffer cmd-buf)
 	    (kshdb-track-mode 't)
-	    (dbgr-cmdbuf-info-cmd-args= dbgr-cmdbuf-info cmd-args)
+	    (dbgr-cmdbuf-info-cmd-args= cmd-args)
 	    )
 	(message "Error running kshdb command"))
     )))

@@ -90,6 +90,39 @@ See also `dbgr-window-src-window'"
     src-window)
   )
 
+;; (defun dbgr-window-bt-undisturb-src ( &optional opt-buffer switch?)
+;;   "Make sure the source buffers is displayed in windows without
+;; disturbing the command window if it is also displayed. Returns
+;; the command window
+;; See also `dbgr-window-src-window'"
+;;   (interactive)
+;;   (let* ((buffer (or opt-buffer (current-buffer)))
+;; 	 (src-buffer (dbgr-get-srcbuf buffer))
+;; 	 (src-window (get-buffer-window src-buffer))
+;; 	 (cmd-buffer (dbgr-get-cmdbuf buffer))
+;; 	 (cmd-window (get-buffer-window cmd-buffer))
+;; 	 (window (selected-window))
+;; 	 )
+;;     (if cmd-buffer 
+;; 	(progn 
+;; 	  (unless cmd-window
+;; 	    (setq cmd-window 
+;; 		  (if (eq window src-window)
+;; 		      ;; FIXME: generalize what to do here.
+;; 		      (if (one-window? 't) 
+;; 			  (split-window) 
+;; 			(next-window window))
+;; 		    window))
+;; 	    (set-window-buffer cmd-window cmd-buffer)
+;; 	    )
+;; 	  (if switch? 
+;; 	      (and (select-window cmd-window)
+;; 		   (switch-to-buffer cmd-buffer))))
+
+;;       )
+;;     src-window)
+;;   )
+
 ;; (defun dbgr-window-src-and-cmd ( &optional opt-buffer )
 ;;   "Make sure the source buffers is displayed in windows without
 ;; disturbing the command window if it is also displayed. Returns

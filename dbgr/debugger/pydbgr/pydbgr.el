@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 ;;  `pydbgr' Main interface to pydbgr via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper"
@@ -70,7 +70,7 @@ marginal icons is reset."
 	  (progn
 	    (switch-to-buffer cmd-buf)
 	    (pydbgr-track-mode 't)
-	    (dbgr-cmdbuf-info-cmd-args= dbgr-cmdbuf-info cmd-args)
+	    (dbgr-cmdbuf-info-cmd-args= cmd-args)
 	    )
 	(message "Error running pydbgr command"))
     )))

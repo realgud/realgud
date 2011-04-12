@@ -1,8 +1,9 @@
 ;;; Backtrace buffer
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
 (require-relative-list
  '("../key") "dbgr-")
+
 (require-relative-list
  '("command") "dbgr-buffer-")
 
@@ -65,12 +66,17 @@ to be debugged."
     map)
   "Keymap to navigate dbgr stack frames.")
 
-(defun dbgr-remove-surrounding-stars(string)
+(defun dbgr-get-buffer-base-name(string)
   "Leading and ending * in string. For example:
-   *shell<2>* -> shell<2>. 
+   *shell<2>* -> shell<2>
+   *foo shell* -> foo
    buffer.c -> buffer.c"
   (if (string-match "^[*]?\\([^*]+\\)[*]?$" string)
-      (match-string 1 string)
+      (let ((string-sans-stars (match-string 1 string)))
+	(if (string-match "\\(.+\\) shell" string-sans-stars)
+	    (match-string 1 string-sans-stars)
+	  string-sans-stars)
+	)
     string
     )
 )
@@ -107,10 +113,11 @@ to be debugged."
 	  ;; (message "+++4 %s" dbgr-track-divert-string)
 	  (let ((bt-buffer (get-buffer-create
 			    (format "*%s backtrace*" 
-				    (dbgr-remove-surrounding-stars 
+				    (dbgr-get-buffer-base-name
 				     (buffer-name)))))
 		(divert-string dbgr-track-divert-string)
 		)
+	    (dbgr-cmdbuf-info-bt-buf= dbgr-cmdbuf-info bt-buffer)
 	    (with-current-buffer bt-buffer
 	      (setq buffer-read-only nil)
 	      (delete-region (point-min) (point-max))

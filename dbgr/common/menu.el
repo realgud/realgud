@@ -72,6 +72,12 @@ menu. (The common map typically contains function key bindings.)"
 		      :help (documentation 'dbgr-window-src-undisturb-cmd)
 		      ))
 
+    (define-key menu-map [backtrace]
+      (dbgr-menu-item menu-map "backtrace" 'dbgr-window-src-undisturb-cmd
+		      :enable '(dbgr-get-process)
+		      :help (documentation 'dbgr-window-src-undisturb-cmd)
+		      ))
+
     (define-key menu-map [arrow3]
       (dbgr-menu-item menu-map "arrow 3" 'dbgr-goto-arrow3
 		      :enable '(dbgr-get-process)
