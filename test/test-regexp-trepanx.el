@@ -5,9 +5,9 @@
 (test-unit-clear-contexts)
 
 
-(setq bps    (gethash "brkpt-set"     dbgr-trepanx-pat-hash))
-(setq prompt (gethash "prompt"        dbgr-trepanx-pat-hash))
-(setq tb     (gethash "backtrace"     dbgr-trepanx-pat-hash))
+(setq bps    (gethash "brkpt-set"       dbgr-trepanx-pat-hash))
+(setq prompt (gethash "prompt"          dbgr-trepanx-pat-hash))
+(setq tb     (gethash "lang-backtrace"  dbgr-trepanx-pat-hash))
 
 (defun tb-loc-match(text) 
   (string-match (dbgr-loc-pat-regexp tb) text)

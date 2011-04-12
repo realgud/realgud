@@ -34,7 +34,7 @@ dbgr-loc-pat struct")
        ))
 
 ;;  Regular expression that describes a Rubinius backtrace line.
-(setf (gethash "backtrace" dbgr-trepanx-pat-hash) 
+(setf (gethash "lang-backtrace" dbgr-trepanx-pat-hash) 
       dbgr-rubinius-backtrace-loc-pat)
 
 ;;  Regular expression that describes a Rubinius X-agent backtrace

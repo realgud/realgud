@@ -4,11 +4,11 @@
 (test-unit-clear-contexts)
 
 
-(setq bps-pat    (gethash "brkpt-set"     dbgr-trepan-pat-hash))
+(setq bps-pat    (gethash "brkpt-set"          dbgr-trepan-pat-hash))
 (setq frame-pat  (gethash "debugger-backtrace" dbgr-trepan-pat-hash))
-(setq prompt-pat (gethash "prompt"        dbgr-trepan-pat-hash))
-(setq tb-pat     (gethash "backtrace"     dbgr-trepan-pat-hash))
-(setq ctrl-pat   (gethash "control-frame" dbgr-trepan-pat-hash))
+(setq prompt-pat (gethash "prompt"             dbgr-trepan-pat-hash))
+(setq tb-pat     (gethash "lang-backtrace"     dbgr-trepan-pat-hash))
+(setq ctrl-pat   (gethash "control-frame"      dbgr-trepan-pat-hash))
 
 (defun loc-match(text var) 
   (string-match (dbgr-loc-pat-regexp var) text)

@@ -16,11 +16,6 @@
 
 (declare-function dbgr-track-mode(bool))
 
-(define-key kshdb-track-mode-map 
-  (kbd "C-c !!") 'dbgr-goto-lang-backtrace-line)
-(define-key kshdb-track-mode-map 
-  (kbd "C-c !b") 'dbgr-goto-debugger-backtrace-line)
-
 (defun kshdb-track-mode-hook()
   (if kshdb-track-mode
       (progn

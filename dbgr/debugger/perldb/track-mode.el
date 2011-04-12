@@ -14,9 +14,6 @@
 
 (dbgr-track-mode-vars "dbgr-perldb")
 
-;(define-key dbgr-track-mode-map (kbd "C-c!b")
-;  'dbgr-goto-backtrace-line)
-
 (declare-function dbgr-track-mode(bool))
 
 (defun dbgr-perldb-track-mode-hook()

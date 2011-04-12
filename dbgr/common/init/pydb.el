@@ -36,7 +36,7 @@ The values of a hash entry is a dbgr-loc-pat struct")
        ))
 
 ;;  Regular expression that describes a Python backtrace line.
-(setf (gethash "backtrace" pydb-pat-hash)
+(setf (gethash "lang-backtrace" pydb-pat-hash)
       (make-dbgr-loc-pat
        :regexp   "^[ \t]+File \"\\(.+\\)\", line \\([0-9]+\\)"
        :file-group 1

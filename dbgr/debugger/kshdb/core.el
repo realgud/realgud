@@ -132,18 +132,6 @@ NOTE: the above should have each item listed in quotes.
   (dbgr-suggest-invocation kshdb-command-name kshdb-minibuffer-history 
 			   "Shell-script" "\\.sh$"))
 
-(defun kshdb-goto-backtrace-line (pt)
-  "Display the location mentioned by the zshd backtrace line
-described by PT."
-  (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "backtrace" dbgr-kshdb-pat-hash))
-
-(defun kshdb-goto-dollarbang-backtrace-line (pt)
-  "Display the location mentioned by a ksh backtrace line
-described by PT."
-  (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "dollar-bang" dbgr-kshdb-pat-hash))
-
 (defun kshdb-reset ()
   "Kshdb cleanup - remove debugger's internal buffers (frame,
 breakpoints, etc.)."

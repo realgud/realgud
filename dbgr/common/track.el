@@ -431,6 +431,6 @@ described by PT."
   "Display the location mentioned by the Perl backtrace line
 described by PT."
   (interactive "d")
-  (dbgr-goto-line-for-pt pt "backtrace"))
+  (dbgr-goto-line-for-pt pt "lang-backtrace"))
 
 (provide-me "dbgr-")

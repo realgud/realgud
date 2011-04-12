@@ -132,18 +132,6 @@ NOTE: the above should have each item listed in quotes.
   (dbgr-suggest-invocation zshdb-command-name zshdb-minibuffer-history 
 			   "Shell-script" "\\.sh$"))
 
-(defun zshdb-goto-backtrace-line (pt)
-  "Display the location mentioned by the zshdb backtrace line
-described by PT."
-  (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "backtrace" dbgr-zshdb-pat-hash))
-
-(defun zshdb-goto-control-frame-line (pt)
-  "Display the location mentioned by a control-frame line
-described by PT."
-  (interactive "d")
-  (dbgr-goto-line-for-pt-and-type pt "control-frame" dbgr-zshdb-pat-hash))
-
 (defun zshdb-reset ()
   "Zshdb cleanup - remove debugger's internal buffers (frame,
 breakpoints, etc.)."

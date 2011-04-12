@@ -65,13 +65,7 @@ described by PT."
   "Display the location mentioned by the Ruby backtrace line
 described by PT."
   (interactive "d")
-  (dbgr-goto-line-for-pt pt "backtrace"))
-
-(defun dbgr-ruby-goto-dollarbang-backtrace-line (pt)
-  "Display the location mentioned by a Ruby $! backtrace line
-described by PT."
-  (interactive "d")
-  (dbgr-goto-line-for-pt pt "dollar-bang"))
+  (dbgr-goto-line-for-pt pt "lang-backtrace"))
 
 (defun dbgr-ruby-populate-command-keys (&optional map)
   "Bind the debugger function key layout used by many debuggers.

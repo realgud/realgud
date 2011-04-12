@@ -39,7 +39,8 @@ dbgr-loc-pat struct")
        ))
 
 ;; Regular expression that describes a Ruby backtrace line.
-(setf (gethash "backtrace" dbgr-trepan-pat-hash) dbgr-ruby-backtrace-loc-pat)
+(setf (gethash "lang-backtrace" dbgr-trepan-pat-hash) 
+      dbgr-ruby-backtrace-loc-pat)
 
 ;; Regular expression that describes a "breakpoint set" line. 
 ;; For example: 

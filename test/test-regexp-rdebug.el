@@ -3,7 +3,7 @@
 
 (test-unit-clear-contexts)
 
-(setq tb  (gethash "backtrace" dbgr-rdebug-pat-hash))
+(setq tb  (gethash "lang-backtrace" dbgr-rdebug-pat-hash))
 (setq bps (gethash "brkpt-set" dbgr-rdebug-pat-hash))
 (setq rails-bt (gethash "rails-backtrace" dbgr-rdebug-pat-hash))
 

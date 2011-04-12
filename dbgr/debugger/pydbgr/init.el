@@ -41,7 +41,8 @@ dbgr-loc-pat struct")
        ))
 
 ;;  Regular expression that describes a Python backtrace line.
-(setf (gethash "backtrace" dbgr-pydbgr-pat-hash) dbgr-python-backtrace-loc-pat)
+(setf (gethash "lang-backtrace" dbgr-pydbgr-pat-hash) 
+      dbgr-python-backtrace-loc-pat)
 
 ;;  Regular expression that describes a "breakpoint set" line
 (setf (gethash "brkpt-set" dbgr-pydbgr-pat-hash)
