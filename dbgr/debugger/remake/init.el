@@ -1,5 +1,5 @@
 ;;; Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org>
-;;; Regular expressions for Z shell debugger: remake 
+;;; Regular expressions for GNU Make debugger: remake 
 
 (eval-when-compile (require 'cl))
 
@@ -8,7 +8,6 @@
 			 "../../common/loc" 
 			 "../../common/init") 
 		       "dbgr-")
-(require-relative-list '("../../lang/posix-shell") "dbgr-lang-")
 
 (defvar dbgr-pat-hash)
 (declare-function make-dbgr-loc-pat (dbgr-loc))
@@ -30,11 +29,10 @@ dbgr-loc-pat struct")
 
 ;; For example: 
 ;;   remake<10>
-;;   remake<(5)> 
 ;;   remake<<1>>
 (setf (gethash "prompt" dbgr-remake-pat-hash)
       (make-dbgr-loc-pat
-       :regexp   "^remake<\\([0-9]\\)+> "
+       :regexp   "^remake[<]+\\([0-9]+\\)[>]+ "
        :num 1
        ))
 
@@ -54,48 +52,46 @@ dbgr-loc-pat struct")
        :regexp "^Breakpoint \\([0-9]+\\) on target .* cleared\n"
        :num 1))
 
-;; FIXME: add these.
-;; ;; Regular expression that describes a debugger "backtrace" command line.
-;; ;; For example:
-;; ;;   ->0 in file `/etc/apparmor/fns' at line 24
-;; ;;   ##1 /etc/apparmor/fns called from file `/etc/init.d/apparmor' at line 35
-;; ;;   ##2 /etc/init.d/apparmor called from file `/usr/bin/remake' at line 129
-;; (setf (gethash "frame" dbgr-remake-pat-hash)
-;;       (make-dbgr-loc-pat
-;;        :regexp 	(concat dbgr-shell-frame-start-regexp
-;; 			dbgr-shell-frame-num-regexp "[ ]?"
-;; 			"\\(.*\\)"
-;; 			dbgr-shell-frame-file-regexp
-;; 			"\\(?:" dbgr-shell-frame-line-regexp "\\)?"
-;; 			)
-;;        :num 2
-;;        :file-group 4
-;;        :line-group 5)
-;;       )
+(defconst dbgr-remake-frame-start-regexp
+  "\\(?:^\\|\n\\)\\(=>\\|  \\)#")
+(defconst dbgr-remake-frame-num-regexp
+  "\\([0-9]+\\)")
 
-;; (setf (gethash "font-lock-keywords" dbgr-remake-pat-hash)
-;;       '(
-;; 	;; The frame number and first type name, if present.
-;; 	;; E.g. ->0 in file `/etc/init.d/apparmor' at line 35
-;; 	;;      --^-
-;; 	("^\\(->\\|##\\)\\([0-9]+\\) "
-;; 	 (2 dbgr-backtrace-number-face))
+(defconst dbgr-remake-frame-file-regexp "\\(.*\\):\\([0-9]+\\)")
 
-;; 	;; File name.
-;; 	;; E.g. ->0 in file `/etc/init.d/apparmor' at line 35
-;; 	;;          ---------^^^^^^^^^^^^^^^^^^^^-
-;; 	("[ \t]+\\(in\\|from\\) file `\\(.+\\)'"
-;; 	 (2 dbgr-file-name-face))
+;; Regular expression that describes a debugger "backtrace" command line.
+;; For example:
+;; =>#0  Makefile.in at /tmp/Makefile:216
+;;   #1  Makefile at /tmp/Makefile:230
+(setf (gethash "frame" dbgr-remake-pat-hash)
+      (make-dbgr-loc-pat
+       :regexp 	(concat dbgr-remake-frame-start-regexp
+			dbgr-remake-frame-num-regexp "  "
+			"\\(.*\\)" " at "
+			dbgr-remake-frame-file-regexp
+			)
+       :num 2
+       :file-group 4
+       :line-group 5)
+      )
 
-;; 	;; File name.
-;; 	;; E.g. ->0 in file `/etc/init.d/apparmor' at line 35
-;; 	;;                                         --------^^
-;; 	;; Line number.
-;; 	("[ \t]+at line \\([0-9]+\\)$"
-;; 	 (1 dbgr-line-number-face))
-;; 	;; (trepan-frames-match-current-line
-;; 	;;  (0 trepan-frames-current-frame-face append))
-;; 	))
+(setf (gethash "font-lock-keywords" dbgr-remake-pat-hash)
+      '(
+	;; The frame number and first type name, if present.
+	;; E.g. =>#0  Makefile.in at /tmp/Makefile:216
+	;;      ---^
+	((concat dbgr-remake-frame-start-regexp
+		 dbgr-remake-frame-num-regexp)
+	 (2 dbgr-backtrace-number-face))
+
+	;; File name.
+	;; E.g. =>#0  Makefile.in at /tmp/Makefile:216
+	;;            ---------------^^^^^^^^^^^^^^^^^
+	((concat "  \\(.*\\)" " at " dbgr-remake-frame-file-regexp)
+	 (2 dbgr-file-name-face)
+	 (3 dbgr-line-number-face)
+	 )
+	))
 
 (setf (gethash "remake" dbgr-pat-hash) dbgr-remake-pat-hash)
 
