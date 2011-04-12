@@ -177,8 +177,8 @@ debugger prompt.
 	  (error "Process %s isn't running; status %s" process 
 		 (process-status process)))
 	
-	(dbgr-cmdbuf-info-no-record?= dbgr-cmdbuf-info no-record?)
-	(dbgr-cmdbuf-info-frame-switch?= dbgr-cmdbuf-info frame-switch?)
+	(dbgr-cmdbuf-info-no-record?= no-record?)
+	(dbgr-cmdbuf-info-frame-switch?= frame-switch?)
 
 	;; Down the line we may handle prompting in a more
 	;; sophisticated way. But for now, we handle this by forcing
@@ -194,8 +194,8 @@ debugger prompt.
 	  (sit-for 0))
 
 	;; Reset temporary hook-processing variables to their default state.
-	(dbgr-cmdbuf-info-no-record?= dbgr-cmdbuf-info nil)
-	(dbgr-cmdbuf-info-frame-switch?= dbgr-cmdbuf-info nil)
+	(dbgr-cmdbuf-info-no-record?= nil)
+	(dbgr-cmdbuf-info-frame-switch?=  nil)
 	))))
 
 (provide-me "dbgr-")

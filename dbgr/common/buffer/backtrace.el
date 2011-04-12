@@ -30,42 +30,6 @@ to be debugged."
 
 (defvar dbgr-goto-entry-acc "")
 
-(defvar dbgr-backtrace-mode-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map "."       'dbgr-backtrace-moveto-frame-selected)
-    (define-key map "r"       'dbgr-backtrace-init)
-    (define-key map [double-mouse-1] 'dbgr-goto-frame-mouse)
-    (define-key map [mouse-2] 'dbgr-goto-frame-mouse)
-    (define-key map [mouse-3] 'dbgr-goto-frame-mouse)
-    (define-key map [up]      'dbgr-backtrace-moveto-frame-prev)
-    (define-key map [down]    'dbgr-backtrace-moveto-frame-next)
-    (define-key map "n"       'dbgr-backtrace-moveto-frame-next)
-    (define-key map "p"       'dbgr-backtrace-moveto-frame-prev)
-    (define-key map [(control m)] 'dbgr-goto-frame)
-    (define-key map "0" 'dbgr-goto-frame-n)
-    (define-key map "1" 'dbgr-goto-frame-n)
-    (define-key map "2" 'dbgr-goto-frame-n)
-    (define-key map "3" 'dbgr-goto-frame-n)
-    (define-key map "4" 'dbgr-goto-frame-n)
-    (define-key map "5" 'dbgr-goto-frame-n)
-    (define-key map "6" 'dbgr-goto-frame-n)
-    (define-key map "7" 'dbgr-goto-frame-n)
-    (define-key map "8" 'dbgr-goto-frame-n)
-    (define-key map "9" 'dbgr-goto-frame-n)
-    (dbgr-populate-common-keys map)
-
-    ;; ;; --------------------
-    ;; ;; The "Stack window" submenu.
-    ;; (let ((submenu (make-sparse-keymap)))
-    ;;   (define-key-after map [menu-bar debugger stack]
-    ;;     (cons "Stack window" submenu)
-    ;;     'placeholder))
-
-    ;; (define-key map [menu-bar debugger stack goto]
-    ;;   '(menu-item "Goto frame" dbgr-goto-frame))
-    map)
-  "Keymap to navigate dbgr stack frames.")
-
 (defun dbgr-get-buffer-base-name(string)
   "Leading and ending * in string. For example:
    *shell<2>* -> shell<2>
@@ -97,9 +61,8 @@ to be debugged."
 	  (error "No 'frame' regular expression recorded for debugger %s"
 		 (dbgr-cmdbuf-debugger-name)))
 	(setq process (get-buffer-process (current-buffer)))
-	(dbgr-cmdbuf-info-in-srcbuf?= dbgr-cmdbuf-info 
-				      (not (dbgr-cmdbuf? buffer)))
-	(dbgr-cmdbuf-info-divert-output?= dbgr-cmdbuf-info 't)
+	(dbgr-cmdbuf-info-in-srcbuf?= (not (dbgr-cmdbuf? buffer)))
+	(dbgr-cmdbuf-info-divert-output?= 't)
 	(setq dbgr-track-divert-string nil)
 	(dbgr-command "backtrace" nil nil 't)
 	(while (and (eq 'run (process-status process))
@@ -117,7 +80,7 @@ to be debugged."
 				     (buffer-name)))))
 		(divert-string dbgr-track-divert-string)
 		)
-	    (dbgr-cmdbuf-info-bt-buf= dbgr-cmdbuf-info bt-buffer)
+	    (dbgr-cmdbuf-info-bt-buf= bt-buffer)
 	    (with-current-buffer bt-buffer
 	      (setq buffer-read-only nil)
 	      (delete-region (point-min) (point-max))
@@ -174,30 +137,6 @@ to be debugged."
        dbgr-backtrace-info
        (dbgr-backtrace-info? dbgr-backtrace-info)))
 
-
-(defun dbgr-backtrace-mode (&optional cmdbuf)
-  "Major mode for displaying the stack frames.
-\\{dbgr-frames-mode-map}"
-  (interactive)
-  (kill-all-local-variables)
-  (setq buffer-read-only 't)
-  (setq major-mode 'dbgr-backtrace-mode)
-  (setq mode-name "dbgr Stack Frames")
-  ;; (set (make-local-variable 'dbgr-secondary-buffer) t)
-  (setq mode-line-process 'dbgr-mode-line-process)
-  (use-local-map dbgr-backtrace-mode-map)
-
-  ;; FIXME: make buffer specific
-  (if cmdbuf
-      (let* ((font-lock-keywords 
-	      (with-current-buffer cmdbuf
-		(dbgr-cmdbuf-pat "font-lock-keywords"))))
-	(if font-lock-keywords
-	    (set (make-local-variable 'font-lock-defaults)
-		 (list font-lock-keywords)))
-	))
-  ;; (run-mode-hooks 'dbgr-backtrace-mode-hook)
-  )
 
 (defun dbgr-backtrace-moveto-frame-selected ()
   "Set point to the selected frame."

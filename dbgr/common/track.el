@@ -339,7 +339,7 @@ loc-regexp pattern"
 		    (setq dbgr-track-divert-string 
 			  (substring text 0 (match-beginning 0)))
 		    ;; We've got desired output, so reset divert output.
-		    (dbgr-cmdbuf-info-divert-output?= dbgr-cmdbuf-info nil)
+		    (dbgr-cmdbuf-info-divert-output?= nil)
 		    (kill-region dbgr-last-output-start to)
 		    ;; FIXME: DELETE output. Or do elsewhere?
 		    )

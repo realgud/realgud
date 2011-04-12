@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 ;;  tracks shell output 
 
 (eval-when-compile (require 'cl))
@@ -7,7 +7,7 @@
 (require 'load-relative)
 (require-relative-list
  '("core"   "helper" "track" "loc" "lochist" "file" 
-   "fringe" "window" "regexp" "menu"
+   "fringe" "window" "regexp" "menu" "backtrace-mode"
    "send"   "shortkey") "dbgr-")
 
 (require-relative-list  '("buffer/command") "dbgr-buffer-")
@@ -70,9 +70,8 @@ of this mode."
 	  (call-interactively 'dbgr-track-set-debugger))
 	(if (boundp 'comint-last-output-start)
 	    (progn
-	      (dbgr-cmdbuf-info-prior-prompt-regexp= 
-	       dbgr-cmdbuf-info comint-prompt-regexp)
-	      (dbgr-cmdbuf-info-divert-output?=  dbgr-cmdbuf-info nil)
+	      (dbgr-cmdbuf-info-prior-prompt-regexp= comint-prompt-regexp)
+	      (dbgr-cmdbuf-info-divert-output?= nil)
 	      (let* ((regexp-hash
 		      (and (dbgr-cmdbuf-info? dbgr-cmdbuf-info)
 			   (dbgr-sget 'cmdbuf-info 'regexp-hash)))

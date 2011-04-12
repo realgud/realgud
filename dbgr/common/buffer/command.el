@@ -111,27 +111,27 @@
 (defun dbgr-cmdbuf-info-cmd-args=(value)
   (setf (dbgr-cmdbuf-info-cmd-args dbgr-cmdbuf-info) value))
 
-(defun dbgr-cmdbuf-info-divert-output?=(info value)
-  (setf (dbgr-cmdbuf-info-divert-output? info) value))
+(defun dbgr-cmdbuf-info-divert-output?=(value)
+  (setf (dbgr-cmdbuf-info-divert-output? dbgr-cmdbuf-info) value))
 
-(defun dbgr-cmdbuf-info-frame-switch?=(info value)
-  (setf (dbgr-cmdbuf-info-frame-switch? info) value))
+(defun dbgr-cmdbuf-info-frame-switch?=(value)
+  (setf (dbgr-cmdbuf-info-frame-switch? dbgr-cmdbuf-info) value))
 
-(defun dbgr-cmdbuf-info-in-srcbuf?=(info value)
-  (setf (dbgr-cmdbuf-info-in-srcbuf? info) value))
+(defun dbgr-cmdbuf-info-in-srcbuf?=(value)
+  (setf (dbgr-cmdbuf-info-in-srcbuf? dbgr-cmdbuf-info) value))
 
-(defun dbgr-cmdbuf-info-no-record?=(info value)
-  (setf (dbgr-cmdbuf-info-no-record? info) value))
+(defun dbgr-cmdbuf-info-no-record?=(value)
+  (setf (dbgr-cmdbuf-info-no-record? dbgr-cmdbuf-info) value))
 
-(defun dbgr-cmdbuf-info-bt-buf=(info value)
-  (setf (dbgr-cmdbuf-info-bt-buf info) value))
+(defun dbgr-cmdbuf-info-bt-buf=(value)
+  (setf (dbgr-cmdbuf-info-bt-buf dbgr-cmdbuf-info) value))
 
-(defun dbgr-cmdbuf-info-prior-prompt-regexp=(info value)
-  (if (dbgr-cmdbuf-info? info)
-      (setf (dbgr-cmdbuf-info-prior-prompt-regexp info) value)))
+(defun dbgr-cmdbuf-info-prior-prompt-regexp=(value)
+  (if (dbgr-cmdbuf-info? dbgr-cmdbuf-info)
+      (setf (dbgr-cmdbuf-info-prior-prompt-regexp dbgr-cmdbuf-info) value)))
 
-(defun dbgr-cmdbuf-info-src-shortkey?=(info value)
-  (setf (dbgr-cmdbuf-info-src-shortkey? info) value))
+(defun dbgr-cmdbuf-info-src-shortkey?=(value)
+  (setf (dbgr-cmdbuf-info-src-shortkey? dbgr-cmdbuf-info) value))
 
 (defun dbgr-cmdbuf-command-string(cmd-buffer)
   "Get the command string invocation for this command buffer"
@@ -174,6 +174,7 @@ as a main program."
 	     :line-group (dbgr-sget 'loc-pat 'line-group)
 	     :loc-hist (make-dbgr-loc-hist)
 	     :regexp-hash regexp-hash
+	     :bt-buf nil
 	     :cmd-hash cmd-hash
 	     :src-shortkey? 't
 	     ))

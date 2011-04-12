@@ -74,10 +74,8 @@ MODE-ON? a boolean which specifies if we are going into or out of this mode."
 	  (dbgr-srcbuf-info-short-key?= dbgr-srcbuf-info mode-on?)
 	  (setq dbgr-short-key-mode mode-on?))
 	;; (with-current-buffer-safe cmdbuf
-	;;   (dbgr-cmdbuf-info-src-shortkey?=
-	;;    dbgr-cmdbuf-info mode-on?)
-	;;   (dbgr-cmdbuf-info-in-srcbuf?= 
-	;;    dbgr-cmdbuf-info mode-on?)
+	;;   (dbgr-cmdbuf-info-src-shortkey?= mode-on?)
+	;;   (dbgr-cmdbuf-info-in-srcbuf?= mode-on?)
 	;;   )
 	)
     (error "Buffer %s does not seem to be attached to a debugger" 

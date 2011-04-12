@@ -96,6 +96,16 @@ if we don't find anything."
 	(dbgr-get-cmdbuf-from-backtrace buffer))
        (t nil)))))
 
+(defun dbgr-get-backtrace-buf( &optional opt-buffer)
+  "Return the backtrace buffer associated with 
+OPT-BUFFER or if that is ommited `current-buffer'."
+  (let* ((buffer (or opt-buffer (current-buffer)))
+	 (cmdbuf (dbgr-get-cmdbuf buffer)))
+    (with-current-buffer-safe cmdbuf
+      (dbgr-sget 'cmdbuf-info 'bt-buf)
+      ))
+  )
+
 (defun dbgr-get-process (&optional opt-buffer)
   "Return the process buffer associated with OPT-BUFFER or
   `current-buffer' if that is omitted. nil is returned if

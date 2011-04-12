@@ -58,9 +58,9 @@ See also `dbgr-window-src-window'"
   )
 
 (defun dbgr-window-cmd-undisturb-src ( &optional opt-buffer switch?)
-  "Make sure the source buffers is displayed in windows without
+  "Make sure the source buffer is displayed in windows without
 disturbing the command window if it is also displayed. Returns
-the command window
+the source window.
 See also `dbgr-window-src-window'"
   (interactive)
   (let* ((buffer (or opt-buffer (current-buffer)))
@@ -90,38 +90,50 @@ See also `dbgr-window-src-window'"
     src-window)
   )
 
-;; (defun dbgr-window-bt-undisturb-src ( &optional opt-buffer switch?)
-;;   "Make sure the source buffers is displayed in windows without
-;; disturbing the command window if it is also displayed. Returns
-;; the command window
-;; See also `dbgr-window-src-window'"
-;;   (interactive)
-;;   (let* ((buffer (or opt-buffer (current-buffer)))
-;; 	 (src-buffer (dbgr-get-srcbuf buffer))
-;; 	 (src-window (get-buffer-window src-buffer))
-;; 	 (cmd-buffer (dbgr-get-cmdbuf buffer))
-;; 	 (cmd-window (get-buffer-window cmd-buffer))
-;; 	 (window (selected-window))
-;; 	 )
-;;     (if cmd-buffer 
-;; 	(progn 
-;; 	  (unless cmd-window
-;; 	    (setq cmd-window 
-;; 		  (if (eq window src-window)
-;; 		      ;; FIXME: generalize what to do here.
-;; 		      (if (one-window? 't) 
-;; 			  (split-window) 
-;; 			(next-window window))
-;; 		    window))
-;; 	    (set-window-buffer cmd-window cmd-buffer)
-;; 	    )
-;; 	  (if switch? 
-;; 	      (and (select-window cmd-window)
-;; 		   (switch-to-buffer cmd-buffer))))
+(defun dbgr-window-bt-undisturb-src ( &optional opt-buffer switch?)
+  "Make sure the backtrace buffer is displayed in windows without
+disturbing the source window if it is also displayed. Returns
+the source window
+See also `dbgr-window-src-window'"
+  (interactive)
+  (let* ((buffer (or opt-buffer (current-buffer)))
+	 (src-buffer (dbgr-get-srcbuf buffer))
+	 (src-window (get-buffer-window src-buffer))
+	 (cmd-buffer (dbgr-get-cmdbuf buffer))
+	 (cmd-window (get-buffer-window cmd-buffer))
+	 (bt-buffer (dbgr-get-backtrace-buf cmd-buffer))
+	 (bt-window (get-buffer-window bt-buffer))
+	 (window (selected-window))
+	 )
+    (if cmd-buffer 
+	(progn 
+	  (unless bt-window
+	    (setq bt-window 
+		  (if (eq window src-window)
+		      ;; FIXME: generalize what to do here.
+		      (if (one-window? 't) 
+			  (split-window) 
+			(next-window window))
+		    window))
+	    (set-window-buffer bt-window bt-buffer)
+	    )
+	  (if switch? 
+	      (and (select-window bt-window)
+		   (switch-to-buffer bt-buffer))))
 
-;;       )
-;;     src-window)
-;;   )
+      )
+    src-window)
+  )
+
+(defun dbgr-window-bt()
+  "Refresh backtrace information and display that in a buffer"
+  (interactive)
+  (with-current-buffer-safe (dbgr-get-cmdbuf)
+    (dbgr-backtrace-init)
+    (dbgr-window-bt-undisturb-src)
+    )
+  )
+
 
 ;; (defun dbgr-window-src-and-cmd ( &optional opt-buffer )
 ;;   "Make sure the source buffers is displayed in windows without

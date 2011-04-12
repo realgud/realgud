@@ -44,7 +44,7 @@
 	 ;; 	  (assert-equal bp-num (dbgr-loc-num bp-loc)))
 	 
 	 ;; (specify "dbgr-track-divert-prompt"
-	 ;; 	  (dbgr-cmdbuf-info-divert-output?= dbgr-cmdbuf-info 't)
+	 ;; 	  (dbgr-cmdbuf-info-divert-output?= 't)
 	 ;; 	  (setq dbgr-track-divert-string "")
 	 ;; 	  (setq text 
 	 ;; 		"--> #0 TOP Object#<top /usr/local/bin/irb> in file /usr/local/bin/irb at line 9\n(trepan): ")

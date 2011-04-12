@@ -15,8 +15,7 @@ if none has been set in the command hash."
 	(cmd)
 	)
     (with-current-buffer-safe cmdbuf
-      (dbgr-cmdbuf-info-in-srcbuf?= dbgr-cmdbuf-info 
-				    (not (dbgr-cmdbuf? buffer)))
+      (dbgr-cmdbuf-info-in-srcbuf?= (not (dbgr-cmdbuf? buffer)))
       (setq cmd-hash (dbgr-cmdbuf-info-cmd-hash dbgr-cmdbuf-info))
       (unless (and cmd-hash (setq cmd (gethash cmd-name cmd-hash)))
 	(setq cmd default-cmd-template))
@@ -132,8 +131,7 @@ getting stepped."
 	(cmd)
 	)
     (with-current-buffer-safe cmdbuf
-      (dbgr-cmdbuf-info-in-srcbuf?= dbgr-cmdbuf-info 
-				    (not (dbgr-cmdbuf? buffer)))
+      (dbgr-cmdbuf-info-in-srcbuf?= (not (dbgr-cmdbuf? buffer)))
       (setq cmd-hash (dbgr-cmdbuf-info-cmd-hash dbgr-cmdbuf-info))
       (unless (and cmd-hash (setq cmd (gethash "quit" cmd-hash)))
 	(setq cmd "quit"))
