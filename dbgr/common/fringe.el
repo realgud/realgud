@@ -173,17 +173,21 @@ session which should also erase those fringe arrows."
   "If the current buffer contains dbgr-overlay-arrows 1, 2 or 3 
    recenter window to show that"
   (interactive "")
+  ;; We need to update in the order 3..1 so that if there are more than on
+  ;; arrows in the same buffer the smaller number (e.g. arrow 1) is the 
+  ;; position we are at rather than the earlier one (e.g. arrow 3).
+  (if (and dbgr-overlay-arrow3 
+	   (eq (marker-buffer dbgr-overlay-arrow3) (current-buffer)))
+      (goto-char dbgr-overlay-arrow3)
+    )
+  (if (and dbgr-overlay-arrow2 
+	   (eq (marker-buffer dbgr-overlay-arrow2) (current-buffer)))
+      (goto-char dbgr-overlay-arrow2)
+    )
   (if (and dbgr-overlay-arrow1 
 	   (eq (marker-buffer dbgr-overlay-arrow1) (current-buffer)))
       (goto-char dbgr-overlay-arrow1)
-    (if (and dbgr-overlay-arrow2 
-	     (eq (marker-buffer dbgr-overlay-arrow2) (current-buffer)))
-	(goto-char dbgr-overlay-arrow2)
-      (if (and dbgr-overlay-arrow3 
-	   (eq (marker-buffer dbgr-overlay-arrow3) (current-buffer)))
-	  (goto-char dbgr-overlay-arrow3)
-	)
-      ))
+    )
   )
 
 

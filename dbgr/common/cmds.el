@@ -21,6 +21,16 @@ if none has been set in the command hash."
 	(setq cmd default-cmd-template))
       )
     (dbgr-command cmd arg no-record? frame-switch? dbgr-prompts?)
+    ;; FIXME: Figure out how to update the position if the source
+    ;; buffer is displayed.
+    ;; (if frame-switch?
+    ;; 	(let* ((src-buffer (dbgr-get-srcbuf-from-cmdbuf cmdbuf))
+    ;; 	       (src-window (get-buffer-window src-buffer))
+    ;; 	       ))
+    ;; 	  (with-selected-window src-window
+    ;; 	    (message "recentering...")
+    ;; 	    (dbgr-recenter-arrow)
+    ;; 	  ))
     )
   ;; FIXME: this is a one-time thing. Put in caller.
   (local-set-key (format "\C-c%s" key) 
@@ -59,7 +69,7 @@ This command is often referred to as 'step out' as opposed to
 'step over' or 'step into'.
 "
     (interactive "p")
-    (dbgr-cmd-remap arg "finish" "finish" "F")
+    (dbgr-cmd-remap arg "finish" "finish" ".")
 )
 
 (defun dbgr-cmd-frame(&optional arg)

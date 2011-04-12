@@ -53,11 +53,11 @@ dbgr-loc-pat struct")
        :num 1))
 
 (defconst dbgr-remake-frame-start-regexp
-  "\\(?:^\\|\n\\)\\(=>\\|  \\)#")
+  "\\(?:^\\|\n\\)\\(=>\\|  \\)")
 (defconst dbgr-remake-frame-num-regexp
-  "\\([0-9]+\\)")
+  "#\\([0-9]+\\)  ")
 
-(defconst dbgr-remake-frame-file-regexp "\\(.*\\):\\([0-9]+\\)")
+(defconst dbgr-remake-frame-file-regexp " at \\(.*\\):\\([0-9]+\\)")
 
 ;; Regular expression that describes a debugger "backtrace" command line.
 ;; For example:
@@ -66,8 +66,8 @@ dbgr-loc-pat struct")
 (setf (gethash "frame" dbgr-remake-pat-hash)
       (make-dbgr-loc-pat
        :regexp 	(concat dbgr-remake-frame-start-regexp
-			dbgr-remake-frame-num-regexp "  "
-			"\\(.*\\)" " at "
+			dbgr-remake-frame-num-regexp
+			"\\(.*\\)"
 			dbgr-remake-frame-file-regexp
 			)
        :num 2
@@ -77,20 +77,18 @@ dbgr-loc-pat struct")
 
 (setf (gethash "font-lock-keywords" dbgr-remake-pat-hash)
       '(
+	;; ;; File name and line number
+	;; ;; E.g. =>#0  Makefile.in at /tmp/Makefile:216
+	;; ;;                       ----^^^^^^^^^^^^^^^^^
+	(" at \\(.*\\):\\([0-9]+\\)"
+	 (1 dbgr-file-name-face)
+	 (2 dbgr-line-number-face))
+
 	;; The frame number and first type name, if present.
 	;; E.g. =>#0  Makefile.in at /tmp/Makefile:216
 	;;      ---^
-	((concat dbgr-remake-frame-start-regexp
-		 dbgr-remake-frame-num-regexp)
-	 (2 dbgr-backtrace-number-face))
-
-	;; File name.
-	;; E.g. =>#0  Makefile.in at /tmp/Makefile:216
-	;;            ---------------^^^^^^^^^^^^^^^^^
-	((concat "  \\(.*\\)" " at " dbgr-remake-frame-file-regexp)
-	 (2 dbgr-file-name-face)
-	 (3 dbgr-line-number-face)
-	 )
+	("#\\([0-9]+\\)  "
+	 (1 dbgr-backtrace-number-face))
 	))
 
 (setf (gethash "remake" dbgr-pat-hash) dbgr-remake-pat-hash)

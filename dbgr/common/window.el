@@ -34,7 +34,7 @@ See also `dbgr-window-src-undistub-cmd'"
   "Make sure the source buffers is displayed in windows without
 disturbing the command window if it is also displayed. Returns
 the command window
-See also `dbgr-window-src-window'"
+See also `dbgr-window-src'"
   (interactive)
   (let* ((buffer (or opt-buffer (current-buffer)))
 	 (src-buffer (dbgr-get-srcbuf buffer))
@@ -61,7 +61,7 @@ See also `dbgr-window-src-window'"
   "Make sure the source buffer is displayed in windows without
 disturbing the command window if it is also displayed. Returns
 the source window.
-See also `dbgr-window-src-window'"
+See also `dbgr-window-src'"
   (interactive)
   (let* ((buffer (or opt-buffer (current-buffer)))
 	 (src-buffer (dbgr-get-srcbuf buffer))
@@ -94,7 +94,7 @@ See also `dbgr-window-src-window'"
   "Make sure the backtrace buffer is displayed in windows without
 disturbing the source window if it is also displayed. Returns
 the source window
-See also `dbgr-window-src-window'"
+See also `dbgr-window-src'"
   (interactive)
   (let* ((buffer (or opt-buffer (current-buffer)))
 	 (src-buffer (dbgr-get-srcbuf buffer))
