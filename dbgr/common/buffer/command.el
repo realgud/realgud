@@ -52,20 +52,41 @@
 
 (defalias 'dbgr-cmdbuf-info? 'dbgr-cmdbuf-info-p)
 
+;; FIXME: figure out how to put in a loop.
+(dbgr-struct-field-setter "dbgr-cmdbuf-info" "bp-list")
+(dbgr-struct-field-setter "dbgr-cmdbuf-info" "bt-buf")
+(dbgr-struct-field-setter "dbgr-cmdbuf-info" "cmd-args")
+(dbgr-struct-field-setter "dbgr-cmdbuf-info" "divert-output?")
+(dbgr-struct-field-setter "dbgr-cmdbuf-info" "frame-switch?")
+(dbgr-struct-field-setter "dbgr-cmdbuf-info" "in-srcbuf?")
+(dbgr-struct-field-setter "dbgr-cmdbuf-info" "no-record?")
+(dbgr-struct-field-setter "dbgr-cmdbuf-info" "prior-prompt-regexp")
+(dbgr-struct-field-setter "dbgr-cmdbuf-info" "src-shortkey?")
+
 (defun dbgr-cmdbuf-info-describe ()
   (interactive "")
-  (message "debugger-name: %s" 
-	   (dbgr-cmdbuf-info-debugger-name dbgr-cmdbuf-info))
-  (message "in source or command buffer: %s" 
-	   (dbgr-cmdbuf-info-in-srcbuf? dbgr-cmdbuf-info))
-  (message "command-line args: %s" 
-	   (dbgr-cmdbuf-info-cmd-args dbgr-cmdbuf-info))
-  (message "source should go into shortkey?: %s"
-	   (dbgr-cmdbuf-info-src-shortkey? dbgr-cmdbuf-info))
-  (message "command hash: %s"
-	   (dbgr-cmdbuf-info-cmd-hash dbgr-cmdbuf-info))
-  (message "backtrace-buffer: %s"
-	   (dbgr-cmdbuf-info-bt-buf dbgr-cmdbuf-info))
+  (let ((info dbgr-cmdbuf-info)
+	(cmdbuf-name (buffer-name)))
+    (switch-to-buffer (get-buffer-create "*Describe*"))
+    (delete-region (point-min) (point-max))
+    (insert (format "cmdbuf-info for %s\n" cmdbuf-name))
+    (insert (format "Debugger-name: %s\n" 
+		    (dbgr-cmdbuf-info-debugger-name info)))
+    (insert (format "In source or command buffer?: %s\n" 
+		    (dbgr-cmdbuf-info-in-srcbuf? info)))
+    (insert (format "Command-line args: %s\n" 
+		    (dbgr-cmdbuf-info-cmd-args info)))
+    (insert (format "Source should go into shortkey?: %s\n"
+		    (dbgr-cmdbuf-info-src-shortkey? info)))
+    (insert (format "Breakpoint list: %s\n"
+		    (dbgr-cmdbuf-info-bp-list info)))
+    (insert (format "Remap table for debugger commands: %s\n"
+		    (dbgr-cmdbuf-info-cmd-hash info)))
+    (insert (format "Source buffers seen: %s\n"
+		    (dbgr-cmdbuf-info-srcbuf-list info)))
+    (insert (format "Backtrace buffer: %s\n"
+		    (dbgr-cmdbuf-info-bt-buf info)))
+    )
   )
 
 (defun dbgr-cmdbuf? (&optional buffer)
@@ -101,37 +122,6 @@
 	(message "Set source to shortkey is now %s" (not unset))
 	))
   )
-
-;; FIXME: DRY = access via a macro. See also analogous
-;; code in dbgr-srcbuf
-(defun dbgr-cmdbuf-info-bp-list=(value)
-  (if (dbgr-cmdbuf-info? dbgr-cmdbuf-info)
-      (setf (dbgr-cmdbuf-info-bp-list dbgr-cmdbuf-info) value)))
-
-(defun dbgr-cmdbuf-info-cmd-args=(value)
-  (setf (dbgr-cmdbuf-info-cmd-args dbgr-cmdbuf-info) value))
-
-(defun dbgr-cmdbuf-info-divert-output?=(value)
-  (setf (dbgr-cmdbuf-info-divert-output? dbgr-cmdbuf-info) value))
-
-(defun dbgr-cmdbuf-info-frame-switch?=(value)
-  (setf (dbgr-cmdbuf-info-frame-switch? dbgr-cmdbuf-info) value))
-
-(defun dbgr-cmdbuf-info-in-srcbuf?=(value)
-  (setf (dbgr-cmdbuf-info-in-srcbuf? dbgr-cmdbuf-info) value))
-
-(defun dbgr-cmdbuf-info-no-record?=(value)
-  (setf (dbgr-cmdbuf-info-no-record? dbgr-cmdbuf-info) value))
-
-(defun dbgr-cmdbuf-info-bt-buf=(value)
-  (setf (dbgr-cmdbuf-info-bt-buf dbgr-cmdbuf-info) value))
-
-(defun dbgr-cmdbuf-info-prior-prompt-regexp=(value)
-  (if (dbgr-cmdbuf-info? dbgr-cmdbuf-info)
-      (setf (dbgr-cmdbuf-info-prior-prompt-regexp dbgr-cmdbuf-info) value)))
-
-(defun dbgr-cmdbuf-info-src-shortkey?=(value)
-  (setf (dbgr-cmdbuf-info-src-shortkey? dbgr-cmdbuf-info) value))
 
 (defun dbgr-cmdbuf-command-string(cmd-buffer)
   "Get the command string invocation for this command buffer"

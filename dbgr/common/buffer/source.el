@@ -10,7 +10,7 @@
 (require-relative-list '("../helper" "../key") "dbgr-")
 
 (defstruct dbgr-srcbuf-info
-  "debugger object/structure specific to a (top-level) Ruby file
+  "debugger object/structure specific to a (top-level) source program
 to be debugged."
   debugger-name  ;; Name of debugger. We could get this from the
                  ;; process command buffer, but we want to store it
@@ -49,6 +49,26 @@ to be debugged."
 (dbgr-struct-field-setter "dbgr-srcbuf-info" "debugger-name")
 (dbgr-struct-field-setter "dbgr-srcbuf-info" "short-key?")
 (dbgr-struct-field-setter "dbgr-srcbuf-info" "was-read-only?")
+
+(defun dbgr-srcbuf-info-describe ()
+  (interactive "")
+  (let ((info dbgr-srcbuf-info)
+	(srcbuf-name (buffer-name)))
+    (switch-to-buffer (get-buffer-create "*Describe*"))
+    (delete-region (point-min) (point-max))
+    (insert (format "srcbuf-info for %s\n" srcbuf-name))
+    (insert (format "Debugger-name: %s\n" 
+		    (dbgr-srcbuf-info-debugger-name info)))
+    (insert (format "Command-line args: %s\n" 
+		    (dbgr-srcbuf-info-cmd-args info)))
+    (insert (format "Was previously read only?: %s\n"
+		    (dbgr-srcbuf-info-was-read-only? info)))
+    (insert (format "Command Process buffer: %s\n"
+		    (dbgr-srcbuf-info-cmdproc info)))
+    (insert (format "Location history: %s\n"
+		    (dbgr-srcbuf-info-loc-hist info)))
+    )
+  )
 
 (defun dbgr-srcbuf-info-set? ()
   "Return true if `dbgr-srcbuf-info' is set."
