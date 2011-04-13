@@ -7,6 +7,8 @@
 (require-relative-list
  '("command") "dbgr-buffer-")
 
+(declare-function dbgr-backtrace-mode (cmdbuf))
+
 (defstruct dbgr-backtrace-info
   "debugger object/structure specific to a (top-level) Ruby file
 to be debugged."

@@ -43,13 +43,12 @@ to be debugged."
 )
 (defalias 'dbgr-srcbuf-info? 'dbgr-srcbuf-p)
 
-;; FIXME: DRY = access via a macro. See also analogous
-;; code in dbgr-srcbuf
-(defun dbgr-srcbuf-info-was-read-only?=(value)
-  (setf (dbgr-srcbuf-info-was-read-only? dbgr-srcbuf-info) value))
-
-(defun dbgr-srcbuf-info-short-key?=(value)
-  (setf (dbgr-srcbuf-info-short-key? dbgr-srcbuf-info) value))
+;; FIXME: figure out how to put in a loop.
+(dbgr-struct-field-setter "dbgr-srcbuf-info" "cmd-args")
+(dbgr-struct-field-setter "dbgr-srcbuf-info" "cmdproc")
+(dbgr-struct-field-setter "dbgr-srcbuf-info" "debugger-name")
+(dbgr-struct-field-setter "dbgr-srcbuf-info" "short-key?")
+(dbgr-struct-field-setter "dbgr-srcbuf-info" "was-read-only?")
 
 (defun dbgr-srcbuf-info-set? ()
   "Return true if `dbgr-srcbuf-info' is set."
@@ -75,15 +74,6 @@ to be debugged."
   (with-current-buffer-safe src-buf 
     (dbgr-sget 'srcbuf-info 'loc-hist))
 )
-;; FIXME: DRY = access via a macro
-(defun dbgr-srcbuf-info-cmdproc=(buffer)
-  (setf (dbgr-srcbuf-info-cmdproc dbgr-srcbuf-info) buffer))
-
-(defun dbgr-srcbuf-info-debugger-name=(value)
-  (setf (dbgr-srcbuf-info-debugger-name dbgr-srcbuf-info) value))
-
-(defun dbgr-srcbuf-info-cmd-args=(buffer)
-  (setf (dbgr-srcbuf-info-cmd-args dbgr-srcbuf-info) buffer))
 
 (declare-function fn-p-to-fn?-alias(sym))
 (fn-p-to-fn?-alias 'dbgr-srcbuf-info-p)
