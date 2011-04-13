@@ -45,11 +45,11 @@ to be debugged."
 
 ;; FIXME: DRY = access via a macro. See also analogous
 ;; code in dbgr-srcbuf
-(defun dbgr-srcbuf-info-was-read-only?=(info value)
-  (setf (dbgr-srcbuf-info-was-read-only? info) value))
+(defun dbgr-srcbuf-info-was-read-only?=(value)
+  (setf (dbgr-srcbuf-info-was-read-only? dbgr-srcbuf-info) value))
 
-(defun dbgr-srcbuf-info-short-key?=(info value)
-  (setf (dbgr-srcbuf-info-short-key? info) value))
+(defun dbgr-srcbuf-info-short-key?=(value)
+  (setf (dbgr-srcbuf-info-short-key? dbgr-srcbuf-info) value))
 
 (defun dbgr-srcbuf-info-set? ()
   "Return true if `dbgr-srcbuf-info' is set."
@@ -76,14 +76,14 @@ to be debugged."
     (dbgr-sget 'srcbuf-info 'loc-hist))
 )
 ;; FIXME: DRY = access via a macro
-(defun dbgr-srcbuf-info-cmdproc=(info buffer)
-  (setf (dbgr-srcbuf-info-cmdproc info) buffer))
+(defun dbgr-srcbuf-info-cmdproc=(buffer)
+  (setf (dbgr-srcbuf-info-cmdproc dbgr-srcbuf-info) buffer))
 
-(defun dbgr-srcbuf-info-debugger-name=(info value)
-  (setf (dbgr-srcbuf-info-debugger-name info) value))
+(defun dbgr-srcbuf-info-debugger-name=(value)
+  (setf (dbgr-srcbuf-info-debugger-name dbgr-srcbuf-info) value))
 
-(defun dbgr-srcbuf-info-cmd-args=(info buffer)
-  (setf (dbgr-srcbuf-info-cmd-args info) buffer))
+(defun dbgr-srcbuf-info-cmd-args=(buffer)
+  (setf (dbgr-srcbuf-info-cmd-args dbgr-srcbuf-info) buffer))
 
 (declare-function fn-p-to-fn?-alias(sym))
 (fn-p-to-fn?-alias 'dbgr-srcbuf-info-p)
@@ -126,9 +126,9 @@ in it with those from CMDPROC-BUFFER"
      (or (current-local-map) (use-local-map (make-sparse-keymap))))
     (if (dbgr-srcbuf-info? dbgr-srcbuf-info)
 	(progn
-	  (dbgr-srcbuf-info-cmdproc= dbgr-srcbuf-info cmdproc-buffer)
-	  (dbgr-srcbuf-info-debugger-name= dbgr-srcbuf-info debugger-name)
-	  (dbgr-srcbuf-info-cmd-args= dbgr-srcbuf-info cmd-args)
+	  (dbgr-srcbuf-info-cmdproc= cmdproc-buffer)
+	  (dbgr-srcbuf-info-debugger-name= debugger-name)
+	  (dbgr-srcbuf-info-cmd-args= cmd-args)
 	  )
       (dbgr-srcbuf-init src-buffer cmdproc-buffer "unknown" nil)))))
 

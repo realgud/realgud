@@ -63,15 +63,14 @@ MODE-ON? a boolean which specifies if we are going into or out of this mode."
 	  (if mode-on?
 	      ;; Mode is being turned on.
 	      (progn
-		(dbgr-srcbuf-info-was-read-only?=  
-		 dbgr-srcbuf-info buffer-read-only)
+		(dbgr-srcbuf-info-was-read-only?= buffer-read-only)
 		(local-set-key [M-insert] 'dbgr-short-key-mode)
 		(setq buffer-read-only t))
 	    ;; Mode is being turned off: restore read-only state.
 	    (setq buffer-read-only (dbgr-sget 'srcbuf-info 'was-read-only?)))
 	  ;; Save the current state, so we can determine when the
 	  ;; state is toggled in the future.
-	  (dbgr-srcbuf-info-short-key?= dbgr-srcbuf-info mode-on?)
+	  (dbgr-srcbuf-info-short-key?= mode-on?)
 	  (setq dbgr-short-key-mode mode-on?))
 	;; (with-current-buffer-safe cmdbuf
 	;;   (dbgr-cmdbuf-info-src-shortkey?= mode-on?)
