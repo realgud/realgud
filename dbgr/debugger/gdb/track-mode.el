@@ -32,9 +32,9 @@
   :global nil
   :group 'dbgr-gdb
   :keymap dbgr-gdb-track-mode-map
-  (dbgr-track-set-debugger "dbgr-gdb")
   (if dbgr-gdb-track-mode
       (progn 
+	(dbgr-track-set-debugger "gdb")
 	(dbgr-track-mode 't)
 	(run-mode-hooks (intern (dbgr-gdb-track-mode-hook))))
     (progn 

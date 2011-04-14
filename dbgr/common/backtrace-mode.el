@@ -4,6 +4,7 @@
 (require-relative-list  '("menu") "dbgr-")
 (defvar dbgr-backtrace-mode-map
   (let ((map  (dbgr-populate-debugger-menu (make-sparse-keymap))))
+    (dbgr-populate-common-keys map)
     (define-key map "."       'dbgr-backtrace-moveto-frame-selected)
     (define-key map "r"       'dbgr-backtrace-init)
     (define-key map [double-mouse-1] 'dbgr-goto-frame-mouse)
@@ -11,20 +12,29 @@
     (define-key map [mouse-3] 'dbgr-goto-frame-mouse)
     (define-key map [up]      'dbgr-backtrace-moveto-frame-prev)
     (define-key map [down]    'dbgr-backtrace-moveto-frame-next)
+
+    ;; FIXME: these can go to a common routine. See also shortkey.el
+    (define-key map "<"       'dbgr-cmd-newer-frame)
+    (define-key map ">"       'dbgr-cmd-older-frame)
+    (define-key map "d"       'dbgr-cmd-newer-frame)
+    (define-key map "u"       'dbgr-cmd-older-frame)
+    (define-key map "l"        'dbgr-recenter-arrow)
+    (define-key map "C"        'dbgr-window-cmd-undisturb-src)
+    (define-key map "S"        'dbgr-window-src-undisturb-cmd)
+
     (define-key map "n"       'dbgr-backtrace-moveto-frame-next)
     (define-key map "p"       'dbgr-backtrace-moveto-frame-prev)
+    (define-key map "0"       'dbgr-goto-frame-n)
+    (define-key map "1"       'dbgr-goto-frame-n)
+    (define-key map "2"       'dbgr-goto-frame-n)
+    (define-key map "3"       'dbgr-goto-frame-n)
+    (define-key map "4"       'dbgr-goto-frame-n)
+    (define-key map "5"       'dbgr-goto-frame-n)
+    (define-key map "6"       'dbgr-goto-frame-n)
+    (define-key map "7"       'dbgr-goto-frame-n)
+    (define-key map "8"       'dbgr-goto-frame-n)
+    (define-key map "9"       'dbgr-goto-frame-n)
     (define-key map [(control m)] 'dbgr-goto-frame)
-    (define-key map "0" 'dbgr-goto-frame-n)
-    (define-key map "1" 'dbgr-goto-frame-n)
-    (define-key map "2" 'dbgr-goto-frame-n)
-    (define-key map "3" 'dbgr-goto-frame-n)
-    (define-key map "4" 'dbgr-goto-frame-n)
-    (define-key map "5" 'dbgr-goto-frame-n)
-    (define-key map "6" 'dbgr-goto-frame-n)
-    (define-key map "7" 'dbgr-goto-frame-n)
-    (define-key map "8" 'dbgr-goto-frame-n)
-    (define-key map "9" 'dbgr-goto-frame-n)
-    (dbgr-populate-common-keys map)
 
     ;; ;; --------------------
     ;; ;; The "Stack window" submenu.

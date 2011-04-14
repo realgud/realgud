@@ -24,8 +24,6 @@ This should be an executable on your path, or an absolute file name."
   :type 'string
   :group 'trepanx)
 
-(declare-function trepanx-track-mode (bool))
-
 ;; -------------------------------------------------------------------
 ;; The end.
 ;;
@@ -42,8 +40,6 @@ discover that the buffer has prior command-buffer information and
 NO-RESET is nil, then that information which may point into other
 buffers and source buffers which may contain marks and fringe or
 marginal icons is reset."
-
-  
   (interactive)
   (let* (
 	 (cmd-str (or opt-command-line (trepanx-query-cmdline "trepanx")))
@@ -52,29 +48,12 @@ marginal icons is reset."
 	 (script-args (cdr cmd-args))
 	 (script-name (car script-args))
 	 (cmd-buf))
-  
-    ;; Parse the command line and pick out the script name and whether
-    ;; --annotate has been set.
-  
-    (condition-case nil
-	(setq cmd-buf 
-	      (apply 'dbgr-exec-shell "trepanx" script-name
-		     (car cmd-args) no-reset (cdr cmd-args)))
-    (error nil))
-    ;; FIXME: Is there probably is a way to remove the
-    ;; below test and combine in condition-case? 
-    (let ((process (get-buffer-process cmd-buf)))
-      (if (and process (eq 'run (process-status process)))
-	  (progn
-	    (switch-to-buffer cmd-buf)
-	    (trepanx-track-mode 't)
-	    (dbgr-cmdbuf-info-cmd-args= cmd-args)
-	    )
-	(message "Error running trepanx command"))
-    )))
+    (dbgr-run-process "trepanx" script-name cmd-args 
+		      'trepanx-track-mode no-reset)
+    )
+  )
 
 (defalias 'trepanx 'dbgr-trepanx)
 
 (provide-me "dbgr-")
-
 ;;; trepanx.el ends here

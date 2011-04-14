@@ -95,11 +95,8 @@ discover that the buffer has prior command-buffer information and
 NO-RESET is nil, then that information which may point into other
 buffers and source buffers which may contain marks and fringe or
 marginal icons is reset."
-
-  
   (interactive)
-  (let* (
-	 (cmd-str (or opt-command-line (rdebug-query-cmdline "rdebug")))
+  (let* ((cmd-str (or opt-command-line (rdebug-query-cmdline "rdebug")))
 	 (cmd-args (split-string-and-unquote cmd-str))
 	 (parsed-args (rdebug-parse-cmd-args cmd-args))
 	 (script-name-annotate-p (rdebug-get-script-name cmd-args))
@@ -107,27 +104,10 @@ marginal icons is reset."
 	 (annotate-p  (cadr script-name-annotate-p))
 	 (script-args (cdr cmd-args))
 	 (cmd-buf))
-  
-    ;; Parse the command line and pick out the script name and whether
-    ;; --annotate has been set.
-  
-    (condition-case nil
-	(setq cmd-buf 
-	      (apply 'dbgr-exec-shell "rdebug" script-name
-		     (car cmd-args) no-reset (cdr cmd-args)))
-    (error nil))
-    ;; FIXME: Is there probably is a way to remove the
-    ;; below test and combine in condition-case? 
-    (let ((process (get-buffer-process cmd-buf)))
-      (if (and process (eq 'run (process-status process)))
-	  (progn
-	    (switch-to-buffer cmd-buf)
-	    (rdebug-track-mode 't)
-	    (dbgr-cmdbuf-info-cmd-args= cmd-args)
-	    )
-	(message "Error running rdebug command"))
-    )))
+    (dbgr-run-process "rdebug" script-name cmd-args 
+		      'rdebug-track-mode no-reset)
+    )
+  )
 
 (defalias 'rdebug 'dbgr-rdebug)
-
 (provide-me "dbgr-")

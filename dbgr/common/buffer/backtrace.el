@@ -60,7 +60,7 @@ to be debugged."
 	    (sleep-count 0)
 	    )
 	(unless frame-pat
-	  (error "No 'frame' regular expression recorded for debugger %s"
+	  (error "No 'debugger-backtrace' regular expression recorded for debugger %s"
 		 (dbgr-cmdbuf-debugger-name)))
 	(setq process (get-buffer-process (current-buffer)))
 	(dbgr-cmdbuf-info-in-srcbuf?= (not (dbgr-cmdbuf? buffer)))

@@ -95,6 +95,40 @@ return the first argument is always removed.
 	(cons (list arg) (list remaining))))
      (t (cons (list arg) (list remaining))))))
 
+(defun dbgr-run-process(debugger-name script-filename cmd-args 
+				      track-mode-func &optional no-reset)
+  "Runs `dbgr-exec-shell with DEBUGGER-NAME SCRIPT-FILENAME PROGRAM-ARGS
+NO-RESET and SCRIPT-ARGS. If this succeeeds we call TRACK-MODE-FUNC
+and save cmd-args in command-buffer for use if we want to restarting.
+If we don't succeed in running the program we will switch to the command buffer
+which shows details of the error. The command buffer or nil is returned"
+
+  (let ((cmd-buf))
+    (condition-case nil
+	(setq cmd-buf 
+	      (apply 'dbgr-exec-shell debugger-name script-filename
+		     (car cmd-args) no-reset (cdr cmd-args)))
+      (error nil))
+    ;; FIXME: Is there probably is a way to remove the
+    ;; below test and combine in condition-case? 
+    (let ((process (get-buffer-process cmd-buf)))
+      (if (and process (eq 'run (process-status process)))
+	  (progn
+	    (switch-to-buffer cmd-buf)
+	    (funcall track-mode-func 't)
+	    (dbgr-cmdbuf-info-cmd-args= cmd-args)
+	    )
+	(progn 
+	  (if cmd-buf (switch-to-buffer cmd-buf))
+	  (message "Error running command: %s %s" debugger-name script-filename)
+	  )
+	)
+      )
+    cmd-buf
+    )
+  )
+
+
 (defun dbgr-terminate (&optional buf)
   "Resets state in all buffers associated with source or command buffer BUF)
 This does things like remove fringe arrows breakpoint icons and

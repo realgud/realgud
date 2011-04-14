@@ -6,11 +6,20 @@
 
 (defun dbgr-send-command-comint (process command-str)
   "Assume we are in a comint buffer. Insert COMMAND-STR and 
-send that input onto the process.  Parameter PROCESS not used."
-  (comint-goto-process-mark)
-  (setq dbgr-last-output-start (point-marker))
-  (insert command-str)
-  (comint-send-input))
+send that input onto the process."
+  (if (eq 'run (process-status process))
+      (progn
+	(comint-goto-process-mark)
+	(setq comint-last-output-start
+	      (setq dbgr-last-output-start (point-marker)))
+	(insert command-str)
+	(comint-send-input)
+	)
+    ;; else
+    (message "Process %s not in `run' state; not issuing %s" 
+	     process command-str)
+    )
+  )
 
 (defalias 'comint-output-filter-orig 
   (symbol-function 'comint-output-filter))

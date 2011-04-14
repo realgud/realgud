@@ -3,40 +3,34 @@
 (require-relative-list '("custom" "key" "menu") "dbgr-")
 (require-relative-list '("buffer/helper") "dbgr-buffer-")
 
-(defvar dbgr-short-key-mode-map (make-sparse-keymap)
+(defvar dbgr-short-key-mode-map 
+  (let ((map (make-sparse-keymap)))
+    (dbgr-populate-common-keys map)
+    (dbgr-populate-src-buffer-map-plain map)
+    (dbgr-populate-debugger-menu map)
+    (define-key map "1"        'dbgr-goto-arrow1)
+    (define-key map "2"        'dbgr-goto-arrow2)
+    (define-key map "3"        'dbgr-goto-arrow3)
+    (define-key map "b"        'dbgr-cmd-break)
+    (define-key map "c"        'dbgr-cmd-continue)
+    (define-key map "e"        'dbgr-cmd-eval-region)
+
+    ;; FIXME: these can go to a common routine
+    (define-key map "<"        'dbgr-cmd-newer-frame)
+    (define-key map ">"        'dbgr-cmd-older-frame)
+    (define-key map "d"        'dbgr-cmd-newer-frame)
+    (define-key map "u"        'dbgr-cmd-older-frame)
+    (define-key map "l"        'dbgr-recenter-arrow)
+    (define-key map "C"        'dbgr-window-cmd-undisturb-src)
+    (define-key map "S"        'dbgr-window-src-undisturb-cmd)
+
+    (define-key map "R"        'dbgr-cmd-restart)
+    (define-key map "!"        'dbgr-cmd-shell)
+    (define-key map [insert]   'dbgr-short-key-mode)
+    (define-key map [M-insert] 'dbgr-short-key-mode)
+    map)
   "Keymap used in `dbgr-short-key-mode'.")
 
-(define-key dbgr-short-key-mode-map
-  (kbd "1") 'dbgr-goto-arrow1)
-(define-key dbgr-short-key-mode-map
-  (kbd "2") 'dbgr-goto-arrow2)
-(define-key dbgr-short-key-mode-map
-  (kbd "3") 'dbgr-goto-arrow3)
-(define-key dbgr-short-key-mode-map
-  (kbd "b") 'dbgr-cmd-break)
-(define-key dbgr-short-key-mode-map
-  (kbd "c") 'dbgr-cmd-continue)
-(define-key dbgr-short-key-mode-map
-  (kbd "e") 'dbgr-cmd-eval-region)
-(define-key dbgr-short-key-mode-map
-  (kbd "<") 'dbgr-cmd-newer-frame)
-(define-key dbgr-short-key-mode-map
-  (kbd ">") 'dbgr-cmd-older-frame)
-(define-key dbgr-short-key-mode-map
-  (kbd "l") 'dbgr-recenter-arrow)
-(define-key dbgr-short-key-mode-map
-  (kbd "C") 'dbgr-window-cmd-undisturb-src)
-(define-key dbgr-short-key-mode-map
-  (kbd "S") 'dbgr-window-src-undisturb-cmd)
-(define-key dbgr-short-key-mode-map
-  (kbd "R") 'dbgr-cmd-restart)
-(define-key dbgr-short-key-mode-map
-  (kbd "!") 'dbgr-cmd-shell)
-(define-key dbgr-short-key-mode-map [insert] 'dbgr-short-key-mode)
-(define-key dbgr-short-key-mode-map [M-insert] 'dbgr-short-key-mode)
-(dbgr-populate-common-keys dbgr-short-key-mode-map)
-(dbgr-populate-src-buffer-map-plain dbgr-short-key-mode-map)
-(dbgr-populate-debugger-menu dbgr-short-key-mode-map)
 
 ;; Implementation note: This is the mode that does all the work, it's
 ;; local to the buffer that is affected.

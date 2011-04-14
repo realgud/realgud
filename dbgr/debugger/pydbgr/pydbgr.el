@@ -54,26 +54,11 @@ marginal icons is reset."
 	 (script-args (cdr cmd-args))
 	 (script-name (car script-args))
 	 (cmd-buf))
-  
-    ;; Parse the command line and pick out the script name and whether
-    ;; --annotate has been set.
-  
-    (condition-case nil
-	(setq cmd-buf 
-	      (apply 'dbgr-exec-shell "pydbgr" script-name
-		     (car cmd-args) no-reset (cdr cmd-args)))
-    (error nil))
-    ;; FIXME: Is there probably is a way to remove the
-    ;; below test and combine in condition-case? 
-    (let ((process (get-buffer-process cmd-buf)))
-      (if (and process (eq 'run (process-status process)))
-	  (progn
-	    (switch-to-buffer cmd-buf)
-	    (pydbgr-track-mode 't)
-	    (dbgr-cmdbuf-info-cmd-args= cmd-args)
-	    )
-	(message "Error running pydbgr command"))
-    )))
+    (dbgr-run-process "pydbgr" script-name cmd-args 
+		      'pydbgr-track-mode no-reset)
+    )
+  )
+
 
 (defalias 'pydbgr 'dbgr-pydbgr)
 
