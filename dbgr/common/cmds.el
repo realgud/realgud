@@ -37,6 +37,12 @@ if none has been set in the command hash."
 		 (intern (format "dbgr-cmd-%s" cmd-name)))
   )
 
+(defun dbgr-cmd-backtrace(arg)
+  "Show debugger breakpoint at the current line"
+  (interactive "p")
+  (dbgr-cmd-remap arg "backtrace" "backtrace" "T")
+  )
+
 (defun dbgr-cmd-break(arg)
   "Set a breakpoint at the current line"
   (interactive "p")

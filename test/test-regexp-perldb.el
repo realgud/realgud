@@ -8,9 +8,8 @@
 ; We customize this for this debugger.
 ; FIXME: encapsulate this.
 (setq dbg-name "perldb")
-(setq loc-pat    (gethash "loc"    (gethash dbg-name dbgr-pat-hash)))
-(setq frame-pat  (gethash "debugger-backtrace"  dbgr-perldb-pat-hash))
-(setq prompt-pat (gethash "prompt" dbgr-perldb-pat-hash))
+(setq loc-pat     (gethash "loc"    (gethash dbg-name dbgr-pat-hash)))
+(setq prompt-pat  (gethash "prompt" dbgr-perldb-pat-hash))
 
 (setq dbgr (make-dbgr-cmdbuf-info
 		  :debugger-name dbg-name
@@ -63,13 +62,15 @@
 					      text)))
 
 	 (specify "debugger-backtrace"
+		  (setq dbg-bt-pat  (gethash "debugger-backtrace"  
+					     dbgr-perldb-pat-hash))
 		  (setq s1
 			"$ = main::top_navigation_panel called from file `./latex2html' line 7400
 ")
-		  (setq frame-re (dbgr-loc-pat-regexp frame-pat))
-		  (setq file-group (dbgr-loc-pat-file-group frame-pat))
-		  (setq line-group (dbgr-loc-pat-line-group frame-pat))
-		  (assert-equal 30 (string-match frame-re s1))
+		  (setq dbgr-bt-re (dbgr-loc-pat-regexp dbg-bt-pat))
+		  (setq file-group (dbgr-loc-pat-file-group dbg-bt-pat))
+		  (setq line-group (dbgr-loc-pat-line-group dbg-bt-pat))
+		  (assert-equal 30 (string-match dbgr-bt-re s1))
 		  (assert-equal "./latex2html"
 				(substring s1 
 					   (match-beginning file-group)
@@ -79,6 +80,51 @@
 					   (match-beginning line-group)
 					   (match-end line-group)))
 		  )
+
+	 (specify "carp-backtrace"
+		  (setq s1
+			" at /tmp/foo.pl line 7
+ 	main::__ANON__('Illegal division by zero at /tmp/foo.pl line 4.\x{a}') called at foo2.pl line 5
+ 	main::foo(3) called at foo3.pl line 8
+")
+		  (setq lang-bt-pat (gethash "lang-backtrace"  
+					     dbgr-perldb-pat-hash))
+		  (setq carp-bt-re (dbgr-loc-pat-regexp lang-bt-pat))
+		  (setq file-group (dbgr-loc-pat-file-group lang-bt-pat))
+		  (setq line-group (dbgr-loc-pat-line-group lang-bt-pat))
+		  (assert-equal 0 (string-match carp-bt-re s1))
+		  (assert-equal "/tmp/foo.pl"
+				(substring s1 
+					   (match-beginning file-group)
+					   (match-end file-group)))
+		  (assert-equal "7"
+				(substring s1 
+					   (match-beginning line-group)
+					   (match-end line-group)))
+		  (setq pos (match-end 0))
+		  
+		  (assert-equal 22 (string-match carp-bt-re s1 pos))
+		  (assert-equal "foo2.pl"
+				(substring s1 
+					   (match-beginning file-group)
+					   (match-end file-group)))
+		  (assert-equal "5"
+				(substring s1 
+					   (match-beginning line-group)
+					   (match-end line-group)))
+		  
+		  (setq pos (match-end 0))
+		  (assert-equal 119 (string-match carp-bt-re s1 pos))
+		  (assert-equal "foo3.pl"
+				(substring s1 
+					   (match-beginning file-group)
+					   (match-end file-group)))
+		  (assert-equal "8"
+				(substring s1 
+					   (match-beginning line-group)
+					   (match-end line-group)))
+		  )
+
 	 )
 
 (test-unit "regexp-perldb")

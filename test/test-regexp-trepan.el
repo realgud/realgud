@@ -4,11 +4,11 @@
 (test-unit-clear-contexts)
 
 
-(setq bps-pat    (gethash "brkpt-set"          dbgr-trepan-pat-hash))
-(setq frame-pat  (gethash "debugger-backtrace" dbgr-trepan-pat-hash))
-(setq prompt-pat (gethash "prompt"             dbgr-trepan-pat-hash))
-(setq tb-pat     (gethash "lang-backtrace"     dbgr-trepan-pat-hash))
-(setq ctrl-pat   (gethash "control-frame"      dbgr-trepan-pat-hash))
+(setq bps-pat     (gethash "brkpt-set"          dbgr-trepan-pat-hash))
+(setq dbg-bt-pat  (gethash "debugger-backtrace" dbgr-trepan-pat-hash))
+(setq prompt-pat  (gethash "prompt"             dbgr-trepan-pat-hash))
+(setq lang-bt-pat (gethash "lang-backtrace"     dbgr-trepan-pat-hash))
+(setq ctrl-pat    (gethash "control-frame"      dbgr-trepan-pat-hash))
 
 (defun loc-match(text var) 
   (string-match (dbgr-loc-pat-regexp var) text)
@@ -26,14 +26,15 @@
 	 (tag regexp-trepan)
 	 (lexical-let ((text "	from /usr/local/bin/irb:12:in `<main>'"))
 	   (specify "basic traceback location"
-		    (assert-t (numberp (loc-match text tb-pat))))
+		    (assert-t (numberp (loc-match text lang-bt-pat))))
 	   (specify "extract traceback file name"
 	   	    (assert-equal "/usr/local/bin/irb"
-				  (match-string (dbgr-loc-pat-file-group tb-pat)
+				  (match-string (dbgr-loc-pat-file-group lang-bt-pat)
 	   				  text)))
 	   (specify "extract traceback line number"
 	   	    (assert-equal "12"
-				  (match-string (dbgr-loc-pat-line-group tb-pat)
+				  (match-string (dbgr-loc-pat-line-group 
+						 lang-bt-pat)
 						text)))
 	   )
 
@@ -41,10 +42,10 @@
 		    (setq s1 "--> #0 METHOD Object#require(path) in file <internal:lib/require> at line 28
     #1 TOP Object#<top /tmp/linecache.rb> in file /tmp/linecache.rb
 ")
-		    (setq frame-re (dbgr-loc-pat-regexp frame-pat))
-		    (setq num-group (dbgr-loc-pat-num frame-pat))
-		    (setq file-group (dbgr-loc-pat-file-group frame-pat))
-		    (setq line-group (dbgr-loc-pat-line-group frame-pat))
+		    (setq frame-re (dbgr-loc-pat-regexp dbg-bt-pat))
+		    (setq num-group (dbgr-loc-pat-num dbg-bt-pat))
+		    (setq file-group (dbgr-loc-pat-file-group dbg-bt-pat))
+		    (setq line-group (dbgr-loc-pat-line-group dbg-bt-pat))
 	   	    (assert-equal 0 (string-match frame-re s1))
 		    (assert-equal "0" (substring s1 
 						 (match-beginning num-group)

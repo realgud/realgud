@@ -8,6 +8,8 @@
  '("command") "dbgr-buffer-")
 
 (declare-function dbgr-backtrace-mode (cmdbuf))
+(declare-function dbgr-cmd-backtrace arg)
+
 
 (defstruct dbgr-backtrace-info
   "debugger object/structure specific to a (top-level) Ruby file
@@ -66,7 +68,7 @@ to be debugged."
 	(dbgr-cmdbuf-info-in-srcbuf?= (not (dbgr-cmdbuf? buffer)))
 	(dbgr-cmdbuf-info-divert-output?= 't)
 	(setq dbgr-track-divert-string nil)
-	(dbgr-command "backtrace" nil nil 't)
+	(dbgr-cmd-backtrace 0)
 	(while (and (eq 'run (process-status process))
 		    (null dbgr-track-divert-string)
 		    (> 1000 (setq sleep-count (1+ sleep-count))))
@@ -297,36 +299,49 @@ non-digit will start entry number from the beginning again."
 (defun dbgr-backtrace-add-text-properties  (frame-pat &optional opt-string)
   "Parse STRING and add properties for that"
 
-  (let (
-	 (string (or opt-string 
-		     (buffer-substring (point-min) (point-max))
-		     ))
-	 (frame-regexp (dbgr-loc-pat-regexp frame-pat))
-	 (frame-group-pat (dbgr-loc-pat-num frame-pat))
-	 (last-pos 0)
-	 (selected-frame-num nil)
-	 (frame-num-pos-list '())
-	 )
+  (let ((string (or opt-string 
+		    (buffer-substring (point-min) (point-max))
+		    ))
+	(frame-regexp (dbgr-loc-pat-regexp frame-pat))
+	(frame-group-pat (dbgr-loc-pat-num frame-pat))
+	(alt-frame-num -1)
+	(last-pos 0)
+	(selected-frame-num nil)
+	(frame-num-pos-list '())
+	)
     (while (string-match frame-regexp string last-pos)
-      (let* ((frame-num-str 
-	      (substring string (match-beginning frame-group-pat)
-			 (match-end frame-group-pat)))
-	     (frame-num (string-to-number frame-num-str))
+      (let ((frame-num-str)
+	    (frame-num)
+	    
+	    ;; FIXME: Sort of a hack that 1 is always the frame indicator.
+	    (frame-indicator 
+	     (substring string (match-beginning 1) (match-end 1)))
+	    (frame-num-pos)
 
-	     ;; FIXME: Sort of a hack that 1 is always the frame indicator.
-	     (frame-indicator 
-	      (substring string (match-beginning 1) (match-end 1)))
+	    )
+	(if frame-group-pat
+	    (progn
+	      (setq frame-num-str 
+		    (substring string (match-beginning frame-group-pat)
+			       (match-end frame-group-pat)))
+	      (setq frame-num (string-to-number frame-num-str))
+	      (setq frame-num-pos (match-beginning frame-group-pat))
+	      (add-to-list 'frame-num-pos-list frame-num-pos 't)
+	      (add-text-properties (match-beginning frame-group-pat) 
+				   (match-end frame-group-pat)
+				   '(mouse-face highlight 
+						help-echo 
+						"mouse-2: goto this frame")
+				   string)
+	      
+	      )
+	  ; else
+	  (setq frame-num (incf alt-frame-num))
+	  )
 
-	     (frame-num-pos (match-beginning frame-group-pat))
-	     )
-	(add-to-list 'frame-num-pos-list frame-num-pos 't)
+	
 	(put-text-property (match-beginning 0) (match-end 0)
 			   'frame-num  frame-num string)
-	(add-text-properties (match-beginning frame-group-pat) 
-			     (match-end frame-group-pat)
-			     '(mouse-face highlight 
-					  help-echo "mouse-2: goto this frame")
-			     string)
 	(setq last-pos (match-end 0))
 
 	;; FIXME: Sort of a hack, indicator has '->' somewhere in it if it is

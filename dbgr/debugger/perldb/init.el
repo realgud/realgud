@@ -10,8 +10,9 @@
 (declare-function make-dbgr-loc-pat (dbgr-loc))
 
 (defvar dbgr-perldb-pat-hash (make-hash-table :test 'equal)
-  "Hash key is the what kind of pattern we want to match: backtrace, prompt, etc. 
-The values of a hash entry is a dbgr-loc-pat struct")
+  "Hash key is the what kind of pattern we want to match:
+backtrace, prompt, etc.  The values of a hash entry is a
+dbgr-loc-pat struct")
 
 (declare-function make-dbgr-loc "dbgr-loc" (a b c d e f))
 
@@ -35,7 +36,7 @@ The values of a hash entry is a dbgr-loc-pat struct")
        :num 1
        ))
 
-;;  Regular expression that describes a Perl backtrace line.
+;;  Regular expression that describes a Perl debugger backtrace line.
 ;; $ = main::top_navigation_panel called from file `./latex2html' line 7400
 ;; $ = main::BEGIN() called from file `(eval 19)[/usr/bin/latex2html:126]' line 2
 (setf (gethash "debugger-backtrace" dbgr-perldb-pat-hash)
@@ -44,17 +45,32 @@ The values of a hash entry is a dbgr-loc-pat struct")
        :file-group 1
        :line-group 2))
 
+;;  Regular expression that describes a Perl Carp backtrace line.
+;;  at /tmp/foo.pl line 7
+;; 	main::__ANON__('Illegal division by zero at /tmp/foo.pl line 4.\x{a}') called at /tmp/foo.pl line 4
+;; 	main::foo(3) called at /tmp/foo.pl line 8
+2
+(setf (gethash "lang-backtrace" dbgr-perldb-pat-hash)
+      (make-dbgr-loc-pat
+       :regexp   (concat 
+		  "\\(?:^\\|
+\\)"
+		  "\\(?:[ \t]+\\(?:\\|.* called \\)at \\(.*\\) line \\([0-9]+\\)\\)")
+       :file-group 1
+       :line-group 2))
+
 (defvar dbgr-perldb-command-hash (make-hash-table :test 'equal)
   "Hash key is command name like 'quit' and the value is 
   the perldb command to use, like 'q'")
 
-(setf (gethash "break"    dbgr-perldb-command-hash) "b %l")
-(setf (gethash "continue" dbgr-perldb-command-hash) "c")
-(setf (gethash "quit"     dbgr-perldb-command-hash) "q")
-(setf (gethash "restart"  dbgr-perldb-command-hash) "R")
-(setf (gethash "run"      dbgr-perldb-command-hash) "R")
-(setf (gethash "step"     dbgr-perldb-command-hash) "s")
-(setf (gethash "next"     dbgr-perldb-command-hash) "n")
+(setf (gethash "backtrace" dbgr-perldb-command-hash) "T")
+(setf (gethash "break"     dbgr-perldb-command-hash) "b %l")
+(setf (gethash "continue"  dbgr-perldb-command-hash) "c")
+(setf (gethash "quit"      dbgr-perldb-command-hash) "q")
+(setf (gethash "restart"   dbgr-perldb-command-hash) "R")
+(setf (gethash "run"       dbgr-perldb-command-hash) "R")
+(setf (gethash "step"      dbgr-perldb-command-hash) "s")
+(setf (gethash "next"      dbgr-perldb-command-hash) "n")
 (setf (gethash "perldb" dbgr-command-hash) dbgr-perldb-command-hash)
 
 (setf (gethash "perldb" dbgr-pat-hash) dbgr-perldb-pat-hash)
