@@ -11,7 +11,7 @@
 
 (defvar dbgr-perldb-pat-hash (make-hash-table :test 'equal)
   "Hash key is the what kind of pattern we want to match:
-backtrace, prompt, etc.  The values of a hash entry is a
+lang-backtrace, prompt, etc.  The values of a hash entry is a
 dbgr-loc-pat struct")
 
 (declare-function make-dbgr-loc "dbgr-loc" (a b c d e f))
@@ -30,6 +30,11 @@ dbgr-loc-pat struct")
        :file-group 1
        :line-group 2))
 
+;; perldb debugger prompt.
+;; Examples:
+;;   DB<4> 
+;; [pid=6489->6502]  DB<1> 
+;; 
 (setf (gethash "prompt" dbgr-perldb-pat-hash)
       (make-dbgr-loc-pat
        :regexp   "\\(?:\\[pid=[0-9]+->[0-9]+\\]\\)?  DB<\\([0-9]+\\)> "
@@ -66,6 +71,7 @@ dbgr-loc-pat struct")
 (setf (gethash "backtrace" dbgr-perldb-command-hash) "T")
 (setf (gethash "break"     dbgr-perldb-command-hash) "b %l")
 (setf (gethash "continue"  dbgr-perldb-command-hash) "c")
+(setf (gethash "eval"      dbgr-perldb-command-hash) "x %s")
 (setf (gethash "quit"      dbgr-perldb-command-hash) "q")
 (setf (gethash "restart"   dbgr-perldb-command-hash) "R")
 (setf (gethash "run"       dbgr-perldb-command-hash) "R")
