@@ -1,10 +1,11 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
 (require-relative-list '("custom" "key" "menu") "dbgr-")
 (require-relative-list '("buffer/helper") "dbgr-buffer-")
 
 (defvar dbgr-short-key-mode-map 
   (let ((map (make-sparse-keymap)))
+    (suppress-keymap map)
     (dbgr-populate-common-keys map)
     (dbgr-populate-src-buffer-map-plain map)
     (dbgr-populate-debugger-menu map)

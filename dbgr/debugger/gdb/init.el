@@ -51,8 +51,7 @@ dbgr-loc-pat struct")
 ;; Regular expression that describes a gdb "backtrace" command line.
 ;; For example:
 ;; #0  main (argc=2, argv=0xbffff564, envp=0xbffff570) at main.c:935
-;; #1  0xb7e9f4a5 in *__GI___strdup (
-;;    s=0xbffff760 "/tmp/remake/remake") at strdup.c:42
+;; #1  0xb7e9f4a5 in *__GI___strdup (s=0xbffff760 "/tmp/remake/remake") at strdup.c:42
 ;; #2  0x080593ac in main (argc=2, argv=0xbffff5a4, envp=0xbffff5b0)
 ;;    at main.c:952
 (setf (gethash "debugger-backtrace" dbgr-gdb-pat-hash)

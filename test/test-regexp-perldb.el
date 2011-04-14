@@ -62,14 +62,14 @@
 					      text)))
 
 	 (specify "debugger-backtrace"
-		  (setq dbg-bt-pat  (gethash "debugger-backtrace"  
+		  (setq dbgr-bt-pat  (gethash "debugger-backtrace"  
 					     dbgr-perldb-pat-hash))
 		  (setq s1
 			"$ = main::top_navigation_panel called from file `./latex2html' line 7400
 ")
-		  (setq dbgr-bt-re (dbgr-loc-pat-regexp dbg-bt-pat))
-		  (setq file-group (dbgr-loc-pat-file-group dbg-bt-pat))
-		  (setq line-group (dbgr-loc-pat-line-group dbg-bt-pat))
+		  (setq dbgr-bt-re (dbgr-loc-pat-regexp dbgr-bt-pat))
+		  (setq file-group (dbgr-loc-pat-file-group dbgr-bt-pat))
+		  (setq line-group (dbgr-loc-pat-line-group dbgr-bt-pat))
 		  (assert-equal 30 (string-match dbgr-bt-re s1))
 		  (assert-equal "./latex2html"
 				(substring s1 
