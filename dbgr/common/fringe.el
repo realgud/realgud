@@ -188,6 +188,7 @@ session which should also erase those fringe arrows."
 	   (eq (marker-buffer dbgr-overlay-arrow1) (current-buffer)))
       (goto-char dbgr-overlay-arrow1)
     )
+  (redisplay)
   )
 
 

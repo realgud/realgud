@@ -41,18 +41,17 @@ NO-RESET is nil, then that information which may point into other
 buffers and source buffers which may contain marks and fringe or
 marginal icons is reset."
   (interactive)
-  (let* (
-	 (cmd-str (or opt-command-line (trepan-query-cmdline "trepan")))
+  (let* ((cmd-str (or opt-command-line (trepan-query-cmdline "trepan")))
 	 (cmd-args (split-string-and-unquote cmd-str))
 	 (parsed-args (trepan-parse-cmd-args cmd-args))
 	 (script-args (cdr cmd-args))
 	 (script-name (car script-args))
-	 (cmd-buf))
-    (dbgr-run-process "trepan" script-name cmd-args 'trepan-track-mode no-reset)
-    )
-  )
+	 (cmd-buf
+	   (dbgr-run-process "trepan" script-name cmd-args 
+			     'trepan-track-mode no-reset)
+	   ))
+  ))
 
 (defalias 'trepan 'dbgr-trepan)
-
 (provide-me "dbgr-")
 ;;; trepan.el ends here

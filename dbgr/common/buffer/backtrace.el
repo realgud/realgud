@@ -336,7 +336,20 @@ non-digit will start entry number from the beginning again."
 	      
 	      )
 	  ; else
-	  (setq frame-num (incf alt-frame-num))
+	  (progn 
+	    (setq frame-num-str 
+		    (substring string (match-beginning 0)
+			       (match-end 0)))
+	    (setq frame-num (incf alt-frame-num))
+	    (setq frame-num-pos (match-beginning 0))
+	    (add-to-list 'frame-num-pos-list frame-num-pos 't)
+	    (add-text-properties (match-beginning 0) 
+				 (match-end 0)
+				 '(mouse-face highlight 
+					      help-echo 
+					      "mouse-2: goto this frame")
+				   string)
+	    )
 	  )
 
 	
