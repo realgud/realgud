@@ -16,11 +16,15 @@ dbgr-loc-pat struct")
 
 (declare-function make-dbgr-loc "dbgr-loc" (a b c d e f))
 
+(defconst dbgr-gdb-frame-file-regexp
+ "\\(.+\\):\\([0-9]+\\)")
+
 ;; regular expression that describes a gdb location generally shown
 ;; before a command prompt. NOTE: we assume annotate 1!
 (setf (gethash "loc" dbgr-gdb-pat-hash)
       (make-dbgr-loc-pat
-       :regexp "^\\(.+\\):\\([0-9]+\\):\\([0-9]+\\):beg:0x\\([0-9a-f]+\\)"
+       :regexp (format "^%s:\\([0-9]+\\):beg:0x\\([0-9a-f]+\\)"
+		       dbgr-gdb-frame-file-regexp)
        :file-group 1
        :line-group 2
        :char-offset-group 3))
@@ -37,6 +41,27 @@ dbgr-loc-pat struct")
        :num 1
        :file-group 3
        :line-group 4))
+
+(defconst dbgr-gdb-frame-start-regexp
+  "\\(?:^\\|\n\\)")
+
+(defconst dbgr-gdb-frame-num-regexp
+  "#\\([0-9]+\\)  ")
+
+;; Regular expression that describes a remake "backtrace" command line.
+;; For example:
+;; #0  main (argc=2, argv=0xbffff564, envp=0xbffff570) at main.c:935
+(setf (gethash "debugger-backtrace" dbgr-gdb-pat-hash)
+      (make-dbgr-loc-pat
+       :regexp 	(concat dbgr-gdb-frame-start-regexp 
+			dbgr-gdb-frame-num-regexp
+			"\\(.*\\)[ \n]+at "
+			dbgr-gdb-frame-file-regexp
+			)
+       :num 1
+       :file-group 3
+       :line-group 4)
+      )
 
 (defvar dbgr-gdb-command-hash (make-hash-table :test 'equal)
   "Hash key is command name like 'continue' and the value is 
