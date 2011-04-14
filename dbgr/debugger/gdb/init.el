@@ -48,9 +48,13 @@ dbgr-loc-pat struct")
 (defconst dbgr-gdb-frame-num-regexp
   "#\\([0-9]+\\)  ")
 
-;; Regular expression that describes a remake "backtrace" command line.
+;; Regular expression that describes a gdb "backtrace" command line.
 ;; For example:
 ;; #0  main (argc=2, argv=0xbffff564, envp=0xbffff570) at main.c:935
+;; #1  0xb7e9f4a5 in *__GI___strdup (
+;;    s=0xbffff760 "/tmp/remake/remake") at strdup.c:42
+;; #2  0x080593ac in main (argc=2, argv=0xbffff5a4, envp=0xbffff5b0)
+;;    at main.c:952
 (setf (gethash "debugger-backtrace" dbgr-gdb-pat-hash)
       (make-dbgr-loc-pat
        :regexp 	(concat dbgr-gdb-frame-start-regexp 
@@ -62,6 +66,21 @@ dbgr-loc-pat struct")
        :file-group 3
        :line-group 4)
       )
+
+(setf (gethash "font-lock-keywords" dbgr-gdb-pat-hash)
+      '(
+	;; #2  0x080593ac in main (argc=2, argv=0xbffff5a4, envp=0xbffff5b0)
+	;;    at main.c:952
+	("[ \n]+at \\(.*\\):\\([0-9]+\\)"
+	 (1 dbgr-file-name-face)
+	 (2 dbgr-line-number-face))
+
+	;; The frame number and first type name, if present.
+	;; E.g. =>#0  Makefile.in at /tmp/Makefile:216
+	;;      ---^
+	( "#\\(?:^\\|\n\\)\\([0-9]+\\)  "
+	 (1 dbgr-backtrace-number-face))
+	))
 
 (defvar dbgr-gdb-command-hash (make-hash-table :test 'equal)
   "Hash key is command name like 'continue' and the value is 
