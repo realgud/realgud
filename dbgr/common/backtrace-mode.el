@@ -12,15 +12,17 @@
     (define-key map [mouse-3] 'dbgr-goto-frame-mouse)
     (define-key map [up]      'dbgr-backtrace-moveto-frame-prev)
     (define-key map [down]    'dbgr-backtrace-moveto-frame-next)
+    (define-key map "l"       'dbgr-recenter-arrow)
 
-    ;; FIXME: these can go to a common routine. See also shortkey.el
+    ;; FIXME: these can go to a common routine. See also shortkey.el and
+    ;; key.el
     (define-key map "<"       'dbgr-cmd-newer-frame)
     (define-key map ">"       'dbgr-cmd-older-frame)
     (define-key map "d"       'dbgr-cmd-newer-frame)
     (define-key map "u"       'dbgr-cmd-older-frame)
-    (define-key map "l"        'dbgr-recenter-arrow)
-    (define-key map "C"        'dbgr-window-cmd-undisturb-src)
-    (define-key map "S"        'dbgr-window-src-undisturb-cmd)
+    (define-key map "C"       'dbgr-window-cmd-undisturb-src)
+    (define-key map "F"       'dbgr-window-bt)
+    (define-key map "S"       'dbgr-window-src-undisturb-cmd)
 
     (define-key map "n"       'dbgr-backtrace-moveto-frame-next)
     (define-key map "p"       'dbgr-backtrace-moveto-frame-prev)

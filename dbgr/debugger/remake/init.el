@@ -55,7 +55,11 @@ dbgr-loc-pat struct")
 (defconst dbgr-remake-frame-start-regexp
   "\\(?:^\\|\n\\)")
 
-(defconst dbgr-remake-frame-arrow "\\(=>\\|  \\)")
+(defconst dbgr-remake-selected-frame-arrow "=>"
+"String that describes which frame is selected in a debugger
+backtrace listing.")
+(defconst dbgr-remake-frame-arrow (format "\\(%s\\|  \\)" 
+					  dbgr-remake-selected-frame-arrow))
 (defconst dbgr-remake-frame-num-regexp
   "#\\([0-9]+\\)  ")
 
@@ -93,6 +97,11 @@ dbgr-loc-pat struct")
        :file-group 4
        :line-group 5)
       )
+
+;; Regular expression that describes which frame is selected in 
+;; a debugger backtrace listing.
+(setf (gethash "selected-frame-indicator" dbgr-remake-pat-hash)
+      dbgr-remake-selected-frame-arrow)
 
 (setf (gethash "font-lock-keywords" dbgr-remake-pat-hash)
       '(

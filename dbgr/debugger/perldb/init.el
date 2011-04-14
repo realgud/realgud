@@ -68,6 +68,16 @@ dbgr-loc-pat struct")
   "Hash key is command name like 'quit' and the value is 
   the perldb command to use, like 'q'")
 
+(setf (gethash "font-lock-keywords" dbgr-perldb-pat-hash)
+      '(
+	("\s+called from file `\\(.+\\)' line \\([0-9]+\\)"
+	 (1 dbgr-file-name-face)
+	 (2 dbgr-line-number-face))
+	))
+
+
+(setf (gethash "perldb" dbgr-pat-hash) dbgr-perldb-pat-hash)
+
 (setf (gethash "backtrace" dbgr-perldb-command-hash) "T")
 (setf (gethash "break"     dbgr-perldb-command-hash) "b %l")
 (setf (gethash "continue"  dbgr-perldb-command-hash) "c")
@@ -78,7 +88,5 @@ dbgr-loc-pat struct")
 (setf (gethash "step"      dbgr-perldb-command-hash) "s")
 (setf (gethash "next"      dbgr-perldb-command-hash) "n")
 (setf (gethash "perldb" dbgr-command-hash) dbgr-perldb-command-hash)
-
-(setf (gethash "perldb" dbgr-pat-hash) dbgr-perldb-pat-hash)
 
 (provide-me "dbgr-perldb-")

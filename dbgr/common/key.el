@@ -79,10 +79,6 @@ Nor does it touch prefix keys; for that see `dbgr-populate-keys-standard'"
   (let ((prefix-map (make-sparse-keymap)))
     (define-key map "b" 'dbgr-cmd-break)
     (define-key map " " 'dbgr-cmd-step)
-    (define-key map "<" 'dbgr-cmd-newer-frame)
-    (define-key map ">" 'dbgr-cmd-older-frame)
-    (define-key map "d" 'dbgr-cmd-newer-frame)
-    (define-key map "u" 'dbgr-cmd-older-frame)
     (define-key map "f" 'dbgr-cmd-finish)
     (define-key map "n" 'dbgr-cmd-next)
     (define-key map "q" 'dbgr-cmd-quit)
@@ -90,8 +86,17 @@ Nor does it touch prefix keys; for that see `dbgr-populate-keys-standard'"
     (define-key map "R" 'dbgr-cmd-restart)
     (define-key map "s" 'dbgr-cmd-step)
     (define-key map "!" 'dbgr-cmd-shell)
+
+    ;; FIXME: these can go to a common routine. See also shortkey.el
+    ;; and backtrace-mode.el
+    (define-key map "<" 'dbgr-cmd-newer-frame)
+    (define-key map ">" 'dbgr-cmd-older-frame)
+    (define-key map "d" 'dbgr-cmd-newer-frame)
+    (define-key map "u" 'dbgr-cmd-older-frame)
     (define-key map "C" 'dbgr-window-cmd-undisturb-src)
     (define-key map "F" 'dbgr-window-bt)
+    (define-key map "S" 'dbgr-window-src-undisturb-cmd)
+
     (define-key map [M-down]    'dbgr-track-hist-newer)
     (define-key map [M-kp-2]    'dbgr-track-hist-newer)
     (define-key map [M-up]      'dbgr-track-hist-older)

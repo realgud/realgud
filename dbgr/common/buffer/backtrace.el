@@ -57,6 +57,8 @@ to be debugged."
   	)
     (with-current-buffer-safe cmdbuf
       (let ((frame-pat (dbgr-cmdbuf-pat "debugger-backtrace"))
+	    (indicator-re (or (dbgr-cmdbuf-pat "selected-frame-indicator")
+			      "->"))
 	    (selected-frame-num)
 	    (frame-pos-ring)
 	    (sleep-count 0)
@@ -91,7 +93,8 @@ to be debugged."
 	      (if divert-string 
 		  (let* ((triple 
 			  (dbgr-backtrace-add-text-properties frame-pat
-							      divert-string))
+							      divert-string
+							      indicator-re))
 			 (string-with-props (car triple))
 			 (frame-num-pos-list (caddr triple))
 			 )
@@ -296,7 +299,8 @@ non-digit will start entry number from the beginning again."
       (setq dbgr-goto-entry-acc ""))
   (dbgr-goto-frame-n-internal (this-command-keys)))
 
-(defun dbgr-backtrace-add-text-properties  (frame-pat &optional opt-string)
+(defun dbgr-backtrace-add-text-properties  (frame-pat &optional opt-string
+						      frame-indicator-re)
   "Parse STRING and add properties for that"
 
   (let ((string (or opt-string 
@@ -313,7 +317,7 @@ non-digit will start entry number from the beginning again."
       (let ((frame-num-str)
 	    (frame-num)
 	    
-	    ;; FIXME: Sort of a hack that 1 is always the frame indicator.
+	    ;; FIXME: Remove hack that 1 is always the frame indicator.
 	    (frame-indicator 
 	     (substring string (match-beginning 1) (match-end 1)))
 	    (frame-num-pos)
@@ -357,9 +361,7 @@ non-digit will start entry number from the beginning again."
 			   'frame-num  frame-num string)
 	(setq last-pos (match-end 0))
 
-	;; FIXME: Sort of a hack, indicator has '->' somewhere in it if it is
-	;; selected.
-	(if (string-match "->" frame-indicator)
+	(if (string-match frame-indicator-re frame-indicator)
 	  (setq selected-frame-num frame-num))
 	))
 
