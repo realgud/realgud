@@ -97,10 +97,21 @@ of this mode."
 		   'dbgr-track-comint-output-filter-hook)
       (remove-hook 'eshell-output-filter-functions 
 		    'dbgr-track-eshell-output-filter-hook)
+      (let* ((cmd-process (get-buffer-process (current-buffer)))
+	     (status (if cmd-process
+			 (format ":%s"
+			    (process-status cmd-process))
+		       "")))
+	(setq mode-line-process status)
+	;; Force mode line redisplay soon.
+	(force-mode-line-update)
+	)
+
       ;; FIXME: restore/unchain old process sentinels.
       )
     )
-)
+  )
+
 
 ;; For name == "trepan", produces: 
 ;;   (defvar trepan-track-mode-map (make-sparse-keymap))

@@ -99,7 +99,14 @@ evaluating (dbgr-cmdbuf-info-loc-regexp dbgr-cmdbuf-info)"
 		    (with-current-buffer src-buffer
 		      (dbgr-bp-add-info bp-loc)
 		      )))
-	      (if loc (dbgr-track-loc-action loc cmdbuf)))
+	      (if loc 
+		  (progn 
+		    (dbgr-track-loc-action loc cmdbuf)
+		    (dbgr-cmdbuf-info-in-debugger?= 't)
+		    (dbgr-cmdbuf-force-mode-line-update)
+		    )
+		)
+	      )
 	  )
       ;; else
       (error "Buffer %s is not a debugger command buffer" cmdbuf))

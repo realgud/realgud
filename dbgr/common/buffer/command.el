@@ -27,6 +27,7 @@
                        ;; comint-prompt-regexp) *before* setting
                        ;; loc-regexp
   no-record?           ;; Should we update the location history?
+  in-debugger?         ;; True if we think we are in a debugger
   src-shortkey?        ;; Are source buffers in dbgr-short-key mode?
   regexp-hash          ;; hash table of regular expressions appropriate for
                        ;; this debugger. Eventually loc-regexp, file-group
@@ -62,6 +63,7 @@
 (dbgr-struct-field-setter "dbgr-cmdbuf-info" "no-record?")
 (dbgr-struct-field-setter "dbgr-cmdbuf-info" "prior-prompt-regexp")
 (dbgr-struct-field-setter "dbgr-cmdbuf-info" "src-shortkey?")
+(dbgr-struct-field-setter "dbgr-cmdbuf-info" "in-debugger?")
 
 (defun dbgr-cmdbuf-info-describe ()
   (interactive "")
@@ -86,6 +88,8 @@
 		    (dbgr-cmdbuf-info-srcbuf-list info)))
     (insert (format "Backtrace buffer: %s\n"
 		    (dbgr-cmdbuf-info-bt-buf info)))
+    (insert (format "In debugger?: %s\n"
+		    (dbgr-cmdbuf-info-in-debugger? info)))
     )
   )
 
@@ -100,6 +104,12 @@
   (and (boundp 'dbgr-cmdbuf-info) 
        dbgr-cmdbuf-info
        (dbgr-cmdbuf-info? dbgr-cmdbuf-info)))
+
+(defun dbgr-cmdbuf-info-in-debugger-toggle ()
+  "Toggle state of whether we think we running a debugger or not"
+  (dbgr-cmdbuf-info-in-debugger?= (not (dbgr-sget 'cmdbuf-info 'cmd-args)))
+  (dbgr-cmdbuf-force-mode-line-update)
+)
 
 (defun dbgr-cmdbuf-add-srcbuf(srcbuf &optional cmdbuf)
   "Add SRCBUF to srcbuf-list field of INFO unless it is already included."
@@ -167,6 +177,7 @@ as a main program."
 	     :bt-buf nil
 	     :cmd-hash cmd-hash
 	     :src-shortkey? 't
+	     :in-debugger? nil
 	     ))
       (setq font-lock-keywords (dbgr-cmdbuf-pat "font-lock-keywords"))
       (if font-lock-keywords
@@ -208,5 +219,31 @@ command-process buffer has stored."
   (with-current-buffer cmd-buf
     (lexical-let* ((loc (dbgr-loc-hist-item (dbgr-cmdbuf-loc-hist cmd-buf))))
       (and loc (dbgr-loc-marker loc)))))
+
+(defun dbgr-cmdbuf-force-mode-line-update (&optional opt-cmdbuf)
+  "Force update of command buffer to include process status"
+  (let ((cmdbuf (dbgr-get-cmdbuf opt-cmdbuf))
+	(debug-status)
+	(status)
+	(cmd-process)
+	)
+    (if (and cmdbuf (buffer-name cmdbuf))
+	(with-current-buffer cmdbuf
+	  (setq cmd-process (get-buffer-process cmdbuf))
+	  (setq debug-status
+		(if (dbgr-sget 'cmdbuf-info 'in-debugger?)
+		    "debugger"
+		  "no debugger"))
+	  (setq status 
+		(if cmd-process
+		    (format ":%s [%s]" 
+			    (process-status cmd-process) debug-status)
+		  ":not running"))
+	  (setq mode-line-process status)
+	  ;; Force mode line redisplay soon.
+	  (force-mode-line-update))
+      ))
+  )
+
 
 (provide-me "dbgr-buffer-")

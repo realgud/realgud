@@ -10,6 +10,7 @@
 ; FIXME: encapsulate this.
 (setq dbg-name "gdb")
 
+(setq loc-pat (gethash "loc" (gethash dbg-name dbgr-pat-hash)))
 (setq dbgr (make-dbgr-cmdbuf-info
 		  :debugger-name dbg-name
 		  :loc-regexp (dbgr-loc-pat-regexp loc-pat)
@@ -22,7 +23,6 @@
 (setq text "/home/rocky/c/ctest.c:80:2000:beg:0x8048748>")
 (context "traceback location matching"
 	 (tag regexp-gdb)
-	 (setq loc-pat (gethash "loc" (gethash dbg-name dbgr-pat-hash)))
 	 (defun loc-match(text) 
 	   (string-match (dbgr-cmdbuf-info-loc-regexp dbgr) text)
 	   )
