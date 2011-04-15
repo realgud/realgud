@@ -55,15 +55,20 @@ results into the command buffer."
 (defun dbgr-send-command (command &optional opt-send-fn opt-buffer)
   "Invoke the debugger COMMAND adding that command and the
 results into the command buffer."
-  (let* ((buffer (or opt-buffer (current-buffer)))
-	 (cmdbuf (dbgr-get-cmdbuf buffer))
+  (let* ((cmdbuf (dbgr-get-cmdbuf opt-buffer))
 	 (send-command-fn (or opt-send-fn (function dbgr-send-command-comint)))
 	 )
     (if cmdbuf
 	(with-current-buffer cmdbuf
 	  (let ((process (get-buffer-process cmdbuf)))
-	    (or process (error "Command process buffer is not running"))
-	    (funcall send-command-fn process command)
+	    (unless process 
+	      (dbgr-cmdbuf-info-in-debugger?= nil)
+	      (error "Command process buffer is not running")
+	      )
+	    (if (dbgr-sget 'cmdbuf-info 'in-debugger?)
+		(funcall send-command-fn process command)
+	      (error "Command buffer doesn't think a debugger is running")
+	      )
 	    ))
       (error "Can't find command process buffer")
       )))

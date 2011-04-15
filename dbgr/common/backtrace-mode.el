@@ -4,6 +4,7 @@
 (require-relative-list  '("menu") "dbgr-")
 (defvar dbgr-backtrace-mode-map
   (let ((map  (dbgr-populate-debugger-menu (make-sparse-keymap))))
+    (suppress-keymap map)
     (dbgr-populate-common-keys map)
     (define-key map "."       'dbgr-backtrace-moveto-frame-selected)
     (define-key map "r"       'dbgr-backtrace-init)

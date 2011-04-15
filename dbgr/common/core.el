@@ -137,6 +137,8 @@ resets short-key mode."
   (let ((cmdbuf (dbgr-get-cmdbuf buf)))
     (if cmdbuf
 	(with-current-buffer cmdbuf
+	  (dbgr-cmdbuf-info-in-debugger?= nil)
+	  (dbgr-cmdbuf-force-mode-line-update)
 	  (dbgr-fringe-erase-history-arrows)
 	  (if dbgr-cmdbuf-info
 	      (dolist (srcbuf (dbgr-cmdbuf-info-srcbuf-list dbgr-cmdbuf-info))

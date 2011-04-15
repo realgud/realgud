@@ -49,6 +49,7 @@ to be debugged."
     )
 )
 
+;; FIXME: create this in a new frame.
 (defun dbgr-backtrace-init ()
   (interactive)
   (let ((buffer (current-buffer))
