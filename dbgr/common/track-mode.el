@@ -99,9 +99,11 @@ of this mode."
 		    'dbgr-track-eshell-output-filter-hook)
       (let* ((cmd-process (get-buffer-process (current-buffer)))
 	     (status (if cmd-process
-			 (format ":%s"
-			    (process-status cmd-process))
-		       "")))
+			 (list (propertize (format ":%s"
+						   (process-status cmd-process))
+			    'face 'debugger-running))
+		       ""))
+	     )
 	(setq mode-line-process status)
 	;; Force mode line redisplay soon.
 	(force-mode-line-update)

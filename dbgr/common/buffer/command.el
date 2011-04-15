@@ -15,6 +15,26 @@
   )
 (require 'cl)
 
+(defface debugger-running
+  '((((class color) (min-colors 16) (background light))
+     (:foreground "Green4" :weight bold))
+    (((class color) (min-colors 88) (background dark))
+     (:foreground "Green1" :weight bold))
+    (((class color) (min-colors 16) (background dark))
+     (:foreground "Green" :weight bold))
+    (((class color)) (:foreground "green" :weight bold))
+    (t (:weight bold)))
+  "Face used to highlight debugger run information."
+  :group 'dbgr
+  :version "23.1")
+
+(defface debugger-not-running
+  '((t :inherit font-lock-warning-face))
+  "Face used when debugger or process is not running."
+  :group 'dbgr
+  :version "23.1")
+
+
 (defstruct dbgr-cmdbuf-info
   "The debugger object/structure specific to a process buffer."
   in-srcbuf?           ;; If true, selected window be the source buffer.
@@ -107,8 +127,9 @@
 
 (defun dbgr-cmdbuf-info-in-debugger-toggle ()
   "Toggle state of whether we think we running a debugger or not"
-  (dbgr-cmdbuf-info-in-debugger?= (not (dbgr-sget 'cmdbuf-info 'cmd-args)))
-  (dbgr-cmdbuf-force-mode-line-update)
+  (interactive "")
+  (dbgr-cmdbuf-info-in-debugger?= (not (dbgr-sget 'cmdbuf-info 'in-debugger?)))
+  (dbgr-cmdbuf-mode-line-update)
 )
 
 (defun dbgr-cmdbuf-add-srcbuf(srcbuf &optional cmdbuf)
@@ -220,7 +241,7 @@ command-process buffer has stored."
     (lexical-let* ((loc (dbgr-loc-hist-item (dbgr-cmdbuf-loc-hist cmd-buf))))
       (and loc (dbgr-loc-marker loc)))))
 
-(defun dbgr-cmdbuf-force-mode-line-update (&optional opt-cmdbuf)
+(defun dbgr-cmdbuf-mode-line-update (&optional opt-cmdbuf)
   "Force update of command buffer to include process status"
   (let ((cmdbuf (dbgr-get-cmdbuf opt-cmdbuf))
 	(debug-status)
@@ -232,13 +253,17 @@ command-process buffer has stored."
 	  (setq cmd-process (get-buffer-process cmdbuf))
 	  (setq debug-status
 		(if (dbgr-sget 'cmdbuf-info 'in-debugger?)
-		    "debugger"
-		  "no debugger"))
+		    " debugger"
+		  ""))
 	  (setq status 
 		(if cmd-process
-		    (format ":%s [%s]" 
-			    (process-status cmd-process) debug-status)
-		  ":not running"))
+		    (list (propertize
+			   (format ":%s%s" 
+				   (process-status cmd-process) debug-status)
+			   'face 'debugger-running))
+		  (list (propertize ":not running" 'face
+			'debugger-not-running))
+		  ))
 	  (setq mode-line-process status)
 	  ;; Force mode line redisplay soon.
 	  (force-mode-line-update))

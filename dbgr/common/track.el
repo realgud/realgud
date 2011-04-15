@@ -103,7 +103,7 @@ evaluating (dbgr-cmdbuf-info-loc-regexp dbgr-cmdbuf-info)"
 		  (progn 
 		    (dbgr-track-loc-action loc cmdbuf)
 		    (dbgr-cmdbuf-info-in-debugger?= 't)
-		    (dbgr-cmdbuf-force-mode-line-update)
+		    (dbgr-cmdbuf-mode-line-update)
 		    )
 		)
 	      )
