@@ -13,6 +13,9 @@ CHECK_FILES = $(notdir $(test_files:.el=.run))
 
 check: $(CHECK_FILES)
 
+check-short:
+	$(MAKE) check 2>&1  | ruby ../make-check-filter.rb
+
 test-%.run:
 	(cd $(top_srcdir)/test && $(EMACS) -batch -Q -l $(@:.run=.el) )
 

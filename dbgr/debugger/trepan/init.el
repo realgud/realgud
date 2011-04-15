@@ -104,7 +104,7 @@ backtrace listing.")
 (setf (gethash "font-lock-keywords" dbgr-trepan-pat-hash)
       '(
 	;; The frame number and first type name, if present.
-	(format ("^\\(%s\\|   \\)? #\\([0-9]+\\) \\([A-Z]+\\) *\\([A-Z_][a-zA-Z0-9_]*\\)[#]\\([a-zA-Z_][a-zA-Z_[0-9]]*\\)?" dbgr-trepan-selected-frame-arrow)
+	("^\\(-->\\|   \\)? #\\([0-9]+\\) \\([A-Z]+\\) *\\([A-Z_][a-zA-Z0-9_]*\\)[#]\\([a-zA-Z_][a-zA-Z_[0-9]]*\\)?"
 	 (2 dbgr-backtrace-number-face)
 	 (3 font-lock-keyword-face)         ; e.g. METHOD, TOP
 	 (4 font-lock-constant-face)        ; e.g. Object
