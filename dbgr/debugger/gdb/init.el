@@ -81,6 +81,8 @@ dbgr-loc-pat struct")
 	 (1 dbgr-backtrace-number-face))
 	))
 
+(setf (gethash "gdb" dbgr-pat-hash) dbgr-trepan-pat-hash)
+
 (defvar dbgr-gdb-command-hash (make-hash-table :test 'equal)
   "Hash key is command name like 'continue' and the value is 
   the gdb command to use, like 'continue'")
