@@ -429,13 +429,13 @@ described by PT."
   )
   
 (defun dbgr-goto-debugger-backtrace-line (pt)
-  "Display the location mentioned by the Perl backtrace line
+  "Display the location mentioned by the debugger backtrace line
 described by PT."
   (interactive "d")
   (dbgr-goto-line-for-pt pt "debugger-backtrace"))
 
 (defun dbgr-goto-lang-backtrace-line (pt)
-  "Display the location mentioned by the Perl backtrace line
+  "Display the location mentioned by the programming-language backtrace line
 described by PT."
   (interactive "d")
   (dbgr-goto-line-for-pt pt "lang-backtrace"))

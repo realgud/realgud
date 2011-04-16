@@ -46,7 +46,7 @@ if none has been set in the command hash."
 (defun dbgr-cmd-break(arg)
   "Set a breakpoint at the current line"
   (interactive "p")
-  (dbgr-cmd-remap arg "break" "break %X:l" "b")
+  (dbgr-cmd-remap arg "break" "break %X:%l" "b")
   )
 
 (defun dbgr-cmd-continue(&optional arg)
@@ -83,6 +83,12 @@ This command is often referred to as 'step out' as opposed to
 If no argument specified use 0 or the most recent frame."
     (dbgr-cmd-remap arg "frame" "frame %p" "f" t t)
 )
+
+(defun dbgr-cmd-kill(arg)
+  "kill debugger process"
+  (interactive "p")
+  (dbgr-cmd-remap arg "kill" "kill" "k" nil nil 't)
+  )
 
 (defun dbgr-cmd-newer-frame(&optional arg)
     "Move the current frame to a newer (more recent) frame. 
