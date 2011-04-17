@@ -31,6 +31,30 @@
 		    (assert-equal line-number (dbgr-loc-line-number loc)))
 	   )
 
+	 (specify "dbgr-track-selected-frame"
+		  (setq debugger-output "up 
+--> #1 TOP Object#<top /usr/local/bin/irb> in file /usr/local/bin/irb at line 9
+   (/usr/local/bin/irb:9 @11)
+require irb'
+")
+		  (assert-equal 1 (dbgr-track-selected-frame debugger-output))
+
+		  (setq debugger-output " 
+--> #0 TOP Object#<top /usr/local/bin/irb> in file /usr/local/bin/irb at line 9
+   (/usr/local/bin/irb:9 @11)
+require irb'
+")
+		  (assert-equal 0 (dbgr-track-selected-frame debugger-output))
+
+		  (setq debugger-output "
+<- (<internal:lib/rubygems/custom_require>:38 remapped /usr/local/lib/ruby/gems/1.9.1/gems/trepanning-0.1.3.dev/data/custom_require.rb:38 @16)
+R=> false
+end
+")
+		  (assert-nil (dbgr-track-selected-frame debugger-output))
+		  )
+
+
 	 ;; (setq debugger-bp-output (format "Breakpoint %d set at line %d\n\tin file %s.\n"
 	 ;; 				  bp-num line-number filename))
 	 ;; (setq bp-loc (dbgr-track-bp-loc debugger-bp-output nil))

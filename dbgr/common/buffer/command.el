@@ -85,31 +85,38 @@
 (dbgr-struct-field-setter "dbgr-cmdbuf-info" "src-shortkey?")
 (dbgr-struct-field-setter "dbgr-cmdbuf-info" "in-debugger?")
 
-(defun dbgr-cmdbuf-info-describe ()
+(defun dbgr-cmdbuf-info-describe (&optional buffer)
   (interactive "")
-  (let ((info dbgr-cmdbuf-info)
-	(cmdbuf-name (buffer-name)))
-    (switch-to-buffer (get-buffer-create "*Describe*"))
-    (delete-region (point-min) (point-max))
-    (insert (format "cmdbuf-info for %s\n" cmdbuf-name))
-    (insert (format "Debugger-name: %s\n" 
-		    (dbgr-cmdbuf-info-debugger-name info)))
-    (insert (format "In source or command buffer?: %s\n" 
-		    (dbgr-cmdbuf-info-in-srcbuf? info)))
-    (insert (format "Command-line args: %s\n" 
-		    (dbgr-cmdbuf-info-cmd-args info)))
-    (insert (format "Source should go into shortkey?: %s\n"
-		    (dbgr-cmdbuf-info-src-shortkey? info)))
-    (insert (format "Breakpoint list: %s\n"
-		    (dbgr-cmdbuf-info-bp-list info)))
-    (insert (format "Remap table for debugger commands: %s\n"
-		    (dbgr-cmdbuf-info-cmd-hash info)))
-    (insert (format "Source buffers seen: %s\n"
-		    (dbgr-cmdbuf-info-srcbuf-list info)))
-    (insert (format "Backtrace buffer: %s\n"
-		    (dbgr-cmdbuf-info-bt-buf info)))
-    (insert (format "In debugger?: %s\n"
-		    (dbgr-cmdbuf-info-in-debugger? info)))
+  (setq buffer (dbgr-get-cmdbuf buffer))
+  (if buffer
+      (with-current-buffer buffer
+	(let ((info dbgr-cmdbuf-info)
+	      (cmdbuf-name (buffer-name)))
+	  (switch-to-buffer (get-buffer-create "*Describe*"))
+	  (delete-region (point-min) (point-max))
+	  (insert (format "cmdbuf-info for %s\n" cmdbuf-name))
+	  (insert (format "Debugger-name: %s\n" 
+			  (dbgr-cmdbuf-info-debugger-name info)))
+	  (insert (format "Selected window should contain source?: %s\n" 
+			  (dbgr-cmdbuf-info-in-srcbuf? info)))
+	  (insert (format "Command-line args: %s\n" 
+			  (dbgr-cmdbuf-info-cmd-args info)))
+	  (insert (format "Source should go into shortkey?: %s\n"
+			  (dbgr-cmdbuf-info-src-shortkey? info)))
+	  (insert (format "Breakpoint list: %s\n"
+			  (dbgr-cmdbuf-info-bp-list info)))
+	  (insert (format "Remap table for debugger commands: %s\n"
+			  (dbgr-cmdbuf-info-cmd-hash info)))
+	  (insert (format "Source buffers seen: %s\n"
+			  (dbgr-cmdbuf-info-srcbuf-list info)))
+	  (insert (format "Backtrace buffer: %s\n"
+			  (dbgr-cmdbuf-info-bt-buf info)))
+	  (insert (format "In debugger?: %s\n"
+			  (dbgr-cmdbuf-info-in-debugger? info)))
+	  )
+	)
+    (message "Buffer %s is not a debugger buffer; nothing done."
+	     (or buffer (current-buffer)))
     )
   )
 
@@ -125,12 +132,21 @@
        dbgr-cmdbuf-info
        (dbgr-cmdbuf-info? dbgr-cmdbuf-info)))
 
-(defun dbgr-cmdbuf-info-in-debugger-toggle ()
-  "Toggle state of whether we think we running a debugger or not"
+(defun dbgr-cmdbuf-stay-in-source-toggle (&optional buffer)
+  "Toggle state of whether we should stay in source code or not"
   (interactive "")
-  (dbgr-cmdbuf-info-in-debugger?= (not (dbgr-sget 'cmdbuf-info 'in-debugger?)))
-  (dbgr-cmdbuf-mode-line-update)
-)
+  (setq buffer (dbgr-get-cmdbuf buffer))
+  (if buffer
+      (with-current-buffer buffer
+	(dbgr-cmdbuf-info-in-srcbuf?= 
+	 (not (dbgr-sget 'cmdbuf-info 'in-srcbuf?)))
+	(message "Selected window should contain source?: %s\n" 
+		 (dbgr-cmdbuf-info-in-srcbuf? dbgr-cmdbuf-info))
+	)
+    (message "Buffer %s is not a debugger buffer; nothing done."
+	     (or buffer (current-buffer)))
+    )
+  )
 
 (defun dbgr-cmdbuf-add-srcbuf(srcbuf &optional cmdbuf)
   "Add SRCBUF to srcbuf-list field of INFO unless it is already included."

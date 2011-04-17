@@ -63,6 +63,28 @@ dbgr-loc-pat struct")
        :regexp "^Deleted breakpoint \\([0-9]+\\)\n"
        :num 1))
 
+(defconst dbgr-trepan-selected-frame-indicator "-->"
+"String that describes which frame is selected in a debugger
+backtrace listing.")
+
+(defconst dbgr-trepan-frame-file-regexp
+  "[ \t\n]+in file \\([^ \n]+\\)")
+
+;; Top frame number
+(setf (gethash "top-frame-num" dbgr-trepan-pat-hash) 0)
+
+;; Regular expression that describes a debugger "selected" frame in in 
+;; a frame-motion command.
+;; For example:
+;; --> #1 TOP Object#<top /usr/local/bin/irb> in file /usr/local/bin/irb at line 9
+(setf (gethash "selected-frame" dbgr-trepan-pat-hash)
+      (make-dbgr-loc-pat
+       :regexp 
+       (format "^%s #\\([0-9]+\\) .*%s" 
+	       dbgr-trepan-selected-frame-indicator
+	       dbgr-trepan-frame-file-regexp)
+       :num 1))
+
 (setf (gethash "control-frame" dbgr-trepan-pat-hash)
       (make-dbgr-loc-pat
        :regexp "^c:\\([0-9]+\\) p:\\([0-9]+\\) s:\\([0-9]+\\) b:\\([0-9]+\\) l:\\([0-9a-f]+\\) d:\\([0-9a-f]+\\) \\([A-Z]+\\) \\(.+\\):\\([0-9]+\\)"
@@ -71,9 +93,6 @@ dbgr-loc-pat struct")
 
 ;;  Regular expression that describes a Ruby $! string
 (setf (gethash "dollar-bang" dbgr-trepan-pat-hash) dbgr-ruby-dollar-bang)
-
-(defconst dbgr-trepan-frame-file-regexp
-  "[ \t\n]+in file \\([^ \n]+\\)")
 
 ;;  Regular expression that describes debugger "backtrace" command line.
 ;;  e.g.
@@ -92,14 +111,10 @@ dbgr-loc-pat struct")
        :line-group 7)
       )
 
-(defconst dbgr-trepan-selected-frame-arrow "-->"
-"String that describes which frame is selected in a debugger
-backtrace listing.")
-
 ;; Regular expression that describes which frame is selected in 
 ;; a debugger backtrace listing.
 (setf (gethash "selected-frame-indicator" dbgr-trepan-pat-hash)
-      dbgr-trepan-selected-frame-arrow)
+      dbgr-trepan-selected-frame-indicator)
 
 (setf (gethash "font-lock-keywords" dbgr-trepan-pat-hash)
       '(

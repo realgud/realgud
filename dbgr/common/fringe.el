@@ -2,8 +2,8 @@
 ;; Fringe marks for history of stopping points
 
 ;; Bitmap for hollow overlay-arrow in fringe
-;; (define-fringe-bitmap 'hollow-right-triangle
-;;  "\xe0\x90\x88\x84\x84\x88\x90\xe0")
+(define-fringe-bitmap 'hollow-right-triangle
+  "\xe0\x90\x88\x84\x84\x88\x90\xe0")
 
 ;; FIXME: Figure out how to do this as a macro.
 
@@ -169,27 +169,30 @@ session which should also erase those fringe arrows."
       (goto-char dbgr-overlay-arrow1))
   )
 
-(defun dbgr-recenter-arrow()
+(defun dbgr-recenter-arrow(&optional opt-buffer)
   "If the current buffer contains dbgr-overlay-arrows 1, 2 or 3 
    recenter window to show that"
   (interactive "")
-  ;; We need to update in the order 3..1 so that if there are more than on
-  ;; arrows in the same buffer the smaller number (e.g. arrow 1) is the 
-  ;; position we are at rather than the earlier one (e.g. arrow 3).
-  (if (and dbgr-overlay-arrow3 
-	   (eq (marker-buffer dbgr-overlay-arrow3) (current-buffer)))
-      (goto-char dbgr-overlay-arrow3)
-    )
-  (if (and dbgr-overlay-arrow2 
-	   (eq (marker-buffer dbgr-overlay-arrow2) (current-buffer)))
-      (goto-char dbgr-overlay-arrow2)
-    )
-  (if (and dbgr-overlay-arrow1 
-	   (eq (marker-buffer dbgr-overlay-arrow1) (current-buffer)))
-      (goto-char dbgr-overlay-arrow1)
-    )
-  (redisplay)
-  )
+  (let ((buffer (or opt-buffer (current-buffer))))
+    ;; We need to update in the order 3..1 so that if there are more than on
+    ;; arrows in the same buffer the smaller number (e.g. arrow 1) is the 
+    ;; position we are at rather than the earlier one (e.g. arrow 3).
+    (with-current-buffer-safe buffer
+      (if (and dbgr-overlay-arrow3 
+	       (eq (marker-buffer dbgr-overlay-arrow3) buffer))
+	  (goto-char dbgr-overlay-arrow3)
+	)
+      (if (and dbgr-overlay-arrow2 
+	       (eq (marker-buffer dbgr-overlay-arrow2) buffer))
+	  (goto-char dbgr-overlay-arrow2)
+      )
+      (if (and dbgr-overlay-arrow1 
+	       (eq (marker-buffer dbgr-overlay-arrow1) buffer))
+	  (goto-char dbgr-overlay-arrow1)
+	)
+      (redisplay)
+      )
+    ))
 
 
 (provide 'dbgr-fringe)

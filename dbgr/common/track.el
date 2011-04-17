@@ -82,6 +82,9 @@ evaluating (dbgr-cmdbuf-info-loc-regexp dbgr-cmdbuf-info)"
   (if (> from to) (psetq to from from to))
   (let* ((text (buffer-substring-no-properties from to))
 	 (loc (dbgr-track-loc text cmd-mark))
+	 ;; If we see a selected frame number, it is stored
+	 ;; in frame-num. Otherwise, nil.
+	 (frame-num)  
 	 (text-sans-loc)
 	 (bp-loc)
 	 (cmdbuf (or opt-cmdbuf (current-buffer)))
@@ -91,7 +94,10 @@ evaluating (dbgr-cmdbuf-info-loc-regexp dbgr-cmdbuf-info)"
 	    (with-current-buffer cmdbuf
 	      (if (dbgr-sget 'cmdbuf-info 'divert-output?)
 		  (dbgr-track-divert-prompt text cmdbuf to))
+	      ;; FIXME: instead of these fixed filters, 
+	      ;; put into a list and iterate over that.
 	      (setq text-sans-loc (or (dbgr-track-loc-remaining text) text))
+	      (setq frame-num (dbgr-track-selected-frame text) text)
 	      (setq bp-loc (dbgr-track-bp-loc text-sans-loc cmd-mark cmdbuf))
 	      (if bp-loc 
 		  (let ((src-buffer (dbgr-loc-goto bp-loc)))
@@ -100,8 +106,10 @@ evaluating (dbgr-cmdbuf-info-loc-regexp dbgr-cmdbuf-info)"
 		      (dbgr-bp-add-info bp-loc)
 		      )))
 	      (if loc 
-		  (progn 
-		    (dbgr-track-loc-action loc cmdbuf)
+		  (let ((selected-frame 
+			 (or (not frame-num) 
+			     (eq frame-num (dbgr-cmdbuf-pat "top-frame-num")))))
+		    (dbgr-track-loc-action loc cmdbuf (not selected-frame))
 		    (dbgr-cmdbuf-info-in-debugger?= 't)
 		    (dbgr-cmdbuf-mode-line-update)
 		    )
@@ -174,7 +182,7 @@ unshown."
   (interactive)
   (dbgr-track-hist-fn-internal 'dbgr-loc-hist-oldest))
 
-(defun dbgr-track-loc-action (loc cmdbuf)
+(defun dbgr-track-loc-action (loc cmdbuf &optional not-selected-frame)
   "If loc is valid, show loc and do whatever actions we do for
 encountering a new loc."
   (if (dbgr-loc? loc)
@@ -220,11 +228,25 @@ encountering a new loc."
 	      (with-current-buffer srcbuf
 		(if (and (boundp 'dbgr-overlay-arrow1)
 			 (markerp dbgr-overlay-arrow1))
-		    (dbgr-window-update-position srcbuf dbgr-overlay-arrow1)))
+		    (progn 
+		      ;; Doesn't work
+		      ;; (if not-selected-frame
+		      ;; 	  (set-fringe-bitmap-face 'hollow-right-triangle 
+		      ;; 				  'dbgr-overlay-arrow1)
+		      ;; 			; else 
+		      ;; 	(set-fringe-bitmap-face 'dbgr-right-triangle1 
+		      ;; 				'dbgr-overlay-arrow1)
+		      ;; 	)
+		      (dbgr-window-update-position srcbuf dbgr-overlay-arrow1)))
+		)
 	      (if cmd-window (select-window cmd-window)))
-	  (dbgr-window-src srcbuf)
+	  ; else
+	  (progn
+	    (dbgr-window-src srcbuf)
+	    (dbgr-window-update-position srcbuf dbgr-overlay-arrow1))
 	  )
-	)))
+	))
+  )
 
 (defun dbgr-track-loc(text cmd-mark &optional opt-regexp opt-file-group opt-line-group )
   "Do regular-expression matching to find a file name and line number inside
@@ -326,6 +348,23 @@ loc-regexp pattern"
 	(if loc-regexp
 	    (if (string-match loc-regexp text)
 		(substring text (match-end 0))
+	      nil)
+	  nil))
+    nil)
+  )
+  
+(defun dbgr-track-selected-frame(text)
+  "Return a selected frame number found in TEXT or nil if none found."
+  (if (dbgr-cmdbuf?)
+      (let ((selected-frame-pat (dbgr-cmdbuf-pat "selected-frame"))
+	    (frame-num-regexp)
+	    )
+	(if (and selected-frame-pat 
+		 (setq frame-num-regexp (dbgr-loc-pat-regexp 
+					 selected-frame-pat)))
+	    (if (string-match frame-num-regexp text)
+		(let ((frame-num-group (dbgr-loc-pat-num selected-frame-pat)))
+		  (string-to-number (match-string frame-num-group text)))
 	      nil)
 	  nil))
     nil)

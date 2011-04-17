@@ -79,7 +79,7 @@ if we don't find anything."
 	  nil)))))
 
 (defun dbgr-get-cmdbuf( &optional opt-buffer)
-  "Return the source-code buffer associated with OPT-BUFFER
+  "Return the command buffer associated with OPT-BUFFER
 or `current-buffer' if that is omitted. nil is returned
 if we don't find anything."
 

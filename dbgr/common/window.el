@@ -8,13 +8,17 @@
 
 (defun dbgr-window-update-position (buffer marker)
   "Update BUFFER to position specified with MARKER.
-We assume MAKER points inside BUFFER"
+We assume MARKER points inside BUFFER"
   (with-current-buffer buffer
     (let ((window (get-buffer-window buffer)))
       (if window
 	  (progn 
 	    (select-window window)
-	    (goto-char marker))))))
+	    (goto-char marker)
+	    (redisplay)
+	    )
+	)))
+  )
 
 
 (defun dbgr-window-src ( &optional opt-buffer )
@@ -23,12 +27,13 @@ We don't care if the command buffer is also displayed.
 See also `dbgr-window-src-undistub-cmd'"
   (let* ((buffer (or opt-buffer (current-buffer)))
 	 (src-buffer (dbgr-get-srcbuf buffer))
-	 (src-window (get-buffer-window src-buffer))
+	 (src-window (get-buffer-window src-buffer 'visible))
 	 (window (selected-window)))
     (if src-buffer 
-	(unless src-window
+	(unless (and src-window (not (window-minibuffer-p)))
 	  (set-window-buffer window src-buffer))
-	)))
+	)
+    ))
 
 (defun dbgr-window-src-undisturb-cmd ( &optional opt-buffer )
   "Make sure the source buffers is displayed in windows without
