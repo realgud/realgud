@@ -96,6 +96,7 @@ evaluating (dbgr-cmdbuf-info-loc-regexp dbgr-cmdbuf-info)"
 		  (dbgr-track-divert-prompt text cmdbuf to))
 	      ;; FIXME: instead of these fixed filters, 
 	      ;; put into a list and iterate over that.
+	      (dbgr-track-termination? text)
 	      (setq text-sans-loc (or (dbgr-track-loc-remaining text) text))
 	      (setq frame-num (dbgr-track-selected-frame text) text)
 	      (setq bp-loc (dbgr-track-bp-loc text-sans-loc cmd-mark cmdbuf))
@@ -368,6 +369,21 @@ loc-regexp pattern"
 	      nil)
 	  nil))
     nil)
+  )
+
+
+(defun dbgr-track-termination?(text)
+  "Return 't and call dbgr-terminate-cmdbuf we we have a termination message"
+  (if (dbgr-cmdbuf?)
+      (let ((termination-re (dbgr-cmdbuf-pat "termination"))
+	    )
+	(if (and termination-re (string-match termination-re text))
+	    (progn 
+	      (dbgr-terminate (current-buffer))
+	      't)
+	  nil)
+	)
+    )
   )
   
 (defun dbgr-track-divert-prompt(text cmdbuf to)

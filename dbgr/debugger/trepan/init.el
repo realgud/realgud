@@ -78,6 +78,8 @@ backtrace listing.")
 (defconst dbgr-trepan-frame-file-regexp
   "[ \t\n]+in file \\([^ \n]+\\)")
 
+(defconst dbgr-trepan-debugger-name "trepan" "Name of debugger")
+
 ;; Top frame number
 (setf (gethash "top-frame-num" dbgr-trepan-pat-hash) 0)
 
@@ -119,10 +121,9 @@ backtrace listing.")
        :line-group 7)
       )
 
-;; Regular expression that describes which frame is selected in 
-;; a debugger backtrace listing.
-(setf (gethash "selected-frame-indicator" dbgr-trepan-pat-hash)
-      dbgr-trepan-selected-frame-indicator)
+;; Regular expression that for a termination message.
+(setf (gethash "termination" dbgr-trepan-pat-hash)
+       "^trepan: That's all, folks...\n")
 
 (setf (gethash "font-lock-keywords" dbgr-trepan-pat-hash)
       '(
@@ -189,7 +190,7 @@ backtrace listing.")
 ;; 	;;  (0 trepan-frames-current-frame-face append))
 ;; 	))
 
-(setf (gethash "trepan" dbgr-pat-hash) dbgr-trepan-pat-hash)
+(setf (gethash dbgr-trepan-debugger-name dbgr-pat-hash) dbgr-trepan-pat-hash)
 
 (defvar dbgr-trepan-command-hash (make-hash-table :test 'equal)
   "Hash key is command name like 'quit' and the value is 
@@ -197,6 +198,7 @@ backtrace listing.")
 
 (setf (gethash "quit" dbgr-trepan-command-hash) "quit!")
 (setf (gethash "shell" dbgr-trepan-command-hash) "irb")
-(setf (gethash "trepan" dbgr-command-hash) dbgr-trepan-command-hash)
+(setf (gethash dbgr-trepan-debugger-name
+	       dbgr-command-hash) dbgr-trepan-command-hash)
 
 (provide-me "dbgr-trepan-")

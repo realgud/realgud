@@ -52,9 +52,6 @@ dbgr-loc-pat struct")
        :regexp "^Breakpoint \\([0-9]+\\) on target .* cleared\n"
        :num 1))
 
-(defconst dbgr-remake-frame-start-regexp
-  "\\(?:^\\|\n\\)")
-
 (defconst dbgr-remake-selected-frame-arrow "=>"
 "String that describes which frame is selected in a debugger
 backtrace listing.")
@@ -71,7 +68,7 @@ backtrace listing.")
 ;; #1  Makefile at /tmp/Makefile:230
 (setf (gethash "lang-backtrace" dbgr-remake-pat-hash)
       (make-dbgr-loc-pat
-       :regexp 	(concat dbgr-remake-frame-start-regexp 
+       :regexp 	(concat "^"
 			dbgr-remake-frame-num-regexp
 			"\\(.*\\)"
 			dbgr-remake-frame-file-regexp
@@ -87,7 +84,7 @@ backtrace listing.")
 ;;   #1  Makefile at /tmp/Makefile:230
 (setf (gethash "debugger-backtrace" dbgr-remake-pat-hash)
       (make-dbgr-loc-pat
-       :regexp 	(concat dbgr-remake-frame-start-regexp
+       :regexp 	(concat "^"
 			dbgr-remake-frame-arrow
 			dbgr-remake-frame-num-regexp
 			"\\(.*\\)"
@@ -102,6 +99,10 @@ backtrace listing.")
 ;; a debugger backtrace listing.
 (setf (gethash "selected-frame-indicator" dbgr-remake-pat-hash)
       dbgr-remake-selected-frame-arrow)
+
+;; Regular expression that for a termination message.
+(setf (gethash "termination" dbgr-remake-pat-hash)
+       "^remake: That's all, folks...\n")
 
 (setf (gethash "font-lock-keywords" dbgr-remake-pat-hash)
       '(

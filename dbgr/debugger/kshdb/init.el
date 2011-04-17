@@ -72,6 +72,10 @@ dbgr-loc-pat struct")
        :line-group 5)
       )
 
+;; Regular expression that for a termination message.
+(setf (gethash "termination" dbgr-kshdb-pat-hash)
+       "^kshdb: That's all, folks...\n")
+
 (setf (gethash "font-lock-keywords" dbgr-kshdb-pat-hash)
       '(
 	;; The frame number and first type name, if present.

@@ -1,5 +1,6 @@
 (require 'test-unit)
 (load-file "../dbgr/common/track.el")
+(load-file "../dbgr/common/core.el")
 (load-file "../dbgr/debugger/trepan/init.el")
 
 (test-unit-clear-contexts)
@@ -54,6 +55,17 @@ end
 		  (assert-nil (dbgr-track-selected-frame debugger-output))
 		  )
 
+
+	 (specify "dbgr-track-termination?"
+		  (setq debugger-output "-- (/usr/local/bin/irb:9 @2)
+require 'irb'
+")
+		  (assert-nil (dbgr-track-termination? debugger-output))
+		  (setq debugger-output "Really quit? (N/y) y
+trepan: That's all, folks...
+")
+		  (assert-t (dbgr-track-termination? debugger-output))
+		  )
 
 	 ;; (setq debugger-bp-output (format "Breakpoint %d set at line %d\n\tin file %s.\n"
 	 ;; 				  bp-num line-number filename))

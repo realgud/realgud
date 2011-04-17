@@ -87,6 +87,10 @@ dbgr-loc-pat struct")
        :line-group 7)
       )
 
+;; Regular expression that for a termination message.
+(setf (gethash "termination" dbgr-trepanx-pat-hash)
+       "^trepanx: That's all, folks...\n")
+
 (setf (gethash "font-lock-keywords" dbgr-trepanx-pat-hash)
       '(
 	;; File name and line number. E.g. at /test/gcd.rb:6
