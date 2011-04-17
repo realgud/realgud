@@ -398,8 +398,10 @@ loc-regexp pattern"
 (defun dbgr-goto-line-for-loc-pat (pt &optional opt-dbgr-loc-pat)
   "Display the location mentioned in line described by
 PT. OPT-DBGR-LOC-PAT is used to get regular-expresion pattern
-matching information. If not supplied we use the currnet buffer's \"location\" 
-pattern found via dbgr-cmdbuf information."
+matching information. If not supplied we use the current buffer's \"location\" 
+pattern found via dbgr-cmdbuf information. nil is returned if we can't
+find a location. non-nil if we can find a location.
+"
   (interactive "d")
   (save-excursion
     (goto-char pt)
@@ -420,7 +422,10 @@ pattern found via dbgr-cmdbuf information."
 				(dbgr-loc-pat-file-group loc-pat)
 				(dbgr-loc-pat-line-group loc-pat)
 				))
-      (if loc (dbgr-track-loc-action loc cmdbuf)))))
+      (if loc (or (dbgr-track-loc-action loc cmdbuf) 't)
+	nil)
+      ))
+    )
 
 (defun dbgr-track-set-debugger (debugger-name)
   "Set debugger name and information associated with that debugger for
@@ -471,12 +476,16 @@ described by PT."
   "Display the location mentioned by the debugger backtrace line
 described by PT."
   (interactive "d")
-  (dbgr-goto-line-for-pt pt "debugger-backtrace"))
+  (unless (dbgr-goto-line-for-pt pt "debugger-backtrace")
+    (message "Didn't match a debugger backtrace location.")
+    ))
 
 (defun dbgr-goto-lang-backtrace-line (pt)
   "Display the location mentioned by the programming-language backtrace line
 described by PT."
   (interactive "d")
-  (dbgr-goto-line-for-pt pt "lang-backtrace"))
+  (unless (dbgr-goto-line-for-pt pt "lang-backtrace")
+    (message "Didn't match a programming-language backtrace location.")
+    ))
 
 (provide-me "dbgr-")
