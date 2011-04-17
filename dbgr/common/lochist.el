@@ -20,6 +20,14 @@
   "A list of source-code positions recently encountered"
   (position -1)
   (ring (make-ring dbgr-loc-hist-size)))
+
+(defun dbgr-loc-hist-describe(loc-hist &optional buffer)
+  (unless buffer (setq buffer (current-buffer)))
+  (insert (format "  buffer size: %d\n" dbgr-loc-hist-size))
+  (insert (format "  position   : %d\n" (dbgr-loc-hist-position loc-hist)))
+  (mapcar (lambda(i) (if i (insert (format "    %s\n" i)))) 
+	  (cddr (dbgr-loc-hist-ring loc-hist)))
+)
   
 (defun dbgr-loc-hist-item-at(loc-hist position)
   "Get the current item stored at POSITION of the ring
