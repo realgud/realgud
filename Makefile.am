@@ -20,6 +20,15 @@ test: check
 check-short:
 	$(MAKE) check 2>&1  | ruby make-check-filter.rb
 
+short:
+	$(MAKE) 2>&1 >/dev/null | ruby make-check-filter.rb
+
+%.short:
+	$(MAKE) $(@:.short=) 2>&1 >/dev/null
+
+tasks:
+	remake --tasks | grep -v '/' | grep -v '\.'
+
 
 
 

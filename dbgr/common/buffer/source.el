@@ -50,44 +50,6 @@ to be debugged."
 (dbgr-struct-field-setter "dbgr-srcbuf-info" "short-key?")
 (dbgr-struct-field-setter "dbgr-srcbuf-info" "was-read-only?")
 
-(defun dbgr-srcbuf-info-describe (&optional buffer)
-  (interactive "")
-  (setq buffer (dbgr-get-srcbuf buffer))
-  (if buffer
-      (with-current-buffer buffer
-	(interactive "")
-	(let ((info dbgr-srcbuf-info)
-	      (srcbuf-name (buffer-name))
-	      (a1 dbgr-overlay-arrow1)
-	      (a2 dbgr-overlay-arrow2)
-	      (a3 dbgr-overlay-arrow3)
-	      )
-	  (switch-to-buffer (get-buffer-create "*Describe*"))
-	  (delete-region (point-min) (point-max))
-	  (insert (format "srcbuf-info for %s\n" srcbuf-name))
-	  (insert (format "Debugger-name: %s\n" 
-			  (dbgr-srcbuf-info-debugger-name info)))
-	  (insert (format "Command-line args: %s\n" 
-			  (dbgr-srcbuf-info-cmd-args info)))
-	  (insert (format "Was previously read only?: %s\n"
-			  (dbgr-srcbuf-info-was-read-only? info)))
-	  (insert (format "Command Process buffer: %s\n"
-			  (dbgr-srcbuf-info-cmdproc info)))
-
-	  ;; FIXME This info isn't part of the src info structure.
-	  (insert (format "Overlay arrow 1: %s\n" a1))
-	  (insert (format "Overlay arrow 2: %s\n" a2))
-	  (insert (format "Overlay arrow 3: %s\n" a3))
-	  (insert (format "Location history:\n"))
-
-	  (dbgr-loc-hist-describe  (dbgr-srcbuf-info-loc-hist info))
-	  )
-	)
-    (message "Buffer %s is not a debugger source buffer; nothing done."
-	     (or buffer (current-buffer)))
-    )
-  )
-
 (defun dbgr-srcbuf-info-set? ()
   "Return true if `dbgr-srcbuf-info' is set."
   (and (boundp 'dbgr-srcbuf-info) 
