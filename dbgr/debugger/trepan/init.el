@@ -38,9 +38,17 @@ dbgr-loc-pat struct")
        :regexp "^(+trepan\\(@[0-9]+\\|@main\\)?)+: "
        ))
 
-;; Regular expression that describes a Ruby backtrace line.
+;; Regular expression that describes a Ruby YARV 1.9 backtrace line.
+;; For example:
+;; <internal:lib/rubygems/custom_require>:29:in `require'
+;; <internal:lib/rubygems/custom_require>:29:in `require'
+;; /tmp/Rakefile:50:in `<top /src/external-vcs/laser/Rakefile>'
+;;	from /usr/lib/ruby/gems/rspec/compatibility.rb:6:in `const_missing'
 (setf (gethash "lang-backtrace" dbgr-trepan-pat-hash) 
-      dbgr-ruby-backtrace-loc-pat)
+  (make-dbgr-loc-pat
+   :regexp "^\\(?:[\t]from \\)?\\([^:]+\\):\\([0-9]+\\)\\(?:in `.*'\\)?"
+   :file-group 1
+   :line-group 2))
 
 ;; Regular expression that describes a "breakpoint set" line. 
 ;; For example: 
