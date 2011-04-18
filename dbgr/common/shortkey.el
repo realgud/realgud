@@ -22,6 +22,7 @@
     (define-key map "d"        'dbgr-cmd-newer-frame)
     (define-key map "u"        'dbgr-cmd-older-frame)
     (define-key map "l"        'dbgr-recenter-arrow)
+    (define-key map "B"        'dbgr-backtrace-init)
     (define-key map "C"        'dbgr-window-cmd-undisturb-src)
     (define-key map "S"        'dbgr-window-src-undisturb-cmd)
 

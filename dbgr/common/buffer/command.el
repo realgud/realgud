@@ -132,6 +132,23 @@
        dbgr-cmdbuf-info
        (dbgr-cmdbuf-info? dbgr-cmdbuf-info)))
 
+(defun dbgr-cmdbuf-toggle-in-debugger? (&optional buffer)
+  "Toggle state of whether we think we are in the debugger or not"
+  (interactive "")
+  (setq buffer (dbgr-get-cmdbuf buffer))
+  (if buffer
+      (with-current-buffer buffer
+	(dbgr-cmdbuf-info-in-debugger?= 
+	 (not (dbgr-sget 'cmdbuf-info 'in-debugger?)))
+	(message "Command buffer is in debugger?: %s\n" 
+		 (dbgr-cmdbuf-info-in-debugger? dbgr-cmdbuf-info))
+	(dbgr-cmdbuf-mode-line-update)
+	)
+    (message "Buffer %s is not a debugger buffer; nothing done."
+	     (or buffer (current-buffer)))
+    )
+  )
+
 (defun dbgr-cmdbuf-stay-in-source-toggle (&optional buffer)
   "Toggle state of whether we should stay in source code or not"
   (interactive "")

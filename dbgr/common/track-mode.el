@@ -94,7 +94,7 @@ of this mode."
 	)
       (dbgr-fringe-erase-history-arrows)
       (remove-hook 'comint-output-filter-functions 
-		   'dbgr-track-comint-output-filter-hook)
+      		   'dbgr-track-comint-output-filter-hook)
       (remove-hook 'eshell-output-filter-functions 
 		    'dbgr-track-eshell-output-filter-hook)
       (let* ((cmd-process (get-buffer-process (current-buffer)))
@@ -107,6 +107,9 @@ of this mode."
 	(setq mode-line-process status)
 	;; Force mode line redisplay soon.
 	(force-mode-line-update)
+	;; FIXME: This is a workaround. Without this, we comint doesn't
+	;; process commands
+	(comint-mode)
 	)
 
       ;; FIXME: restore/unchain old process sentinels.
@@ -116,8 +119,12 @@ of this mode."
 
 
 ;; For name == "trepan", produces: 
+;;   (defvar trepan-track-mode nil
+;;     "Non-nil if using trepan track-mode ... "
 ;;   (defvar trepan-track-mode-map (make-sparse-keymap))
 ;;   (set-keymap-parent trepan-track-mode-map dbgr-track-mode-map)
+;;   (defvar trepan-short-key-mode-map (make-sparse-keymap))
+;;   (set-keymap-parent trepan-short-key-mode-map dbgr-short-key-mode-map)
 (defmacro dbgr-track-mode-vars (name)
   `(progn
      (defvar ,(intern (concat name "-track-mode")) nil
@@ -125,7 +132,9 @@ of this mode."
 Use the command `%s-track-mode' to toggle or set this variable." name name))
      (defvar ,(intern (concat name "-track-mode-map")) (make-sparse-keymap)
        ,(format "Keymap used in `%s-track-mode'." name))
-     (defvar ,(intern (concat name "-track-mode-map")) dbgr-track-mode-map)
+     (set-keymap-parent ,(intern (concat name "-track-mode-map")) dbgr-track-mode-map)
+     (defvar ,(intern (concat name "-short-key-mode-map")) (make-sparse-keymap))
+     (set-keymap-parent ,(intern (concat name "-short-key-mode-map")) dbgr-short-key-mode-map)
     ))
 
 ;; FIXME: The below could be a macro? I have a hard time getting

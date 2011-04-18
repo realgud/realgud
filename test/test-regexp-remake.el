@@ -47,7 +47,7 @@
 		  			   (match-end line-group)))
 		  (setq pos (match-end 0))
 		  
-		  (assert-equal 38 (string-match frame-re s1 pos))
+		  (assert-equal 39 (string-match frame-re s1 pos))
 		  (assert-equal "1" (substring s1 
 		  			       (match-beginning num-group)
 		  			       (match-end num-group)))
