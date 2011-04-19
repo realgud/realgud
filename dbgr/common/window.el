@@ -14,8 +14,11 @@ We assume MARKER points inside BUFFER"
       (if window
 	  (progn 
 	    (select-window window)
-	    (goto-char marker)
-	    (redisplay)
+	    (if marker 
+		(progn 
+		  (goto-char marker)
+		  (redisplay)
+		  ))
 	    )
 	)))
   )
