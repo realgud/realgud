@@ -242,7 +242,7 @@ encountering a new loc."
 		)
 	      (if cmd-window (select-window cmd-window)))
 	  ; else
-	  (progn
+	  (with-current-buffer srcbuf
 	    (dbgr-window-src srcbuf)
 	    (dbgr-window-update-position srcbuf dbgr-overlay-arrow1))
 	  )
