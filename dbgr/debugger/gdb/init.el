@@ -46,7 +46,7 @@ dbgr-loc-pat struct")
   "\\(?:^\\|\n\\)")
 
 (defconst dbgr-gdb-frame-num-regexp
-  "#\\([0-9]+\\)  ")
+  "#\\([0-9]+\\) ")
 
 ;; Regular expression that describes a gdb "backtrace" command line.
 ;; For example:
@@ -54,16 +54,19 @@ dbgr-loc-pat struct")
 ;; #1  0xb7e9f4a5 in *__GI___strdup (s=0xbffff760 "/tmp/remake/remake") at strdup.c:42
 ;; #2  0x080593ac in main (argc=2, argv=0xbffff5a4, envp=0xbffff5b0)
 ;;    at main.c:952
+;; #46 0xb7f51b87 in vm_call_cfunc (th=0x804d188, reg_cfp=0xb7ba9e88, num=0, 
+;;    recv=157798080, blockptr=0x0, me=0x80d12a0) at vm_insnhelper.c:410
+
 (setf (gethash "debugger-backtrace" dbgr-gdb-pat-hash)
       (make-dbgr-loc-pat
        :regexp 	(concat dbgr-gdb-frame-start-regexp 
 			dbgr-gdb-frame-num-regexp
-			"\\(.*\\)[ \n]+at "
+			"\\(?:.\\|\\(?:[\n] \\)\\)+[ ]+at "
 			dbgr-gdb-frame-file-regexp
 			)
        :num 1
-       :file-group 3
-       :line-group 4)
+       :file-group 2
+       :line-group 3)
       )
 
 (setf (gethash "font-lock-keywords" dbgr-gdb-pat-hash)
