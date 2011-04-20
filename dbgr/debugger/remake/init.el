@@ -100,7 +100,7 @@ backtrace listing.")
 (setf (gethash "selected-frame-indicator" dbgr-remake-pat-hash)
       dbgr-remake-selected-frame-arrow)
 
-;; Regular expression that for a termination message.
+;; Regular expression for a termination message.
 (setf (gethash "termination" dbgr-remake-pat-hash)
        "^remake: That's all, folks...\n")
 
