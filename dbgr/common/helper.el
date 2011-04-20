@@ -59,8 +59,9 @@ gives:
   `(defun ,(intern (concat variable-name "-" field "=")) (value)
      ;; FIXME: figure out how to add docstring
      ;; ,(concat "Sets field" ,field " of " ,variable-name " to VALUE")
-     (setf (,(intern (concat variable-name "-" field))
-	    ,(intern variable-name)) value)
+     (if ,(intern variable-name)
+	 (setf (,(intern (concat variable-name "-" field))
+		,(intern variable-name)) value))
     ))
 
 ;; (defun dbgr-struct-field (var-sym field-sym)
