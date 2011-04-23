@@ -41,7 +41,7 @@ marks set in buffer-local variables to extract text"
   ;; check all text from comint-last-input-end to process-mark.
 
   ; FIXME: Add unwind-protect? 
-  (if dbgr-track-mode
+  (if (and dbgr-track-mode (dbgr-cmdbuf? (current-buffer)))
       (let* ((cmd-buff (current-buffer))
 	     (cmd-mark (point-marker))
 	     (curr-proc (get-buffer-process cmd-buff))
@@ -49,7 +49,8 @@ marks set in buffer-local variables to extract text"
 	     (last-output-start (max comint-last-input-end 
 				     (- last-output-end dbgr-track-char-range))))
 	(dbgr-track-from-region last-output-start 
-				last-output-end cmd-mark cmd-buff)))
+				last-output-end cmd-mark cmd-buff
+				't)))
   )
 
 (defun dbgr-track-eshell-output-filter-hook()
@@ -63,10 +64,11 @@ marks set in buffer-local variables to extract text"
 		     (cmd-mark (point-marker))
 		     (loc (dbgr-track-from-region eshell-last-output-start 
 						  eshell-last-output-end cmd-mark)))
-	(dbgr-track-loc-action loc cmd-buff)))
+	(dbgr-track-loc-action loc cmd-buff 't)))
   )
 
-(defun dbgr-track-from-region(from to &optional cmd-mark opt-cmdbuf)
+(defun dbgr-track-from-region(from to &optional cmd-mark opt-cmdbuf
+				   shortkey-on-tracing?)
   "Find and position a buffer at the location found in the marked region.
 
 You might want to use this function interactively after marking a
@@ -110,7 +112,8 @@ evaluating (dbgr-cmdbuf-info-loc-regexp dbgr-cmdbuf-info)"
 		  (let ((selected-frame 
 			 (or (not frame-num) 
 			     (eq frame-num (dbgr-cmdbuf-pat "top-frame-num")))))
-		    (dbgr-track-loc-action loc cmdbuf (not selected-frame))
+		    (dbgr-track-loc-action loc cmdbuf (not selected-frame)
+					   shortkey-on-tracing?)
 		    (dbgr-cmdbuf-info-in-debugger?= 't)
 		    (dbgr-cmdbuf-mode-line-update)
 		    )
@@ -183,7 +186,8 @@ unshown."
   (interactive)
   (dbgr-track-hist-fn-internal 'dbgr-loc-hist-oldest))
 
-(defun dbgr-track-loc-action (loc cmdbuf &optional not-selected-frame)
+(defun dbgr-track-loc-action (loc cmdbuf &optional not-selected-frame
+				  shortkey-on-tracing?)
   "If loc is valid, show loc and do whatever actions we do for
 encountering a new loc."
   (if (dbgr-loc? loc)
@@ -209,7 +213,9 @@ encountering a new loc."
 
 	(with-current-buffer srcbuf
 	  (dbgr-short-key-mode-setup 
-	   (or dbgr-short-key-on-tracing? shortkey-mode?)))
+	   (and shortkey-on-tracing? 
+		(or dbgr-short-key-on-tracing? shortkey-mode?))
+	   ))
 
         ;; Do we need to go back to the process/command buffer because other
         ;; output-filter hooks run after this may assume they are in that

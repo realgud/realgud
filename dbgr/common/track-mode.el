@@ -88,7 +88,7 @@ of this mode."
 		  'dbgr-track-eshell-output-filter-hook)
 	(run-mode-hooks 'dbgr-track-mode-hook))
     (progn
-      (if (boundp 'comint-last-output-start)
+      (if (and (boundp 'comint-last-output-start) dbgr-cmdbuf-info)
 	(setq comint-prompt-regexp
 	   (dbgr-sget 'cmdbuf-info 'prior-prompt-regexp))
 	)

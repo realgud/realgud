@@ -22,7 +22,7 @@
 (define-key trepanx-track-mode-map 
   (kbd "C-c !x") 'dbgr-rubinius-goto-Xagent-backtrace-line)
 (define-key trepanx-track-mode-map 
-  (kbd "C-c !!") 'dbgr-rubinius-goto-Xagent-backtrace-line)
+  (kbd "C-c !!") 'dbgr-rubinius-goto-dollar-bang-line)
 
 (defun trepanx-track-mode-hook()
   (use-local-map trepanx-track-mode-map)
