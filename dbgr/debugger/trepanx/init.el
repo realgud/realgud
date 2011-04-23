@@ -138,6 +138,6 @@ dbgr-loc-pat struct")
 
 (setf (gethash "quit" dbgr-trepanx-command-hash) "quit!")
 (setf (gethash "shell" dbgr-trepanx-command-hash) "irb")
-(setf (gethash "trepan" dbgr-command-hash) dbgr-trepanx-command-hash)
+(setf (gethash "trepanx" dbgr-command-hash) dbgr-trepanx-command-hash)
 
 (provide-me "dbgr-trepanx-")
