@@ -56,7 +56,8 @@ dbgr-loc-pat struct")
 (defconst dbgr-rdebug-frame-num-regexp   dbgr-trepan-frame-num-regexp)
 
 ;;  Regular expression that describes a Ruby $! string
-(setf (gethash "dollar-bang" dbgr-rdebug-pat-hash) dbgr-ruby-dollar-bang)
+(setf (gethash "dollar-bang" dbgr-rdebug-pat-hash) 
+      dbgr-ruby-dollar-bang-loc-pat)
 
 ;;  Regular expression that describes a Ruby $! string
 (setf (gethash "rails-backtrace" dbgr-rdebug-pat-hash) 

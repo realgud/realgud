@@ -39,7 +39,7 @@ traceback) line."  )
   "A dbgr-loc-pat struct that describes a Rubinius Xagent backtrace (or
 traceback) line."  )
 
-(defconst dbgr-ruby-dollar-bang
+(defconst dbgr-ruby-dollar-bang-loc-pat
       (make-dbgr-loc-pat
        :regexp "^[ \t]*[[]?\\(.+\\):\\([0-9]+\\):in `.*'"
        :file-group 1
@@ -67,10 +67,17 @@ described by PT."
   (interactive "d")
   (dbgr-goto-line-for-pt pt "lang-backtrace"))
 
+(defun dbgr-ruby-goto-dollar-bang-line (pt)
+  "Display the location mentioned by the Ruby backtrace line
+described by PT."
+  (interactive "d")
+  (dbgr-goto-line-for-pt pt "dollar-bang-backtrace"))
+
 (defun dbgr-ruby-populate-command-keys (&optional map)
   "Bind the debugger function key layout used by many debuggers.
 
 \\{dbgr-example-map-standard}"
+  (define-key map (kbd "C-c !l") 'dbgr-goto-lang-backtrace-line)
   (define-key map (kbd "C-c !!") 'dbgr-goto-lang-backtrace-line)
   (define-key map (kbd "C-c !b") 'dbgr-goto-debugger-backtrace-line)
   (define-key map (kbd "C-c !r") 'dbgr-rails-goto-backtrace-line)

@@ -37,6 +37,10 @@ dbgr-loc-pat struct")
 (setf (gethash "lang-backtrace" dbgr-trepanx-pat-hash) 
       dbgr-rubinius-backtrace-loc-pat)
 
+;;  Regular expression that describes a ruby $! backtrace
+(setf (gethash "dollar-bang-backtrace" dbgr-trepanx-pat-hash) 
+      dbgr-ruby-dollar-bang-loc-pat)
+
 ;;  Regular expression that describes a Rubinius X-agent backtrace
 ;;  line. 
 (setf (gethash "rubinius-backtrace-Xagent" dbgr-trepanx-pat-hash) 
@@ -61,7 +65,8 @@ dbgr-loc-pat struct")
        :num 1))
 
 ;;  Regular expression that describes a Ruby $! string
-(setf (gethash "dollar-bang" dbgr-trepanx-pat-hash) dbgr-ruby-dollar-bang)
+(setf (gethash "dollar-bang" dbgr-trepanx-pat-hash) 
+      dbgr-ruby-dollar-bang-loc-pat)
 
 (setf (gethash "trepanx" dbgr-pat-hash) dbgr-trepanx-pat-hash)
 

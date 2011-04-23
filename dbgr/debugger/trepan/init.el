@@ -50,6 +50,10 @@ dbgr-loc-pat struct")
    :file-group 1
    :line-group 2))
 
+;;  Regular expression that describes a ruby $! backtrace
+(setf (gethash "dollar-bang-backtrace" dbgr-trepan-pat-hash) 
+      dbgr-ruby-dollar-bang-loc-pat)
+
 ;; Regular expression that describes a "breakpoint set" line. 
 ;; For example: 
 ;;   Breakpoint 1 set at VM offset 2 of instruction sequence "require",
@@ -102,7 +106,8 @@ backtrace listing.")
        :line-group 9))
 
 ;;  Regular expression that describes a Ruby $! string
-(setf (gethash "dollar-bang" dbgr-trepan-pat-hash) dbgr-ruby-dollar-bang)
+(setf (gethash "dollar-bang" dbgr-trepan-pat-hash) 
+      dbgr-ruby-dollar-bang-loc-pat)
 
 ;;  Regular expression that describes debugger "backtrace" command line.
 ;;  e.g.
