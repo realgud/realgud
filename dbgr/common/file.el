@@ -1,6 +1,7 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 ; Should dbgr-file-loc-from-line be here or elsewhere?
 (require 'load-relative)
+(require 'compile) ;; for compilation-find-file
 (require-relative-list '("helper" "loc") "dbgr-")
 
 (fn-p-to-fn?-alias 'file-exists-p)
@@ -21,6 +22,11 @@ found"
 If we're unable find the source code we return a string describing the
 problem as best as we can determine."
 
+  (unless (file-exists? filename)
+    (setq filename 
+	  (buffer-file-name 
+	   (compilation-find-file (point-marker) filename nil)))
+    )
   (if (file-exists? filename)
       (if (integerp line-number)
 	  (if (> line-number 0)
@@ -41,6 +47,8 @@ problem as best as we can determine."
 		  (format "Problem getting line count for file `%s'" filename)))
 	    (format "line number %s should be greater than 0" line-number))
 	(format "%s is not an integer" line-number))
-    (format "File named `%s' not found" filename)))
+    ;; else
+    (format "File named `%s' not found" filename))
+  )
 
 (provide-me "dbgr-")

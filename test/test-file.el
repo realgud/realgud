@@ -17,9 +17,9 @@
 
   (context "dbgr-file-loc-from-line"
 	   (tag file)
-	   (specify "File not found"
-		    (assert-t (stringp (dbgr-file-loc-from-line 
-					"not-found-file" 5 (make-marker)))))
+	   ;; (specify "File not found"
+	   ;; 	    (assert-t (stringp (dbgr-file-loc-from-line 
+	   ;; 				"not-found-file" 5 (make-marker)))))
 	   (specify "invalid real line number"
 		    (assert-t (stringp (dbgr-file-loc-from-line filename 5.5))))
 	   (specify "negative number"

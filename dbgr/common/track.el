@@ -282,7 +282,9 @@ Otherwise return nil."
 		  (unless line-str (message "line number not found -- using 1"))
 		  (if (and filename lineno)
 		      (dbgr-file-loc-from-line filename lineno cmd-mark)
-		    nil)))
+		    nil))
+	      (message "Unable to file and line number for given line")
+	      )
 	  (and (message (concat "Buffer variable for regular expression pattern not"
 			   " given and not passed as a parameter")) nil)))
     (and (message "Current buffer %s is not a debugger command buffer"
