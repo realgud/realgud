@@ -213,7 +213,9 @@ marginal icons is reset."
 	(make-local-variable 'dbgr-overlay-arrow2)
 	(make-local-variable 'dbgr-overlay-arrow3)
 
-	(comint-exec cmdproc-buffer debugger-name program nil args)
+	(condition-case nil
+	    (comint-exec cmdproc-buffer debugger-name program nil args)
+	  (error cmdproc-buffer))
 	
 	(setq process (get-buffer-process cmdproc-buffer))
 
