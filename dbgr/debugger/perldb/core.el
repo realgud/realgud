@@ -15,7 +15,7 @@
 
 (easy-mmode-defmap dbgr-perldb-minibuffer-local-map
   '(("\C-i" . comint-dynamic-complete-filename))
-  "Keymap for minibuffer prompting of gud startup command."
+  "Keymap for minibuffer prompting of perldb startup command."
   :inherit minibuffer-local-map)
 
 ;; FIXME: I think this code and the keymaps and history

@@ -9,7 +9,8 @@
 (defgroup remake nil
   "The GNU Make debugger: remake"
   :group 'processes
-  :group 'tools
+  :group 'dbgr
+  :group 'make
   :version "23.1")
 
 ;; -------------------------------------------------------------------

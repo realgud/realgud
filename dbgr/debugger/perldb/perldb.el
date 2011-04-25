@@ -7,9 +7,10 @@
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
 (defgroup dbgr-perldb nil
-  "The Perl debugger"
+  "The Perl debugger (dbgr variant)"
   :group 'processes
-  :group 'tools
+  :group 'dbgr
+  :group 'perl
   :version "23.1")
 
 ;; -------------------------------------------------------------------

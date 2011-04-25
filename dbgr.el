@@ -2,6 +2,12 @@
 ;;; Things related to loading and loading the dbgr package.
 (require 'load-relative)
 
+(defgroup dbgr nil
+  "The Grand Cathedral Debugger rewrite"
+  :group 'processes
+  :group 'tools
+  :version "23.1")
+
 ;; FIXME: extend require-relative for "autoload".
 (defun dbgr-load-features()
   (require-relative-list

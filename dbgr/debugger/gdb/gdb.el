@@ -9,7 +9,8 @@
 (defgroup dbgr-gdb nil
   "The dbgr interface to gdb"
   :group 'processes
-  :group 'tools
+  :group 'dbgr
+  :group 'gdb
   :version "23.1")
 
 ;; -------------------------------------------------------------------

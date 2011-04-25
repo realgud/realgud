@@ -9,7 +9,7 @@
 (defgroup kshdb nil
   "The Korn shell debugger: kshdb"
   :group 'processes
-  :group 'tools
+  :group 'dbgr
   :version "23.1")
 
 ;; -------------------------------------------------------------------

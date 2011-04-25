@@ -9,7 +9,7 @@
 (defgroup zshdb nil
   "The Zsh debugger: zshdb"
   :group 'processes
-  :group 'tools
+  :group 'dbgr
   :version "23.1")
 
 ;; -------------------------------------------------------------------

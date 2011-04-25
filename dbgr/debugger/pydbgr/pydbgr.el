@@ -10,7 +10,8 @@
 (defgroup pydbgr nil
   "The Python pydbgr debugger"
   :group 'processes
-  :group 'tools
+  :group 'dbgr
+  :group 'python
   :version "23.1")
 
 ;; -------------------------------------------------------------------

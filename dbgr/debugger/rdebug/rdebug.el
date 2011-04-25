@@ -9,7 +9,8 @@
 (defgroup rdebug nil
   "ruby-debug (rdebug)"
   :group 'processes
-  :group 'tools
+  :group 'ruby
+  :group 'dbgr
   :version "23.1")
 
 ;; -------------------------------------------------------------------

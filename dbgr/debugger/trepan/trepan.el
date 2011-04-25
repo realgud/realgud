@@ -9,7 +9,8 @@
 (defgroup trepan nil
   "The Ruby 1.9.2 \"trepanning\" debugger"
   :group 'processes
-  :group 'tools
+  :group 'ruby
+  :group 'dbgr
   :version "23.1")
 
 ;; -------------------------------------------------------------------
