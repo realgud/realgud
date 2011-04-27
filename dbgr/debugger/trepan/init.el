@@ -38,6 +38,10 @@ dbgr-loc-pat struct")
        :regexp "^(+trepan\\(@[0-9]+\\|@main\\)?)+: "
        ))
 
+;; Regular expression that describes a Ruby YARV 1.9 syntax error line.
+(setf (gethash "syntax-error" dbgr-trepan-pat-hash) 
+      dbgr-ruby-YARV-syntax-error-pat)
+
 ;; Regular expression that describes a Ruby YARV 1.9 backtrace line.
 ;; For example:
 ;; <internal:lib/rubygems/custom_require>:29:in `require'

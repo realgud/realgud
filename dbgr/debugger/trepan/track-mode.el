@@ -23,10 +23,18 @@ described by PT."
   (interactive "d")
   (dbgr-goto-line-for-pt pt "control-frame"))
 
+(defun dbgr-trepan-goto-syntax-error-line (pt)
+  "Display the location mentioned in a Syntax error line
+described by PT."
+  (interactive "d")
+  (dbgr-goto-line-for-pt pt "syntax-error"))
+
 (dbgr-ruby-populate-command-keys trepan-track-mode-map)
 
 (define-key trepan-track-mode-map 
   (kbd "C-c !c") 'dbgr-trepan-goto-control-frame-line)
+(define-key trepan-track-mode-map 
+  (kbd "C-c !s") 'dbgr-trepan-goto-syntax-error-line)
 
 (defun trepan-track-mode-hook()
   (if trepan-track-mode

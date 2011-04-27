@@ -446,8 +446,10 @@ find a location. non-nil if we can find a location.
 				(dbgr-loc-pat-file-group loc-pat)
 				(dbgr-loc-pat-line-group loc-pat)
 				))
-      (if loc (or (dbgr-track-loc-action loc cmdbuf) 't)
-	nil)
+      (if (stringp loc)
+	  (message loc)
+	(if loc (or (dbgr-track-loc-action loc cmdbuf) 't)
+	  nil))
       ))
     )
 

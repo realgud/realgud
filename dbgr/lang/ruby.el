@@ -15,6 +15,15 @@
   "A dbgr-loc-pat struct that describes a Rails backtrace (or
 traceback) line."  )
 
+;; Regular expression that describes a Ruby YARV 1.9 syntax error line.
+;; SyntaxError: /tmp/columnize.rb:270: syntax error, unexpected $end, ...
+(defconst dbgr-ruby-YARV-syntax-error-pat
+  (make-dbgr-loc-pat
+   :regexp "^SyntaxError: \\([^:]+\\):\\([0-9]+\\): syntax error"
+   :file-group 1
+   :line-group 2)
+  "A dbgr-loc-pat struct that describes a Ruby YARV syntax error message")
+
 (defconst dbgr-ruby-backtrace-loc-pat
   (make-dbgr-loc-pat
    :regexp "^[ \t]+from \\([^:]+\\):\\([0-9]+\\)\\(?: in `.*'\\)?"
