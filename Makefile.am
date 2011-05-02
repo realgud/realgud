@@ -4,6 +4,9 @@ lispdir = @lispdir@
 lisp_files := $(wildcard dbgr.el)
 lisp_LISP = $(lisp_files)
 
+include common.mk
+
+EXTRA_DIST=common.mk README.textile
 
 if MAINTAINER_MODE
 
@@ -20,14 +23,6 @@ test: check
 check-short:
 	$(MAKE) check 2>&1  | ruby make-check-filter.rb
 
-short:
-	$(MAKE) 2>&1 >/dev/null | ruby make-check-filter.rb
-
-%.short:
-	$(MAKE) $(@:.short=) 2>&1 >/dev/null
-
-tasks:
-	remake --tasks | grep -v '/' | grep -v '\.'
 
 
 

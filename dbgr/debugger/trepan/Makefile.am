@@ -1,1 +1,1 @@
-include ../common.mk
+include $(srcdir)/../common.mk

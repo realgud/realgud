@@ -48,9 +48,14 @@ marks set in buffer-local variables to extract text"
 	     (last-output-end (process-mark curr-proc))
 	     (last-output-start (max comint-last-input-end 
 				     (- last-output-end dbgr-track-char-range))))
-	(dbgr-track-from-region last-output-start 
-				last-output-end cmd-mark cmd-buff
-				't)))
+	;; Sometimes e get called twice and the second time nothing
+	;; Changes. Guard against this.
+	(unless (= last-output-start last-output-end)
+	  (dbgr-track-from-region last-output-start 
+				  last-output-end cmd-mark cmd-buff
+				  't))
+	)
+    )
   )
 
 (defun dbgr-track-eshell-output-filter-hook()
@@ -260,13 +265,13 @@ encountering a new loc."
 string TEXT. If we match, we will turn the result into a dbgr-loc struct.
 Otherwise return nil."
   
-  ; NOTE: dbgr-cmdbuf-info is a buffer variable local to the process running
-  ; the debugger. It contains a dbgr-cmdbuf-info "struct". In that struct are
-  ; the fields loc-regexp, file-group, and line-group. By setting the
-  ; the fields of dbgr-cmdbuf-info appropriately we can accomodate a family
-  ; of debuggers -- one at a time -- for the buffer process.
+  ;; NOTE: dbgr-cmdbuf-info is a buffer variable local to the process running
+  ;; the debugger. It contains a dbgr-cmdbuf-info "struct". In that struct are
+  ;; the fields loc-regexp, file-group, and line-group. By setting the
+  ;; the fields of dbgr-cmdbuf-info appropriately we can accomodate a family
+  ;; of debuggers -- one at a time -- for the buffer process.
 
-  (if (dbgr-cmdbuf?)
+  (if (dbgr-cmdbuf?) 
       (let 
 	  ((loc-regexp (or opt-regexp 
 			   (dbgr-sget 'cmdbuf-info 'loc-regexp)))
@@ -286,11 +291,12 @@ Otherwise return nil."
 	      (message "Unable to file and line number for given line")
 	      )
 	  (and (message (concat "Buffer variable for regular expression pattern not"
-			   " given and not passed as a parameter")) nil)))
+				" given and not passed as a parameter")) nil)))
     (and (message "Current buffer %s is not a debugger command buffer"
 		  (current-buffer)) nil)
-    ))
-
+    )
+  )
+  
 (defun dbgr-track-bp-loc(text &optional cmd-mark cmdbuf)
   "Do regular-expression matching to find a file name and line number inside
 string TEXT. If we match, we will turn the result into a dbgr-loc struct.

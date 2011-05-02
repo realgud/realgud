@@ -4,4 +4,4 @@ EXTRA_DIST = common.mk
 .PHONY: check all
 
 check:
-	$(MAKE) -C ../../test $@
+	$(MAKE) -C $(top_srcdir)/test $@

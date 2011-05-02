@@ -102,8 +102,7 @@ program."
     (put 'dbgr-srcbuf-info 'variable-documentation 
 	 "Debugger information for a buffer containing source code.")))
 
-(defun dbgr-srcbuf-init-or-update
-  (src-buffer cmdproc-buffer)
+(defun dbgr-srcbuf-init-or-update (src-buffer cmdproc-buffer)
   "Call `dbgr-srcbuf-init' for SRC-BUFFER update `dbgr-srcbuf-info' variables
 in it with those from CMDPROC-BUFFER"
   (let ((debugger-name)
@@ -113,7 +112,10 @@ in it with those from CMDPROC-BUFFER"
      (setq cmd-args (dbgr-cmdbuf-info-cmd-args dbgr-cmdbuf-info)))
   (with-current-buffer-safe src-buffer
     (dbgr-populate-common-keys 
-     (or (current-local-map) (use-local-map (make-sparse-keymap))))
+     ;; use-local-map returns nil so e have to call (current-local-map)
+     ;; again in this case.
+     (or (current-local-map) (use-local-map (make-sparse-keymap))
+	 (current-local-map)))
     (if (dbgr-srcbuf-info? dbgr-srcbuf-info)
 	(progn
 	  (dbgr-srcbuf-info-cmdproc= cmdproc-buffer)
