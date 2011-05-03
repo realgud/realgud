@@ -53,7 +53,7 @@ marks set in buffer-local variables to extract text"
 	(unless (= last-output-start last-output-end)
 	  (dbgr-track-from-region last-output-start 
 				  last-output-end cmd-mark cmd-buff
-				  't))
+				  't 't))
 	)
     )
   )
@@ -73,7 +73,7 @@ marks set in buffer-local variables to extract text"
   )
 
 (defun dbgr-track-from-region(from to &optional cmd-mark opt-cmdbuf
-				   shortkey-on-tracing?)
+				   shortkey-on-tracing? no-warn-if-no-match?)
   "Find and position a buffer at the location found in the marked region.
 
 You might want to use this function interactively after marking a
@@ -88,7 +88,7 @@ evaluating (dbgr-cmdbuf-info-loc-regexp dbgr-cmdbuf-info)"
   (interactive "r")
   (if (> from to) (psetq to from from to))
   (let* ((text (buffer-substring-no-properties from to))
-	 (loc (dbgr-track-loc text cmd-mark))
+	 (loc (dbgr-track-loc text cmd-mark nil nil nil no-warn-if-no-match?))
 	 ;; If we see a selected frame number, it is stored
 	 ;; in frame-num. Otherwise, nil.
 	 (frame-num)  
@@ -260,7 +260,8 @@ encountering a new loc."
 	))
   )
 
-(defun dbgr-track-loc(text cmd-mark &optional opt-regexp opt-file-group opt-line-group )
+(defun dbgr-track-loc(text cmd-mark &optional opt-regexp opt-file-group 
+			   opt-line-group no-warn-on-no-match?)
   "Do regular-expression matching to find a file name and line number inside
 string TEXT. If we match, we will turn the result into a dbgr-loc struct.
 Otherwise return nil."
@@ -288,7 +289,8 @@ Otherwise return nil."
 		  (if (and filename lineno)
 		      (dbgr-file-loc-from-line filename lineno cmd-mark)
 		    nil))
-	      (message "Unable to file and line number for given line")
+	      (unless no-warn-on-no-match? 
+		(message "Unable to file and line number for given line"))
 	      )
 	  (and (message (concat "Buffer variable for regular expression pattern not"
 				" given and not passed as a parameter")) nil)))
