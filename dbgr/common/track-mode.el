@@ -20,7 +20,7 @@
     (define-key map [M-print]	'dbgr-track-hist-older)
     (define-key map [M-S-down]	'dbgr-track-hist-newest)
     (define-key map [M-S-up]	'dbgr-track-hist-oldest)
-    (define-key map (kbd "C-c S") 'dbgr-window-src-undisturb-cmd)
+    (define-key map "\C-cS" 'dbgr-window-src-undisturb-cmd)
     map)
   "Keymap used in `dbgr-track-minor-mode'.")
 

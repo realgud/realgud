@@ -152,14 +152,20 @@ getting stepped."
 	(cmd-hash)
 	(cmd)
 	)
-    (with-current-buffer-safe cmdbuf
-      (dbgr-cmdbuf-info-in-srcbuf?= (not (dbgr-cmdbuf? buffer)))
-      (setq cmd-hash (dbgr-cmdbuf-info-cmd-hash dbgr-cmdbuf-info))
-      (unless (and cmd-hash (setq cmd (gethash "quit" cmd-hash)))
-	(setq cmd "quit"))
+    (if cmdbuf
+	(progn
+	  (with-current-buffer cmdbuf
+	    (dbgr-cmdbuf-info-in-srcbuf?= (not (dbgr-cmdbuf? buffer)))
+	    (setq cmd-hash (dbgr-cmdbuf-info-cmd-hash dbgr-cmdbuf-info))
+	    (unless (and cmd-hash (setq cmd (gethash "quit" cmd-hash)))
+	      (setq cmd "quit"))
+	    )
+	  (dbgr-command cmd arg 't)
+	  (if cmdbuf (dbgr-terminate cmdbuf))
+	  )
+      ; else
+      (dbgr-terminate-srcbuf buffer)
       )
-    (dbgr-command cmd arg 't)
-    (if cmdbuf (dbgr-terminate cmdbuf))
     )
   )
 

@@ -131,10 +131,15 @@ which shows details of the error. The command buffer or nil is returned"
 (defun dbgr-terminate-srcbuf (&optional srcbuf)
   "Resets source buffer."
   (interactive "bsource buffer: ")
-  (dbgr-fringe-erase-history-arrows)
-  (dbgr-bp-remove-icons (point-min) (point-max))
-  (dbgr-short-key-mode 0)
-)
+  (with-current-buffer srcbuf
+    (dbgr-fringe-erase-history-arrows)
+    (dbgr-bp-remove-icons (point-min) (point-max))
+    (if (dbgr-srcbuf?) 
+	(dbgr-short-key-mode 0)
+      (setq dbgr-short-key-mode nil))
+    (redisplay)
+    )
+  )
 
 (defun dbgr-terminate (&optional buf)
   "Resets state in all buffers associated with source or command
