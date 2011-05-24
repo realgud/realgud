@@ -128,11 +128,18 @@ which shows details of the error. The command buffer or nil is returned"
     )
   )
 
+(defun dbgr-terminate-srcbuf (&optional srcbuf)
+  "Resets source buffer."
+  (interactive "bsource buffer: ")
+  (dbgr-fringe-erase-history-arrows)
+  (dbgr-bp-remove-icons (point-min) (point-max))
+  (dbgr-short-key-mode 0)
+)
 
 (defun dbgr-terminate (&optional buf)
-  "Resets state in all buffers associated with source or command buffer BUF)
-This does things like remove fringe arrows breakpoint icons and
-resets short-key mode."
+  "Resets state in all buffers associated with source or command
+buffer BUF) This does things like remove fringe arrows breakpoint
+icons and resets short-key mode."
   (interactive "bbuffer: ")
   (let ((cmdbuf (dbgr-get-cmdbuf buf)))
     (if cmdbuf
@@ -144,10 +151,9 @@ resets short-key mode."
 	      (dolist (srcbuf (dbgr-cmdbuf-info-srcbuf-list dbgr-cmdbuf-info))
 		(if (dbgr-srcbuf? srcbuf)
 		    (with-current-buffer srcbuf
-		      (dbgr-fringe-erase-history-arrows)
-		  (dbgr-short-key-mode 0)
-		  (dbgr-bp-remove-icons (point-min) (point-max))
-		  )))
+		      (dbgr-terminate-srcbuf srcbuf)
+		      ))
+		)
 	    )
 	  )
       (error "Buffer %s does not seem to be attached to a debugger" 

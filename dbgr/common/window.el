@@ -62,6 +62,7 @@ See also `dbgr-window-src'"
 		  window))
 	  (set-window-buffer src-window src-buffer))
 	)
+    (select-window src-window)
     cmd-window)
   )
 
