@@ -27,7 +27,7 @@ We assume MARKER points inside BUFFER"
 (defun dbgr-window-src ( &optional opt-buffer )
   "Make sure the source buffer is displayed in a window
 We don't care if the command buffer is also displayed.
-See also `dbgr-window-src-undistub-cmd'"
+See also `dbgr-window-src-undisturb-cmd'"
   (let* ((buffer (or opt-buffer (current-buffer)))
 	 (src-buffer (dbgr-get-srcbuf buffer))
 	 (src-window (get-buffer-window src-buffer 'visible))
@@ -58,7 +58,7 @@ See also `dbgr-window-src'"
 		    ;; FIXME: generalize what to do here.
 		    (if (one-window? 't) 
 			(split-window) 
-		      (next-window window))
+		      (next-window window 'no-minibuf))
 		  window))
 	  (set-window-buffer src-window src-buffer))
 	)
@@ -86,7 +86,7 @@ See also `dbgr-window-src'"
 		      ;; FIXME: generalize what to do here.
 		      (if (one-window? 't) 
 			  (split-window) 
-			(next-window window))
+			(next-window window 'no-minibuf))
 		    window))
 	    (set-window-buffer cmd-window cmd-buffer)
 	    )
@@ -95,6 +95,7 @@ See also `dbgr-window-src'"
 		   (switch-to-buffer cmd-buffer))))
 
       )
+    (select-window cmd-window)
     src-window)
   )
 
@@ -121,7 +122,7 @@ See also `dbgr-window-src'"
 		      ;; FIXME: generalize what to do here.
 		      (if (one-window? 't) 
 			  (split-window) 
-			(next-window window))
+			(next-window window 'no-minibuf))
 		    window))
 	    (set-window-buffer bt-window bt-buffer)
 	    )
