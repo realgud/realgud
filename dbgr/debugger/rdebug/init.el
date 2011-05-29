@@ -38,6 +38,10 @@ dbgr-loc-pat struct")
 (setf (gethash "lang-backtrace" dbgr-rdebug-pat-hash) 
       dbgr-ruby-backtrace-loc-pat)
 
+;;  Regular expression that describes a ruby $! backtrace
+(setf (gethash "dollar-bang-backtrace" dbgr-rdebug-pat-hash) 
+      dbgr-ruby-dollar-bang-loc-pat)
+
 ;; Regular expression that describes a rdebug "breakpoint set" line
 ;; For example:
 ;;   Breakpoint 1 file /test/gcd.rb, line 6
@@ -124,6 +128,6 @@ dbgr-loc-pat struct")
 
 (setf (gethash "quit" dbgr-rdebug-command-hash) "quit!")
 (setf (gethash "shell" dbgr-rdebug-command-hash) "irb")
-(setf (gethash "trepan" dbgr-command-hash) dbgr-rdebug-command-hash)
+(setf (gethash "rdebug" dbgr-command-hash) dbgr-rdebug-command-hash)
 
 (provide-me "dbgr-rdebug-")

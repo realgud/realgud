@@ -48,7 +48,7 @@ dbgr-loc-pat struct")
 ;; <internal:lib/rubygems/custom_require>:29:in `require'
 ;; /tmp/Rakefile:50:in `<top /src/external-vcs/laser/Rakefile>'
 ;;	from /usr/lib/ruby/gems/rspec/compatibility.rb:6:in `const_missing'
-(setf (gethash "lang-backtrace" dbgr-trepan-pat-hash) 
+(setf (gethash "lang-backtrace" dbgr-trepan-pat-hash)
   (make-dbgr-loc-pat
    :regexp "^\\(?:[\t]from \\)?\\([^:]+\\):\\([0-9]+\\)\\(?:in `.*'\\)?"
    :file-group 1
