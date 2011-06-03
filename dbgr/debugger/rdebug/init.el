@@ -67,7 +67,7 @@ dbgr-loc-pat struct")
 (setf (gethash "rails-backtrace" dbgr-rdebug-pat-hash) 
       dbgr-rails-backtrace-loc-pat)
 
-;;  Regular expression that describes debugger "backtrace" command line.
+;;  Regular expression that describes a debugger "backtrace" command line.
 ;;  e.g.
 ;; --> #0 at line /usr/bin/irb:12
 ;;     #1 main.__script__ at /tmp/fact.rb:1
