@@ -43,6 +43,7 @@ AC_CONFIG_FILES([Makefile \
 		 dbgr/debugger/remake/Makefile \
 		 dbgr/debugger/trepan/Makefile \
 		 dbgr/debugger/trepanx/Makefile \
+		 dbgr/debugger/trepan8/Makefile \
 		 dbgr/debugger/zshdb/Makefile \
 		 dbgr/lang/Makefile \
 		 test/Makefile \
