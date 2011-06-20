@@ -118,7 +118,6 @@ of this mode."
     )
   )
 
-
 ;; For name == "trepan", produces: 
 ;;   (defvar trepan-track-mode nil
 ;;     "Non-nil if using trepan track-mode ... "
@@ -152,5 +151,20 @@ the name of the debugger which is used to preface variables."
     (progn 
       (dbgr-track-mode nil)
       )))
+
+(defun dbgr-track-mode-disable()
+  "Disable the debugger track-mode hook"
+  (interactive "")
+  (if dbgr-track-mode
+      (setq dbgr-track-mode nil)
+    (message "Debugger is not in track mode")))
+
+(defun dbgr-track-mode-enable()
+  "Enable the debugger track-mode hook"
+  (interactive "")
+  (if dbgr-track-mode
+      (message "Debugger track mode is already enabled.")
+    (setq dbgr-track-mode t))
+  )
 
 (provide-me "dbgr-")
