@@ -11,6 +11,7 @@ Debuggers we currently support are:
  * "pydb":http://bashdb.sourceforge.net/pydb/ (Python)
  * "pydbgr":http://code.google.com/p/pydbgr/ (Python)
  * "trepanning":https://github.com/rocky/rb-trepanning/wiki (Ruby 1.9)
+ * "rb8-trepanning":https://github.com/rocky/rb8-trepanning/wiki (Ruby 1.8 and an unpatched YARV 1.9)
  * "rbx-trepanning":https://github.com/rocky/rbx-trepanning/wiki (for Rubinius)
  * "remake":http//bashdb.sf.net/remake (GNU Make)
  * ruby-debug (Ruby)
