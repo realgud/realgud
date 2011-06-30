@@ -1,8 +1,7 @@
 #!/bin/sh
-# Copyright (C) 1995, 2000, 2003, 2004, 2005, 2009 Free Software
-# Foundation, Inc.
+# Copyright (C) 1995, 2000, 2003, 2004, 2005  Free Software Foundation, Inc.
 
-scriptversion=2009-04-28.21; # UTC
+scriptversion=2009-11-18.07
 
 # Franc,ois Pinard <pinard@iro.umontreal.ca>, 1995.
 #
@@ -17,7 +16,8 @@ scriptversion=2009-04-28.21; # UTC
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 # As a special exception to the GNU General Public License, if you
 # distribute this file as part of a program that contains a
@@ -61,20 +61,17 @@ if test -z "$EMACS" || test "$EMACS" = "t"; then
   EMACS=emacs
 fi
 
-tempdir=elc.$$
+tempdir=.
 
 # Cleanup the temporary directory on exit.
-trap 'ret=$?; rm -rf "$tempdir" && exit $ret' 0
+# trap 'ret=$?; rm -rf "$tempdir" && exit $ret' 0
 trap '(exit $?); exit' 1 2 13 15
-
-mkdir $tempdir
-cp "$@" $tempdir
 
 (
   cd $tempdir
   echo "(setq load-path (cons nil load-path))" > script
   $EMACS -batch -q -l script -f batch-byte-compile *.el || exit $?
-  mv *.elc ..
+  # mv *.elc ..
 ) || exit $?
 
 (exit 0); exit 0
@@ -85,6 +82,5 @@ cp "$@" $tempdir
 # eval: (add-hook 'write-file-hooks 'time-stamp)
 # time-stamp-start: "scriptversion="
 # time-stamp-format: "%:y-%02m-%02d.%02H"
-# time-stamp-time-zone: "UTC"
-# time-stamp-end: "; # UTC"
+# time-stamp-end: "$"
 # End:
