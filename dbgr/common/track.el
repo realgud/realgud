@@ -474,6 +474,7 @@ debugger with that information"
 		(cond 
 		 ((equal debugger-name "gdb") "dbgr-gdb")
 		 ((equal debugger-name "perldb") "dbgr-perldb")
+		 ((equal debugger-name "trepanpl") "dbgr-trepanpl")
 		 ('t debugger-name)))
 	       (specific-track-mode (intern (concat prefix "-track-mode")))
 	       )

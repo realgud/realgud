@@ -1,5 +1,5 @@
 ;;; Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org>
-;;; Ruby "perldb" Debugger tracking a comint or eshell buffer.
+;;; Stock Perl Debugger "perldb5" tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))
 (require 'load-relative)

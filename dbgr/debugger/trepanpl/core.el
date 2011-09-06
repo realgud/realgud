@@ -6,28 +6,28 @@
 			 "../../common/core" 
 			 "../../common/lang")
 		       "dbgr-")
-(require-relative-list '("init") "dbgr-perldb-")
+(require-relative-list '("init") "dbgr-trepanpl-")
 
 ;; FIXME: I think the following could be generalized and moved to 
 ;; dbgr-... probably via a macro.
-(defvar perldb-minibuffer-history nil
-  "minibuffer history list for the command `perldb'.")
+(defvar trepanpl-minibuffer-history nil
+  "minibuffer history list for the command `trepanpl'.")
 
-(easy-mmode-defmap dbgr-perldb-minibuffer-local-map
+(easy-mmode-defmap dbgr-trepanpl-minibuffer-local-map
   '(("\C-i" . comint-dynamic-complete-filename))
-  "Keymap for minibuffer prompting of perldb startup command."
+  "Keymap for minibuffer prompting of trepanpl startup command."
   :inherit minibuffer-local-map)
 
 ;; FIXME: I think this code and the keymaps and history
 ;; variable chould be generalized, perhaps via a macro.
-(defun dbgr-perldb-query-cmdline (&optional opt-debugger)
+(defun dbgr-trepanpl-query-cmdline (&optional opt-debugger)
   (dbgr-query-cmdline 
-   'dbgr-perldb-suggest-invocation
-   dbgr-perldb-minibuffer-local-map
-   'dbgr-perldb-minibuffer-history
+   'dbgr-trepanpl-suggest-invocation
+   dbgr-trepanpl-minibuffer-local-map
+   'dbgr-trepanpl-minibuffer-history
    opt-debugger))
 
-(defun dbgr-perldb-parse-cmd-args (orig-args)
+(defun dbgr-trepanpl-parse-cmd-args (orig-args)
   "Parse command line ARGS for the annotate level and name of script to debug.
 
 ARGS should contain a tokenized list of the command line to run.
@@ -41,16 +41,16 @@ We return the a list containing
 
 For example for the following input 
   (map 'list 'symbol-name
-   '(perl -W -C /tmp -d ./gcd.pl a b))
+   '(perl5.10 -W -C /tmp trepanpl --emacs ./gcd.pl a b))
 
 we might return:
-   ((perl -W -C -d) (./gcd.pl a b))
+   ((perl -W -C) (trepanpl --emacs) (./gcd.pl a b) 't)
 
 NOTE: the above should have each item listed in quotes.
 "
 
   ;; Parse the following kind of pattern:
-  ;;  [perl perl-options] perldb perldb-options script-name script-options
+  ;;  [perl perl-options] trepanpl trepanpl-options script-name script-options
   (let (
 	(args orig-args)
 	(pair)          ;; temp return from 
@@ -61,8 +61,9 @@ NOTE: the above should have each item listed in quotes.
 	(perl-two-args '())
 	;; One dash is added automatically to the below, so
 	;; h is really -h and -host is really --host.
-	(perldb-two-args '("e" "E"))
-	(perldb-opt-two-args '())
+	(trepanpl-two-args '("h" "-host" "p" "-port"
+			   "I" "-include"))
+	(trepanpl-opt-two-args '())
 	(interp-regexp 
 	 (if (member system-type (list 'windows-nt 'cygwin 'msdos))
 	     "^perl\\(?:5[0-9.]*\\)\\(.exe\\)?$"
@@ -72,12 +73,13 @@ NOTE: the above should have each item listed in quotes.
 	(script-name nil)
 	(debugger-name nil)
 	(interpreter-args '())
+	(debugger-args '())
 	(script-args '())
-	)
+	(annotate-p nil))
 
     (if (not (and args))
 	;; Got nothing: return '(nil, nil)
-	(list interpreter-args script-args)
+	(list interpreter-args debugger-args script-args annotate-p)
       ;; else
       ;; Strip off optional "perl" or "perl5.10.1" etc.
       (when (string-match interp-regexp
@@ -85,7 +87,7 @@ NOTE: the above should have each item listed in quotes.
 			   (file-name-nondirectory (car args))))
 	(setq interpreter-args (list (pop args)))
 
-	;; Strip off Perl-specific options
+	;; Strip off optional "perl" or "perl5.10.1" etc.
 	(while (and args
 		    (string-match "^-" (car args)))
 	  (setq pair (dbgr-parse-command-arg 
@@ -97,35 +99,36 @@ NOTE: the above should have each item listed in quotes.
     ))
 
 ; # To silence Warning: reference to free variable
-(defvar dbgr-perldb-command-name) 
+(defvar dbgr-trepanpl-command-name) 
 
-(defun dbgr-perldb-suggest-invocation (debugger-name)
-  "Suggest a perldb command invocation via `dbgr-suggest-invocaton'"
-  (dbgr-suggest-invocation dbgr-perldb-command-name perldb-minibuffer-history 
+(defun dbgr-trepanpl-suggest-invocation (debugger-name)
+  "Suggest a trepanpl command invocation via `dbgr-suggest-invocaton'"
+  (dbgr-suggest-invocation dbgr-trepanpl-command-name 
+			   trepanpl-minibuffer-history 
 			   "perl" "\\.pl$"))
 
-(defun dbgr-perldb-reset ()
-  "Perldb cleanup - remove debugger's internal buffers (frame,
+(defun dbgr-trepanpl-reset ()
+  "Trepanpl cleanup - remove debugger's internal buffers (frame,
 breakpoints, etc.)."
   (interactive)
-  ;; (perldb-breakpoint-remove-all-icons)
+  ;; (trepanpl-breakpoint-remove-all-icons)
   (dolist (buffer (buffer-list))
-    (when (string-match "\\*perldb-[a-z]+\\*" (buffer-name buffer))
+    (when (string-match "\\*trepanpl-[a-z]+\\*" (buffer-name buffer))
       (let ((w (get-buffer-window buffer)))
         (when w
           (delete-window w)))
       (kill-buffer buffer))))
 
-;; (defun perldb-reset-keymaps()
+;; (defun trepanpl-reset-keymaps()
 ;;   "This unbinds the special debugger keys of the source buffers."
 ;;   (interactive)
-;;   (setcdr (assq 'perldb-debugger-support-minor-mode minor-mode-map-alist)
-;; 	  perldb-debugger-support-minor-mode-map-when-deactive))
+;;   (setcdr (assq 'trepanpl-debugger-support-minor-mode minor-mode-map-alist)
+;; 	  trepanpl-debugger-support-minor-mode-map-when-deactive))
 
 
-(defun dbgr-perldb-customize ()
-  "Use `customize' to edit the settings of the `perldb' debugger."
+(defun dbgr-trepanpl-customize ()
+  "Use `customize' to edit the settings of the `trepanpl' debugger."
   (interactive)
-  (customize-group 'dbgr-perldb))
+  (customize-group 'dbgr-trepanpl))
 
-(provide-me "dbgr-perldb-")
+(provide-me "dbgr-trepanpl-")
