@@ -66,7 +66,7 @@
 					     dbgr-perldb-pat-hash))
 		  (setq s1
 			"$ = main::top_navigation_panel called from file `./latex2html' line 7400
-")
+p")
 		  (setq dbgr-bt-re (dbgr-loc-pat-regexp dbgr-bt-pat))
 		  (setq file-group (dbgr-loc-pat-file-group dbgr-bt-pat))
 		  (setq line-group (dbgr-loc-pat-line-group dbgr-bt-pat))
@@ -76,6 +76,25 @@
 					   (match-beginning file-group)
 					   (match-end file-group)))
 		  (assert-equal "7400"
+				(substring s1 
+					   (match-beginning line-group)
+					   (match-end line-group)))
+		  )
+
+	 (specify "debugger-errmsg"
+		  (setq dbgr-bt-pat  (gethash "perl-errmsg"  
+					     dbgr-perldb-pat-hash))
+		  (setq s1
+			"Use of uninitialized value $lines[0] in join or string at bin/../lib/LineCache.pm line 548.")
+		  (setq dbgr-bt-re (dbgr-loc-pat-regexp dbgr-bt-pat))
+		  (setq file-group (dbgr-loc-pat-file-group dbgr-bt-pat))
+		  (setq line-group (dbgr-loc-pat-line-group dbgr-bt-pat))
+		  (assert-equal 54 (string-match dbgr-bt-re s1))
+		  (assert-equal "bin/../lib/LineCache.pm"
+				(substring s1 
+					   (match-beginning file-group)
+					   (match-end file-group)))
+		  (assert-equal "548"
 				(substring s1 
 					   (match-beginning line-group)
 					   (match-end line-group)))

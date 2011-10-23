@@ -7,6 +7,7 @@
 			 "../../common/loc" 
 			 "../../common/init") 
 		       "dbgr-")
+(require-relative-list '("../../lang/perl") "dbgr-lang-")
 
 (defvar dbgr-pat-hash)
 (declare-function make-dbgr-loc-pat (dbgr-loc))
@@ -38,17 +39,26 @@ dbgr-loc-pat struct")
        :regexp "^(+trepanpl\\(@[0-9]+\\|@main\\)?)+: "
        ))
 
-;; Regular expression that describes a Ruby YARV 1.9 backtrace line.
+;; Regular expression that describes a Perl backtrace line.
 ;; For example:
-;; <internal:lib/rubygems/custom_require>:29:in `require'
-;; <internal:lib/rubygems/custom_require>:29:in `require'
-;; /tmp/Rakefile:50:in `<top /src/external-vcs/laser/Rakefile>'
-;;	from /usr/lib/ruby/gems/rspec/compatibility.pl:6:in `const_missing'
-(setf (gethash "lang-backtrace" dbgr-trepanpl-pat-hash)
+;; $ = main::top_navigation_panel called from file `./latex2html' line 7400
+;; $ = main::BEGIN() called from file `(eval 19)[/usr/bin/latex2html:126]' line 2
+(setf (gethash "debugger-backtrace" dbgr-trepanpl-pat-hash)
   (make-dbgr-loc-pat
    :regexp "^\\(?:[\t]from \\)?\\([^:]+\\):\\([0-9]+\\)\\(?:in `.*'\\)?"
    :file-group 1
    :line-group 2))
+
+;;  Regular expression that describes location in a Perl errmsg
+(setf (gethash "perl-errmsg" dbgr-trepanpl-pat-hash) 
+      dbgr-perl-errmsg-loc-pat)
+
+;;  Regular expression that describes a Perl Carp backtrace line.
+;;  at /tmp/foo.pl line 7
+;; 	main::__ANON__('Illegal division by zero at /tmp/foo.pl line 4.\x{a}') called at /tmp/foo.pl line 4
+;; 	main::foo(3) called at /tmp/foo.pl line 8
+(setf (gethash "lang-backtrace" dbgr-trepanpl-pat-hash) 
+      dbgr-perl-carp-loc-pat)
 
 ;; Regular expression that describes a "breakpoint set" line. 
 ;; For example: 

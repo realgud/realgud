@@ -5,6 +5,7 @@
 
 (require 'load-relative)
 (require-relative-list '("../regexp" "../loc") "dbgr-")
+(require-relative-list '("../../lang/perl") "dbgr-lang-")
 
 (defvar dbgr-pat-hash)
 (declare-function make-dbgr-loc-pat (dbgr-loc))
@@ -50,19 +51,16 @@ dbgr-loc-pat struct")
        :file-group 1
        :line-group 2))
 
+;;  Regular expression that describes location in a Perl errmsg
+(setf (gethash "perl-errmsg" dbgr-perldb-pat-hash) 
+      dbgr-perl-errmsg-loc-pat)
+
 ;;  Regular expression that describes a Perl Carp backtrace line.
 ;;  at /tmp/foo.pl line 7
 ;; 	main::__ANON__('Illegal division by zero at /tmp/foo.pl line 4.\x{a}') called at /tmp/foo.pl line 4
 ;; 	main::foo(3) called at /tmp/foo.pl line 8
-2
-(setf (gethash "lang-backtrace" dbgr-perldb-pat-hash)
-      (make-dbgr-loc-pat
-       :regexp   (concat 
-		  "\\(?:^\\|
-\\)"
-		  "\\(?:[ \t]+\\(?:\\|.* called \\)at \\(.*\\) line \\([0-9]+\\)\\)")
-       :file-group 1
-       :line-group 2))
+(setf (gethash "lang-backtrace" dbgr-perldb-pat-hash) 
+      dbgr-perl-carp-loc-pat)
 
 (defvar dbgr-perldb-command-hash (make-hash-table :test 'equal)
   "Hash key is command name like 'quit' and the value is 

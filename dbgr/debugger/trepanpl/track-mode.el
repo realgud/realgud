@@ -25,6 +25,8 @@ described by PT."
 (define-key dbgr-trepanpl-track-mode-map 
   (kbd "C-c !s") 'dbgr-trepanpl-goto-syntax-error-line)
 
+(dbgr-perl-populate-command-keys dbgr-trepanpl-track-mode-map)
+
 (defun dbgr-trepanpl-track-mode-hook()
   (if dbgr-trepanpl-track-mode
       (progn

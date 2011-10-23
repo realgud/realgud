@@ -15,11 +15,7 @@
 (dbgr-track-mode-vars "dbgr-perldb")
 
 (declare-function dbgr-track-mode(bool))
-
-(define-key dbgr-perldb-track-mode-map 
-  (kbd "C-c !!") 'dbgr-goto-lang-backtrace-line)
-(define-key dbgr-perldb-track-mode-map 
-  (kbd "C-c !b") 'dbgr-goto-debugger-backtrace-line)
+(dbgr-perl-populate-command-keys dbgr-perldb-track-mode-map )
 
 ;; Perldb doesn't have stack switching commands.
 (define-key dbgr-perldb-short-key-mode-map
