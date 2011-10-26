@@ -1,3 +1,4 @@
+;;; Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org>
 (defconst dbgr-track-char-range 10000
   "Max number of characters from end of buffer to search for stack entry.")
 
@@ -261,7 +262,8 @@ encountering a new loc."
   )
 
 (defun dbgr-track-loc(text cmd-mark &optional opt-regexp opt-file-group 
-			   opt-line-group no-warn-on-no-match?)
+			   opt-line-group no-warn-on-no-match? 
+			   opt-ignore-file-re)
   "Do regular-expression matching to find a file name and line number inside
 string TEXT. If we match, we will turn the result into a dbgr-loc struct.
 Otherwise return nil."
@@ -279,7 +281,10 @@ Otherwise return nil."
 	   (file-group (or opt-file-group 
 			   (dbgr-sget 'cmdbuf-info 'file-group)))
 	   (line-group (or opt-line-group 
-			   (dbgr-sget 'cmdbuf-info 'line-group))))
+			   (dbgr-sget 'cmdbuf-info 'line-group)))
+	   (ignore-file-re (or opt-ignore-file-re
+			       (dbgr-sget 'cmdbuf-info 'ignore-file-re)))
+	   )
 	(if loc-regexp
 	    (if (string-match loc-regexp text)
 		(let* ((filename (match-string file-group text))
@@ -287,7 +292,8 @@ Otherwise return nil."
 		       (lineno (string-to-number (or line-str "1"))))
 		  (unless line-str (message "line number not found -- using 1"))
 		  (if (and filename lineno)
-		      (dbgr-file-loc-from-line filename lineno cmd-mark)
+		      (dbgr-file-loc-from-line filename lineno cmd-mark nil
+					       ignore-file-re)
 		    nil))
 	      (unless no-warn-on-no-match? 
 		(message "Unable to file and line number for given line"))
@@ -299,10 +305,11 @@ Otherwise return nil."
     )
   )
   
-(defun dbgr-track-bp-loc(text &optional cmd-mark cmdbuf)
+(defun dbgr-track-bp-loc(text &optional cmd-mark cmdbuf ignore-file-re)
   "Do regular-expression matching to find a file name and line number inside
 string TEXT. If we match, we will turn the result into a dbgr-loc struct.
-Otherwise return nil."
+Otherwise return nil. CMD-MARK is set in the dbgr-loc object created.
+"
   
   ; NOTE: dbgr-cmdbuf-info is a buffer variable local to the process
   ; running the debugger. It contains a dbgr-cmdbuf-info "struct". In
@@ -315,10 +322,12 @@ Otherwise return nil."
     (if (dbgr-cmdbuf?)
 	(let* ((loc-pat (dbgr-cmdbuf-pat "brkpt-set")))
 	  (if loc-pat
-	      (let ((bp-num-group (dbgr-loc-pat-num loc-pat))
-		    (loc-regexp   (dbgr-loc-pat-regexp loc-pat))
-		    (file-group   (dbgr-loc-pat-file-group loc-pat))
-		    (line-group   (dbgr-loc-pat-line-group loc-pat)))
+	      (let ((bp-num-group   (dbgr-loc-pat-num loc-pat))
+		    (loc-regexp     (dbgr-loc-pat-regexp loc-pat))
+		    (file-group     (dbgr-loc-pat-file-group loc-pat))
+		    (line-group     (dbgr-loc-pat-line-group loc-pat))
+		    (ignore-file-re (dbgr-loc-pat-ignore-file-re loc-pat))
+		    )
 		(if loc-regexp
 		    (if (string-match loc-regexp text)
 			(let* ((bp-num (match-string bp-num-group text))
@@ -333,7 +342,9 @@ Otherwise return nil."
 				     (dbgr-file-loc-from-line 
 				      filename lineno 
 				      cmd-mark 
-				      (string-to-number bp-num))))
+				      (string-to-number bp-num)
+				      ignore-file-re
+				      )))
 				(if (stringp loc-or-error)
 				    (progn 
 				      (message loc-or-error) 
@@ -453,6 +464,8 @@ find a location. non-nil if we can find a location.
 				(dbgr-loc-pat-regexp loc-pat)
 				(dbgr-loc-pat-file-group loc-pat)
 				(dbgr-loc-pat-line-group loc-pat)
+				nil
+				(dbgr-loc-pat-ignore-file-re loc-pat)
 				))
       (if (stringp loc)
 	  (message loc)

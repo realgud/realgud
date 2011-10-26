@@ -64,6 +64,7 @@
   loc-regexp   ;; Location regular expression string
   file-group
   line-group
+  ignore-file-re
 
   loc-hist     ;; ring of locations seen in the course of execution
                ;; see dbgr-lochist
@@ -226,6 +227,7 @@ as a main program."
 	     :loc-regexp (dbgr-sget 'loc-pat 'regexp)
 	     :file-group (dbgr-sget 'loc-pat 'file-group)
 	     :line-group (dbgr-sget 'loc-pat 'line-group)
+	     :ignore-file-re (dbgr-sget 'loc-pat 'ignore-file-re)
 	     :loc-hist (make-dbgr-loc-hist)
 	     :regexp-hash regexp-hash
 	     :bt-buf nil

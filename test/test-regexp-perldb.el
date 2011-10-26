@@ -31,6 +31,21 @@
 		  )
 	 )
 
+(context "perldb file ignore matching"
+	 (tag regexp-perldb)
+	 (assert-equal 0 (string-match dbgr-perl-ignore-file-re
+				       "(eval 1006)[../example/eval.pl:5]"))
+)
+
+
+(context "perldb prompt matching"
+	 (tag regexp-perldb)
+	 (specify "prompt"
+		  (prompt-match "  DB<2> "  "2")
+		  (prompt-match	"[pid=6489->6502]  DB<1> " "1")
+		  )
+	 )
+
 (defun loc-match(text) 
   (string-match (dbgr-cmdbuf-info-loc-regexp dbgr) text)
 )

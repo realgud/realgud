@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 ;;; FIXME - think of a better name.
 ;;; Debugger regular expressions for many kinds of
 ;;;  debuggers
@@ -22,6 +22,7 @@ a string output by a debugger inside a process shell"
   (char-offset-group)
   (instruction-address-group)
   (column-group)
+  (ignore-file-re)
 )
 
 (defvar dbgr-pat-hash (make-hash-table :test 'equal)

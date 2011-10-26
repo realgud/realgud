@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org>
 ;;  `trepanpl' Main interface to trepanpl via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "dbgr-")
@@ -7,9 +7,9 @@
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
 (defgroup trepanpl nil
-  "The Ruby 1.9.2 \"trepanning\" debugger"
+  "The Perl \"trepanning\" debugger"
   :group 'processes
-  :group 'ruby
+  :group 'perl
   :group 'dbgr
   :version "23.1")
 
@@ -17,7 +17,7 @@
 ;; User definable variables
 ;;
 
-(defcustom trepan-command-name
+(defcustom dbgr-trepanpl-command-name
   ;;"trepanpl --emacs 3"
   "trepanpl"
   "File name for executing the Ruby debugger and command options.
@@ -50,7 +50,7 @@ marginal icons is reset."
 	 (script-name (car script-args))
 	 (cmd-buf
 	   (dbgr-run-process "trepanpl" script-name cmd-args 
-			     'trepanpl-track-mode no-reset)
+			     'dbgr-trepanpl-track-mode no-reset)
 	   ))
   ))
 

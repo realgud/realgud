@@ -1,5 +1,5 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
-;;; Ruby 1.8 debuggger: ruby-debug (rdebug)
+;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Ruby 1.8 debugger: ruby-debug (rdebug)
 
 (eval-when-compile (require 'cl))
 
@@ -24,7 +24,9 @@ dbgr-loc-pat struct")
       (make-dbgr-loc-pat
        :regexp "\\(?:source \\)?\\(\\(?:[a-zA-Z]:\\)?\\(?:.+\\)\\):\\([0-9]+\\).*\\(?:\n\\|$\\)"
        :file-group 1
-       :line-group 2))
+       :line-group 2
+       :ignore-file-re  "(eval)"
+      ))
 
 ;; Regular expression that describes a rdebug command prompt
 ;; For example:

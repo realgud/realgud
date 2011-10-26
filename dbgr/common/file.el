@@ -16,16 +16,26 @@ found"
 	  (line-number-at-pos (point-max))))
     nil))
 
-(defun dbgr-file-loc-from-line(filename line-number &optional cmd-marker bp-num)
+(defun dbgr-file-loc-from-line(filename line-number 
+					&optional cmd-marker bp-num ignore-file-re)
   "Return a dbgr-loc for FILENAME and LINE-NUMBER
+
+CMD-MARKER and BP-NUM get stored in the dbgr-loc object. IGNORE-FILE-RE 
+is a regular expression describing things that aren't expected to be 
+found. For example many debuggers create a pseudo file name for eval
+expressions. For example (eval 1) of Perl <string> of Python.
 
 If we're unable find the source code we return a string describing the
 problem as best as we can determine."
 
   (unless (file-exists? filename)
-    (setq filename 
-	  (buffer-file-name 
-	   (compilation-find-file (point-marker) filename nil)))
+    (if (and ignore-file-re (string-match ignore-file-re filename))
+	(message "tracking ignored for psuedo-file %s" filename)
+      ; else 
+      (setq filename 
+	    (buffer-file-name 
+	     (compilation-find-file (point-marker) filename nil)))
+      )
     )
   (if (file-exists? filename)
       (if (integerp line-number)

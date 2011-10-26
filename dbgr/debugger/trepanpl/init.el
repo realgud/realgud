@@ -21,12 +21,13 @@ dbgr-loc-pat struct")
 ;; before a command prompt.
 ;; For example: 
 ;; -- (/tmp/linecache.pl:64)
-;; C> (/tmp/eval.pl:2)
 (setf (gethash "loc" dbgr-trepanpl-pat-hash)
       (make-dbgr-loc-pat
        :regexp ".. (\\(?:.+ \\(?:via\\|remapped\\) \\)?\\(.+\\):\\([0-9]+\\)\\(?: @[0-9]+\\)?)"
        :file-group 1
-       :line-group 2))
+       :line-group 2
+       :ignore-file-re  dbgr-perl-ignore-file-re)
+      )
 
 ;; Regular expression that describes a trepanpl command prompt
 ;; For example: 
@@ -47,7 +48,9 @@ dbgr-loc-pat struct")
   (make-dbgr-loc-pat
    :regexp "^\\(?:[\t]from \\)?\\([^:]+\\):\\([0-9]+\\)\\(?:in `.*'\\)?"
    :file-group 1
-   :line-group 2))
+   :line-group 2
+   :ignore-file-re  dbgr-perl-ignore-file-re)
+  )
 
 ;;  Regular expression that describes location in a Perl errmsg
 (setf (gethash "perl-errmsg" dbgr-trepanpl-pat-hash) 
@@ -71,7 +74,9 @@ dbgr-loc-pat struct")
        :regexp "^Breakpoint \\([0-9]+\\) set at .*[\n\t ]+line \\([0-9]+\\)[ \t\n]+in file \\(.+\\)."
        :num 1
        :file-group 3
-       :line-group 2))
+       :line-group 2
+       :ignore-file-re  dbgr-perl-ignore-file-re)
+      )
 
 ;; Regular expression that describes a debugger "delete" (breakpoint) response.
 ;; For example:

@@ -29,6 +29,11 @@
        :line-group 2)
   "A dbgr-loc-pat struct that describes a line used in an error message"  )
 
+;;  Regular expression that pseudo-files in caller. For example:
+;;    (eval 1006)[../example/eval.pl:5]
+(defconst dbgr-perl-ignore-file-re "(eval [0-9]+)\\(\\[.+\\]\\)?"
+  "Regular expression that pseudo-files of caller()")
+
 ;; FIXME: there is probably a less redundant way to do the following
 ;; FNS. 
 (defun dbgr-perl-goto-errmsg-line (pt)
