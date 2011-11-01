@@ -8,12 +8,24 @@ run_cmd() {
     return $rc
 }
 
+# environment variable SUDO_CMD could be "sudo" or "su root -c"
 if (( $(id -u) != 0)) ; then 
-    need_sudo='sudo'
+    if [[ -z "$SUDO_CMD" ]] ; then
+	need_sudo='sudo'
+	if which $need_sudo >/dev/null 2>&1 ; then
+	    try_cmd=''
+	else
+	    need_sudo='su root -c'
+	    try_cmd='su'
+	fi
+    else
+	need_sudo="$SUDO_CMD"
+    fi
 else
     need_sudo=''
+    try_cmd=''
 fi
-for program in git make $need_sudo ; do
+for program in git make $try_cmd ; do
     if ! which $program >/dev/null 2>&1 ; then
 	echo "Cant find program $program in $PATH"
 	exit 1
