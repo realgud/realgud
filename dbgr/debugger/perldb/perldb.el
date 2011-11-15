@@ -52,5 +52,8 @@ marginal icons is reset."
 	  ))
     ))
 
+(defalias 'perl5db 'dbgr-perldb)
+(defalias 'perldb 'dbgr-perldb)
+
 (provide-me "dbgr-")
 ;;; perldb.el ends here

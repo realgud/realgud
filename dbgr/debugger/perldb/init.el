@@ -74,7 +74,8 @@ dbgr-loc-pat struct")
 	))
 
 
-(setf (gethash "perldb" dbgr-pat-hash) dbgr-perldb-pat-hash)
+(setf (gethash "perldb"  dbgr-pat-hash) dbgr-perldb-pat-hash)
+(setf (gethash "perl5db" dbgr-pat-hash) dbgr-perldb-pat-hash)
 
 (setf (gethash "backtrace" dbgr-perldb-command-hash) "T")
 (setf (gethash "break"     dbgr-perldb-command-hash) "b %l")
