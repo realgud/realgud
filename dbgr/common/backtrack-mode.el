@@ -32,7 +32,8 @@
 (defun dbgr-backtrack-set-debugger (debugger-name)
   "Set debugger name This info is returned or nil if we can't find a 
 debugger with that information"
-  (interactive "sDebugger name: ")
+  (interactive 
+   (list (completing-read "Debugger name: " dbgr-debugger-names)))
   (let ((regexp-hash (gethash debugger-name dbgr-pat-hash)))
     (if regexp-hash
 	(let* ((prefix 
