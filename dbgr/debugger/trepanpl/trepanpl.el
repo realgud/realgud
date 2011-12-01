@@ -55,6 +55,5 @@ marginal icons is reset."
   ))
 
 (defalias 'trepan.pl 'dbgr-trepanpl)
-(defalias 'trepanpl 'dbgr-trepanpl)
 (provide-me "dbgr-")
 ;;; trepanpl.el ends here
