@@ -2,28 +2,6 @@
 (defconst dbgr-track-char-range 10000
   "Max number of characters from end of buffer to search for stack entry.")
 
-;;; FIXME: put somewhere else
-(defconst dbgr-debugger-names
-  '(
-    "bashdb"
-    "dbgr-gdb" 
-    "dbgr-kshdb"
-    "dbgr-pydb"
-    "gdb" 
-    "kshdb"
-    "perl5db" 
-    "perldb" 
-    "pydb"
-    "pydbgr"
-    "trepan"
-    "trepanpl"
-    "trepanx"
-    "zshdb"
-    )
-  "List of all debugger names"
-  )
-
-
 ;; Shell process buffers that we can hook into:
 (require 'esh-mode) 
 (require 'comint)
@@ -502,7 +480,7 @@ the buffer process. This info is returned or nil if we can't find a
 debugger with that information"
   ;; FIXME: turn in to fn which can be used by dbgr-backtrack-set-debugger
   (interactive 
-   (list (completing-read "Debugger name: " dbgr-debugger-names)))
+   (list (completing-read "Debugger name: " dbgr-pat-hash)))
 
   (let ((regexp-hash (gethash debugger-name dbgr-pat-hash))
 	(command-hash (gethash debugger-name dbgr-command-hash))
@@ -511,10 +489,12 @@ debugger with that information"
 	(let* ((prefix 
 		(cond 
 		 ((equal debugger-name "gdb") "dbgr-gdb")
+		 ((or (equal debugger-name "trepan.pl")
+		      (equal debugger-name "trepanpl"))
+			     "dbgr-trepanpl")
 		 ((or (equal debugger-name "perldb") 
 		      (equal debugger-name "perl5db"))
 		      "dbgr-perldb")
-		 ((equal debugger-name "trepanpl") "dbgr-trepanpl")
 		 ('t debugger-name)))
 	       (specific-track-mode (intern (concat prefix "-track-mode")))
 	       )

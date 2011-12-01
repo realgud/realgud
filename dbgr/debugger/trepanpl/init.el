@@ -93,7 +93,7 @@ backtrace listing.")
 (defconst dbgr-trepanpl-frame-file-regexp
   "[ \t\n]+in file \\([^ \n]+\\)")
 
-(defconst dbgr-trepanpl-debugger-name "trepanpl" "Name of debugger")
+(defconst dbgr-trepanpl-debugger-name "trepan.pl" "Name of debugger")
 
 ;; Top frame number
 (setf (gethash "top-frame-num" dbgr-trepanpl-pat-hash) 0)
@@ -112,7 +112,7 @@ backtrace listing.")
 
 ;; Regular expression that for a termination message.
 (setf (gethash "termination" dbgr-trepanpl-pat-hash)
-       "^trepanpl: That's all, folks...\n")
+       "^trepan.pl: That's all, folks...\n")
 
 (setf (gethash "font-lock-keywords" dbgr-trepanpl-pat-hash)
       '(

@@ -1,6 +1,6 @@
 ;;; Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org>
 
-;;; Mode for parsing various kinds of backtraces found in the Ruby
+;;; Mode for parsing various kinds of backtraces found in Perl
 
 (eval-when-compile (require 'cl))
 (require 'load-relative)
@@ -11,7 +11,7 @@
 			 ) 
 		       "dbgr-")
 (require-relative-list '("core" "init") "dbgr-trepanpl-")
-(require-relative-list '("../../lang/ruby") "dbgr-lang-")
+(require-relative-list '("../../lang/perl") "dbgr-lang-")
 
 (dbgr-backtrack-mode-vars "trepanpl")
 (set-keymap-parent trepanpl-backtrack-mode-map dbgr-backtrack-mode-map)
@@ -24,7 +24,7 @@ described by PT."
   (interactive "d")
   (dbgr-goto-line-for-pt pt "control-frame"))
 
-(dbgr-ruby-populate-command-keys trepanpl-backtrack-mode-map)
+(dbgr-perl-populate-command-keys trepanpl-backtrack-mode-map)
 (define-key trepanpl-backtrack-mode-map 
   (kbd "C-c !c") 'dbgr-trepanpl-goto-control-frame-line)
 
@@ -37,7 +37,7 @@ described by PT."
   :group 'trepanpl
   :keymap trepanpl-backtrack-mode-map
 
-  (dbgr-backtrack-set-debugger "trepanpl")
+  (dbgr-backtrack-set-debugger "trepan.pl")
   (if trepanpl-backtrack-mode
       (progn 
 	(dbgr-backtrack-mode 't)
@@ -53,7 +53,7 @@ described by PT."
 	(use-local-map trepanpl-backtrack-mode-map)
 	(message "using trepanpl mode map")
 	)
-    (message "trepanpl backtrack-mode-hook disable called"))
+    (message "trepan.pl backtrack-mode-hook disable called"))
 )
 
 (provide-me "dbgr-trepanpl-")

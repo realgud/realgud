@@ -19,8 +19,8 @@
 
 (defcustom dbgr-trepanpl-command-name
   ;;"trepanpl --emacs 3"
-  "trepanpl"
-  "File name for executing the Ruby debugger and command options.
+  "trepan.pl"
+  "File name for executing the Perl debugger and command options.
 This should be an executable on your path, or an absolute file name."
   :type 'string
   :group 'trepanpl)
@@ -31,7 +31,7 @@ This should be an executable on your path, or an absolute file name."
 
 ;;;###autoload
 (defun dbgr-trepanpl (&optional opt-command-line no-reset)
-  "Invoke the trepanpl Ruby debugger and start the Emacs user interface.
+  "Invoke the trepan.pl Perl debugger and start the Emacs user interface.
 
 String COMMAND-LINE specifies how to run trepanpl.
 
@@ -43,17 +43,17 @@ buffers and source buffers which may contain marks and fringe or
 marginal icons is reset."
   (interactive)
   (let* ((cmd-str (or opt-command-line 
-		      (dbgr-trepanpl-query-cmdline "trepanpl")))
+		      (dbgr-trepanpl-query-cmdline "trepan.pl")))
 	 (cmd-args (split-string-and-unquote cmd-str))
 	 (parsed-args (dbgr-trepanpl-parse-cmd-args cmd-args))
 	 (script-args (cdr cmd-args))
 	 (script-name (car script-args))
 	 (cmd-buf
-	   (dbgr-run-process "trepanpl" script-name cmd-args 
+	   (dbgr-run-process "trepan.pl" script-name cmd-args 
 			     'dbgr-trepanpl-track-mode no-reset)
 	   ))
   ))
 
-(defalias 'trepanpl 'dbgr-trepanpl)
+(defalias 'trepan.pl 'dbgr-trepanpl)
 (provide-me "dbgr-")
 ;;; trepanpl.el ends here
