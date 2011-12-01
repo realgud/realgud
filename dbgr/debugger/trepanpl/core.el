@@ -41,10 +41,10 @@ We return the a list containing
 
 For example for the following input 
   (map 'list 'symbol-name
-   '(perl5.10 -W -C /tmp trepanpl --emacs ./gcd.pl a b))
+   '(perl5.10 -W -C /tmp trepan.pl --emacs ./gcd.pl a b))
 
 we might return:
-   ((perl -W -C) (trepanpl --emacs) (./gcd.pl a b) 't)
+   ((perl -W -C) (trepan.pl --emacs) (./gcd.pl a b) 't)
 
 NOTE: the above should have each item listed in quotes.
 "

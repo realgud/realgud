@@ -33,7 +33,7 @@ described by PT."
 	(use-local-map dbgr-trepanpl-track-mode-map)
 	(message "using trepanpl mode map")
 	)
-    (message "trepanpl track-mode-hook disable called"))
+    (message "trepan.pl track-mode-hook disable called"))
 )
 
 (define-minor-mode dbgr-trepanpl-track-mode
@@ -45,7 +45,7 @@ described by PT."
   :group 'trepanpl
   :keymap dbgr-trepanpl-track-mode-map
 
-  (dbgr-track-set-debugger "trepanpl")
+  (dbgr-track-set-debugger "trepan.pl")
   (if dbgr-trepanpl-track-mode
       (progn 
 	(dbgr-track-mode 't)

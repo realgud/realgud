@@ -53,7 +53,7 @@ described by PT."
 	(use-local-map trepanpl-backtrack-mode-map)
 	(message "using trepanpl mode map")
 	)
-    (message "trepanpl backtrack-mode-hook disable called"))
+    (message "trepan.pl backtrack-mode-hook disable called"))
 )
 
 (provide-me "dbgr-trepanpl-")

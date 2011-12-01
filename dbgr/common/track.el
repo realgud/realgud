@@ -474,19 +474,24 @@ find a location. non-nil if we can find a location.
       ))
     )
 
-(defun dbgr-track-set-debugger (debugger-name)
+(defun dbgr-track-set-debugger (&optional opt-debugger-name)
   "Set debugger name and information associated with that debugger for
 the buffer process. This info is returned or nil if we can't find a 
 debugger with that information"
-  (interactive "sDebugger name: ")
-  (let ((regexp-hash (gethash debugger-name dbgr-pat-hash))
-	(command-hash (gethash debugger-name dbgr-command-hash))
-	)
+  (interactive)
+  (let* (
+	 (debugger-name (or opt-debugger-name
+			    (completing-read "Debugger name: "
+					     dbgr-command-hash)))
+	 (regexp-hash (gethash debugger-name dbgr-pat-hash))
+	 (command-hash (gethash debugger-name dbgr-command-hash))
+	 )
     (if regexp-hash
 	(let* ((prefix 
 		(cond 
 		 ((equal debugger-name "gdb") "dbgr-gdb")
 		 ((equal debugger-name "perldb") "dbgr-perldb")
+		 ((equal debugger-name "trepan.pl") "dbgr-trepanpl")
 		 ((equal debugger-name "trepanpl") "dbgr-trepanpl")
 		 ('t debugger-name)))
 	       (specific-track-mode (intern (concat prefix "-track-mode")))
