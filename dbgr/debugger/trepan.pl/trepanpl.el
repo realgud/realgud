@@ -18,7 +18,6 @@
 ;;
 
 (defcustom dbgr-trepanpl-command-name
-  ;;"trepanpl --emacs 3"
   "trepan.pl"
   "File name for executing the Perl debugger and command options.
 This should be an executable on your path, or an absolute file name."

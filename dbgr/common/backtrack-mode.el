@@ -33,7 +33,7 @@
   "Set debugger name This info is returned or nil if we can't find a 
 debugger with that information"
   (interactive 
-   (list (completing-read "Debugger name: " dbgr-debugger-names)))
+   (list (completing-read "Debugger name: " dbgr-pat-hash)))
   (let ((regexp-hash (gethash debugger-name dbgr-pat-hash)))
     (if regexp-hash
 	(let* ((prefix 
