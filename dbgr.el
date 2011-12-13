@@ -21,7 +21,7 @@
      "./dbgr/debugger/rdebug/rdebug"
      "./dbgr/debugger/remake/remake"
      "./dbgr/debugger/trepan/trepan"
-     "./dbgr/debugger/trepanpl/trepanpl"
+     "./dbgr/debugger/trepan.pl/trepanpl"
      "./dbgr/debugger/trepanx/trepanx"
      "./dbgr/debugger/trepan8/trepan8"
      "./dbgr/debugger/zshdb/zshdb"
