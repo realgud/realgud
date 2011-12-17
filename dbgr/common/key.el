@@ -95,6 +95,7 @@ Nor does it touch prefix keys; for that see `dbgr-populate-keys-standard'"
     (define-key map "u" 'dbgr-cmd-older-frame)
     (define-key map "C" 'dbgr-window-cmd-undisturb-src)
     (define-key map "F" 'dbgr-window-bt)
+    (define-key map "Q" 'dbgr-cmd-terminate)
     (define-key map "S" 'dbgr-window-src-undisturb-cmd)
 
     (define-key map [M-down]    'dbgr-track-hist-newer)
