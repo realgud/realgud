@@ -144,6 +144,16 @@ getting stepped."
     (dbgr-cmd-remap arg "step" "step %p" "s")
 )
 
+(defun dbgr-cmd-terminate (&optional arg)
+  "Gently terminate source and command buffers without possibly
+issuing a command to the underlying debuger.  Use this if the
+underlying debugger has died or you want to get out of all
+shortkey modes in the source window and possibly restart
+debugging after editing source."
+  (interactive "p")
+  (dbgr-terminate (current-buffer))
+)
+
 (defun dbgr-cmd-quit (&optional arg)
   "Gently terminate execution of the debugged program."
   (interactive "p")
