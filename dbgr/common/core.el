@@ -131,6 +131,7 @@ which shows details of the error. The command buffer or nil is returned"
 (defun dbgr-terminate-srcbuf (&optional srcbuf)
   "Resets source buffer."
   (interactive "bsource buffer: ")
+  (if (stringp srcbuf) (setq srcbuf (get-buffer srcbuf)))
   (with-current-buffer srcbuf
     (dbgr-fringe-erase-history-arrows)
     (dbgr-bp-remove-icons (point-min) (point-max))
@@ -146,6 +147,7 @@ which shows details of the error. The command buffer or nil is returned"
 buffer BUF) This does things like remove fringe arrows breakpoint
 icons and resets short-key mode."
   (interactive "bbuffer: ")
+  (if (stringp buf) (setq buf (get-buffer buf)))
   (let ((cmdbuf (dbgr-get-cmdbuf buf)))
     (if cmdbuf
 	(with-current-buffer cmdbuf
