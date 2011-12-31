@@ -10,7 +10,7 @@
 (require-relative-list '("fringe" "helper" "lang" "reset") "dbgr-")
 (require-relative-list '("buffer/command" "buffer/source") "dbgr-buffer-")
 
-(declare-function dbgr-short-key-mode-off "shortkey.el")
+(declare-function dbgr-short-key-mode-setup "shortkey.el")
 
 (defvar dbgr-srcbuf-info)
 
@@ -136,9 +136,10 @@ which shows details of the error. The command buffer or nil is returned"
     (dbgr-fringe-erase-history-arrows)
     (dbgr-bp-remove-icons (point-min) (point-max))
     (if (dbgr-srcbuf?) 
-	(dbgr-short-key-mode-off)
-      (setq dbgr-short-key-mode nil))
-    (redisplay)
+	(progn
+	  (dbgr-short-key-mode-setup 0)
+	  (redisplay)
+	  ))
     )
   )
 
