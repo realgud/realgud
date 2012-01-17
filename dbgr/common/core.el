@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 ; (require 'term)
 (if (< emacs-major-version 23)
     (error
@@ -10,7 +10,7 @@
 (require-relative-list '("fringe" "helper" "lang" "reset") "dbgr-")
 (require-relative-list '("buffer/command" "buffer/source") "dbgr-buffer-")
 
-(declare-function dbgr-short-key-mode &optional arg)
+(declare-function dbgr-short-key-mode-setup "shortkey.el")
 
 (defvar dbgr-srcbuf-info)
 
@@ -131,13 +131,15 @@ which shows details of the error. The command buffer or nil is returned"
 (defun dbgr-terminate-srcbuf (&optional srcbuf)
   "Resets source buffer."
   (interactive "bsource buffer: ")
+  (if (stringp srcbuf) (setq srcbuf (get-buffer srcbuf)))
   (with-current-buffer srcbuf
     (dbgr-fringe-erase-history-arrows)
     (dbgr-bp-remove-icons (point-min) (point-max))
     (if (dbgr-srcbuf?) 
-	(dbgr-short-key-mode 0)
-      (setq dbgr-short-key-mode nil))
-    (redisplay)
+	(progn
+	  (dbgr-short-key-mode-setup 0)
+	  (redisplay)
+	  ))
     )
   )
 
@@ -146,6 +148,7 @@ which shows details of the error. The command buffer or nil is returned"
 buffer BUF) This does things like remove fringe arrows breakpoint
 icons and resets short-key mode."
   (interactive "bbuffer: ")
+  (if (stringp buf) (setq buf (get-buffer buf)))
   (let ((cmdbuf (dbgr-get-cmdbuf buf)))
     (if cmdbuf
 	(with-current-buffer cmdbuf
