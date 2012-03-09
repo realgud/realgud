@@ -13,7 +13,7 @@ Debuggers we currently support are:
  * "trepanning":https://github.com/rocky/rb-trepanning/wiki (Ruby 1.9)
  * "rb8-trepanning":https://github.com/rocky/rb8-trepanning/wiki (MRI Ruby 1.8 and an unpatched YARV 1.9)
  * "rbx-trepanning":https://github.com/rocky/rbx-trepanning/wiki (for Rubinius)
- * "remake":http//bashdb.sf.net/remake (GNU Make)
+ * "remake":http://bashdb.sf.net/remake (GNU Make)
  * ruby-debug (Ruby)
  * "zshdb":https://github.com/rocky/zshdb/wiki (Zsh)
 
