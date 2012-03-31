@@ -15,7 +15,7 @@ Basic Installation
    Briefly, the shell commands `./configure && make' should configure,
 and build this package.  If that succeeds `make install' will install
 the package. However on some systems you may need root privileges, you 
-may have use `sudo make install' or perhaps `su root' beforehand.
+may have to use `sudo make install' or perhaps `su root' beforehand.
 
 
    See http://wiki.github.com/rocky/emacs-dbgr/how-to-install for more

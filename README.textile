@@ -8,12 +8,13 @@ Debuggers we currently support are:
  * gdb  
  * "kshdb":https://github.com/rocky/kshdb/wiki (Korn Shell)
  * perldb (Perl)
+ * "Devel::Trepan":https://github.com/rocky/Perl-Devel-Trepan/wiki (Perl)
  * "pydb":http://bashdb.sourceforge.net/pydb/ (Python)
  * "pydbgr":http://code.google.com/p/pydbgr/ (Python)
  * "trepanning":https://github.com/rocky/rb-trepanning/wiki (Ruby 1.9)
  * "rb8-trepanning":https://github.com/rocky/rb8-trepanning/wiki (MRI Ruby 1.8 and an unpatched YARV 1.9)
  * "rbx-trepanning":https://github.com/rocky/rbx-trepanning/wiki (for Rubinius)
- * "remake":http//bashdb.sf.net/remake (GNU Make)
+ * "remake":http://bashdb.sf.net/remake (GNU Make)
  * ruby-debug (Ruby)
  * "zshdb":https://github.com/rocky/zshdb/wiki (Zsh)
 
