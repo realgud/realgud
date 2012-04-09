@@ -5,14 +5,17 @@ EXTRA_DIST=gcd.py gcd.rb
 
 all: 
 
+#: same thing as "check"
 test: check
 
 test_files := $(wildcard test-*.el)
 
 CHECK_FILES = $(notdir $(test_files:.el=.run))
 
+#: Run all tests
 check: $(CHECK_FILES)
 
+#: Run all tests with minimum verbosity
 check-short:
 	$(MAKE) check 2>&1  | ruby ../make-check-filter.rb
 

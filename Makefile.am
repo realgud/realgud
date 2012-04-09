@@ -18,8 +18,10 @@ ACLOCAL_AMFLAGS=-I .
 
 endif
 
+#: Run all tests
 test: check
 
+#: Run all tests without bloated output
 check-short:
 	$(MAKE) check 2>&1  | ruby make-check-filter.rb
 
