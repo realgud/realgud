@@ -137,7 +137,7 @@ which shows details of the error. The command buffer or nil is returned"
     (dbgr-bp-remove-icons (point-min) (point-max))
     (if (dbgr-srcbuf?) 
 	(progn
-	  (dbgr-short-key-mode-setup 0)
+	  (dbgr-short-key-mode-setup nil)
 	  (redisplay)
 	  ))
     )

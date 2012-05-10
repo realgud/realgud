@@ -53,7 +53,11 @@ described by PT."
   :global nil
   :group 'trepan
   :keymap trepan-track-mode-map
+  (trepan-track-mode-internal trepan-track-mode)
+)
 
+;; Broken out as a function for debugging
+(defun trepan-track-mode-internal (&optional arg)
   (dbgr-track-set-debugger "trepan")
   (if trepan-track-mode
       (progn 
