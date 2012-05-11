@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2011, 2012 Rocky Bernstein <rocky@gnu.org>
 ; (require 'term)
 (if (< emacs-major-version 23)
     (error

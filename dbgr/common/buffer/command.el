@@ -1,5 +1,5 @@
 ;;; process-command buffer things
-;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2011, 2012 Rocky Bernstein <rocky@gnu.org>
 
 (require 'load-relative)
 (require-relative-list
@@ -37,7 +37,7 @@
 
 (defstruct dbgr-cmdbuf-info
   "The debugger object/structure specific to a process buffer."
-  in-srcbuf?           ;; If true, selected window be the source buffer.
+  in-srcbuf?           ;; If true, selected window should be the source buffer.
 		       ;; Otherwise, the command buffer?
   debugger-name        ;; Name of debugger
   frame-switch?        ;; Should the selected window be the source buffer or
@@ -87,6 +87,10 @@
 (dbgr-struct-field-setter "dbgr-cmdbuf-info" "in-debugger?")
 
 (defun dbgr-cmdbuf-info-describe (&optional buffer)
+  "Display dbgr-cmdcbuf-info fields of BUFFER.
+BUFFER is either a debugger command or source buffer. If BUFFER is not given
+the current buffer is used as a starting point.
+Information is put in an internal buffer called *Describe*."
   (interactive "")
   (setq buffer (dbgr-get-cmdbuf buffer))
   (if buffer
@@ -95,28 +99,30 @@
 	      (cmdbuf-name (buffer-name)))
 	  (switch-to-buffer (get-buffer-create "*Describe*"))
 	  (delete-region (point-min) (point-max))
-	  (insert (format "cmdbuf-info for %s\n" cmdbuf-name))
-	  (insert (format "Debugger-name: %s\n" 
-			  (dbgr-cmdbuf-info-debugger-name info)))
-	  (insert (format "Selected window should contain source?: %s\n" 
-			  (dbgr-cmdbuf-info-in-srcbuf? info)))
-	  (insert (format "Command-line args: %s\n" 
-			  (dbgr-cmdbuf-info-cmd-args info)))
-	  (insert (format "Source should go into shortkey?: %s\n"
-			  (dbgr-cmdbuf-info-src-shortkey? info)))
-	  (insert (format "Breakpoint list: %s\n"
-			  (dbgr-cmdbuf-info-bp-list info)))
-	  (insert (format "Remap table for debugger commands: %s\n"
-			  (dbgr-cmdbuf-info-cmd-hash info)))
-	  (insert (format "Source buffers seen: %s\n"
-			  (dbgr-cmdbuf-info-srcbuf-list info)))
-	  (insert (format "Backtrace buffer: %s\n"
-			  (dbgr-cmdbuf-info-bt-buf info)))
-	  (insert (format "In debugger?: %s\n"
-			  (dbgr-cmdbuf-info-in-debugger? info)))
-	  )
+	  (mapc 'insert
+		(list 
+		 (format "dbgr-cmdbuf-info for %s\n\n" cmdbuf-name)
+		 (format "Debugger name (debugger-name): %s\n" 
+			 (dbgr-cmdbuf-info-debugger-name info))
+		 (format "Selected window should contain source? (in-srcbuf?): %s\n" 
+			 (dbgr-cmdbuf-info-in-srcbuf? info))
+		 (format "Command-line args (cmd-args): %s\n" 
+			 (dbgr-cmdbuf-info-cmd-args info))
+		 (format "Source should go into short-key mode? (src-shortkey?): %s\n"
+			 (dbgr-cmdbuf-info-src-shortkey? info))
+		 (format "Breakpoint list (bp-list): %s\n"
+			 (dbgr-cmdbuf-info-bp-list info))
+		 (format "Remap table for debugger commands: %s\n"
+			 (dbgr-cmdbuf-info-cmd-hash info))
+		 (format "Source buffers seen (srcbuf-list): %s\n"
+			 (dbgr-cmdbuf-info-srcbuf-list info))
+		 (format "Backtrace buffer (bt): %s\n"
+			 (dbgr-cmdbuf-info-bt-buf info))
+		 (format "In debugger? (in-debugger?): %s\n"
+			 (dbgr-cmdbuf-info-in-debugger? info))
+		 )))
 	)
-    (message "Buffer %s is not a debugger buffer; nothing done."
+    (message "Buffer %s is not a debugger source or command buffer; nothing done."
 	     (or buffer (current-buffer)))
     )
   )

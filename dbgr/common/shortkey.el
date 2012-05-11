@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2011, 2012 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
 (require-relative-list '("custom" "key" "menu") "dbgr-")
 (require-relative-list '("buffer/helper") "dbgr-buffer-")
