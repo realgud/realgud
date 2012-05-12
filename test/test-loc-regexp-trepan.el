@@ -44,6 +44,28 @@
 
 	 )
 
+(context "location remap matching"
+	 (tag loc-regexp-trepan)
+
+	 (specify "remapped location"
+		  (setq text "-> (<internal:lib/rubygems/custom_require>:28 remapped /usr/lib/ruby/gems/1.9.1/gems/data/custom_require.rb:28 @2)")
+		  (assert-t (numberp (loc-match text)))
+		  )
+	 (specify "extract remapped file name"
+		  (assert-equal 0 (loc-match text))
+		  (assert-equal "/usr/lib/ruby/gems/1.9.1/gems/data/custom_require.rb"
+				(match-string (dbgr-cmdbuf-info-file-group dbgr)
+						text))
+		  )
+	 (specify "extract remapped line number"
+		  (assert-equal "28"
+				(match-string 
+				 (dbgr-cmdbuf-info-line-group dbgr)
+				 text))
+		  )
+
+	 )
+
 
 (context "location matching c-func"
 	 (tag loc-regexp-trepan)

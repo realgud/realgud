@@ -1,3 +1,4 @@
+;;; Copyright (C) 2012 Rocky Bernstein <rocky@gnu.org>
 ;;; "kshdb" Debugger tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))

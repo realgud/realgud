@@ -1,4 +1,5 @@
-;;; Ruby "remake" Debugger tracking a comint or eshell buffer.
+;;; Copyright (C) 2012 Rocky Bernstein <rocky@gnu.org>
+;;; GNU Make Debugger tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))
 (require 'load-relative)
@@ -41,10 +42,10 @@
   (dbgr-track-set-debugger "remake")
   (if remake-track-mode
       (progn 
-	(dbgr-track-mode 't)
+	(setq dbgr-track-mode 't)
 	(run-mode-hooks (intern (remake-track-mode-hook))))
     (progn 
-      (dbgr-track-mode nil)
+      (setq dbgr-track-mode nil)
       ))
 )
 
