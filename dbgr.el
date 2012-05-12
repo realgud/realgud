@@ -16,6 +16,7 @@
      "./dbgr/debugger/bashdb/bashdb"
      "./dbgr/debugger/gdb/gdb"
      "./dbgr/debugger/kshdb/kshdb"
+     "./dbgr/debugger/pdb/pdb"
      "./dbgr/debugger/pydbgr/pydbgr"
      "./dbgr/debugger/perldb/perldb"
      "./dbgr/debugger/rdebug/rdebug"

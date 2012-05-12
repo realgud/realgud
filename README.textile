@@ -9,6 +9,7 @@ Debuggers we currently support are:
  * "kshdb":https://github.com/rocky/kshdb/wiki (Korn Shell)
  * perldb (Perl)
  * "Devel::Trepan":https://github.com/rocky/Perl-Devel-Trepan/wiki (Perl)
+ * pdb (Stock C Python debugger)
  * "pydb":http://bashdb.sourceforge.net/pydb/ (Python)
  * "pydbgr":http://code.google.com/p/pydbgr/ (Python)
  * "trepanning":https://github.com/rocky/rb-trepanning/wiki (Ruby 1.9)
