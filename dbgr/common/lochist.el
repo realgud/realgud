@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2012 Rocky Bernstein <rocky@gnu.org>
 ;;; Debugger location ring
 ;;; Commentary:
 
@@ -21,12 +21,23 @@
   (position -1)
   (ring (make-ring dbgr-loc-hist-size)))
 
-(defun dbgr-loc-hist-describe(loc-hist &optional buffer)
-  (unless buffer (setq buffer (current-buffer)))
-  (insert (format "  buffer size: %d\n" dbgr-loc-hist-size))
-  (insert (format "  position   : %d\n" (dbgr-loc-hist-position loc-hist)))
-  (mapcar (lambda(i) (if i (insert (format "    %s\n" i)))) 
-	  (cddr (dbgr-loc-hist-ring loc-hist)))
+(defun dbgr-loc-hist-describe(loc-hist)
+  "Format LOC-HIST values inside buffer *Describe*"
+  (switch-to-buffer (get-buffer-create "*Describe*"))
+  (mapc 'insert
+	(list 
+	 (format "  buffer size: %d\n" dbgr-loc-hist-size)
+	 (format "  position   : %d\n" (dbgr-loc-hist-position loc-hist))))
+  (let ((locs (cddr (dbgr-loc-hist-ring loc-hist)))
+	(loc)
+	(i 1))
+    (while (and (setq loc (elt locs i)) (dbgr-loc? loc) (<= i (length locs)))
+      (insert (format "    i: %d\n" i))
+      (dbgr-loc-describe loc)
+      (insert "    ----\n")
+      (setq i (1+ i))
+      )
+    )
 )
   
 (defun dbgr-loc-hist-item-at(loc-hist position)

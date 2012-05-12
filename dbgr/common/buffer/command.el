@@ -37,12 +37,12 @@
 
 (defstruct dbgr-cmdbuf-info
   "The debugger object/structure specific to a process buffer."
-  in-srcbuf?           ;; If true, selected window should be the source buffer.
-		       ;; Otherwise, the command buffer?
   debugger-name        ;; Name of debugger
+  cmd-args             ;; Command-line invocation arguments
   frame-switch?        ;; Should the selected window be the source buffer or
 		       ;; command buffer?
-  cmd-args             ;; Command-line invocation arguments
+  in-srcbuf?           ;; If true, selected window should be the source buffer.
+		       ;; Otherwise, the command buffer?
   prior-prompt-regexp  ;; regular expression prompt (e.g.
                        ;; comint-prompt-regexp) *before* setting
                        ;; loc-regexp
@@ -104,10 +104,10 @@ Information is put in an internal buffer called *Describe*."
 		 (format "dbgr-cmdbuf-info for %s\n\n" cmdbuf-name)
 		 (format "Debugger name (debugger-name): %s\n" 
 			 (dbgr-cmdbuf-info-debugger-name info))
-		 (format "Selected window should contain source? (in-srcbuf?): %s\n" 
-			 (dbgr-cmdbuf-info-in-srcbuf? info))
 		 (format "Command-line args (cmd-args): %s\n" 
 			 (dbgr-cmdbuf-info-cmd-args info))
+		 (format "Selected window should contain source? (in-srcbuf?): %s\n" 
+			 (dbgr-cmdbuf-info-in-srcbuf? info))
 		 (format "Source should go into short-key mode? (src-shortkey?): %s\n"
 			 (dbgr-cmdbuf-info-src-shortkey? info))
 		 (format "Breakpoint list (bp-list): %s\n"
@@ -120,7 +120,9 @@ Information is put in an internal buffer called *Describe*."
 			 (dbgr-cmdbuf-info-bt-buf info))
 		 (format "In debugger? (in-debugger?): %s\n"
 			 (dbgr-cmdbuf-info-in-debugger? info))
-		 )))
+		 ))
+	  (dbgr-loc-hist-describe (dbgr-cmdbuf-info-loc-hist info))
+	  )
 	)
     (message "Buffer %s is not a debugger source or command buffer; nothing done."
 	     (or buffer (current-buffer)))

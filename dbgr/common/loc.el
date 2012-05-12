@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2012 Rocky Bernstein <rocky@gnu.org>
 ;;; Debugger location
 ;;; Commentary:
 
@@ -26,6 +26,23 @@ want to save the values that were seen/requested originally."
 )
 
 (defalias 'dbgr-loc? 'dbgr-loc-p)
+
+(defun dbgr-loc-describe (loc)
+  "Display dbgr-cmdcbuf-info.
+Information is put in an internal buffer called *Describe*."
+  (interactive "")
+  (switch-to-buffer (get-buffer-create "*Describe*"))
+  (mapc 'insert
+	(list 
+	 (format "    id           : %s\n" (dbgr-loc-id loc))
+	 (format "    num          : %s\n" (dbgr-loc-num loc))
+	 (format "    filename     : %s\n" (dbgr-loc-filename loc))
+	 (format "    line number  : %s\n" (dbgr-loc-line-number loc))
+	 (format "    column number: %s\n" (dbgr-loc-column-number loc))
+	 (format "    source marker: %s\n" (dbgr-loc-marker loc))
+	 (format "    cmdbuf marker: %s\n" (dbgr-loc-cmd-marker loc))
+	 ))
+  )
 
 (defun dbgr-loc-current(source-buffer cmd-marker)
   "Create a location object for the point in the current buffer."
