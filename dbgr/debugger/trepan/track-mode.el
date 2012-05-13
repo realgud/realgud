@@ -62,7 +62,8 @@ described by PT."
   (if trepan-track-mode
       (progn 
 	(setq dbgr-track-mode 't)
-	(run-mode-hooks (intern (trepan-track-mode-hook))))
+	(dbgr-track-mode-setup 't)
+	(trepan-track-mode-hook))
     (progn 
       (setq dbgr-track-mode nil)
       ))
