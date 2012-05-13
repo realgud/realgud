@@ -13,8 +13,6 @@
 "Our own location type. Even though a mark contains a
 file-name (via a buffer) and a line number (via an offset), we
 want to save the values that were seen/requested originally."
-   id            ;; Unique id -- is the total number of locations seen
-	         ;; when this one was created.
    num           ;; If there is a number such as a breakpoint or frame
 		 ;; number associated with this location this is set.
 		 ;; Nil otherwise.
@@ -34,7 +32,6 @@ Information is put in an internal buffer called *Describe*."
   (switch-to-buffer (get-buffer-create "*Describe*"))
   (mapc 'insert
 	(list 
-	 (format "    id           : %s\n" (dbgr-loc-id loc))
 	 (format "    num          : %s\n" (dbgr-loc-num loc))
 	 (format "    filename     : %s\n" (dbgr-loc-filename loc))
 	 (format "    line number  : %s\n" (dbgr-loc-line-number loc))

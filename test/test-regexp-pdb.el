@@ -56,7 +56,7 @@
 	   )
 	 )
 
-(context "prompt matching"
+(context "pdb prompt matching"
 	 (tag regexp-pdb)
 	 ;; (lexical-let ((text "(c:\\working\\python\\helloworld.py:30): <module>"))
 	 ;;   (specify "MS DOS position location"
@@ -90,17 +90,16 @@
 	   
 	   )
 
-	 (lexical-let ((prompt-str "(Pdb) "))
-	   (specify "prompt matching"
-		    (prompt-match prompt-str "valid debugger prompt: %s")
-		    (setq prompt_str "((Pdb)) ")
-		    (prompt-match prompt-str "valid nested debugger prompt: %s")
-		    (setq prompt-str "Pdb) ")
-		    (assert-nil (numberp (loc-match prompt-str prompt))
-				(format "%s %s" "invalid debugger prompt"
-					prompt-str))
-		    )
-	   )
+	 (setq prompt-str "(Pdb) ")
+	 (specify "prompt matching"
+		  (prompt-match prompt-str "valid debugger prompt: %s")
+		  (setq prompt-str "((Pdb)) ")
+		  (prompt-match prompt-str "valid nested debugger prompt: %s")
+		  (setq prompt-str "Pdb) ")
+		  (assert-nil (numberp (loc-match prompt-str prompt-pat))
+			      (format "%s %s" "invalid debugger prompt"
+				      prompt-str))
+		  )
 	 )
 
 (test-unit "regexp-pdb")

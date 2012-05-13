@@ -22,7 +22,7 @@
   (string-match (dbgr-cmdbuf-info-loc-regexp dbgr) text)
 )
 
-(context "location matching"
+(context "trepan location matching"
 	 (tag loc-regexp-trepan)
 
 	 (specify "basic location"

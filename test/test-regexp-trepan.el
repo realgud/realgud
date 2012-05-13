@@ -76,7 +76,8 @@
 	   	    (prompt-match "((trepan)): ")
 	   	    (prompt-match "((trepan@55)): ")
 		    (prompt-match "((trepan@main)): ")
-		    (assert-nil (loc-match "trepan:" prompt-pat)
+		    (setq prompt-str "trepan:")
+		    (assert-nil (loc-match prompt-str prompt-pat)
 				(format "invalid prompt %s" prompt-str))
 		    )
 
