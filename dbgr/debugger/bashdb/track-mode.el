@@ -39,7 +39,8 @@
   (if bashdb-track-mode
       (progn 
 	(setq dbgr-track-mode 't)
-	(run-mode-hooks (intern (bashdb-track-mode-hook))))
+        (dbgr-track-mode-setup 't)
+        (bashdb-track-mode-hook))
     (progn 
       (setq dbgr-track-mode nil)
       ))

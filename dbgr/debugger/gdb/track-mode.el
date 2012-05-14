@@ -36,7 +36,8 @@
       (progn 
 	(dbgr-track-set-debugger "gdb")
 	(setq dbgr-track-mode 't)
-	(run-mode-hooks (intern (dbgr-gdb-track-mode-hook))))
+        (dbgr-track-mode-setup 't)
+        (dbgr-gdb-track-mode-hook))
     (progn 
       (setq dbgr-track-mode nil)
       ))

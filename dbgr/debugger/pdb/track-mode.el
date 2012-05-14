@@ -5,12 +5,12 @@
 (eval-when-compile (require 'cl))
 (require 'load-relative)
 (require-relative-list '(
-			 "../../common/cmds" 
-			 "../../common/menu"
-			 "../../common/track"
-			 "../../common/track-mode"
-			 ) 
-		       "dbgr-")
+                         "../../common/cmds" 
+                         "../../common/menu"
+                         "../../common/track"
+                         "../../common/track-mode"
+                         ) 
+                       "dbgr-")
 (require-relative-list '("core" "init") "dbgr-pdb-")
 
 (dbgr-track-mode-vars "pdb")
@@ -22,9 +22,9 @@
 (defun pdb-track-mode-hook()
   (if pdb-track-mode
       (progn
-	(use-local-map pdb-track-mode-map)
-	(message "using pdb mode map")
-	)
+        (use-local-map pdb-track-mode-map)
+        (message "using pdb mode map")
+        )
     (message "pdb track-mode-hook disable called")
     )
 )
@@ -40,8 +40,9 @@
   (dbgr-track-set-debugger "pdb")
   (if pdb-track-mode
       (progn 
-	(setq dbgr-track-mode 't)
-	(run-mode-hooks (intern (pdb-track-mode-hook))))
+        (setq dbgr-track-mode 't)
+        (dbgr-track-mode-setup 't)
+        (pdb-track-mode-hook))
     (progn 
       (setq dbgr-track-mode nil)
       ))

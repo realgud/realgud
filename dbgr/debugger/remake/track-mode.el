@@ -43,7 +43,8 @@
   (if remake-track-mode
       (progn 
 	(setq dbgr-track-mode 't)
-	(run-mode-hooks (intern (remake-track-mode-hook))))
+        (dbgr-track-mode-setup 't)
+        (remake-track-mode-hook))
     (progn 
       (setq dbgr-track-mode nil)
       ))

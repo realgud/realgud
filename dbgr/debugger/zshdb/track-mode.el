@@ -40,7 +40,8 @@
   (if zshdb-track-mode
       (progn 
 	(setq dbgr-track-mode 't)
-	(run-mode-hooks (intern (zshdb-track-mode-hook))))
+        (dbgr-track-mode-setup 't)
+        (zshdb-track-mode-hook))
     (progn 
       (setq dbgr-track-mode nil)
       ))

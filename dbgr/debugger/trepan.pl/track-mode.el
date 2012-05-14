@@ -4,12 +4,12 @@
 (eval-when-compile (require 'cl))
 (require 'load-relative)
 (require-relative-list '(
-			 "../../common/cmds" 
-			 "../../common/menu"
-			 "../../common/track"
-			 "../../common/track-mode"
-			 ) 
-		       "dbgr-")
+                         "../../common/cmds" 
+                         "../../common/menu"
+                         "../../common/track"
+                         "../../common/track-mode"
+                         ) 
+                       "dbgr-")
 (require-relative-list '("core" "init") "dbgr-trepanpl-")
 
 (dbgr-track-mode-vars "dbgr-trepanpl")
@@ -30,9 +30,9 @@ described by PT."
 (defun dbgr-trepanpl-track-mode-hook()
   (if dbgr-trepanpl-track-mode
       (progn
-	(use-local-map dbgr-trepanpl-track-mode-map)
-	(message "using trepanpl mode map")
-	)
+        (use-local-map dbgr-trepanpl-track-mode-map)
+        (message "using trepanpl mode map")
+        )
     (message "trepan.pl track-mode-hook disable called"))
 )
 
@@ -48,8 +48,9 @@ described by PT."
   (dbgr-track-set-debugger "trepan.pl")
   (if dbgr-trepanpl-track-mode
       (progn 
-	(setq dbgr-track-mode 't)
-	(run-mode-hooks (intern (dbgr-trepanpl-track-mode-hook))))
+        (setq dbgr-track-mode 't)
+        (dbgr-track-mode-setup 't)
+        (dbgr-trepanpl-track-mode-hook))
     (progn 
       (setq dbgr-track-mode nil)
       ))

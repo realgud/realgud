@@ -39,7 +39,8 @@
   (if kshdb-track-mode
       (progn 
 	(dbgr-track-mode 't)
-	(run-mode-hooks (intern (kshdb-track-mode-hook))))
+        (dbgr-track-mode-setup 't)
+        (kshdb-track-mode-hook))
     (progn 
       (dbgr-track-mode nil)
       ))

@@ -70,7 +70,7 @@ not not found"
 	     (marker      (dbgr-loc-marker loc))
 	     (cmd-marker  (dbgr-loc-cmd-marker loc))
 	     (src-buffer  (marker-buffer (or marker (make-marker)))))
-	(if (not src-buffer)
+	(if (and (not src-buffer) filename)
 	    (setq src-buffer (find-file-noselect filename)))
 	(if cmd-marker
 	    (with-current-buffer (marker-buffer cmd-marker)
