@@ -1,3 +1,4 @@
+;;; Copyright (C) 2012 Rocky Bernstein <rocky@gnu.org>
 ;;; "zshdb" Debugger tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))
@@ -38,10 +39,10 @@
   (dbgr-track-set-debugger "zshdb")
   (if zshdb-track-mode
       (progn 
-	(dbgr-track-mode 't)
+	(setq dbgr-track-mode 't)
 	(run-mode-hooks (intern (zshdb-track-mode-hook))))
     (progn 
-      (dbgr-track-mode nil)
+      (setq dbgr-track-mode nil)
       ))
 )
 

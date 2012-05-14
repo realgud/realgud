@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2012 Rocky Bernstein <rocky@gnu.org>
 ;;; Ruby "rdebug" Debugger tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))
@@ -35,10 +35,10 @@
   (dbgr-track-set-debugger "rdebug")
   (if rdebug-track-mode
       (progn 
-	(dbgr-track-mode 't)
+	(setq dbgr-track-mode 't)
 	(run-mode-hooks (intern (rdebug-track-mode-hook))))
     (progn 
-      (dbgr-track-mode nil)
+      (setq dbgr-track-mode nil)
       ))
 )
 

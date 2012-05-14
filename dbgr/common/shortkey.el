@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2011, 2012 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
 (require-relative-list '("custom" "key" "menu") "dbgr-")
 (require-relative-list '("buffer/helper") "dbgr-buffer-")
@@ -64,16 +64,16 @@ MODE-ON? a boolean which specifies if we are going into or out of this mode."
 	      (if (not (eq (dbgr-sget 'srcbuf-info 'short-key?) mode-on?))
 		  (progn
 		    (dbgr-srcbuf-info-short-key?= mode-on?)
-		    (setq dbgr-short-key-mode mode-on?)))
-	      (if mode-on?
-		  ;; Mode is being turned on.
-		  (progn
-		    (dbgr-srcbuf-info-was-read-only?= buffer-read-only)
-		    (local-set-key [M-insert] 'dbgr-short-key-mode)
-		    (setq buffer-read-only t))
-		;; Mode is being turned off: restore read-only state.
-		(setq buffer-read-only 
-		      (dbgr-sget 'srcbuf-info 'was-read-only?)))
+		    (setq dbgr-short-key-mode mode-on?)
+		    (if mode-on?
+			;; Mode is being turned on.
+			(progn
+			  (dbgr-srcbuf-info-was-read-only?= buffer-read-only)
+			  (local-set-key [M-insert] 'dbgr-short-key-mode)
+			  (setq buffer-read-only t))
+		      ;; Mode is being turned off: restore read-only state.
+		      (setq buffer-read-only 
+			    (dbgr-sget 'srcbuf-info 'was-read-only?)))))
 	      )
 	  ;; (with-current-buffer-safe cmdbuf
 	  ;;   (dbgr-cmdbuf-info-src-shortkey?= mode-on?)

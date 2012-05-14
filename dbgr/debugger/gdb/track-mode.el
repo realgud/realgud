@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2012 Rocky Bernstein <rocky@gnu.org>
 ;;; gdb tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))
@@ -35,10 +35,10 @@
   (if dbgr-gdb-track-mode
       (progn 
 	(dbgr-track-set-debugger "gdb")
-	(dbgr-track-mode 't)
+	(setq dbgr-track-mode 't)
 	(run-mode-hooks (intern (dbgr-gdb-track-mode-hook))))
     (progn 
-      (dbgr-track-mode nil)
+      (setq dbgr-track-mode nil)
       ))
 )
 

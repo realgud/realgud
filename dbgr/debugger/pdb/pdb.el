@@ -1,14 +1,14 @@
-;;; Copyright (C) 2010, 2011, 2012 Rocky Bernstein <rocky@gnu.org>
-;;  `pydbgr' Main interface to pydbgr via Emacs
+;;; Copyright (C) 2012 Rocky Bernstein <rocky@gnu.org>
+;;  `pdb' Main interface to pdb via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper"
 			 "../../common/track") "dbgr-")
-(require-relative-list '("core" "track-mode") "dbgr-pydbgr-")
+(require-relative-list '("core" "track-mode") "dbgr-pdb-")
 
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
-(defgroup pydbgr nil
-  "The Python pydbgr debugger"
+(defgroup pdb nil
+  "The Python pdb debugger"
   :group 'processes
   :group 'dbgr
   :group 'python
@@ -18,25 +18,24 @@
 ;; User definable variables
 ;;
 
-(defcustom pydbgr-command-name
-  ;;"pydbgr --emacs 3"
-  "pydbgr"
-  "File name for executing the Python debugger and command options.
+(defcustom pdb-command-name
+  "pdb"
+  "File name for executing the stock Python debugger and command options.
 This should be an executable on your path, or an absolute file name."
   :type 'string
-  :group 'pydbgr)
+  :group 'pdb)
 
-(declare-function pydbgr-track-mode (bool))
+(declare-function pdb-track-mode (bool))
 
 ;; -------------------------------------------------------------------
 ;; The end.
 ;;
 
 ;;;###autoload
-(defun dbgr-pydbgr (&optional opt-command-line no-reset)
-  "Invoke the pydbgr Python debugger and start the Emacs user interface.
+(defun dbgr-pdb (&optional opt-command-line no-reset)
+  "Invoke the pdb Python debugger and start the Emacs user interface.
 
-String COMMAND-LINE specifies how to run pydbgr.
+String COMMAND-LINE specifies how to run pdb.
 
 Normally command buffers are reused when the same debugger is
 reinvoked inside a command buffer with a similar command. If we
@@ -48,19 +47,19 @@ marginal icons is reset."
   
   (interactive)
   (let* (
-	 (cmd-str (or opt-command-line (pydbgr-query-cmdline 
-					"pydbgr")))
+	 (cmd-str (or opt-command-line (pdb-query-cmdline 
+					"pdb")))
 	 (cmd-args (split-string-and-unquote cmd-str))
-	 (parsed-args (pydbgr-parse-cmd-args cmd-args))
+	 (parsed-args (pdb-parse-cmd-args cmd-args))
 	 (script-args (cdr cmd-args))
 	 (script-name (car script-args))
 	 (cmd-buf))
-    (dbgr-run-process "pydbgr" script-name cmd-args 
-		      'pydbgr-track-mode no-reset)
+    (dbgr-run-process "pdb" script-name cmd-args 
+		      'pdb-track-mode no-reset)
     )
   )
 
 
-(defalias 'pydbgr 'dbgr-pydbgr)
+(defalias 'pdb 'dbgr-pdb)
 
 (provide-me "dbgr-")

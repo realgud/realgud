@@ -15,7 +15,8 @@
 )
 
 (defun prompt-match(prompt-str) 
-  (assert-equal 0 (loc-match prompt-str prompt-pat))
+  (assert-equal 0 (loc-match prompt-str prompt-pat)
+		(format "valid prompt %s" prompt-str))
 )
 
 ;; FIXME: we get a void variable somewhere in here when running
@@ -75,6 +76,9 @@
 	   	    (prompt-match "((trepan)): ")
 	   	    (prompt-match "((trepan@55)): ")
 		    (prompt-match "((trepan@main)): ")
+		    (setq prompt-str "trepan:")
+		    (assert-nil (loc-match prompt-str prompt-pat)
+				(format "invalid prompt %s" prompt-str))
 		    )
 
 	   (specify "control-frame"

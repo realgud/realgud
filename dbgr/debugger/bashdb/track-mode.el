@@ -1,4 +1,5 @@
-;;; Ruby "bashdb" Debugger tracking a comint or eshell buffer.
+;;; Copyright (C) 2012 Rocky Bernstein <rocky@gnu.org>
+;;; Bash Debugger tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))
 (require 'load-relative)
@@ -37,10 +38,10 @@
   (dbgr-track-set-debugger "bashdb")
   (if bashdb-track-mode
       (progn 
-	(dbgr-track-mode 't)
+	(setq dbgr-track-mode 't)
 	(run-mode-hooks (intern (bashdb-track-mode-hook))))
     (progn 
-      (dbgr-track-mode nil)
+      (setq dbgr-track-mode nil)
       ))
 )
 

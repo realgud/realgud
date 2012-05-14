@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2011, 2012 Rocky Bernstein <rocky@gnu.org>
 ; (require 'term)
 (if (< emacs-major-version 23)
     (error
@@ -137,7 +137,7 @@ which shows details of the error. The command buffer or nil is returned"
     (dbgr-bp-remove-icons (point-min) (point-max))
     (if (dbgr-srcbuf?) 
 	(progn
-	  (dbgr-short-key-mode-setup 0)
+	  (dbgr-short-key-mode-setup nil)
 	  (redisplay)
 	  ))
     )

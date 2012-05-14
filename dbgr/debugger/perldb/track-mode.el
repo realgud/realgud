@@ -1,4 +1,4 @@
-;;; Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011, 2012 Rocky Bernstein <rocky@gnu.org>
 ;;; Stock Perl Debugger "perldb5" tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))
@@ -44,10 +44,10 @@
   (dbgr-track-set-debugger "perldb")
   (if dbgr-perldb-track-mode
       (progn 
-	(dbgr-track-mode 't)
+	(setq dbgr-track-mode 't)
 	(run-mode-hooks (intern (dbgr-perldb-track-mode-hook))))
     (progn 
-      (dbgr-track-mode nil)
+      (setq dbgr-track-mode nil)
       ))
 )
 

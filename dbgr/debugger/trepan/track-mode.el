@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2012 Rocky Bernstein <rocky@gnu.org>
 ;;; Ruby "trepan" Debugger tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))
@@ -53,14 +53,19 @@ described by PT."
   :global nil
   :group 'trepan
   :keymap trepan-track-mode-map
+  (trepan-track-mode-internal trepan-track-mode)
+)
 
+;; Broken out as a function for debugging
+(defun trepan-track-mode-internal (&optional arg)
   (dbgr-track-set-debugger "trepan")
   (if trepan-track-mode
       (progn 
-	(dbgr-track-mode 't)
-	(run-mode-hooks (intern (trepan-track-mode-hook))))
+	(setq dbgr-track-mode 't)
+	(dbgr-track-mode-setup 't)
+	(trepan-track-mode-hook))
     (progn 
-      (dbgr-track-mode nil)
+      (setq dbgr-track-mode nil)
       ))
 )
 

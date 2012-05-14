@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2012 Rocky Bernstein <rocky@gnu.org>
 ;;; Debugger location
 ;;; Commentary:
 
@@ -13,8 +13,6 @@
 "Our own location type. Even though a mark contains a
 file-name (via a buffer) and a line number (via an offset), we
 want to save the values that were seen/requested originally."
-   id            ;; Unique id -- is the total number of locations seen
-	         ;; when this one was created.
    num           ;; If there is a number such as a breakpoint or frame
 		 ;; number associated with this location this is set.
 		 ;; Nil otherwise.
@@ -26,6 +24,22 @@ want to save the values that were seen/requested originally."
 )
 
 (defalias 'dbgr-loc? 'dbgr-loc-p)
+
+(defun dbgr-loc-describe (loc)
+  "Display dbgr-cmdcbuf-info.
+Information is put in an internal buffer called *Describe*."
+  (interactive "")
+  (switch-to-buffer (get-buffer-create "*Describe*"))
+  (mapc 'insert
+	(list 
+	 (format "    num          : %s\n" (dbgr-loc-num loc))
+	 (format "    filename     : %s\n" (dbgr-loc-filename loc))
+	 (format "    line number  : %s\n" (dbgr-loc-line-number loc))
+	 (format "    column number: %s\n" (dbgr-loc-column-number loc))
+	 (format "    source marker: %s\n" (dbgr-loc-marker loc))
+	 (format "    cmdbuf marker: %s\n" (dbgr-loc-cmd-marker loc))
+	 ))
+  )
 
 (defun dbgr-loc-current(source-buffer cmd-marker)
   "Create a location object for the point in the current buffer."

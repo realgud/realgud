@@ -27,7 +27,7 @@
   (string-match (dbgr-loc-pat-regexp xagent-pat) text)
 )
 
-(context "location matching"
+(context "trepanx location matching"
 	 (tag loc-regexp-trepanx)
 
 	 (specify "basic location"

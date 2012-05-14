@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2011, 2012 Rocky Bernstein <rocky@gnu.org>
 ;;  tracks shell output 
 
 (eval-when-compile (require 'cl))
@@ -146,10 +146,10 @@ the name of the debugger which is used to preface variables."
   (funcall (intern (concat "dbgr-define-" name "-commands")))
   (if (intern (concat name "-track-mode"))
       (progn 
-	(dbgr-track-mode 't)
+	(setq dbgr-track-mode 't)
 	(run-mode-hooks (intern (concat name "-track-mode-hook"))))
     (progn 
-      (dbgr-track-mode nil)
+      (setq dbgr-track-mode nil)
       )))
 
 (defun dbgr-track-mode-disable()
