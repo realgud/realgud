@@ -14,8 +14,8 @@
 file-name (via a buffer) and a line number (via an offset), we
 want to save the values that were seen/requested originally."
    num           ;; If there is a number such as a breakpoint or frame
-		 ;; number associated with this location this is set.
-		 ;; Nil otherwise.
+		 ;; number associated with this location, this is set.
+		 ;; nil otherwise.
    filename  
    line-number
    column-number ;; Column offset within line
