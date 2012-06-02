@@ -1,4 +1,4 @@
-;;; Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011, 2012 Rocky Bernstein <rocky@gnu.org>
 (defconst dbgr-track-char-range 10000
   "Max number of characters from end of buffer to search for stack entry.")
 
@@ -22,11 +22,10 @@
   :type 'symbolp
   :group 'dbgr)
 
-(defvar dbgr-track-mode)
+(make-variable-buffer-local  (defvar dbgr-track-mode))
 (fn-p-to-fn?-alias 'dbgr-loc-p)
 (declare-function dbgr-loc?(loc))
 
-(make-variable-buffer-local 'dbgr-track-mode)
 (defvar dbgr-track-divert-string)
 
 (defun dbgr-track-comint-output-filter-hook(text)

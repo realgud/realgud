@@ -26,8 +26,7 @@ to be debugged."
 (declare-function dbgr-command (fmt &optional arg no-record? 
 				    frame-switch? dbgr-prompts?))
 
-(defvar dbgr-backtrace-info)
-(make-variable-buffer-local 'dbgr-backtrace-info)
+(make-variable-buffer-local (defvar dbgr-backtrace-info))
 
 ;: FIXME: not picked up from track. Why?
 (defvar dbgr-track-divert-string nil)
