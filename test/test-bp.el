@@ -1,7 +1,8 @@
 (require 'test-simple)
+(require 'load-relative)
 (load-file "../dbgr/common/bp.el")
 
-(test-simple-clear)
+(test-simple-start)
 
 (note "breakpoints")
 
