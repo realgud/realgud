@@ -1,13 +1,8 @@
-(require 'test-unit)
+(require 'test-simple)
 (load-file "../dbgr/common/shortkey.el")
-(test-unit-clear-contexts)
+(test-simple-clear)
 
-(context "dbgr-shortkey"
-	 (tag shortkey)
-	 (specify "assert-raises"
-		  (assert-raises error
-		   		 (dbgr-shortkey-mode-setup 't))
-		  )
-)
+(note "dbgr-shortkey")
+(assert-raises error (dbgr-shortkey-mode-setup 't))
 
-(test-unit "shortkey")
+(end-tests)
