@@ -1,38 +1,40 @@
 (setq elisp-file "../dbgr/common/core.el")
-(require 'test-unit)
+(require 'test-simple)
 (load-file "../dbgr/common/lang.el")
-(test-unit-clear-contexts)
+(test-simple-start)
 
-(context "dbgr-lang-mode?"
-	 (tag lang)
-	 (specify "dbgr-lang-mode? with Lisp file"
-		  (assert-nil
-		   (dbgr-lang-mode? elisp-file "ruby")))
+(note "dbgr-lang-mode?")
 
-	 (specify "dbgr-lang-mode? with Ruby file"
-		  (save-excursion (find-file "./gcd.rb"))
-		  (assert-t
-		   (dbgr-lang-mode? "./gcd.rb" "ruby")))
-	 
-	 (specify "dbgr-suggest-lang-file"
-		  (assert-equal "gcd.rb"
-				(dbgr-suggest-lang-file "ruby" "\\.rb$")))
-	 )
+(assert-nil
+ (dbgr-lang-mode? elisp-file "ruby")
+ "dbgr-lang-mode? with Lisp file")
 
-(context "dbgr-suggest-file-from-buffer"
-	 (tag lang)
-	 (specify "dbgr-lang-mode? with Lisp file"
-		  (with-current-buffer (setq elisp-buffer 
-					(find-file "./test-dbgr.el"))
-				  (setq major-mode 'emacs-lisp-mode)
-				  (message "set major mode to %s" major-mode)
-				  )
-		  (assert-equal (buffer-file-name elisp-buffer)
+
+(save-excursion 
+  (find-file "./gcd.rb")
+  (assert-t
+   (dbgr-lang-mode? "./gcd.rb" "ruby")
+   "dbgr-lang-mode? with Ruby file")
+  )
+
+
+(assert-equal "gcd.rb"
+	      (dbgr-suggest-lang-file "ruby" "\\.rb$")
+	      "dbgr-suggest-lang-file"
+	      )
+
+(note "dbgr-suggest-file-from-buffer")
+
+
+(with-current-buffer 
+    (setq elisp-buffer (find-file "./test-dbgr.el"))
+  (setq major-mode 'emacs-lisp-mode)
+  (message "set major mode to %s" major-mode)
+  )
+(assert-equal (buffer-file-name elisp-buffer)
 				(dbgr-suggest-file-from-buffer
 				 "emacs-lisp"
-				 (list elisp-buffer)))
-		  )
-	 )
+				 (list elisp-buffer))
+				"dbgr-lang-mode? with Lisp file"		  )
 
-
-(test-unit "lang")
+(end-tests)
