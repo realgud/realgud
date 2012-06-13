@@ -2,7 +2,7 @@
 (load-file "../dbgr/common/loc.el")
 (load-file "../dbgr/common/lochist.el")
 
-(test-simple-clear)
+(test-simple-start)
 
 ;;; (defun setup()
 ;;;      (lexical-let ((loc-hist (make-dbgr-loc-hist))
