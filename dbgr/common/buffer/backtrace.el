@@ -1,5 +1,5 @@
 ;;; Backtrace buffer
-;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2011, 2012 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
 (require-relative-list
  '("../key") "dbgr-")
@@ -12,8 +12,7 @@
 
 
 (defstruct dbgr-backtrace-info
-  "debugger object/structure specific to a (top-level) Ruby file
-to be debugged."
+  "debugger object/structure specific to a (top-level) program to be debugged."
   (cmdbuf    nil)  ;; buffer of the associated debugger process
   (cur-pos   0)    ;; Frame we are at
   frame-ring       ;; ring of marks in buffer of frame numbers. The 
@@ -26,8 +25,7 @@ to be debugged."
 (declare-function dbgr-command (fmt &optional arg no-record? 
 				    frame-switch? dbgr-prompts?))
 
-(defvar dbgr-backtrace-info)
-(make-variable-buffer-local 'dbgr-backtrace-info)
+(make-variable-buffer-local (defvar dbgr-backtrace-info))
 
 ;: FIXME: not picked up from track. Why?
 (defvar dbgr-track-divert-string nil)
