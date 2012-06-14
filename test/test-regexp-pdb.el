@@ -1,7 +1,7 @@
-(require 'test-unit)
+(require 'test-simple)
 (load-file "../dbgr/debugger/pdb/init.el")
 
-(test-unit-clear-contexts)
+(test-simple-start)
 
 
 (setq bps-pat    (gethash "brkpt-set" dbgr-pdb-pat-hash))
@@ -22,85 +22,77 @@
 ;;        even though we define it in lexical-let. Dunno why.
 ;;        setq however will workaround this.
 (setq text "  File \"/usr/lib/python2.6/code.py\", line 281, in raw_input")
-(context "traceback location matching"
-	 (tag regexp-pdb)
-	 (specify "basic traceback location"
-		  (assert-t (numberp (loc-match text tb-pat))))
-	 (specify "extract file name"
-		  (assert-equal "/usr/lib/python2.6/code.py"
-				(match-string (dbgr-loc-pat-file-group tb-pat)
-					      text)
-				(format "Failing file group is %s" 
-					(dbgr-loc-pat-file-group tb-pat))))
-	 (specify "extract line number"
-		  (assert-equal "281"
-				(match-string (dbgr-loc-pat-line-group tb-pat)
-					      text))
-		  ))
+(note "traceback location matching")
 
-(context "breakpoint location matching"
-	 (tag regexp-pdb)
-	 (lexical-let ((text "Breakpoint 1 at /src/git/code/gcd.py:13"))
-	   (specify "basic breakpoint location"
-		    (assert-t (numberp (loc-match text bps-pat))))
-	   (specify "extract breakpoint file name"
-	   	    (assert-equal "/src/git/code/gcd.py"
-				  (match-string (dbgr-loc-pat-file-group 
-						 bps-pat)
-						text)))
-	   (specify "extract breakpoint line number"
-	   	    (assert-equal "13"
-				  (match-string (dbgr-loc-pat-line-group 
-						 bps-pat)
-						text)))
-	   )
-	 )
+(assert-t (numberp (loc-match text tb-pat)) "basic traceback location")
 
-(context "pdb prompt matching"
-	 (tag regexp-pdb)
-	 ;; (lexical-let ((text "(c:\\working\\python\\helloworld.py:30): <module>"))
-	 ;;   (specify "MS DOS position location"
-	 ;; 	    (assert-t (numberp (loc-match text loc-pat))))
-	 ;;   (specify "extract file name"
-	 ;; 	    (assert-equal "c:\\working\\python\\helloworld.py"
-	 ;; 			(match-string (dbgr-loc-pat-file-group loc-pat)
-	 ;; 				      text)
-	 ;; 			(format "Failing file group is %s" 
-	 ;; 				(dbgr-loc-pat-file-group tb-pat))))
-	 ;; (specify "extract line number"
-	 ;; 	  (assert-equal "30"
-	 ;; 			(match-string (dbgr-loc-pat-line-group loc-pat)
-	 ;; 				      text)))
+(assert-equal "/usr/lib/python2.6/code.py"
+	      (match-string (dbgr-loc-pat-file-group tb-pat)
+			    text)
+	      (format "Failing file group is %s" 
+		      (dbgr-loc-pat-file-group tb-pat) "extract file name"))
 
-	 ;;   )
-	 (lexical-let ((text "> /usr/bin/ipython(24)<module>"))
-	   (specify "position location"
-		    (assert-t (numberp (loc-match text loc-pat))))
-	   (specify "extract file name"
-		    (assert-equal "/usr/bin/ipython"
-				(match-string (dbgr-loc-pat-file-group loc-pat)
-					      text)
-				(format "Failing file group is %s" 
-					(dbgr-loc-pat-file-group tb-pat))))
-	   (specify "extract line number"
-		    (assert-equal "24"
-				  (match-string (dbgr-loc-pat-line-group 
-						 loc-pat)
-						text)))
-	   
-	   )
+(assert-equal "281"
+	      (match-string (dbgr-loc-pat-line-group tb-pat)
+			    text) "extract line number")
 
-	 (setq prompt-str "(Pdb) ")
-	 (specify "prompt matching"
-		  (prompt-match prompt-str "valid debugger prompt: %s")
-		  (setq prompt-str "((Pdb)) ")
-		  (prompt-match prompt-str "valid nested debugger prompt: %s")
-		  (setq prompt-str "Pdb) ")
-		  (assert-nil (numberp (loc-match prompt-str prompt-pat))
-			      (format "%s %s" "invalid debugger prompt"
-				      prompt-str))
-		  )
-	 )
+(note "breakpoint location matching")
 
-(test-unit "regexp-pdb")
+(setq text "Breakpoint 1 at /src/git/code/gcd.py:13")
+(assert-t (numberp (loc-match text bps-pat)) "basic breakpoint location")
+
+(assert-equal "/src/git/code/gcd.py"
+	      (match-string (dbgr-loc-pat-file-group 
+			     bps-pat)
+			    text)   "extract breakpoint file name")
+
+
+(assert-equal "13"
+	      (match-string (dbgr-loc-pat-line-group 
+			     bps-pat)
+			    text)   "extract breakpoint line number")
+
+(note "pdb prompt matching")
+
+;; (lexical-let ((text "(c:\\working\\python\\helloworld.py:30): <module>"))
+;;   (specify "MS DOS position location"
+;; 	    (assert-t (numberp (loc-match text loc-pat))))
+;;   (specify "extract file name"
+;; 	    (assert-equal "c:\\working\\python\\helloworld.py"
+;; 			(match-string (dbgr-loc-pat-file-group loc-pat)
+;; 				      text)
+;; 			(format "Failing file group is %s" 
+;; 				(dbgr-loc-pat-file-group tb-pat))))
+;; (specify "extract line number"
+;; 	  (assert-equal "30"
+;; 			(match-string (dbgr-loc-pat-line-group loc-pat)
+;; 				      text)))
+
+;;   )
+(setq text "> /usr/bin/ipython(24)<module>")
+(assert-t (numberp (loc-match text loc-pat)) "position location")
+(assert-equal "/usr/bin/ipython"
+	      (match-string (dbgr-loc-pat-file-group loc-pat)
+			    text)
+	      (format "Failing file group is %s" 
+		      (dbgr-loc-pat-file-group tb-pat)
+		      "extract file name"))
+(assert-equal "24"
+	      (match-string (dbgr-loc-pat-line-group 
+			     loc-pat)
+			    text)
+	      "extract line number")
+
+
+(setq prompt-str "(Pdb) ")
+(note "prompt matching")
+(prompt-match prompt-str "valid debugger prompt: %s")
+(setq prompt-str "((Pdb)) ")
+(prompt-match prompt-str "valid nested debugger prompt: %s")
+(setq prompt-str "Pdb) ")
+(assert-nil (numberp (loc-match prompt-str prompt-pat))
+	    (format "%s %s" "invalid debugger prompt"
+		    prompt-str))
+
+(end-tests)
 
