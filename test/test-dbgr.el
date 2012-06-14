@@ -11,11 +11,10 @@
 (assert-equal -5 (dbgr-string-starts-with "dbgrfoo" "dbgr-"))
 
 (note "dbgr-loaded-features")
-(setq dbgr-features (dbgr-loaded-features))
+(set (make-local-variable 'dbgr-features) (dbgr-loaded-features))
 (dolist (feature '(dbgr-trepan dbgr-pydbgr
 			       dbgr-core))
-  (assert-t (not (not (member feature dbgr-features))))
-  )
+  (assert-t (not (not (member feature dbgr-features)))) )
 
 (note "dbgr-unload-features")
 (load-file "../dbgr.el")

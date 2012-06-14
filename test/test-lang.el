@@ -1,4 +1,5 @@
-(setq elisp-file "../dbgr/common/core.el")
+(set (make-local-variable 'elisp-file)
+     "../dbgr/common/core.el")
 (require 'test-simple)
 (load-file "../dbgr/common/lang.el")
 (test-simple-start)
@@ -28,7 +29,8 @@
 
 (with-current-buffer 
     (setq elisp-buffer (find-file "./test-dbgr.el"))
-  (setq major-mode 'emacs-lisp-mode)
+  (set (make-local-variable 'major-mode)
+       'emacs-lisp-mode)
   (message "set major mode to %s" major-mode)
   )
 (assert-equal (buffer-file-name elisp-buffer)
