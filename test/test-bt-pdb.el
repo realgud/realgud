@@ -19,8 +19,6 @@
     ))
 
 
-(note "dbgr-buffer-backtrace-pdb")
-
 (note "fontify")
 (setq temp-cmdbuf (generate-new-buffer "*cmdbuf-test*"))
 
