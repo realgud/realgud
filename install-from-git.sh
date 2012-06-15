@@ -32,7 +32,7 @@ for program in git make $try_cmd ; do
     fi
 done
 
-for pkg in emacs-{test-unit,load-relative,loc-changes,dbgr} ; do 
+for pkg in emacs-{test-unit,test-simple,load-relative,loc-changes,dbgr} ; do 
     echo '******************************************'
     echo Trying to install ${pkg}...
     echo '******************************************'
