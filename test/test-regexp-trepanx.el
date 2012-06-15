@@ -28,11 +28,12 @@
 (assert-t (numberp (tb-loc-match text))
 	  "basic traceback location")
 
-(note "extract traceback file name")
-(assert-equal 0 (tb-loc-match text))
+(assert-equal 0 (tb-loc-match text)
+	      "match trepanx location")
 (assert-equal "tmp/boom.rb"
 	      (match-string (dbgr-loc-pat-file-group tb)
-			    text))
+			    text)
+	      "extract traceback file name")
 (setq text 
       "            { } in main.__script__ at /tmp/blam.rb:5")
 (assert-equal 0 (tb-loc-match text)

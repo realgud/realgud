@@ -4,13 +4,14 @@
 #   make check 2>&1  | ruby ../make-check-filter.rb
 # See Makefile.am
 pats = ["^(?:Loading",
-        'make\[',
+        '(re)?make\[',
         "Making check in",
         '\(cd \.\.',
         "make -C",
         "Test-Unit",
         "Fontifying",
-        '\s*$'
+        '\s*$',
+        '##[<>]+$'
        ].join('|') + ')'
 # puts pats
 skip_re = /#{pats}/
