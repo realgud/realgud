@@ -1,9 +1,10 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2012 Rocky Bernstein <rocky@gnu.org>
 ;; Fringe marks for history of stopping points
 
 ;; Bitmap for hollow overlay-arrow in fringe
-(define-fringe-bitmap 'hollow-right-triangle
-  "\xe0\x90\x88\x84\x84\x88\x90\xe0")
+(if (display-images-p)
+    (define-fringe-bitmap 'hollow-right-triangle
+      "\xe0\x90\x88\x84\x84\x88\x90\xe0"))
 
 ;; FIXME: Figure out how to do this as a macro.
 

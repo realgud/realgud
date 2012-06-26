@@ -1,6 +1,6 @@
 AC_INIT(emacs-dbgr, 0.02vc,)
 AC_CONFIG_SRCDIR(dbgr.el)
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([foreign])
 AM_MAINTAINER_MODE
 
 AC_PATH_PROG([EMACS], [emacs], [emacs])
