@@ -1,14 +1,16 @@
-;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;; Copyright (C) 2010, 2012 Rocky Bernstein <rocky@gnu.org>
 ;; Code associated with breakpoints
 
 (require 'image)
 (require 'load-relative)
 (require-relative-list '("loc") "dbgr-")
 
-;; NOTE: if you don't see the icon, check the that the window margin
-;; is not nil.
-(defconst dbgr-bp-xpm-data
-  "/* XPM */
+(if (display-images-p)
+    (progn
+      ;; NOTE: if you don't see the icon, check the that the window margin
+      ;; is not nil.
+      (defconst dbgr-bp-xpm-data
+	"/* XPM */
 static char *magick[] = {
 /* columns rows colors chars-per-pixel */
 \"10 10 2 1\",
@@ -28,7 +30,7 @@ static char *magick[] = {
 };"
   "XPM data used for breakpoint icon.")
 
-(defconst dbr-bp-enabled-pbm-data
+      (defconst dbr-bp-enabled-pbm-data
   "P1
 10 10\",
 0 0 0 0 1 1 1 1 0 0 0 0
@@ -43,7 +45,7 @@ static char *magick[] = {
 0 0 0 0 1 1 1 1 0 0 0 0"
   "PBM data used for enabled breakpoint icon.")
 
-(defconst dbgr-bp-disabled-pbm-data
+      (defconst dbgr-bp-disabled-pbm-data
   "P1
 10 10\",
 0 0 1 0 1 0 1 0 0 0
@@ -58,22 +60,23 @@ static char *magick[] = {
 0 0 0 1 0 1 0 1 0 0"
   "PBM data used for disabled breakpoint icon.")
 
+      (defvar dbgr-bp-enabled-icon
+	(create-image dbgr-bp-xpm-data
+		      'xpm t 
+		      :ascent 100)
+	"Icon for an enabled breakpoint in display margin.")
+      
+      ;; For seeing what dbgr-bp-enabled-icon looks like:
+      ;; (insert-image dbgr-bp-enabled-icon)
+      
+      (defvar dbgr-bp-disabled-icon
+	(create-image dbgr-bp-disabled-pbm-data
+		      'pbm t 
+		      :ascent 100)
+	"Icon for a disabled breakpoint in display margin.")))
+      
 (makunbound 'dbgr-bp-enabled-icon)
-(defvar dbgr-bp-enabled-icon
-  (create-image dbgr-bp-xpm-data
-		'xpm t 
-		:ascent 100)
-  "Icon for an enabled breakpoint in display margin.")
-
-;; For seeing what dbgr-bp-enabled-icon looks like:
-;; (insert-image dbgr-bp-enabled-icon)
-
 (makunbound 'dbgr-bp-disabled-icon)
-(defvar dbgr-bp-disabled-icon
-  (create-image dbgr-bp-disabled-pbm-data
-		'pbm t 
-		:ascent 100)
-  "Icon for a disabled breakpoint in display margin.")
 
 ;; For seeing what dbgr-bp-enabled-icon looks like:
 ;; (insert-image dbgr-bp-disabled-icon)
