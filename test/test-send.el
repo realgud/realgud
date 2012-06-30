@@ -1,8 +1,8 @@
-(require 'test-unit)
+(require 'test-simple)
 (load-file "../dbgr/common/send.el")
 (load-file "../dbgr/common/regexp.el")
 (load-file "../dbgr/debugger/trepan/init.el")
-(test-unit-clear-contexts)
+(test-simple-start)
 
 (defvar temp-cmdbuf nil)
 (defun setup ()
@@ -17,41 +17,37 @@
   (kill-buffer temp-cmdbuf)
 )
 
-(context "dbgr-send"
-	 (tag send)
-	 (specify "format no expand characters"
-		  (dolist (str '("abc" "100%" "I feel %% today"))
-		    (assert-equal str (dbgr-expand-format str)))
-	   )
-	 (specify "format %l - with arg"
-		  (assert-equal "line 5" (dbgr-expand-format "line %p" 5)))
-	 (specify "format %l - without arg"
-		  (assert-equal "line " (dbgr-expand-format "line %p")))
+(dolist (str '("abc" "100%" "I feel %% today"))
+  (assert-equal str (dbgr-expand-format str "format no expand characters")))
 
-	 (specify "format %s"
-		  (assert-equal "hi, rocky!" 
-				(dbgr-expand-format "h%s!" "i, rocky")))
 
-	 (setup)
-	 ;; Current buffer is now set up as a source buffer
-	 (setq file-name (buffer-file-name))
-	 (specify "File formatting"
-		  (if (and file-name (dbgr-get-srcbuf (current-buffer)))
-		      (dolist 
-			  (pair 
-			   (list 
-			    (cons "%d" (file-name-directory file-name))
-			    (cons "%x" file-name)
-			    (cons "%X" (expand-file-name file-name))
-			    (cons "%f" "test-send.el")
-			    (cons "%F" "test-send")))
-			(assert-equal (cdr pair) (dbgr-expand-format (car pair))))))
-	 (tear-down)
+(assert-equal "line 5" (dbgr-expand-format "line %p" 5) 
+	      "format %l - with arg")
+(assert-equal "line " (dbgr-expand-format "line %p") 
+	      "format %l - without arg")
 
-	 (specify "dbgr-dbgr-command - not a command buffer"
-		  (assert-raises error (dbgr-command "testing")))
+(assert-equal "hi, rocky!" 
+	      (dbgr-expand-format "h%s!" "i, rocky") 
+	      "format %s")
 
-)
+(setup)
+;; Current buffer is now set up as a source buffer
+(setq file-name (buffer-file-name))
+(note "File formatting")
+(if (and file-name (dbgr-get-srcbuf (current-buffer)))
+    (dolist 
+	(pair 
+	 (list 
+	  (cons "%d" (file-name-directory file-name))
+	  (cons "%x" file-name)
+	  (cons "%X" (expand-file-name file-name))
+	  (cons "%f" "test-send.el")
+	  (cons "%F" "test-send")))
+      (assert-equal (cdr pair) (dbgr-expand-format (car pair)))))
+(tear-down)
 
-(test-unit "send")
 
+(assert-raises error (dbgr-command "testing") 
+	       "dbgr-dbgr-command - not a command buffer")
+
+(end-tests)
