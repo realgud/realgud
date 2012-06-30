@@ -1,20 +1,15 @@
-(require 'test-unit)
+(require 'test-simple)
 (load-file "../dbgr/debugger/perldb/perldb.el")
 
-(test-unit-clear-contexts)
+(test-simple-start)
 
-(context "perldb"
-	 (tag perldb)
+(note "dbgr-perldb-parse-cmd-args")
+(assert-equal '(("perl" "-W" "-d") ("gcd.rb" "a" "b"))
+	      (dbgr-perldb-parse-cmd-args 
+	       '("perl" "-W" "-d" "gcd.rb" "a" "b")))
+(assert-equal '(("perl5.10.1" "-C" "/tmp" "-d") ("gcd.rb"))
+	      (dbgr-perldb-parse-cmd-args 
+	       '("perl5.10.1" "-C" "/tmp" "-d" "gcd.rb")))
 
-	 (specify "dbgr-perldb-parse-cmd-args"
-	      (assert-equal '(("perl" "-W" "-d") ("gcd.rb" "a" "b"))
-			    (dbgr-perldb-parse-cmd-args 
-			     '("perl" "-W" "-d" "gcd.rb" "a" "b")))
-	      (assert-equal '(("perl5.10.1" "-C" "/tmp" "-d") ("gcd.rb"))
-			    (dbgr-perldb-parse-cmd-args 
-			     '("perl5.10.1" "-C" "/tmp" "-d" "gcd.rb")))
-	      )
-	 )
-
-(test-unit "perldb")
+(end-tests)
 
