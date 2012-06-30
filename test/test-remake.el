@@ -1,8 +1,8 @@
-(require 'test-unit)
+(require 'test-simple)
 (load-file "../dbgr/common/core.el") ;; for dbgr-exec-shell
 (load-file "../dbgr/debugger/remake/remake.el")
 
-(test-unit-clear-contexts)
+(test-simple-start)
 
 (defun dbgr-exec-shell (debugger-name script-filename program 
 				      &optional no-reset &rest args)
@@ -17,18 +17,13 @@ file-name-directory that was failing"
     )
   )
 
-(context "remake"
-	 (tag remake)
+(note "can deal with no Makefile name")
+;; If dbgr-remake is successful we switch buffers
+(setq my-buf (current-buffer))
+(dbgr-remake "remake --debugger")
+(assert-t (not (eq (current-buffer) my-buf)))
+(delete-process "foo")
+(switch-to-buffer my-buf)
 
-	 (specify "can deal with no Makefile name"
-		  ;; If dbgr-remake is successful we switch buffers
-		  (setq my-buf (current-buffer))
-		  (dbgr-remake "remake --debugger")
-		  (assert-t (not (eq (current-buffer) my-buf)))
-		  (delete-process "foo")
-		  (switch-to-buffer my-buf)
-	      )
-	 )
-
-(test-unit "remake")
+(end-tests)
 
