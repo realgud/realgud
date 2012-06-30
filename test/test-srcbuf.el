@@ -1,9 +1,9 @@
-(require 'test-unit)
+(require 'test-simple)
 (load-file "../dbgr/common/buffer/source.el")
 (load-file "../dbgr/common/buffer/command.el")
 (load-file "../dbgr/debugger/trepan/init.el")
 
-(test-unit-clear-contexts)
+(test-simple-start)
 
 (defvar temp-cmdbuf nil)
 (defun tear-down()
@@ -17,56 +17,48 @@
   (setq temp-srcbuf (find-file-noselect "./gcd.rb"))
 )
 
-(context "dbgr-srcbuf"
-	 (tag dbgr-srcbuf)
-	 (specify "dbgr-srcbuf? before init"
-		  (assert-nil (dbgr-srcbuf? (current-buffer))))
+(assert-nil (dbgr-srcbuf? (current-buffer)) "dbgr-srcbuf? before init")
+(setq dbgr-srcbuf-info nil)
+(assert-nil (dbgr-srcbuf? (current-buffer)) 
+	    "dbgr-srcbuf? before init - but nil")
+(assert-equal nil (dbgr-srcbuf-command-string (current-buffer))
+	      "dbgr-srcbuf-command-string - uninit")
 
-	 (setq dbgr-srcbuf-info nil)
-	 (specify "dbgr-srcbuf? before init - but nil"
-		  (assert-nil (dbgr-srcbuf? (current-buffer))))
+(note "dbgr-srcbuf-init")
+(setup)
+(dbgr-srcbuf-init temp-srcbuf temp-cmdbuf
+		  "trepan"
+		  '("/bin/trepan" "--emacs" "gcd.rb" "1"))
+(assert-equal "trepan" 
+	      (with-current-buffer temp-srcbuf
+		(dbgr-srcbuf-info-debugger-name 
+		 dbgr-srcbuf-info)))
 
-	 (specify "dbgr-srcbuf-command-string - uninit"
-		  (assert-equal nil (dbgr-srcbuf-command-string (current-buffer))))
+(assert-t (dbgr-srcbuf? temp-srcbuf)
+	  "dbgr-srcbuf? after init")
 
-	 (specify "dbgr-srcbuf-init"
-		  (setup)
-	 	  (dbgr-srcbuf-init temp-srcbuf temp-cmdbuf
-	 			       "trepan"
-	 			       '("/bin/trepan" "--emacs" "gcd.rb" "1"))
-	 	  (assert-equal "trepan" 
-	 	  		(with-current-buffer temp-srcbuf
-	 	  		  (dbgr-srcbuf-info-debugger-name 
-	 	  		   dbgr-srcbuf-info)))
+(assert-equal "/bin/trepan --emacs gcd.rb 1"
+	      (dbgr-srcbuf-command-string 
+	       temp-srcbuf)
+	      "dbgr-srcbuf-command-string")
 
-	 	  (assert-t (dbgr-srcbuf? temp-srcbuf)
-			    "dbgr-srcbuf? after init")
-
-		  (assert-equal "/bin/trepan --emacs gcd.rb 1"
-		  		(dbgr-srcbuf-command-string 
-		  		 temp-srcbuf)
-		  		 "dbgr-srcbuf-command-string")
-
-	 	  (assert-equal temp-cmdbuf
-	 	  		(with-current-buffer temp-srcbuf
-	 	  		  (dbgr-srcbuf-info-cmdproc dbgr-srcbuf-info)))
-
-	 	  (dbgr-srcbuf-init-or-update temp-srcbuf temp-cmdbuf)
-	 	  (assert-equal temp-cmdbuf
-	 	  		(with-current-buffer temp-srcbuf
-	 	  		  (dbgr-srcbuf-info-cmdproc dbgr-srcbuf-info))
-		  		"dbgr-srcbuf-init-or-update - update")
+(assert-equal temp-cmdbuf
+	      (with-current-buffer temp-srcbuf
+		(dbgr-srcbuf-info-cmdproc dbgr-srcbuf-info)))
 	 
-	 	  (kill-buffer temp-srcbuf)
-	 	  (setq temp-srcbuf (find-file-noselect "./gcd.rb"))
-	 	  (dbgr-srcbuf-init-or-update temp-srcbuf temp-cmdbuf)
-	 	  (assert-equal temp-cmdbuf
-	 	  		(with-current-buffer temp-srcbuf
-	 	  		  (dbgr-srcbuf-info-cmdproc dbgr-srcbuf-info))
-		  		"dbgr-srcbuf-init-or-update - init")
-		  (tear-down)
-		  )
-	 )
+(dbgr-srcbuf-init-or-update temp-srcbuf temp-cmdbuf)
+(assert-equal temp-cmdbuf
+	      (with-current-buffer temp-srcbuf
+		(dbgr-srcbuf-info-cmdproc dbgr-srcbuf-info))
+	      "dbgr-srcbuf-init-or-update - update")
 
-(test-unit "dbgr-srcbuf")
+(kill-buffer temp-srcbuf)
+(setq temp-srcbuf (find-file-noselect "./gcd.rb"))
+(dbgr-srcbuf-init-or-update temp-srcbuf temp-cmdbuf)
+(assert-equal temp-cmdbuf
+	      (with-current-buffer temp-srcbuf
+			 (dbgr-srcbuf-info-cmdproc dbgr-srcbuf-info))
+	      "dbgr-srcbuf-init-or-update - init")
+(tear-down)
 
+(end-tests)

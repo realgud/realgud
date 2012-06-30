@@ -1,6 +1,6 @@
-(require 'test-unit)
+(require 'test-simple)
 (load-file "../dbgr/debugger/trepan/trepan.el")
-(test-unit-clear-contexts)
+(test-simple-start)
 
 (defvar temp-cmdbuf nil)
 (defun setup ()
@@ -20,33 +20,30 @@
   (kill-buffer temp-cmdbuf)
 )
 
-(context "dbgr-track-mode"
-  (tag track-mode)
-  (setup)
-  
-  ;; Current buffer is now set up as a source buffer
-  
-  (specify "track-functions-mapped-to-keys"
-	   (with-current-buffer temp-cmdbuf
-	     (dolist (fn '(dbgr-track-hist-newest
-			   dbgr-track-hist-newer
-			   dbgr-track-hist-older
-			   dbgr-track-hist-oldest))
-	       (assert-nil (null (where-is-internal fn)) fn)
-	       )
-	     ))
-  
-  (specify "track-mode-vars"
-	   (makunbound 'foo-track-mode)
-	   (makunbound 'foo-track-mode-map)
-	   (dbgr-track-mode-vars "foo")
-	   (dolist (var '("foo-track-mode-map" "foo-track-mode"))
-	     (let ((var-sym (intern var)))
-	       (assert-t (boundp var-sym))
-	       (assert-t (stringp (get var-sym 'variable-documentation)))
-	       ))
-	   )
-  )
-  
-(test-unit "track-mode")
+(setup)
 
+;; Current buffer is now set up as a source buffer
+
+(with-current-buffer temp-cmdbuf
+  (switch-to-buffer temp-cmdbuf)
+  (dolist (fn '(dbgr-track-hist-newest
+		dbgr-track-hist-newer
+		dbgr-track-hist-older
+		dbgr-track-hist-oldest))
+    (assert-nil (null (where-is-internal fn))
+		(format "track-functions-mapped-to-keys %s" fn))
+    )
+  (switch-to-buffer nil)
+  )
+
+(note "track-mode-vars")
+(makunbound 'foo-track-mode)
+(makunbound 'foo-track-mode-map)
+(dbgr-track-mode-vars "foo")
+(dolist (var '("foo-track-mode-map" "foo-track-mode"))
+  (let ((var-sym (intern var)))
+    (assert-t (boundp var-sym))
+    (assert-t (stringp (get var-sym 'variable-documentation)))
+    ))
+
+(end-tests)
