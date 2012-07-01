@@ -9,8 +9,10 @@
 ; We customize this for this debugger.
 ; FIXME: encapsulate this.
 (setq dbg-name "perldb")
-(setq loc-pat     (gethash "loc"    (gethash dbg-name dbgr-pat-hash)))
-(setq prompt-pat  (gethash "prompt" dbgr-perldb-pat-hash))
+(set (make-local-variable 'loc-pat)
+     (gethash "loc"    (gethash dbg-name dbgr-pat-hash)))
+(set (make-local-variable 'prompt-pat)
+     (gethash "prompt" dbgr-perldb-pat-hash))
 
 (setq dbgr (make-dbgr-cmdbuf-info
 		  :debugger-name dbg-name
@@ -18,22 +20,17 @@
 		  :file-group (dbgr-loc-pat-file-group loc-pat)
 		  :line-group (dbgr-loc-pat-line-group loc-pat)))
 
-
 (note "prompt")
 (prompt-match "  DB<2> "  "2")
-(prompt-match	"[pid=6489->6502]  DB<1> " "1")
+(prompt-match "[pid=6489->6502]  DB<1> " "1")
 
 (assert-equal 0 (string-match dbgr-perl-ignore-file-re
 			      "(eval 1006)[../example/eval.pl:5]")
 	      "perldb file ignore matching")
 
-(defun loc-match(text) 
-  (string-match (dbgr-cmdbuf-info-loc-regexp dbgr) text)
-  )
-
 (setq text "main::(/usr/bin/latex2html:102):")
 	 
-(assert-t (numberp (loc-match text)) "basic location")
+(assert-t (numberp (cmdbuf-loc-match text dbgr)) "basic location")
 (assert-equal "/usr/bin/latex2html"
 	      (match-string (dbgr-cmdbuf-info-file-group dbgr) text)
 	      "extract file name")
@@ -44,7 +41,7 @@
 
 (note "location for with CODE in it")
 (setq text "main::CODE(0x9407ac8)(l2hconf.pm:6):")
-(assert-t (numberp (loc-match text)))
+(assert-t (numberp (cmdbuf-loc-match text dbgr)))
 (assert-equal "l2hconf.pm"
 	      (match-string (dbgr-cmdbuf-info-file-group dbgr)
 			    text))

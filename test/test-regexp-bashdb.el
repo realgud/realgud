@@ -4,9 +4,9 @@
 
 (test-simple-start)
 
-(setq prompt-pat (gethash "prompt" dbgr-bashdb-pat-hash))
-
 (note "bashdb prompt matching")
+(set (make-local-variable 'prompt-pat)
+     (gethash "prompt" dbgr-bashdb-pat-hash))
 (prompt-match "bashdb<10> "  "10")
 (prompt-match	"bashdb<(5)> " "5" "subshell prompt %s")
 (prompt-match	"bashdb<<1>> " "1" "nested debug prompt %s")

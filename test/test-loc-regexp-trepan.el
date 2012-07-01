@@ -1,6 +1,7 @@
 (require 'test-simple)
 (load-file "../dbgr/common/buffer/command.el")
 (load-file "../dbgr/debugger/trepan/init.el")
+(load-file "./regexp-helper.el")
 
 (test-simple-start)
 
@@ -17,16 +18,11 @@
 		  :line-group (dbgr-loc-pat-line-group  loc-pat)))
 
 
-(defun loc-match(text) 
-  (string-match (dbgr-cmdbuf-info-loc-regexp dbgr) text)
-)
-
-
 (setq text "-- (/usr/local/bin/irb:9 @2)")
-(assert-t (numberp (loc-match text)) "basic location")
+(assert-t (numberp (cmdbuf-loc-match text dbgr)) "basic location")
 
 (note "extract file name")
-(assert-equal 0 (loc-match text))
+(assert-equal 0 (cmdbuf-loc-match text dbgr))
 (assert-equal "/usr/local/bin/irb"
 	      (match-string (dbgr-cmdbuf-info-file-group dbgr)
 			    text))
@@ -37,9 +33,9 @@
 	       text) "extract line number")
 
 (setq text "-> (<internal:lib/rubygems/custom_require>:28 remapped /usr/lib/ruby/gems/1.9.1/gems/data/custom_require.rb:28 @2)")
-(assert-t (numberp (loc-match text)) "remapped location")
+(assert-t (numberp (cmdbuf-loc-match text dbgr)) "remapped location")
 	 
-(assert-equal 0 (loc-match text))
+(assert-equal 0 (cmdbuf-loc-match text dbgr))
 (assert-equal "/usr/lib/ruby/gems/1.9.1/gems/data/custom_require.rb"
 	      (match-string (dbgr-cmdbuf-info-file-group dbgr)
 			    text) "extract remapped file name")
@@ -50,9 +46,9 @@
 	       text) "extract remapped line number")
 
 (setq text "C> (/tmp/c-func.rb:2)")
-(assert-t (numberp (loc-match text)) "basic location for C fn")
+(assert-t (numberp (cmdbuf-loc-match text dbgr)) "basic location for C fn")
 
-(assert-equal 0 (loc-match text))
+(assert-equal 0 (cmdbuf-loc-match text dbgr))
 (assert-equal "/tmp/c-func.rb"
 	      (match-string (dbgr-cmdbuf-info-file-group dbgr)
 			    text) "extract file name for C fn")

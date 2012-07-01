@@ -11,7 +11,7 @@
 
 (note "remake prompt")
 (prompt-match "remake<10> "  "10")
-(prompt-match	"remake<<1>> " "1")
+(prompt-match	"remake<<1>> " "1" "recursive remake %s")
 
 (note "remake debugger-backtrace")
 (setq s1

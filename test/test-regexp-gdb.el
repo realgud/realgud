@@ -1,6 +1,7 @@
 (require 'test-simple)
 (load-file "../dbgr/common/buffer/command.el")
 (load-file "../dbgr/debugger/gdb/init.el")
+(load-file "./regexp-helper.el")
 
 (test-simple-start)
 
@@ -22,11 +23,7 @@
 (setq text "/home/rocky/c/ctest.c:80:2000:beg:0x8048748>")
 (note "traceback location matching")
 
-(defun loc-match(text) 
-  (string-match (dbgr-cmdbuf-info-loc-regexp dbgr) text)
-  )
-
-(assert-t (numberp (loc-match text)) "basic location")
+(assert-t (numberp (cmdbuf-loc-match text dbgr)) "basic location")
 (assert-equal "/home/rocky/c/ctest.c"
 	      (match-string (dbgr-cmdbuf-info-file-group dbgr)
 			    text) "extract file name")
@@ -92,6 +89,11 @@
 	      (substring s1 
 			 (match-beginning line-group)
 			 (match-end line-group)))
+
+(note "prompt")
+(set (make-local-variable 'prompt-pat)
+     (gethash "prompt" dbgr-gdb-pat-hash))
+(prompt-match "(gdb) ")
 
 (end-tests)
 

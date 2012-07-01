@@ -1,4 +1,4 @@
-SUBDIRS = dbgr
+SUBDIRS = dbgr test
 
 lispdir = @lispdir@
 lisp_files := $(wildcard dbgr.el)
@@ -6,7 +6,7 @@ lisp_LISP = $(lisp_files)
 
 include common.mk
 
-EXTRA_DIST=common.mk README.textile
+EXTRA_DIST=common.mk README.textile dbgr.el
 
 if MAINTAINER_MODE
 

@@ -33,4 +33,9 @@
 			      text)   "extract breakpoint line number")
   )
 
+(note "prompt")
+(set (make-local-variable 'prompt-pat)
+     (gethash "prompt" dbgr-rdebug-pat-hash))
+(prompt-match "(rdb:1) ")
+
 (end-tests)

@@ -1,6 +1,7 @@
 (require 'test-simple)
 (load-file "../dbgr/common/buffer/command.el")
 (load-file "../dbgr/debugger/trepanx/init.el")
+(load-file "./regexp-helper.el")
 
 (test-simple-start)
 
@@ -18,20 +19,16 @@
 		  :line-group (dbgr-loc-pat-line-group  loc-pat)))
 
 
-(defun loc-match(text) 
-  (string-match (dbgr-cmdbuf-info-loc-regexp dbgr) text)
-)
-
 (defun xagent-match(text) 
   (string-match (dbgr-loc-pat-regexp xagent-pat) text)
 )
 
 (setq text "-- (../rbx-trepanning/tmp/rbxtest.rb:7 @5)")
-(assert-t (numberp (loc-match text)) "basic location")
+(assert-t (numberp (cmdbuf-loc-match text dbgr)) "basic location")
 
 (note "extract file name")
 (setq text "-- (../rbx-trepanning/tmp/rbxtest.rb:7 @5)")
-(assert-equal 0 (loc-match text))
+(assert-equal 0 (cmdbuf-loc-match text dbgr))
 (assert-equal "../rbx-trepanning/tmp/rbxtest.rb"
 	      (match-string (dbgr-cmdbuf-info-file-group dbgr)
 			    text))
