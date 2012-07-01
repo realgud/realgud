@@ -3,14 +3,11 @@
 ;; Don't have a pat-hash for ruby, so we need something that pulls in
 ;; Ruby.
 (load-file "../dbgr/debugger/rdebug/init.el")
+(load-file "./regexp-helper.el")
 
 (test-simple-start)
 
 (setq bt  (gethash "rails-backtrace" dbgr-rdebug-pat-hash))
-
-(defun loc-match(text var) 
-  (string-match (dbgr-loc-pat-regexp var) text)
-)
 
 ;; FIXME: we get a void variable somewhere in here when running
 ;;        even though we define it in lexical-let. Dunno why.

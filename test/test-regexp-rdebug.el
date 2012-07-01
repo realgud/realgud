@@ -1,15 +1,11 @@
 (require 'test-simple)
 (load-file "../dbgr/debugger/rdebug/init.el")
+(load-file "./regexp-helper.el")
 
 (test-simple-start)
 
-(setq tb  (gethash "lang-backtrace" dbgr-rdebug-pat-hash))
-(setq bps (gethash "brkpt-set" dbgr-rdebug-pat-hash))
+(setup-regexp-vars dbgr-rdebug-pat-hash)
 (setq rails-bt (gethash "rails-backtrace" dbgr-rdebug-pat-hash))
-
-(defun loc-match(text var) 
-  (string-match (dbgr-loc-pat-regexp var) text)
-)
 
 ;; FIXME: we get a void variable somewhere in here when running
 ;;        even though we define it in lexical-let. Dunno why.

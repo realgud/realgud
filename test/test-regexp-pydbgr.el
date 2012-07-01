@@ -1,15 +1,10 @@
 (require 'test-simple)
 (load-file "../dbgr/debugger/pydbgr/init.el")
+(load-file "./regexp-helper.el")
 
 (test-simple-start)
 
-(setq bps    (gethash "brkpt-set" dbgr-pydbgr-pat-hash))
-(setq loc    (gethash "loc"       dbgr-pydbgr-pat-hash))
-(setq tb     (gethash "lang-backtrace" dbgr-pydbgr-pat-hash))
-
-(defun loc-match(text var) 
-  (string-match (dbgr-loc-pat-regexp var) text)
-)
+(setup-regexp-vars dbgr-pydbgr-pat-hash)
 
 ;; FIXME: we get a void variable somewhere in here when running
 ;;        even though we define it in lexical-let. Dunno why.
