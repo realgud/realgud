@@ -1,3 +1,6 @@
+(require 'test-simple)
+(load-file "../dbgr/common/buffer/command.el")
+
 (defun setup-regexp-vars(pat-hash)
   (setq bps    (gethash "brkpt-set" pat-hash))
   (setq loc    (gethash "loc"       pat-hash))

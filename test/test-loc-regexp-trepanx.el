@@ -1,7 +1,5 @@
-(require 'test-simple)
-(load-file "../dbgr/common/buffer/command.el")
-(load-file "../dbgr/debugger/trepanx/init.el")
 (load-file "./regexp-helper.el")
+(load-file "../dbgr/debugger/trepanx/init.el")
 
 (test-simple-start)
 

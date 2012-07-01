@@ -1,6 +1,5 @@
-(require 'test-simple)
 (load-file "../dbgr/debugger/trepanx/init.el")
-(load-file "../dbgr/lang/ruby.el")
+(load-file "./regexp-helper.el")
 
 (test-simple-start)
 

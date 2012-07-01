@@ -1,9 +1,7 @@
-(require 'test-simple)
-
 ;; Don't have a pat-hash for ruby, so we need something that pulls in
 ;; Ruby.
-(load-file "../dbgr/debugger/rdebug/init.el")
 (load-file "./regexp-helper.el")
+(load-file "../dbgr/debugger/rdebug/init.el")
 
 (test-simple-start)
 

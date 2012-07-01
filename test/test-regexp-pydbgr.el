@@ -1,6 +1,5 @@
-(require 'test-simple)
-(load-file "../dbgr/debugger/pydbgr/init.el")
 (load-file "./regexp-helper.el")
+(load-file "../dbgr/debugger/pydbgr/init.el")
 
 (test-simple-start)
 
