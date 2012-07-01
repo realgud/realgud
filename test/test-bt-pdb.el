@@ -5,36 +5,28 @@
 (load-file "../dbgr/common/buffer/backtrace.el")
 (load-file "../dbgr/common/backtrace-mode.el")
 (load-file "../dbgr/debugger/pdb/init.el")
+(load-file "./bt-helper.el")
 
 (test-simple-start)
 
-(defun setup-bt(string temp-bt temp-cmdbuf)
-  (with-current-buffer temp-bt
-    (dbgr-backtrace-mode temp-cmdbuf)
-    (goto-char (point-min))
-    (setq buffer-read-only nil)
-    (insert string)
-    (font-lock-fontify-buffer)
-    (goto-char (point-min))
-    ))
-
-
 (note "fontify")
 (setq temp-cmdbuf (generate-new-buffer "*cmdbuf-test*"))
-
-(with-current-buffer temp-cmdbuf
+(setq temp-bt (generate-new-buffer "*bt-test*"))
+(with-current-buffer temp-bt
+  (switch-to-buffer temp-cmdbuf)
   (dbgr-cmdbuf-init temp-cmdbuf "pdb" 
 		    (gethash "pdb" dbgr-pat-hash))
+  (switch-to-buffer nil)
   )
 
-(setq temp-bt (generate-new-buffer "*bt-test*"))
 (setup-bt 
-"->0 gcd(a=3, b=5) called from file '/test/gcd.py' at line 28
+ "->0 gcd(a=3, b=5) called from file '/test/gcd.py' at line 28
 ##1 <module> execfile() file '/test/gcd.py' at line 41
 "
-			    temp-bt temp-cmdbuf)
+ temp-bt temp-cmdbuf)
 
 (with-current-buffer temp-bt
+  (switch-to-buffer temp-bt)
   (goto-char (point-min))
   (dolist (pair 
 	   '(
@@ -47,11 +39,11 @@
 	     ("/test" . dbgr-file-name)
 	     ("4"     . dbgr-line-number)
 	     ))
-    (switch-to-buffer temp-bt)
     (search-forward (car pair))
     (assert-eql (cdr pair)
 		  (get-text-property (point) 'face))
     )
+  (switch-to-buffer nil)
   )
 
 (end-tests)

@@ -1,7 +1,7 @@
 include $(top_srcdir)/common.mk
 
 PHONY=check test all
-EXTRA_DIST=gcd.py gcd.rb
+EXTRA_DIST=gcd.py gcd.rb bt-helper.el
 
 all: 
 
