@@ -1,21 +1,15 @@
 (require 'test-simple)
 (load-file "../dbgr/debugger/bashdb/init.el")
+(load-file "./regexp-helper.el")
 
 (test-simple-start)
 
-(setq prompt-pat (gethash "prompt"             dbgr-bashdb-pat-hash))
-
-(defun prompt-match(prompt-str num-str) 
-  (assert-equal 0 (string-match (dbgr-loc-pat-regexp prompt-pat)
-				prompt-str))
-  (assert-equal num-str (substring prompt-str 
-				   (match-beginning 1) (match-end 1)))
-)
+(setq prompt-pat (gethash "prompt" dbgr-bashdb-pat-hash))
 
 (note "bashdb prompt matching")
 (prompt-match "bashdb<10> "  "10")
-(prompt-match	"bashdb<(5)> " "5")
-(prompt-match	"bashdb<<1>> " "1")
+(prompt-match	"bashdb<(5)> " "5" "subshell prompt %s")
+(prompt-match	"bashdb<<1>> " "1" "nested debug prompt %s")
 
 (note "debugger-backtrace")
 (setq dbgr-pat-bat  (gethash "debugger-backtrace" 

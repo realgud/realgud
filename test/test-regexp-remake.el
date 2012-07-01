@@ -1,5 +1,6 @@
 (require 'test-simple)
 (load-file "../dbgr/debugger/remake/init.el")
+(load-file "./regexp-helper.el")
 
 (test-simple-start)
 
@@ -7,13 +8,6 @@
      (gethash "prompt"             dbgr-remake-pat-hash))
 (set (make-local-variable 'frame-pat)
      (gethash "debugger-backtrace" dbgr-remake-pat-hash))
-
-(defun prompt-match(prompt-str num-str) 
-  (assert-equal 0 (string-match (dbgr-loc-pat-regexp prompt-pat)
-				prompt-str))
-  (assert-equal num-str (substring prompt-str 
-				   (match-beginning 1) (match-end 1)))
-)
 
 (note "remake prompt")
 (prompt-match "remake<10> "  "10")

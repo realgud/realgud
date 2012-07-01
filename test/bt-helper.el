@@ -7,3 +7,4 @@
     (font-lock-fontify-buffer)
     (goto-char (point-min))
     ))
+

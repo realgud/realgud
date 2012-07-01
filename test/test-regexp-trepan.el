@@ -1,5 +1,6 @@
 (require 'test-simple)
 (load-file "../dbgr/debugger/trepan/init.el")
+(load-file "./regexp-helper.el")
 
 (test-simple-start)
 
@@ -13,15 +14,6 @@
      (gethash "lang-backtrace"     dbgr-trepan-pat-hash))
 (set (make-local-variable 'ctrl-pat)
      (gethash "control-frame"      dbgr-trepan-pat-hash))
-
-(defun loc-match(text var) 
-  (string-match (dbgr-loc-pat-regexp var) text)
-)
-
-(defun prompt-match(prompt-str) 
-  (assert-equal 0 (loc-match prompt-str prompt-pat)
-		(format "valid prompt %s" prompt-str))
-)
 
 ;; FIXME: we get a void variable somewhere in here when running
 ;;        even though we define it in lexical-let. Dunno why.
@@ -84,9 +76,9 @@
 
 (note "prompt")
 (prompt-match "(trepan): ")
-(prompt-match "((trepan)): ")
-(prompt-match "((trepan@55)): ")
-(prompt-match "((trepan@main)): ")
+(prompt-match "((trepan)): " nil "nested debugger prompt: %s")
+(prompt-match "((trepan@55)): " nil "nested debugger prompt with addr: %s")
+(prompt-match "((trepan@main)): " nil "nested debugger prompt with method: %s")
 (setq prompt-str "trepan:")
 (assert-nil (loc-match prompt-str prompt-pat)
 	    (format "invalid prompt %s" prompt-str))

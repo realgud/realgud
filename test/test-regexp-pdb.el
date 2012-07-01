@@ -1,5 +1,6 @@
 (require 'test-simple)
 (load-file "../dbgr/debugger/pdb/init.el")
+(load-file "./regexp-helper.el")
 
 (test-simple-start)
 
@@ -15,15 +16,6 @@
 
 (set (make-local-variable 'tb-pat)
       (gethash "lang-backtrace" dbgr-pdb-pat-hash))
-
-(defun loc-match(text var) 
-  (string-match (dbgr-loc-pat-regexp var) text)
-)
-
-(defun prompt-match(prompt-str msg-fmt)
-  (assert-equal 0 (loc-match prompt-str prompt-pat)
-		(format msg-fmt  prompt-str))
-)
 
 ;; FIXME: we get a void variable somewhere in here when running
 ;;        even though we define it in lexical-let. Dunno why.
@@ -60,8 +52,6 @@
 			     bps-pat)
 			    text)   "extract breakpoint line number")
 
-(note "pdb prompt matching")
-
 ;; (set text "(c:\\working\\python\\helloworld.py:30): <module>")
 ;; 
 ;; (assert-t (numberp (loc-match text loc-pat)) "MS DOS position location")
@@ -91,11 +81,11 @@
 	      "extract line number")
 
 
-(set (make-local-variable 'prompt-str) "(Pdb) ")
 (note "prompt matching")
-(prompt-match prompt-str "valid debugger prompt: %s")
+(set (make-local-variable 'prompt-str) "(Pdb) ")
+(prompt-match prompt-str nil "debugger prompt: %s")
 (setq prompt-str "((Pdb)) ")
-(prompt-match prompt-str "valid nested debugger prompt: %s")
+(prompt-match prompt-str nil "nested debugger prompt: %s")
 (setq prompt-str "Pdb) ")
 (assert-nil (numberp (loc-match prompt-str prompt-pat))
 	    (format "%s %s" "invalid debugger prompt"

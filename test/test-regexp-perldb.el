@@ -1,6 +1,7 @@
 (require 'test-simple)
 (load-file "../dbgr/common/buffer/command.el")
 (load-file "../dbgr/debugger/perldb/init.el")
+(load-file "./regexp-helper.el")
 
 (test-simple-start)
 
@@ -18,11 +19,6 @@
 		  :line-group (dbgr-loc-pat-line-group loc-pat)))
 
 
-(defun prompt-match(prompt-str num-str) 
-  (assert-equal 0 (string-match (dbgr-loc-pat-regexp prompt-pat)
-				prompt-str))
-)
-
 (note "prompt")
 (prompt-match "  DB<2> "  "2")
 (prompt-match	"[pid=6489->6502]  DB<1> " "1")
@@ -30,9 +26,6 @@
 (assert-equal 0 (string-match dbgr-perl-ignore-file-re
 			      "(eval 1006)[../example/eval.pl:5]")
 	      "perldb file ignore matching")
-
-(prompt-match "  DB<2> "  "2")
-(prompt-match	"[pid=6489->6502]  DB<1> " "1")
 
 (defun loc-match(text) 
   (string-match (dbgr-cmdbuf-info-loc-regexp dbgr) text)

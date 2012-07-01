@@ -1,22 +1,16 @@
 (require 'test-simple)
 (load-file "../dbgr/debugger/zshdb/init.el")
+(load-file "./regexp-helper.el")
 
 (test-simple-start)
 
-(setq prompt-pat (gethash "prompt"        dbgr-zshdb-pat-hash))
+(setq prompt-pat (gethash "prompt"             dbgr-zshdb-pat-hash))
 (setq frame-pat  (gethash "debugger-backtrace" dbgr-zshdb-pat-hash))
-
-(defun prompt-match(prompt-str num-str) 
-  (assert-equal 0 (string-match (dbgr-loc-pat-regexp prompt-pat)
-				prompt-str))
-  (assert-equal num-str (substring prompt-str 
-				   (match-beginning 1) (match-end 1)))
-)
 
 (note "zshdb prompt matching")
 (prompt-match "zshdb<10> "  "10")
-(prompt-match	"zshdb<(5)> " "5")
-(prompt-match	"zshdb<<1>> " "1")
+(prompt-match	"zshdb<(5)> " "5" "subshell prompt %s")
+(prompt-match	"zshdb<<1>> " "1" "nested debug prompt %s")
 
 (note "zshdb frame matching")
 
