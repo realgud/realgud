@@ -10,14 +10,6 @@
 (set (make-local-variable 'tb)
      (gethash "lang-backtrace"  dbgr-trepanpl-pat-hash))
 
-;; (defun tb-loc-match(text) 
-;;   (string-match (dbgr-loc-pat-regexp tb) text)
-;; )
-
-;; (defun bp-loc-match(text) 
-;;   (string-match (dbgr-loc-pat-regexp bps) text)
-;; )
-
 ;; ;; FIXME: we get a void variable somewhere in here when running
 ;; ;;        even though we define it in lexical-let. Dunno why.
 ;; ;;        setq however will workaround this.
@@ -56,24 +48,23 @@
 (assert-nil (loc-match prompt-str prompt-pat)
 	    (format "invalid prompt %s" prompt-str))
 
-;;; FIXME: Make this work
-;; (setq text "Breakpoint 2 set in /tmp/File/Basename.pm at line 215")
+(setq text "Breakpoint 2 set in /tmp/File/Basename.pm at line 215")
 
-;; (assert-t (numberp (bp-loc-match text)) 
-;; 	  "basic breakpoint location")
-;; (assert-equal "/tmp/Basename.pm"
-;; 	      (match-string (dbgr-loc-pat-file-group bps)
-;; 			    text)
-;; 	      "extract breakpoint file name"
-;; 	      )
-;; (assert-equal "215"
-;; 	      (match-string (dbgr-loc-pat-line-group bps)
-;; 			    text)
-;; 	      "extract breakpoint line number"
-;; 	      )
+(assert-t (numberp (bp-loc-match text)) 
+	  "basic breakpoint location")
+(assert-equal "/tmp/File/Basename.pm"
+	      (match-string (dbgr-loc-pat-file-group bps)
+			    text)
+	      "extract breakpoint file name"
+	      )
+(assert-equal "215"
+	      (match-string (dbgr-loc-pat-line-group bps)
+			    text)
+	      "extract breakpoint line number"
+	      )
 
-;; (setq text "Breakpoint 1 set in (eval 1177)[/Eval.pm:94] at line 5")
-;; (assert-t (numberp (bp-loc-match text)) "eval breakpoint location")
+(setq text "Breakpoint 1 set in (eval 1177)[/Eval.pm:94] at line 5")
+(assert-t (numberp (bp-loc-match text)) "eval breakpoint location")
 
 (end-tests)
 

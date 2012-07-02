@@ -10,14 +10,6 @@
 (set (make-local-variable 'tb)
      (gethash "lang-backtrace"  dbgr-trepanx-pat-hash))
 
-(defun tb-loc-match(text) 
-  (string-match (dbgr-loc-pat-regexp tb) text)
-)
-
-(defun bp-loc-match(text) 
-  (string-match (dbgr-loc-pat-regexp bps) text)
-)
-
 ;; FIXME: we get a void variable somewhere in here when running
 ;;        even though we define it in lexical-let. Dunno why.
 ;;        setq however will workaround this.

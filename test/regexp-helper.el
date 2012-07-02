@@ -12,6 +12,14 @@
   (string-match (dbgr-loc-pat-regexp var) text)
 )
 
+(defun bp-loc-match(text) 
+  (string-match (dbgr-loc-pat-regexp bps) text)
+)
+
+(defun tb-loc-match(text) 
+  (string-match (dbgr-loc-pat-regexp tb) text)
+)
+
 (defun cmdbuf-loc-match(text dbgr) 
   "Match TEXT against cmdbuf-info-loc field VAR"
   (string-match (dbgr-cmdbuf-info-loc-regexp dbgr) text)
