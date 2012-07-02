@@ -47,16 +47,17 @@
 			    text) 
 	      "extract traceback line number")
  
-;; (note "prompt")
-;; (assert-equal 0 (string-match (dbgr-loc-pat-regexp prompt)
-;; 			      "(trepanx): "))
-;; (assert-equal 0 (string-match (dbgr-loc-pat-regexp prompt)
-;; 			      "((trepanx)): "))
-;; (assert-equal 0 (string-match (dbgr-loc-pat-regexp prompt)
-;; 			      "((trepanx@55)): "))
-;; (assert-equal 0 (string-match (dbgr-loc-pat-regexp prompt)
-;; 			      "((trepanx@main)): "))
- 
+(note "prompt matching")
+(set (make-local-variable 'prompt-pat)
+     (gethash "prompt" dbgr-trepanx-pat-hash))
+(prompt-match "((trepanx)): " nil "nested debugger prompt: %s")
+(prompt-match "((trepanx@55)): " 
+	      "@55" "nested debugger prompt with addr: %s")
+(prompt-match "((trepanx@main)): " "@main" 
+	      "nested debugger prompt with method: %s")
+(setq prompt-str "trepanx:")
+(assert-nil (loc-match prompt-str prompt-pat)
+	    (format "invalid prompt %s" prompt-str))
 
 (setq text "Set breakpoint 1: __script__() at /bin/irb:2 (@0)")
 

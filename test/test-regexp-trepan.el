@@ -77,8 +77,9 @@
 (note "prompt")
 (prompt-match "(trepan): ")
 (prompt-match "((trepan)): " nil "nested debugger prompt: %s")
-(prompt-match "((trepan@55)): " nil "nested debugger prompt with addr: %s")
-(prompt-match "((trepan@main)): " nil "nested debugger prompt with method: %s")
+(prompt-match "((trepan@55)): " "@55" "nested debugger prompt with addr: %s")
+(prompt-match "((trepan@main)): " "@main" 
+	      "nested debugger prompt with method: %s")
 (setq prompt-str "trepan:")
 (assert-nil (loc-match prompt-str prompt-pat)
 	    (format "invalid prompt %s" prompt-str))
