@@ -20,10 +20,10 @@ dbgr-loc-pat struct")
 ;; Regular expression that describes a trepanpl location generally shown
 ;; before a command prompt.
 ;; For example: 
-;; -- (/tmp/linecache.pl:64)
+;; -- main::(/tmp/linecache.pl:64)
 (setf (gethash "loc" dbgr-trepanpl-pat-hash)
       (make-dbgr-loc-pat
-       :regexp ".. (\\(?:.+ \\(?:via\\|remapped\\) \\)?\\(.+\\):\\([0-9]+\\)\\(?: @[0-9]+\\)?)"
+       :regexp ".. \\(?:.+::\\)?(\\(?:.+ \\(?:via\\|remapped\\) \\)?\\(.+\\):\\([0-9]+\\)\\(?: @[0-9]+\\)?)"
        :file-group 1
        :line-group 2
        :ignore-file-re  dbgr-perl-ignore-file-re)
@@ -65,16 +65,13 @@ dbgr-loc-pat struct")
 
 ;; Regular expression that describes a "breakpoint set" line. 
 ;; For example: 
-;;   Breakpoint 1 set at VM offset 2 of instruction sequence "require",
-;;	line 29 in file <internal:lib/rubygems/custom_require>.
-;;   Breakpoint 2 set at VM offset 29 of instruction sequence "<top /xx.pl>",
-;;	line 64 in file /src/external-vcs/linecache/trunk/lib/linecache.pl.
+;;   Breakpoint 1 set in /tmp/gcd.pl at line 9
 (setf (gethash "brkpt-set" dbgr-trepanpl-pat-hash)
       (make-dbgr-loc-pat
-       :regexp "^Breakpoint \\([0-9]+\\) set at .*[\n\t ]+line \\([0-9]+\\)[ \t\n]+in file \\(.+\\)."
+       :regexp "^Breakpoint \\([0-9]+\\) set in \\(.+\\) at.*[\n\t ]+line \\([0-9]+\\)"
        :num 1
-       :file-group 3
-       :line-group 2
+       :file-group 2
+       :line-group 3
        :ignore-file-re  dbgr-perl-ignore-file-re)
       )
 
