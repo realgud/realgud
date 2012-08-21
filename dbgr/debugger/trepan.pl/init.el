@@ -20,10 +20,10 @@ dbgr-loc-pat struct")
 ;; Regular expression that describes a trepanpl location generally shown
 ;; before a command prompt.
 ;; For example: 
-;; -- (/tmp/linecache.pl:64)
+;; -- main::(/tmp/linecache.pl:64)
 (setf (gethash "loc" dbgr-trepanpl-pat-hash)
       (make-dbgr-loc-pat
-       :regexp ".. (\\(?:.+ \\(?:via\\|remapped\\) \\)?\\(.+\\):\\([0-9]+\\)\\(?: @[0-9]+\\)?)"
+       :regexp ".. \\(?:.+::\\)?(\\(?:.+ \\(?:via\\|remapped\\) \\)?\\(.+\\):\\([0-9]+\\)\\(?: @[0-9]+\\)?)"
        :file-group 1
        :line-group 2
        :ignore-file-re  dbgr-perl-ignore-file-re)
