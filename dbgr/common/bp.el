@@ -5,9 +5,6 @@
 (require 'load-relative)
 (require-relative-list '("loc") "dbgr-")
 
-;; FIXME: use "find-image" to allow either xpm or pbm finding.
-;; (see gdb-mi.el) 
-
 (defvar dbgr-bp-enabled-icon nil
   "Icon for an enabled breakpoint in display margin.")
       
@@ -37,7 +34,7 @@ static char *magick[] = {
 \"++      ++\",
 \"+++    +++\",
 };"
-  "XPM data used for breakpoint icon.")
+  "XPM data used for breakpoint enable and disable icon.")
 
       (defconst dbgr-bp-enabled-pbm-data
   "P1
