@@ -1,6 +1,7 @@
 ;;; Copyright (C) 2010, 2012 Rocky Bernstein <rocky@gnu.org>
 ;;; Programming language specific stuff.
 (require 'load-relative)
+
 (defun dbgr-lang-mode? (filename lang-str)
   "Return true if FILENAME is a buffer we are visiting a buffer
 that is in LANG-STR mode. The test is just that the major mode
@@ -37,22 +38,27 @@ starts LANG-STR."
       )
     )
 
-(defun dbgr-suggest-lang-file (lang-str lang-ext-regexp)
+(defun dbgr-suggest-lang-file (lang-str lang-ext-regexp &optional last-resort)
  "Suggest a file to debug. We search for the the major mode for
 that programming language using we check filenames using
 LANG-EXT-REGEXP. For example, for ruby LANG-STR would be 'ruby'
 and LANG-EXT-REGEXP would be '\\.rb$'.
 
+Buffers and files are ranked with a priority. Higher is more
+priority and selected will be selected over lower-priorities.
+
 The first priority is given to the current buffer. If the major
 mode matches LANG-STR, then we are done. If not, we'll set
-priority 2 (a low or easily overridden priority) and we keep
-going.  Then we will try files in the default-directory. Of those
-that we are visiting we check the major mode. The first one we
-find we will return.  Failing this, we see if the file is
-executable and has a LANG-EXT suffix. These have priority 8.  Failing
-that, we'll go for just having a LANG-EXT suffix. These have priority
-7. And other executable files have priority 6.  Within a given
-priority, we use the first one we find."
+priority 2 and we keep going.  Then we will try files in the
+default-directory. Of those buffers we are visiting, we check the
+major mode. The first one we find we will return.  Failing this,
+we see if the file is executable and has a LANG-EXT suffix. These
+have priority 8.  Failing that, we'll go for just having a
+LANG-EXT suffix. These have priority 7. And other executable
+files that are not directories have priority 6 if they have the
+right LANG-EXT, otherwise they are priority 5.
+
+Within a given priority, we use the first one we find."
     (let* ((file)
            (file-list (directory-files default-directory))
            (priority 2)
@@ -83,10 +89,11 @@ priority, we use the first one we find."
                     (progn
                       (setq result file)
                       (setq priority 5)))))
-            (if (and (< priority 6) 
-                     (setq file (dbgr-suggest-file-from-buffer lang-str)))
-                (setq result file))
-            ))
+	    ))
+      (if (< priority 6)
+	  (if (setq file (dbgr-suggest-file-from-buffer lang-str))
+	      (setq result file)
+	    (if last-resort (setq result last-resort))))
       result)
     )
 

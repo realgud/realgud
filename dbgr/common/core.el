@@ -35,7 +35,7 @@ using LANG-STR and LANG-EXT-REGEXP."
      ((and minibuffer-history (listp minibuffer-history)) 
       (car minibuffer-history))
      (t (concat debugger-name " " 
-		(dbgr-suggest-lang-file lang-str lang-ext-regexp)))
+		(dbgr-suggest-lang-file lang-str lang-ext-regexp last-resort)))
      )))
 
 (defun dbgr-query-cmdline 

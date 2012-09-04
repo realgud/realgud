@@ -1,11 +1,11 @@
-;;; Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011-2012 Rocky Bernstein <rocky@gnu.org>
 (eval-when-compile (require 'cl))
   
 (require 'load-relative)
 (require-relative-list '("../../common/track" 
-			 "../../common/core" 
-			 "../../common/lang")
-		       "dbgr-")
+                         "../../common/core" 
+                         "../../common/lang")
+                       "dbgr-")
 (require-relative-list '("init") "dbgr-trepanpl-")
 
 ;; FIXME: I think the following could be generalized and moved to 
@@ -52,48 +52,48 @@ NOTE: the above should have each item listed in quotes.
   ;; Parse the following kind of pattern:
   ;;  [perl perl-options] trepanpl trepanpl-options script-name script-options
   (let (
-	(args orig-args)
-	(pair)          ;; temp return from 
-	(perl-opt-two-args '("0" "C" "D" "i" "l" "m" "-module" "x"))
-	;; Perl doesn't have mandatory 2-arg options in our sense,
-	;; since the two args can be run together, e.g. "-C/tmp" or "-C /tmp"
-	;; 
-	(perl-two-args '())
-	;; One dash is added automatically to the below, so
-	;; h is really -h and -host is really --host.
-	(trepanpl-two-args '("h" "-host" "p" "-port"
-			   "I" "-include"))
-	(trepanpl-opt-two-args '())
-	(interp-regexp 
-	 (if (member system-type (list 'windows-nt 'cygwin 'msdos))
-	     "^perl\\(?:5[0-9.]*\\)\\(.exe\\)?$"
-	   "^perl\\(?:5[0-9.]*\\)?$"))
+        (args orig-args)
+        (pair)          ;; temp return from 
+        (perl-opt-two-args '("0" "C" "D" "i" "l" "m" "-module" "x"))
+        ;; Perl doesn't have mandatory 2-arg options in our sense,
+        ;; since the two args can be run together, e.g. "-C/tmp" or "-C /tmp"
+        ;; 
+        (perl-two-args '())
+        ;; One dash is added automatically to the below, so
+        ;; h is really -h and -host is really --host.
+        (trepanpl-two-args '("h" "-host" "p" "-port"
+                           "I" "-include"))
+        (trepanpl-opt-two-args '())
+        (interp-regexp 
+         (if (member system-type (list 'windows-nt 'cygwin 'msdos))
+             "^perl\\(?:5[0-9.]*\\)\\(.exe\\)?$"
+           "^perl\\(?:5[0-9.]*\\)?$"))
 
-	;; Things returned
-	(script-name nil)
-	(debugger-name nil)
-	(interpreter-args '())
-	(debugger-args '())
-	(script-args '())
-	(annotate-p nil))
+        ;; Things returned
+        (script-name nil)
+        (debugger-name nil)
+        (interpreter-args '())
+        (debugger-args '())
+        (script-args '())
+        (annotate-p nil))
 
     (if (not (and args))
-	;; Got nothing: return '(nil, nil)
-	(list interpreter-args debugger-args script-args annotate-p)
+        ;; Got nothing: return '(nil, nil)
+        (list interpreter-args debugger-args script-args annotate-p)
       ;; else
       ;; Strip off optional "perl" or "perl5.10.1" etc.
       (when (string-match interp-regexp
-			  (file-name-sans-extension
-			   (file-name-nondirectory (car args))))
-	(setq interpreter-args (list (pop args)))
+                          (file-name-sans-extension
+                           (file-name-nondirectory (car args))))
+        (setq interpreter-args (list (pop args)))
 
-	;; Strip off optional "perl" or "perl5.10.1" etc.
-	(while (and args
-		    (string-match "^-" (car args)))
-	  (setq pair (dbgr-parse-command-arg 
-		      args perl-two-args perl-opt-two-args))
-	  (nconc interpreter-args (car pair))
-	  (setq args (cadr pair))))
+        ;; Strip off optional "perl" or "perl5.10.1" etc.
+        (while (and args
+                    (string-match "^-" (car args)))
+          (setq pair (dbgr-parse-command-arg 
+                      args perl-two-args perl-opt-two-args))
+          (nconc interpreter-args (car pair))
+          (setq args (cadr pair))))
 
       (list interpreter-args args))
     ))
@@ -104,8 +104,8 @@ NOTE: the above should have each item listed in quotes.
 (defun dbgr-trepanpl-suggest-invocation (debugger-name)
   "Suggest a trepanpl command invocation via `dbgr-suggest-invocaton'"
   (dbgr-suggest-invocation dbgr-trepanpl-command-name 
-			   trepanpl-minibuffer-history 
-			   "perl" "\\.pl$"))
+                           trepanpl-minibuffer-history 
+                           "perl" "\\.pl$" "trepan.pl"))
 
 (defun dbgr-trepanpl-reset ()
   "Trepanpl cleanup - remove debugger's internal buffers (frame,
@@ -123,7 +123,7 @@ breakpoints, etc.)."
 ;;   "This unbinds the special debugger keys of the source buffers."
 ;;   (interactive)
 ;;   (setcdr (assq 'trepanpl-debugger-support-minor-mode minor-mode-map-alist)
-;; 	  trepanpl-debugger-support-minor-mode-map-when-deactive))
+;;        trepanpl-debugger-support-minor-mode-map-when-deactive))
 
 
 (defun dbgr-trepanpl-customize ()

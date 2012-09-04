@@ -20,9 +20,14 @@
 
 
 (assert-equal "gcd.rb"
-	      (dbgr-suggest-lang-file "ruby" "\\.rb$")
-	      "dbgr-suggest-lang-file"
-	      )
+              (dbgr-suggest-lang-file "ruby" "\\.rb$")
+              "dbgr-suggest-lang-file"
+              )
+
+(assert-equal "default.bogus"
+              (dbgr-suggest-lang-file "bogus" "\\.bogus$" "default.bogus")
+              "dbgr-suggest-lang-file"
+              )
 
 (note "dbgr-suggest-file-from-buffer")
 
@@ -34,9 +39,9 @@
   (message "set major mode to %s" major-mode)
   )
 (assert-equal (buffer-file-name elisp-buffer)
-				(dbgr-suggest-file-from-buffer
-				 "emacs-lisp"
-				 (list elisp-buffer))
-				"dbgr-lang-mode? with Lisp file"		  )
+                                (dbgr-suggest-file-from-buffer
+                                 "emacs-lisp"
+                                 (list elisp-buffer))
+                                "dbgr-lang-mode? with Lisp file"                  )
 
 (end-tests)
