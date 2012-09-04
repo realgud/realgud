@@ -29,6 +29,8 @@
               "dbgr-suggest-lang-file"
               )
 
+(assert-t (file-exists-p (dbgr-suggest-lang-file "bogus" "\\.bogus$")))
+
 (note "dbgr-suggest-file-from-buffer")
 
 

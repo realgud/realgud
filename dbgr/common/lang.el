@@ -85,10 +85,11 @@ Within a given priority, we use the first one we find."
                             (setq result file)
                             (setq priority 6))))
                 (if (and is-not-directory (< priority 5))
-                    ;; Found some sort of executable file.
+                    ;; Found some sort of regular file.
                     (progn
                       (setq result file)
-                      (setq priority 5)))))
+                      (setq priority 5)))
+		))
 	    ))
       (if (< priority 6)
 	  (if (setq file (dbgr-suggest-file-from-buffer lang-str))

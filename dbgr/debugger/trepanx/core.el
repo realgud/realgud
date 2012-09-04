@@ -130,7 +130,7 @@ NOTE: the above should have each item listed in quotes.
 (defun trepanx-suggest-invocation (debugger-name)
   "Suggest a trepanx command invocation via `dbgr-suggest-invocaton'"
   (dbgr-suggest-invocation trepanx-command-name trepanx-minibuffer-history 
-			   "ruby" "\\.rb$"))
+			   "ruby" "\\.rb$" "trepanx"))
 
 (defun trepanx-reset ()
   "Trepanx cleanup - remove debugger's internal buffers (frame,
