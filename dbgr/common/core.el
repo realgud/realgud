@@ -15,7 +15,8 @@
 (defvar dbgr-srcbuf-info)
 
 (defun dbgr-suggest-invocation 
-  (debugger-name minibuffer-history lang-str lang-ext-regexp)
+  (debugger-name minibuffer-history lang-str lang-ext-regexp 
+		 &optional last-resort)
   "Suggest a debugger command invocation. If the current buffer
 is a source file or process buffer previously set, then use the
 value of that the command invocations found by buffer-local

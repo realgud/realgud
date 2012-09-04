@@ -35,7 +35,14 @@
 	      (match-string (dbgr-cmdbuf-info-file-group dbgr) text)
 	      "extract file name")
 
-(assert-equal "102"
+(setq text "main::((eval 6)[eval.pl:5]:2):	$x = 2;")
+	 
+(assert-t (numberp (cmdbuf-loc-match text dbgr)) "eval location")
+(assert-equal "(eval 6)[eval.pl:5]"
+	      (match-string (dbgr-cmdbuf-info-file-group dbgr) text)
+	      "extract file name")
+
+(assert-equal "2"
 	      (match-string (dbgr-cmdbuf-info-line-group dbgr)
 			    text) "extract line number")
 
