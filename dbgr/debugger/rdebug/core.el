@@ -129,7 +129,7 @@ NOTE: the above should have each item listed in quotes.
 (defun rdebug-suggest-invocation (debugger-name)
   "Suggest a rdebug command invocation via `dbgr-suggest-invocaton'"
   (dbgr-suggest-invocation rdebug-command-name rdebug-minibuffer-history 
-			   "ruby" "\\.rb$"))
+			   "ruby" "\\.rb$" "rdebug"))
 
 (defun rdebug-reset ()
   "Rdebug cleanup - remove debugger's internal buffers (frame,

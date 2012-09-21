@@ -20,8 +20,12 @@
 (dbgr-ruby-populate-command-keys rdebug-track-mode-map)
 
 (defun rdebug-track-mode-hook()
-  (use-local-map rdebug-track-mode-map)
-  (message "rdebug track-mode-hook called")
+  (if rdebug-track-mode
+      (progn
+	(use-local-map trepan-track-mode-map)
+	(message "using trepan mode map")
+	)
+    (message "trepan track-mode-hook disable called"))
 )
 
 (define-minor-mode rdebug-track-mode
@@ -32,11 +36,17 @@
   :global nil
   :group 'rdebug
   :keymap rdebug-track-mode-map
+  (rdebug-track-mode-internal rdebug-track-mode)
+)
+
+;; Broken out as a function for debugging
+(defun rdebug-track-mode-internal (&optional arg)
   (dbgr-track-set-debugger "rdebug")
   (if rdebug-track-mode
       (progn 
 	(setq dbgr-track-mode 't)
-	(run-mode-hooks (intern (rdebug-track-mode-hook))))
+	(dbgr-track-mode-setup 't)
+	(trepan-track-mode-hook))
     (progn 
       (setq dbgr-track-mode nil)
       ))
