@@ -85,10 +85,9 @@ static char *magick[] = {
                           (:type pbm :data
                                  ,dbgr-bp-disabled-pbm-data
                                  :ascent 100 :pointer hand))))
+      ;; For seeing what dbgr-bp-enabled-icon looks like:
+      ;; (insert-image dbgr-bp-disabled-icon)
       ))
-      
-;; For seeing what dbgr-bp-enabled-icon looks like:
-;; (insert-image dbgr-bp-disabled-icon)
 
 (defun dbgr-bp-add-info (loc)
   "Record bp information for location LOC."
@@ -150,7 +149,7 @@ also attached to the icon via its display string."
             (set-window-buffer (selected-window) buffer-save))
           ))
       (dbgr-bp-remove-icons pos)
-      (if (display-images-p) 
+      (if (and (display-images-p) brkpt-icon)
           (put-image brkpt-icon pos bp-str 'left-margin))
       )
     )
