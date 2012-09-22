@@ -3,18 +3,7 @@
 
 (require 'image)
 (require 'load-relative)
-(require-relative-list '("loc") "dbgr-")
-
-;; These are all fully defined in bp-image-data.el
-(defconst dbgr-bp-xpm-data nil)
-(defconst dbgr-bp-enabled-xpm-data nil)
-(defconst dbgr-bp-disabled-xpm-data nil)
-(defconst dbgr-bp-enabled-pbm-data nil)
-(defconst dbgr-bp-disabled-pbm-data nil)
-(defconst dbgr-bp-enabled-svg-data nil)
-(defconst dbgr-bp-disabled-svg-data nil)
-(defconst dbgr-bp-enabled-tiff-data nil)
-(defconst dbgr-bp-disabled-tiff-data nil)
+(require-relative-list '("loc" "bp-image-data") "dbgr-")
 
 (defvar dbgr-bp-enabled-icon nil
   "Icon for an enabled breakpoint in display margin.")
@@ -22,51 +11,54 @@
 (defvar dbgr-bp-disabled-icon nil
   "Icon for a disabled breakpoint in display margin.")
 
-(if (display-images-p)
-    (require-relative-list '("bp-image-data") "dbgr-")
-    (progn
-      ;; NOTE: if you don't see the icon, check the that the window margin
-      ;; is not nil.
+(defun set-bp-icons()
+  (if (display-images-p)
+      (progn
+	;; NOTE: if you don't see the icon, check the that the window margin
+	;; is not nil.
+	(setq dbgr-bp-enabled-icon
+	      (find-image `((:type xpm :data
+				   ,dbgr-bp-xpm-data
+				   :ascent 100 :pointer hand)
+			    (:type svg :data
+				   ,dbgr-bp-enabled-svg-data
+				   :ascent 100 :pointer hand)
+			    (:type tiff :data
+				   ,dbgr-bp-enabled-tiff-data
+				   :ascent 100 :pointer hand)
+			    (:type pbm :data
+				   ,dbgr-bp-enabled-pbm-data
+				   :ascent 100 :pointer hand)
+			    )))
+	
+	;; For seeing what dbgr-bp-enabled-icon looks like:
+	;; (insert-image dbgr-bp-enabled-icon)
+	
+	(setq dbgr-bp-disabled-icon
+	      (find-image `((:type xpm :data
+				   ,dbgr-bp-xpm-data
+				   :conversion disabled ;; different than 'enabled'
+				   :ascent 100 :pointer hand)
+			    (:type svg :data
+				   ,dbgr-bp-disabled-svg-data
+				   :ascent 100 :pointer hand)
+			    (:type tiff :data
+				   ,dbgr-bp-disabled-tiff-data
+				   :ascent 100 :pointer hand)
+			    (:type pbm :data
+				   ,dbgr-bp-disabled-pbm-data
+				   :ascent 100 :pointer hand)
+			    (:type svg :data
+				   ,dbgr-bp-disabled-svg-data
+				   :ascent 100 :pointer hand)
+			    )))
+	;; For seeing what dbgr-bp-enabled-icon looks like:
+	;; (insert-image dbgr-bp-disabled-icon)
+	)
+    (message "Display doesn't support breakpoint images in fringe")
+    )
+  )
 
-      (setq dbgr-bp-enabled-icon
-            (find-image `((:type xpm :data
-                                 ,dbgr-bp-xpm-data
-                                 :ascent 100 :pointer hand)
-                          (:type svg :data
-                                 ,dbgr-bp-enabled-svg-data
-                                 :ascent 100 :pointer hand)
-                          (:type tiff :data
-                                 ,dbgr-bp-enabled-tiff-data
-                                 :ascent 100 :pointer hand)
-                          (:type pbm :data
-                                 ,dbgr-bp-enabled-pbm-data
-                                 :ascent 100 :pointer hand)
-			  )))
-
-      ;; For seeing what dbgr-bp-enabled-icon looks like:
-      ;; (insert-image dbgr-bp-enabled-icon)
-      
-      (setq dbgr-bp-disabled-icon
-            (find-image `((:type xpm :data
-                                 ,dbgr-bp-xpm-data
-                                 :conversion disabled ;; different than 'enabled'
-                                 :ascent 100 :pointer hand)
-                          (:type svg :data
-                                 ,dbgr-bp-disabled-svg-data
-                                 :ascent 100 :pointer hand)
-                          (:type tiff :data
-                                 ,dbgr-bp-disabled-tiff-data
-                                 :ascent 100 :pointer hand)
-                          (:type pbm :data
-                                 ,dbgr-bp-disabled-pbm-data
-                                 :ascent 100 :pointer hand)
-                          (:type svg :data
-                                 ,dbgr-bp-disabled-svg-data
-                                 :ascent 100 :pointer hand)
-			  )))
-      ;; For seeing what dbgr-bp-enabled-icon looks like:
-      ;; (insert-image dbgr-bp-disabled-icon)
-      ))
 
 (defun dbgr-bp-add-info (loc)
   "Record bp information for location LOC."
@@ -97,6 +89,7 @@ also attached to the icon via its display string."
         (help-string "mouse-1: clear bkpt, mouse-3: enable/disable bkpt")
         )
     (with-current-buffer buf
+      (unless dbgr-bp-enabled-icon (set-bp-icons))
       (if enabled 
           (progn 
             (setq enabled-str "B")
@@ -128,7 +121,7 @@ also attached to the icon via its display string."
             (set-window-buffer (selected-window) buffer-save))
           ))
       (dbgr-bp-remove-icons pos)
-      (if (and (display-images-p) brkpt-icon)
+      (if brkpt-icon
           (put-image brkpt-icon pos bp-str 'left-margin))
       )
     )

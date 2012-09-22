@@ -1,4 +1,6 @@
 ;;; Copyright (C) 2011, 2012 Rocky Bernstein <rocky@gnu.org>
+(declare-function dbgr-terminate &optional cmdbuf)
+
 (defconst dbgr-track-char-range 10000
   "Max number of characters from end of buffer to search for stack entry.")
 
