@@ -22,10 +22,10 @@
 (defun rdebug-track-mode-hook()
   (if rdebug-track-mode
       (progn
-	(use-local-map trepan-track-mode-map)
-	(message "using trepan mode map")
+	(use-local-map rdebug-track-mode-map)
+	(message "using rdebug mode map")
 	)
-    (message "trepan track-mode-hook disable called"))
+    (message "rdebug track-mode-hook disable called"))
 )
 
 (define-minor-mode rdebug-track-mode
@@ -46,7 +46,7 @@
       (progn 
 	(setq dbgr-track-mode 't)
 	(dbgr-track-mode-setup 't)
-	(trepan-track-mode-hook))
+	(rdebug-track-mode-hook))
     (progn 
       (setq dbgr-track-mode nil)
       ))

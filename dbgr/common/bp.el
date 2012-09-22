@@ -23,7 +23,7 @@
   "Icon for a disabled breakpoint in display margin.")
 
 (if (display-images-p)
-    (require-relative "dbgr-bp-image-data")
+    (require-relative-list '("bp-image-data") "dbgr-")
     (progn
       ;; NOTE: if you don't see the icon, check the that the window margin
       ;; is not nil.
