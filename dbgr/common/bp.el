@@ -5,6 +5,17 @@
 (require 'load-relative)
 (require-relative-list '("loc") "dbgr-")
 
+;; These are all fully defined in bp-image-data.el
+(defconst dbgr-bp-xpm-data nil)
+(defconst dbgr-bp-enabled-xpm-data nil)
+(defconst dbgr-bp-disabled-xpm-data nil)
+(defconst dbgr-bp-enabled-pbm-data nil)
+(defconst dbgr-bp-disabled-pbm-data nil)
+(defconst dbgr-bp-enabled-svg-data nil)
+(defconst dbgr-bp-disabled-svg-data nil)
+(defconst dbgr-bp-enabled-tiff-data nil)
+(defconst dbgr-bp-disabled-tiff-data nil)
+
 (defvar dbgr-bp-enabled-icon nil
   "Icon for an enabled breakpoint in display margin.")
       
@@ -12,67 +23,25 @@
   "Icon for a disabled breakpoint in display margin.")
 
 (if (display-images-p)
+    (require-relative "dbgr-bp-image-data")
     (progn
       ;; NOTE: if you don't see the icon, check the that the window margin
       ;; is not nil.
-      (defconst dbgr-bp-xpm-data
-        "/* XPM */
-static char *magick[] = {
-/* columns rows colors chars-per-pixel */
-\"10 10 2 1\",
-\"  c red\",
-\"+ c None\",
-/* pixels */
-\"+++    +++\",
-\"++      ++\",
-\"+        +\",
-\"          \",
-\"          \",
-\"          \",
-\"          \",
-\"+        +\",
-\"++      ++\",
-\"+++    +++\",
-};"
-  "XPM data used for breakpoint enable and disable icon.")
-
-      (defconst dbgr-bp-enabled-pbm-data
-  "P1
-10 10\",
-0 0 0 0 1 1 1 1 0 0 0 0
-0 0 0 1 1 1 1 1 1 0 0 0
-0 0 1 1 1 1 1 1 1 1 0 0
-0 1 1 1 1 1 1 1 1 1 1 0
-0 1 1 1 1 1 1 1 1 1 1 0
-0 1 1 1 1 1 1 1 1 1 1 0
-0 1 1 1 1 1 1 1 1 1 1 0
-0 0 1 1 1 1 1 1 1 1 0 0
-0 0 0 1 1 1 1 1 1 0 0 0
-0 0 0 0 1 1 1 1 0 0 0 0"
-  "PBM data used for enabled breakpoint icon.")
-
-      (defconst dbgr-bp-disabled-pbm-data
-  "P1
-10 10\",
-0 0 1 0 1 0 1 0 0 0
-0 1 0 1 0 1 0 1 0 0
-1 0 1 0 1 0 1 0 1 0
-0 1 0 1 0 1 0 1 0 1
-1 0 1 0 1 0 1 0 1 0
-0 1 0 1 0 1 0 1 0 1
-1 0 1 0 1 0 1 0 1 0
-0 1 0 1 0 1 0 1 0 1
-0 0 1 0 1 0 1 0 1 0
-0 0 0 1 0 1 0 1 0 0"
-  "PBM data used for disabled breakpoint icon.")
 
       (setq dbgr-bp-enabled-icon
             (find-image `((:type xpm :data
                                  ,dbgr-bp-xpm-data
                                  :ascent 100 :pointer hand)
+                          (:type svg :data
+                                 ,dbgr-bp-enabled-svg-data
+                                 :ascent 100 :pointer hand)
+                          (:type tiff :data
+                                 ,dbgr-bp-enabled-tiff-data
+                                 :ascent 100 :pointer hand)
                           (:type pbm :data
                                  ,dbgr-bp-enabled-pbm-data
-                                 :ascent 100 :pointer hand))))
+                                 :ascent 100 :pointer hand)
+			  )))
 
       ;; For seeing what dbgr-bp-enabled-icon looks like:
       ;; (insert-image dbgr-bp-enabled-icon)
@@ -82,9 +51,19 @@ static char *magick[] = {
                                  ,dbgr-bp-xpm-data
                                  :conversion disabled ;; different than 'enabled'
                                  :ascent 100 :pointer hand)
+                          (:type svg :data
+                                 ,dbgr-bp-disabled-svg-data
+                                 :ascent 100 :pointer hand)
+                          (:type tiff :data
+                                 ,dbgr-bp-disabled-tiff-data
+                                 :ascent 100 :pointer hand)
                           (:type pbm :data
                                  ,dbgr-bp-disabled-pbm-data
-                                 :ascent 100 :pointer hand))))
+                                 :ascent 100 :pointer hand)
+                          (:type svg :data
+                                 ,dbgr-bp-disabled-svg-data
+                                 :ascent 100 :pointer hand)
+			  )))
       ;; For seeing what dbgr-bp-enabled-icon looks like:
       ;; (insert-image dbgr-bp-disabled-icon)
       ))

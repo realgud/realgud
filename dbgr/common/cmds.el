@@ -4,6 +4,7 @@
 (require-relative-list  '("buffer/command") "dbgr-buffer-")
 
 (declare-function dbgr-terminate &optional cmdbuf)
+(declare-function dbgr-terminate-srcbuf &optional cmdbuf)
 
 (defun dbgr-cmd-remap(arg cmd-name default-cmd-template key
 			  &optional no-record? frame-switch? dbgr-prompts?)
