@@ -86,7 +86,7 @@ also attached to the icon via its display string."
           ('t (format "%d:" bp-num))))
         (brkpt-icon)
         (bp-str)
-        (help-string "mouse-1: clear bkpt, mouse-3: enable/disable bkpt")
+        (help-string "mouse-1: enable/disable bkpt")
         )
     (with-current-buffer buf
       (unless dbgr-bp-enabled-icon (set-bp-icons))

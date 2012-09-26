@@ -1,4 +1,4 @@
-;;; Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011-2012 Rocky Bernstein <rocky@gnu.org>
 ;;; Trepanning Perl debugger
 (eval-when-compile (require 'cl))
 
@@ -183,7 +183,8 @@ backtrace listing.")
   "Hash key is command name like 'quit' and the value is 
   the trepanpl command to use, like 'quit!'")
 
-(setf (gethash "quit" dbgr-trepanpl-command-hash) "quit!")
+(setf (gethash "break"  dbgr-trepanpl-command-hash) "break %f %l")
+(setf (gethash "quit"   dbgr-trepanpl-command-hash) "quit!")
 (setf (gethash dbgr-trepanpl-debugger-name
 	       dbgr-command-hash) dbgr-trepanpl-command-hash)
 
