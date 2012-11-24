@@ -1,5 +1,8 @@
 #!/bin/bash
-# Install emacs-dbgr from git
+
+# Install emacs-dbgr from git.  Any options passed to this program
+# will be passed onto each ./configure script.
+
 run_cmd() {
     echo "--- Running command: $@"
     $@
@@ -39,7 +42,7 @@ for pkg in emacs-{test-simple,load-relative,loc-changes,dbgr} ; do
     run_cmd git clone http://github.com/rocky/${pkg}.git
     (cd $pkg && \
         run_cmd $SHELL ./autogen.sh && \
-	run_cmd ./configure && \
+	run_cmd ./configure $@ && \
 	run_cmd make && \
 	run_cmd make check && \
         run_cmd $need_sudo make install
