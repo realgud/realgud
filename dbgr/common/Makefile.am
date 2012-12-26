@@ -1,4 +1,4 @@
-SUBDIRS = buffer init
+SUBDIRS = buffer
 MOSTLYCLEANFILES = *.elc
 
 include $(top_srcdir)/common.mk
