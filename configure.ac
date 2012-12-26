@@ -32,13 +32,13 @@ AC_CONFIG_FILES([Makefile \
 		 dbgr/Makefile \
 		 dbgr/common/Makefile \
 		 dbgr/common/buffer/Makefile \
-		 dbgr/common/init/Makefile \
 		 dbgr/debugger/Makefile \
 		 dbgr/debugger/bashdb/Makefile \
 		 dbgr/debugger/gdb/Makefile \
 		 dbgr/debugger/kshdb/Makefile \
 		 dbgr/debugger/perldb/Makefile \
 		 dbgr/debugger/pdb/Makefile \
+		 dbgr/debugger/pydb/Makefile \
 		 dbgr/debugger/pydbgr/Makefile \
 		 dbgr/debugger/rdebug/Makefile \
 		 dbgr/debugger/remake/Makefile \
