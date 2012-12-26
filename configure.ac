@@ -11,7 +11,7 @@ $EMACS -batch -q -no-site-file -eval \
          (error "You need GNU Emacs 23 or better.")
          (kill-emacs 1)
        )
-     (dolist (package (quote (loc-changes load-relative test-unit)))
+     (dolist (package (quote (loc-changes load-relative test-simple)))
         (require package))
    )'
 if test $? -ne 0 ; then

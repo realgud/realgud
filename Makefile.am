@@ -11,6 +11,7 @@ EXTRA_DIST=common.mk README.textile dbgr.el
 if MAINTAINER_MODE
 
 CL = ChangeLog
+#: Create a ChangeLog file from git logs
 ChangeLog:
 	git log --pretty --numstat --summary | $(GIT2CL) > $@
 
