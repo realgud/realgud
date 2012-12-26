@@ -29,7 +29,7 @@ dbgr-loc-pat struct")
 ;;   > c:\\mydirectory\\gcd.py(10)<module>
 (setf (gethash "loc" dbgr-pydb-pat-hash)
       (make-dbgr-loc-pat
-       :regexp "^> \\(\\(?:[a-zA-Z]:\\)?[-a-zA-Z0-9_/.\\\\ ]+\\)(\\([0-9]+\\))"
+       :regexp "^(\\(\\(?:[a-zA-Z]:\\)?[-a-zA-Z0-9_/.\\\\ ]+\\):\\([0-9]+\\))"
        :file-group 1
        :line-group 2))
 

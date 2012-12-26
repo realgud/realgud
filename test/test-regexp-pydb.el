@@ -66,19 +66,19 @@
 ;; 	      (match-string (dbgr-loc-pat-line-group loc-pat)
 ;; 			    text) "extract line number")
 
-(setq text "> /usr/bin/ipython(24)<module>")
-(assert-t (numberp (loc-match text loc-pat)) "position location")
-(assert-equal "/usr/bin/ipython"
-	      (match-string (dbgr-loc-pat-file-group loc-pat)
-			    text)
-	      (format "Failing file group is %s" 
-		      (dbgr-loc-pat-file-group tb-pat)
-		      "extract file name"))
-(assert-equal "24"
-	      (match-string (dbgr-loc-pat-line-group 
-			     loc-pat)
-			    text)
-	      "extract line number")
+;; (setq text "> /usr/bin/ipython(24)<module>")
+;; (assert-t (numberp (loc-match text loc-pat)) "position location")
+;; (assert-equal "/usr/bin/ipython"
+;; 	      (match-string (dbgr-loc-pat-file-group loc-pat)
+;; 			    text)
+;; 	      (format "Failing file group is %s" 
+;; 		      (dbgr-loc-pat-file-group tb-pat)
+;; 		      "extract file name"))
+;; (assert-equal "24"
+;; 	      (match-string (dbgr-loc-pat-line-group 
+;; 			     loc-pat)
+;; 			    text)
+;; 	      "extract line number")
 
 
 (note "prompt matching")
