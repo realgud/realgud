@@ -41,6 +41,7 @@
   (if pydbgr-track-mode
       (progn 
 	(setq dbgr-track-mode 't)
+	(dbgr-track-mode-setup 't)
 	(run-mode-hooks (intern (pydbgr-track-mode-hook))))
     (progn 
       (setq dbgr-track-mode nil)
