@@ -25,11 +25,12 @@ dbgr-loc-pat struct")
 ;;
 ;; For example:
 ;;   (/usr/bin/zonetab2pot.py:15): <module>
+;;   (/usr/bin/zonetab2pot.py:15 remapped <string>): <module>
 ;; or MS Windows:
 ;;   (c:\\mydirectory\\gcd.py:10): <module>
 (setf (gethash "loc" dbgr-pydbgr-pat-hash)
       (make-dbgr-loc-pat
-       :regexp "^(\\(\\(?:[a-zA-Z]:\\)?[-a-zA-Z0-9_/.\\\\ ]+\\):\\([0-9]+\\))"
+       :regexp "^(\\(\\(?:[a-zA-Z]:\\)?[-a-zA-Z0-9_/.\\\\ ]+\\):\\([0-9]+\\)\\(?: remapped .*\\)?)"
        :file-group 1
        :line-group 2))
 

@@ -57,5 +57,18 @@
 			      text)   "extract line number")
   )
 
+(lexical-let 
+    ((text "(/tmp/eval_stringzDKTfr.py:1 remapped <string>): <module>"))
+  (assert-t (numberp (loc-match text loc))   "position location")
+  (assert-equal "/tmp/eval_stringzDKTfr.py"
+		(match-string (dbgr-loc-pat-file-group loc)
+			      text)
+		(format "Failing file group is %s" 
+			(dbgr-loc-pat-file-group tb) "extract file name"))
+  (assert-equal "1"
+		(match-string (dbgr-loc-pat-line-group loc)
+			      text)   "extract line number")
+  )
+
 (end-tests)
 
