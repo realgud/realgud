@@ -1,5 +1,8 @@
 SUBDIRS = dbgr test
 
+GIT2CL ?= git2cl
+RUBY   ?= ruby
+
 lispdir = @lispdir@
 lisp_files := $(wildcard dbgr.el)
 lisp_LISP = $(lisp_files)
@@ -24,9 +27,10 @@ test: check
 
 #: Run all tests without bloated output
 check-short:
-	$(MAKE) check 2>&1  | ruby make-check-filter.rb
+	$(MAKE) check 2>&1  | $(RUBY) make-check-filter.rb
 
-
-
+#: Run "make install"
+install-short:
+	$(MAKE) install 2>&1  | $(RUBY) make-check-filter.rb
 
 
