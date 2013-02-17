@@ -12,6 +12,8 @@
 ;; Variables defining regular expressions (regexp:s).
 ;;
 
+(eval-when-compile (require 'cl))
+
 (defstruct dbgr-loc-pat
   "Information to match and extract a file and line number location from
 a string output by a debugger inside a process shell"
