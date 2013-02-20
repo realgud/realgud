@@ -1,3 +1,7 @@
+# Note: This makefile include remake-style target comments. 
+# These comments before the targets start with #:
+# remake --tasks to shows the targets and the comments
+
 SUBDIRS = dbgr test
 
 GIT2CL ?= git2cl
@@ -13,7 +17,6 @@ EXTRA_DIST=common.mk README.textile dbgr.el
 
 if MAINTAINER_MODE
 
-CL = ChangeLog
 #: Create a ChangeLog file from git logs
 ChangeLog:
 	git log --pretty --numstat --summary | $(GIT2CL) > $@
