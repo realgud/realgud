@@ -1,8 +1,49 @@
 #!/bin/bash
+# This installs all prequisites. If you are lucky you can just run
+# this:
+#   sh ./install-from-git.sh
+#
+# However we do provide some customization: 
+#
+# 1. GIT PROTOCOL
+# ===============
+# If your "git clone" can't handled the "http" protocol, might be able
+# to use "git". To do this set the GIT_PROTOCOL variable like this: 
+#
+#     GIT_PROTOCOL=git sh ./install-from-git.sh
+#
+# 2. configure options (e.g --prefix)
+# ====================================
+# If you want to choose where to install, you can pass configure options
+# to this script. For example
+#
+#     sh ./install-from-git.sh --prefix=/tmp
+# 
+#
+# 3. TO "sudo" or not to "sudo"? 
+# ==============================
+# If you are running as root on a *Nix-like box, then there's no problem.
+#
+# If you are not running as root, "sudo" might be invoked to install
+# code.  On systems that don't have a "sudo" command but need
+# filesystem permission, then you get by with setting SUDO_CMD to "su root-c"
+# For example:
+#
+#    SUDO_CMD='su root -c' sh ./install-from-git.sh
+#
+# If you have sufficient filesystem permission (which is often the
+# case on Windows or cygwin) then you might not need or want sudo. So
+# here, set SUDO_CMD to a blank:
+#
+#      SUDO_CMD=' ' sh ./install-from-git.sh
+# 
+#
+# To finish here is an invocation using all 3 above options:
+#   GIT_PROTOCOL='git' SUDO_CMD=' ' sh ./install-from-git.sh --prefix=/tmp
 
-# Install emacs-dbgr from git.  Any options passed to this program
-# will be passed onto each ./configure script.
+GIT_PROTOCOL=${GIT_PROTOCOL:-http}
 
+# Run and echo a command
 run_cmd() {
     echo "--- Running command: $@"
     $@
@@ -11,7 +52,9 @@ run_cmd() {
     return $rc
 }
 
-# environment variable SUDO_CMD could be "sudo" or "su root -c"
+# environment variable SUDO_CMD could be "sudo" or "su root -c" or " " 
+# for don't need sudo
+
 if (( $(id -u) != 0)) ; then 
     if [[ -z "$SUDO_CMD" ]] ; then
 	need_sudo='sudo'
@@ -39,7 +82,7 @@ for pkg in emacs-{test-simple,load-relative,loc-changes,dbgr} ; do
     echo '******************************************'
     echo Trying to install ${pkg}...
     echo '******************************************'
-    run_cmd git clone http://github.com/rocky/${pkg}.git
+    run_cmd git clone ${GIT_PROTOCOL}://github.com/rocky/${pkg}.git
     (cd $pkg && \
         run_cmd $SHELL ./autogen.sh && \
 	run_cmd ./configure $@ && \
