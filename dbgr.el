@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2013 Rocky Bernstein <rocky@gnu.org>
 ;;; Things related to loading and loading the dbgr package.
 (require 'load-relative)
 
@@ -23,6 +23,7 @@
      "./dbgr/debugger/rdebug/rdebug"
      "./dbgr/debugger/remake/remake"
      "./dbgr/debugger/trepan/trepan"
+     "./dbgr/debugger/trepan3k/trepan3k"
      "./dbgr/debugger/trepan.pl/trepanpl"
      "./dbgr/debugger/trepanx/trepanx"
      "./dbgr/debugger/trepan8/trepan8"
