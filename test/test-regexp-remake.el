@@ -1,13 +1,13 @@
 (require 'test-simple)
-(load-file "../dbgr/debugger/remake/init.el")
+(load-file "../realgud/debugger/remake/init.el")
 (load-file "./regexp-helper.el")
 
 (test-simple-start)
 
 (set (make-local-variable 'prompt-pat)
-     (gethash "prompt"             dbgr-remake-pat-hash))
+     (gethash "prompt"             realgud-remake-pat-hash))
 (set (make-local-variable 'frame-pat)
-     (gethash "debugger-backtrace" dbgr-remake-pat-hash))
+     (gethash "debugger-backtrace" realgud-remake-pat-hash))
 
 (note "remake prompt")
 (prompt-match "remake<10> "  "10")
@@ -20,41 +20,40 @@
 ")
 
 (set (make-local-variable 'frame-re)
-     (dbgr-loc-pat-regexp frame-pat))
+     (realgud-loc-pat-regexp frame-pat))
 (set (make-local-variable 'num-group)
-     (dbgr-loc-pat-num frame-pat))
+     (realgud-loc-pat-num frame-pat))
 (set (make-local-variable 'file-group)
-     (dbgr-loc-pat-file-group frame-pat))
+     (realgud-loc-pat-file-group frame-pat))
 (set (make-local-variable 'line-group)
-     (dbgr-loc-pat-line-group frame-pat))
+     (realgud-loc-pat-line-group frame-pat))
 
 (assert-equal 0 (string-match frame-re s1))
-(assert-equal "0" (substring s1 
+(assert-equal "0" (substring s1
 			     (match-beginning num-group)
 			     (match-end num-group)))
 (assert-equal "/tmp/Makefile"
-	      (substring s1 
+	      (substring s1
 			 (match-beginning file-group)
 			 (match-end file-group)))
 (assert-equal "216"
-	      (substring s1 
+	      (substring s1
 			 (match-beginning line-group)
 			 (match-end line-group)))
 (set (make-local-variable 'pos)
      (match-end 0))
 
 (assert-equal 39 (string-match frame-re s1 pos))
-(assert-equal "1" (substring s1 
+(assert-equal "1" (substring s1
 			     (match-beginning num-group)
 			     (match-end num-group)))
 (assert-equal "/tmp/Makefile"
-	      (substring s1 
+	      (substring s1
 			 (match-beginning file-group)
 			 (match-end file-group)))
 (assert-equal "230"
-	      (substring s1 
+	      (substring s1
 			 (match-beginning line-group)
 			 (match-end line-group)))
 
 (end-tests)
-

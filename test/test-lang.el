@@ -1,49 +1,49 @@
 (set (make-local-variable 'elisp-file)
-     "../dbgr/common/core.el")
+     "../realgud/common/core.el")
 (require 'test-simple)
-(load-file "../dbgr/common/lang.el")
+(load-file "../realgud/common/lang.el")
 (test-simple-start)
 
-(note "dbgr-lang-mode?")
+(note "realgud-lang-mode?")
 
 (assert-nil
- (dbgr-lang-mode? elisp-file "ruby")
- "dbgr-lang-mode? with Lisp file")
+ (realgud-lang-mode? elisp-file "ruby")
+ "realgud-lang-mode? with Lisp file")
 
 
-(save-excursion 
+(save-excursion
   (find-file "./gcd.rb")
   (assert-t
-   (dbgr-lang-mode? "./gcd.rb" "ruby")
-   "dbgr-lang-mode? with Ruby file")
+   (realgud-lang-mode? "./gcd.rb" "ruby")
+   "realgud-lang-mode? with Ruby file")
   )
 
 
 (assert-equal "gcd.rb"
-              (dbgr-suggest-lang-file "ruby" "\\.rb$")
-              "dbgr-suggest-lang-file"
+              (realgud-suggest-lang-file "ruby" "\\.rb$")
+              "realgud-suggest-lang-file"
               )
 
 (assert-equal "default.bogus"
-              (dbgr-suggest-lang-file "bogus" "\\.bogus$" "default.bogus")
-              "dbgr-suggest-lang-file"
+              (realgud-suggest-lang-file "bogus" "\\.bogus$" "default.bogus")
+              "realgud-suggest-lang-file"
               )
 
-(assert-t (file-exists-p (dbgr-suggest-lang-file "bogus" "\\.bogus$")))
+(assert-t (file-exists-p (realgud-suggest-lang-file "bogus" "\\.bogus$")))
 
-(note "dbgr-suggest-file-from-buffer")
+(note "realgud-suggest-file-from-buffer")
 
 
-(with-current-buffer 
+(with-current-buffer
     (setq elisp-buffer (find-file "./test-dbgr.el"))
   (set (make-local-variable 'major-mode)
        'emacs-lisp-mode)
   (message "set major mode to %s" major-mode)
   )
 (assert-equal (buffer-file-name elisp-buffer)
-                                (dbgr-suggest-file-from-buffer
+                                (realgud-suggest-file-from-buffer
                                  "emacs-lisp"
                                  (list elisp-buffer))
-                                "dbgr-lang-mode? with Lisp file"                  )
+                                "realgud-lang-mode? with Lisp file"                  )
 
 (end-tests)

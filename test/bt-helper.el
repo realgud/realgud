@@ -1,9 +1,9 @@
 (require 'test-simple)
 (require 'font-lock)
 
-(load-file "../dbgr/common/buffer/command.el")
-(load-file "../dbgr/common/buffer/backtrace.el")
-(load-file "../dbgr/common/backtrace-mode.el")
+(load-file "../realgud/common/buffer/command.el")
+(load-file "../realgud/common/buffer/backtrace.el")
+(load-file "../realgud/common/backtrace-mode.el")
 
 (defun setup-bt-vars(debugger-name)
   "Sets up globals temp-cmdbuf and temp-bt with command buffer
@@ -12,9 +12,9 @@ for DEBUGGER-NAME"
   (setq temp-bt (generate-new-buffer "*bt-test*"))
   (with-current-buffer temp-cmdbuf
     (switch-to-buffer temp-cmdbuf)
-    (dbgr-cmdbuf-init temp-cmdbuf debugger-name
-		      (gethash debugger-name dbgr-pat-hash))
-  
+    (realgud-cmdbuf-init temp-cmdbuf debugger-name
+		      (gethash debugger-name realgud-pat-hash))
+
     (switch-to-buffer nil)
   ))
 
@@ -24,7 +24,7 @@ for DEBUGGER-NAME"
 for DEBUGGER-NAME and initializes it to STRING"
   (setup-bt-vars debugger-name)
   (with-current-buffer temp-bt
-    (dbgr-backtrace-mode temp-cmdbuf)
+    (realgud-backtrace-mode temp-cmdbuf)
     (goto-char (point-min))
     (setq buffer-read-only nil)
     (insert string)
@@ -33,4 +33,3 @@ for DEBUGGER-NAME and initializes it to STRING"
     )
   temp-bt
 )
-

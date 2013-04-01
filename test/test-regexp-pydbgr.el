@@ -1,9 +1,9 @@
 (load-file "./regexp-helper.el")
-(load-file "../dbgr/debugger/pydbgr/init.el")
+(load-file "../realgud/debugger/pydbgr/init.el")
 
 (test-simple-start)
 
-(setup-regexp-vars dbgr-pydbgr-pat-hash)
+(setup-regexp-vars realgud-pyrealgud-pat-hash)
 
 ;; FIXME: we get a void variable somewhere in here when running
 ;;        even though we define it in lexical-let. Dunno why.
@@ -13,22 +13,22 @@
 (note "traceback location matching")
 (assert-t (numberp (loc-match text tb)) "basic traceback location")
 (assert-equal "/usr/lib/python2.6/code.py"
-	      (match-string (dbgr-loc-pat-file-group tb)
+	      (match-string (realgud-loc-pat-file-group tb)
 			    text)
-	      (format "Failing file group is %s" 
-		      (dbgr-loc-pat-file-group tb) "extract file name"))
+	      (format "Failing file group is %s"
+		      (realgud-loc-pat-file-group tb) "extract file name"))
 (assert-equal "281"
-	      (match-string (dbgr-loc-pat-line-group tb)
+	      (match-string (realgud-loc-pat-line-group tb)
 			    text) "extract line number")
 
 (note "breakpoint location matching")
 (lexical-let ((text "Breakpoint 1 set at line 13 of file /src/git/code/gcd.py"))
   (assert-t (numberp (loc-match text bps))  "basic breakpoint location")
   (assert-equal "/src/git/code/gcd.py"
-		(match-string (dbgr-loc-pat-file-group bps)
+		(match-string (realgud-loc-pat-file-group bps)
 			      text)   "extract breakpoint file name")
   (assert-equal "13"
-		(match-string (dbgr-loc-pat-line-group bps)
+		(match-string (realgud-loc-pat-line-group bps)
 			      text)   "extract breakpoint line number")
   )
 
@@ -36,39 +36,38 @@
 (lexical-let ((text "(c:\\working\\python\\helloworld.py:30): <module>"))
   (assert-t (numberp (loc-match text loc))   "MS DOS position location")
   (assert-equal "c:\\working\\python\\helloworld.py"
-		(match-string (dbgr-loc-pat-file-group loc)
+		(match-string (realgud-loc-pat-file-group loc)
 			      text)
-		(format "Failing file group is %s" 
-			(dbgr-loc-pat-file-group tb) "extract file name"))
+		(format "Failing file group is %s"
+			(realgud-loc-pat-file-group tb) "extract file name"))
   (assert-equal "30"
-		(match-string (dbgr-loc-pat-line-group loc)
+		(match-string (realgud-loc-pat-line-group loc)
 			      text)   "extract line number")
 
   )
 (lexical-let ((text "(/usr/bin/ipython:24): <module>"))
   (assert-t (numberp (loc-match text loc))   "position location")
   (assert-equal "/usr/bin/ipython"
-		(match-string (dbgr-loc-pat-file-group loc)
+		(match-string (realgud-loc-pat-file-group loc)
 			      text)
-		(format "Failing file group is %s" 
-			(dbgr-loc-pat-file-group tb) "extract file name"))
+		(format "Failing file group is %s"
+			(realgud-loc-pat-file-group tb) "extract file name"))
   (assert-equal "24"
-		(match-string (dbgr-loc-pat-line-group loc)
+		(match-string (realgud-loc-pat-line-group loc)
 			      text)   "extract line number")
   )
 
-(lexical-let 
+(lexical-let
     ((text "(/tmp/eval_stringzDKTfr.py:1 remapped <string>): <module>"))
   (assert-t (numberp (loc-match text loc))   "position location")
   (assert-equal "/tmp/eval_stringzDKTfr.py"
-		(match-string (dbgr-loc-pat-file-group loc)
+		(match-string (realgud-loc-pat-file-group loc)
 			      text)
-		(format "Failing file group is %s" 
-			(dbgr-loc-pat-file-group tb) "extract file name"))
+		(format "Failing file group is %s"
+			(realgud-loc-pat-file-group tb) "extract file name"))
   (assert-equal "1"
-		(match-string (dbgr-loc-pat-line-group loc)
+		(match-string (realgud-loc-pat-line-group loc)
 			      text)   "extract line number")
   )
 
 (end-tests)
-

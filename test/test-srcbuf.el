@@ -1,7 +1,7 @@
 (require 'test-simple)
-(load-file "../dbgr/common/buffer/source.el")
-(load-file "../dbgr/common/buffer/command.el")
-(load-file "../dbgr/debugger/trepan/init.el")
+(load-file "../realgud/common/buffer/source.el")
+(load-file "../realgud/common/buffer/command.el")
+(load-file "../realgud/debugger/trepan/init.el")
 
 (test-simple-start)
 
@@ -13,52 +13,52 @@
 
 (defun setup ()
   (setq temp-cmdbuf (generate-new-buffer "*cmdbuf-test*"))
-  (dbgr-cmdbuf-init temp-cmdbuf "trepan" (gethash "trepan" dbgr-pat-hash))
+  (realgud-cmdbuf-init temp-cmdbuf "trepan" (gethash "trepan" realgud-pat-hash))
   (setq temp-srcbuf (find-file-noselect "./gcd.rb"))
 )
 
-(assert-nil (dbgr-srcbuf? (current-buffer)) "dbgr-srcbuf? before init")
-(setq dbgr-srcbuf-info nil)
-(assert-nil (dbgr-srcbuf? (current-buffer)) 
-	    "dbgr-srcbuf? before init - but nil")
-(assert-equal nil (dbgr-srcbuf-command-string (current-buffer))
-	      "dbgr-srcbuf-command-string - uninit")
+(assert-nil (realgud-srcbuf? (current-buffer)) "realgud-srcbuf? before init")
+(setq realgud-srcbuf-info nil)
+(assert-nil (realgud-srcbuf? (current-buffer))
+	    "realgud-srcbuf? before init - but nil")
+(assert-equal nil (realgud-srcbuf-command-string (current-buffer))
+	      "realgud-srcbuf-command-string - uninit")
 
-(note "dbgr-srcbuf-init")
+(note "realgud-srcbuf-init")
 (setup)
-(dbgr-srcbuf-init temp-srcbuf temp-cmdbuf
+(realgud-srcbuf-init temp-srcbuf temp-cmdbuf
 		  "trepan"
 		  '("/bin/trepan" "--emacs" "gcd.rb" "1"))
-(assert-equal "trepan" 
+(assert-equal "trepan"
 	      (with-current-buffer temp-srcbuf
-		(dbgr-srcbuf-info-debugger-name 
-		 dbgr-srcbuf-info)))
+		(realgud-srcbuf-info-debugger-name
+		 realgud-srcbuf-info)))
 
-(assert-t (dbgr-srcbuf? temp-srcbuf)
-	  "dbgr-srcbuf? after init")
+(assert-t (realgud-srcbuf? temp-srcbuf)
+	  "realgud-srcbuf? after init")
 
 (assert-equal "/bin/trepan --emacs gcd.rb 1"
-	      (dbgr-srcbuf-command-string 
+	      (realgud-srcbuf-command-string
 	       temp-srcbuf)
-	      "dbgr-srcbuf-command-string")
+	      "realgud-srcbuf-command-string")
 
 (assert-equal temp-cmdbuf
 	      (with-current-buffer temp-srcbuf
-		(dbgr-srcbuf-info-cmdproc dbgr-srcbuf-info)))
-	 
-(dbgr-srcbuf-init-or-update temp-srcbuf temp-cmdbuf)
+		(realgud-srcbuf-info-cmdproc realgud-srcbuf-info)))
+
+(realgud-srcbuf-init-or-update temp-srcbuf temp-cmdbuf)
 (assert-equal temp-cmdbuf
 	      (with-current-buffer temp-srcbuf
-		(dbgr-srcbuf-info-cmdproc dbgr-srcbuf-info))
-	      "dbgr-srcbuf-init-or-update - update")
+		(realgud-srcbuf-info-cmdproc realgud-srcbuf-info))
+	      "realgud-srcbuf-init-or-update - update")
 
 (kill-buffer temp-srcbuf)
 (setq temp-srcbuf (find-file-noselect "./gcd.rb"))
-(dbgr-srcbuf-init-or-update temp-srcbuf temp-cmdbuf)
+(realgud-srcbuf-init-or-update temp-srcbuf temp-cmdbuf)
 (assert-equal temp-cmdbuf
 	      (with-current-buffer temp-srcbuf
-			 (dbgr-srcbuf-info-cmdproc dbgr-srcbuf-info))
-	      "dbgr-srcbuf-init-or-update - init")
+			 (realgud-srcbuf-info-cmdproc realgud-srcbuf-info))
+	      "realgud-srcbuf-init-or-update - init")
 (tear-down)
 
 (end-tests)

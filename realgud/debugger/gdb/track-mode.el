@@ -1,0 +1,46 @@
+;;; Copyright (C) 2010, 2012 Rocky Bernstein <rocky@gnu.org>
+;;; gdb tracking a comint or eshell buffer.
+
+(eval-when-compile (require 'cl))
+(require 'load-relative)
+(require-relative-list '(
+			 "../../common/cmds"
+			 "../../common/menu"
+			 "../../common/track"
+			 "../../common/track-mode"
+			 )
+		       "realgud-")
+(require-relative-list '("core" "init") "realgud-gdb-")
+
+(realgud-track-mode-vars "realgud-gdb")
+
+(declare-function realgud-track-mode(bool))
+
+(define-key realgud-gdb-track-mode-map
+  (kbd "C-c !b") 'realgud-goto-debugger-backtrace-line)
+
+(defun realgud-gdb-track-mode-hook()
+  (use-local-map realgud-gdb-track-mode-map)
+  (message "realgud-gdb track-mode-hook called")
+)
+
+(define-minor-mode realgud-gdb-track-mode
+  "Minor mode for tracking ruby debugging inside a process shell."
+  :init-value nil
+  ;; :lighter " gdb"   ;; mode-line indicator from realgud-track is sufficient.
+  ;; The minor mode bindings.
+  :global nil
+  :group 'realgud-gdb
+  :keymap realgud-gdb-track-mode-map
+  (if realgud-gdb-track-mode
+      (progn
+	(realgud-track-set-debugger "gdb")
+	(setq realgud-track-mode 't)
+        (realgud-track-mode-setup 't)
+        (realgud-gdb-track-mode-hook))
+    (progn
+      (setq realgud-track-mode nil)
+      ))
+)
+
+(provide-me "realgud-gdb-")

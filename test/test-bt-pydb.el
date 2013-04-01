@@ -1,5 +1,5 @@
 (load-file "./bt-helper.el")
-(load-file "../dbgr/debugger/pydb/init.el")
+(load-file "../realgud/debugger/pydb/init.el")
 
 (test-simple-start)
 
@@ -12,16 +12,16 @@
 (with-current-buffer temp-bt
   (switch-to-buffer temp-bt)
   (goto-char (point-min))
-  (dolist (pair 
+  (dolist (pair
 	   '(
-	     ("->" .    dbgr-backtrace-number )
+	     ("->" .    realgud-backtrace-number )
 	     ("gc"    . font-lock-function-name-face )
 	     ("("     . font-lock-variable-name-face )
-	     ("/test" . dbgr-file-name)
-	     ("2"     . dbgr-line-number)
-	     ("##"    . dbgr-backtrace-number)
-	     ("/test" . dbgr-file-name)
-	     ("4"     . dbgr-line-number)
+	     ("/test" . realgud-file-name)
+	     ("2"     . realgud-line-number)
+	     ("##"    . realgud-backtrace-number)
+	     ("/test" . realgud-file-name)
+	     ("4"     . realgud-line-number)
 	     ))
     (search-forward (car pair))
     (assert-eql (cdr pair)
@@ -30,4 +30,3 @@
   )
 
 (end-tests)
-
