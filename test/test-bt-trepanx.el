@@ -1,5 +1,5 @@
 (load-file "./bt-helper.el")
-(load-file "../dbgr/debugger/trepanx/init.el")
+(load-file "../realgud/debugger/trepanx/init.el")
 
 (test-simple-start)
 
@@ -14,19 +14,19 @@
 (with-current-buffer temp-bt
   (switch-to-buffer temp-bt)
   (goto-char (point-min))
-  (dolist (pair 
+  (dolist (pair
 	   '(
-	     ("   "    .   dbgr-backtrace-number )
+	     ("   "    .   realgud-backtrace-number )
 	     ("Trepan" . font-lock-constant-face )
 	     ("Objec"  . font-lock-variable-name-face )
 	     ("#"      . font-lock-variable-name-face )
 	     ("("      .  font-lock-variable-name-face )
-	     ("/foo"   .  dbgr-file-name)
-	     ("1"      . dbgr-line-number)
-	     ("   "    . dbgr-backtrace-number)
+	     ("/foo"   .  realgud-file-name)
+	     ("1"      . realgud-line-number)
+	     ("   "    . realgud-backtrace-number)
 	     ("mai"    . font-lock-constant-face )
-	     ("/bin"   . dbgr-file-name)
-	     ("1"     . dbgr-line-number)
+	     ("/bin"   . realgud-file-name)
+	     ("1"     . realgud-line-number)
 	     ))
     (search-forward (car pair))
     (assert-equal (cdr pair)

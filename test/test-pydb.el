@@ -1,5 +1,5 @@
 (require 'test-simple)
-(load-file "../dbgr/debugger/pydb/pydb.el")
+(load-file "../realgud/debugger/pydb/pydb.el")
 
 (test-simple-start)
 
@@ -7,7 +7,6 @@
 (assert-equal '(nil ("pydb") ("foo") nil)
 	      (pydb-parse-cmd-args '("pydb" "foo")))
 (assert-equal '(nil ("pydb") ("program.py" "foo") nil)
-	      (pydb-parse-cmd-args 
+	      (pydb-parse-cmd-args
 	       '("pydb" "program.py" "foo")))
 (end-tests)
-

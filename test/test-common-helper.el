@@ -1,16 +1,16 @@
 (require 'test-simple)
-(load-file "../dbgr/common/helper.el")
+(load-file "../realgud/common/helper.el")
 
 (test-simple-start)
 
-(defstruct dbgr-test-info name)
-(dbgr-struct-field-setter "dbgr-test-info" "name")
+(defstruct realgud-test-info name)
+(realgud-struct-field-setter "realgud-test-info" "name")
 
-(set (make-local-variable 'dbgr-test-info)
-     (make-dbgr-test-info :name "foo"))
+(set (make-local-variable 'realgud-test-info)
+     (make-realgud-test-info :name "foo"))
 
 (note "setter macro works")
-(assert-t (functionp 'dbgr-test-info-name=))
-(assert-equal "foo" (dbgr-test-info-name= "foo"))
+(assert-t (functionp 'realgud-test-info-name=))
+(assert-equal "foo" (realgud-test-info-name= "foo"))
 
 (end-tests)

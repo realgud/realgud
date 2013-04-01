@@ -1,0 +1,257 @@
+;;; Copyright (C) 2010, 2011, 2012 Rocky Bernstein <rocky@gnu.org>
+; (require 'term)
+(if (< emacs-major-version 23)
+    (error
+     "You need at least Emacs 23 or greater to run this - you have version %d"
+     emacs-major-version))
+
+(require 'comint)
+(require 'load-relative)
+(require-relative-list '("fringe" "helper" "lang" "reset") "realgud-")
+(require-relative-list '("buffer/command" "buffer/source") "realgud-buffer-")
+
+(declare-function realgud-short-key-mode-setup "shortkey.el")
+
+(defvar realgud-srcbuf-info)
+
+(defun realgud-suggest-invocation
+  (debugger-name minibuffer-history lang-str lang-ext-regexp
+		 &optional last-resort)
+  "Suggest a debugger command invocation. If the current buffer
+is a source file or process buffer previously set, then use the
+value of that the command invocations found by buffer-local
+variables. Next, try to use the first value of MINIBUFFER-HISTORY
+if that exists.  Finally we try to find a suitable program file
+using LANG-STR and LANG-EXT-REGEXP."
+  (let* ((buf (current-buffer))
+	 (cmd-str-cmdbuf (realgud-cmdbuf-command-string buf))
+	 (cmd-str-srcbuf (realgud-srcbuf-command-string buf))
+	 )
+    (cond
+     ((and cmd-str-cmdbuf (equal debugger-name (realgud-cmdbuf-debugger-name buf)))
+      cmd-str-cmdbuf)
+     ((and cmd-str-srcbuf (equal debugger-name (realgud-srcbuf-debugger-name buf)))
+      cmd-str-srcbuf)
+     ((and minibuffer-history (listp minibuffer-history))
+      (car minibuffer-history))
+     (t (concat debugger-name " "
+		(realgud-suggest-lang-file lang-str lang-ext-regexp last-resort)))
+     )))
+
+(defun realgud-query-cmdline
+  (suggest-invocation-fn
+   minibuffer-local-map
+   minibuffer-history
+   &optional opt-debugger)
+  "Prompt for a debugger command invocation to run.
+Analogous to `gud-query-cmdline'.
+
+If you happen to be in a debugger process buffer, the last command invocation
+for that first one suggested. Failing that, some amount of guessing is done
+to find a suitable file via SUGGEST-INVOCATION-FN.
+
+We also set filename completion and use a history of the prior
+dbgr invocations "
+  (let ((debugger (or opt-debugger
+		   (realgud-sget 'srcbuf-info 'debugger-name))))
+    (read-from-minibuffer
+     (format "Run %s (like this): " debugger)  ;; prompt string
+     (funcall suggest-invocation-fn debugger)  ;; initial value
+     minibuffer-local-map                      ;; keymap
+     nil                                       ;; read - use default value
+     minibuffer-history                        ;; history variable
+     )))
+
+(defun realgud-parse-command-arg (args two-args opt-two-args)
+  "Return a cons node where the car is a list containing the
+entire first option and the cdr is the remaining arguments from ARGS.
+
+We determine if an option has length one or two using the lists
+TWO-ARGS and OPT-TWO-ARGS. Both of these are list of 'options',
+that is strings without the leading dash. TWO-ARGS takes a
+mandatory additional argument. OPT-TWO-ARGS might take two
+arguments. The rule for an optional argument that we use is if
+the next parameter starts with a dash ('-'), it is not part of
+the preceeding parameter when that parameter is optional.
+
+NOTE: we don't check whether the first arguments of ARGS is an
+option by testing to see if it starts say with a dash. So on
+return the first argument is always removed.
+"
+  (let ((arg (car args))
+	(d-two-args (mapcar (lambda(x) (concat "-" x)) two-args))
+	(d-opt-two-args (mapcar (lambda(x) (concat "-" x)) opt-two-args))
+	(remaining (cdr args)))
+    (cond
+     ((member arg d-two-args)
+      (if (not remaining)
+	    (progn
+	      (message "Expecting an argument after %s. Continuing anyway."
+		       arg)
+	      (cons (list arg) (list remaining)))
+	(cons (list arg (car remaining)) (list (cdr remaining)))))
+     ((member arg d-opt-two-args)
+      (if (and remaining (not (string-match "^-" (car remaining))))
+	  (cons (list arg (car remaining)) (list (cdr remaining)))
+	(cons (list arg) (list remaining))))
+     (t (cons (list arg) (list remaining))))))
+
+(defun realgud-run-process(debugger-name script-filename cmd-args
+				      track-mode-func &optional no-reset)
+  "Runs `realgud-exec-shell with DEBUGGER-NAME SCRIPT-FILENAME PROGRAM-ARGS
+NO-RESET and SCRIPT-ARGS. If this succeeeds we call TRACK-MODE-FUNC
+and save cmd-args in command-buffer for use if we want to restarting.
+If we don't succeed in running the program we will switch to the command buffer
+which shows details of the error. The command buffer or nil is returned"
+
+  (let ((cmd-buf))
+    (condition-case nil
+	(setq cmd-buf
+	      (apply 'realgud-exec-shell debugger-name script-filename
+		     (car cmd-args) no-reset (cdr cmd-args)))
+      (error nil))
+    ;; FIXME: Is there probably is a way to remove the
+    ;; below test and combine in condition-case?
+    (let ((process (get-buffer-process cmd-buf)))
+      (if (and process (eq 'run (process-status process)))
+	  (progn
+	    (switch-to-buffer cmd-buf)
+	    (funcall track-mode-func 't)
+	    (realgud-cmdbuf-info-cmd-args= cmd-args)
+	    )
+	(progn
+	  (if cmd-buf (switch-to-buffer cmd-buf))
+	  (message "Error running command: %s %s" debugger-name script-filename)
+	  )
+	)
+      )
+    cmd-buf
+    )
+  )
+
+(defun realgud-terminate-srcbuf (&optional srcbuf)
+  "Resets source buffer."
+  (interactive "bsource buffer: ")
+  (if (stringp srcbuf) (setq srcbuf (get-buffer srcbuf)))
+  (with-current-buffer srcbuf
+    (realgud-fringe-erase-history-arrows)
+    (realgud-bp-remove-icons (point-min) (point-max))
+    (if (realgud-srcbuf?)
+	(progn
+	  (realgud-short-key-mode-setup nil)
+	  (redisplay)
+	  ))
+    )
+  )
+
+(defun realgud-terminate (&optional buf)
+  "Resets state in all buffers associated with source or command
+buffer BUF) This does things like remove fringe arrows breakpoint
+icons and resets short-key mode."
+  (interactive "bbuffer: ")
+  (if (stringp buf) (setq buf (get-buffer buf)))
+  (let ((cmdbuf (realgud-get-cmdbuf buf)))
+    (if cmdbuf
+	(with-current-buffer cmdbuf
+	  (realgud-cmdbuf-info-in-debugger?= nil)
+	  (realgud-cmdbuf-mode-line-update)
+	  (realgud-fringe-erase-history-arrows)
+	  (if realgud-cmdbuf-info
+	      (dolist (srcbuf (realgud-cmdbuf-info-srcbuf-list realgud-cmdbuf-info))
+		(if (realgud-srcbuf? srcbuf)
+		    (with-current-buffer srcbuf
+		      (realgud-terminate-srcbuf srcbuf)
+		      ))
+		)
+	    )
+	  )
+      (error "Buffer %s does not seem to be attached to a debugger"
+	     (buffer-name))
+      )
+    )
+  )
+
+(defun realgud-term-sentinel (process string)
+  "Called when PROCESS dies. We call `realgud-quit' to clean up."
+  (let ((cmdbuf (realgud-get-cmdbuf)))
+    (if cmdbuf (realgud-terminate cmdbuf)))
+  (message "That's all folks.... %s" string))
+
+(defun realgud-exec-shell (debugger-name script-filename program
+				      &optional no-reset &rest args)
+  "Run the specified SCRIPT-FILENAME in under debugger DEBUGGER-NAME a
+comint process buffer. ARGS are the arguments passed to the
+PROGRAM.  At the moment, no piping of input is allowed.
+
+SCRIPT-FILENAME will have local variable `realgud-script-info' set
+which contains the debugger name and debugger process-command
+buffer.
+
+Normally command buffers are reused when the same debugger is
+reinvoked inside a command buffer with a similar command. If we
+discover that the buffer has prior command-buffer information and
+NO-RESET is nil, then that information which may point into other
+buffers and source buffers which may contain marks and fringe or
+marginal icons is reset."
+
+  (let* ((starting-directory
+	  (or (file-name-directory script-filename)
+	      default-directory "./"))
+	 (cmdproc-buffer
+	  (get-buffer-create
+	   (format "*%s %s shell*"
+		   (file-name-nondirectory debugger-name)
+		   (file-name-nondirectory script-filename))))
+	 (realgud-buf (current-buffer))
+	 (process (get-buffer-process cmdproc-buffer)))
+    (unless (and process (eq 'run (process-status process)))
+      (with-current-buffer cmdproc-buffer
+	(and (realgud-cmdbuf?) (not no-reset) (realgud-reset))
+	(setq default-directory default-directory)
+	(insert "Current directory is " default-directory "\n")
+
+	;; For term.el
+	;; (term-mode)
+	;; (set (make-local-variable 'term-term-name) realgud-term-name)
+	;; (make-local-variable 'realgud-parent-buffer)
+	;; (setq realgud-parent-buffer realgud-buf)
+
+	;; For comint.el.
+	(comint-mode)
+
+	;; Making overlay-arrow-variable-list buffer local has to be
+	;; done after running commint mode. FIXME: find out why and if
+	;; this reason is justifyable. Also consider moving this somewhere
+	;; else.
+	(make-local-variable 'overlay-arrow-variable-list)
+	(make-local-variable 'realgud-overlay-arrow1)
+	(make-local-variable 'realgud-overlay-arrow2)
+	(make-local-variable 'realgud-overlay-arrow3)
+
+	(condition-case nil
+	    (comint-exec cmdproc-buffer debugger-name program nil args)
+	  (error cmdproc-buffer))
+
+	(setq process (get-buffer-process cmdproc-buffer))
+
+	(if (and process (eq 'run (process-status process)))
+	    (let ((src-buffer (find-file-noselect script-filename))
+		  (cmdline-list (cons program args)))
+	      ;; is this right?
+	      (point-max)
+	      (realgud-srcbuf-init src-buffer cmdproc-buffer
+				debugger-name cmdline-list))
+	  (insert (format "Failed to invoke shell command: %s %s" program args)))
+	(process-put process 'buffer cmdproc-buffer)))
+    cmdproc-buffer))
+
+;; Start of a term-output-filter for term.el
+(defun realgud-term-output-filter (process string)
+  (let ((process-buffer (process-get process 'buffer)))
+    (if process-buffer
+	(save-current-buffer
+	  (set-buffer process-buffer)
+	  ;; (insert-before-markers (format "+++1 %s" string))
+	  (insert-before-markers string)))))
+
+(provide-me "realgud-")

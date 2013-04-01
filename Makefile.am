@@ -1,19 +1,19 @@
-# Note: This makefile include remake-style target comments. 
+# Note: This makefile include remake-style target comments.
 # These comments before the targets start with #:
 # remake --tasks to shows the targets and the comments
 
-SUBDIRS = dbgr test
+SUBDIRS = realgud test
 
 GIT2CL ?= git2cl
 RUBY   ?= ruby
 
 lispdir = @lispdir@
-lisp_files := $(wildcard dbgr.el)
+lisp_files := $(wildcard realgud.el)
 lisp_LISP = $(lisp_files)
 
 include common.mk
 
-EXTRA_DIST=common.mk README.textile dbgr.el
+EXTRA_DIST=common.mk README.textile realgud.el
 
 if MAINTAINER_MODE
 
@@ -35,5 +35,3 @@ check-short:
 #: Run "make install"
 install-short:
 	$(MAKE) install 2>&1  | $(RUBY) make-check-filter.rb
-
-

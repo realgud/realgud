@@ -1,38 +1,38 @@
 (require 'test-simple)
-(load-file "../dbgr/common/buffer/command.el")
-(load-file "../dbgr/debugger/trepan/init.el")
+(load-file "../realgud/common/buffer/command.el")
+(load-file "../realgud/debugger/trepan/init.el")
 (test-simple-start)
 
-(assert-nil (dbgr-cmdbuf? (current-buffer))
-	    "dbgr-cmdbuf? before init")
+(assert-nil (realgud-cmdbuf? (current-buffer))
+	    "realgud-cmdbuf? before init")
 
-(assert-equal nil (dbgr-cmdbuf-command-string (current-buffer))
-	      "dbgr-cmdbuf-command-string - uninit")
+(assert-equal nil (realgud-cmdbuf-command-string (current-buffer))
+	      "realgud-cmdbuf-command-string - uninit")
 (setq temp-cmdbuf (generate-new-buffer "*cmdbuf-test*"))
-(assert-t (dbgr-cmdbuf-init temp-cmdbuf "trepan" 
-			    (gethash "trepan" dbgr-pat-hash))
-	  "dbgr-cmdbuf-init")
+(assert-t (realgud-cmdbuf-init temp-cmdbuf "trepan"
+			    (gethash "trepan" realgud-pat-hash))
+	  "realgud-cmdbuf-init")
 
 (with-current-buffer temp-cmdbuf
   (switch-to-buffer temp-cmdbuf)
-  (dbgr-cmdbuf-info-cmd-args= '("command" "args"))
-  (assert-equal "command args" 
-		(dbgr-cmdbuf-command-string temp-cmdbuf))
-  (assert-equal "trepan" 
-		(dbgr-cmdbuf-debugger-name))
-  (assert-equal nil 
-		(dbgr-cmdbuf-info-srcbuf-list 
-		 dbgr-cmdbuf-info)
+  (realgud-cmdbuf-info-cmd-args= '("command" "args"))
+  (assert-equal "command args"
+		(realgud-cmdbuf-command-string temp-cmdbuf))
+  (assert-equal "trepan"
+		(realgud-cmdbuf-debugger-name))
+  (assert-equal nil
+		(realgud-cmdbuf-info-srcbuf-list
+		 realgud-cmdbuf-info)
 		"srcbuf-list should start out nil")
-  (dbgr-cmdbuf-add-srcbuf (current-buffer) temp-cmdbuf)
+  (realgud-cmdbuf-add-srcbuf (current-buffer) temp-cmdbuf)
   (assert-equal (list (current-buffer))
-		(dbgr-cmdbuf-info-srcbuf-list
-		 dbgr-cmdbuf-info)
+		(realgud-cmdbuf-info-srcbuf-list
+		 realgud-cmdbuf-info)
 		"should have added one item to srcbuf-list")
-  (dbgr-cmdbuf-add-srcbuf (current-buffer) temp-cmdbuf)
+  (realgud-cmdbuf-add-srcbuf (current-buffer) temp-cmdbuf)
   (assert-equal (list (current-buffer))
-		(dbgr-cmdbuf-info-srcbuf-list
-		 dbgr-cmdbuf-info)
+		(realgud-cmdbuf-info-srcbuf-list
+		 realgud-cmdbuf-info)
 		"Second source buffer same as first; should have added still only one item.")
   (switch-to-buffer nil)
   )
