@@ -1,43 +1,43 @@
 (require 'test-simple)
-(setq trepan-core "../dbgr/debugger/trepan/core.el")
-(load-file "../dbgr/common/core.el")
+(setq trepan-core "../realgud/debugger/trepan/core.el")
+(load-file "../realgud/common/core.el")
 
 ;; We use a specific langues to test core. Here we use trepan.
-(load-file "../dbgr/debugger/trepan/core.el")
+(load-file "../realgud/debugger/trepan/core.el")
 
 (test-simple-start)
 
 (lexical-let ((opt-two-args '("0" "C" "e" "E" "F" "i")))
   (assert-equal '(("-0" "a") nil)
-		(dbgr-parse-command-arg '("-0" "a") '() opt-two-args)
+		(realgud-parse-command-arg '("-0" "a") '() opt-two-args)
 		  "Two args found, none remain afterwards though.")
-  
+
   (assert-equal
    '(("-5") ("a" "-0"))
-   (dbgr-parse-command-arg '("-5" "a" "-0") '() 
+   (realgud-parse-command-arg '("-5" "a" "-0") '()
 				    opt-two-args)
    "One arg not found.")
 
-  (assert-equal 
+  (assert-equal
    '((nil) nil)
-   (dbgr-parse-command-arg '() '() opt-two-args)
+   (realgud-parse-command-arg '() '() opt-two-args)
    "Degenerate case - no args"
    )
-  
-  (assert-equal 
+
+  (assert-equal
    '(("--port" "123") ("bar"))
-   (dbgr-parse-command-arg 
+   (realgud-parse-command-arg
     '("--port" "123" "bar") '("-port") '())
    "two mandatory args"
    )
-  
-  (assert-equal 
+
+  (assert-equal
    '(("/usr/bin/ruby1.9" "-W") ("trepan") ("foo") nil)
    (trepan-parse-cmd-args
     '("/usr/bin/ruby1.9" "-W" "trepan" "foo"))
      "Separate Ruby with its arg from debugger and its arg.")
-  
-  (assert-equal 
+
+  (assert-equal
    '(("ruby1.9" "-T3") ("trepan" "--port" "123") ("bar") nil)
    (trepan-parse-cmd-args
     '("ruby1.9" "-T3" "trepan" "--port" "123" "bar"))
@@ -56,13 +56,13 @@
    (trepan-parse-cmd-args
     '("trepan" "--port" "123" "foo" "--emacs" "a"))
    "trepan with --emacs in the wrong place")
-  
-  (assert-equal 
-   '(("ruby" "-I/usr/lib/ruby") 
-     ("trepan" "-h" "foo" "--emacs") 
+
+  (assert-equal
+   '(("ruby" "-I/usr/lib/ruby")
+     ("trepan" "-h" "foo" "--emacs")
      ("baz") t)
    (trepan-parse-cmd-args
-    '("ruby" "-I/usr/lib/ruby" "trepan" "-h" "foo" 
+    '("ruby" "-I/usr/lib/ruby" "trepan" "-h" "foo"
       "--emacs" "baz"))
      "trepan with emacs")
   )

@@ -2,20 +2,20 @@
 (require 'test-simple)
 (require 'font-lock)
 
-(load-file "../dbgr/common/buffer/command.el")
-(load-file "../dbgr/common/buffer/backtrace.el")
+(load-file "../realgud/common/buffer/command.el")
+(load-file "../realgud/common/buffer/backtrace.el")
 
 (test-simple-start)
 
-(note "dbgr-buffer-backtrace")
+(note "realgud-buffer-backtrace")
 
-(assert-equal "abc" (dbgr-get-buffer-base-name "*abc*")
+(assert-equal "abc" (realgud-get-buffer-base-name "*abc*")
 	      "remove buffer stars")
 
-(assert-equal "abc" (dbgr-get-buffer-base-name "abc")
+(assert-equal "abc" (realgud-get-buffer-base-name "abc")
 	      "no buffer stars")
 
-(assert-equal "abc" (dbgr-get-buffer-base-name "*abc shell*")
+(assert-equal "abc" (realgud-get-buffer-base-name "*abc shell*")
 	      "remove buffer stars and shell")
 
 (end-tests)

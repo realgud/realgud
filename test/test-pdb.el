@@ -1,5 +1,5 @@
 (require 'test-simple)
-(load-file "../dbgr/debugger/pdb/pdb.el")
+(load-file "../realgud/debugger/pdb/pdb.el")
 
 (test-simple-start)
 
@@ -7,7 +7,6 @@
 (assert-equal '(nil ("pdb") ("foo") nil)
 	      (pdb-parse-cmd-args '("pdb" "foo")))
 (assert-equal '(nil ("pdb") ("program.py" "foo") nil)
-	      (pdb-parse-cmd-args 
+	      (pdb-parse-cmd-args
 	       '("pdb" "program.py" "foo")))
 (end-tests)
-

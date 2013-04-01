@@ -1,5 +1,5 @@
 (load-file "./bt-helper.el")
-(load-file "../dbgr/debugger/zshdb/init.el")
+(load-file "../realgud/debugger/zshdb/init.el")
 
 (test-simple-start)
 
@@ -11,11 +11,11 @@
 (with-current-buffer temp-bt
   (switch-to-buffer temp-bt)
   (goto-char (point-min))
-  (dolist (pair 
+  (dolist (pair
 	   '(
-	     ("->" .    dbgr-backtrace-number )
-	     ("/test" . dbgr-file-name)
-	     ("line " . dbgr-line-number)
+	     ("->" .    realgud-backtrace-number )
+	     ("/test" . realgud-file-name)
+	     ("line " . realgud-line-number)
 	     ))
     (search-forward (car pair))
     (assert-equal (cdr pair)
@@ -24,4 +24,3 @@
   )
 
 (end-tests)
-

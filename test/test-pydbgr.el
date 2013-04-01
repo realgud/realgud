@@ -1,5 +1,5 @@
 (require 'test-simple)
-(load-file "../dbgr/debugger/pydbgr/pydbgr.el")
+(load-file "../realgud/debugger/pydbgr/pydbgr.el")
 
 (test-simple-start)
 
@@ -18,16 +18,15 @@
 (assert-equal '(("python") ("pydbgr" "--annotate") ("1" "foo") t)
 	      (pydbgr-parse-cmd-args
 	       '("python" "pydbgr" "--annotate" "1" "foo")))
-(assert-equal '(("/usr/bin/python") ("pydbgr" "--different") 
+(assert-equal '(("/usr/bin/python") ("pydbgr" "--different")
 		("foo") nil)
 	      (pydbgr-parse-cmd-args
-	       '("/usr/bin/python" "pydbgr" 
+	       '("/usr/bin/python" "pydbgr"
 		 "--different" "foo")))
 (assert-equal '(nil ("program.py") ("foo") nil)
 	      (pydbgr-parse-cmd-args '("program.py" "foo")))
 (assert-equal '(nil ("pydbgr") ("program.py" "foo") nil)
-	      (pydbgr-parse-cmd-args 
+	      (pydbgr-parse-cmd-args
 	       '("pydbgr" "program.py" "foo")))
 
 (end-tests)
-

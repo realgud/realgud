@@ -1,5 +1,5 @@
-AC_INIT(emacs-dbgr, 0.02vc,)
-AC_CONFIG_SRCDIR(dbgr.el)
+AC_INIT(emacs-realgud, 0.1.0,)
+AC_CONFIG_SRCDIR(realgud.el)
 AM_INIT_AUTOMAKE([foreign])
 AM_MAINTAINER_MODE
 
@@ -22,33 +22,33 @@ fi
 ## Find out where to install the debugger emacs lisp files
 ##
 AM_PATH_LISPDIR
-lispdir_dbgr=$lispdir/dbgr
+lispdir_realgud=$lispdir/realgud
 AC_SUBST([lispdir])
-AC_SUBST([lispdir_dbgr])
+AC_SUBST([lispdir_realgud])
 
-AM_CONDITIONAL(INSTALL_EMACS_LISP, test "x$lispdir_dbgr" != "x")
+AM_CONDITIONAL(INSTALL_EMACS_LISP, test "x$lispdir_realgud" != "x")
 
 AC_CONFIG_FILES([Makefile \
-		 dbgr/Makefile \
-		 dbgr/common/Makefile \
-		 dbgr/common/buffer/Makefile \
-		 dbgr/debugger/Makefile \
-		 dbgr/debugger/bashdb/Makefile \
-		 dbgr/debugger/gdb/Makefile \
-		 dbgr/debugger/kshdb/Makefile \
-		 dbgr/debugger/perldb/Makefile \
-		 dbgr/debugger/pdb/Makefile \
-		 dbgr/debugger/pydb/Makefile \
-		 dbgr/debugger/pydbgr/Makefile \
-		 dbgr/debugger/rdebug/Makefile \
-		 dbgr/debugger/remake/Makefile \
-		 dbgr/debugger/trepan/Makefile \
-		 dbgr/debugger/trepan3k/Makefile \
-		 dbgr/debugger/trepan.pl/Makefile \
-		 dbgr/debugger/trepanx/Makefile \
-		 dbgr/debugger/trepan8/Makefile \
-		 dbgr/debugger/zshdb/Makefile \
-		 dbgr/lang/Makefile \
+		 realgud/Makefile \
+		 realgud/common/Makefile \
+		 realgud/common/buffer/Makefile \
+		 realgud/debugger/Makefile \
+		 realgud/debugger/bashdb/Makefile \
+		 realgud/debugger/gdb/Makefile \
+		 realgud/debugger/kshdb/Makefile \
+		 realgud/debugger/perldb/Makefile \
+		 realgud/debugger/pdb/Makefile \
+		 realgud/debugger/pydb/Makefile \
+		 realgud/debugger/pydbgr/Makefile \
+		 realgud/debugger/rdebug/Makefile \
+		 realgud/debugger/remake/Makefile \
+		 realgud/debugger/trepan/Makefile \
+		 realgud/debugger/trepan3k/Makefile \
+		 realgud/debugger/trepan.pl/Makefile \
+		 realgud/debugger/trepanx/Makefile \
+		 realgud/debugger/trepan8/Makefile \
+		 realgud/debugger/zshdb/Makefile \
+		 realgud/lang/Makefile \
 		 test/Makefile \
 		 ])
 AC_OUTPUT
