@@ -1,0 +1,5 @@
+Lars Andersen (expez) - Getting this packaged and put on to Melpa. Also the new name, realgud, is basically his idea.
+
+Anders Lindgren - The inspiration behind in an earlier incarnation of this code, ruby-debug. Ideas like short-key-mode are his.
+
+Nick Roberts - We used some of the code for the fringe icons from gdb-mi.

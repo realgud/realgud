@@ -13,7 +13,7 @@ lisp_LISP = $(lisp_files)
 
 include common.mk
 
-EXTRA_DIST=common.mk README.textile realgud.el
+EXTRA_DIST=common.mk README.md THANKS realgud.el
 
 if MAINTAINER_MODE
 
