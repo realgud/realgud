@@ -1,6 +1,6 @@
 A modular GNU Emacs front-end for interacting with external debuggers.
 
-See [https://github.com/rocky/emacs-dbgr/wiki/Debuggers-Supported] for a list of debuggers supported.
+See https://github.com/rocky/emacs-dbgr/wiki/Debuggers-Supported for a list of debuggers supported.
 
 The debugger is run out of a *comint* process buffer, or you can use a
 `M-x track-mode` inside an existing shell.
