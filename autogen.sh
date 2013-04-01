@@ -1,5 +1,5 @@
 #!/bin/sh
-ln -fs README.textile README
+ln -fs README.md README
 autoreconf -vi && \
 autoconf && {
   echo "Running configure with --enable-maintainer-mode $@"
