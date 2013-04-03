@@ -13,7 +13,7 @@
   (byte-compile-disable-warning 'unresolved)
   (defvar realgud-cmdbuf-info)
   )
-(require 'cl)
+(require 'cl-lib)
 
 (defface debugger-running
   '((((class color) (min-colors 16) (background light))

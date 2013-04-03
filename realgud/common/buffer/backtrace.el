@@ -1,15 +1,17 @@
 ;;; Backtrace buffer
-;;; Copyright (C) 2010, 2011, 2012 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2013 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
+(eval-when-compile (require 'cl-lib))
 (require-relative-list
- '("../key") "realgud-")
+ '("../key" "helper") "realgud-")
 
 (require-relative-list
  '("command") "realgud-buffer-")
 
 (declare-function realgud-backtrace-mode (cmdbuf))
-(declare-function realgud-cmd-backtrace arg)
-
+(declare-function realgud-cmd-backtrace (arg))
+(declare-function realgud-cmdbuf-pat(key))
+(declare-function realgud-cmdbuf-info-in-srcbuf?= (arg))
 
 (defstruct realgud-backtrace-info
   "debugger object/structure specific to a (top-level) program to be debugged."

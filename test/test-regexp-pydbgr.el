@@ -3,7 +3,7 @@
 
 (test-simple-start)
 
-(setup-regexp-vars realgud-pyrealgud-pat-hash)
+(setup-regexp-vars realgud-pydbgr-pat-hash)
 
 ;; FIXME: we get a void variable somewhere in here when running
 ;;        even though we define it in lexical-let. Dunno why.

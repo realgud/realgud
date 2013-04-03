@@ -1,7 +1,7 @@
-;;; Copyright (C) 2010, 2012 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2012-2013 Rocky Bernstein <rocky@gnu.org>
 ;;; source-code buffer code
 (eval-when-compile
-  (require 'cl)
+  (require 'cl-lib)
   (defvar realgud-srcbuf-info) ;; is buffer local
   (defvar realgud-cmdbuf-info) ;; in the cmdbuf, this is buffer local
   )

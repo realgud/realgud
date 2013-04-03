@@ -45,16 +45,16 @@
 ;;   trepan         trepan3k      trepanning debugger for Python 3.x
 ;;   zshdb          zshdb         Zsh
 
-;; **gdb invication requires the realgud- preface to disambiguate it
+;; **gdb invocation requires the realgud- preface to disambiguate it
 ;; from the older, preexisting emacs command. The other invocations
 ;; also accept realgud- prefaces, e.g. realgud-bashdb or realgud-pdb.
 ;; Alas there is older obsolete Emacs code out there for bashdb,
 ;; kshdb, and rdebug.
 
 ;; The debugger is run out of a comint process buffer, or you can use
-;; a “track-mode” inside an existing shell.
+;; a `track-mode' inside an existing shell.
 
-;; To install you’ll need a couple of other Emacs packages
+;; To install you will need a couple of other Emacs packages
 ;; installed. Should be available via Melpa. See the installation
 ;; instructions for details.
 
