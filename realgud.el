@@ -23,9 +23,24 @@
 
 ;;; Commentary:
 
-;; A modular font-end for interacting with external debuggers.
+;; Once upon a time in an Emacs far far away and a programming-style
+;; long gone, there was a monolithic Cathederal-like debugger
+;; front-end. This interfaced with a number of debuggers, some of them
+;; now dead. Is there anyone still alive that remembers sdb from
+;; UNIX/32V?  http://en.wikipedia.org/wiki/UNIX/32V
 ;;
-;; Debuggers we currently support are:
+;; This isn't that. Here we make use of more modern programming
+;; practices, more numerous and smaller files, unit tests, and better
+;; use of emacs primitives (e.g. buffer marks, buffer-local variables
+;; structures, rings, hash tables). Although there is still much to be
+;; desired, this code is more scalable and suitable as a common base as and
+;; Emacs front-end to modern debuggers.
+;;
+;; Oh, and because global variables are largely banned, we can support
+;; several simultaneous debug sessions.
+;;
+;;
+;; The debuggers we currently support are:
 
 ;;   NAME           INVOCATION**  WHAT
 ;    -----------------------------------
@@ -51,12 +66,18 @@
 ;; Alas there is older obsolete Emacs code out there for bashdb,
 ;; kshdb, and rdebug.
 
+;; If you don't see your favorite debugger above, see
+;; https://github.com/rocky/emacs-dbgr/wiki/How-to-add-a-new-a-debugger
+;; for how you can add your own.
+
 ;; The debugger is run out of a comint process buffer, or you can use
 ;; a `track-mode' inside an existing shell.
 
 ;; To install you will need a couple of other Emacs packages
-;; installed. Should be available via Melpa. See the installation
-;; instructions for details.
+;; installed. If you install via Melpa these will be pulled in
+;; automatically. See the installation instructions
+;; https://github.com/rocky/emacs-dbgr/wiki/How-to-Install for how to
+;; install.
 
 ;;; Code:
 
