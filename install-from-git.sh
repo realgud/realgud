@@ -3,12 +3,12 @@
 # this:
 #   sh ./install-from-git.sh
 #
-# However we do provide some customization: 
+# However we do provide some customization:
 #
 # 1. GIT PROTOCOL
 # ===============
 # If your "git clone" can't handled the "http" protocol, might be able
-# to use "git". To do this set the GIT_PROTOCOL variable like this: 
+# to use "git". To do this set the GIT_PROTOCOL variable like this:
 #
 #     GIT_PROTOCOL=git sh ./install-from-git.sh
 #
@@ -18,9 +18,9 @@
 # to this script. For example
 #
 #     sh ./install-from-git.sh --prefix=/tmp
-# 
 #
-# 3. TO "sudo" or not to "sudo"? 
+#
+# 3. TO "sudo" or not to "sudo"?
 # ==============================
 # If you are running as root on a *Nix-like box, then there's no problem.
 #
@@ -36,7 +36,7 @@
 # here, set SUDO_CMD to a blank:
 #
 #      SUDO_CMD=' ' sh ./install-from-git.sh
-# 
+#
 #
 # To finish here is an invocation using all 3 above options:
 #   GIT_PROTOCOL='git' SUDO_CMD=' ' sh ./install-from-git.sh --prefix=/tmp
@@ -52,10 +52,10 @@ run_cmd() {
     return $rc
 }
 
-# environment variable SUDO_CMD could be "sudo" or "su root -c" or " " 
+# environment variable SUDO_CMD could be "sudo" or "su root -c" or " "
 # for don't need sudo
 
-if (( $(id -u) != 0)) ; then 
+if (( $(id -u) != 0)) ; then
     if [[ -z "$SUDO_CMD" ]] ; then
 	need_sudo='sudo'
 	if which $need_sudo >/dev/null 2>&1 ; then
@@ -78,7 +78,7 @@ for program in git make $try_cmd ; do
     fi
 done
 
-for pkg in emacs-{test-simple,load-relative,loc-changes,dbgr} ; do 
+for pkg in emacs-{test-simple,load-relative,loc-changes,dbgr} ; do
     echo '******************************************'
     echo Trying to install ${pkg}...
     echo '******************************************'
