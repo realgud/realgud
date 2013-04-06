@@ -51,13 +51,14 @@
 ;;   pdb            pdb           stock C Python debugger
 ;;   perldb         perldb        stock Perl5 debugger
 ;;   pydb           pydb          slighly enhanced pdb for Python 2.x
-;;   pydbgr         pydbgr        trepanning debugger for Python 2.x
+;;   pydbgr         pydbgr        obsolete trepanning debugger for Python 2.x
 ;;   rb8-trepanning trepan8       MRI Ruby 1.8 and an unpatched YARV 1.9
 ;;   rbx-trepanning trepanx       trepanning debugger for Rubinius Ruby
 ;;   remake         remake        GNU Make
 ;;   ruby-debug     rdebug        Ruby
 ;;   trepanning     trepan        trepanning debugger for a patched Ruby 1.9
-;;   trepan         trepan3k      trepanning debugger for Python 3.x
+;;   trepan2        trepan2       trepanning debugger for Python 2.x
+;;   trepan3k       trepan3k      trepanning debugger for Python 3.x
 ;;   zshdb          zshdb         Zsh
 
 ;; **gdb invocation requires the realgud- preface to disambiguate it
@@ -104,6 +105,7 @@
      "./realgud/debugger/rdebug/rdebug"
      "./realgud/debugger/remake/remake"
      "./realgud/debugger/trepan/trepan"
+     "./realgud/debugger/trepan2/trepan2"
      "./realgud/debugger/trepan3k/trepan3k"
      "./realgud/debugger/trepan.pl/trepanpl"
      "./realgud/debugger/trepanx/trepanx"

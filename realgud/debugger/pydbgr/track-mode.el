@@ -1,6 +1,6 @@
-;;; Copyright (C) 2010, 2012 Rocky Bernstein <rocky@gnu.org>
-;;; Python "pydbgr" Debugger tracking a comint
-;;; or eshell buffer.
+;; Copyright (C) 2010, 2012 Rocky Bernstein <rocky@gnu.org> 
+;;
+;; Python "pydbgr" Debugger tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))
 (require 'load-relative)

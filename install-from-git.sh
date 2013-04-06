@@ -1,24 +1,29 @@
 #!/bin/bash
-# This installs all prequisites. If you are lucky you can just run
-# this:
-#   sh ./install-from-git.sh
+
+# This installs all realgud and its prerequisites. If you are lucky
+# you can just run this:
 #
-# However we do provide some customization:
+#   bash ./install-from-git.sh
+#
+# However we do provide for some customization...
 #
 # 1. GIT PROTOCOL
 # ===============
-# If your "git clone" can't handled the "http" protocol, might be able
-# to use "git". To do this set the GIT_PROTOCOL variable like this:
+#
+# If your "git clone" can't handle the "http" protocol, you might be
+# able to use the "git" protocol. To do this set the GIT_PROTOCOL
+# variable like this:
 #
 #     GIT_PROTOCOL=git sh ./install-from-git.sh
 #
 # 2. configure options (e.g --prefix)
 # ====================================
-# If you want to choose where to install, you can pass configure options
-# to this script. For example
+
+# If you want to customize configuration parameters, for example,
+# choose where to install, you can pass configure options to this
+# script. For example:# can pass configure options.
 #
 #     sh ./install-from-git.sh --prefix=/tmp
-#
 #
 # 3. TO "sudo" or not to "sudo"?
 # ==============================
@@ -71,6 +76,7 @@ else
     need_sudo=''
     try_cmd=''
 fi
+
 for program in git make $try_cmd ; do
     if ! which $program >/dev/null 2>&1 ; then
 	echo "Cant find program $program in $PATH"
