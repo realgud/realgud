@@ -22,7 +22,7 @@
 (defcustom realgud-short-key-on-tracing? nil
 "If non-nil, set short-key mode for any source buffer that is traced into"
   :type 'symbolp
-  :group 'dbgr)
+  :group 'realgud)
 
 (make-variable-buffer-local  (defvar realgud-track-mode))
 (fn-p-to-fn?-alias 'realgud-loc-p)

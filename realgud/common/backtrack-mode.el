@@ -53,7 +53,7 @@ debugger with that information"
   "Minor mode for backtracking parsing."
   :init-value nil
   :global nil
-  :group 'dbgr
+  :group 'realgud
 
   :lighter
   (:eval (progn

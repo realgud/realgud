@@ -27,7 +27,7 @@ This variable can be bound to the following:
 * Any other value is expected to be a callable function that takes one
   argument, the keymap, and populates it with suitable keys."
   :type 'function
-  :group 'dbgr)
+  :group 'realgud)
 
 ;; -------------------------------------------------------------------
 ;; Key bindings

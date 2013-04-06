@@ -4,7 +4,7 @@
 (defface realgud-line-number
   '((t :inherit font-lock-variable-name-face))
   "Face for displaying line numbers in."
-  :group 'dbgr
+  :group 'realgud
   :version "23.1")
 
 (defvar realgud-line-number-face 'realgud-line-number
@@ -13,7 +13,7 @@
 (defface realgud-file-name
   '((t :inherit font-lock-preprocessor-face))
   "Face for displaying file names."
-  :group 'dbgr
+  :group 'realgud
   :version "23.1")
 
 (defface realgud-backtrace-number
@@ -21,7 +21,7 @@
      :foreground "black"
      :weight bold))
   "Fringe face for current position."
-  :group 'dbgr)
+  :group 'realgud)
 
 (defvar realgud-backtrace-number-face 'realgud-backtrace-number
   "Face name to use for backtrace numbers.")

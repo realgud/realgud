@@ -1,3 +1,4 @@
+dnl FIXME: pick up from realgud.el
 AC_INIT(emacs-realgud, 0.1.0,)
 AC_CONFIG_SRCDIR(realgud.el)
 AM_INIT_AUTOMAKE([foreign])
@@ -18,6 +19,20 @@ if test $? -ne 0 ; then
     AC_MSG_ERROR([Can't continue until above error is corrected.])
 fi
 
+##################################################################
+# See if --with-lispdir was set. If not, set it to a reasonable default
+# based on where bash thinks bashdb is supposed to be installed.
+##################################################################
+
+AM_MISSING_PROG(GIT2CL, git2cl, $missing_dir)
+
+# Check whether --with-lispdir was given.
+if test "${with_lispdir+set}" = set; then :
+else
+   mydir=$(dirname $0)
+   with_lispdir=$(EMACS_PROG=$EMACS $SH_PROG $mydir/compute-lispdir.sh)
+fi
+
 ##
 ## Find out where to install the debugger emacs lisp files
 ##
@@ -25,8 +40,6 @@ AM_PATH_LISPDIR
 lispdir_realgud=$lispdir/realgud
 AC_SUBST([lispdir])
 AC_SUBST([lispdir_realgud])
-
-AM_CONDITIONAL(INSTALL_EMACS_LISP, test "x$lispdir_realgud" != "x")
 
 AC_CONFIG_FILES([Makefile \
 		 realgud/Makefile \
@@ -53,3 +66,5 @@ AC_CONFIG_FILES([Makefile \
 		 test/Makefile \
 		 ])
 AC_OUTPUT
+echo
+echo "Install lisp directory set to $with_lispdir"

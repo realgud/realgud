@@ -25,13 +25,13 @@
     (((class color)) (:foreground "green" :weight bold))
     (t (:weight bold)))
   "Face used to highlight debugger run information."
-  :group 'dbgr
+  :group 'realgud
   :version "23.1")
 
 (defface debugger-not-running
   '((t :inherit font-lock-warning-face))
   "Face used when debugger or process is not running."
-  :group 'dbgr
+  :group 'realgud
   :version "23.1")
 
 

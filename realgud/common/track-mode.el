@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2011, 2012 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2013 Rocky Bernstein <rocky@gnu.org>
 ;;  tracks shell output
 
 (eval-when-compile (require 'cl))
@@ -34,7 +34,7 @@
   "Minor mode for tracking debugging inside a process shell."
   :init-value nil
   :global nil
-  :group 'dbgr
+  :group 'realgud
 
   :lighter
   (:eval (progn

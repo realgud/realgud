@@ -14,7 +14,7 @@
 (defcustom realgud-loc-hist-size 20  ; For testing. Should really be larger.
   "Size of dbgr position history ring"
   :type 'integer
-  :group 'dbgr)
+  :group 'realgud)
 
 (defstruct realgud-loc-hist
   "A list of source-code positions recently encountered"

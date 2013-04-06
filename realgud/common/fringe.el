@@ -13,21 +13,21 @@
      :foreground "black"
      :weight bold))
   "Fringe face for current position."
-  :group 'dbgr)
+  :group 'realgud)
 
 (defface realgud-overlay-arrow2
   '((t
      :foreground "gray"
      :weight bold))
   "Fringe face for position one back in fringe."
-  :group 'dbgr)
+  :group 'realgud)
 
 (defface realgud-overlay-arrow3
   '((t
      :foreground "gainsboro"
      :weight bold))
   "Fringe face for position two back in fringe."
-  :group 'dbgr)
+  :group 'realgud)
 
 
 (defvar realgud-overlay-arrow1 nil

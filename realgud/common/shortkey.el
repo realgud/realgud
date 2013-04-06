@@ -41,7 +41,7 @@
 The buffer is read-only when the minor mode is active.
 
 \\{realgud-short-key-mode-map}"
-  :group 'dbgr
+  :group 'realgud
   :global nil
   :init-value nil
   :lighter " ShortKeys"
