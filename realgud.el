@@ -31,7 +31,7 @@
 ;;
 ;; This isn't that. Here we make use of more modern programming
 ;; practices, more numerous and smaller files, unit tests, and better
-;; use of emacs primitives (e.g. buffer marks, buffer-local variables
+;; use of emacs primitives (e.g. buffer marks, buffer-local variables,
 ;; structures, rings, hash tables). Although there is still much to be
 ;; desired, this code is more scalable and suitable as a common base as and
 ;; Emacs front-end to modern debuggers.

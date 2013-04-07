@@ -13,6 +13,8 @@ lisp_LISP = $(lisp_files)
 
 include common.mk
 
+PHONY=check clean dist distclean test 
+
 EXTRA_DIST=common.mk README.md THANKS realgud.el
 
 if MAINTAINER_MODE
