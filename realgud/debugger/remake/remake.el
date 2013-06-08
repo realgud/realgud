@@ -1,4 +1,4 @@
-;;; Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011, 2013 Rocky Bernstein <rocky@gnu.org>
 ;;  `remake' Main interface to remake via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
@@ -25,25 +25,9 @@ This should be an executable on your path, or an absolute file name."
   :type 'string
   :group 'remake)
 
-;; -------------------------------------------------------------------
-;; The end.
-;;
+(defun realgud-remake-fn (&optional opt-command-line no-reset)
+  "See `realgud-remake' for details"
 
-;;;###autoload
-(defun realgud-remake (&optional opt-command-line no-reset)
-  "Invoke the GNU Make debugger, remake and start the Emacs user interface.
-
-String COMMAND-LINE specifies how to run remake.
-
-Normally command buffers are reused when the same debugger is
-reinvoked inside a command buffer with a similar command. If we
-discover that the buffer has prior command-buffer information and
-NO-RESET is nil, then that information which may point into other
-buffers and source buffers which may contain marks and fringe or
-marginal icons is reset."
-
-
-  (interactive)
   (let* ((cmd-str (or opt-command-line (remake-query-cmdline "remake")))
 	 (cmd-args (split-string-and-unquote cmd-str))
 	 (parsed-args (remake-parse-cmd-args cmd-args))
@@ -75,6 +59,24 @@ marginal icons is reset."
     ;; 	(message "Error running remake command"))
     ;;   )
     )
+  )
+
+;;;###autoload
+(defun realgud-remake (&optional opt-command-line no-reset)
+  "Invoke the GNU Make debugger, remake and start the Emacs user interface.
+
+String COMMAND-LINE specifies how to run remake.
+
+Normally command buffers are reused when the same debugger is
+reinvoked inside a command buffer with a similar command. If we
+discover that the buffer has prior command-buffer information and
+NO-RESET is nil, then that information which may point into other
+buffers and source buffers which may contain marks and fringe or
+marginal icons is reset."
+
+
+  (interactive)
+  (realgud-remake-fn opt-command-line no-reset)
   )
 
 (defalias 'remake 'realgud-remake)

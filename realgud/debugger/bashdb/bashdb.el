@@ -1,4 +1,4 @@
-;;; Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011, 2013 Rocky Bernstein <rocky@gnu.org>
 ;;  `bashdb' Main interface to bashdb via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
@@ -32,7 +32,7 @@ This should be an executable on your path, or an absolute file name."
 
 ;;;###autoload
 (defun realgud-bashdb (&optional opt-command-line no-reset)
-  "Invoke the bashdb Z-shell debugger and start the Emacs user interface.
+  "Invoke the bashdb shell debugger and start the Emacs user interface.
 
 String COMMAND-LINE specifies how to run bashdb.
 

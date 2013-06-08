@@ -1,8 +1,14 @@
-;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2011, 2013 Rocky Bernstein <rocky@gnu.org>
 ; Should realgud-file-loc-from-line be here or elsewhere?
 (require 'load-relative)
 (require 'compile) ;; for compilation-find-file
 (require-relative-list '("helper" "loc") "realgud-")
+
+(defvar realgud-file-remap (make-hash-table :test 'equal)
+  "How to remap files we otherwise can't find in the
+  filesystem. The hash key is the file string we saw, and the
+  value is associated filesystem string presumably in the
+  filesystem")
 
 (fn-p-to-fn?-alias 'file-exists-p)
 (declare-function file-exists?(file))
@@ -28,16 +34,28 @@ expressions. For example (eval 1) of Perl <string> of Python.
 If we're unable find the source code we return a string describing the
 problem as best as we can determine."
 
-  (unless (file-exists? filename)
+  (unless (file-readable-p filename)
     (if (and ignore-file-re (string-match ignore-file-re filename))
 	(message "tracking ignored for psuedo-file %s" filename)
       ; else
-      (setq filename
-	    (buffer-file-name
-	     (compilation-find-file (point-marker) filename nil)))
-      )
-    )
-  (if (file-exists? filename)
+      (let ((remapped-filename))
+	(if (gethash filename realgud-file-remap)
+	    (progn
+	      (setq remapped-filename (gethash filename realgud-file-remap))
+	      (if (file-exists? remapped-filename)
+		  (setq filename remapped-filename)
+		(remhash filename realgud-file-remap)))
+	  (progn
+	    (setq remapped-filename
+		  (buffer-file-name
+		   (compilation-find-file (point-marker) filename nil)))
+	    (if (and remapped-filename (file-exists? remapped-filename))
+	      (progn
+		(puthash filename remapped-filename realgud-file-remap)
+		(setq filename remapped-filename)))
+	  )))
+      ))
+  (if (file-readable-p filename)
       (if (integerp line-number)
 	  (if (> line-number 0)
 	      (lexical-let ((line-count))
@@ -58,7 +76,7 @@ problem as best as we can determine."
 	    (format "line number %s should be greater than 0" line-number))
 	(format "%s is not an integer" line-number))
     ;; else
-    (format "File named `%s' not found" filename))
+    (format "File named `%s' not readable" filename))
   )
 
 (provide-me "realgud-")

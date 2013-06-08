@@ -1,4 +1,4 @@
-;;; Copyright (C) 2011, 2012 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011-2013 Rocky Bernstein <rocky@gnu.org>
 (declare-function realgud-terminate &optional cmdbuf)
 
 (defconst realgud-track-char-range 10000
@@ -73,6 +73,16 @@ marks set in buffer-local variables to extract text"
 						  eshell-last-output-end cmd-mark)))
 	(realgud-track-loc-action loc cmd-buff 't)))
   )
+
+(defun realgud-track-term-output-filter-hook(text)
+  "An output-filter hook custom for ansi-term shells.  Find
+location/s, if any, and run the action(s) associated with
+finding a new location/s.  The parameter TEXT appears because it
+is part of the comint-output-filter-functions API. Instead we use
+marks set in buffer-local variables to extract text"
+  (if (and realgud-track-mode (realgud-cmdbuf? (current-buffer)))
+      (realgud-track-loc text (point-marker))
+    ))
 
 (defun realgud-track-from-region(from to &optional cmd-mark opt-cmdbuf
 				   shortkey-on-tracing? no-warn-if-no-match?)
