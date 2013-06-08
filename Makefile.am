@@ -8,14 +8,12 @@ GIT2CL ?= git2cl
 RUBY   ?= ruby
 
 lispdir = @lispdir@
-lisp_files := $(wildcard realgud.el)
-lisp_LISP = $(lisp_files)
 
 include common.mk
 
-PHONY=check clean dist distclean test 
+PHONY=check clean dist distclean test
 
-EXTRA_DIST=common.mk README.md THANKS realgud.el
+EXTRA_DIST+=common.mk README.md THANKS
 
 if MAINTAINER_MODE
 

@@ -33,8 +33,8 @@
 ;; practices, more numerous and smaller files, unit tests, and better
 ;; use of emacs primitives (e.g. buffer marks, buffer-local variables,
 ;; structures, rings, hash tables). Although there is still much to be
-;; desired, this code is more scalable and suitable as a common base as and
-;; Emacs front-end to modern debuggers.
+;; desired, this code is more scalable and suitable as a common base for
+;; an Emacs front-end to modern debuggers.
 ;;
 ;; Oh, and because global variables are largely banned, we can support
 ;; several simultaneous debug sessions.

@@ -79,7 +79,7 @@ fi
 
 for program in git make $try_cmd ; do
     if ! which $program >/dev/null 2>&1 ; then
-	echo "Cant find program $program in $PATH"
+	echo "Can't find program $program in $PATH"
 	exit 1
     fi
 done

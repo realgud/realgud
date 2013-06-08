@@ -41,6 +41,8 @@ lispdir_realgud=$lispdir/realgud
 AC_SUBST([lispdir])
 AC_SUBST([lispdir_realgud])
 
+AM_CONDITIONAL(INSTALL_EMACS_LISP, test "x$lispdir_realgud" != "x")
+
 AC_CONFIG_FILES([Makefile \
 		 realgud/Makefile \
 		 realgud/common/Makefile \
