@@ -50,6 +50,7 @@ AC_CONFIG_FILES([Makefile \
 		 realgud/debugger/Makefile \
 		 realgud/debugger/bashdb/Makefile \
 		 realgud/debugger/gdb/Makefile \
+		 realgud/debugger/gub/Makefile \
 		 realgud/debugger/kshdb/Makefile \
 		 realgud/debugger/perldb/Makefile \
 		 realgud/debugger/pdb/Makefile \

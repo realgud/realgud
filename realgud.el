@@ -47,6 +47,7 @@
 ;;   bashdb         bashdb        bash
 ;;   Devel::Trepan  trepan.pl     Perl5
 ;;   gdb            realgud-gdb   gdb
+;;   gub            realgud-gub   Go SSA debugger
 ;;   kshdb          kshdb         Korn Shell 93u+
 ;;   pdb            pdb           stock C Python debugger
 ;;   perldb         perldb        stock Perl5 debugger
@@ -97,6 +98,7 @@
      "./realgud/common/track-mode"
      "./realgud/debugger/bashdb/bashdb"
      "./realgud/debugger/gdb/gdb"
+     "./realgud/debugger/gub/gub"
      "./realgud/debugger/kshdb/kshdb"
      "./realgud/debugger/pdb/pdb"
      "./realgud/debugger/perldb/perldb"
@@ -154,7 +156,7 @@ like 'pydbgr'."
       )
 )
 
-(defun realgud-unload-features()
+(defun realgud-unload-features()	;
   "Remove all features loaded from this package. Used in
 `realgud-reload-features'. See that."
   (interactive "")
