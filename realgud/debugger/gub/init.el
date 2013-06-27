@@ -23,7 +23,8 @@ realgud-loc-pat struct")
 ;; -- (emacs-dbgr/realgud/debugger/Makefile:168)
 (setf (gethash "loc" realgud-gub-pat-hash)
       (make-realgud-loc-pat
-       :regexp "\\(?:^\\|\n\\)\\(\\(?:[a-zA-Z/]:\\)[-a-zA-Z0-9_/.\\\\ ]+\\):\\([0-9]+\\)"
+       :regexp
+       "\\(?:^\\|\n\\)\\(\\(?:[a-zA-Z]:\\)?[-a-zA-Z0-9_/.\\\\ ]*\\.go\\):\\([0-9]+\\)"
        :file-group 1
        :line-group 2))
 
