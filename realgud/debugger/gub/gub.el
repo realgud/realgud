@@ -18,9 +18,8 @@
 ;;
 
 (defcustom gub-command-name
-  ;;"gub --emacs 3"
-  "gub"
-  "File name for executing the GNU make debugger, gub, and command options.
+  "tortoise -run -interp=F"
+  "File name for executing the Go SSA interpreter/debugger, gub, and command options.
 This should be an executable on your path, or an absolute file name."
   :type 'string
   :group 'gub)
@@ -32,11 +31,11 @@ This should be an executable on your path, or an absolute file name."
 	 (cmd-args (split-string-and-unquote cmd-str))
 	 (parsed-args (gub-parse-cmd-args cmd-args))
 	 (gub-program (car parsed-args))
-	 (makefile-name (or (cadr parsed-args) "Makefile"))
-	 (makefile-args (caddr parsed-args))
+	 (script-name (cadr parsed-args))
+	 (script-args (caddr parsed-args))
 	 (cmd-buf))
-    (realgud-run-process "gub" makefile-name
-		      (cons gub-program makefile-args)
+    (realgud-run-process "gub" script-name
+		      (cons gub-program script-args)
 		      'gub-track-mode no-reset)
 
     ;; ;; Parse the command line and pick out the script name and whether

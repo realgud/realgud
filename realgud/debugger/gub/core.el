@@ -162,22 +162,9 @@ given priority, we use the first one we find."
 (defvar gub-command-name) ; # To silence Warning: reference to free variable
 
 (defun gub-suggest-invocation (debugger-name)
-  "Suggest a gub command invocation via `realgud-suggest-invocaton'"
-
-  (let* ((buf (current-buffer))
-	 (cmd-str-cmdbuf (realgud-cmdbuf-command-string buf))
-	 (cmd-str-srcbuf (realgud-srcbuf-command-string buf))
-	 )
-    (cond
-     ((and cmd-str-cmdbuf (equal debugger-name (realgud-cmdbuf-debugger-name buf)))
-      cmd-str-cmdbuf)
-     ((and cmd-str-srcbuf (equal debugger-name (realgud-srcbuf-debugger-name buf)))
-      cmd-str-srcbuf)
-     ((and minibuffer-history (listp minibuffer-history))
-      (car minibuffer-history))
-     (t (concat debugger-name " --debugger -f "
-		(gub-suggest-Makefile)))
-     )))
+  "Suggest a command invocation via `realgud-suggest-invocaton'"
+  (realgud-suggest-invocation gub-command-name gub-minibuffer-history
+                           "go" "\\.go$" "tortoise -run -interp=F"))
 
 ;; Convert a command line as would be typed normally to run a script
 ;; into one that invokes an Emacs-enabled debugging session.
