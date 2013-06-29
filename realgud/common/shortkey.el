@@ -28,8 +28,8 @@
 
     (define-key map "R"        'realgud-cmd-restart)
     (define-key map "!"        'realgud-cmd-shell)
-    (define-key map [insert]   'realgud-short-key-mode-off)
-    (define-key map [(control x)(control q)] 'realgud-short-key-mode-off)
+    (define-key map [insert]   'realgud-short-key-mode)
+    (define-key map [(control x)(control q)] 'realgud-short-key-mode)
     map)
   "Keymap used in `realgud-short-key-mode'.")
 
