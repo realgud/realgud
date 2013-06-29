@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2011, 2012 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2013 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
 (require-relative-list '("custom" "key" "menu") "realgud-")
 (require-relative-list '("buffer/helper") "realgud-buffer-")
@@ -28,11 +28,10 @@
 
     (define-key map "R"        'realgud-cmd-restart)
     (define-key map "!"        'realgud-cmd-shell)
-    (define-key map [insert]   'realgud-short-key-mode)
-    (define-key map [M-insert] 'realgud-short-key-mode)
+    (define-key map [insert]   'realgud-short-key-mode-off)
+    (define-key map [(control x)(control q)] 'realgud-short-key-mode-off)
     map)
   "Keymap used in `realgud-short-key-mode'.")
-
 
 ;; Implementation note: This is the mode that does all the work, it's
 ;; local to the buffer that is affected.
