@@ -1,5 +1,5 @@
 ;;; Copyright (C) 2013 Rocky Bernstein <rocky@gnu.org>
-;;; Regular expressions for GNU Make debugger: gub
+;;; Regular expressions for Go SSA debugger: gub
 
 (eval-when-compile (require 'cl))
 
@@ -24,7 +24,7 @@ realgud-loc-pat struct")
 (setf (gethash "loc" realgud-gub-pat-hash)
       (make-realgud-loc-pat
        :regexp
-       "\\(?:^\\|\n\\)\\(\\(?:[a-zA-Z]:\\)?[-a-zA-Z0-9_/.\\\\ ]*\\.go\\):\\([0-9]+\\)"
+       "\\(?:^\\|\n\\)\\(\\(?:[a-zA-Z]:\\)?[a-zA-Z0-9_/.\\\\][-a-zA-Z0-9_/.\\\\ ]*\\.go\\):\\([0-9]+\\)"
        :file-group 1
        :line-group 2))
 
