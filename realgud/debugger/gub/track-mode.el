@@ -16,10 +16,20 @@
 
 (declare-function realgud-track-mode(bool))
 
+(defun realgud-gub-goto-location (pt)
+  "Display the location mentioned in a location
+described by PT."
+  (interactive "d")
+  (realgud-goto-line-for-pt pt "location"))
+
+
 (define-key gub-track-mode-map
   (kbd "C-c !!") 'realgud-goto-lang-backtrace-line)
 (define-key gub-track-mode-map
   (kbd "C-c !b") 'realgud-goto-debugger-backtrace-line)
+(define-key gub-track-mode-map
+  (kbd "C-c !s") 'realgud-gub-goto-location)
+
 
 (defun gub-track-mode-hook()
   (if gub-track-mode
