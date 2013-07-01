@@ -1,4 +1,8 @@
 (require 'test-simple)
+(eval-when-compile
+  (defvar trepan-core)
+)
+
 (setq trepan-core "../realgud/debugger/trepan/core.el")
 (load-file "../realgud/common/core.el")
 
@@ -6,6 +10,7 @@
 (load-file "../realgud/debugger/trepan/core.el")
 
 (test-simple-start)
+
 
 (lexical-let ((opt-two-args '("0" "C" "e" "E" "F" "i")))
   (assert-equal '(("-0" "a") nil)

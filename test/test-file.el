@@ -4,6 +4,13 @@
 
 (test-simple-start)
 
+(eval-when-compile
+  (defvar realgud-file-remap)
+  (defvar filename)
+  (defvar remap-filename)
+  (defvar old-compilation-find-file)
+)
+
 (clrhash realgud-file-remap)
 
 (setq old-compilation-find-file (symbol-function 'compilation-find-file))

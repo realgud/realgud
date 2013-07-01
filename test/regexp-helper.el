@@ -1,10 +1,17 @@
 (require 'test-simple)
 (load-file "../realgud/common/buffer/command.el")
 
+(eval-when-compile
+  (defvar test-bps)
+  (defvar test-loc)
+  (defvar test-tb)
+  (defvar prompt-pat)
+)
+
 (defun setup-regexp-vars(pat-hash)
-  (setq bps    (gethash "brkpt-set" pat-hash))
-  (setq loc    (gethash "loc"       pat-hash))
-  (setq tb     (gethash "lang-backtrace" pat-hash))
+  (setq test-bps    (gethash "brkpt-set" pat-hash))
+  (setq test-loc    (gethash "loc"       pat-hash))
+  (setq test-tb     (gethash "lang-backtrace" pat-hash))
 )
 
 (defun loc-match(text var)
@@ -13,11 +20,11 @@
 )
 
 (defun bp-loc-match(text)
-  (string-match (realgud-loc-pat-regexp bps) text)
+  (string-match (realgud-loc-pat-regexp test-bps) text)
 )
 
 (defun tb-loc-match(text)
-  (string-match (realgud-loc-pat-regexp tb) text)
+  (string-match (realgud-loc-pat-regexp test-tb) text)
 )
 
 (defun cmdbuf-loc-match(text dbgr)

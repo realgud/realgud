@@ -1,3 +1,8 @@
+(eval-when-compile
+  (defvar elisp-file)
+  (defvar elisp-buffer)
+)
+
 (set (make-local-variable 'elisp-file)
      "../realgud/common/core.el")
 (require 'test-simple)

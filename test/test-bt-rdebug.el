@@ -3,6 +3,10 @@
 
 (test-simple-start)
 
+(eval-when-compile
+  (defvar temp-bt)
+)
+
 (setq temp-bt
       (setup-bt "rdebug"
 		"--> #0 Object.gcd(a#Fixnum, b#Fixnum)

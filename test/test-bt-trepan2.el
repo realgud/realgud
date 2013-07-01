@@ -3,6 +3,10 @@
 
 (test-simple-start)
 
+(eval-when-compile
+  (defvar temp-bt)
+)
+
 (setq temp-bt
       (setup-bt "trepan2"
 		"->0 gcd(a=3, b=5) called from file '/test/gcd.py' at line 28
