@@ -3,6 +3,14 @@
 
 (test-simple-start)
 
+(eval-when-compile
+  (defvar dbg-name)
+  (defvar realgud-pat-hash)
+  (defvar dbgr)
+  (defvar text)
+)
+
+
 ; Some setup usually done in setting up the buffer.
 ; We customize this for the debugger trepan. Others may follow.
 ; FIXME: encapsulate this.
