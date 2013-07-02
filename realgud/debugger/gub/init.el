@@ -31,10 +31,11 @@ realgud-loc-pat struct")
 ;; Regular expression that describes a gub location generally shown
 ;; before a command prompt.
 ;; For example:
-;;   gub[1]
+;;   gub[1]:
+;;   gub[1@3]:
 (setf (gethash "prompt" realgud-gub-pat-hash)
       (make-realgud-loc-pat
-       :regexp   "^gub\\[\\([0-9]+\\)\\]: "
+       :regexp   "^gub\\[\\([0-9]+\\)\\(?:@\\([0-9]+\\)\\)?\\]: "
        :num 1
        ))
 

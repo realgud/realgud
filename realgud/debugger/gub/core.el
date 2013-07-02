@@ -2,8 +2,13 @@
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
-(require-relative-list '("../../common/track" "../../common/core") "realgud-")
+(require-relative-list '("../../common/track" "../../common/lang"
+			 "../../common/core") "realgud-")
 (require-relative-list '("init") "realgud-gub-")
+
+(declare-function realgud-query-cmdline 'realgud-core)
+(declare-function realgud-suggest-invocation 'realgud-core)
+(declare-function realgud-lang-mode? 'realgud-lang)
 
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
