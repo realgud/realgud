@@ -3,9 +3,16 @@
 
 (test-simple-start)
 
-; Some setup usually done in setting up the buffer.
-; We customize this for the debugger trepan. Others may follow.
-; FIXME: encapsulate this.
+(eval-when-compile
+  (defvar dbg-name)
+  (defvar loc-pat)
+  (defvar dbgr)
+  (defvar text)
+)
+
+;; Some setup usually done in setting up the buffer.
+;; We customize this for the debugger trepan. Others may follow.
+;; FIXME: encapsulate this.
 (setq dbg-name "gub")
 (setq loc-pat (gethash "loc" (gethash dbg-name realgud-pat-hash)))
 
