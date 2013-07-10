@@ -1,5 +1,3 @@
-(declare-function define-package "package")
-
 (define-package "realgud"
   "0.1.0"
   "A modular framework for interacting with external debuggers."
