@@ -1,5 +1,6 @@
 *.elc
 *~
+/*-pkg.el
 /*.tar.gz
 /COPYING
 /README
