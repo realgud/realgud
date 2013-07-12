@@ -30,42 +30,37 @@
    opt-debugger))
 
 (defun gub-parse-cmd-args (orig-args)
-  "Parse command line ARGS for the annotate level and name of script to debug.
+  "Parse command line ARGS for the name of script to debug and its args.
 
 ARGS should contain a tokenized list of the command line to run.
 
 We return the a list containing
 
-- the command processor (e.g. make)
-- the Makefile name
-- command args (which includes the makefile name)
-
+- the command processor (e.g. gub.sh) and it's arguments if any - a list of strings
 For example for the following input
-  '(\"gmake\" \"-x\" \"/tmp/Makefile\")
+  \'./gub.sh --gub=\"-I\" -- ./gcd.go a b\'
 
 we might return:
-   (\"gmake\" \"/tmp/Makefile\" (\"-x\" \"/tmp/Makefile\"))
+   (gub (\"-gub=-I\") (./gcd.rb a b))
 
+NOTE: the above should have each item listed in quotes.
 "
 
   (let (
 	(args orig-args)
-	(interp-regexp
-	 (if (member system-type (list 'windows-nt 'cygwin 'msdos))
-	     "^\\(re\\)?make*\\(.exe\\)?$"
-	   "^\\(re\\)?make*$"))
+	(interp-regexp ".*gub$")
 
 	;; Things returned
-	(gub-name nil)
-	(makefile-name nil)
+	(gub-name "gub.sh")
 	(gub-args '())
+	(go-prog-and-args '())
 	)
 
     (if (not (and args))
 	;; Got nothing
-	(list gub-name makefile-name gub-args)
+	(list gub-name gub-args go-prog-and-args)
       ;; else
-      ;; Strip off "make" or "gub" etc.
+      ;; Strip off "gub"
       (when (string-match interp-regexp
 			  (file-name-sans-extension
 			   (file-name-nondirectory (car args))))
@@ -76,35 +71,23 @@ we might return:
       (while args
 	(let ((arg (pop args)))
 	  (cond
-	   ;; ;; Annotation or emacs option with level number.
-	   ;; ((or (member arg '("--annotate" "-A"))
-	   ;; 	(equal arg "--emacs"))
-	   ;;  (setq annotate-p t)
-	   ;;  (nconc debugger-args (list (pop args))))
-	   ;; ;; Combined annotation and level option.
-	   ;; ((string-match "^--annotate=[0-9]" arg)
-	   ;;  (nconc debugger-args (list (pop args)) )
-	   ;;  (setq annotate-p t))
+	   ((string-match "^--gub" arg)
+	    (setq gub-args (nconc gub-args (list arg))))
 
-	   ((member arg '("--file" "--makefile" "-f"))
-	    (setq gub-args (nconc gub-args (list arg)))
-	    (setq makefile-name (pop args))
-	    (setq gub-args (nconc gub-args
-				     (list (format "%s" makefile-name)))))
+	   ((string-match "^--interp" arg)
+	    (setq gub-args (nconc gub-args (list arg))))
+
+	   ((equal arg "--")) ;; Ignore
 
 	   ;; Anything else add to gub-args
-	   ('t (setq gub-args (nconc gub-args (list arg))))
-	   )))
-      (list gub-name makefile-name gub-args))))
+	   ('t (setq go-prog-and-args (nconc go-prog-and-args (list arg))))
+	   ))))
+      (list gub-name gub-args go-prog-and-args)
+    ))
 
 (defconst realgud-gub-auto-suffix-regexp
-  "\\.\\(am\\|in\\)$"
+  "\\.go$"
   "Common automake and autoconf Makefile suffixes"
-)
-
-(defconst realgud-gub-makefile-regexp
-  "\\(^[Mm]akefile$\\|\\.Makefile$\\|\\.mk\\)$"
-  "Regular expression matching common Makefile names"
 )
 
 (defun gub-suggest-file-priority(filename)
@@ -130,46 +113,12 @@ we might return:
     )
 )
 
-(defun gub-suggest-gofile ()
- "Suggest a Go to debug.
-
-The first priority is given to the current buffer. If the major
-mode matches GNUMakefile and doesn't end in .am or .in, then we
-are done. If not, we'll set priority 2 (a low or easily
-overridden priority) and we keep going.  Then we will try files
-in the default-directory. Of those that we are visiting we check
-the major mode. There are demerits for a file ending in .in or
-.am which are used by 'configure' and 'automake' respectively.
-
-If the current buffer isn't a success, we see if the file matches
-REGEXP. These have priority 9, 8 or 7 depending on whether there
-is a .in or .am sufifx and there is a REGEXP match'.  Within a
-given priority, we use the first one we find."
-    (let* ((file)
-	   (file-list (directory-files default-directory))
-	   (priority 2)
-	   (is-not-directory)
-	   (result (buffer-file-name)))
-      (if (not (realgud-lang-mode? result "makefile"))
-	  (progn
-	    (while (and (setq file (car-safe file-list)) (< priority 8))
-	      (setq file-list (cdr file-list))
-	      (let ((try-priority (gub-suggest-file-priority file)))
-		(if (> try-priority priority)
-		    (progn
-		      (setq priority try-priority)
-		      (setq result file)))
-		))
-	    ))
-      result)
-    )
-
 (defvar gub-command-name) ; # To silence Warning: reference to free variable
 
 (defun gub-suggest-invocation (debugger-name)
   "Suggest a command invocation via `realgud-suggest-invocaton'"
   (realgud-suggest-invocation gub-command-name gub-minibuffer-history
-                           "go" "\\.go$" "tortoise -run -interp=F"))
+                           "go" "\\.go$" "gub.sh"))
 
 ;; Convert a command line as would be typed normally to run a script
 ;; into one that invokes an Emacs-enabled debugging session.
