@@ -32,29 +32,11 @@ This should be an executable on your path, or an absolute file name."
 	 (parsed-args (gub-parse-cmd-args cmd-args))
 	 (gub-program (car parsed-args))
 	 (gub-args (cadr parsed-args))
-	 (script-and-args (caddr parsed-args))
+	 (go-prog-and-args (caddr parsed-args))
+	 (script-filename (car go-prog-and-args))
 	 (cmd-buf))
-    (realgud-run-process "gub" gub-program script-and-args
+    (realgud-run-process gub-program script-filename cmd-args
 			 'gub-track-mode no-reset)
-
-    ;; Parse the command line and pick out the script name.
-
-    (condition-case nil
-    	(setq cmd-buf
-    	      (apply 'realgud-exec-shell "gub" script-and-args
-    		     gub-program no-reset (cdr script-and-args)))
-      (error nil))
-    ;; FIXME: Is there probably is a way to remove the
-    ;; below test and combine in condition-case?
-    (let ((process (get-buffer-process cmd-buf)))
-      (if (and process (eq 'run (process-status process)))
-    	  (progn
-    	    (switch-to-buffer cmd-buf)
-    	    (gub-track-mode 't)
-    	    (realgud-cmdbuf-info-cmd-args= cmd-args)
-    	    )
-    	(message "Error running gub command"))
-      )
     )
   )
 
