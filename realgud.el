@@ -1,7 +1,7 @@
 ;;; realgud.el --- A modular front-end for interacting with external debuggers
 
 ;; Author: Rocky Bernstein
-;; Version: 0.1.0
+;; Version: 0.2.0
 ;; URL: http://github.com/rocky/emacs-loc-changes
 ;; Compatibility: GNU Emacs 24.x
 
@@ -47,7 +47,7 @@
 ;;   bashdb         bashdb        bash
 ;;   Devel::Trepan  trepan.pl     Perl5
 ;;   gdb            realgud-gdb   gdb
-;;   gub            realgud-gub   Go SSA debugger
+;;   gub            gub           Go SSA debugger
 ;;   kshdb          kshdb         Korn Shell 93u+
 ;;   pdb            pdb           stock C Python debugger
 ;;   perldb         perldb        stock Perl5 debugger

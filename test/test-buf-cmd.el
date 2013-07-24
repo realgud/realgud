@@ -3,6 +3,12 @@
 (load-file "../realgud/debugger/trepan/init.el")
 (test-simple-start)
 
+(eval-when-compile
+  (defvar temp-cmdbuf)
+  (defvar realgud-pat-hash)
+  (defvar realgud-cmdbuf-info)
+)
+
 (assert-nil (realgud-cmdbuf? (current-buffer))
 	    "realgud-cmdbuf? before init")
 

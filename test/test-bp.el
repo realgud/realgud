@@ -2,6 +2,11 @@
 (require 'load-relative)
 (load-file "../realgud/common/bp.el")
 
+(eval-when-compile
+  (defvar temp-srcbuf)
+)
+
+
 (test-simple-start)
 
 (note "breakpoints")

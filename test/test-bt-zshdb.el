@@ -3,6 +3,10 @@
 
 (test-simple-start)
 
+(eval-when-compile
+  (defvar temp-bt)
+)
+
 (setq temp-bt
       (setup-bt "zshdb"
 		"->0 in file `/test/autogen.sh' at line 2

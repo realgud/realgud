@@ -1,6 +1,13 @@
 (require 'test-simple)
 (load-file "../realgud/common/buffer/command.el")
 
+(eval-when-compile
+  (defvar bps)
+  (defvar loc)
+  (defvar tb)
+  (defvar prompt-pat)
+)
+
 (defun setup-regexp-vars(pat-hash)
   (setq bps    (gethash "brkpt-set" pat-hash))
   (setq loc    (gethash "loc"       pat-hash))

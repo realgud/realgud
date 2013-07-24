@@ -5,6 +5,12 @@
 (load-file "../realgud/common/buffer/backtrace.el")
 (load-file "../realgud/common/backtrace-mode.el")
 
+(eval-when-compile
+  (defvar temp-cmdbuf)
+  (defvar temp-bt)
+  (defvar realgud-pat-hash)
+)
+
 (defun setup-bt-vars(debugger-name)
   "Sets up globals temp-cmdbuf and temp-bt with command buffer
 for DEBUGGER-NAME"

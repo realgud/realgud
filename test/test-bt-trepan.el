@@ -3,6 +3,10 @@
 
 (test-simple-start)
 
+(eval-when-compile
+  (defvar temp-bt)
+)
+
 (setq temp-bt
       (setup-bt "trepan"
 		"--> #0 METHOD Object#gcd(a, b) in file /test/gcd.rb at line 4

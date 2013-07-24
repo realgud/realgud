@@ -31,38 +31,18 @@ This should be an executable on your path, or an absolute file name."
 	 (cmd-args (split-string-and-unquote cmd-str))
 	 (parsed-args (gub-parse-cmd-args cmd-args))
 	 (gub-program (car parsed-args))
-	 (script-name (cadr parsed-args))
-	 (script-args (caddr parsed-args))
+	 (gub-args (cadr parsed-args))
+	 (go-prog-and-args (caddr parsed-args))
+	 (script-filename (car go-prog-and-args))
 	 (cmd-buf))
-    (realgud-run-process "gub" script-name
-		      (cons gub-program script-args)
-		      'gub-track-mode no-reset)
-
-    ;; ;; Parse the command line and pick out the script name and whether
-    ;; ;; --annotate has been set.
-
-    ;; (condition-case nil
-    ;; 	(setq cmd-buf
-    ;; 	      (apply 'realgud-exec-shell "gub" makefile-name
-    ;; 		     gub-program no-reset makefile-args))
-    ;;   (error nil))
-    ;; ;; FIXME: Is there probably is a way to remove the
-    ;; ;; below test and combine in condition-case?
-    ;; (let ((process (get-buffer-process cmd-buf)))
-    ;;   (if (and process (eq 'run (process-status process)))
-    ;; 	  (progn
-    ;; 	    (switch-to-buffer cmd-buf)
-    ;; 	    (gub-track-mode 't)
-    ;; 	    (realgud-cmdbuf-info-cmd-args= cmd-args)
-    ;; 	    )
-    ;; 	(message "Error running gub command"))
-    ;;   )
+    (realgud-run-process gub-program script-filename cmd-args
+			 'gub-track-mode no-reset)
     )
   )
 
 ;;;###autoload
 (defun realgud-gub (&optional opt-command-line no-reset)
-  "Invoke the GNU Make debugger, gub and start the Emacs user interface.
+  "Invoke the Go SSA debugger, gub and start the Emacs user interface.
 
 String COMMAND-LINE specifies how to run gub.
 

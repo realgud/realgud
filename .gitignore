@@ -1,5 +1,6 @@
 *.elc
 *~
+/*-pkg.el
 /*.tar.gz
 /COPYING
 /README
@@ -8,6 +9,8 @@
 /config.log
 /config.status
 /configure
+/configure.lineno
+/elpa
 /install-sh
 /missing
 Makefile

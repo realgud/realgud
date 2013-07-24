@@ -3,6 +3,10 @@
 
 (test-simple-start)
 
+(eval-when-compile
+  (defvar temp-bt)
+)
+
 (setq temp-bt
       (setup-bt "trepanx"
 		"   0 Trepanning(Object)#debug_program(dbgr, ruby_path, program_to_debug) at /foo.rb:10
