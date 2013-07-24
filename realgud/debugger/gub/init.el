@@ -42,7 +42,7 @@ realgud-loc-pat struct")
 ;;  Regular expression that describes a "breakpoint set" line
 (setf (gethash "brkpt-set" realgud-gub-pat-hash)
       (make-realgud-loc-pat
-       :regexp "^Breakpoint \\([0-9]+\\) set\\(?:in function \\) at \\([a-zA-Z0-9_/.\\\\][-a-zA-Z0-9_/.\\\\ ]*\\.go\\):\\([0-9]+\\)"
+       :regexp "^ Breakpoint \\([0-9]+\\) set\\(?:in function \\) at \\([a-zA-Z0-9_/.\\\\][-a-zA-Z0-9_/.\\\\ ]*\\.go\\):\\([0-9]+\\)"
        :num 1
        :file-group 2
        :line-group 3))
@@ -52,7 +52,7 @@ realgud-loc-pat struct")
 ;;   Deleted breakpoint 1.
 (setf (gethash "brkpt-del" realgud-gub-pat-hash)
       (make-realgud-loc-pat
-       :regexp "^Deleted breakpoint \\([0-9]+\\)\n"
+       :regexp "^ Deleted breakpoint \\([0-9]+\\)\n"
        :num 1))
 
 ;; Regular expression describes general location. In contrast to loc
