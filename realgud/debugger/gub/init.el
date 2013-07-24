@@ -124,15 +124,15 @@ backtrace listing.")
   "Hash key is command name like 'quit' and the value is
   the gub command to use, like 'q'")
 
-(setf (gethash "backtrace" realgud-gub-command-hash) "T")
-(setf (gethash "break"     realgud-gub-command-hash) "b %l")
-(setf (gethash "continue"  realgud-gub-command-hash) "c")
-(setf (gethash "eval"      realgud-gub-command-hash) "x %s")
-(setf (gethash "quit"      realgud-gub-command-hash) "q")
+(setf (gethash "backtrace" realgud-gub-command-hash) "backtrace")
+(setf (gethash "break"     realgud-gub-command-hash) "break %l")
+(setf (gethash "continue"  realgud-gub-command-hash) "continue")
+;;(setf (gethash "eval"      realgud-gub-command-hash) "x %s")
+(setf (gethash "quit"      realgud-gub-command-hash) "quit")
 (setf (gethash "restart"   realgud-gub-command-hash) "R")
 (setf (gethash "run"       realgud-gub-command-hash) "R")
-(setf (gethash "step"      realgud-gub-command-hash) "s")
-(setf (gethash "next"      realgud-gub-command-hash) "n")
+(setf (gethash "step"      realgud-gub-command-hash) "step")
+(setf (gethash "next"      realgud-gub-command-hash) "next")
 (setf (gethash "gub" realgud-command-hash) realgud-gub-command-hash)
 
 
