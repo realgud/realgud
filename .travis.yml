@@ -10,7 +10,8 @@ script:
   - bash ~/.carton/bin/carton
   - elpath=$(emacs -batch -q -no-site-file -eval "(message (apply 'concat (mapcar (lambda(x) (concat x \":\")) load-path)))" 2>&1)
   - test_simple=/home/travis/build/rocky/emacs-dbgr/test-simple-20130710.1126
-  - elpath=${elpath}${test_simple}
-  - # ls -lR /home/travis
+  - loc_changes=/home/travis/build/rocky/emacs-dbgr/loc-changes-20130330.1204
+  - elpath=${elpath}${test_simple}:${loc_changes}
+  - ls -lR /home/travis
   - echo $elpath
   - EMACSLOADPATH=$elpath /bin/sh ./autogen.sh && EMACSLOADPATH=$elpath make check
