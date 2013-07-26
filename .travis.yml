@@ -14,6 +14,6 @@ script:
   - load_relative=/home/travis/build/rocky/emacs-dbgr/elpa/load-relative-20130410.549
   - cl_lib=/home/travis/build/rocky/emacs-dbgr/elpa/cl-lib-0.3
   - elpath=${elpath}${test_simple}:${loc_changes}:${load_relative}:${cl_lib}
-  - ls -lR /home/travis
+  - # ls -lR /home/travis
   - echo $elpath
   - EMACSLOADPATH=$elpath /bin/sh ./autogen.sh && EMACSLOADPATH=$elpath make check
