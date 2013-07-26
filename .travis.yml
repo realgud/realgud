@@ -9,7 +9,7 @@ script:
   - curl -fsSkL https://raw.github.com/rejeep/carton/master/go | sh
   - bash ~/.carton/bin/carton
   - elpath=$(emacs -batch -q -no-site-file -eval "(message (apply 'concat (mapcar (lambda(x) (concat x \":\")) load-path)))" 2>&1)
-  - test_simple=/home/travis/build/rocky/emacs-dbgr/test-simple-20130710.1126
+  - test_simple=/home/travis/build/rocky/emacs-dbgr/elpa/test-simple-20130710.1126
   - loc_changes=/home/travis/build/rocky/emacs-dbgr/elpa/loc-changes-20130711.309
   - load_relative=/home/travis/build/rocky/emacs-dbgr/elpa/load-relative-20130410.549
   - elpath=${elpath}${test_simple}:${loc_changes}:${load_relative}
