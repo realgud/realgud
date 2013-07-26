@@ -11,7 +11,8 @@ script:
   - elpath=$(emacs -batch -q -no-site-file -eval "(message (apply 'concat (mapcar (lambda(x) (concat x \":\")) load-path)))" 2>&1)
   - test_simple=/home/travis/build/rocky/emacs-dbgr/test-simple-20130710.1126
   - loc_changes=/home/travis/build/rocky/emacs-dbgr/elpa/loc-changes-20130711.309
-  - elpath=${elpath}${test_simple}:${loc_changes}
+  - load_relative=/home/travis/build/rocky/emacs-dbgr/elpa/load-relative-20130410.549
+  - elpath=${elpath}${test_simple}:${loc_changes}:${load_relative}
   - ls -lR /home/travis
   - echo $elpath
   - EMACSLOADPATH=$elpath /bin/sh ./autogen.sh && EMACSLOADPATH=$elpath make check
