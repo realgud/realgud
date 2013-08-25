@@ -14,8 +14,7 @@ car (lambda(x) (concat x \":\")) load-path)))" 2>&1)
   - test_simple=/home/travis/build/rocky/emacs-dbgr/.cask/*/elpa/test-simple-*
   - loc_changes=/home/travis/build/rocky/emacs-dbgr/.cask/*/elpa/loc-changes-*
   - load_relative=/home/travis/build/rocky/emacs-dbgr/.cask/elpa/load-relative-*
-  - cl_lib=/home/travis/build/rocky/emacs-dbgr/.cask/*/elpa/cl-lib-*
+  - cl_lib=/home/travis/build/rocky/emacs-dbgr/.cask/*/elpa/cl-lib-*/
   - elpath=${elpath}${test_simple}:${loc_changes}:${load_relative}:${cl_lib}
-  - # ls -lR /home/travis
   - echo $elpath
   - EMACSLOADPATH=$elpath /bin/sh ./autogen.sh && EMACSLOADPATH=$elpath make check
