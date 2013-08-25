@@ -10,11 +10,10 @@ script:
   - export PATH="/home/travis/.cask/bin:$PATH"
   - carton
   - elpath=$(emacs -batch -q -no-site-file -eval "(message (apply 'concat (mapcar (lambda(x) (concat x \":\")) load-path)))" 2>&1)
-  - test_simple=$(echo /home/travis/build/rocky/emacs-dbgr/.cask/*/elpa/test-simple-*)
-  - loc_changes=$(echo /home/travis/build/rocky/emacs-dbgr/.cask/*/elpa/loc-changes-*)
-  - load_relative=$(echo /home/travis/build/rocky/emacs-dbgr/.cask/elpa/load-relative-*)
-  - cl_lib=$(echo /home/travis/build/rocky/emacs-dbgr/.cask/*/elpa/cl-lib-*/)
+  - test_simple=/home/travis/build/rocky/emacs-dbgr/.cask/*/elpa/test-simple-20130710.1126
+  - loc_changes=/home/travis/build/rocky/emacs-dbgr/.cask/*/elpa/loc-changes-20130711.309
+  - load_relative=/home/travis/build/rocky/emacs-dbgr/.cask/elpa/load-relative-20130410.549
+  - cl_lib=/home/travis/build/rocky/emacs-dbgr/.cask/elpa/elpa/cl-lib-0.3
   - elpath=${elpath}${test_simple}:${loc_changes}:${load_relative}:${cl_lib}
-  - # ls -lR /home/travis
   - echo $elpath
   - EMACSLOADPATH=$elpath /bin/sh ./autogen.sh && EMACSLOADPATH=$elpath make check
