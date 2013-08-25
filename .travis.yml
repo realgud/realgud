@@ -8,7 +8,7 @@ install:
 script:
   - curl -fsSkL https://raw.github.com/rejeep/carton/master/go | sh
   - export PATH="/home/travis/.cask/bin:$PATH"
-  - carton
+  - carton || true
   - elpath=$(emacs -batch -q -no-site-file -eval "(message (apply 'concat (mapcar (lambda(x) (concat x \":\")) load-path)))" 2>&1)
   - test_simple=/home/travis/build/rocky/emacs-dbgr/.cask/23.3.1/elpa/test-simple-20130710.1126
   - loc_changes=/home/travis/build/rocky/emacs-dbgr/.cask/23.3.1/elpa/loc-changes-20130711.309
