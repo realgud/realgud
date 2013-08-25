@@ -62,6 +62,7 @@ of this mode."
 	  (error "Can't find a process for buffer %s" (current-buffer)))
 
 	(setq realgud-track-divert-string "")
+	(setq realgud-track-mode 't)
 
 	;; FIXME: save and chain process-sentinel via
 	;; (process-sentinel (get-buffer-process (current-buffer)))

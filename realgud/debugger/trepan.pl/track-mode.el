@@ -1,4 +1,4 @@
-;;; Copyright (C) 2011, 2012 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011, 2012, 2013 Rocky Bernstein <rocky@gnu.org>
 ;;; Perl trepanning Debugger tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))
@@ -48,7 +48,6 @@ described by PT."
   (realgud-track-set-debugger "trepan.pl")
   (if realgud-trepanpl-track-mode
       (progn
-        (setq realgud-track-mode 't)
         (realgud-track-mode-setup 't)
         (realgud-trepanpl-track-mode-hook))
     (progn

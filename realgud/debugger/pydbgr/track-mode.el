@@ -40,7 +40,6 @@
   (realgud-track-set-debugger "pydbgr")
   (if pydbgr-track-mode
       (progn
-	(setq realgud-track-mode 't)
 	(realgud-track-mode-setup 't)
 	(run-mode-hooks (intern (pydbgr-track-mode-hook))))
     (progn

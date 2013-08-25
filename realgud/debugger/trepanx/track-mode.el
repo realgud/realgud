@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2012 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2012-2013 Rocky Bernstein <rocky@gnu.org>
 ;;; Ruby "trepanx" Debugger tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))
@@ -40,8 +40,8 @@
   (realgud-track-set-debugger "trepanx")
   (if trepanx-track-mode
       (progn
-	(setq realgud-track-mode 't)
-	(run-mode-hooks (intern (trepanx-track-mode-hook))))
+	(realgud-track-mode-setup 't)
+	(repanx-track-mode-hook))
     (progn
       (setq realgud-track-mode nil)
       ))

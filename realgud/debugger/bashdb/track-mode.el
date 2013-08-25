@@ -1,4 +1,4 @@
-;;; Copyright (C) 2012 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2012-2013 Rocky Bernstein <rocky@gnu.org>
 ;;; Bash Debugger tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))
@@ -38,7 +38,6 @@
   (realgud-track-set-debugger "bashdb")
   (if bashdb-track-mode
       (progn
-	(setq realgud-track-mode 't)
         (realgud-track-mode-setup 't)
         (bashdb-track-mode-hook))
     (progn
