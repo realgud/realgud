@@ -9,12 +9,12 @@ script:
   - curl -fsSkL https://raw.github.com/rejeep/carton/master/go | sh
   - export PATH="/home/travis/.cask/bin:$PATH"
   - carton
-  - elpath=$(emacs -batch -q -no-site-file -eval "(message (apply 'concat (map
-car (lambda(x) (concat x \":\")) load-path)))" 2>&1)
+  - elpath=$(emacs -batch -q -no-site-file -eval "(message (apply 'concat (mapcar (lambda(x) (concat x \":\")) load-path)))" 2>&1)
   - test_simple=/home/travis/build/rocky/emacs-dbgr/.cask/*/elpa/test-simple-*
   - loc_changes=/home/travis/build/rocky/emacs-dbgr/.cask/*/elpa/loc-changes-*
   - load_relative=/home/travis/build/rocky/emacs-dbgr/.cask/elpa/load-relative-*
   - cl_lib=/home/travis/build/rocky/emacs-dbgr/.cask/*/elpa/cl-lib-*/
   - elpath=${elpath}${test_simple}:${loc_changes}:${load_relative}:${cl_lib}
+  - # ls -lR /home/travis
   - echo $elpath
   - EMACSLOADPATH=$elpath /bin/sh ./autogen.sh && EMACSLOADPATH=$elpath make check
