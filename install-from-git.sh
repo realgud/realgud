@@ -46,7 +46,7 @@
 # To finish here is an invocation using all 3 above options:
 #   GIT_PROTOCOL='git' SUDO_CMD=' ' sh ./install-from-git.sh --prefix=/tmp
 
-GIT_PROTOCOL=${GIT_PROTOCOL:-http}
+GIT_PROTOCOL=${GIT_PROTOCOL:-https}
 
 # Run and echo a command
 run_cmd() {
@@ -88,6 +88,9 @@ for pkg in emacs-{test-simple,load-relative,loc-changes,dbgr} ; do
     echo '******************************************'
     echo Trying to install ${pkg}...
     echo '******************************************'
+    if [[ -d $pkg ]]; then
+	run_cmd $need_sudo rm -fr $pkg
+    fi
     run_cmd git clone ${GIT_PROTOCOL}://github.com/rocky/${pkg}.git
     (cd $pkg && \
         run_cmd $SHELL ./autogen.sh && \

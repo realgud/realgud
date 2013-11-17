@@ -5,6 +5,9 @@ AM_INIT_AUTOMAKE([foreign])
 AM_MAINTAINER_MODE
 
 AC_PATH_PROG([EMACS], [emacs], [emacs])
+AC_ARG_WITH(emacs, AC_HELP_STRING([--with-emacs],
+                  [location of emacs program]), EMACS=$withval)
+
 AC_MSG_NOTICE("Checking emacs version and prerequiste packages")
 $EMACS -batch -q -no-site-file -eval \
   '(if (<= emacs-major-version 22)
@@ -12,7 +15,8 @@ $EMACS -batch -q -no-site-file -eval \
          (error "You need GNU Emacs 23 or better.")
          (kill-emacs 1)
        )
-     (dolist (package (quote (loc-changes load-relative test-simple)))
+     (dolist (package
+         (quote (cl-lib loc-changes load-relative test-simple)))
         (require package))
    )'
 if test $? -ne 0 ; then

@@ -47,7 +47,6 @@
 ;;   bashdb         bashdb        bash
 ;;   Devel::Trepan  trepan.pl     Perl5
 ;;   gdb            realgud-gdb   gdb
-;;   gub            gub           Go SSA debugger
 ;;   kshdb          kshdb         Korn Shell 93u+
 ;;   pdb            pdb           stock C Python debugger
 ;;   perldb         perldb        stock Perl5 debugger
@@ -61,7 +60,10 @@
 ;;   trepan2        trepan2       trepanning debugger for Python 2.x
 ;;   trepan3k       trepan3k      trepanning debugger for Python 3.x
 ;;   zshdb          zshdb         Zsh
-
+;;
+;; And possibly (commented out for now):
+;;   gub            gub           Go SSA debugger
+;;
 ;; **gdb invocation requires the realgud- preface to disambiguate it
 ;; from the older, preexisting emacs command. The other invocations
 ;; also accept realgud- prefaces, e.g. realgud-bashdb or realgud-pdb.
@@ -98,7 +100,7 @@
      "./realgud/common/track-mode"
      "./realgud/debugger/bashdb/bashdb"
      "./realgud/debugger/gdb/gdb"
-     "./realgud/debugger/gub/gub"
+     ;; "./realgud/debugger/gub/gub"
      "./realgud/debugger/kshdb/kshdb"
      "./realgud/debugger/pdb/pdb"
      "./realgud/debugger/perldb/perldb"
@@ -156,7 +158,7 @@ like 'pydbgr'."
       )
 )
 
-(defun realgud-unload-features()	;
+(defun realgud-unload-features()
   "Remove all features loaded from this package. Used in
 `realgud-reload-features'. See that."
   (interactive "")
