@@ -18,10 +18,10 @@ script:
   - export PATH="/home/travis/.cask/bin:$PATH"
   - carton || true
   - elpath=$(emacs -batch -q -no-site-file -eval "(message (apply 'concat (mapcar (lambda(x) (concat x \":\")) load-path)))" 2>&1)
-  - test_simple=/home/travis/build/rocky/emacs-dbgr/.cask/24.3/elpa/test-simple-20130710.1126
-  - loc_changes=/home/travis/build/rocky/emacs-dbgr/.cask/24.3/elpa/loc-changes-20130711.309
-  - load_relative=/home/travis/build/rocky/emacs-dbgr/.cask/24.3/elpa/load-relative-20130410.549
-  - cl_lib=/home/travis/.emacs.d/.cask/24.3/bootstrap/cl-lib-0.3/
+  - test_simple=/home/travis/build/rocky/emacs-dbgr/.cask/24.3.1/elpa/test-simple-20130710.1126
+  - loc_changes=/home/travis/build/rocky/emacs-dbgr/.cask/24.3.1/elpa/loc-changes-20130711.309
+  - load_relative=/home/travis/build/rocky/emacs-dbgr/.cask/24.3.1/elpa/load-relative-20130410.549
+  - cl_lib=/home/travis/.emacs.d/.cask/24.3.1/bootstrap/cl-lib-0.3/
   - elpath=${elpath}${test_simple}:${loc_changes}:${load_relative}:${cl_lib}
   - ls -laR /home/travis/build/rocky/emacs-dbgr/
   - echo $elpath
