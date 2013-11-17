@@ -16,13 +16,8 @@ install:
 script:
   - curl -fsSkL https://raw.github.com/rejeep/carton/master/go | python
   - export PATH="/home/travis/.cask/bin:$PATH"
-  - cask || true
-  - elpath=$(emacs -batch -q -no-site-file -eval "(message (apply 'concat (mapcar (lambda(x) (concat x \":\")) load-path)))" 2>&1)
-  - test_simple=/home/travis/build/rocky/emacs-dbgr/.cask/24.3.1/elpa/test-simple-20130710.1126
-  - loc_changes=/home/travis/.emacs.d/.cask/24.3.1/elpa/loc-changes-20130711.309
-  - load_relative=/home/travis/.emacs.d/.cask/24.3.1/elpa/load-relative-20130410.549
-  - cl_lib=/home/travis/.emacs.d/.cask/24.3.1/bootstrap/cl-lib-0.3/
-  - elpath=${elpath}${test_simple}:${loc_changes}:${load_relative}:${cl_lib}
-  - ls -laR /home/travis/.emacs.d/
-  - echo $elpath
-  - EMACSLOADPATH=$elpath /bin/sh ./autogen.sh && EMACSLOADPATH=$elpath make check
+  - emacs -batch -q -eval "(progn (require 'package) (add-to-list 'package-archives '(\"melpa\" . \"http://melpa.milkbox.net/packages/\") t) (package-refresh-contents) (package-install 'load-relative))"
+  - emacs -batch -q -eval "(progn (require 'package) (add-to-list 'package-archives '(\"melpa\" . \"http://melpa.milkbox.net/packages/\") t) (package-refresh-contents) (package-install 'loc-changes))"
+  - emacs -batch -q -eval "(progn (require 'package) (add-to-list 'package-archives '(\"melpa\" . \"http://melpa.milkbox.net/packages/\") t) (package-refresh-contents) (package-install 'test-simple))"
+  - cask init
+  - cask exec /bin/bash ./autogen.sh && cask exec make check
