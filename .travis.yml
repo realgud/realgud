@@ -14,7 +14,7 @@ install:
 
 # run the tests
 script:
-  - curl -fsSkL https://raw.github.com/rejeep/carton/master/go | sh
+  - curl -fsSkL https://raw.github.com/rejeep/carton/master/go | python
   - export PATH="/home/travis/.cask/bin:$PATH"
   - carton || true
   - elpath=$(emacs -batch -q -no-site-file -eval "(message (apply 'concat (mapcar (lambda(x) (concat x \":\")) load-path)))" 2>&1)
