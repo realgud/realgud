@@ -3,10 +3,10 @@
 typeset -i rc=0
 typeset -i DEBUG=${DEBUG:-0}
 EMACS_PROG=${EMACS_PROG:-emacs}
-list=$($EMACS_PROG --batch --no-splash --eval '(message (substring (format "%s" load-path) 1 -1))' 2>&1)
+list=$($EMACS_PROG --batch --no-splash --no-site-file --eval '(message (substring (format "%s" load-path) 1 -1))' 2>&1)
 rc=$?
 if (( rc != 0 )) ; then
-    echo  >&2 "Something went running $EMACS_PROG"
+    echo  >&2 "Something went wrong running $EMACS_PROG"
     exit $rc
 $cmd
 fi

@@ -9,7 +9,7 @@ AC_ARG_WITH(emacs, AC_HELP_STRING([--with-emacs],
                   [location of emacs program]), EMACS=$withval)
 
 AC_MSG_NOTICE("Checking emacs version and prerequiste packages")
-$EMACS -batch -q -no-site-file -eval \
+$EMACS -batch -q --no-site-file -eval \
   '(if (<= emacs-major-version 22)
        (progn
          (error "You need GNU Emacs 23 or better.")
