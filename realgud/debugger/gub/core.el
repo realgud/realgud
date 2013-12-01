@@ -48,7 +48,7 @@ NOTE: the above should have each item listed in quotes.
 
   (let (
 	(args orig-args)
-	(interp-regexp ".*gub$")
+	(interp-regexp ".*\\(gub.sh\\|tortoise\\)$")
 
 	;; Things returned
 	(gub-name "gub.sh")
@@ -60,7 +60,7 @@ NOTE: the above should have each item listed in quotes.
 	;; Got nothing
 	(list gub-name gub-args go-prog-and-args)
       ;; else
-      ;; Strip off "gub"
+      ;; Strip off "gub.sh"
       (when (string-match interp-regexp
 			  (file-name-sans-extension
 			   (file-name-nondirectory (car args))))
@@ -71,10 +71,13 @@ NOTE: the above should have each item listed in quotes.
       (while args
 	(let ((arg (pop args)))
 	  (cond
-	   ((string-match "^--gub" arg)
+	   ((string-match "^--gub=" arg)
 	    (setq gub-args (nconc gub-args (list arg))))
 
-	   ((string-match "^--interp" arg)
+	   ((string-match "^run" arg)
+	    (setq gub-args (nconc gub-args (list arg))))
+
+	   ((string-match "^--interp=SS" arg)
 	    (setq gub-args (nconc gub-args (list arg))))
 
 	   ((equal arg "--")) ;; Ignore
@@ -87,28 +90,19 @@ NOTE: the above should have each item listed in quotes.
 
 (defconst realgud-gub-auto-suffix-regexp
   "\\.go$"
-  "Common automake and autoconf Makefile suffixes"
+  "Go file suffix"
 )
 
 (defun gub-suggest-file-priority(filename)
   (let ((priority 2)
 	(is-not-directory)
 	)
-    (if (realgud-lang-mode? filename "makefile")
+    (if (realgud-lang-mode? filename "go")
 	(progn
-	  (if (string-match realgud-gub-makefile-regexp filename)
-	      (setq priority 8)
-	    (if (string-match realgud-gub-auto-suffix-regexp filename)
-		(setq priority 5)
-	      (setq priority 7)))
+	  (if (string-match realgud-gub-auto-suffix-regexp filename)
+	      (setq priority 5)
+	    (setq priority 7))
 	  ))
-    ;; The file isn't in a makefile-mode buffer,
-    ;; Check for an executable file with a .mk extension.
-    (if (setq is-not-directory (not (file-directory-p filename)))
-	(if (and (string-match realgud-gub-makefile-regexp filename))
-	    (if (< priority 6)
-		(progn
-		  (setq priority 6)))))
     priority
     )
 )

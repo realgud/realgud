@@ -18,11 +18,16 @@
 ;;
 
 (defcustom gub-command-name
-  "tortoise -run -interp=F"
+  "tortoise -run -gub= -interp=SS --"
   "File name for executing the Go SSA interpreter/debugger, gub, and command options.
 This should be an executable on your path, or an absolute file name."
   :type 'string
   :group 'gub)
+
+(declare-function gub-query-cmdline  'realgud-gub-core)
+(declare-function gub-parse-cmd-args 'realgud-gub-core)
+(declare-function realgud-run-process 'realgud-core)
+
 
 (defun realgud-gub-fn (&optional opt-command-line no-reset)
   "See `realgud-gub' for details"
