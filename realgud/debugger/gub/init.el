@@ -94,10 +94,18 @@ backtrace listing.")
        :line-group 5)
       )
 
-;; Regular expression that describes which frame is selected in
-;; a debugger backtrace listing.
 (setf (gethash "selected-frame-indicator" realgud-gub-pat-hash)
       realgud-gub-selected-frame-arrow)
+
+;; Regular expression that describes a Go backtrace line
+;; For example:
+;;    /usr/local/go/src/pkg/runtime/panic.c:482 (0x805c956)
+;;    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^-^^^-----------
+(setf (gethash "lang-backtrace" realgud-gub-pat-hash)
+      (make-realgud-loc-pat
+       :regexp "^\\(/.+\\):\\([0-9]+\\) \\((0x[0-9a-f]+)\\)?$"
+       :file-group 1
+       :line-group 2))
 
 ;; Regular expression for a termination message.
 (setf (gethash "termination" realgud-gub-pat-hash)
@@ -105,9 +113,9 @@ backtrace listing.")
 
 (setf (gethash "font-lock-keywords" realgud-gub-pat-hash)
       '(
-	;; ;; File name and line number
-	;; ;; E.g. =>#0  Makefile.in at /tmp/Makefile:216
-	;; ;;                       ----^^^^^^^^^^^^^^^^^
+	;; File name and line number
+	;; E.g. =>#0  Makefile.in at /tmp/Makefile:216
+	;;                        ---^^^^^^^^^^^^^-^^^
 	(" at \\(.*\\):\\([0-9]+\\)"
 	 (1 realgud-file-name-face)
 	 (2 realgud-line-number-face))
