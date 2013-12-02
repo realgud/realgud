@@ -3,8 +3,14 @@
 
 (test-simple-start)
 
-(assert-equal '("gub.sh" ("--gub=\"-I\"") ("gub.sh ./gcd.go" "3" "5"))
+(note "form(s) involving gub.sh shell script")
+(assert-equal '("gub.sh" ("--gub=\"-I\"") ("./gcd.go" "3" "5"))
 	      (gub-parse-cmd-args
 	       '("gub.sh" "--gub=\"-I\"" "--" "./gcd.go" "3" "5")))
+
+(note "form(s) involving underlying tortoise interpreter")
+(assert-equal '("tortoise" ("-run" "-gub=" "-interp=SS") ("./gcd.go" "3" "5"))
+	      (gub-parse-cmd-args
+	       '("tortoise" "-run" "-gub=" "-interp=SS" "--" "./gcd.go" "3" "5")))
 
 (end-tests)

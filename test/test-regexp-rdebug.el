@@ -13,23 +13,23 @@
 (setq text "	from /usr/local/bin/irb:12:in `<main>'")
 (note "traceback location matching")
 (lexical-let ((text "	from /usr/local/bin/irb:12:in `<main>'"))
-  (assert-t (numberp (loc-match text tb)) "basic traceback location")
+  (assert-t (numberp (loc-match text helper-tb)) "basic traceback location")
   (assert-equal "/usr/local/bin/irb"
-		(match-string (realgud-loc-pat-file-group tb)
+		(match-string (realgud-loc-pat-file-group helper-tb)
 			      text)
 		"extract traceback file name")
   (assert-equal "12"
-		(match-string (realgud-loc-pat-line-group tb)
+		(match-string (realgud-loc-pat-line-group helper-tb)
 			      text) "extract traceback line number")
   )
 
 (lexical-let ((text "Breakpoint 1 file /usr/bin/irb, line 10\n"))
-  (assert-t (numberp (loc-match text bps)) "basic breakpoint location")
+  (assert-t (numberp (loc-match text helper-bps)) "basic breakpoint location")
   (assert-equal "/usr/bin/irb"
-		(match-string (realgud-loc-pat-file-group bps)
+		(match-string (realgud-loc-pat-file-group helper-bps)
 			      text) "extract breakpoint file name")
   (assert-equal "10"
-		(match-string (realgud-loc-pat-line-group bps)
+		(match-string (realgud-loc-pat-line-group helper-bps)
 			      text)   "extract breakpoint line number")
   )
 

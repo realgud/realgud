@@ -1,6 +1,6 @@
 (require 'test-simple)
 (load-file "../realgud/debugger/rdebug/rdebug.el")
-
+(declare-function rdebug-get-script-name 'realgud-rdebug)
 (test-simple-start)
 
 (note "rdebug-get-script-name")

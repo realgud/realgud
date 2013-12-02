@@ -48,7 +48,7 @@ NOTE: the above should have each item listed in quotes.
 
   (let (
 	(args orig-args)
-	(interp-regexp ".*\\(gub.sh\\|tortoise\\)$")
+	(interp-regexp ".*\\(^gub\.sh\\|tortoise\\)$")
 
 	;; Things returned
 	(gub-name "gub.sh")
@@ -62,8 +62,7 @@ NOTE: the above should have each item listed in quotes.
       ;; else
       ;; Strip off "gub.sh"
       (when (string-match interp-regexp
-			  (file-name-sans-extension
-			   (file-name-nondirectory (car args))))
+			   (file-name-nondirectory (car args)))
 	(setq gub-name (pop args))
 	)
 
@@ -71,13 +70,13 @@ NOTE: the above should have each item listed in quotes.
       (while args
 	(let ((arg (pop args)))
 	  (cond
-	   ((string-match "^--gub=" arg)
+	   ((string-match "^-[-]?gub=" arg)
 	    (setq gub-args (nconc gub-args (list arg))))
 
-	   ((string-match "^run" arg)
+	   ((string-match "^-run" arg)
 	    (setq gub-args (nconc gub-args (list arg))))
 
-	   ((string-match "^--interp=SS" arg)
+	   ((string-match "^-interp=SS" arg)
 	    (setq gub-args (nconc gub-args (list arg))))
 
 	   ((equal arg "--")) ;; Ignore

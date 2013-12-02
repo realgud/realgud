@@ -4,11 +4,11 @@
 
 (test-simple-start)
 
-(set (make-local-variable 'bps)
+(set (make-local-variable 'helper-bps)
      (gethash "brkpt-set"       realgud-trepanpl-pat-hash))
 (set (make-local-variable 'prompt)
      (gethash "prompt"          realgud-trepanpl-pat-hash))
-(set (make-local-variable 'tb)
+(set (make-local-variable 'helper-tb)
      (gethash "lang-backtrace"  realgud-trepanpl-pat-hash))
 
 ;; ;; FIXME: we get a void variable somewhere in here when running
@@ -54,12 +54,12 @@
 (assert-t (numberp (bp-loc-match text))
 	  "basic breakpoint location")
 (assert-equal "/tmp/File/Basename.pm"
-	      (match-string (realgud-loc-pat-file-group bps)
+	      (match-string (realgud-loc-pat-file-group helper-bps)
 			    text)
 	      "extract breakpoint file name"
 	      )
 (assert-equal "215"
-	      (match-string (realgud-loc-pat-line-group bps)
+	      (match-string (realgud-loc-pat-line-group helper-bps)
 			    text)
 	      "extract breakpoint line number"
 	      )

@@ -1,6 +1,7 @@
 (require 'test-simple)
 (require 'load-relative)
 (load-file "../realgud/common/bp.el")
+(declare-function realgud-bp-remove-icons 'realgud-bp)
 
 (eval-when-compile
   (defvar temp-srcbuf)

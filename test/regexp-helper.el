@@ -2,16 +2,19 @@
 (load-file "../realgud/common/buffer/command.el")
 
 (eval-when-compile
-  (defvar bps)
-  (defvar loc)
-  (defvar tb)
+  (defvar helper-bps)
+  (defvar helper-loc)
+  (defvar helper-tb)
   (defvar prompt-pat)
 )
 
+(declare-function realgud-loc-pat-regexp 'realgud-backtrace-mode)
+(declare-function realgud-cmdbuf-info-loc-regexp 'realgud-buffer-command)
+
 (defun setup-regexp-vars(pat-hash)
-  (setq bps    (gethash "brkpt-set" pat-hash))
-  (setq loc    (gethash "loc"       pat-hash))
-  (setq tb     (gethash "lang-backtrace" pat-hash))
+  (setq helper-bps    (gethash "brkpt-set" pat-hash))
+  (setq helper-loc    (gethash "loc"       pat-hash))
+  (setq helper-tb     (gethash "lang-backtrace" pat-hash))
 )
 
 (defun loc-match(text var)
@@ -20,11 +23,11 @@
 )
 
 (defun bp-loc-match(text)
-  (string-match (realgud-loc-pat-regexp bps) text)
+  (string-match (realgud-loc-pat-regexp helper-bps) text)
 )
 
 (defun tb-loc-match(text)
-  (string-match (realgud-loc-pat-regexp tb) text)
+  (string-match (realgud-loc-pat-regexp helper-tb) text)
 )
 
 (defun cmdbuf-loc-match(text dbgr)

@@ -5,6 +5,9 @@
 (load-file "../realgud/common/buffer/backtrace.el")
 (load-file "../realgud/common/backtrace-mode.el")
 
+(declare-function realgud-backtrace-mode 'realgud-backtrace-mode)
+(declare-function realgud-cmdbuf-init 'realgud-buffer-command)
+
 (eval-when-compile
   (defvar temp-cmdbuf)
   (defvar temp-bt)
@@ -39,3 +42,5 @@ for DEBUGGER-NAME and initializes it to STRING"
     )
   temp-bt
 )
+
+(provide 'realgud-bt-helper)

@@ -1,8 +1,18 @@
 (require 'test-simple)
 (load-file "../realgud/debugger/trepan/trepan.el")
+(load-file "../realgud/common/track-mode.el")
+(load-file "../realgud/common/backtrace-mode.el")
 (test-simple-start)
 
-(defvar temp-cmdbuf nil)
+(eval-when-compile
+  (defvar realgud-pat-hash)
+  (defvar temp-cmdbuf nil)
+)
+
+(declare-function trepan-track-mode 'realgud-trepan)
+(declare-function realgud-track-mode-vars 'realgud-track-mode)
+(declare-function realgud-backtrace-mode 'realgud-backtrace-mode)
+
 (defun setup ()
   (setq temp-cmdbuf (generate-new-buffer "*cmdbuf-test*"))
   ;; (start-process "test-track-mode" temp-cmdbuf nil)

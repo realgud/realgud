@@ -1,6 +1,8 @@
 (load-file "./bt-helper.el")
 (load-file "../realgud/debugger/zshdb/init.el")
 
+(declare-function setup-bt 'realgud-bt-helper)
+
 (test-simple-start)
 
 (eval-when-compile

@@ -1,6 +1,6 @@
 (require 'test-simple)
 (load-file "../realgud/debugger/perldb/perldb.el")
-
+(declare-function realgud-perldb-parse-cmd-args 'realgud-perldb)
 (test-simple-start)
 
 (note "realgud-perldb-parse-cmd-args")
