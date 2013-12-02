@@ -1,6 +1,8 @@
 (require 'test-simple)
 (load-file "../realgud/debugger/gub/core.el")
 
+(declare-function gub-parse-cmd-args 'realgud-gub-core)
+
 (test-simple-start)
 
 (note "form(s) involving gub.sh shell script")

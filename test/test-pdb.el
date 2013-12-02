@@ -1,7 +1,7 @@
 (require 'test-simple)
 (load-file "../realgud/debugger/pdb/pdb.el")
 
-(declare-function realgud-pdb-parse-cmd-args 'realgud-pdb)
+(declare-function pdb-parse-cmd-args 'realgud-pdb)
 
 (test-simple-start)
 

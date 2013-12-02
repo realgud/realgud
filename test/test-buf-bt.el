@@ -2,8 +2,11 @@
 (require 'test-simple)
 (require 'font-lock)
 
+
 (load-file "../realgud/common/buffer/command.el")
 (load-file "../realgud/common/buffer/backtrace.el")
+
+(declare-function realgud-get-buffer-base-name 'realgud-command)
 
 (test-simple-start)
 

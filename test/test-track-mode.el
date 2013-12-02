@@ -1,7 +1,12 @@
 (require 'test-simple)
 (load-file "../realgud/debugger/trepan/trepan.el")
+(load-file "../realgud/common/buffer/command.el")
 (load-file "../realgud/common/track-mode.el")
 (load-file "../realgud/common/backtrace-mode.el")
+
+(declare-function realgud-cmdbuf-init 'realgud-buffer-command)
+(declare-function realgud-srcbuf-init 'realgud-buffer-source)
+
 (test-simple-start)
 
 (eval-when-compile

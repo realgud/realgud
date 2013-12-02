@@ -1,6 +1,8 @@
 (require 'test-simple)
 (load-file "../realgud/common/buffer/command.el")
 (load-file "../realgud/debugger/trepan/init.el")
+(declare-function realgud-cmdbuf-init 'realgud-buffer-command)
+
 (test-simple-start)
 
 (eval-when-compile

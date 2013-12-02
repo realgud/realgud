@@ -2,6 +2,8 @@
 (load-file "../realgud/common/send.el")
 (load-file "../realgud/common/regexp.el")
 (load-file "../realgud/debugger/trepan/init.el")
+
+(declare-function realgud-srcbuf-init 'realgud-buffer-source)
 (test-simple-start)
 
 (defvar temp-cmdbuf nil)
