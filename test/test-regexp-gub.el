@@ -32,4 +32,21 @@
 	      (match-string (realgud-loc-pat-line-group tb)
 			    text)   "extract traceback line number")
 
+(note "panic traceback")
+(setq text "	/tmp/github.com/rocky/ssa-interp/eval/selectorexpr.go:18 +0x9f")
+
+(set (make-local-variable 'panic-tb)
+     (gethash "panic-backtrace"  realgud-gub-pat-hash))
+
+(assert-t (numberp (string-match (realgud-loc-pat-regexp panic-tb) text))
+	  "go panic location")
+(assert-equal "/tmp/github.com/rocky/ssa-interp/eval/selectorexpr.go"
+	      (match-string (realgud-loc-pat-file-group tb)
+			    text) "extract panic traceback file name")
+(assert-equal "18"
+	      (match-string (realgud-loc-pat-line-group tb)
+			    text)   "extract panic traceback line number")
+
+
+
 (end-tests)

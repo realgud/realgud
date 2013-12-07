@@ -10,7 +10,7 @@
 		       "realgud-")
 (require-relative-list '("../../lang/posix-shell") "realgud-lang-")
 
-(defvar realgud-pat-hash)
+(defvar realgud-bashdb-pat-hash)
 (declare-function make-realgud-loc-pat (realgud-loc))
 
 (defvar realgud-bashdb-pat-hash (make-hash-table :test 'equal)

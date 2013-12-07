@@ -23,7 +23,14 @@
   "Display the location mentioned in a location
 described by PT."
   (interactive "d")
-  (realgud-goto-line-for-pt pt "location"))
+  (realgud-goto-line-for-pt pt "general-location"))
+
+
+(defun realgud-gub-goto-panic-location (pt)
+  "Display the location mentioned in a location
+described by PT."
+  (interactive "d")
+  (realgud-goto-line-for-pt pt "panic-backtrace"))
 
 
 (define-key gub-track-mode-map
@@ -32,6 +39,8 @@ described by PT."
   (kbd "C-c !b") 'realgud-goto-debugger-backtrace-line)
 (define-key gub-track-mode-map
   (kbd "C-c !s") 'realgud-gub-goto-location)
+(define-key gub-track-mode-map
+  (kbd "C-c !p") 'realgud-gub-goto-panic-location)
 
 (defun gub-track-mode-hook()
   (if gub-track-mode

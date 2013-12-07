@@ -107,6 +107,16 @@ backtrace listing.")
        :file-group 1
        :line-group 2))
 
+;; Regular expression that describes a Go runtime panic
+;; For example:
+;;	/tmp/github.com/rocky/ssa-interp/eval/selectorexpr.go:18 +0x9f
+;;^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^-^^------
+(setf (gethash "panic-backtrace" realgud-gub-pat-hash)
+      (make-realgud-loc-pat
+       :regexp "^[ \t]*\\(/.+\\):\\([0-9]+\\) \\(+0x[0-9a-f]+\\)?$"
+       :file-group 1
+       :line-group 2))
+
 ;; Regular expression for a termination message.
 (setf (gethash "termination" realgud-gub-pat-hash)
        "^gub: That's all, folks...\n")
