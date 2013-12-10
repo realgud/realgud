@@ -5,6 +5,10 @@
 
 (declare-function realgud-terminate &optional cmdbuf)
 (declare-function realgud-terminate-srcbuf &optional cmdbuf)
+(declare-function realgud-get-cmdbuf   "realgud-buffer-command")
+(declare-function realgud-get-command  "realgud-buffer-command")
+(declare-function realgud-cmd-remap    "realgud-cmd")
+
 
 (defun realgud-cmd-remap(arg cmd-name default-cmd-template key
 			  &optional no-record? frame-switch? realgud-prompts?)

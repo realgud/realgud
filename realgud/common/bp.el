@@ -1,9 +1,13 @@
-;; Copyright (C) 2010, 2012 Rocky Bernstein <rocky@gnu.org>
+;; Copyright (C) 2010, 2012, 2013 Rocky Bernstein <rocky@gnu.org>
 ;; Code associated with breakpoints
 
 (require 'image)
 (require 'load-relative)
 (require-relative-list '("loc" "bp-image-data") "realgud-")
+
+(declare-function realgud-bp-remove-icons 'realgud-bp)
+(declare-function realgud-set-bp-icons 'realgud-bp)
+(declare-function realgud-bp-put-icon 'realgud-bp)
 
 (defvar realgud-bp-enabled-icon nil
   "Icon for an enabled breakpoint in display margin.")
@@ -11,7 +15,7 @@
 (defvar realgud-bp-disabled-icon nil
   "Icon for a disabled breakpoint in display margin.")
 
-(defun set-bp-icons()
+(defun realgud-set-bp-icons()
   (if (display-images-p)
       (progn
 	;; NOTE: if you don't see the icon, check the that the window margin
@@ -60,17 +64,6 @@
   )
 
 
-(defun realgud-bp-add-info (loc)
-  "Record bp information for location LOC."
-  (if (realgud-loc? loc)
-      (let* ((marker (realgud-loc-marker loc))
-             (bp-num (realgud-loc-num loc))
-             )
-        (realgud-bp-put-icon marker 't bp-num)
-        )
-    )
-)
-
 (defun realgud-bp-put-icon (pos enabled bp-num &optional opt-buf)
   "Add a breakpoint icon in the left margin at POS via a `put-image' overlay.
 The alternate string name for the image is created from the value
@@ -89,7 +82,7 @@ also attached to the icon via its display string."
         (help-string "mouse-1: enable/disable bkpt")
         )
     (with-current-buffer buf
-      (unless realgud-bp-enabled-icon (set-bp-icons))
+      (unless realgud-bp-enabled-icon (realgud-set-bp-icons))
       (if enabled
           (progn
             (setq enabled-str "B")
@@ -126,6 +119,17 @@ also attached to the icon via its display string."
       )
     )
   )
+
+(defun realgud-bp-add-info (loc)
+  "Record bp information for location LOC."
+  (if (realgud-loc? loc)
+      (let* ((marker (realgud-loc-marker loc))
+             (bp-num (realgud-loc-num loc))
+             )
+        (realgud-bp-put-icon marker 't bp-num)
+        )
+    )
+)
 
 (defun realgud-bp-remove-icons (&optional opt-begin-pos opt-end-pos)
   "Remove dbgr breakpoint icons (overlays) in the region

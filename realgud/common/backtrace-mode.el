@@ -1,7 +1,13 @@
 ;;; Debugger Backtrace buffer mode settings
-;;; Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011, 2013 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
-(require-relative-list  '("menu") "realgud-")
+(require-relative-list  '("menu" "key") "realgud-")
+(require-relative-list  '("buffer/command") "realgud-buffer-")
+
+(declare-function realgud-populate-debugger-menu 'realgud-menu)
+(declare-function realgud-populate-common-keys 'realgud-menu)
+(declare-function realgud-cmdbuf-pat 'realgud-menu)
+
 (defvar realgud-backtrace-mode-map
   (let ((map  (realgud-populate-debugger-menu (make-sparse-keymap))))
     (suppress-keymap map)

@@ -1,4 +1,4 @@
-;;; Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org> Used to parse
+;;; Copyright (C) 2011, 2013 Rocky Bernstein <rocky@gnu.org> Used to parse
 ;;;  programming-language backtrace-like tracks output. In contrast to
 ;;;  track-mode, there doesn't have to be a process shell arround
 ;;; Compare with backtrace-mode.el which handles backtraces inside the
@@ -14,6 +14,8 @@
    "send"   "shortkey") "realgud-")
 
 (require-relative-list  '("buffer/command") "realgud-buffer-")
+
+(declare-function realgud-track-set-debugger 'realgud-track)
 
 (defvar realgud-backtrack-mode-map
   (let ((map (make-sparse-keymap)))
