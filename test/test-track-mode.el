@@ -9,10 +9,8 @@
 
 (test-simple-start)
 
-(eval-when-compile
-  (defvar realgud-pat-hash)
-  (defvar temp-cmdbuf nil)
-)
+(defvar realgud-pat-hash)
+(defvar temp-cmdbuf nil)
 
 (declare-function trepan-track-mode 'realgud-trepan)
 (declare-function realgud-track-mode-vars 'realgud-track-mode)

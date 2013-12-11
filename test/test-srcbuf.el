@@ -6,7 +6,21 @@
 (declare-function realgud-cmdbuf-init 'realgud-buffer-command)
 (declare-function realgud-srcbuf-init 'realgud-buffer-source)
 
+(declare-function realgud-srcbuf?                   'realgud-buffer-source)
+(declare-function realgud-srcbuf-command-string     'realgud-buffer-source)
+(declare-function realgud-srcbuf-loc-p              'realgud-loc)
+(declare-function realgud-srcbuf-info-debugger-name 'realgud-loc)
+(declare-function realgud-srcbuf-info-cmdproc       'realgud-track)
+(declare-function realgud-srcbuf-init-or-update     'realgud-track)
+
 (test-simple-start)
+
+(eval-when-compile
+  (defvar realgud-pat-hash)
+  (defvar realgud-srcbuf-info)
+  (defvar temp-srcbuf)
+  (defvar test-filename)
+)
 
 (defvar temp-cmdbuf nil)
 (defun tear-down()

@@ -1,10 +1,27 @@
 (require 'test-simple)
 (load-file "../realgud/common/track.el")
 (load-file "../realgud/common/core.el")
+(load-file "../realgud/common/loc.el")
 (load-file "../realgud/debugger/trepan/init.el")
-(declare-function realgud-cmdbuf-init 'realgud-buffer-command)
+
+(declare-function realgud-cmdbuf-init          'realgud-buffer-command)
+(declare-function realgud-loc-filename         'realgud-loc)
+(declare-function realgud-loc-p                'realgud-loc)
+(declare-function realgud-loc-line-number      'realgud-loc)
+(declare-function realgud-track-from-region    'realgud-track)
+(declare-function realgud-track-loc            'realgud-track)
+(declare-function realgud-track-loc-remaining  'realgud-track)
+(declare-function realgud-track-selected-frame 'realgud-track)
+(declare-function realgud-track-termination?   'realgud-track)
 
 (test-simple-start)
+
+(eval-when-compile
+  (defvar debugger-output)
+  (defvar line-number)
+  (defvar realgud-pat-hash)
+  (defvar test-filename)
+)
 
 ;; Some setup usually done in setting up the buffer.
 ;; We customize this for the debugger trepan. Others may follow.
@@ -15,15 +32,17 @@
 (realgud-cmdbuf-init (current-buffer) "trepan"
 		  (gethash "trepan" realgud-pat-hash))
 
-(setq filename (symbol-file 'test-simple))
+(setq test-filename (symbol-file 'test-simple))
 (setq line-number 7)
 (setq debugger-output (format "-> (%s:%d)\n(trepan):\n"
-			      filename line-number))
+			      test-filename line-number))
 (lexical-let ((loc (realgud-track-loc debugger-output nil)))
   (assert-t (realgud-loc-p loc)   "loc extracted")
   (assert-equal "\n(trepan):\n"
-		(realgud-track-loc-remaining debugger-output) "loc-remaining")
-  (assert-equal filename (realgud-loc-filename loc) "loc filename extracted")
+		(realgud-track-loc-remaining debugger-output)
+		"loc-remaining")
+  (assert-equal test-filename (realgud-loc-filename loc)
+		"loc filename extracted")
   (assert-equal line-number (realgud-loc-line-number loc)
 		"loc line-number extracted")
   )
@@ -63,7 +82,7 @@ trepan: That's all, folks...
 
 
 ;; (setq debugger-bp-output (format "Breakpoint %d set at line %d\n\tin file %s.\n"
-;; 				  bp-num line-number filename))
+;; 				  bp-num line-number test-filename))
 ;; (setq bp-loc (realgud-track-bp-loc debugger-bp-output nil))
 ;; (setq bp-num 2)
 
