@@ -1,10 +1,22 @@
 (load-file "./regexp-helper.el")
+(load-file "../realgud/common/regexp.el")
 (load-file "../realgud/debugger/gub/init.el")
+
+(declare-function realgud-cmdbuf-info-loc-regexp 'realgud-buffer-command)
+(declare-function cmdbuf-loc-match               'realgud-regexp)
+(declare-function realgud-loc-pat-regexp         'realgud-regexp)
+(declare-function realgud-loc-pat-file-group     'realgud-regexp)
+(declare-function realgud-loc-pat-line-group     'realgud-regexp)
+(declare-function realgud-cmdbuf-info-file-group 'realgud-regexp)
+(declare-function realgud-cmdbuf-info-line-group 'realgud-regexp)
+(declare-function realgud-cmdbuf-info            'realgud-regexp)
+(declare-function make-realgud-cmdbuf-info       'realgud-regexp)
 
 (test-simple-start)
 
 (eval-when-compile
   (defvar dbg-name)
+  (defvar realgud-pat-hash)
   (defvar loc-pat)
   (defvar test-dbgr)
   (defvar test-text)

@@ -1,7 +1,15 @@
 (require 'test-simple)
 (load-file "../realgud.el")
 
+(declare-function realgud-loaded-features    'realgud)
+(declare-function realgud-unload-features    'realgud-regexp)
+(declare-function realgud-string-starts-with 'realgud-regexp)
+
 (test-simple-start)
+
+(eval-when-compile
+  (defvar realgud-features)
+)
 
 (note "realgud")
 
