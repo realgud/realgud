@@ -25,6 +25,12 @@ This should be an executable on your path, or an absolute file name."
   :type 'string
   :group 'realgud-gdb)
 
+(declare-function gdb-track-mode (bool))
+(declare-function realgud-command            'realgud-gdb-core)
+(declare-function realgud-gdb-parse-cmd-args 'realgud-gdb-core)
+(declare-function realgud-gdb-query-cmdline  'realgud-gdb-core)
+(declare-function realgud-run-process        'realgud-core)
+
 ;; -------------------------------------------------------------------
 ;; The end.
 ;;

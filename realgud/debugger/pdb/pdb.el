@@ -26,6 +26,9 @@ This should be an executable on your path, or an absolute file name."
   :group 'pdb)
 
 (declare-function pdb-track-mode (bool))
+(declare-function pdb-query-cmdline  'realgud-pdb-core)
+(declare-function pdb-parse-cmd-args 'realgud-pdb-core)
+(declare-function realgud-run-process 'realgud-core)
 
 ;; -------------------------------------------------------------------
 ;; The end.

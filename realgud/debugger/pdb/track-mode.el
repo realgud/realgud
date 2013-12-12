@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2012 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2012-2013 Rocky Bernstein <rocky@gnu.org>
 ;;; Python "pdb" Debugger tracking a comint
 ;;; or eshell buffer.
 
@@ -15,7 +15,10 @@
 
 (realgud-track-mode-vars "pdb")
 
-(declare-function realgud-track-mode(bool))
+(declare-function realgud-track-mode 'realgud-track-mode)
+(declare-function realgud-track-mode-setup 'realgud-track-mode)
+(declare-function realgud-track-set-debugger 'realgud-track-mode)
+(declare-function realgud-python-populate-command-keys 'realgud-lang-python)
 
 (realgud-python-populate-command-keys pdb-track-mode-map)
 

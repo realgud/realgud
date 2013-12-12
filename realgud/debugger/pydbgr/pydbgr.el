@@ -27,6 +27,9 @@ This should be an executable on your path, or an absolute file name."
   :group 'pydbgr)
 
 (declare-function pydbgr-track-mode (bool))
+(declare-function pydbgr-query-cmdline  'realgud-pydbgr-core)
+(declare-function pydbgr-parse-cmd-args 'realgud-pydbgr-core)
+(declare-function realgud-run-process 'realgud-core)
 
 ;; -------------------------------------------------------------------
 ;; The end.

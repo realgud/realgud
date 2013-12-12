@@ -1,4 +1,4 @@
-;;; Copyright (C) 2011, 2012 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011-2013 Rocky Bernstein <rocky@gnu.org>
 ;;; Stock Perl Debugger "perldb5" tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))
@@ -14,7 +14,12 @@
 
 (realgud-track-mode-vars "realgud-perldb")
 
-(declare-function realgud-track-mode(bool))
+(declare-function realgud-perl-populate-command-keys
+		  'realgud-perldb)
+(declare-function realgud-track-mode 'realgud-track-mode)
+(declare-function realgud-track-mode-setup 'realgud-track-mode)
+(declare-function realgud-track-set-debugger 'realgud-track-mode)
+
 (realgud-perl-populate-command-keys realgud-perldb-track-mode-map )
 
 ;; Perldb doesn't have stack switching commands.

@@ -23,6 +23,12 @@
   :type 'string
   :group 'realgud-perldb)
 
+(declare-function realgud-perldb-track-mode (bool))
+(declare-function realgud-perldb-query-cmdline  'realgud-perldb-core)
+(declare-function realgud-perldb-parse-cmd-args 'realgud-perldb-core)
+(declare-function realgud-run-process 'realgud-core)
+
+
 ;; -------------------------------------------------------------------
 ;; The end.
 ;;

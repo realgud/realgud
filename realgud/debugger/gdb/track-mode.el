@@ -14,7 +14,11 @@
 
 (realgud-track-mode-vars "realgud-gdb")
 
-(declare-function realgud-track-mode(bool))
+(declare-function realgud-gdb-track-mode-hook 'realgud-gdb)
+(declare-function realgud-track-mode 'realgud-track-mode)
+(declare-function realgud-track-mode-hook 'realgud-track-mode)
+(declare-function realgud-track-mode-setup 'realgud-track-mode)
+(declare-function realgud-track-set-debugger 'realgud-track-mode)
 
 (define-key realgud-gdb-track-mode-map
   (kbd "C-c !b") 'realgud-goto-debugger-backtrace-line)

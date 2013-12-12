@@ -25,6 +25,9 @@ This should be an executable on your path, or an absolute file name."
   :group 'bashdb)
 
 (declare-function bashdb-track-mode (bool))
+(declare-function bashdb-query-cmdline  'realgud-bashdb-core)
+(declare-function bashdb-parse-cmd-args 'realgud-bashdb-core)
+(declare-function realgud-run-process 'realgud-core)
 
 ;; -------------------------------------------------------------------
 ;; The end.

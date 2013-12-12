@@ -1,4 +1,4 @@
-;;; Copyright (C) 2011, 2012, 2013 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011-2013 Rocky Bernstein <rocky@gnu.org>
 ;;; Perl trepanning Debugger tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))

@@ -25,6 +25,9 @@ This should be an executable on your path, or an absolute file name."
   :group 'kshdb)
 
 (declare-function kshdb-track-mode (bool))
+(declare-function kshdb-query-cmdline  'realgud-kshdb-core)
+(declare-function kshdb-parse-cmd-args 'realgud-kshdb-core)
+(declare-function realgud-run-process 'realgud-core)
 
 ;; -------------------------------------------------------------------
 ;; The end.

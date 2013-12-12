@@ -1,4 +1,4 @@
-;;; Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011, 2013 Rocky Bernstein <rocky@gnu.org>
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
@@ -7,6 +7,11 @@
 			 "../../common/lang")
 		       "realgud-")
 (require-relative-list '("init") "realgud-perldb-")
+
+(declare-function realgud-lang-mode? 'realgud-lang)
+(declare-function realgud-parse-command-arg 'realgud-core)
+(declare-function realgud-query-cmdline 'realgud-core)
+(declare-function realgud-suggest-invocation 'realgud-core)
 
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
