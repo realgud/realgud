@@ -3,8 +3,7 @@
 (require-relative-list '("helper") "realgud-")
 (require-relative-list '("buffer/helper") "realgud-buffer-")
 
-(fn-p-to-fn?-alias 'one-window-p)
-(declare-function one-window?(bool))
+(declare-function one-window-p(bool))
 
 (defun realgud-window-update-position (buffer marker)
   "Update BUFFER to position specified with MARKER.
@@ -56,7 +55,7 @@ See also `realgud-window-src'"
 	  (setq src-window
 		(if (eq window cmd-window)
 		    ;; FIXME: generalize what to do here.
-		    (if (one-window? 't)
+		    (if (one-window-p 't)
 			(split-window)
 		      (next-window window 'no-minibuf))
 		  window))
@@ -85,7 +84,7 @@ See also `realgud-window-src'"
 	    (setq cmd-window
 		  (if (eq window src-window)
 		      ;; FIXME: generalize what to do here.
-		      (if (one-window? 't)
+		      (if (one-window-p 't)
 			  (split-window)
 			(next-window window 'no-minibuf))
 		    window))
@@ -121,7 +120,7 @@ See also `realgud-window-src'"
 	    (setq bt-window
 		  (if (eq window src-window)
 		      ;; FIXME: generalize what to do here.
-		      (if (one-window? 't)
+		      (if (one-window-p 't)
 			  (split-window)
 			(next-window window 'no-minibuf))
 		    window))
@@ -162,7 +161,7 @@ See also `realgud-window-src'"
 ;; 	(unless src-window
 ;; 	  (setq src-window
 ;; 		(if (eq window cmd-window)
-;; 		    (if (one-window? 't) (split-window) (next-window window))
+;; 		    (if (one-window-p 't) (split-window) (next-window window))
 ;; 		  window))
 ;; 	  (set-window-buffer src-window src-buffer))
 ;; 	)

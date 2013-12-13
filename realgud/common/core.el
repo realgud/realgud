@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2011, 2012 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2013 Rocky Bernstein <rocky@gnu.org>
 ; (require 'term)
 (if (< emacs-major-version 23)
     (error
@@ -11,6 +11,15 @@
 (require-relative-list '("buffer/command" "buffer/source") "realgud-buffer-")
 
 (declare-function realgud-short-key-mode-setup "shortkey.el")
+
+(declare-function comint-mode  'comint)
+(declare-function realgud-command-string         'realgud-buffer-command)
+(declare-function realgud-cmdbuf-command-string  'realgud-buffer-command)
+(declare-function realgud-srcbuf-init            'realgud-buffer-source)
+(declare-function realgud-srcbuf?                'realgud-buffer-source)
+(declare-function realgud-srcbuf-debugger-name   'realgud-buffer-source)
+
+
 
 (defvar realgud-srcbuf-info)
 

@@ -10,13 +10,13 @@
   value is associated filesystem string presumably in the
   filesystem")
 
-(fn-p-to-fn?-alias 'file-exists-p)
-(declare-function file-exists?(file))
+(declare-function buffer-killed? 'helper)
+(declare-function compilation-find-file 'compile)
 
 (defun realgud-file-line-count(filename)
   "Return the number of lines in file FILENAME, or nil FILENAME can't be
 found"
-  (if (file-exists? filename)
+  (if (file-exists-p filename)
       (let ((file-buffer (find-file-noselect filename)))
 	(with-current-buffer-safe file-buffer
 	  (line-number-at-pos (point-max))))
@@ -42,14 +42,14 @@ problem as best as we can determine."
 	(if (gethash filename realgud-file-remap)
 	    (progn
 	      (setq remapped-filename (gethash filename realgud-file-remap))
-	      (if (file-exists? remapped-filename)
+	      (if (file-exists-p remapped-filename)
 		  (setq filename remapped-filename)
 		(remhash filename realgud-file-remap)))
 	  (progn
 	    (setq remapped-filename
 		  (buffer-file-name
 		   (compilation-find-file (point-marker) filename nil)))
-	    (if (and remapped-filename (file-exists? remapped-filename))
+	    (if (and remapped-filename (file-exists-p remapped-filename))
 	      (progn
 		(puthash filename remapped-filename realgud-file-remap)
 		(setq filename remapped-filename)))

@@ -1,14 +1,16 @@
-;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2011, 2013 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
 (require-relative-list  '("send") "realgud-")
 (require-relative-list  '("buffer/command") "realgud-buffer-")
 
+(declare-function buffer-killed? 'helper)
+(declare-function realgud-cmdbuf-info-in-srcbuf?=   'realgud-buffer-command)
+(declare-function realgud-cmdbuf?      'realgud-buffer-command)
+(declare-function realgud-command      'realgud-cmd)
+(declare-function realgud-get-cmdbuf   'realgud-buffer-command)
+(declare-function realgud-get-command  'realgud-buffer-command)
 (declare-function realgud-terminate &optional cmdbuf)
 (declare-function realgud-terminate-srcbuf &optional cmdbuf)
-(declare-function realgud-get-cmdbuf   "realgud-buffer-command")
-(declare-function realgud-get-command  "realgud-buffer-command")
-(declare-function realgud-cmd-remap    "realgud-cmd")
-
 
 (defun realgud-cmd-remap(arg cmd-name default-cmd-template key
 			  &optional no-record? frame-switch? realgud-prompts?)
