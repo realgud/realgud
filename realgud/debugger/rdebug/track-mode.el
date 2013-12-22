@@ -15,7 +15,10 @@
 
 (realgud-track-mode-vars "rdebug")
 
-(declare-function realgud-track-mode(bool))
+(declare-function realgud-track-mode 'realgud-track-mode)
+(declare-function realgud-track-mode-hook 'realgud-track-mode)
+(declare-function realgud-track-mode-setup 'realgud-track-mode)
+(declare-function realgud-track-set-debugger 'realgud-track-mode)
 
 (realgud-ruby-populate-command-keys rdebug-track-mode-map)
 

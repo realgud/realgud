@@ -15,7 +15,10 @@
 
 (realgud-track-mode-vars "trepan")
 
-(declare-function realgud-track-mode(bool))
+(declare-function realgud-track-mode 'realgud-track-mode)
+(declare-function realgud-track-mode-hook 'realgud-track-mode)
+(declare-function realgud-track-mode-setup 'realgud-track-mode)
+(declare-function realgud-track-set-debugger 'realgud-track-mode)
 
 (defun realgud-trepan-goto-control-frame-line (pt)
   "Display the location mentioned by a control-frame line

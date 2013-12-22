@@ -41,7 +41,7 @@
   (if trepanx-track-mode
       (progn
 	(realgud-track-mode-setup 't)
-	(repanx-track-mode-hook))
+	(trepanx-track-mode-hook))
     (progn
       (setq realgud-track-mode nil)
       ))

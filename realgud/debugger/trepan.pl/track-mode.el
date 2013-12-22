@@ -14,7 +14,10 @@
 
 (realgud-track-mode-vars "realgud-trepanpl")
 
-(declare-function realgud-track-mode(bool))
+(declare-function realgud-track-mode 'realgud-track-mode)
+(declare-function realgud-track-mode-hook 'realgud-track-mode)
+(declare-function realgud-track-mode-setup 'realgud-track-mode)
+(declare-function realgud-track-set-debugger 'realgud-track-mode)
 
 (defun realgud-trepanpl-goto-syntax-error-line (pt)
   "Display the location mentioned in a Syntax error line

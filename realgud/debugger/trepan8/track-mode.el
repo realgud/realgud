@@ -15,7 +15,10 @@
 
 (realgud-track-mode-vars "trepan8")
 
-(declare-function realgud-track-mode(bool))
+(declare-function realgud-track-mode 'realgud-track-mode)
+(declare-function realgud-track-mode-hook 'realgud-track-mode)
+(declare-function realgud-track-mode-setup 'realgud-track-mode)
+(declare-function realgud-track-set-debugger 'realgud-track-mode)
 
 (realgud-ruby-populate-command-keys trepan8-track-mode-map)
 
