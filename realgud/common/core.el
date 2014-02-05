@@ -250,7 +250,8 @@ marginal icons is reset."
 	      (point-max)
 	      (realgud-srcbuf-init src-buffer cmdproc-buffer
 				debugger-name cmdline-list))
-	  (insert (format "Failed to invoke shell command: %s %s" program args)))
+	  (insert (format "Failed to invoke shell command: %s with args %s" program
+			  args)))
 	(process-put process 'buffer cmdproc-buffer)))
     cmdproc-buffer))
 
