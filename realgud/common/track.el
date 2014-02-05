@@ -1,4 +1,4 @@
-;;; Copyright (C) 2011-2013 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011-2014 Rocky Bernstein <rocky@gnu.org>
 (declare-function realgud-terminate &optional cmdbuf)
 
 (defconst realgud-track-char-range 10000
@@ -134,6 +134,15 @@ evaluating (realgud-cmdbuf-info-loc-regexp realgud-cmdbuf-info)"
 		    (realgud-cmdbuf-info-in-debugger?= 't)
 		    (realgud-cmdbuf-mode-line-update)
 		    )
+		(progn
+		  (setq bp-loc (realgud-track-bp-delete text-sans-loc cmd-mark cmdbuf))
+		  (if bp-loc
+		      (let ((src-buffer (realgud-loc-goto bp-loc)))
+			(realgud-cmdbuf-add-srcbuf src-buffer cmdbuf)
+			(with-current-buffer src-buffer
+			  (message "deleting breakpoints not implemented yet")
+			  (realgud-bp-del-info bp-loc)
+			  ))))
 		)
 	      )
 	  )
@@ -369,6 +378,49 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 				    ;; Set to return location
 				    loc-or-error)))
 			    nil)))
+		  nil))
+	    nil))
+      (and (message "Current buffer %s is not a debugger command buffer"
+		    (current-buffer)) nil)
+      )
+    )
+)
+
+(defun realgud-track-bp-delete(text &optional cmd-mark cmdbuf ignore-file-re)
+  "Do regular-expression matching see if a breakpoint has been delete inside
+string TEXT. If we match, we will return the location of the breakpoint found
+from in command buffer. Otherwise nil is returned."
+
+  ; NOTE: realgud-cmdbuf-info is a buffer variable local to the process
+  ; running the debugger. It contains a realgud-cmdbuf-info "struct". In
+  ; that struct is the regexp hash to match positions. By setting the
+  ; the fields of realgud-cmdbuf-info appropriately we can accomodate a
+  ; family of debuggers -- one at a time -- for the buffer process.
+
+  (setq cmdbuf (or cmdbuf (current-buffer)))
+  (with-current-buffer cmdbuf
+    (if (realgud-cmdbuf?)
+	(let* ((loc-pat (realgud-cmdbuf-pat "brkpt-del"))
+	       (found-loc nil)
+	       )
+	  (if loc-pat
+	      (let ((bp-num-group   (realgud-loc-pat-num loc-pat))
+		    (loc-regexp     (realgud-loc-pat-regexp loc-pat))
+		    (loc))
+		(if (and loc-regexp (string-match loc-regexp text))
+		    (let* ((bp-num (string-to-number (match-string bp-num-group text)))
+			   (info realgud-cmdbuf-info)
+			   (bp-list (realgud-cmdbuf-info-bp-list info))
+			   )
+		      (while (and (not found-loc) (setq loc (car-safe bp-list)))
+			(setq bp-list (cdr bp-list))
+			(if (eq (realgud-loc-num loc) bp-num)
+			    (progn
+			      (setq found-loc loc)
+			      (message "found bp %d in %s" bp-num found-loc))
+			))
+		      ;; return the location:
+		      found-loc)
 		  nil))
 	    nil))
       (and (message "Current buffer %s is not a debugger command buffer"

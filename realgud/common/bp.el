@@ -1,4 +1,4 @@
-;; Copyright (C) 2010, 2012, 2013 Rocky Bernstein <rocky@gnu.org>
+;; Copyright (C) 2010, 2012-2014 Rocky Bernstein <rocky@gnu.org>
 ;; Code associated with breakpoints
 
 (require 'image)
@@ -127,6 +127,17 @@ also attached to the icon via its display string."
              (bp-num (realgud-loc-num loc))
              )
         (realgud-bp-put-icon marker 't bp-num)
+        )
+    )
+)
+
+(defun realgud-bp-del-info (loc)
+  "Remove bp information for location LOC."
+  (if (realgud-loc? loc)
+      (let* ((marker (realgud-loc-marker loc))
+             (bp-num (realgud-loc-num loc))
+             )
+        (realgud-bp-put-icon marker 'nil bp-num)
         )
     )
 )
