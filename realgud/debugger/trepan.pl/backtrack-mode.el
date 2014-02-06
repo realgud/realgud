@@ -1,4 +1,4 @@
-;;; Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011, 2014 Rocky Bernstein <rocky@gnu.org>
 
 ;;; Mode for parsing various kinds of backtraces found in Perl
 
@@ -12,6 +12,8 @@
 		       "realgud-")
 (require-relative-list '("core" "init") "realgud-trepanpl-")
 (require-relative-list '("../../lang/perl") "realgud-lang-")
+
+(declare-function realgud-backtrack-set-debugger 'realgud-common-backtrack-mode)
 
 (realgud-backtrack-mode-vars "trepanpl")
 (set-keymap-parent trepanpl-backtrack-mode-map realgud-backtrack-mode-map)

@@ -16,7 +16,8 @@
 (realgud-backtrack-mode-vars "trepan")
 (set-keymap-parent trepan-backtrack-mode-map realgud-backtrack-mode-map)
 
-(declare-function realgud-backtrack-mode(bool))
+(declare-function realgud-backtrack-mode         'realgud-common-backtrack-mode)
+(declare-function realgud-backtrack-set-debugger 'realgud-common-backtrack-mode)
 
 (defun realgud-trepan-goto-control-frame-line (pt)
   "Display the location mentioned by a control-frame line
