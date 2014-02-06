@@ -26,7 +26,8 @@
 
 (make-variable-buffer-local  (defvar realgud-track-mode))
 (fn-p-to-fn?-alias 'realgud-loc-p)
-(declare-function realgud-loc?(loc))
+(declare-function realgud-loc?                    'realgud-loc)
+(declare-function realgud-cmdbuf-mode-line-update 'realgud-buffer-command)
 
 (defvar realgud-track-divert-string)
 

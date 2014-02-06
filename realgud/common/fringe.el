@@ -1,5 +1,7 @@
-;;; Copyright (C) 2010, 2012 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2012, 2014 Rocky Bernstein <rocky@gnu.org>
 ;; Fringe marks for history of stopping points
+
+(declare-function realgud-loc-hist-item-at       'realgud-lochist)
 
 ;; Bitmap for hollow overlay-arrow in fringe
 (if (display-images-p)

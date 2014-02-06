@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010-2013 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2014 Rocky Bernstein <rocky@gnu.org>
 ; (require 'term)
 (if (< emacs-major-version 23)
     (error
@@ -12,14 +12,22 @@
 
 (declare-function realgud-short-key-mode-setup "shortkey.el")
 
+(declare-function comint-exec  'comint)
 (declare-function comint-mode  'comint)
-(declare-function realgud-command-string         'realgud-buffer-command)
-(declare-function realgud-cmdbuf-command-string  'realgud-buffer-command)
-(declare-function realgud-srcbuf-init            'realgud-buffer-source)
-(declare-function realgud-srcbuf?                'realgud-buffer-source)
-(declare-function realgud-srcbuf-debugger-name   'realgud-buffer-source)
-
-
+(declare-function realgud-cmdbuf-args=                'realgud-buffer-command)
+(declare-function realgud-cmdbuf-command-string       'realgud-buffer-command)
+(declare-function realgud-cmdbuf-debugger-name        'realgud-buffer-command)
+(declare-function realgud-cmdbuf-info-cmd-args=       'realgud-buffer-command)
+(declare-function realgud-cmdbuf-info-in-debugger?=   'realgud-buffer-command)
+(declare-function realgud-cmdbuf-mode-line-update     'realgud-buffer-command)
+(declare-function realgud-command-string              'realgud-buffer-command)
+(declare-function realgud-fringe-erase-history-arrows 'realgud-buffer-command)
+(declare-function realgud-srcbuf-init                 'realgud-buffer-source)
+(declare-function realgud-srcbuf?                     'realgud-buffer-source)
+(declare-function realgud-srcbuf-debugger-name        'realgud-buffer-source)
+(declare-function realgud-srcbuf-command-string       'realgud-buffer-source)
+(declare-function realgud-suggest-lang-file           'realgud-lang)
+(declare-function realgud-reset                       'realgud-reset)
 
 (defvar realgud-srcbuf-info)
 
