@@ -120,6 +120,20 @@ also attached to the icon via its display string."
     )
   )
 
+(defun realgud-bp-del-icon (pos &optional opt-buf)
+  "Delete breakpoint icon in the left margin at POS via a `put-image' overlay.
+The alternate string name for the image is created from the value
+of ENABLED and BP-NUM.  In particular, if ENABLED is 't and
+BP-NUM is 5 the overlay string is be 'B5:' If ENABLED is false
+then the overlay string is 'b5:'. Breakpoint text properties are
+also attached to the icon via its display string."
+  (let ((buf (or opt-buf (current-buffer))))
+    (with-current-buffer buf
+      (realgud-bp-remove-icons pos)
+    )
+  )
+)
+
 (defun realgud-bp-add-info (loc)
   "Record bp information for location LOC."
   (if (realgud-loc? loc)
@@ -137,7 +151,7 @@ also attached to the icon via its display string."
       (let* ((marker (realgud-loc-marker loc))
              (bp-num (realgud-loc-num loc))
              )
-        (realgud-bp-put-icon marker 'nil bp-num)
+        (realgud-bp-del-icon marker)
         )
     )
 )

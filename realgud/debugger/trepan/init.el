@@ -76,7 +76,7 @@ realgud-loc-pat struct")
 ;;   Deleted breakpoint 1.
 (setf (gethash "brkpt-del" realgud-trepan-pat-hash)
       (make-realgud-loc-pat
-       :regexp "^Deleted breakpoint \\([0-9]+\\)\n"
+       :regexp "^Deleted breakpoint \\([0-9]+\\).\n"
        :num 1))
 
 (defconst realgud-trepan-selected-frame-indicator "-->"

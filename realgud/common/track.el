@@ -140,7 +140,6 @@ evaluating (realgud-cmdbuf-info-loc-regexp realgud-cmdbuf-info)"
 		      (let ((src-buffer (realgud-loc-goto bp-loc)))
 			(realgud-cmdbuf-add-srcbuf src-buffer cmdbuf)
 			(with-current-buffer src-buffer
-			  (message "deleting breakpoints not implemented yet")
 			  (realgud-bp-del-info bp-loc)
 			  ))))
 		)
@@ -417,7 +416,9 @@ from in command buffer. Otherwise nil is returned."
 			(if (eq (realgud-loc-num loc) bp-num)
 			    (progn
 			      (setq found-loc loc)
-			      (message "found bp %d in %s" bp-num found-loc))
+			      ;; Remove loc from breakpoint list
+			      (realgud-cmdbuf-info-bp-list=
+			       (remove loc (realgud-cmdbuf-info-bp-list info))))
 			))
 		      ;; return the location:
 		      found-loc)
