@@ -5,8 +5,6 @@
 (require 'load-relative)
 (require-relative-list '("loc" "bp-image-data") "realgud-")
 
-(declare-function realgud-bp-remove-icons 'realgud-bp)
-
 (defvar realgud-bp-enabled-icon nil
   "Icon for an enabled breakpoint in display margin.")
 

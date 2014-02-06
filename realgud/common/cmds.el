@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010-2011, 2013 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2011, 2013-2014 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
 (require-relative-list  '("send") "realgud-")
 (require-relative-list  '("buffer/command") "realgud-buffer-")
@@ -60,6 +60,24 @@ if none has been set in the command hash."
     "Continue execution."
     (interactive "MContinue args: ")
     (realgud-cmd-remap arg "continue" "continue" "c")
+)
+
+(defun realgud-cmd-delete(&optional arg)
+    "Delete breakpoint."
+    (interactive "NBreakpoint number: ")
+    (realgud-cmd-remap arg "delete" "delete %p" "D")
+)
+
+(defun realgud-cmd-disable(&optional arg)
+    "Delete breakpoint."
+    (interactive "NBreakpoint number: ")
+    (realgud-cmd-remap arg "disable" "disable %p" "-")
+)
+
+(defun realgud-cmd-enable(&optional arg)
+    "Delete breakpoint."
+    (interactive "NBreakpoint number: ")
+    (realgud-cmd-remap arg "enable" "enable %p" "+")
 )
 
 (defun realgud-cmd-eval(arg)
