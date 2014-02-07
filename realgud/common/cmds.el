@@ -63,15 +63,14 @@ if none has been set in the command hash."
     (realgud-cmd-remap arg "continue" "continue" "c")
 )
 
-(defun realgud-cmd-delete(&optional arg)
+(defun realgud-cmd-delete(arg)
     "Delete breakpoint."
     (interactive "pBreakpoint number: ")
-    (unless arg
-      (setq line-num (line-number-at-pos))
-      (setq arg (realgud-get-bpnum-from-line-num line-num))
-      )
-    (realgud-cmd-remap arg "delete" "delete %p" "D")
-)
+    (setq line-num (line-number-at-pos))
+    (let ((arg (realgud-get-bpnum-from-line-num line-num)))
+      (if arg
+	  (realgud-cmd-remap arg "delete" "delete %p" "D")))
+    )
 
 (defun realgud-cmd-disable(&optional arg)
     "Disable breakpoint."
