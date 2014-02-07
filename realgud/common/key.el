@@ -79,6 +79,7 @@ Nor does it touch prefix keys; for that see `realgud-populate-keys-standard'"
   (let ((prefix-map (make-sparse-keymap)))
     (define-key map "b" 'realgud-cmd-break)
     (define-key map "D" 'realgud-cmd-delete)
+    (define-key map [delete] 'realgud-cmd-delete)
     (define-key map " " 'realgud-cmd-step)
     (define-key map "f" 'realgud-cmd-finish)
     (define-key map "n" 'realgud-cmd-next)
