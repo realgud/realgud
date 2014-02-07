@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2011, 2014 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
 
 (defcustom realgud-populate-common-fn-keys-function
@@ -75,9 +75,10 @@ The variable `realgud-populate-common-fn-keys-function' controls the layout."
 
 This does not touch change menus; for that see `realgud-populate-debugger-menu'.
 Nor does it touch prefix keys; for that see `realgud-populate-keys-standard'"
-  ;; Keys to view other buffers.
+  ;; Common Debugger functions
   (let ((prefix-map (make-sparse-keymap)))
     (define-key map "b" 'realgud-cmd-break)
+    (define-key map "D" 'realgud-cmd-delete)
     (define-key map " " 'realgud-cmd-step)
     (define-key map "f" 'realgud-cmd-finish)
     (define-key map "n" 'realgud-cmd-next)

@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2012-2013 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2012-2014 Rocky Bernstein <rocky@gnu.org>
 ;;; source-code buffer code
 (eval-when-compile
   (require 'cl-lib)
@@ -130,8 +130,8 @@ Information is put in an internal buffer called *Describe*."
   (src-buffer cmdproc-buffer debugger-name cmd-args)
   "Initialize SRC-BUFFER as a source-code buffer for a debugger.
 CMDPROC-BUFFER is the process-command buffer containing the
-debugger.  DEBUGGER-NAME is the name of the debugger.  as a main
-program."
+debugger.  DEBUGGER-NAME is the name of the debugger as a main
+program name."
   (with-current-buffer cmdproc-buffer
     (set-buffer src-buffer)
     (set (make-local-variable 'realgud-srcbuf-info)
@@ -166,7 +166,7 @@ in it with those from CMDPROC-BUFFER"
       (realgud-srcbuf-init src-buffer cmdproc-buffer "unknown" nil)))))
 
 (defun realgud-srcbuf-command-string(src-buffer)
-  "Get the command string invocation for this source buffer"
+  "Get the command string invocation for SRC-BUFFER"
   (with-current-buffer-safe src-buffer
     (cond
      ((and (realgud-srcbuf? src-buffer)
@@ -175,5 +175,45 @@ in it with those from CMDPROC-BUFFER"
 		 (realgud-sget 'srcbuf-info 'cmd-args)
 		 " "))
      (t nil))))
+
+(defun realgud-srcbuf-bp-list(&optional buffer)
+  "Return a list of breakpoint loc structures that reside in
+BUFFER which should be an initialized source buffer."
+  (let ((src-buffer (realgud-get-srcbuf buffer)))
+    (if src-buffer
+	(with-current-buffer src-buffer
+	(let* ((info realgud-srcbuf-info)
+	       (cmdbuf (realgud-srcbuf-info-cmdproc info)))
+	  (with-current-buffer cmdbuf
+	    (let ((bp-list
+		   (realgud-cmdbuf-info-bp-list realgud-cmdbuf-info)))
+	      (delq nil
+		    (mapcar (lambda (loc)
+			      (cond ((eq src-buffer
+					 (marker-buffer (realgud-loc-marker loc)))
+				     loc)
+				    (nil)))
+			    bp-list))
+	      )))))))
+
+(defun realgud-get-bpnum-from-line-num(line-num &optional buffer)
+  "Find a breakpoint number associated with LINE-NUM in source code BUFFER.
+If none exists return nil"
+  (let ((src-buffer (realgud-get-srcbuf buffer))
+	(bp-num nil)
+	(bp)
+	(bp-list)
+	)
+    (if src-buffer
+	(progn
+	  (setq bp-list (realgud-srcbuf-bp-list src-buffer))
+	  (while (and (not bp-num) bp-list)
+	    (setq bp (car bp-list))
+	    (setq bp-list (cdr bp-list))
+	    (if (eq line-num (realgud-loc-line-number bp))
+		(setq bp-num (realgud-loc-num bp)))
+	    ))
+      )
+    bp-num))
 
 (provide-me "realgud-buffer-")

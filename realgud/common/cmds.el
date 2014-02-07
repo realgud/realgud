@@ -2,6 +2,7 @@
 (require 'load-relative)
 (require-relative-list  '("send") "realgud-")
 (require-relative-list  '("buffer/command") "realgud-buffer-")
+(require-relative-list  '("buffer/source") "realgud-buffer-")
 
 (declare-function buffer-killed? 'helper)
 (declare-function realgud-cmdbuf-info-in-srcbuf?=   'realgud-buffer-command)
@@ -64,21 +65,25 @@ if none has been set in the command hash."
 
 (defun realgud-cmd-delete(&optional arg)
     "Delete breakpoint."
-    (interactive "NBreakpoint number: ")
+    (interactive "pBreakpoint number: ")
+    (unless arg
+      (setq line-num (line-number-at-pos))
+      (setq arg (realgud-get-bpnum-from-line-num line-num))
+      )
     (realgud-cmd-remap arg "delete" "delete %p" "D")
 )
 
 (defun realgud-cmd-disable(&optional arg)
-    "Delete breakpoint."
+    "Disable breakpoint."
     (interactive "NBreakpoint number: ")
     (realgud-cmd-remap arg "disable" "disable %p" "-")
-)
+    )
 
 (defun realgud-cmd-enable(&optional arg)
-    "Delete breakpoint."
+    "Enable breakpoint."
     (interactive "NBreakpoint number: ")
     (realgud-cmd-remap arg "enable" "enable %p" "+")
-)
+    )
 
 (defun realgud-cmd-eval(arg)
     "Exaluate an expression."
