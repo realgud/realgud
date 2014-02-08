@@ -69,7 +69,7 @@ if none has been set in the command hash."
     (setq line-num (line-number-at-pos))
     (let ((arg (realgud-get-bpnum-from-line-num line-num)))
       (if arg
-	  (realgud-cmd-remap arg "delete" "delete %p" "D")))
+	  (realgud-cmd-remap arg "delete" "delete %p" "D" nil nil 't)))
     )
 
 (defun realgud-cmd-disable(&optional arg)

@@ -148,22 +148,23 @@ program name."
 in it with those from CMDPROC-BUFFER"
   (let ((debugger-name)
 	(cmd-args))
-   (with-current-buffer-safe cmdproc-buffer
-     (setq debugger-name (realgud-sget 'cmdbuf-info 'debugger-name))
-     (setq cmd-args (realgud-cmdbuf-info-cmd-args realgud-cmdbuf-info)))
-  (with-current-buffer-safe src-buffer
-    (realgud-populate-common-keys
-     ;; use-local-map returns nil so e have to call (current-local-map)
-     ;; again in this case.
-     (or (current-local-map) (use-local-map (make-sparse-keymap))
-	 (current-local-map)))
-    (if (realgud-srcbuf-info? realgud-srcbuf-info)
-	(progn
-	  (realgud-srcbuf-info-cmdproc= cmdproc-buffer)
-	  (realgud-srcbuf-info-debugger-name= debugger-name)
-	  (realgud-srcbuf-info-cmd-args= cmd-args)
-	  )
-      (realgud-srcbuf-init src-buffer cmdproc-buffer "unknown" nil)))))
+    (realgud-cmdbuf-add-srcbuf src-buffer cmdproc-buffer)
+    (with-current-buffer-safe cmdproc-buffer
+      (setq debugger-name (realgud-sget 'cmdbuf-info 'debugger-name))
+      (setq cmd-args (realgud-cmdbuf-info-cmd-args realgud-cmdbuf-info)))
+    (with-current-buffer-safe src-buffer
+      (realgud-populate-common-keys
+       ;; use-local-map returns nil so e have to call (current-local-map)
+       ;; again in this case.
+       (or (current-local-map) (use-local-map (make-sparse-keymap))
+	   (current-local-map)))
+      (if (realgud-srcbuf-info? realgud-srcbuf-info)
+	  (progn
+	    (realgud-srcbuf-info-cmdproc= cmdproc-buffer)
+	    (realgud-srcbuf-info-debugger-name= debugger-name)
+	    (realgud-srcbuf-info-cmd-args= cmd-args)
+	    )
+	(realgud-srcbuf-init src-buffer cmdproc-buffer "unknown" nil)))))
 
 (defun realgud-srcbuf-command-string(src-buffer)
   "Get the command string invocation for SRC-BUFFER"
