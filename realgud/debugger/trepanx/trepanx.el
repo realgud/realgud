@@ -1,9 +1,14 @@
-;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2011, 2014 Rocky Bernstein <rocky@gnu.org>
 ;;  `trepanx' Main interface to trepanx via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("../../common/track") "realgud-")
 (require-relative-list '("core" "track-mode") "realgud-trepanx-")
+
+(declare-function trepanx-query-cmdline  'realgud-trepanx-core)
+(declare-function trepanx-parse-cmd-args 'realgud-trepanx-core)
+(declare-function realgud-run-process 'realgud-core)
+
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
 (defgroup trepanx nil
@@ -57,4 +62,3 @@ marginal icons is reset."
 (defalias 'trepanx 'realgud-trepanx)
 
 (provide-me "realgud-")
-;;; trepanx.el ends here

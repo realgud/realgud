@@ -7,13 +7,19 @@
 (require-relative-list '(
 			 "../../common/cmds"
 			 "../../common/menu"
+                         "../../common/track-mode"
 			 "../../common/backtrack-mode"
 			 )
 		       "realgud-")
 (require-relative-list '("core" "init") "realgud-trepanpl-")
 (require-relative-list '("../../lang/perl") "realgud-lang-")
 
-(declare-function realgud-backtrack-set-debugger 'realgud-common-backtrack-mode)
+(declare-function realgud-goto-line-for-pt
+		  'realgud-track-mode)
+(declare-function realgud-backtrack-set-debugger
+		  'realgud-common-backtrack-mode)
+(declare-function realgud-perl-populate-command-keys
+		  'realgud-lang-perl)
 
 (realgud-backtrack-mode-vars "trepanpl")
 (set-keymap-parent trepanpl-backtrack-mode-map realgud-backtrack-mode-map)

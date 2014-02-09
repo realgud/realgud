@@ -1,13 +1,18 @@
-;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2011, 2014 Rocky Bernstein <rocky@gnu.org>
 ;;  `trepan8' Main interface to trepan8 via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("../../common/track") "realgud-")
 (require-relative-list '("core" "track-mode") "realgud-trepan8-")
+
+(declare-function trepan8-query-cmdline  'realgud-trepan8-core)
+(declare-function trepan8-parse-cmd-args 'realgud-trepan8-core)
+(declare-function realgud-run-process 'realgud-core)
+
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
 (defgroup trepan8 nil
-  "The Rubinius \"trepanning\" debugger"
+  "The Ruby \"trepanning\" debugger for Ruby 1.8"
   :group 'processes
   :group 'ruby
   :group 'dbgr
@@ -57,4 +62,3 @@ marginal icons is reset."
 (defalias 'trepan8 'realgud-trepan8)
 
 (provide-me "realgud-")
-;;; trepan8.el ends here

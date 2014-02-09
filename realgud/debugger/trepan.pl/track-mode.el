@@ -1,4 +1,4 @@
-;;; Copyright (C) 2011-2013 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011-2014 Rocky Bernstein <rocky@gnu.org>
 ;;; Perl trepanning Debugger tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))
@@ -11,6 +11,7 @@
                          )
                        "realgud-")
 (require-relative-list '("core" "init") "realgud-trepanpl-")
+(require-relative-list '("../../lang/ruby") "realgud-lang-")
 
 (realgud-track-mode-vars "realgud-trepanpl")
 
@@ -19,6 +20,7 @@
 (declare-function realgud-track-mode-hook    'realgud-track-mode)
 (declare-function realgud-track-mode-setup   'realgud-track-mode)
 (declare-function realgud-track-set-debugger 'realgud-track-mode)
+(declare-function realgud-perl-populate-command-keys 'realgud-lang-perl)
 
 
 (defun realgud-trepanpl-goto-syntax-error-line (pt)

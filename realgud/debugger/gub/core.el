@@ -1,4 +1,4 @@
-;;; Copyright (C) 2013 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2013-2014 Rocky Bernstein <rocky@gnu.org>
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
@@ -6,9 +6,9 @@
 			 "../../common/core") "realgud-")
 (require-relative-list '("init") "realgud-gub-")
 
-(declare-function realgud-query-cmdline 'realgud-core)
+(declare-function realgud-query-cmdline      'realgud-core)
 (declare-function realgud-suggest-invocation 'realgud-core)
-(declare-function realgud-lang-mode? 'realgud-lang)
+(declare-function realgud-lang-mode?         'realgud-lang)
 
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.

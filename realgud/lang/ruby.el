@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2014 Rocky Bernstein <rocky@gnu.org>
 ;;; Common Ruby constants and regular expressions.
 (eval-when-compile (require 'cl))
 
@@ -6,6 +6,7 @@
 (require-relative-list '("../common/regexp" "../common/loc" "../common/track")
 		       "realgud-")
 
+(declare-function realgud-goto-line-for-pt 'realgud-track)
 
 (defconst realgud-rails-backtrace-loc-pat
   (make-realgud-loc-pat

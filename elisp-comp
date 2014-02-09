@@ -1,7 +1,7 @@
 #!/bin/sh
 # Copyright (C) 1995-2012 Free Software Foundation, Inc.
 
-scriptversion=2013-03-25.08; # UTC
+scriptversion=2014-02-09.22; # UTC
 
 # Franc,ois Pinard <pinard@iro.umontreal.ca>, 1995.
 #
@@ -76,7 +76,7 @@ trap "ret=143; $do_exit" 15
 (
   # cd $tempdir
   echo "(setq load-path (cons nil (cons \"$abs_srcdir\" load-path)))" > script
-  $EMACS -batch -q -l script -f batch-byte-compile *.el || exit $?
+  $EMACS -batch -q -l script -f batch-byte-compile-if-not-done *.el || exit $?
   # mv *.elc ..
 ) || exit $?
 

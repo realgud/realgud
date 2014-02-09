@@ -1,4 +1,4 @@
-;;; Copyright (C) 2012 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2012, 2014 Rocky Bernstein <rocky@gnu.org>
 ;;; "zshdb" Debugger tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))
@@ -11,6 +11,12 @@
 			 )
 		       "realgud-")
 (require-relative-list '("core" "init") "realgud-zshdb-")
+(require-relative "../../lang/posix-shell" nil "realgud-lang-")
+
+(declare-function realgud-track-set-debugger 'realgud-track-mode)
+(declare-function realgud-track-mode-setup   'realgud-track-mode)
+(declare-function realgud-posix-shell-populate-command-keys
+		  'realgud-lang-posix-shell)
 
 (realgud-track-mode-vars "zshdb")
 (realgud-posix-shell-populate-command-keys zshdb-track-mode-map)

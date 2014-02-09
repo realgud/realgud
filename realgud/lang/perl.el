@@ -1,4 +1,4 @@
-;;; Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011, 2014 Rocky Bernstein <rocky@gnu.org>
 ;;; Common Perl constants and regular expressions.
 (eval-when-compile (require 'cl))
 
@@ -6,6 +6,7 @@
 (require-relative-list '("../common/regexp" "../common/loc" "../common/track")
 		       "realgud-")
 
+(declare-function realgud-goto-line-for-pt 'realgud-track)
 
 ;;  Regular expression that describes a Perl Carp backtrace line.
 ;;  at /tmp/foo.pl line 7
