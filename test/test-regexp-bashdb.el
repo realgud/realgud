@@ -22,6 +22,9 @@
   (defvar test-s1)
 )
 
+(set (make-local-variable 'bp-del-pat)
+      (gethash "brkpt-set" realgud-bashdb-pat-hash))
+
 (note "bashdb prompt matching")
 (set (make-local-variable 'prompt-pat)
      (gethash "prompt" realgud-bashdb-pat-hash))
@@ -90,5 +93,10 @@
 	      (substring test-s1
 			 (match-beginning file-group)
 			 (match-end file-group)))
+
+(note "breakpoint delete matching")
+(setq text "Removed 1 breakpoint(s).\n")
+(assert-t (numberp (loc-match text bp-del-pat)) "breakpoint delete matching")
+
 
 (end-tests)
