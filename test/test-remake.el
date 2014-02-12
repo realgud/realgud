@@ -2,6 +2,10 @@
 (load-file "../realgud/common/core.el") ;; for realgud-exec-shell
 (load-file "../realgud/debugger/remake/remake.el")
 
+(eval-when-compile
+  (defvar my-buf)
+)
+
 (test-simple-start)
 
 (defun realgud-exec-shell (debugger-name script-filename program

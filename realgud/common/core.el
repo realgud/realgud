@@ -42,13 +42,10 @@ if that exists.  Finally we try to find a suitable program file
 using LANG-STR and LANG-EXT-REGEXP."
   (let* ((buf (current-buffer))
 	 (cmd-str-cmdbuf (realgud-cmdbuf-command-string buf))
-	 (cmd-str-srcbuf (realgud-srcbuf-command-string buf))
 	 )
     (cond
      ((and cmd-str-cmdbuf (equal debugger-name (realgud-cmdbuf-debugger-name buf)))
       cmd-str-cmdbuf)
-     ((and cmd-str-srcbuf (equal debugger-name (realgud-srcbuf-debugger-name buf)))
-      cmd-str-srcbuf)
      ((and minibuffer-history (listp minibuffer-history))
       (car minibuffer-history))
      (t (concat debugger-name " "
