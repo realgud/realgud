@@ -2,6 +2,7 @@
 (load-file "../realgud/debugger/bashdb/init.el")
 (load-file "./regexp-helper.el")
 
+(declare-function loc-match	                 'realgud-helper)
 (declare-function prompt-match                   'regexp-helper)
 (declare-function realgud-loc-pat-num            'realgud-regexp)
 (declare-function realgud-loc-pat-regexp         'realgud-regexp)
@@ -20,10 +21,13 @@
   (defvar realgud-bashdb-pat-hash)
   (defvar realgud-pat-bt)
   (defvar test-s1)
+  (defvar test-text)
+  (defvar brkpt-del)
+  (defvar bp-del-pat)
 )
 
 (set (make-local-variable 'bp-del-pat)
-      (gethash "brkpt-set" realgud-bashdb-pat-hash))
+      (gethash "brkpt-del" realgud-bashdb-pat-hash))
 
 (note "bashdb prompt matching")
 (set (make-local-variable 'prompt-pat)
@@ -95,8 +99,8 @@
 			 (match-end file-group)))
 
 (note "breakpoint delete matching")
-(setq text "Removed 1 breakpoint(s).\n")
-(assert-t (numberp (loc-match text bp-del-pat)) "breakpoint delete matching")
+(setq test-text "Removed 1 breakpoint(s).\n")
+(assert-t (numberp (loc-match test-text bp-del-pat)) "breakpoint delete matching")
 
 
 (end-tests)

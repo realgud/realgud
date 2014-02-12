@@ -171,6 +171,7 @@ icons and resets short-key mode."
     (if cmdbuf
 	(with-current-buffer cmdbuf
 	  (realgud-cmdbuf-info-in-debugger?= nil)
+	  (realgud-cmdbuf-info-bp-list= '())
 	  (realgud-cmdbuf-mode-line-update)
 	  (realgud-fringe-erase-history-arrows)
 	  (if realgud-cmdbuf-info
