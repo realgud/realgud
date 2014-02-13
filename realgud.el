@@ -2,7 +2,7 @@
 
 ;; Author: Rocky Bernstein
 ;; Version: 0.2.0
-;; Package-Requires: (('load-relative "20130410") ('loc-changes "20130723") ('test-simple  "20130710"))
+;; Package-Requires: ((load-relative "20130410") (loc-changes "20130723") (test-simple  "20130710"))
 ;; URL: http://github.com/rocky/emacs-dbgr
 ;; Compatibility: GNU Emacs 24.x
 

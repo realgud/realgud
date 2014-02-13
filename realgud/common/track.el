@@ -51,8 +51,8 @@ marks set in buffer-local variables to extract text"
 	     (last-output-end (process-mark curr-proc))
 	     (last-output-start (max comint-last-input-end
 				     (- last-output-end realgud-track-char-range))))
-	;; Sometimes e get called twice and the second time nothing
-	;; Changes. Guard against this.
+	;; Sometimes we get called twice and the second time nothing
+	;; changes. Guard against this.
 	(unless (= last-output-start last-output-end)
 	  (realgud-track-from-region last-output-start
 				  last-output-end cmd-mark cmd-buff
