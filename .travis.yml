@@ -5,4 +5,4 @@ env:
 
 # run the tests
 script:
-  - cd test && make check-elget
+  - /bin/bash ./autogen.sh && cd test && make check-elget
