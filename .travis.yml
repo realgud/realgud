@@ -2,6 +2,7 @@ language: emacs-lisp
 
 env:
   - EMACS=emacs24
+  - NO_CHECK_EMACS_PACKAGES=1
 
 # run the tests
 script:

@@ -8,17 +8,26 @@ AC_PATH_PROG([EMACS], [emacs], [emacs])
 AC_ARG_WITH(emacs, AC_HELP_STRING([--with-emacs],
                   [location of emacs program]), EMACS=$withval)
 
-AC_MSG_NOTICE("Checking emacs version and prerequiste packages")
+AC_MSG_NOTICE("Checking emacs version")
 $EMACS -batch -q --no-site-file -eval \
   '(if (<= emacs-major-version 22)
        (progn
          (error "You need GNU Emacs 23 or better.")
          (kill-emacs 1)
        )
-     (dolist (package
+   )'
+if test $? -ne 0 ; then
+    AC_MSG_ERROR([Can't continue until above error is corrected.])
+fi
+
+if test "$NO_CHECK_EMACS_PACKAGES" = "" ; then
+AC_MSG_NOTICE("Checking prerequiste packages")
+$EMACS -batch -q --no-site-file -eval \
+  '(dolist (package
          (quote (cl-lib loc-changes load-relative test-simple)))
         (require package))
    )'
+fi
 if test $? -ne 0 ; then
     AC_MSG_ERROR([Can't continue until above error is corrected.])
 fi
