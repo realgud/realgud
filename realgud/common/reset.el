@@ -1,9 +1,13 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2014 Rocky Bernstein <rocky@gnu.org>
 ;; reset state on quit or restart
+
 (require 'load-relative)
 (require-relative-list '("bp" "fringe" "helper") "realgud-")
 (require-relative-list '("buffer/helper" "buffer/command" "buffer/source")
 		       "realgud-buffer-")
+
+(declare-function realgud-bp-remove-icons 'realgud-buffer-command)
+
 (defun realgud-reset (&optional opt-buffer)
   "Reset state prior to quitting or restarting"
   (interactive)

@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2012 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2012, 2014 Rocky Bernstein <rocky@gnu.org>
 ;;; Debugger location ring
 ;;; Commentary:
 
@@ -10,6 +10,8 @@
 (require 'ring)
 (require 'load-relative)
 (require-relative-list '("loc") "realgud-")
+
+(declare-function realgud-loc-describe 'realgud-loc)
 
 (defcustom realgud-loc-hist-size 20  ; For testing. Should really be larger.
   "Size of dbgr position history ring"
