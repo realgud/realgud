@@ -1,7 +1,14 @@
-;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;; Copyright (C) 2010, 2014 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
-(require-relative-list '("../fringe" "../helper") "realgud-")
+(require-relative-list '("../fringe" "../helper" "../lochist")
+		       "realgud-")
 (require-relative-list '("command" "source" "backtrace") "realgud-buffer-")
+
+(declare-function realgud-backtrace?        'realgud-buffer-backtace)
+(declare-function realgud-cmdbuf?           'realgud-buffer-command)
+(declare-function realgud-loc-hist-describe 'realgud-lochist)
+(declare-function realgud-loc-hist-item     'realgud-lochist)
+(declare-function realgud-srcbuf?           'realgud-buffer-command)
 
 (defvar realgud-cmdbuf-info)
 
@@ -136,10 +143,6 @@ use to get the information from.
 	  (switch-to-buffer (get-buffer-create "*Describe*"))
 	  (delete-region (point-min) (point-max))
 	  (insert (format "srcbuf-info for %s\n" srcbuf-name))
-	  (insert (format "Debugger-name: %s\n"
-			  (realgud-srcbuf-info-debugger-name info)))
-	  (insert (format "Command-line args: %s\n"
-			  (realgud-srcbuf-info-cmd-args info)))
 	  (insert (format "Was previously read only?: %s\n"
 			  (realgud-srcbuf-info-was-read-only? info)))
 	  (insert (format "Command Process buffer: %s\n"

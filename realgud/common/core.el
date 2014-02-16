@@ -254,8 +254,7 @@ marginal icons is reset."
 		  (cmdline-list (cons program args)))
 	      ;; is this right?
 	      (point-max)
-	      (realgud-srcbuf-init src-buffer cmdproc-buffer
-				debugger-name cmdline-list))
+	      (realgud-srcbuf-init src-buffer cmdproc-buffer))
 	  (insert (format "Failed to invoke shell command: %s with args %s" program
 			  args)))
 	(process-put process 'buffer cmdproc-buffer)))
