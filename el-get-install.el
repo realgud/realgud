@@ -95,9 +95,10 @@
 (setq
  el-get-sources
  '(el-get			; el-get is self-hosting
+   loc-changes 		        ; loc marks in buffers
    load-relative		; load emacs lisp relative to emacs source
    test-simple			; simple test framework
    ))
 
 ;; install new packages and init already installed packages
-(el-get 'sync)
+(el-get 'sync '(loc-changes load-relative test-simple))
