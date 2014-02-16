@@ -1,27 +1,27 @@
-# Run all tests using targets "test", "check" or "check-short". For
-# example:
-#   make check
-#   make check-short
-#
-# You can run a specific test like test-srcbuf.el by changing ".el" to
-# ".run". For example:
-#  make test-srcbuf.run
-#
-# You can all tests via el-get which loads dependent emacs packages,
-# like load-relative, using targets, "check-elget" or "test-elget" or
-# "check-short-elget".
-#
-# You can run a specific test like test-srcbuf.el via el-get by changing ".el"
-# to ".elrun" For example:
-# make test-srcbuf.elrun
-
-
 include $(top_srcdir)/common.mk
 
 PHONY=check test all check-elget test-elget
 EXTRA_DIST += gcd.py gcd.rb
 
-all:
+#: Give some basic help
+help:
+	@echo "Run all tests using targets \"test\", \"check\" or \"check-short\". For"
+	@echo "example:"
+	@echo "    make check"
+	@echo "    make check-short"
+	@echo
+	@echo "You can run a specific test like test-srcbuf.el by changing \".el\" to"
+	@echo "\".run\". For example:"
+	@echo "    make test-srcbuf.run"
+	@echo
+	@echo "You can all tests via the Emacs el-get package which loads dependent emacs "
+	@echo "packages, like load-relative, using targets, \"check-elget\" or \"test-elget\" or"
+	@echo "\"check-short-elget\"."
+	@echo
+	@echo  "You can run a specific test like test-srcbuf.el via el-get by changing \".el\""
+	@echo "to \".elrun\" For example:"
+	@echo "    make test-srcbuf.elrun"
+
 
 #: same thing as "check"
 test: check
