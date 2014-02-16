@@ -26,8 +26,21 @@
 
 (make-variable-buffer-local  (defvar realgud-track-mode))
 (fn-p-to-fn?-alias 'realgud-loc-p)
-(declare-function realgud-loc?                    'realgud-loc)
-(declare-function realgud-cmdbuf-mode-line-update 'realgud-buffer-command)
+(declare-function realgud-loc?                        'realgud-loc)
+(declare-function realgud-cmdbuf-mode-line-update     'realgud-buffer-command)
+(declare-function realgud-cmdbuf?                     'realgud-buffer-command)
+(declare-function realgud-cmdbuf-pat                  'realgud-buffer-command)
+(declare-function realgud-cmdbuf-debugger-name        'realgud-buffer-command)
+(declare-function realgud-cmdbuf-info-divert-output?= 'realgud-buffer-command)
+(declare-function realgud-cmdbuf-info-in-debugger?=   'realgud-buffer-command)
+(declare-function realgud-cmdbuf-info-bp-list=        'realgud-buffer-command)
+(declare-function realgud-cmdbuf-init                 'realgud-buffer-command)
+(declare-function realgud-get-cmdbuf                  'realgud-buffer-command)
+(declare-function realgud-loc?                        'realgud-loc)
+(declare-function realgud-loc-goto                    'realgud-loc)
+(declare-function realgud-cmdbuf-mode-line-update     'realgud-buffer-command)
+(declare-function realgud-cmdbuf-info-last-input-end= 'realgud-buffer-command)
+(declare-function realgud-cmdbuf-info-in-debugger?    'realgud-buffer-command)
 
 (defvar realgud-track-divert-string)
 
@@ -43,17 +56,26 @@ marks set in buffer-local variables to extract text"
   ;; monitor to the point where we have the next dbgr prompt, and then
   ;; check all text from comint-last-input-end to process-mark.
 
-  ; FIXME: Add unwind-protect?
+  ;; FIXME: Add unwind-protect?
   (if (and realgud-track-mode (realgud-cmdbuf? (current-buffer)))
       (let* ((cmd-buff (current-buffer))
 	     (cmd-mark (point-marker))
 	     (curr-proc (get-buffer-process cmd-buff))
+	     (cmdbuf-last-output-end
+	      (realgud-cmdbuf-info-last-input-end realgud-cmdbuf-info))
 	     (last-output-end (process-mark curr-proc))
 	     (last-output-start (max comint-last-input-end
 				     (- last-output-end realgud-track-char-range))))
 	;; Sometimes we get called twice and the second time nothing
 	;; changes. Guard against this.
 	(unless (= last-output-start last-output-end)
+	  (unless (= last-output-end cmdbuf-last-output-end)
+	    (setq last-output-start (max last-output-start
+					 cmdbuf-last-output-end))
+	    ;; Done with using old command buffer's last-input-end.
+	    ;; Update that for next time.
+	    (realgud-cmdbuf-info-last-input-end= last-output-end)
+	    )
 	  (realgud-track-from-region last-output-start
 				  last-output-end cmd-mark cmd-buff
 				  't 't))

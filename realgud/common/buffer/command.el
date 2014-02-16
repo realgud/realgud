@@ -105,25 +105,25 @@ Information is put in an internal buffer called *Describe*."
 	  (mapc 'insert
 		(list
 		 (format "realgud-cmdbuf-info for %s\n\n" cmdbuf-name)
-		 (format "Debugger name (debugger-name): %s\n"
+		 (format "Debugger name (debugger-name):\t%s\n"
 			 (realgud-cmdbuf-info-debugger-name info))
-		 (format "Command-line args (cmd-args): %s\n"
+		 (format "Command-line args (cmd-args):\t%s\n"
 			 (realgud-cmdbuf-info-cmd-args info))
 		 (format "Selected window should contain source? (in-srcbuf?): %s\n"
 			 (realgud-cmdbuf-info-in-srcbuf? info))
-		 (format "Last input end): %s\n"
+		 (format "Last input end:\t%s\n"
 			 (realgud-cmdbuf-info-last-input-end info))
 		 (format "Source should go into short-key mode? (src-shortkey?): %s\n"
 			 (realgud-cmdbuf-info-src-shortkey? info))
-		 (format "Breakpoint list (bp-list): %s\n"
+		 (format "Breakpoint list (bp-list):\t %s\n"
 			 (realgud-cmdbuf-info-bp-list info))
 		 (format "Remap table for debugger commands: %s\n"
 			 (realgud-cmdbuf-info-cmd-hash info))
 		 (format "Source buffers seen (srcbuf-list): %s\n"
 			 (realgud-cmdbuf-info-srcbuf-list info))
-		 (format "Backtrace buffer (bt): %s\n"
+		 (format "Backtrace buffer (bt):\t%s\n"
 			 (realgud-cmdbuf-info-bt-buf info))
-		 (format "In debugger? (in-debugger?): %s\n"
+		 (format "In debugger? (in-debugger?):\t%s\n"
 			 (realgud-cmdbuf-info-in-debugger? info))
 		 ))
 	  (realgud-loc-hist-describe (realgud-cmdbuf-info-loc-hist info))
@@ -244,6 +244,7 @@ as a main program."
 	     :loc-hist (make-realgud-loc-hist)
 	     :regexp-hash regexp-hash
 	     :bt-buf nil
+	     :last-input-end (point-max)
 	     :cmd-hash cmd-hash
 	     :src-shortkey? 't
 	     :in-debugger? nil
