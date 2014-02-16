@@ -3,23 +3,31 @@ include $(top_srcdir)/common.mk
 PHONY=check test all check-elget test-elget
 EXTRA_DIST += gcd.py gcd.rb
 
-#: Give some basic help
+#: overall help on running the make targets
 help:
-	@echo "Run all tests using targets \"test\", \"check\" or \"check-short\". For"
-	@echo "example:"
+	@echo "The main function of this Makefile is to facilitate running tests."
+	@echo
+	@echo "To run all of the tests, use targets \"test\", \"check\" or \"check-short\"."
+	@echo "For example:"
+	@echo
 	@echo "    make check"
+	@echo "or:"
 	@echo "    make check-short"
 	@echo
-	@echo "You can run a specific test like test-srcbuf.el by changing \".el\" to"
+	@echo "The -short target uses a filter written in Ruby to remove extreanous output."
+	@echo
+	@echo "To run a specific test like test-srcbuf.el, change \".el\" to"
 	@echo "\".run\". For example:"
+	@echo
 	@echo "    make test-srcbuf.run"
 	@echo
-	@echo "You can all tests via the Emacs el-get package which loads dependent emacs "
-	@echo "packages, like load-relative, using targets, \"check-elget\" or \"test-elget\" or"
-	@echo "\"check-short-elget\"."
+	@echo "Tests can also be run via the Emacs el-get package and this loads dependent emacs "
+	@echo "package, like load-relative. To do this, use targets, \"check-elget\","
+	@echo "\"test-elget\", or \"check-short-elget\"."
 	@echo
-	@echo  "You can run a specific test like test-srcbuf.el via el-get by changing \".el\""
+	@echo  "To run a specific test like test-srcbuf.el via el-get change \".el\""
 	@echo "to \".elrun\" For example:"
+	@echo
 	@echo "    make test-srcbuf.elrun"
 
 

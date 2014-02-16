@@ -1,5 +1,5 @@
 ;;; process-command buffer things
-;;; Copyright (C) 2010, 2011, 2012 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2012, 2014 Rocky Bernstein <rocky@gnu.org>
 
 (require 'load-relative)
 (require-relative-list
@@ -43,6 +43,8 @@
 		       ;; command buffer?
   in-srcbuf?           ;; If true, selected window should be the source buffer.
 		       ;; Otherwise, the command buffer?
+  last-input-end       ;; point where input last ended. Set from
+                       ;; comint-last-input-end
   prior-prompt-regexp  ;; regular expression prompt (e.g.
                        ;; comint-prompt-regexp) *before* setting
                        ;; loc-regexp
@@ -78,6 +80,7 @@
 (realgud-struct-field-setter "realgud-cmdbuf-info" "bp-list")
 (realgud-struct-field-setter "realgud-cmdbuf-info" "bt-buf")
 (realgud-struct-field-setter "realgud-cmdbuf-info" "cmd-args")
+(realgud-struct-field-setter "realgud-cmdbuf-info" "last-input-end")
 (realgud-struct-field-setter "realgud-cmdbuf-info" "divert-output?")
 (realgud-struct-field-setter "realgud-cmdbuf-info" "frame-switch?")
 (realgud-struct-field-setter "realgud-cmdbuf-info" "in-srcbuf?")
@@ -108,6 +111,8 @@ Information is put in an internal buffer called *Describe*."
 			 (realgud-cmdbuf-info-cmd-args info))
 		 (format "Selected window should contain source? (in-srcbuf?): %s\n"
 			 (realgud-cmdbuf-info-in-srcbuf? info))
+		 (format "Last input end): %s\n"
+			 (realgud-cmdbuf-info-last-input-end info))
 		 (format "Source should go into short-key mode? (src-shortkey?): %s\n"
 			 (realgud-cmdbuf-info-src-shortkey? info))
 		 (format "Breakpoint list (bp-list): %s\n"
