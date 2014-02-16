@@ -1,4 +1,4 @@
-<!-- [![Build Status](https://travis-ci.org/rocky/emacs-dbgr.png)](https://travis-ci.org/rocky/emacs-dbgr) -->
+[![Build Status](https://travis-ci.org/rocky/emacs-dbgr.png)](https://travis-ci.org/rocky/emacs-dbgr)
 
 A modular GNU Emacs front-end for interacting with external debuggers.
 
