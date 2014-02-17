@@ -74,7 +74,7 @@ marks set in buffer-local variables to extract text"
 					 cmdbuf-last-output-end))
 	    ;; Done with using old command buffer's last-input-end.
 	    ;; Update that for next time.
-	    (realgud-cmdbuf-info-last-input-end= last-output-end)
+	    (realgud-cmdbuf-info-last-input-end= last-output-start)
 	    )
 	  (realgud-track-from-region last-output-start
 				  last-output-end cmd-mark cmd-buff
