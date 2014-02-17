@@ -1,7 +1,12 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2014 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
 (require-relative-list '("helper") "realgud-")
 (require-relative-list '("buffer/helper") "realgud-buffer-")
+
+(declare-function realgud-backtrace-init    'realgud-buffer-helper)
+(declare-function realgud-get-backtrace-buf 'realgud-buffer-helper)
+(declare-function realgud-get-cmdbuf        'realgud-buffer-helper)
+(declare-function realgud-get-srcbuf        'realgud-buffer-helper)
 
 (declare-function one-window-p(bool))
 

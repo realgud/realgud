@@ -5,6 +5,8 @@
 (require-relative-list
  '("../fringe" "../helper" "../loc" "../lochist" "../regexp") "realgud-")
 
+(declare-function realgud-get-cmdbuf 'realgud-buffer-helper)
+
 (eval-when-compile
   (byte-compile-disable-warning 'cl-functions)
   ;; Somehow disabling cl-functions causes the erroneous message:

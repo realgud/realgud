@@ -8,7 +8,7 @@
 (declare-function realgud-cmdbuf-info-in-srcbuf?=   'realgud-buffer-command)
 (declare-function realgud-cmdbuf?      'realgud-buffer-command)
 (declare-function realgud-command      'realgud-cmd)
-(declare-function realgud-get-cmdbuf   'realgud-buffer-command)
+(declare-function realgud-get-cmdbuf   'realgud-buffer-helper)
 (declare-function realgud-get-command  'realgud-buffer-command)
 (declare-function realgud-get-bpnum-from-line-num 'realgud-buffer-source)
 

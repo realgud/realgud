@@ -24,7 +24,7 @@
 (declare-function realgud-cmdbuf?                'realgud-buffer-command)
 (declare-function realgud-command-string         'realgud-buffer-command)
 (declare-function realgud-fringe-erase-history-arrows 'realgud-buffer-command)
-(declare-function realgud-get-cmdbuf             'realgud-buffer-command)
+(declare-function realgud-get-cmdbuf             'realgud-buffer-helper)
 (declare-function realgud-reset                  'realgud-reset)
 (declare-function realgud-short-key-mode-setup   'realgud-shortkey)
 (declare-function realgud-srcbuf-command-string  'realgud-buffer-source)
