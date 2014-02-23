@@ -1,6 +1,6 @@
 ;;; Copyright (C) 2010-2011, 2013-2014 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
-(require-relative-list  '("send") "realgud-")
+(require-relative-list  '("send" "core") "realgud-")
 (require-relative-list  '("buffer/command") "realgud-buffer-")
 (require-relative-list  '("buffer/source") "realgud-buffer-")
 
@@ -8,10 +8,12 @@
 (declare-function realgud-cmdbuf-info-in-srcbuf?=   'realgud-buffer-command)
 (declare-function realgud-cmdbuf?      'realgud-buffer-command)
 (declare-function realgud-command      'realgud-cmd)
-(declare-function realgud-get-cmdbuf   'realgud-buffer-command)
+(declare-function realgud-get-cmdbuf   'realgud-buffer-helper)
 (declare-function realgud-get-command  'realgud-buffer-command)
-(declare-function realgud-terminate &optional cmdbuf)
-(declare-function realgud-terminate-srcbuf &optional cmdbuf)
+(declare-function realgud-get-bpnum-from-line-num 'realgud-buffer-source)
+
+(declare-function realgud-terminate 'realgud-core)
+(declare-function realgud-terminate-srcbuf 'realdgud-core)
 
 (defun realgud-cmd-remap(arg cmd-name default-cmd-template key
 			  &optional no-record? frame-switch? realgud-prompts?)
@@ -66,8 +68,8 @@ if none has been set in the command hash."
 (defun realgud-cmd-delete(arg)
     "Delete breakpoint."
     (interactive "pBreakpoint number: ")
-    (setq line-num (line-number-at-pos))
-    (let ((arg (realgud-get-bpnum-from-line-num line-num)))
+    (let* ((line-num (line-number-at-pos))
+	   (arg (realgud-get-bpnum-from-line-num line-num)))
       (if arg
 	  (realgud-cmd-remap arg "delete" "delete %p" "D")
 	(message "Can't find breakpoint at line %d" line-num))

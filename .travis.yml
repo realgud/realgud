@@ -1,23 +1,13 @@
-language: emacs
+language: emacs-lisp
 
 env:
-  matrix:
-    - EMACS=emacs24
+  - EMACS=emacs24
 
 before_install:
   - sudo add-apt-repository -y ppa:cassou/emacs
   - sudo apt-get update -qq
   - sudo apt-get install -qq $EMACS
 
-install:
-  # Install emacs.
-
 # run the tests
 script:
-  - curl -fsSkL https://raw.github.com/rejeep/carton/master/go | python
-  - export PATH="/home/travis/.cask/bin:$PATH"
-  - emacs -batch -q -eval "(progn (require 'package) (add-to-list 'package-archives '(\"melpa\" . \"http://melpa.milkbox.net/packages/\") t) (package-refresh-contents) (package-install 'load-relative))"
-  - emacs -batch -q -eval "(progn (require 'package) (add-to-list 'package-archives '(\"melpa\" . \"http://melpa.milkbox.net/packages/\") t) (package-refresh-contents) (package-install 'loc-changes))"
-  - emacs -batch -q -eval "(progn (require 'package) (add-to-list 'package-archives '(\"melpa\" . \"http://melpa.milkbox.net/packages/\") t) (package-refresh-contents) (package-install 'test-simple))"
-  - cask init
-  - cask exec /bin/bash ./autogen.sh && cask exec make check
+  - NO_CHECK_EMACS_PACKAGES=1 /bin/bash ./autogen.sh && cd test && make check-elget

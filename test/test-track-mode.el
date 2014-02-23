@@ -24,9 +24,7 @@
   (realgud-cmdbuf-init temp-cmdbuf "trepan" (gethash "trepan" realgud-pat-hash))
   (with-current-buffer temp-cmdbuf
     (trepan-track-mode 't))
-  (realgud-srcbuf-init (current-buffer) temp-cmdbuf
-		    "trepan"
-		    '("/bin/trepan" "my-script" "arg1"))
+  (realgud-srcbuf-init (current-buffer) temp-cmdbuf)
 )
 
 (defun tear-down()

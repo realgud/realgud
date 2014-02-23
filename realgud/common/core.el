@@ -7,10 +7,9 @@
 
 (require 'comint)
 (require 'load-relative)
-(require-relative-list '("fringe" "helper" "lang" "reset") "realgud-")
+(require-relative-list '("fringe" "helper" "lang" "reset")
+		       "realgud-")
 (require-relative-list '("buffer/command" "buffer/source") "realgud-buffer-")
-
-(declare-function realgud-short-key-mode-setup "shortkey.el")
 
 (declare-function comint-exec  'comint)
 (declare-function comint-mode  'comint)
@@ -45,13 +44,10 @@ if that exists.  Finally we try to find a suitable program file
 using LANG-STR and LANG-EXT-REGEXP."
   (let* ((buf (current-buffer))
 	 (cmd-str-cmdbuf (realgud-cmdbuf-command-string buf))
-	 (cmd-str-srcbuf (realgud-srcbuf-command-string buf))
 	 )
     (cond
      ((and cmd-str-cmdbuf (equal debugger-name (realgud-cmdbuf-debugger-name buf)))
       cmd-str-cmdbuf)
-     ((and cmd-str-srcbuf (equal debugger-name (realgud-srcbuf-debugger-name buf)))
-      cmd-str-srcbuf)
      ((and minibuffer-history (listp minibuffer-history))
       (car minibuffer-history))
      (t (concat debugger-name " "
@@ -175,6 +171,7 @@ icons and resets short-key mode."
     (if cmdbuf
 	(with-current-buffer cmdbuf
 	  (realgud-cmdbuf-info-in-debugger?= nil)
+	  (realgud-cmdbuf-info-bp-list= '())
 	  (realgud-cmdbuf-mode-line-update)
 	  (realgud-fringe-erase-history-arrows)
 	  (if realgud-cmdbuf-info
@@ -260,8 +257,7 @@ marginal icons is reset."
 		  (cmdline-list (cons program args)))
 	      ;; is this right?
 	      (point-max)
-	      (realgud-srcbuf-init src-buffer cmdproc-buffer
-				debugger-name cmdline-list))
+	      (realgud-srcbuf-init src-buffer cmdproc-buffer))
 	  (insert (format "Failed to invoke shell command: %s with args %s" program
 			  args)))
 	(process-put process 'buffer cmdproc-buffer)))

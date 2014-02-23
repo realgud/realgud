@@ -1,4 +1,5 @@
 (require 'test-simple)
+
 (load-file "../realgud/common/send.el")
 (load-file "../realgud/common/regexp.el")
 (load-file "../realgud/debugger/trepan/init.el")
@@ -6,13 +7,16 @@
 (declare-function realgud-srcbuf-init 'realgud-buffer-source)
 (test-simple-start)
 
-(defvar temp-cmdbuf nil)
+(eval-when-compile
+  (defvar temp-cmdbuf nil)
+  (defvar realgud-pat-hash)
+  (defvar file-name)
+)
+
 (defun setup ()
   (setq temp-cmdbuf (generate-new-buffer "*cmdbuf-test*"))
   (realgud-cmdbuf-init temp-cmdbuf "trepan" (gethash "trepan" realgud-pat-hash))
-  (realgud-srcbuf-init (current-buffer) temp-cmdbuf
-		    "trepan"
-		    '("/bin/trepan" "my-script" "arg1"))
+  (realgud-srcbuf-init (current-buffer) temp-cmdbuf)
 )
 
 (defun tear-down()

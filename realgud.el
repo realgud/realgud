@@ -2,7 +2,7 @@
 
 ;; Author: Rocky Bernstein
 ;; Version: 0.2.0
-;; Package-Requires: ((load-relative "20130410") ("loc-changes" "20130723") ("test-simple"  "20130710"))
+;; Package-Requires: ((load-relative "20130410") (loc-changes "20130723") (test-simple  "20130710"))
 ;; URL: http://github.com/rocky/emacs-dbgr
 ;; Compatibility: GNU Emacs 24.x
 
@@ -101,7 +101,7 @@
      "./realgud/common/track-mode"
      "./realgud/debugger/bashdb/bashdb"
      "./realgud/debugger/gdb/gdb"
-     ;; "./realgud/debugger/gub/gub"
+     "./realgud/debugger/gub/gub"
      "./realgud/debugger/kshdb/kshdb"
      "./realgud/debugger/pdb/pdb"
      "./realgud/debugger/perldb/perldb"
@@ -110,9 +110,9 @@
      "./realgud/debugger/rdebug/rdebug"
      "./realgud/debugger/remake/remake"
      "./realgud/debugger/trepan/trepan"
+     "./realgud/debugger/trepan.pl/trepanpl"
      "./realgud/debugger/trepan2/trepan2"
      "./realgud/debugger/trepan3k/trepan3k"
-     "./realgud/debugger/trepan.pl/trepanpl"
      "./realgud/debugger/trepanx/trepanx"
      "./realgud/debugger/trepan8/trepan8"
      "./realgud/debugger/zshdb/zshdb"

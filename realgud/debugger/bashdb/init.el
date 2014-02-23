@@ -52,7 +52,7 @@ realgud-loc-pat struct")
 ;;   Removed 1 breakpoint(s).
 (setf (gethash "brkpt-del" realgud-bashdb-pat-hash)
       (make-realgud-loc-pat
-       :regexp "^Removed \\([0-9]+\\) breakpoints(s).\n"
+       :regexp "^Removed \\([0-9]+\\) breakpoint(s).\n"
        :num 1))
 
 ;; Regular expression that describes a debugger "backtrace" command line.

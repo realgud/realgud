@@ -10,6 +10,7 @@ pats = ["^(?:Loading",
         "make -C",
         "Test-Unit",
         "Fontifying",
+        "`flet'",
         '\s*$',
         '##[<>]+$'
        ].join('|') + ')'

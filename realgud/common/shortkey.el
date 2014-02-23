@@ -1,7 +1,9 @@
-;;; Copyright (C) 2010-2013 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2014 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
 (require-relative-list '("custom" "key" "menu") "realgud-")
 (require-relative-list '("buffer/helper") "realgud-buffer-")
+
+(declare-function realgud-get-cmdbuf  'realgud-buffer-helper)
 
 (defvar realgud-short-key-mode-map
   (let ((map (make-sparse-keymap)))

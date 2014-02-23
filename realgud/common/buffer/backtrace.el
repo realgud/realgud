@@ -1,5 +1,5 @@
 ;;; Backtrace buffer
-;;; Copyright (C) 2010-2013 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2014 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
 (eval-when-compile (require 'cl-lib))
 (require-relative-list
@@ -12,6 +12,7 @@
 (declare-function realgud-cmd-backtrace (arg))
 (declare-function realgud-cmdbuf-pat(key))
 (declare-function realgud-cmdbuf-info-in-srcbuf?= (arg))
+(declare-function realgud-get-cmdbuf 'realgud-buffer-helper)
 
 (defstruct realgud-backtrace-info
   "debugger object/structure specific to a (top-level) program to be debugged."

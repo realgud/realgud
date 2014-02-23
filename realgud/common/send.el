@@ -1,8 +1,12 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2014 Rocky Bernstein <rocky@gnu.org>
 (require 'comint)
 (require 'load-relative)
 (require-relative-list '("window") "realgud-")
 (require-relative-list '("buffer/helper") "realgud-buffer-")
+
+(declare-function realgud-get-cmdbuf        'realgud-buffer-helper)
+(declare-function comint-goto-process-mark  'comint)
+(declare-function comint-send-input         'comint)
 
 (defun realgud-send-command-comint (process command-str)
   "Assume we are in a comint buffer. Insert COMMAND-STR and
