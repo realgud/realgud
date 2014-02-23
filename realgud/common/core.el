@@ -14,20 +14,23 @@
 
 (declare-function comint-exec  'comint)
 (declare-function comint-mode  'comint)
+(declare-function realgud-bp-remove-icons             'realgud-bp)
 (declare-function realgud-cmdbuf-args=                'realgud-buffer-command)
 (declare-function realgud-cmdbuf-command-string       'realgud-buffer-command)
 (declare-function realgud-cmdbuf-debugger-name        'realgud-buffer-command)
 (declare-function realgud-cmdbuf-info-cmd-args=       'realgud-buffer-command)
 (declare-function realgud-cmdbuf-info-in-debugger?=   'realgud-buffer-command)
 (declare-function realgud-cmdbuf-mode-line-update     'realgud-buffer-command)
+(declare-function realgud-cmdbuf?                     'realgud-helper)
 (declare-function realgud-command-string              'realgud-buffer-command)
 (declare-function realgud-fringe-erase-history-arrows 'realgud-buffer-command)
+(declare-function realgud-get-cmdbuf                  'realgud-helper)
+(declare-function realgud-reset                       'realgud-reset)
+(declare-function realgud-srcbuf-command-string       'realgud-buffer-source)
+(declare-function realgud-srcbuf-debugger-name        'realgud-buffer-source)
 (declare-function realgud-srcbuf-init                 'realgud-buffer-source)
 (declare-function realgud-srcbuf?                     'realgud-buffer-source)
-(declare-function realgud-srcbuf-debugger-name        'realgud-buffer-source)
-(declare-function realgud-srcbuf-command-string       'realgud-buffer-source)
 (declare-function realgud-suggest-lang-file           'realgud-lang)
-(declare-function realgud-reset                       'realgud-reset)
 
 (defvar realgud-srcbuf-info)
 
@@ -134,6 +137,7 @@ which shows details of the error. The command buffer or nil is returned"
 	  (progn
 	    (switch-to-buffer cmd-buf)
 	    (funcall track-mode-func 't)
+	    (realgud-cmdbuf-info-in-debugger?= 't)
 	    (realgud-cmdbuf-info-cmd-args= cmd-args)
 	    )
 	(progn
