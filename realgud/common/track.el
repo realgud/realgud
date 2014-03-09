@@ -27,6 +27,8 @@
 (make-variable-buffer-local  (defvar realgud-track-mode))
 (fn-p-to-fn?-alias 'realgud-loc-p)
 (declare-function realgud-loc?                        'realgud-loc)
+(declare-function realgud-bp-add-info                 'realgud-bp)
+(declare-function realgud-bp-del-info                 'realgud-bp)
 (declare-function realgud-cmdbuf-mode-line-update     'realgud-buffer-command)
 (declare-function realgud-cmdbuf?                     'realgud-buffer-command)
 (declare-function realgud-cmdbuf-pat                  'realgud-buffer-command)
@@ -35,7 +37,10 @@
 (declare-function realgud-cmdbuf-info-in-debugger?=   'realgud-buffer-command)
 (declare-function realgud-cmdbuf-info-bp-list=        'realgud-buffer-command)
 (declare-function realgud-cmdbuf-init                 'realgud-buffer-command)
+(declare-function realgud-cmdbuf-loc-hist             'realgud-buffer-command)
 (declare-function realgud-get-cmdbuf                  'realgud-buffer-command)
+(declare-function realgud-loc-hist-add                'realgud-lochist)
+(declare-function realgud-loc-hist-item               'realgud-lochist)
 (declare-function realgud-loc?                        'realgud-loc)
 (declare-function realgud-loc-goto                    'realgud-loc)
 (declare-function realgud-cmdbuf-mode-line-update     'realgud-buffer-command)
@@ -72,10 +77,10 @@ marks set in buffer-local variables to extract text"
 	  (unless (= last-output-end cmdbuf-last-output-end)
 	    (setq last-output-start (max last-output-start
 					 cmdbuf-last-output-end))
-	    ;; Done with using old command buffer's last-input-end.
-	    ;; Update that for next time.
-	    (realgud-cmdbuf-info-last-input-end= last-output-start)
 	    )
+	  ;; Done with using old command buffer's last-input-end.
+	  ;; Update that for next time.
+	  (realgud-cmdbuf-info-last-input-end= last-output-start)
 	  (realgud-track-from-region last-output-start
 				  last-output-end cmd-mark cmd-buff
 				  't 't))
