@@ -21,9 +21,10 @@ realgud-loc-pat struct")
 ;; before a command prompt.
 ;; For example:
 ;; -- main::(/tmp/linecache.pl:64)
+;; -- File::Basename::(/usr/share/perl/5.14/File/Basename.pm:284 @0x8918b70)
 (setf (gethash "loc" realgud-trepanpl-pat-hash)
       (make-realgud-loc-pat
-       :regexp ".. \\(?:.+::\\)?(\\(?:.+ \\(?:via\\|remapped\\) \\)?\\(.+\\):\\([0-9]+\\)\\(?: @[0-9]+\\)?)"
+       :regexp ".. \\(?:.+::\\)?(\\(?:.+ \\(?:via\\|remapped\\) \\)?\\(.+\\):\\([0-9]+\\)\\(?: @0x[0-9a-f]+\\)?)"
        :file-group 1
        :line-group 2
        :ignore-file-re  realgud-perl-ignore-file-re)

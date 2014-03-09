@@ -1,7 +1,7 @@
 ;;; realgud.el --- A modular front-end for interacting with external debuggers
 
 ;; Author: Rocky Bernstein
-;; Version: 0.2.0
+;; Version: 0.2.1
 ;; Package-Requires: ((load-relative "20130410") (loc-changes "20130723") (test-simple  "20130710"))
 ;; URL: http://github.com/rocky/emacs-dbgr
 ;; Compatibility: GNU Emacs 24.x
@@ -48,6 +48,7 @@
 ;;   bashdb         bashdb        bash
 ;;   Devel::Trepan  trepan.pl     Perl5
 ;;   gdb            realgud-gdb   gdb
+;;   gub            gub           Go SSA debugger
 ;;   kshdb          kshdb         Korn Shell 93u+
 ;;   pdb            pdb           stock C Python debugger
 ;;   perldb         perldb        stock Perl5 debugger
@@ -62,8 +63,6 @@
 ;;   trepan3k       trepan3k      trepanning debugger for Python 3.x
 ;;   zshdb          zshdb         Zsh
 ;;
-;; And possibly (commented out for now):
-;;   gub            gub           Go SSA debugger
 ;;
 ;; **gdb invocation requires the realgud- preface to disambiguate it
 ;; from the older, preexisting emacs command. The other invocations

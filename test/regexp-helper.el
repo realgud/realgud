@@ -10,6 +10,8 @@
 
 (declare-function realgud-loc-pat-regexp 'realgud-backtrace-mode)
 (declare-function realgud-cmdbuf-info-loc-regexp 'realgud-buffer-command)
+(declare-function test-simple-start 'test-simple)
+
 
 (defun setup-regexp-vars(pat-hash)
   (setq helper-bps    (gethash "brkpt-set" pat-hash))
@@ -44,3 +46,4 @@
       (assert-equal num-str (substring prompt-str
 				       (match-beginning 1) (match-end 1))))
 )
+(provide 'realgud-regexp-helper)
