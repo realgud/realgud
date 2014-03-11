@@ -6,4 +6,10 @@
   :type 'string
   :group 'realgud)
 
+(defcustom realgud-srcbuf-lock t
+  "Set source buffers read-only when the debugger is active.
+A setting of `nil` allows editing, but Short-Key-mode use may inhibit this."
+  :type 'boolean
+  :group 'realgud)
+
 (provide-me "realgud-")
