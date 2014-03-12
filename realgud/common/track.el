@@ -309,6 +309,12 @@ encountering a new loc."
 	  (with-current-buffer srcbuf
 	    (realgud-window-src srcbuf)
 	    (realgud-window-update-position srcbuf realgud-overlay-arrow1))
+	  ;; reset 'in-srcbuf' to allow the command buffer to keep point focus
+	  ;; when used directly. 'in-srcbuf' is set 't' early in the stack
+	  ;; (prior to common command code, e.g. this) when any command is run
+	  ;; from a source buffer
+	  (with-current-buffer cmdbuf
+	    (realgud-cmdbuf-info-in-srcbuf?= nil))
 	  )
 	))
   )
