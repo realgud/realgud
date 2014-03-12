@@ -10,7 +10,7 @@
 
 (require 'load-relative)
 (require-relative-list
- '("file"           "fringe"
+ '("core"           "file"     "fringe"
    "helper"         "init"     "loc"    "lochist"
    "regexp"         "shortkey" "window"
    "bp"
@@ -29,6 +29,7 @@
 
 (declare-function realgud-bp-add-info                 'realgud-bp)
 (declare-function realgud-bp-del-info                 'realgud-bp)
+(declare-function realgud-cmdbuf-add-srcbuf           'realgud-buffer-command)
 (declare-function realgud-cmdbuf-debugger-name        'realgud-buffer-command)
 (declare-function realgud-cmdbuf-info-bp-list=        'realgud-buffer-command)
 (declare-function realgud-cmdbuf-info-divert-output?= 'realgud-buffer-command)
@@ -41,6 +42,8 @@
 (declare-function realgud-cmdbuf-mode-line-update     'realgud-buffer-command)
 (declare-function realgud-cmdbuf-pat                  'realgud-buffer-command)
 (declare-function realgud-cmdbuf?                     'realgud-buffer-command)
+(declare-function realgud-terminate                   'realgud-core)
+(declare-function realgud-file-loc-from-line          'realgud-file)
 (declare-function realgud-fringe-history-set          'realgud-fringe)
 (declare-function realgud-get-cmdbuf                  'realgud-buffer-command)
 (declare-function realgud-loc-goto                    'realgud-loc)
