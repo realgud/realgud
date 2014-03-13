@@ -71,7 +71,7 @@ MODE-ON? a boolean which specifies if we are going into or out of this mode."
                 (progn
                   (realgud-srcbuf-info-was-read-only?= buffer-read-only)
                   (local-set-key [M-insert] 'realgud-short-key-mode)
-                  (setq buffer-read-only t)
+                  (when realgud-srcbuf-lock (setq buffer-read-only t))
                   (run-mode-hooks 'realgud-short-key-mode-hook))
                 ;; Mode is being turned off: restore read-only state.
                 (setq buffer-read-only
