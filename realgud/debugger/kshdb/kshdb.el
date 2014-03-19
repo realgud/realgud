@@ -1,4 +1,4 @@
-;;; Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011, 2014 Rocky Bernstein <rocky@gnu.org>
 ;;  `kshdb' Main interface to kshdb via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
@@ -9,7 +9,7 @@
 (defgroup kshdb nil
   "The Korn shell debugger: kshdb"
   :group 'processes
-  :group 'dbgr
+  :group 'realgud
   :version "23.1")
 
 ;; -------------------------------------------------------------------

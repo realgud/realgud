@@ -1,16 +1,20 @@
-;;; Copyright (C) 2012 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2012, 2014 Rocky Bernstein <rocky@gnu.org>
 ;;  `pydb' Main interface to pydb via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper"
 			 "../../common/track") "realgud-")
 (require-relative-list '("core" "track-mode") "realgud-pydb-")
 
+(declare-function pydb-query-cmdline  'realgud-pydb-core)
+(declare-function pydb-parse-cmd-args 'realgud-pydb-core)
+(declare-function realgud-run-process 'realgud-core)
+
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
 (defgroup pydb nil
   "The Python pydb debugger"
   :group 'processes
-  :group 'dbgr
+  :group 'realgud
   :group 'python
   :version "23.1")
 

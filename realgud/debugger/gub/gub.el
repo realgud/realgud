@@ -9,7 +9,7 @@
 (defgroup gub nil
   "The Go SSA interpreter debugger: gub"
   :group 'processes
-  :group 'dbgr
+  :group 'realgud
   :group 'make
   :version "23.1")
 

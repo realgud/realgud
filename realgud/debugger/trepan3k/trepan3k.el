@@ -10,7 +10,7 @@
 (defgroup trepan3k nil
   "The Python trepan3k debugger"
   :group 'processes
-  :group 'dbgr
+  :group 'realgud
   :group 'python
   :version "23.1")
 

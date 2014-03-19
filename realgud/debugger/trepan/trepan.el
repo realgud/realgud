@@ -1,16 +1,21 @@
-;;; Copyright (C) 2010-2011, 2013 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2011, 2013-2014 Rocky Bernstein <rocky@gnu.org>
 ;;  `trepan' Main interface to trepan via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("../../common/track") "realgud-")
 (require-relative-list '("core" "track-mode") "realgud-trepan-")
+
+(declare-function trepan-query-cmdline  'realgud-trepan-core)
+(declare-function trepan-parse-cmd-args 'realgud-trepan-core)
+(declare-function realgud-run-process 'realgud-core)
+
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
 (defgroup trepan nil
   "The Ruby 1.9.2 1.9.3 \"trepanning\" debugger"
   :group 'processes
   :group 'ruby
-  :group 'dbgr
+  :group 'realgud
   :version "23.1")
 
 ;; -------------------------------------------------------------------

@@ -10,7 +10,7 @@
   "The Perl \"trepanning\" debugger"
   :group 'processes
   :group 'perl
-  :group 'dbgr
+  :group 'realgud
   :version "23.1")
 
 ;; -------------------------------------------------------------------
