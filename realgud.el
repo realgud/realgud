@@ -40,7 +40,7 @@
 ;; Oh, and because global variables are largely banned, we can support
 ;; several simultaneous debug sessions.
 ;;
-;; See `https://github.com/rocky/emacs-dbgr/wiki/Features' for a list
+;; See URL `https://github.com/rocky/emacs-dbgr/wiki/Features' for a list
 ;; features.
 
 ;;
@@ -73,7 +73,7 @@
 ;; Alas there is older obsolete Emacs code out there for bashdb,
 ;; kshdb, and rdebug.
 
-;; If you don't see your favorite debugger above, see
+;; If you don't see your favorite debugger above, see URL
 ;; `https://github.com/rocky/emacs-dbgr/wiki/How-to-add-a-new-debugger/'
 ;; for how you can add your own.
 
@@ -82,9 +82,9 @@
 
 ;; To install you will need a couple of other Emacs packages
 ;; installed. If you install via Melpa these will be pulled in
-;; automatically. See the installation instructions
-;; `https://github.com/rocky/emacs-dbgr/wiki/How-to-Install' for how to
-;; install.
+;; automatically. See the installation instructions URL
+;; `https://github.com/rocky/emacs-dbgr/wiki/How-to-Install' for how
+;; to install.
 
 ;;; Code:
 
