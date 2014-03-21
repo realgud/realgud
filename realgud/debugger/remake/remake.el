@@ -9,9 +9,13 @@
 (defgroup remake nil
   "The GNU Make debugger: remake"
   :group 'processes
-  :group 'dbgr
+  :group 'realgud
   :group 'make
   :version "23.1")
+
+(declare-function remake-query-cmdline  'realgud-remake-core)
+(declare-function remake-parse-cmd-args 'realgud-remake-core)
+(declare-function realgud-run-process 'realgud-core)
 
 ;; -------------------------------------------------------------------
 ;; User definable variables

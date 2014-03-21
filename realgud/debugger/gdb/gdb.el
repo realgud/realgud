@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2011, 2014 Rocky Bernstein <rocky@gnu.org>
 ;;  `realgud-gdb' Main interface to gdb via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
@@ -9,7 +9,7 @@
 (defgroup realgud-gdb nil
   "The dbgr interface to gdb"
   :group 'processes
-  :group 'dbgr
+  :group 'realgud
   :group 'gdb
   :version "23.1")
 

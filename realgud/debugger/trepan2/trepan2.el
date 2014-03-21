@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2011, 2012 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2012, 2014 Rocky Bernstein <rocky@gnu.org>
 ;;  `trepan2' Main interface to trepan2 via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper"
@@ -10,9 +10,13 @@
 (defgroup trepan2 nil
   "The Python trepan2 debugger"
   :group 'processes
-  :group 'dbgr
+  :group 'realgud
   :group 'python
   :version "23.1")
+
+(declare-function trepan2-query-cmdline  'realgud-trepan2-core)
+(declare-function trepan2-parse-cmd-args 'realgud-trepan2-core)
+(declare-function realgud-run-process 'realgud-core)
 
 ;; -------------------------------------------------------------------
 ;; User definable variables

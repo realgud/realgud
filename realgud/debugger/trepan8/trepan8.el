@@ -15,7 +15,7 @@
   "The Ruby \"trepanning\" debugger for Ruby 1.8"
   :group 'processes
   :group 'ruby
-  :group 'dbgr
+  :group 'realgud
   :version "23.1")
 
 ;; -------------------------------------------------------------------

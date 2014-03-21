@@ -1,4 +1,4 @@
-;;; Copyright (C) 2012 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2012, 2014 Rocky Bernstein <rocky@gnu.org>
 ;;  `pdb' Main interface to pdb via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper"
@@ -8,9 +8,9 @@
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
 (defgroup pdb nil
-  "The Python pdb debugger"
+  "The Python pdb debugger (realgud variant)"
   :group 'processes
-  :group 'dbgr
+  :group 'realgud
   :group 'python
   :version "23.1")
 

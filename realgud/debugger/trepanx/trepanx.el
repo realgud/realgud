@@ -15,7 +15,7 @@
   "The Rubinius \"trepanning\" debugger"
   :group 'processes
   :group 'ruby
-  :group 'dbgr
+  :group 'realgud
   :version "23.1")
 
 ;; -------------------------------------------------------------------

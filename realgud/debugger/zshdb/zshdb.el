@@ -15,7 +15,7 @@
 (defgroup zshdb nil
   "The Zsh debugger: zshdb"
   :group 'processes
-  :group 'dbgr
+  :group 'realgud
   :version "23.1")
 
 ;; -------------------------------------------------------------------

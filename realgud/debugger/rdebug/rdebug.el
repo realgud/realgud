@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2011, 2014 Rocky Bernstein <rocky@gnu.org>
 ;;  `rdebug' Main interface to rdebug via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper"
@@ -10,8 +10,12 @@
   "ruby-debug (rdebug)"
   :group 'processes
   :group 'ruby
-  :group 'dbgr
+  :group 'realgud
   :version "23.1")
+
+(declare-function rdebug-query-cmdline  'realgud-rdebug-core)
+(declare-function rdebug-parse-cmd-args 'realgud-rdebug-core)
+(declare-function realgud-run-process 'realgud-core)
 
 ;; -------------------------------------------------------------------
 ;; User definable variables

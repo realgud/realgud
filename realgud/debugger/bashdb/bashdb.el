@@ -1,4 +1,4 @@
-;;; Copyright (C) 2011, 2013 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011, 2013-2014 Rocky Bernstein <rocky@gnu.org>
 ;;  `bashdb' Main interface to bashdb via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
@@ -7,9 +7,9 @@
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
 (defgroup bashdb nil
-  "The bash debugger: bashdb (dbgr variant)"
+  "The bash debugger: bashdb (realgud variant)"
   :group 'processes
-  :group 'dbgr
+  :group 'realgud
   :version "23.1")
 
 ;; -------------------------------------------------------------------
