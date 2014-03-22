@@ -27,8 +27,8 @@
 ;; Once upon a time in an Emacs far far away and a programming-style
 ;; deservedly banished, there was a monolithic Cathederal-like
 ;; debugger front-end. This interfaced with a number of debuggers,
-;; many now dead. Is there anyone still alive that remembers
-;; sdb from UNIX/32V?  See `http://en.wikipedia.org/wiki/UNIX/32V'.
+;; many now dead. Is there anyone still alive that remembers sdb from
+;; UNIX/32V?  See URL `http://en.wikipedia.org/wiki/UNIX/32V'.
 ;;
 ;; This isn't that. Here we make use of more modern programming
 ;; practices, more numerous and smaller files, unit tests, and better
