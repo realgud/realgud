@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2012 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2012, 2014 Rocky Bernstein <rocky@gnu.org>
 ;;; Python "pydb" Debugger tracking a comint
 ;;; or eshell buffer.
 
@@ -33,7 +33,11 @@
 )
 
 (define-minor-mode pydb-track-mode
-  "Minor mode for tracking Pydb debugging inside a process shell."
+  "Minor mode for tracking, pydb, a Python debugger, inside a process shell.
+
+Key bindings:
+\\{pydb-track-mode-map}
+"
   :init-value nil
   ;; :lighter " pydb"   ;; mode-line indicator from realgud-track is sufficient.
   ;; The minor mode bindings.

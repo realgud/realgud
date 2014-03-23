@@ -1,4 +1,4 @@
-;;; Copyright (C) 2011-2013 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011-2014 Rocky Bernstein <rocky@gnu.org>
 ;;; Stock Perl Debugger "perldb5" tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))
@@ -38,7 +38,11 @@
 )
 
 (define-minor-mode realgud-perldb-track-mode
-  "Minor mode for tracking Perl debugging inside a process shell."
+  "Minor mode for tracking perl5db, a Perl debugger, inside a process shell.
+
+Key bindings:
+\\{realgud-perldb-track-mode-map}
+"
   :init-value nil
   ;; :lighter " perldb"   ;; mode-line indicator from realgud-track is sufficient.
   ;; The minor mode bindings.

@@ -33,7 +33,10 @@
 )
 
 (define-minor-mode bashdb-track-mode
-  "Minor mode for tracking ruby debugging inside a process shell."
+  "Minor mode for tracking ruby debugging inside a process shell.
+
+Key bindings:
+\\{bashdb-track-mode-map}"
   :init-value nil
   ;; :lighter " bashdb"   ;; mode-line indicator from realgud-track is sufficient.
   ;; The minor mode bindings.

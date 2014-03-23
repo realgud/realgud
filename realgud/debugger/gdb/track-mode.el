@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2012 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2012, 2014 Rocky Bernstein <rocky@gnu.org>
 ;;; gdb tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))
@@ -28,7 +28,11 @@
 )
 
 (define-minor-mode realgud-gdb-track-mode
-  "Minor mode for tracking ruby debugging inside a process shell."
+  "Minor mode for tracking gdb inside a process shell.
+
+Key bindings:
+\\{realgud-gdb-track-mode-map}
+"
   :init-value nil
   ;; :lighter " gdb"   ;; mode-line indicator from realgud-track is sufficient.
   ;; The minor mode bindings.

@@ -28,12 +28,12 @@
 ;; deservedly banished, there was a monolithic Cathederal-like
 ;; debugger front-end. This interfaced with a number of debuggers,
 ;; many now dead. Is there anyone still alive that remembers sdb from
-;; UNIX/32V?  See URL `http://en.wikipedia.org/wiki/UNIX/32V'.
+;; UNIX/32V circa 1980?
 ;;
 ;; This isn't that. Here we make use of more modern programming
 ;; practices, more numerous and smaller files, unit tests, and better
-;; use of emacs primitives (e.g. buffer marks, buffer-local variables,
-;; structures, rings, hash tables). Although there is still much to be
+;; use of emacs primitives, e.g. buffer marks, buffer-local variables,
+;; structures, rings, hash tables. Although there is still much to be
 ;; desired, this code is more scalable and suitable as a common base for
 ;; an Emacs front-end to modern debuggers.
 ;;

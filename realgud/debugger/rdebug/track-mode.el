@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2012 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2012, 2014 Rocky Bernstein <rocky@gnu.org>
 ;;; Ruby "rdebug" Debugger tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))

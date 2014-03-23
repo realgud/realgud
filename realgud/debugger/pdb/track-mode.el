@@ -1,6 +1,5 @@
-;;; Copyright (C) 2010, 2012-2013 Rocky Bernstein <rocky@gnu.org>
-;;; Python "pdb" Debugger tracking a comint
-;;; or eshell buffer.
+;;; Copyright (C) 2010, 2012-2014 Rocky Bernstein <rocky@gnu.org>
+;;; Python "pdb" Debugger tracking a comint buffer.
 
 (eval-when-compile (require 'cl))
 (require 'load-relative)
@@ -33,7 +32,12 @@
 )
 
 (define-minor-mode pdb-track-mode
-  "Minor mode for tracking ruby debugging inside a process shell."
+  "Minor mode for tracking pdb, the stock Python debugger, inside
+a process shell.
+
+Key bindings:
+\\{pdb-track-mode-map}
+"
   :init-value nil
   ;; :lighter " pdb"   ;; mode-line indicator from realgud-track is sufficient.
   ;; The minor mode bindings.

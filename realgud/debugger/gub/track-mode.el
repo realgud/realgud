@@ -1,5 +1,5 @@
-;;; Copyright (C) 2013 Rocky Bernstein <rocky@gnu.org>
-;;; Golang SSA gub tracking a comint or eshell buffer.
+;;; Copyright (C) 2013-2014 Rocky Bernstein <rocky@gnu.org>
+;;; Golang SSA gub tracking a comint buffer.
 
 (eval-when-compile (require 'cl))
 (require 'load-relative)
@@ -52,7 +52,11 @@ described by PT."
 )
 
 (define-minor-mode gub-track-mode
-  "Minor mode for tracking ruby debugging inside a process shell."
+  "Minor mode for tracking gub, a go debugger, inside a process shell.
+
+Key bindings:
+\\{gub-track-mode-map}
+"
   :init-value nil
   ;; :lighter " gub"   ;; mode-line indicator from realgud-track is sufficient.
   ;; The minor mode bindings.
