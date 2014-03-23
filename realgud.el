@@ -81,10 +81,11 @@
 ;; a `track-mode' inside an existing shell.
 
 ;; To install you will need a couple of other Emacs packages
-;; installed. If you install via Melpa these will be pulled in
-;; automatically. See the installation instructions URL
-;; `https://github.com/rocky/emacs-dbgr/wiki/How-to-Install' for how
-;; to install.
+;; installed. If you install via melpa (`package-install') or
+;; `el-get', these will be pulled in automatically. See the
+;; installation instructions URL
+;; `https://github.com/rocky/emacs-dbgr/wiki/How-to-Install' for all
+;; the ways to to install and more details on installation.
 
 ;;; Code:
 
