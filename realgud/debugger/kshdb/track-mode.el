@@ -32,10 +32,10 @@
 )
 
 (define-minor-mode kshdb-track-mode
-  "Minor mode for tracking kshdb, a Korn shell debugger, inside a
-process shell.
+  "Minor mode for tracking kshdb source locations inside a process shell via realgud. kshdb is a Korn Shell debugger.
 
-Key bindings:
+If called interactively with no prefix argument, the mode is toggled. A prefix argument, captured as ARG, enables the mode if the argument is positive, and disables it otherwise.
+
 \\{kshdb-track-mode-map}
 "
   :init-value nil

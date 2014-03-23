@@ -32,7 +32,12 @@
 )
 
 (define-minor-mode rdebug-track-mode
-  "Minor mode for tracking ruby debugging inside a process shell."
+  "Minor mode for tracking rdebug source locations inside a process shell via realgud. rdebug is a Ruby debugger.
+
+If called interactively with no prefix argument, the mode is toggled. A prefix argument, captured as ARG, enables the mode if the argument is positive, and disables it otherwise.
+
+\\{rdebug-track-mode-map}
+"
   :init-value nil
   ;; :lighter " rdebug"   ;; mode-line indicator from realgud-track is sufficient.
   ;; The minor mode bindings.

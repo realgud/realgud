@@ -1,5 +1,5 @@
 ;;; Copyright (C) 2012, 2014 Rocky Bernstein <rocky@gnu.org>
-;;; "zshdb" Debugger tracking a comint or eshell buffer.
+;;; "zshdb" Debugger tracking a comint buffer.
 
 (eval-when-compile (require 'cl))
 (require 'load-relative)
@@ -34,7 +34,12 @@
 )
 
 (define-minor-mode zshdb-track-mode
-  "Minor mode for tracking ruby debugging inside a process shell."
+  "Minor mode for tracking zshdb source locations inside a process shell via realgud. zshdb is a zsh debugger.
+
+If called interactively with no prefix argument, the mode is toggled. A prefix argument, captured as ARG, enables the mode if the argument is positive, and disables it otherwise.
+
+\\{zshdb-track-mode-map}
+"
   :init-value nil
   ;; :lighter " zshdb"   ;; mode-line indicator from realgud-track is sufficient.
   ;; The minor mode bindings.

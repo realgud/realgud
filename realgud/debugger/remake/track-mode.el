@@ -1,5 +1,5 @@
-;;; Copyright (C) 2012 Rocky Bernstein <rocky@gnu.org>
-;;; GNU Make Debugger tracking a comint or eshell buffer.
+;;; Copyright (C) 2012, 2014 Rocky Bernstein <rocky@gnu.org>
+;;; GNU Make Debugger tracking a comint buffer.
 
 (eval-when-compile (require 'cl))
 (require 'load-relative)
@@ -12,9 +12,11 @@
 		       "realgud-")
 (require-relative-list '("core" "init") "realgud-remake-")
 
-(realgud-track-mode-vars "remake")
+(declare-function realgud-track-set-debugger 'realgud-track-mode)
+(declare-function realgud-track-mode-setup   'realgud-track-mode)
+(declare-function realgud-track-set-debugger 'realgud-track-mode)
 
-(declare-function realgud-track-mode(bool))
+(realgud-track-mode-vars "remake")
 
 (define-key remake-track-mode-map
   (kbd "C-c !!") 'realgud-goto-lang-backtrace-line)
@@ -31,6 +33,12 @@
 )
 
 (define-minor-mode remake-track-mode
+  "Minor mode for tracking remake source locations inside a process shell via realgud. remake is a GNU Make debugger.
+
+If called interactively with no prefix argument, the mode is toggled. A prefix argument, captured as ARG, enables the mode if the argument is positive, and disables it otherwise.
+
+\\{remake-track-mode-map}
+"
   "Minor mode for tracking ruby debugging inside a process shell."
   :init-value nil
   ;; :lighter " remake"   ;; mode-line indicator from realgud-track is sufficient.

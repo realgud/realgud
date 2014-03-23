@@ -1,5 +1,5 @@
 ;;; Copyright (C) 2010-2011, 2014 Rocky Bernstein <rocky@gnu.org>
-;;; Ruby "trepan8" Debugger tracking a comint or eshell buffer.
+;;; Ruby "trepan8" Debugger tracking a comint buffer.
 
 (eval-when-compile (require 'cl))
 (require 'load-relative)
@@ -33,7 +33,12 @@
   (message "trepan8 track-mode-hook called")
 )
 (define-minor-mode trepan8-track-mode
-  "Minor mode for tracking ruby debugging inside a process shell."
+  "Minor mode for tracking trepan8 source locations inside a process shell via realgud. trepan8 is a Ruby debugger for version 1.8.
+
+If called interactively with no prefix argument, the mode is toggled. A prefix argument, captured as ARG, enables the mode if the argument is positive, and disables it otherwise.
+
+\\{trepan8-track-mode-map}
+"
   :init-value nil
   ;; :lighter " trepan8"   ;; mode-line indicator from realgud-track is sufficient.
   ;; The minor mode bindings.

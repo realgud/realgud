@@ -38,9 +38,10 @@
 )
 
 (define-minor-mode realgud-perldb-track-mode
-  "Minor mode for tracking perl5db, a Perl debugger, inside a process shell.
+  "Minor mode for tracking perl5db source locations inside a process shell via realgud. perl5db is the stock Perl debugger.
 
-Key bindings:
+If called interactively with no prefix argument, the mode is toggled. A prefix argument, captured as ARG, enables the mode if the argument is positive, and disables it otherwise.
+
 \\{realgud-perldb-track-mode-map}
 "
   :init-value nil

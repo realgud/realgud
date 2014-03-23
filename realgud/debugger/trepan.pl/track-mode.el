@@ -1,5 +1,5 @@
 ;;; Copyright (C) 2011-2014 Rocky Bernstein <rocky@gnu.org>
-;;; Perl trepanning Debugger tracking a comint or eshell buffer.
+;;; Perl trepanning Debugger tracking a comint buffer.
 
 (eval-when-compile (require 'cl))
 (require 'load-relative)
@@ -44,7 +44,12 @@ described by PT."
 )
 
 (define-minor-mode realgud-trepanpl-track-mode
-  "Minor mode for tracking Perl debugging inside a process shell."
+  "Minor mode for tracking trepan.pl source locations inside a process shell via realgud. trepan.pl is a Perl debugger see URL `https://metacpan.org/pod/Devel::Trepan'.
+
+If called interactively with no prefix argument, the mode is toggled. A prefix argument, captured as ARG, enables the mode if the argument is positive, and disables it otherwise.
+
+\\{trepanpl-track-mode-map}
+"
   :init-value nil
   ;; :lighter " trepanpl"   ;; mode-line indicator from realgud-track is sufficient.
   ;; The minor mode bindings.

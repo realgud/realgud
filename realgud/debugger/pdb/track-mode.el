@@ -32,10 +32,12 @@
 )
 
 (define-minor-mode pdb-track-mode
-  "Minor mode for tracking pdb, the stock Python debugger, inside
+  "Minor mode for tracking pdb source locations inside a process shell via realgud. pdb is the stock Python debugger.
+
+If called interactively with no prefix argument, the mode is toggled. A prefix argument, captured as ARG, enables the mode if the argument is positive, and disables it otherwise.
+
 a process shell.
 
-Key bindings:
 \\{pdb-track-mode-map}
 "
   :init-value nil

@@ -28,7 +28,9 @@
 )
 
 (define-minor-mode realgud-gdb-track-mode
-  "Minor mode for tracking gdb inside a process shell.
+  "Minor mode for tracking gdb inside a process shell via realgud.
+
+If called interactively with no prefix argument, the mode is toggled. A prefix argument, captured as ARG, enables the mode if the argument is positive, and disables it otherwise.
 
 Key bindings:
 \\{realgud-gdb-track-mode-map}

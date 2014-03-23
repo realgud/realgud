@@ -35,10 +35,10 @@
 )
 
 (define-minor-mode pydbgr-track-mode
-  "Minor mode for tracking, pydbgr, a Python debugger, inside a
-process shell.
+  "Minor mode for tracking pydbgr source locations inside a process shelll via realgud. pydbgr is a Python debugger. See URL `https://code.google.com/p/pydbgr/'.
 
-Key bindings:
+If called interactively with no prefix argument, the mode is toggled. A prefix argument, captured as ARG, enables the mode if the argument is positive, and disables it otherwise.
+
 \\{pydbgr-track-mode-map}
 "
   :init-value nil

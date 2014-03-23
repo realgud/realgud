@@ -33,9 +33,10 @@
 )
 
 (define-minor-mode pydb-track-mode
-  "Minor mode for tracking, pydb, a Python debugger, inside a process shell.
+  "Minor mode for tracking pydb source locations inside a process shell via realgud. pydb is a Python debugger.
 
-Key bindings:
+If called interactively with no prefix argument, the mode is toggled. A prefix argument, captured as ARG, enables the mode if the argument is positive, and disables it otherwise.
+
 \\{pydb-track-mode-map}
 "
   :init-value nil
