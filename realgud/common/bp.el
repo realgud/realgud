@@ -36,51 +36,49 @@ overlay for a before-string property containing one we normally set.
   )
 
 (defun realgud-set-bp-icons()
-  (if (display-images-p)
-      (progn
-	;; NOTE: if you don't see the icon, check the that the window margin
-	;; is not nil.
-	(setq realgud-bp-enabled-icon
-	      (find-image `((:type xpm :data
-				   ,realgud-bp-xpm-data
-				   :ascent 100 :pointer hand)
-			    (:type svg :data
-				   ,realgud-bp-enabled-svg-data
-				   :ascent 100 :pointer hand)
-			    (:type tiff :data
-				   ,realgud-bp-enabled-tiff-data
-				   :ascent 100 :pointer hand)
-			    (:type pbm :data
-				   ,realgud-bp-enabled-pbm-data
-				   :ascent 100 :pointer hand)
-			    )))
+  (when (display-images-p)
+    ;; NOTE: if you don't see the icon, check the that the window margin
+    ;; is not nil.
+    (setq realgud-bp-enabled-icon
+	  (find-image `((:type xpm :data
+			       ,realgud-bp-xpm-data
+			       :ascent 100 :pointer hand)
+			(:type svg :data
+			       ,realgud-bp-enabled-svg-data
+			       :ascent 100 :pointer hand)
+			(:type tiff :data
+			       ,realgud-bp-enabled-tiff-data
+			       :ascent 100 :pointer hand)
+			(:type pbm :data
+			       ,realgud-bp-enabled-pbm-data
+			       :ascent 100 :pointer hand)
+			)))
 
-	;; For seeing what realgud-bp-enabled-icon looks like:
-	;; (insert-image realgud-bp-enabled-icon)
+    ;; For seeing what realgud-bp-enabled-icon looks like:
+    ;; (insert-image realgud-bp-enabled-icon)
 
-	(setq realgud-bp-disabled-icon
-	      (find-image `((:type xpm :data
-				   ,realgud-bp-xpm-data
-				   :conversion disabled ;; different than 'enabled'
-				   :ascent 100 :pointer hand)
-			    (:type svg :data
-				   ,realgud-bp-disabled-svg-data
-				   :ascent 100 :pointer hand)
-			    (:type tiff :data
-				   ,realgud-bp-disabled-tiff-data
-				   :ascent 100 :pointer hand)
-			    (:type pbm :data
-				   ,realgud-bp-disabled-pbm-data
-				   :ascent 100 :pointer hand)
-			    (:type svg :data
-				   ,realgud-bp-disabled-svg-data
-				   :ascent 100 :pointer hand)
-			    )))
-	;; For seeing what realgud-bp-enabled-icon looks like:
-	;; (insert-image realgud-bp-disabled-icon)
-	)
-    (message "Display doesn't support breakpoint images in fringe")
+    (setq realgud-bp-disabled-icon
+	  (find-image `((:type xpm :data
+			       ,realgud-bp-xpm-data
+			       :conversion disabled ;; different than 'enabled'
+			       :ascent 100 :pointer hand)
+			(:type svg :data
+			       ,realgud-bp-disabled-svg-data
+			       :ascent 100 :pointer hand)
+			(:type tiff :data
+			       ,realgud-bp-disabled-tiff-data
+			       :ascent 100 :pointer hand)
+			(:type pbm :data
+			       ,realgud-bp-disabled-pbm-data
+			       :ascent 100 :pointer hand)
+			(:type svg :data
+			       ,realgud-bp-disabled-svg-data
+			       :ascent 100 :pointer hand)
+			)))
+    ;; For seeing what realgud-bp-enabled-icon looks like:
+    ;; (insert-image realgud-bp-disabled-icon)
     )
+  (message "Display doesn't support breakpoint images in fringe")
   )
 
 

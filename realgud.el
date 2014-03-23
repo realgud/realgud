@@ -26,9 +26,9 @@
 
 ;; Once upon a time in an Emacs far far away and a programming-style
 ;; deservedly banished, there was a monolithic Cathederal-like
-;; debugger front-end. This interfaced with a number of debuggers,
-;; many now dead. Is there anyone still alive that remembers sdb from
-;; UNIX/32V circa 1980?
+;; debugger front-end called gub. This interfaced with a number of
+;; debuggers, many now dead. Is there anyone still alive that
+;; remembers sdb from UNIX/32V circa 1980?
 ;;
 ;; This isn't that. Here we make use of more modern programming
 ;; practices, more numerous and smaller files, unit tests, and better
@@ -78,7 +78,7 @@
 ;; for how you can add your own.
 
 ;; The debugger is run out of a comint process buffer, or you can use
-;; a `track-mode' inside an existing shell.
+;; a `realgud-track-mode' inside an existing shell.
 
 ;; To install you will need a couple of other Emacs packages
 ;; installed. If you install via melpa (`package-install') or

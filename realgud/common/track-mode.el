@@ -70,18 +70,17 @@ of this mode."
 	(unless (and (realgud-cmdbuf-info-set?)
 		     (realgud-sget 'cmdbuf-info 'debugger-name))
 	  (call-interactively 'realgud-track-set-debugger))
-	(if (boundp 'comint-last-output-start)
-	    (progn
-	      (realgud-cmdbuf-info-prior-prompt-regexp= comint-prompt-regexp)
-	      (realgud-cmdbuf-info-divert-output?= nil)
-	      (let* ((regexp-hash
-		      (and (realgud-cmdbuf-info? realgud-cmdbuf-info)
-			   (realgud-sget 'cmdbuf-info 'regexp-hash)))
-		     (prompt-pat (and regexp-hash
-				      (gethash "prompt" regexp-hash))))
-		(if prompt-pat
-		    (setq comint-prompt-regexp
-			    (realgud-loc-pat-regexp prompt-pat)))))
+	(when (boundp 'comint-last-output-start)
+	  (realgud-cmdbuf-info-prior-prompt-regexp= comint-prompt-regexp)
+	  (realgud-cmdbuf-info-divert-output?= nil)
+	  (let* ((regexp-hash
+		  (and (realgud-cmdbuf-info? realgud-cmdbuf-info)
+		       (realgud-sget 'cmdbuf-info 'regexp-hash)))
+		 (prompt-pat (and regexp-hash
+				  (gethash "prompt" regexp-hash))))
+	    (if prompt-pat
+		(setq comint-prompt-regexp
+		      (realgud-loc-pat-regexp prompt-pat))))
 	  (set-marker comint-last-output-start (point)))
 
 	(add-hook 'comint-output-filter-functions
@@ -89,6 +88,7 @@ of this mode."
 	(add-hook 'eshell-output-filter-functions
 		  'realgud-track-eshell-output-filter-hook)
 	(run-mode-hooks 'realgud-track-mode-hook))
+    ;; else
     (progn
       (if (and (boundp 'comint-last-output-start) realgud-cmdbuf-info)
 	(setq comint-prompt-regexp
@@ -149,6 +149,7 @@ the name of the debugger which is used to preface variables."
       (progn
 	(setq realgud-track-mode 't)
 	(run-mode-hooks (intern (concat name "-track-mode-hook"))))
+    ;; else
     (progn
       (setq realgud-track-mode nil)
       )))

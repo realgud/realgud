@@ -62,20 +62,19 @@ MODE-ON? a boolean which specifies if we are going into or out of this mode."
         (progn
           ;; Save the current state, so we can determine when the
           ;; state is toggled in the future.
-          (if (not (eq (realgud-sget 'srcbuf-info 'short-key?) mode-on?))
-            (progn
-              (realgud-srcbuf-info-short-key?= mode-on?)
-              (setq realgud-short-key-mode mode-on?)
-              (if mode-on?
+          (when (not (eq (realgud-sget 'srcbuf-info 'short-key?) mode-on?))
+	    (realgud-srcbuf-info-short-key?= mode-on?)
+	    (setq realgud-short-key-mode mode-on?)
+	    (if mode-on?
                 ;; Mode is being turned on.
                 (progn
                   (realgud-srcbuf-info-was-read-only?= buffer-read-only)
                   (local-set-key [M-insert] 'realgud-short-key-mode)
                   (when realgud-srcbuf-lock (setq buffer-read-only t))
                   (run-mode-hooks 'realgud-short-key-mode-hook))
-                ;; Mode is being turned off: restore read-only state.
-                (setq buffer-read-only
-                  (realgud-sget 'srcbuf-info 'was-read-only?))))))
+	      ;; Mode is being turned off: restore read-only state.
+	      (setq buffer-read-only
+		    (realgud-sget 'srcbuf-info 'was-read-only?)))))
     ;; (with-current-buffer-safe cmdbuf
     ;;   (realgud-cmdbuf-info-src-shortkey?= mode-on?)
     ;;   (realgud-cmdbuf-info-in-srcbuf?= mode-on?)

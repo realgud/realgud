@@ -9,6 +9,10 @@
 (load-file "../realgud/common/lang.el")
 (test-simple-start)
 
+(declare-function realgud-suggest-lang-file 'realgud-lang)
+(declare-function realgud-suggest-file-from-buffer 'realgud-lang)
+(declare-function realgud-lang-mode? 'realgud-lang)
+
 (note "realgud-lang-mode?")
 
 (assert-nil
@@ -49,6 +53,6 @@
                                 (realgud-suggest-file-from-buffer
                                  "emacs-lisp"
                                  (list elisp-buffer))
-                                "realgud-lang-mode? with Lisp file"                  )
+                                "realgud-lang-mode? with Lisp file")
 
 (end-tests)

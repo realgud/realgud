@@ -153,12 +153,10 @@ which shows details of the error. The command buffer or nil is returned"
   (with-current-buffer srcbuf
     (realgud-fringe-erase-history-arrows)
     (realgud-bp-remove-icons (point-min) (point-max))
-    (if (realgud-srcbuf?)
-	(progn
-	  (realgud-short-key-mode-setup nil)
-	  (redisplay)
-	  ))
-    )
+    (when (realgud-srcbuf?)
+      (realgud-short-key-mode-setup nil)
+      (redisplay)
+      ))
   )
 
 (defun realgud-terminate (&optional buf)

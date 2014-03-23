@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2012 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2012, 2014 Rocky Bernstein <rocky@gnu.org>
 ;;; Programming language specific stuff.
 (require 'load-relative)
 
@@ -8,15 +8,15 @@ that is in LANG-STR mode. The test is just that the major mode
 starts LANG-STR."
   (let ((buffer (and filename (find-buffer-visiting filename)))
         (match-pos))
-    (if buffer
-        (progn
-          (save-current-buffer
-            (set-buffer buffer)
-            (setq match-pos
-                  (string-match (format "^%s-" lang-str)
-                                (format "%s" major-mode))))
-          (and match-pos (= 0 match-pos)))
-      nil))
+    (cond (buffer
+	   (save-current-buffer
+	     (set-buffer buffer)
+	     (setq match-pos
+		   (string-match (format "^%s-" lang-str)
+				 (format "%s" major-mode))))
+	   (and match-pos (= 0 match-pos)))
+	  ('t nil)
+	  ))
   )
 
 (defun realgud-suggest-file-from-buffer (lang-str &optional opt-buff-list)

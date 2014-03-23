@@ -45,14 +45,15 @@ problem as best as we can determine."
 	      (if (file-exists-p remapped-filename)
 		  (setq filename remapped-filename)
 		(remhash filename realgud-file-remap)))
+	  ;; else
 	  (progn
 	    (setq remapped-filename
 		  (buffer-file-name
 		   (compilation-find-file (point-marker) filename nil)))
-	    (if (and remapped-filename (file-exists-p remapped-filename))
-	      (progn
-		(puthash filename remapped-filename realgud-file-remap)
-		(setq filename remapped-filename)))
+	    (when (and remapped-filename (file-exists-p remapped-filename))
+	      (puthash filename remapped-filename realgud-file-remap)
+	      (setq filename remapped-filename)
+	      )
 	  )))
       ))
   (if (file-readable-p filename)
