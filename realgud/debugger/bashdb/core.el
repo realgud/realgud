@@ -42,10 +42,10 @@ We return the a list containing
 
 For example for the following input
   (map 'list 'symbol-name
-   '(bash -W -C /tmp bashdb --emacs ./gcd.rb a b))
+   '(bash -W -C /tmp bashdb --emacs ./gcd.sh a b))
 
 we might return:
-   ((bash -W -C) (bashdb --emacs) (./gcd.rb a b) 't)
+   ((bash -W -C) (bashdb --emacs) (./gcd.sh a b) 't)
 
 NOTE: the above should have each item listed in quotes.
 "
@@ -82,13 +82,13 @@ NOTE: the above should have each item listed in quotes.
 	;; Got nothing: return '(nil, nil)
 	(list interpreter-args debugger-args script-args annotate-p)
       ;; else
-      ;; Strip off optional "ruby" or "ruby182" etc.
+      ;; Strip off optional "bash" or "bash4" etc.
       (when (string-match interp-regexp
 			  (file-name-sans-extension
 			   (file-name-nondirectory (car args))))
 	(setq interpreter-args (list (pop args)))
 
-	;; Strip off Ruby-specific options
+	;; Strip off bash-specific options
 	(while (and args
 		    (string-match "^-" (car args)))
 	  (setq pair (realgud-parse-command-arg

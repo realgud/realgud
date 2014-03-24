@@ -19,7 +19,7 @@
 (defcustom bashdb-command-name
   ;;"bashdb --emacs 3"
   "bashdb"
-  "File name for executing the Ruby debugger and command options.
+  "File name for executing the bash debugger and command options.
 This should be an executable on your path, or an absolute file name."
   :type 'string
   :group 'bashdb)
