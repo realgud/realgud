@@ -18,7 +18,7 @@
 backtrace, prompt, etc.  The values of a hash entry is a
 realgud-loc-pat struct")
 
-(defvar realgud-nodejs-term-escape "[\\[0-9\\]+\\[GKJ\\]"
+(defvar realgud-nodejs-term-escape "[[0-9]+[GKJ]"
   "Escape sequence regular expression pattern nodejs often puts in around prompts")
 
 ;; Regular expression that describes a nodejs location generally shown
@@ -28,7 +28,7 @@ realgud-loc-pat struct")
 (setf (gethash "loc" realgud-nodejs-pat-hash)
       (make-realgud-loc-pat
        :regexp (format
-		"\\(?:^\\|\n\\)\\(?:%s\\)*break in \\([^:]+\\):\\([0-9]*\\)"
+		"\\(?:%s\\)*break in \\([^:]+\\):\\([0-9]*\\)"
 		realgud-nodejs-term-escape)
        :file-group 1
        :line-group 2))
@@ -104,10 +104,16 @@ realgud-loc-pat struct")
 (setf (gethash "nodejs" realgud-pat-hash) realgud-nodejs-pat-hash)
 
 (defvar realgud-nodejs-command-hash (make-hash-table :test 'equal)
-  "Hash key is command name like 'quit' and the value is
-  the nodejs command to use, like 'quit!'")
+  "Hash key is command name like 'finish' and the value is
+  the nodejs command to use, like 'out'")
 
-(setf (gethash "quit" realgud-nodejs-command-hash) "quit!")
 (setf (gethash "nodejs" realgud-command-hash realgud-nodejs-command-hash))
+
+(setf (gethash "continue"  realgud-nodejs-command-hash) "cont")
+(setf (gethash "quit"      realgud-nodejs-command-hash) "quit")
+(setf (gethash "finish"    realgud-nodejs-command-hash) "out")
+(setf (gethash "shell"    realgud-nodejs-command-hash)  "repl")
+(setf (gethash "step"      realgud-nodejs-command-hash) "step")
+(setf (gethash "next"      realgud-nodejs-command-hash) "next")
 
 (provide-me "realgud-nodejs-")

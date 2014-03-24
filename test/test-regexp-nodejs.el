@@ -24,6 +24,7 @@
 (set (make-local-variable 'prompt-pat)
      (gethash "prompt" realgud-nodejs-pat-hash))
 (prompt-match "debug> ")
+(prompt-match "[1G[0Jdebug> [8G[1G[0Kconnecting... ok")
 
 (note "nodejs location matching")
 (setq dbg-name "nodejs")

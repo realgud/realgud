@@ -15,11 +15,14 @@
 
 (declare-function realgud-track-set-debugger 'realgud-track-mode)
 (declare-function realgud-track-mode-setup   'realgud-track-mode)
-(declare-function realgud-posix-shell-populate-command-keys
-		  'realgud-lang-posix-shell)
 
 (realgud-track-mode-vars "nodejs")
-(realgud-posix-shell-populate-command-keys nodejs-track-mode-map)
+
+;; ;; Debugger commands that nodejs doesn't have
+;; (define-key realgud-nodejs-track-mode-map
+;;   [remap dbg-cmd-newer-frame] 'undefined)
+;; (define-key realgud-nodejs-track-mode-map
+;;   [remap realgud-cmd-older-frame] 'undefined)
 
 (declare-function realgud-track-mode(bool))
 
@@ -33,7 +36,7 @@
 )
 
 (define-minor-mode nodejs-track-mode
-  "Minor mode for tracking nodejs source locations inside a process shell via realgud. nodejs is a Bash debugger. See URL `http://nodejs.sf.net'.
+  "Minor mode for tracking nodejs source locations inside a nodejs shell via realgud.
 
 If called interactively with no prefix argument, the mode is toggled. A prefix argument, captured as ARG, enables the mode if the argument is positive, and disables it otherwise.
 
