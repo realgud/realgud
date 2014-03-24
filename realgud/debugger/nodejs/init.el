@@ -42,12 +42,11 @@ realgud-loc-pat struct")
        ))
 
 ;;  Regular expression that describes a "breakpoint set" line
+;; * 4 var count = 0;
 (setf (gethash "brkpt-set" realgud-nodejs-pat-hash)
       (make-realgud-loc-pat
-       :regexp "^Breakpoint \\([0-9]+\\) set in file \\(.+\\), line \\([0-9]+\\).\n"
-       :num 1
-       :file-group 2
-       :line-group 3))
+       :regexp "^[*] \\([0-9]+\\) .*\n"
+       :line-group 1))
 
 ;; Regular expression that describes a debugger "delete" (breakpoint) response.
 ;; For example:
@@ -59,25 +58,31 @@ realgud-loc-pat struct")
 
 ;; Regular expression that describes a debugger "backtrace" command line.
 ;; For example:
-;;   ->0 in file `../nodejs/test/example/subshell.sh' at line 6
-;;   ##1 source("../nodejs/shell.sh") called from file `/bin/nodejs' at line 140
-;;   ##2 main() called from file `/bin/nodejs' at line 0
-(setf (gethash "debugger-backtrace" realgud-nodejs-pat-hash)
-      (make-realgud-loc-pat
-       :regexp 	(concat realgud-shell-frame-start-regexp
-			realgud-shell-frame-num-regexp "[ ]?"
-			"\\(.*\\)"
-			realgud-shell-frame-file-regexp
-			"\\(?:" realgud-shell-frame-line-regexp "\\)?"
-			)
-       :num 2
-       :file-group 4
-       :line-group 5)
-      )
+;; #0 module.js:380:17
+;; #1 dbgtest.js:3:9
+;; #2 Module._compile module.js:456:26
+;; #3 Module._extensions..js module.js:474:10
+;; #4 Module.load module.js:356:32
+;; #5 Module._load module.js:312:12
+;; #6 Module.runMain module.js:497:10
+; ;#7 timers.js:110:15
 
-;; Regular expression that for a termination message.
-(setf (gethash "termination" realgud-nodejs-pat-hash)
-       "^nodejs: That's all, folks...\n")
+;; (setf (gethash "debugger-backtrace" realgud-nodejs-pat-hash)
+;;       (make-realgud-loc-pat
+;;        :regexp 	(concat realgud-shell-frame-start-regexp
+;; 			realgud-shell-frame-num-regexp "[ ]?"
+;; 			"\\(.*\\)"
+;; 			realgud-shell-frame-file-regexp
+;; 			"\\(?:" realgud-shell-frame-line-regexp "\\)?"
+;; 			)
+;;        :num 2
+;;        :file-group 4
+;;        :line-group 5)
+;;       )
+
+;; ;; Regular expression that for a termination message.
+;; (setf (gethash "termination" realgud-nodejs-pat-hash)
+;;        "^nodejs: That's all, folks...\n")
 
 (setf (gethash "font-lock-keywords" realgud-nodejs-pat-hash)
       '(
