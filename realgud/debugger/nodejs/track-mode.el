@@ -20,7 +20,7 @@
 (declare-function realgud-track-mode(bool))
 
 (defun nodejs-track-mode-hook()
-  (if nodejs-track-mode
+  (if realgud-nodejs-track-mode
       (progn
 	(use-local-map nodejs-track-mode-map)
 	(message "using nodejs mode map")
@@ -51,6 +51,17 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
       (setq realgud-track-mode nil)
       ))
 )
+
+(defun realgud-nodejs-track-mode-internal (&optional arg)
+  (realgud-track-set-debugger "nodejs")
+  (if realgud-nodejs-track-mode
+      (progn
+        (realgud-track-mode-setup 't)
+        (nodejs-track-mode-hook))
+    (progn
+      (setq realgud-track-mode nil)
+      ))
+  )
 
 ;; ;; Debugger commands that nodejs doesn't have
 ;; (define-key nodejs-track-mode-map

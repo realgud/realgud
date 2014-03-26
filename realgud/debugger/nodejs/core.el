@@ -12,10 +12,10 @@
 
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
-(defvar nodejs-minibuffer-history nil
+(defvar realgud-nodejs-minibuffer-history nil
   "minibuffer history list for the command `nodejs'.")
 
-(easy-mmode-defmap nodejs-minibuffer-local-map
+(easy-mmode-defmap realgud-nodejs-minibuffer-local-map
   '(("\C-i" . comint-dynamic-complete-filename))
   "Keymap for minibuffer prompting of nodejs startup command."
   :inherit minibuffer-local-map)
@@ -24,12 +24,12 @@
 ;; variable chould be generalized, perhaps via a macro.
 (defun nodejs-query-cmdline (&optional opt-debugger)
   (realgud-query-cmdline
-   'nodejs-suggest-invocation
-   nodejs-minibuffer-local-map
-   'nodejs-minibuffer-history
+   'realgud-nodejs-suggest-invocation
+   realgud-nodejs-minibuffer-local-map
+   'realgud-nodejs-minibuffer-history
    opt-debugger))
 
-(defun nodejs-parse-cmd-args (orig-args)
+(defun realgud-nodejs-parse-cmd-args (orig-args)
   "Parse command line ARGS for the annotate level and name of script to debug.
 
 ARGS should contain a tokenized list of the command line to run.
@@ -125,13 +125,23 @@ NOTE: the above should have each item listed in quotes.
 	   )))
       (list interpreter-args debugger-args script-args annotate-p))))
 
-(defvar nodejs-command-name) ; # To silence Warning: reference to free variable
-(defun nodejs-suggest-invocation (debugger-name)
+(defvar realgud-nodejs-command-name) ; # To silence Warning: reference to free variable
+(defun realgud-nodejs-suggest-invocation (debugger-name)
   "Suggest a nodejs command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation nodejs-command-name nodejs-minibuffer-history
-			   "JavaScript" "\\.js$"))
+  (realgud-suggest-invocation realgud-nodejs-command-name
+			      realgud-nodejs-minibuffer-history
+			      "JavaScript" "\\.js$"))
 
-(defun nodejs-reset ()
+(defun realgud-nodejs-remove-ansi-shmutz()
+  "Remove ASCII escape sequences that node.js 'decorates' in
+prompts and interactive output with"
+  (add-to-list
+   'comint-preoutput-filter-functions
+   (lambda (output)
+     (replace-regexp-in-string "\033\\[[0-9]+[GKJ]" "" output)))
+  )
+
+(defun realgud-nodejs-reset ()
   "Nodejs cleanup - remove debugger's internal buffers (frame,
 breakpoints, etc.)."
   (interactive)
@@ -150,7 +160,7 @@ breakpoints, etc.)."
 ;; 	  nodejs-debugger-support-minor-mode-map-when-deactive))
 
 
-(defun nodejs-customize ()
+(defun realgud-nodejs-customize ()
   "Use `customize' to edit the settings of the `nodejs' debugger."
   (interactive)
   (customize-group 'nodejs))
