@@ -137,11 +137,21 @@ With a numeric argument, step that many times. This command is
 often referred to as 'step through' as opposed to 'step into' or
 'step out'.
 
-The definition of 'step' is debugger specific so, see the
+The definition of 'next' is debugger specific so, see the
 debugger documentation for a more complete definition of what is
 getting stepped."
     (interactive "p")
     (realgud-cmd-remap arg "next" "next %p" "n")
+)
+
+(defun realgud-cmd-next-no-arg(&optional arg)
+    "Step one source line at current call level.
+
+The definition of 'next' is debugger specific so, see the
+debugger documentation for a more complete definition of what is
+getting stepped."
+    (interactive)
+    (realgud-cmd-remap nil "next" "next" "n")
 )
 
 (defun realgud-cmd-older-frame(&optional arg)
@@ -175,6 +185,16 @@ debugger documentation for a more complete definition of what is
 getting stepped."
     (interactive "p")
     (realgud-cmd-remap arg "step" "step %p" "s")
+)
+
+(defun realgud-cmd-step-no-arg()
+    "Step one source line.
+
+The definition of 'step' is debugger specific so, see the
+debugger documentation for a more complete definition of what is
+getting stepped."
+    (interactive)
+    (realgud-cmd-remap nil "step" "step" "s")
 )
 
 (defun realgud-cmd-terminate (&optional arg)

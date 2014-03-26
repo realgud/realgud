@@ -24,7 +24,7 @@
 
 ;; Perldb doesn't have stack switching commands.
 (define-key realgud-perldb-short-key-mode-map
-  [remap dbg-cmd-newer-frame] 'undefined)
+  [remap relgud-cmd-newer-frame] 'undefined)
 (define-key realgud-perldb-short-key-mode-map
   [remap realgud-cmd-older-frame] 'undefined)
 

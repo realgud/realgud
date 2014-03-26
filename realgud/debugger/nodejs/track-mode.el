@@ -11,18 +11,11 @@
 			 )
 		       "realgud-")
 (require-relative-list '("core" "init") "realgud-nodejs-")
-(require-relative "../../lang/posix-shell" nil "realgud-lang-")
 
 (declare-function realgud-track-set-debugger 'realgud-track-mode)
 (declare-function realgud-track-mode-setup   'realgud-track-mode)
 
 (realgud-track-mode-vars "nodejs")
-
-;; ;; Debugger commands that nodejs doesn't have
-;; (define-key realgud-nodejs-track-mode-map
-;;   [remap dbg-cmd-newer-frame] 'undefined)
-;; (define-key realgud-nodejs-track-mode-map
-;;   [remap realgud-cmd-older-frame] 'undefined)
 
 (declare-function realgud-track-mode(bool))
 
@@ -35,7 +28,7 @@
     (message "nodejs track-mode-hook disable called"))
 )
 
-(define-minor-mode nodejs-track-mode
+(define-minor-mode realgud-nodejs-track-mode
   "Minor mode for tracking nodejs source locations inside a nodejs shell via realgud.
 
 If called interactively with no prefix argument, the mode is toggled. A prefix argument, captured as ARG, enables the mode if the argument is positive, and disables it otherwise.
@@ -46,10 +39,11 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   ;; The minor mode bindings.
   :global nil
   :group 'nodejs
+
   :keymap nodejs-track-mode-map
 
   (realgud-track-set-debugger "nodejs")
-  (if nodejs-track-mode
+  (if realgud-nodejs-track-mode
       (progn
         (realgud-track-mode-setup 't)
         (nodejs-track-mode-hook))
@@ -57,5 +51,17 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
       (setq realgud-track-mode nil)
       ))
 )
+
+;; ;; Debugger commands that nodejs doesn't have
+;; (define-key nodejs-track-mode-map
+;;   [remap realgud-cmd-newer-frame] 'undefined)
+;; (define-key nodejs-track-mode-map
+;;   [remap realgud-cmd-older-frame] 'undefined)
+(define-key nodejs-short-key-mode-map
+  [remap realgud-cmd-step] 'realgud-cmd-step-no-arg)
+(define-key nodejs-short-key-mode-map
+  [remap realgud-cmd-step] 'realgud-cmd-step-no-arg)
+(define-key nodejs-short-key-mode-map
+  [remap realgud-cmd-next] 'realgud-cmd-next-no-arg)
 
 (provide-me "realgud-nodejs-")
