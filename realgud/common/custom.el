@@ -2,7 +2,7 @@
 (require 'load-relative)
 
 (defcustom realgud-key-prefix "\C-x\C-a"
-  "Prefix of all Dbgr commands valid in source buffers."
+  "Prefix of all realgud commands valid in source buffers."
   :type 'string
   :group 'realgud)
 

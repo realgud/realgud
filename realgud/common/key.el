@@ -1,5 +1,6 @@
 ;;; Copyright (C) 2010, 2011, 2014 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
+(require-relative "custom" nil "realgud-")
 
 (defcustom realgud-populate-common-fn-keys-function
   'realgud-populate-common-fn-keys-standard
