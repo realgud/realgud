@@ -2,7 +2,6 @@ language: emacs-lisp
 
 env:
   - EMACS=emacs24
-  - EMACS=emacs-snapshot
 
 before_install:
   - if [ "$EMACS" = 'emacs-snapshot' ]; then
