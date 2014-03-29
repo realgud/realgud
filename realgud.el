@@ -53,6 +53,7 @@
 ;;   gdb            realgud-gdb   gdb
 ;;   gub            gub           Go SSA debugger
 ;;   kshdb          kshdb         Korn Shell 93u+
+;;   nodejs         nodejs        node.js debugger
 ;;   pdb            pdb           stock C Python debugger
 ;;   perldb         perldb        stock Perl5 debugger
 ;;   pydb           pydb          slighly enhanced pdb for Python 2.x
@@ -145,6 +146,9 @@ like 'pydbgr'."
     (dolist (feature features result)
       (cond ((eq 't
 		 (realgud-feature-starts-with feature "realgud-"))
+	     (setq result (cons feature result)))
+	    ((eq 't
+		 (realgud-feature-starts-with feature "nodejs"))
 	     (setq result (cons feature result)))
 	    ((eq 't
 		 (realgud-feature-starts-with feature "pydbgr"))
