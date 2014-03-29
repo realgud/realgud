@@ -71,8 +71,8 @@ NOTE: the above should have each item listed in quotes.
 	(annotate-p nil))
 
     (if (not (and args))
-	;; Got nothing: return '(nil, nil)
-	(list interpreter-args debugger-args script-args annotate-p)
+	;; Got nothing: return '(nil, nil, nil)
+	(list debugger-args script-args annotate-p)
       ;; else
       (progn
 	;; Remove "nodejs" from "nodejs --nodejs-options script

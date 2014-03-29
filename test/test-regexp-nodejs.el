@@ -16,6 +16,7 @@
   (defvar loc-pat)
   (defvar prompt-pat)
   (defvar realgud-nodejs-pat-hash)
+  (defvar realgud-pat-hash)
   (defvar test-dbgr)
   (defvar test-text)
 )
