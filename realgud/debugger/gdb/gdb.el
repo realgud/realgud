@@ -54,7 +54,7 @@ marginal icons is reset."
 	 (parsed-args (realgud-gdb-parse-cmd-args cmd-args))
 	 (script-args (cdr cmd-args))
 	 (script-name (expand-file-name (car script-args)))
-	 (cmd-buf (realgud-run-process "gdb" (car script-args) cmd-args
+	 (cmd-buf (realgud-run-process realgud-gdb-command-name (car script-args) cmd-args
 				     'realgud-gdb-track-mode nil))
 	 )
     (if cmd-buf

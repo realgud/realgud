@@ -52,21 +52,18 @@ NOTE: the above should have each item listed in quotes.
 "
 
   ;; Parse the following kind of pattern:
-  ;;  [python python-options] gdb gdb-options script-name script-options
+  ;;  gdb gdb-options script-name script-options
   (let (
 	(args orig-args)
 	(pair)          ;; temp return from
-	(gdb-opt-two-args '())
-	;; Python doesn't have mandatory 2-arg options in our sense,
-	;; since the two args can be run together, e.g. "-C/tmp" or "-C /tmp"
-	;;
-	(python-two-args '())
+
 	;; One dash is added automatically to the below, so
 	;; h is really -h and -host is really --host.
 	(gdb-two-args '("x" "-command" "b" "-exec"
 			"cd" "-pid"  "-core" "-directory"
 			"-annotate"
 			"se" "-symbols" "-tty"))
+	;; gdb doesn't optionsl 2-arg options.
 	(gdb-opt-two-args '())
 
 	;; Things returned

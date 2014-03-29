@@ -20,7 +20,7 @@
 (declare-function realgud-track-mode(bool))
 
 (defun nodejs-track-mode-hook()
-  (if realgud-nodejs-track-mode
+  (if nodejs-track-mode
       (progn
 	(use-local-map nodejs-track-mode-map)
 	(message "using nodejs mode map")
@@ -28,7 +28,7 @@
     (message "nodejs track-mode-hook disable called"))
 )
 
-(define-minor-mode realgud-nodejs-track-mode
+(define-minor-mode nodejs-track-mode
   "Minor mode for tracking nodejs source locations inside a nodejs shell via realgud.
 
 If called interactively with no prefix argument, the mode is toggled. A prefix argument, captured as ARG, enables the mode if the argument is positive, and disables it otherwise.
@@ -43,18 +43,12 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   :keymap nodejs-track-mode-map
 
   (realgud-track-set-debugger "nodejs")
-  (if realgud-nodejs-track-mode
-      (progn
-        (realgud-track-mode-setup 't)
-        (nodejs-track-mode-hook))
-    (progn
-      (setq realgud-track-mode nil)
-      ))
+  (realgud-nodejs-track-mode-internal)
 )
 
 (defun realgud-nodejs-track-mode-internal (&optional arg)
   (realgud-track-set-debugger "nodejs")
-  (if realgud-nodejs-track-mode
+  (if nodejs-track-mode
       (progn
         (realgud-track-mode-setup 't)
         (nodejs-track-mode-hook))

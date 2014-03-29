@@ -4,6 +4,9 @@
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("../../common/track") "realgud-")
 (require-relative-list '("core" "track-mode") "realgud-nodejs-")
+
+(declare-function realgud-nodejs-remove-ansi-shmutz 'realgud-core)
+
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
 (defgroup nodejs nil
@@ -17,7 +20,7 @@
 ;;
 
 (defcustom nodejs-command-name
-  "node --debug"
+  "node debug"
   "File name for executing the Ruby debugger and command options.
 This should be an executable on your path, or an absolute file name."
   :type 'string
@@ -50,9 +53,16 @@ marginal icons is reset."
 	 (parsed-args (nodejs-parse-cmd-args cmd-args))
 	 (script-args (cdr cmd-args))
 	 (script-name (car script-args))
-	 (cmd-buf))
-    (realgud-run-process "nodejs" script-name cmd-args
-		      'nodejs-track-mode no-reset)
+	 (cmd-buf  (realgud-run-process nodejs-command-name (car script-args) cmd-args
+					'nodejs-track-mode no-reset))
+	 )
+    (if cmd-buf
+	(with-current-buffer cmd-buf
+	  ;; FIXME should allow customization whether to do or not
+	  ;; and also only do if hook is not already there.
+	  (realgud-nodejs-remove-ansi-shmutz)
+	  )
+      )
     ))
 
 (defalias 'nodejs 'realgud-nodejs)
