@@ -106,7 +106,7 @@ NOTE: the above should have each item listed in quotes.
   "Suggest a nodejs command invocation via `realgud-suggest-invocaton'"
   (realgud-suggest-invocation nodejs-command-name
 			      realgud-nodejs-minibuffer-history
-			      "JavaScript" "\\.js$"))
+			      "js" "\\.js$"))
 
 (defun realgud-nodejs-remove-ansi-shmutz()
   "Remove ASCII escape sequences that node.js 'decorates' in

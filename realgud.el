@@ -124,6 +124,8 @@
      ) "realgud-")
   )
 
+(load-relative "./realgud/common/custom")
+
 ;; Really should be part of GNU Emacs. But until then...
 (defmacro realgud-string-starts-with(string prefix)
   "compare-strings on STRING anchored from the beginning and up
