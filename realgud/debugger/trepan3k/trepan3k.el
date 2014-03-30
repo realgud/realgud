@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010-2013 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2014 Rocky Bernstein <rocky@gnu.org>
 ;;  `trepan3k' Main interface to trepan3k via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper"
@@ -13,6 +13,10 @@
   :group 'realgud
   :group 'python
   :version "23.1")
+
+(declare-function trepan3k-query-cmdline  'realgud-trepan3k-core)
+(declare-function trepan3k-parse-cmd-args 'realgud-trepan3k-core)
+(declare-function realgud-run-process 'realgud-core)
 
 ;; -------------------------------------------------------------------
 ;; User definable variables

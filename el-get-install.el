@@ -2,6 +2,8 @@
   (defvar el-get-sources)
 )
 
+(declare-function el-get-post-install 'el-get)
+
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
 
 ;;; el-get-install.el --- installer for the lazy
