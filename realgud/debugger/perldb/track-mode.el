@@ -12,7 +12,7 @@
 		       "realgud-")
 (require-relative-list '("core" "init") "realgud-perldb-")
 
-(realgud-track-mode-vars "realgud-perldb")
+(realgud-track-mode-vars "perldb")
 
 (declare-function realgud-perl-populate-command-keys
 		  'realgud-perldb)
@@ -20,18 +20,12 @@
 (declare-function realgud-track-mode-setup 'realgud-track-mode)
 (declare-function realgud-track-set-debugger 'realgud-track-mode)
 
-(realgud-perl-populate-command-keys realgud-perldb-track-mode-map )
-
-;; Perldb doesn't have stack switching commands.
-(define-key realgud-perldb-short-key-mode-map
-  [remap relgud-cmd-newer-frame] 'undefined)
-(define-key realgud-perldb-short-key-mode-map
-  [remap realgud-cmd-older-frame] 'undefined)
+(realgud-perl-populate-command-keys perldb-track-mode-map )
 
 (defun realgud-perldb-track-mode-hook()
   (if realgud-perldb-track-mode
       (progn
-	(use-local-map realgud-perldb-track-mode-map)
+	(use-local-map perldb-track-mode-map)
 	(message "using perldb mode map")
 	)
     (message "perldb track-mode-hook disable called"))
@@ -42,14 +36,14 @@
 
 If called interactively with no prefix argument, the mode is toggled. A prefix argument, captured as ARG, enables the mode if the argument is positive, and disables it otherwise.
 
-\\{realgud-perldb-track-mode-map}
+\\{perldb-track-mode-map}
 "
   :init-value nil
   ;; :lighter " perldb"   ;; mode-line indicator from realgud-track is sufficient.
   ;; The minor mode bindings.
   :global nil
   :group 'perldb
-  :keymap realgud-perldb-track-mode-map
+  :keymap perldb-track-mode-map
 
   (realgud-track-set-debugger "perldb")
   (if realgud-perldb-track-mode
@@ -60,5 +54,11 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
       (setq realgud-track-mode nil)
       ))
 )
+
+;; Perldb doesn't have stack switching commands.
+(define-key perldb-short-key-mode-map
+  [remap realgud-cmd-newer-frame] 'undefined)
+(define-key perldb-short-key-mode-map
+  [remap realgud-cmd-older-frame] 'undefined)
 
 (provide-me "realgud-perldb-")

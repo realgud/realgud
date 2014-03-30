@@ -114,11 +114,12 @@ realgud-loc-pat struct")
 
 (setf (gethash "nodejs" realgud-command-hash realgud-nodejs-command-hash))
 
-(setf (gethash "continue"  realgud-nodejs-command-hash) "cont")
-(setf (gethash "quit"      realgud-nodejs-command-hash) "quit")
-(setf (gethash "finish"    realgud-nodejs-command-hash) "out")
-(setf (gethash "shell"    realgud-nodejs-command-hash)  "repl")
-(setf (gethash "step"      realgud-nodejs-command-hash) "step")
-(setf (gethash "next"      realgud-nodejs-command-hash) "next")
+(setf (gethash "backtrace"  realgud-nodejs-command-hash) "T")
+(setf (gethash "continue"   realgud-nodejs-command-hash) "cont")
+(setf (gethash "quit"       realgud-nodejs-command-hash) "quit")
+(setf (gethash "finish"     realgud-nodejs-command-hash) "out")
+(setf (gethash "shell"      realgud-nodejs-command-hash)  "repl")
+(setf (gethash "step"       realgud-nodejs-command-hash) "step")
+(setf (gethash "next"       realgud-nodejs-command-hash) "next")
 
 (provide-me "realgud-nodejs-")

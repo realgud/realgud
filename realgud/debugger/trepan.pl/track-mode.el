@@ -13,7 +13,7 @@
 (require-relative-list '("core" "init") "realgud-trepanpl-")
 (require-relative-list '("../../lang/ruby") "realgud-lang-")
 
-(realgud-track-mode-vars "realgud-trepanpl")
+(realgud-track-mode-vars "trepanpl")
 
 (declare-function realgud-goto-line-for-pt   'realgud-track-mode)
 (declare-function realgud-track-mode         'realgud-track-mode)
@@ -29,15 +29,15 @@ described by PT."
   (interactive "d")
   (realgud-goto-line-for-pt pt "syntax-error"))
 
-(define-key realgud-trepanpl-track-mode-map
+(define-key trepanpl-track-mode-map
   (kbd "C-c !s") 'realgud-trepanpl-goto-syntax-error-line)
 
-(realgud-perl-populate-command-keys realgud-trepanpl-track-mode-map)
+(realgud-perl-populate-command-keys trepanpl-track-mode-map)
 
 (defun realgud-trepanpl-track-mode-hook()
   (if realgud-trepanpl-track-mode
       (progn
-        (use-local-map realgud-trepanpl-track-mode-map)
+        (use-local-map trepanpl-track-mode-map)
         (message "using trepanpl mode map")
         )
     (message "trepan.pl track-mode-hook disable called"))
@@ -55,7 +55,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   ;; The minor mode bindings.
   :global nil
   :group 'trepanpl
-  :keymap realgud-trepanpl-track-mode-map
+  :keymap trepanpl-track-mode-map
 
   (realgud-track-set-debugger "trepan.pl")
   (if realgud-trepanpl-track-mode
@@ -66,5 +66,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
       (setq realgud-track-mode nil)
       ))
 )
+
+(define-key trepanpl-short-key-mode-map "T" 'realgud-cmd-backtrace)
 
 (provide-me "realgud-trepanpl-")

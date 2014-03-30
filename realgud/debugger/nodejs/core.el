@@ -89,6 +89,11 @@ NOTE: the above should have each item listed in quotes.
 	(while (and args (not script-name))
 	  (let ((arg (car args)))
 	    (cond
+	     ((equal "debug" arg)
+	      (nconc debugger-args (list arg))
+	      (setq args (cdr args))
+	      )
+
 	     ;; Options with arguments.
 	     ((string-match "^-" arg)
 	      (setq pair (realgud-parse-command-arg

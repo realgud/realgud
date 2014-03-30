@@ -51,9 +51,10 @@ marginal icons is reset."
   (let* ((cmd-str (or opt-command-line (nodejs-query-cmdline "nodejs")))
 	 (cmd-args (split-string-and-unquote cmd-str))
 	 (parsed-args (nodejs-parse-cmd-args cmd-args))
-	 (script-args (cdr cmd-args))
+	 (script-args (cadr parsed-args))
 	 (script-name (car script-args))
-	 (cmd-buf  (realgud-run-process nodejs-command-name (car script-args) cmd-args
+	 (cmd-buf  (realgud-run-process nodejs-command-name script-name
+					cmd-args
 					'nodejs-track-mode no-reset))
 	 )
     (if cmd-buf
