@@ -53,7 +53,7 @@
 ;;   gdb            realgud-gdb   gdb
 ;;   gub            gub           Go SSA debugger
 ;;   kshdb          kshdb         Korn Shell 93u+
-;;   nodejs         nodejs        node.js debugger
+;;   nodejs         nodejs        node.js javascript debugger
 ;;   pdb            pdb           stock C Python debugger
 ;;   perldb         perldb        stock Perl5 debugger
 ;;   pydb           pydb          slighly enhanced pdb for Python 2.x
@@ -107,6 +107,7 @@
      "./realgud/debugger/gdb/gdb"
      "./realgud/debugger/gub/gub"
      "./realgud/debugger/kshdb/kshdb"
+     "./realgud/debugger/nodejs/nodejs"
      "./realgud/debugger/pdb/pdb"
      "./realgud/debugger/perldb/perldb"
      "./realgud/debugger/pydb/pydb"
