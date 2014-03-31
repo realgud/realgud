@@ -45,7 +45,7 @@ realgud-loc-pat struct")
 ;; * 4 var count = 0;
 (setf (gethash "brkpt-set" realgud-nodejs-pat-hash)
       (make-realgud-loc-pat
-       :regexp "^[*] \\([0-9]+\\) .*\n"
+       :regexp "^[*] \\([0-9]+\\) "
        :line-group 1))
 
 ;; Regular expression that describes a debugger "delete" (breakpoint) response.

@@ -11,13 +11,15 @@
 			 )
 		       "realgud-")
 (require-relative-list '("core" "init") "realgud-perldb-")
+(require-relative-list '("../../lang/perl") "realgud-lang-")
 
 (realgud-track-mode-vars "perldb")
 
+(declare-function realgud-cmd-remap           'realgud-cmds)
 (declare-function realgud-perl-populate-command-keys
 		  'realgud-perldb)
 (declare-function realgud-track-mode 'realgud-track-mode)
-(declare-function realgud-track-mode-setup 'realgud-track-mode)
+(declare-function realgud-track-mode-setup    realgud-track-mode)
 (declare-function realgud-track-set-debugger 'realgud-track-mode)
 
 (realgud-perl-populate-command-keys perldb-track-mode-map )
@@ -55,10 +57,16 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
       ))
 )
 
+(defun realgud-perldb-backtrace(arg)
+  (interactive "p")
+  (realgud-cmd-remap arg "backtrace" "T" "T")
+)
+
 ;; Perldb doesn't have stack switching commands.
 (define-key perldb-short-key-mode-map
   [remap realgud-cmd-newer-frame] 'undefined)
 (define-key perldb-short-key-mode-map
   [remap realgud-cmd-older-frame] 'undefined)
+(define-key perldb-short-key-mode-map "T" 'realgud-perldb-backtrace)
 
 (provide-me "realgud-perldb-")

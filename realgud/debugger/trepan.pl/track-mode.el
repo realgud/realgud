@@ -11,7 +11,7 @@
                          )
                        "realgud-")
 (require-relative-list '("core" "init") "realgud-trepanpl-")
-(require-relative-list '("../../lang/ruby") "realgud-lang-")
+(require-relative-list '("../../lang/perl") "realgud-lang-")
 
 (realgud-track-mode-vars "trepanpl")
 

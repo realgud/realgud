@@ -48,7 +48,7 @@ if none has been set in the command hash."
   )
 
 (defun realgud-cmd-backtrace(arg)
-  "Show debugger breakpoint at the current line"
+  "Show the current call stack"
   (interactive "p")
   (realgud-cmd-remap arg "backtrace" "backtrace" "T")
   )

@@ -12,6 +12,7 @@
 		       "realgud-")
 (require-relative-list '("core" "init") "realgud-nodejs-")
 
+(declare-function realgud-cmd-remap          'realgud-cmds)
 (declare-function realgud-track-set-debugger 'realgud-track-mode)
 (declare-function realgud-track-mode-setup   'realgud-track-mode)
 
