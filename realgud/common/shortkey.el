@@ -6,7 +6,11 @@
 
 (declare-function realgud-cmdbuf?     'realgud-buffer-command)
 (declare-function realgud-get-cmdbuf  'realgud-buffer-helper)
-(declare-function realgud-srcbuf?     'realgud-buffer-source)
+(declare-function realgud-populate-common-keys        'realgud-key)
+(declare-function realgud-populate-debugger-menu      'realgud-menu)
+(declare-function realgud-srcbuf-info-short-key?=,    'realgud-source)
+(declare-function realgud-srcbuf-info-was-read-only?= 'realgud-source)
+(declare-function realgud-srcbuf?                     'realgud-buffer-source)
 
 (defvar realgud-short-key-mode-map
   (let ((map (make-sparse-keymap)))
@@ -80,8 +84,11 @@ MODE-ON? a boolean which specifies if we are going into or out of this mode."
 
       ;; If there's a shortkey keymap that is custom
       ;; for this debugger mode, use it.
-      (when (and mode-on? shortkey-keymap)
-	(use-local-map shortkey-keymap))
+      (when shortkey-keymap
+	(if mode-on?
+	    (use-local-map shortkey-keymap)
+	  (use-local-map nil)
+	  ))
 
       ;; Ensure action only is performed when the state actually is toggled.
       ;; or when not read-only
