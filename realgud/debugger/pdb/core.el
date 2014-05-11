@@ -6,7 +6,7 @@
 			 "../../common/core"
 			 "../../common/lang")
 		       "realgud-")
-(require-relative-list '("init") "realgud-pdb-")
+(require-relative-list '("init") "realgud:pdb-")
 
 
 (declare-function realgud-lang-mode? 'realgud-lang)
@@ -155,4 +155,4 @@ breakpoints, etc.)."
   (interactive)
   (customize-group 'pdb))
 
-(provide-me "realgud-pdb-")
+(provide-me "realgud:pdb-")

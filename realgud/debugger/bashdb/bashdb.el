@@ -3,7 +3,7 @@
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("../../common/track") "realgud-")
-(require-relative-list '("core" "track-mode") "realgud-bashdb-")
+(require-relative-list '("core" "track-mode") "realgud:bashdb-")
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
 (defgroup bashdb nil
@@ -25,8 +25,8 @@ This should be an executable on your path, or an absolute file name."
   :group 'bashdb)
 
 (declare-function bashdb-track-mode (bool))
-(declare-function bashdb-query-cmdline  'realgud-bashdb-core)
-(declare-function bashdb-parse-cmd-args 'realgud-bashdb-core)
+(declare-function bashdb-query-cmdline  'realgud:bashdb-core)
+(declare-function bashdb-parse-cmd-args 'realgud:bashdb-core)
 (declare-function realgud-run-process 'realgud-core)
 
 ;; -------------------------------------------------------------------
@@ -34,7 +34,7 @@ This should be an executable on your path, or an absolute file name."
 ;;
 
 ;;;###autoload
-(defun realgud-bashdb (&optional opt-command-line no-reset)
+(defun realgud:bashdb (&optional opt-command-line no-reset)
   "Invoke the bashdb shell debugger and start the Emacs user interface.
 
 String COMMAND-LINE specifies how to run bashdb.
@@ -56,6 +56,6 @@ marginal icons is reset."
 		      'bashdb-track-mode no-reset)
     ))
 
-(defalias 'bashdb 'realgud-bashdb)
+(defalias 'bashdb 'realgud:bashdb)
 
 (provide-me "realgud-")

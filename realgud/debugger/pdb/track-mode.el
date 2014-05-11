@@ -10,7 +10,7 @@
                          "../../common/track-mode"
                          )
                        "realgud-")
-(require-relative-list '("core" "init") "realgud-pdb-")
+(require-relative-list '("core" "init") "realgud:pdb-")
 
 (realgud-track-mode-vars "pdb")
 
@@ -57,4 +57,4 @@ a process shell.
       ))
 )
 
-(provide-me "realgud-pdb-")
+(provide-me "realgud:pdb-")

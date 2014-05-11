@@ -3,7 +3,7 @@
 (require 'load-relative)
 (require-relative-list '("../../common/helper"
 			 "../../common/track") "realgud-")
-(require-relative-list '("core" "track-mode") "realgud-trepan2-")
+(require-relative-list '("core" "track-mode") "realgud:trepan2-")
 
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
@@ -14,8 +14,8 @@
   :group 'python
   :version "23.1")
 
-(declare-function trepan2-query-cmdline  'realgud-trepan2-core)
-(declare-function trepan2-parse-cmd-args 'realgud-trepan2-core)
+(declare-function trepan2-query-cmdline  'realgud:trepan2-core)
+(declare-function trepan2-parse-cmd-args 'realgud:trepan2-core)
 (declare-function realgud-run-process 'realgud-core)
 
 ;; -------------------------------------------------------------------
@@ -37,7 +37,7 @@ This should be an executable on your path, or an absolute file name."
 ;;
 
 ;;;###autoload
-(defun realgud-trepan2 (&optional opt-command-line no-reset)
+(defun realgud:trepan2 (&optional opt-command-line no-reset)
   "Invoke the trepan2 Python debugger and start the Emacs user interface.
 
 String COMMAND-LINE specifies how to run trepan2.
@@ -65,6 +65,6 @@ marginal icons is reset."
   )
 
 
-(defalias 'trepan2 'realgud-trepan2)
+(defalias 'trepan2 'realgud:trepan2)
 
 (provide-me "realgud-")

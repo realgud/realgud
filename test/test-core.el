@@ -7,7 +7,7 @@
 (load-file "../realgud/common/core.el")
 
 (declare-function realgud-parse-command-arg, 'realgud-core)
-(declare-function trepan-parse-cmd-args      'realgud-trepan)
+(declare-function trepan-parse-cmd-args      'realgud:trepan)
 
 ;; We use a specific langues to test core. Here we use trepan.
 (load-file "../realgud/debugger/trepan/core.el")

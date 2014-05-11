@@ -597,7 +597,7 @@ debugger with that information"
 		 ((equal debugger-name "gdb") "realgud-gdb")
 		 ((or (equal debugger-name "trepan.pl")
 		      (equal debugger-name "trepanpl"))
-			     "realgud-trepanpl")
+			     "realgud:trepanpl")
 		 ((or (equal debugger-name "perldb")
 		      (equal debugger-name "perl5db"))
 		      "realgud-perldb")

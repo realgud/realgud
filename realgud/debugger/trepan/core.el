@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2012 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2012, 2014 Rocky Bernstein <rocky@gnu.org>
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
@@ -6,7 +6,7 @@
                          "../../common/core"
                          "../../common/lang")
                        "realgud-")
-(require-relative-list '("init") "realgud-trepan-")
+(require-relative-list '("init") "realgud:trepan-")
 
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
@@ -166,4 +166,4 @@ breakpoints, etc.)."
   (interactive)
   (customize-group 'trepan))
 
-(provide-me "realgud-trepan-")
+(provide-me "realgud:trepan-")

@@ -70,7 +70,7 @@
 ;;
 ;; **gdb invocation requires the realgud- preface to disambiguate it
 ;; from the older, preexisting emacs command. The other invocations
-;; also accept realgud- prefaces, e.g. realgud-bashdb or realgud-pdb.
+;; also accept realgud: prefaces, e.g. realgud:bashdb or realgud:pdb.
 ;; Alas there is older obsolete Emacs code out there for bashdb,
 ;; kshdb, and rdebug.
 

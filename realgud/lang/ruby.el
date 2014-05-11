@@ -95,13 +95,13 @@ described by PT."
 
 
 ;; Some things common to all trepan debuggers (Rubinius and Ruby 1.9.2)
-(defconst realgud-trepan-frame-start-regexp
+(defconst realgud:trepan-frame-start-regexp
   "\\(?:^\\|\n\\)\\(-->\\|   \\)")
 
-(defconst realgud-trepan-frame-num-regexp
+(defconst realgud:trepan-frame-num-regexp
   "#\\([0-9]+\\)")
 
-(defconst realgud-trepan-frame-line-regexp
+(defconst realgud:trepan-frame-line-regexp
   "[ \t\n]+at line \\([0-9]+\\)\\(?:\n\\|$\\)")
 
 

@@ -10,7 +10,7 @@
 			 "../../common/track-mode"
 			 )
 		       "realgud-")
-(require-relative-list '("core" "init") "realgud-bashdb-")
+(require-relative-list '("core" "init") "realgud:bashdb-")
 (require-relative "../../lang/posix-shell" nil "realgud-lang-")
 
 (declare-function realgud-cmd-remap          'realgud-cmds)
@@ -58,4 +58,4 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
 
 (define-key bashdb-short-key-mode-map "T" 'realgud-cmd-backtrace)
 
-(provide-me "realgud-bashdb-")
+(provide-me "realgud:bashdb-")

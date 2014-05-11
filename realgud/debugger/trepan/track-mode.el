@@ -10,7 +10,7 @@
 			 "../../common/track-mode"
 			 )
 		       "realgud-")
-(require-relative-list '("core" "init") "realgud-trepan-")
+(require-relative-list '("core" "init") "realgud:trepan-")
 (require-relative-list '("../../lang/ruby") "realgud-lang-")
 
 (declare-function realgud-track-mode 'realgud-track-mode)
@@ -23,13 +23,13 @@
 
 (declare-function realgud-ruby-populate-command-keys 'realgud-lang-ruby)
 
-(defun realgud-trepan-goto-control-frame-line (pt)
+(defun realgud:trepan-goto-control-frame-line (pt)
   "Display the location mentioned by a control-frame line
 described by PT."
   (interactive "d")
   (realgud-goto-line-for-pt pt "control-frame"))
 
-(defun realgud-trepan-goto-syntax-error-line (pt)
+(defun realgud:trepan-goto-syntax-error-line (pt)
   "Display the location mentioned in a Syntax error line
 described by PT."
   (interactive "d")
@@ -38,9 +38,9 @@ described by PT."
 (realgud-ruby-populate-command-keys trepan-track-mode-map)
 
 (define-key trepan-track-mode-map
-  (kbd "C-c !c") 'realgud-trepan-goto-control-frame-line)
+  (kbd "C-c !c") 'realgud:trepan-goto-control-frame-line)
 (define-key trepan-track-mode-map
-  (kbd "C-c !s") 'realgud-trepan-goto-syntax-error-line)
+  (kbd "C-c !s") 'realgud:trepan-goto-syntax-error-line)
 
 (defun trepan-track-mode-hook()
   (if trepan-track-mode
@@ -74,4 +74,4 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
       ))
 )
 
-(provide-me "realgud-trepan-")
+(provide-me "realgud:trepan-")

@@ -4,11 +4,11 @@
 (test-simple-start)
 
 (set (make-local-variable 'helper-bps)
-     (gethash "brkpt-set"       realgud-trepanx-pat-hash))
+     (gethash "brkpt-set"       realgud:trepanx-pat-hash))
 (set (make-local-variable 'prompt)
-     (gethash "prompt"          realgud-trepanx-pat-hash))
+     (gethash "prompt"          realgud:trepanx-pat-hash))
 (set (make-local-variable 'helper-tb)
-     (gethash "lang-backtrace"  realgud-trepanx-pat-hash))
+     (gethash "lang-backtrace"  realgud:trepanx-pat-hash))
 
 ;; FIXME: we get a void variable somewhere in here when running
 ;;        even though we define it in lexical-let. Dunno why.
@@ -41,7 +41,7 @@
 
 (note "prompt matching")
 (set (make-local-variable 'prompt-pat)
-     (gethash "prompt" realgud-trepanx-pat-hash))
+     (gethash "prompt" realgud:trepanx-pat-hash))
 (prompt-match "((trepanx)): " nil "nested debugger prompt: %s")
 (prompt-match "((trepanx@55)): "
 	      "@55" "nested debugger prompt with addr: %s")

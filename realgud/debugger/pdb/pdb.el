@@ -3,7 +3,7 @@
 (require 'load-relative)
 (require-relative-list '("../../common/helper"
 			 "../../common/track") "realgud-")
-(require-relative-list '("core" "track-mode") "realgud-pdb-")
+(require-relative-list '("core" "track-mode") "realgud:pdb-")
 
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
@@ -26,8 +26,8 @@ This should be an executable on your path, or an absolute file name."
   :group 'pdb)
 
 (declare-function pdb-track-mode (bool))
-(declare-function pdb-query-cmdline  'realgud-pdb-core)
-(declare-function pdb-parse-cmd-args 'realgud-pdb-core)
+(declare-function pdb-query-cmdline  'realgud:pdb-core)
+(declare-function pdb-parse-cmd-args 'realgud:pdb-core)
 (declare-function realgud-run-process 'realgud-core)
 
 ;; -------------------------------------------------------------------
@@ -35,7 +35,7 @@ This should be an executable on your path, or an absolute file name."
 ;;
 
 ;;;###autoload
-(defun realgud-pdb (&optional opt-command-line no-reset)
+(defun realgud:pdb (&optional opt-command-line no-reset)
   "Invoke the pdb Python debugger and start the Emacs user interface.
 
 String COMMAND-LINE specifies how to run pdb.
@@ -63,6 +63,6 @@ marginal icons is reset."
   )
 
 
-(defalias 'pdb 'realgud-pdb)
+(defalias 'pdb 'realgud:pdb)
 
 (provide-me "realgud-")

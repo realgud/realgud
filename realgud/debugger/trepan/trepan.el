@@ -3,10 +3,10 @@
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("../../common/track") "realgud-")
-(require-relative-list '("core" "track-mode") "realgud-trepan-")
+(require-relative-list '("core" "track-mode") "realgud:trepan-")
 
-(declare-function trepan-query-cmdline  'realgud-trepan-core)
-(declare-function trepan-parse-cmd-args 'realgud-trepan-core)
+(declare-function trepan-query-cmdline  'realgud:trepan-core)
+(declare-function trepan-parse-cmd-args 'realgud:trepan-core)
 (declare-function realgud-run-process 'realgud-core)
 
 ;; This is needed, or at least the docstring part of it is needed to
@@ -30,8 +30,8 @@ This should be an executable on your path, or an absolute file name."
   :type 'string
   :group 'trepan)
 
-(defun realgud-trepan-fn (&optional opt-command-line no-reset)
-  "See `realgud-trepan' for details."
+(defun realgud:trepan-fn (&optional opt-command-line no-reset)
+  "See `realgud:trepan' for details."
 
   (let* ((cmd-str (or opt-command-line (trepan-query-cmdline "trepan")))
 	 (cmd-args (split-string-and-unquote cmd-str))
@@ -45,7 +45,7 @@ This should be an executable on your path, or an absolute file name."
   ))
 
 ;;;###autoload
-(defun realgud-trepan (&optional opt-command-line no-reset)
+(defun realgud:trepan (&optional opt-command-line no-reset)
   "Invoke the trepan Ruby debugger and start the Emacs user interface.
 
 String COMMAND-LINE specifies how to run trepan.
@@ -57,8 +57,8 @@ NO-RESET is nil, then that information which may point into other
 buffers and source buffers which may contain marks and fringe or
 marginal icons is reset."
   (interactive)
-  (realgud-trepan-fn opt-command-line no-reset))
+  (realgud:trepan-fn opt-command-line no-reset))
 
-(defalias 'trepan 'realgud-trepan)
+(defalias 'trepan 'realgud:trepan)
 (provide-me "realgud-")
 ;;; trepan.el ends here

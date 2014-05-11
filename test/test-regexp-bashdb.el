@@ -18,7 +18,7 @@
   (defvar num-group)
   (defvar test-pos)
   (defvar prompt-pat)
-  (defvar realgud-bashdb-pat-hash)
+  (defvar realgud:bashdb-pat-hash)
   (defvar realgud-pat-bt)
   (defvar test-s1)
   (defvar test-text)
@@ -27,18 +27,18 @@
 )
 
 (set (make-local-variable 'bp-del-pat)
-      (gethash "brkpt-del" realgud-bashdb-pat-hash))
+      (gethash "brkpt-del" realgud:bashdb-pat-hash))
 
 (note "bashdb prompt matching")
 (set (make-local-variable 'prompt-pat)
-     (gethash "prompt" realgud-bashdb-pat-hash))
+     (gethash "prompt" realgud:bashdb-pat-hash))
 (prompt-match "bashdb<10> "  "10")
 (prompt-match	"bashdb<(5)> " "5" "subshell prompt %s")
 (prompt-match	"bashdb<<1>> " "1" "nested debug prompt %s")
 
 (note "debugger-backtrace")
 (setq realgud-pat-bt  (gethash "debugger-backtrace"
-			     realgud-bashdb-pat-hash))
+			     realgud:bashdb-pat-hash))
 (setq test-s1
       "->0 in file `/etc/apparmor/functions' at line 24
 ##1 source(\"/etc/apparmor/functions\") called from file `/etc/init.d/apparmor' at line 35

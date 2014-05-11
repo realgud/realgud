@@ -10,7 +10,7 @@
 			 "../../common/track-mode"
 			 )
 		       "realgud-")
-(require-relative-list '("core" "init") "realgud-trepan8-")
+(require-relative-list '("core" "init") "realgud:trepan8-")
 (require-relative-list '("../../lang/ruby") "realgud-lang-")
 
 (realgud-track-mode-vars "trepan8")
@@ -56,4 +56,4 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
       ))
 )
 
-(provide-me "realgud-trepan8-")
+(provide-me "realgud:trepan8-")

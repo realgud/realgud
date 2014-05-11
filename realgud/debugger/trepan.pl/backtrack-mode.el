@@ -11,7 +11,7 @@
 			 "../../common/backtrack-mode"
 			 )
 		       "realgud-")
-(require-relative-list '("core" "init") "realgud-trepanpl-")
+(require-relative-list '("core" "init") "realgud:trepanpl-")
 (require-relative-list '("../../lang/perl") "realgud-lang-")
 
 (declare-function realgud-goto-line-for-pt
@@ -26,7 +26,7 @@
 
 (declare-function realgud-backtrack-mode(bool))
 
-(defun realgud-trepanpl-goto-control-frame-line (pt)
+(defun realgud:trepanpl-goto-control-frame-line (pt)
   "Display the location mentioned by a control-frame line
 described by PT."
   (interactive "d")
@@ -34,7 +34,7 @@ described by PT."
 
 (realgud-perl-populate-command-keys trepanpl-backtrack-mode-map)
 (define-key trepanpl-backtrack-mode-map
-  (kbd "C-c !c") 'realgud-trepanpl-goto-control-frame-line)
+  (kbd "C-c !c") 'realgud:trepanpl-goto-control-frame-line)
 
 (define-minor-mode trepanpl-backtrack-mode
   "Minor mode for tracking ruby debugging inside a file which may not have process shell."
@@ -64,4 +64,4 @@ described by PT."
     (message "trepan.pl backtrack-mode-hook disable called"))
 )
 
-(provide-me "realgud-trepanpl-")
+(provide-me "realgud:trepanpl-")

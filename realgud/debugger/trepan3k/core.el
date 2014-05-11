@@ -6,7 +6,7 @@
 			 "../../common/core"
 			 "../../common/lang")
 		       "realgud-")
-(require-relative-list '("init") "realgud-trepan3k-")
+(require-relative-list '("init") "realgud:trepan3k-")
 
 
 ;; FIXME: I think the following could be generalized and moved to
@@ -162,4 +162,4 @@ breakpoints, etc.)."
   (interactive)
   (customize-group 'trepan3k))
 
-(provide-me "realgud-trepan3k-")
+(provide-me "realgud:trepan3k-")

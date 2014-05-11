@@ -5,15 +5,15 @@
 (test-simple-start)
 
 (set (make-local-variable 'bps-pat)
-     (gethash "brkpt-set"          realgud-trepan-pat-hash))
+     (gethash "brkpt-set"          realgud:trepan-pat-hash))
 (set (make-local-variable 'dbg-bt-pat)
-     (gethash "debugger-backtrace" realgud-trepan-pat-hash))
+     (gethash "debugger-backtrace" realgud:trepan-pat-hash))
 (set (make-local-variable 'prompt-pat)
-     (gethash "prompt"             realgud-trepan-pat-hash))
+     (gethash "prompt"             realgud:trepan-pat-hash))
 (set (make-local-variable 'lang-bt-pat)
-     (gethash "lang-backtrace"     realgud-trepan-pat-hash))
+     (gethash "lang-backtrace"     realgud:trepan-pat-hash))
 (set (make-local-variable 'ctrl-pat)
-     (gethash "control-frame"      realgud-trepan-pat-hash))
+     (gethash "control-frame"      realgud:trepan-pat-hash))
 
 ;; FIXME: we get a void variable somewhere in here when running
 ;;        even though we define it in lexical-let. Dunno why.

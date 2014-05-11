@@ -8,7 +8,7 @@
 (defvar realgud-pat-hash)
 (declare-function make-realgud-loc-pat (realgud-loc))
 
-(defvar realgud-trepan8-pat-hash (make-hash-table :test 'equal)
+(defvar realgud:trepan8-pat-hash (make-hash-table :test 'equal)
   "Hash key is the what kind of pattern we want to match:
 backtrace, prompt, etc.  The values of a hash entry is a
 realgud-loc-pat struct")
@@ -18,7 +18,7 @@ realgud-loc-pat struct")
 ;; For example:
 ;;  -> (/tmp/fact.rb:1)
 ;;  -- (kernel/common/scope.rb:134 remapped /tmp/scope.rb:134)
-(setf (gethash "loc" realgud-trepan8-pat-hash)
+(setf (gethash "loc" realgud:trepan8-pat-hash)
       (make-realgud-loc-pat
        :regexp ".. (\\(?:.+ \\(?:via\\|remapped\\) \\)?\\(.+\\):\\([0-9]+\\)\\(?: @[0-9]+\\)?)"
        :file-group 1
@@ -28,23 +28,23 @@ realgud-loc-pat struct")
 ;; For example:
 ;;   (trepan8):
 ;;   ((trepan8)):
-(setf (gethash "prompt" realgud-trepan8-pat-hash)
+(setf (gethash "prompt" realgud:trepan8-pat-hash)
       (make-realgud-loc-pat
        :regexp "^(+trepan8\\(@[0-9]+\\|@main\\)?)+: "
        ))
 
 ;;  Regular expression that describes a MRI 1.8 Ruby backtrace line.
-(setf (gethash "lang-backtrace" realgud-trepan8-pat-hash)
+(setf (gethash "lang-backtrace" realgud:trepan8-pat-hash)
       realgud-ruby-backtrace-loc-pat)
 
 ;;  Regular expression that describes a ruby $! backtrace
-(setf (gethash "dollar-bang-backtrace" realgud-trepan8-pat-hash)
+(setf (gethash "dollar-bang-backtrace" realgud:trepan8-pat-hash)
       realgud-ruby-dollar-bang-loc-pat)
 
 ;; Regular expression that describes a "breakpoint set" line
 ;; For example:
 ;; Set breakpoint 1: /tmp/fact.rb:1 (@0)
-(setf (gethash "brkpt-set" realgud-trepan8-pat-hash)
+(setf (gethash "brkpt-set" realgud:trepan8-pat-hash)
       (make-realgud-loc-pat
        :regexp "^Set breakpoint \\([0-9]+\\): .+ at \\(.+\\):\\([0-9]+\\) (@[0-9]+)"
        :num 1
@@ -54,22 +54,22 @@ realgud-loc-pat struct")
 ;; Regular expression that describes a debugger "delete" (breakpoint) response.
 ;; For example:'
 ;;   Deleted breakpoint 1.
-(setf (gethash "brkpt-del" realgud-trepan8-pat-hash)
+(setf (gethash "brkpt-del" realgud:trepan8-pat-hash)
       (make-realgud-loc-pat
        :regexp "^Deleted breakpoint \\([0-9]+\\).\n"
        :num 1))
 
 ;;  Regular expression that describes a Ruby $! string
-(setf (gethash "dollar-bang" realgud-trepan8-pat-hash)
+(setf (gethash "dollar-bang" realgud:trepan8-pat-hash)
       realgud-ruby-dollar-bang-loc-pat)
 
-(setf (gethash "trepan8" realgud-pat-hash) realgud-trepan8-pat-hash)
+(setf (gethash "trepan8" realgud-pat-hash) realgud:trepan8-pat-hash)
 
-(defconst realgud-trepan8-frame-file-line-regexp
+(defconst realgud:trepan8-frame-file-line-regexp
   " at \\(.*\\):\\([0-9]+\\)$")
 
-(defconst realgud-trepan8-frame-start-regexp realgud-trepan-frame-start-regexp)
-(defconst realgud-trepan8-frame-num-regexp   realgud-trepan-frame-start-regexp)
+(defconst realgud:trepan8-frame-start-regexp realgud:trepan-frame-start-regexp)
+(defconst realgud:trepan8-frame-num-regexp   realgud:trepan-frame-start-regexp)
 
 ;;  Regular expression that describes a debugger "backtrace" command line.
 ;;  e.g.
@@ -77,12 +77,12 @@ realgud-loc-pat struct")
 ;;     #1 main.__script__ at /tmp/fact.rb:1
 ;;     #1 main.__script__ at /tmp/fact.rb:1
 ;;     #0 IRB.start(ap_path#String) at line /usr/lib/ruby/1.8/irb.rb:52
-(setf (gethash "debugger-backtrace" realgud-trepan8-pat-hash)
+(setf (gethash "debugger-backtrace" realgud:trepan8-pat-hash)
       (make-realgud-loc-pat
-       :regexp 	(concat realgud-trepan8-frame-start-regexp " "
-			realgud-trepan8-frame-num-regexp
+       :regexp 	(concat realgud:trepan8-frame-start-regexp " "
+			realgud:trepan8-frame-num-regexp
 			"\\(?: \\(?:\\(.+\\)(\\(.*\\))\\)\\)?"
-			realgud-trepan8-frame-file-line-regexp
+			realgud:trepan8-frame-file-line-regexp
 			)
        :num 2
        :file-group 5
@@ -90,10 +90,10 @@ realgud-loc-pat struct")
       )
 
 ;; Regular expression that for a termination message.
-(setf (gethash "termination" realgud-trepan8-pat-hash)
+(setf (gethash "termination" realgud:trepan8-pat-hash)
        "^trepan8: That's all, folks...\n")
 
-(setf (gethash "font-lock-keywords" realgud-trepan8-pat-hash)
+(setf (gethash "font-lock-keywords" realgud:trepan8-pat-hash)
       '(
 	;; Parameters and first type entry. E.g Object.gcd(a#Fixnum, b#Fixnum)
 	;;                                                 ^-^^^^^^  ^-^^^^^^
@@ -127,14 +127,14 @@ realgud-loc-pat struct")
 	;;  (0 trepan-frames-current-frame-face append))
 	))
 
-(setf (gethash "trepan8" realgud-pat-hash) realgud-trepan8-pat-hash)
+(setf (gethash "trepan8" realgud-pat-hash) realgud:trepan8-pat-hash)
 
-(defvar realgud-trepan8-command-hash (make-hash-table :test 'equal)
+(defvar realgud:trepan8-command-hash (make-hash-table :test 'equal)
   "Hash key is command name like 'quit' and the value is
   the trepan8 command to use, like 'quit!'")
 
-(setf (gethash "quit" realgud-trepan8-command-hash) "quit!")
-(setf (gethash "shell" realgud-trepan8-command-hash) "irb")
-(setf (gethash "trepan8" realgud-command-hash) realgud-trepan8-command-hash)
+(setf (gethash "quit" realgud:trepan8-command-hash) "quit!")
+(setf (gethash "shell" realgud:trepan8-command-hash) "irb")
+(setf (gethash "trepan8" realgud-command-hash) realgud:trepan8-command-hash)
 
-(provide-me "realgud-trepan8-")
+(provide-me "realgud:trepan8-")

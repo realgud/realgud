@@ -10,7 +10,7 @@
                          "../../common/track-mode"
                          )
                        "realgud-")
-(require-relative-list '("core" "init") "realgud-trepanpl-")
+(require-relative-list '("core" "init") "realgud:trepanpl-")
 (require-relative-list '("../../lang/perl") "realgud-lang-")
 
 (realgud-track-mode-vars "trepanpl")
@@ -23,19 +23,19 @@
 (declare-function realgud-perl-populate-command-keys 'realgud-lang-perl)
 
 
-(defun realgud-trepanpl-goto-syntax-error-line (pt)
+(defun realgud:trepanpl-goto-syntax-error-line (pt)
   "Display the location mentioned in a Syntax error line
 described by PT."
   (interactive "d")
   (realgud-goto-line-for-pt pt "syntax-error"))
 
 (define-key trepanpl-track-mode-map
-  (kbd "C-c !s") 'realgud-trepanpl-goto-syntax-error-line)
+  (kbd "C-c !s") 'realgud:trepanpl-goto-syntax-error-line)
 
 (realgud-perl-populate-command-keys trepanpl-track-mode-map)
 
-(defun realgud-trepanpl-track-mode-hook()
-  (if realgud-trepanpl-track-mode
+(defun realgud:trepanpl-track-mode-hook()
+  (if realgud:trepanpl-track-mode
       (progn
         (use-local-map trepanpl-track-mode-map)
         (message "using trepanpl mode map")
@@ -43,7 +43,7 @@ described by PT."
     (message "trepan.pl track-mode-hook disable called"))
 )
 
-(define-minor-mode realgud-trepanpl-track-mode
+(define-minor-mode realgud:trepanpl-track-mode
   "Minor mode for tracking trepan.pl source locations inside a process shell via realgud. trepan.pl is a Perl debugger see URL `https://metacpan.org/pod/Devel::Trepan'.
 
 If called interactively with no prefix argument, the mode is toggled. A prefix argument, captured as ARG, enables the mode if the argument is positive, and disables it otherwise.
@@ -58,10 +58,10 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   :keymap trepanpl-track-mode-map
 
   (realgud-track-set-debugger "trepan.pl")
-  (if realgud-trepanpl-track-mode
+  (if realgud:trepanpl-track-mode
       (progn
         (realgud-track-mode-setup 't)
-        (realgud-trepanpl-track-mode-hook))
+        (realgud:trepanpl-track-mode-hook))
     (progn
       (setq realgud-track-mode nil)
       ))
@@ -69,4 +69,4 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
 
 (define-key trepanpl-short-key-mode-map "T" 'realgud-cmd-backtrace)
 
-(provide-me "realgud-trepanpl-")
+(provide-me "realgud:trepanpl-")

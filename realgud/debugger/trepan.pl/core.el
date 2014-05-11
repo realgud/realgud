@@ -6,7 +6,7 @@
                          "../../common/core"
                          "../../common/lang")
                        "realgud-")
-(require-relative-list '("init") "realgud-trepanpl-")
+(require-relative-list '("init") "realgud:trepanpl-")
 
 (declare-function realgud-parse-command-arg  'realgud-core)
 (declare-function realgud-query-cmdline      'realgud-core)
@@ -17,21 +17,21 @@
 (defvar trepanpl-minibuffer-history nil
   "minibuffer history list for the command `trepanpl'.")
 
-(easy-mmode-defmap realgud-trepanpl-minibuffer-local-map
+(easy-mmode-defmap realgud:trepanpl-minibuffer-local-map
   '(("\C-i" . comint-dynamic-complete-filename))
   "Keymap for minibuffer prompting of trepanpl startup command."
   :inherit minibuffer-local-map)
 
 ;; FIXME: I think this code and the keymaps and history
 ;; variable chould be generalized, perhaps via a macro.
-(defun realgud-trepanpl-query-cmdline (&optional opt-debugger)
+(defun realgud:trepanpl-query-cmdline (&optional opt-debugger)
   (realgud-query-cmdline
-   'realgud-trepanpl-suggest-invocation
-   realgud-trepanpl-minibuffer-local-map
-   'realgud-trepanpl-minibuffer-history
+   'realgud:trepanpl-suggest-invocation
+   realgud:trepanpl-minibuffer-local-map
+   'realgud:trepanpl-minibuffer-history
    opt-debugger))
 
-(defun realgud-trepanpl-parse-cmd-args (orig-args)
+(defun realgud:trepanpl-parse-cmd-args (orig-args)
   "Parse command line ARGS for the annotate level and name of script to debug.
 
 ARGS should contain a tokenized list of the command line to run.
@@ -103,15 +103,15 @@ NOTE: the above should have each item listed in quotes.
     ))
 
 ; # To silence Warning: reference to free variable
-(defvar realgud-trepanpl-command-name)
+(defvar realgud:trepanpl-command-name)
 
-(defun realgud-trepanpl-suggest-invocation (debugger-name)
+(defun realgud:trepanpl-suggest-invocation (debugger-name)
   "Suggest a trepanpl command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation realgud-trepanpl-command-name
+  (realgud-suggest-invocation realgud:trepanpl-command-name
                            trepanpl-minibuffer-history
                            "perl" "\\.pl$" "trepan.pl"))
 
-(defun realgud-trepanpl-reset ()
+(defun realgud:trepanpl-reset ()
   "Trepanpl cleanup - remove debugger's internal buffers (frame,
 breakpoints, etc.)."
   (interactive)
@@ -130,9 +130,9 @@ breakpoints, etc.)."
 ;;        trepanpl-debugger-support-minor-mode-map-when-deactive))
 
 
-(defun realgud-trepanpl-customize ()
+(defun realgud:trepanpl-customize ()
   "Use `customize' to edit the settings of the `trepanpl' debugger."
   (interactive)
-  (customize-group 'realgud-trepanpl))
+  (customize-group 'realgud:trepanpl))
 
-(provide-me "realgud-trepanpl-")
+(provide-me "realgud:trepanpl-")

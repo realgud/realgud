@@ -12,7 +12,7 @@
 (defvar realgud-pat-hash)
 (defvar temp-cmdbuf nil)
 
-(declare-function trepan-track-mode 'realgud-trepan)
+(declare-function trepan-track-mode 'realgud:trepan)
 (declare-function realgud-track-mode-vars 'realgud-track-mode)
 (declare-function realgud-backtrace-mode 'realgud-backtrace-mode)
 

@@ -32,6 +32,9 @@ test: check
 check-short:
 	$(MAKE) check 2>&1  | $(RUBY) make-check-filter.rb
 
+check-terse:
+	$(MAKE) check 2>&1  | $(RUBY) make-check-filter.rb | grep failure
+
 #: Run "make install"
 install-short:
 	$(MAKE) install 2>&1  | $(RUBY) make-check-filter.rb

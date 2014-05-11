@@ -58,8 +58,8 @@ realgud-loc-pat struct")
 (defconst realgud-rdebug-frame-file-line-regexp
   "[ \t\n]+at line \\(.*\\):\\([0-9]+\\)$")
 
-(defconst realgud-rdebug-frame-start-regexp realgud-trepan-frame-start-regexp)
-(defconst realgud-rdebug-frame-num-regexp   realgud-trepan-frame-num-regexp)
+(defconst realgud-rdebug-frame-start-regexp realgud:trepan-frame-start-regexp)
+(defconst realgud-rdebug-frame-num-regexp   realgud:trepan-frame-num-regexp)
 
 ;;  Regular expression that describes a Ruby $! string
 (setf (gethash "dollar-bang" realgud-rdebug-pat-hash)

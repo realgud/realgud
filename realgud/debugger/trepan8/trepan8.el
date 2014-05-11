@@ -3,10 +3,10 @@
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("../../common/track") "realgud-")
-(require-relative-list '("core" "track-mode") "realgud-trepan8-")
+(require-relative-list '("core" "track-mode") "realgud:trepan8-")
 
-(declare-function trepan8-query-cmdline  'realgud-trepan8-core)
-(declare-function trepan8-parse-cmd-args 'realgud-trepan8-core)
+(declare-function trepan8-query-cmdline  'realgud:trepan8-core)
+(declare-function trepan8-parse-cmd-args 'realgud:trepan8-core)
 (declare-function realgud-run-process 'realgud-core)
 
 ;; This is needed, or at least the docstring part of it is needed to
@@ -35,7 +35,7 @@ This should be an executable on your path, or an absolute file name."
 ;;
 
 ;;;###autoload
-(defun realgud-trepan8 (&optional opt-command-line no-reset)
+(defun realgud:trepan8 (&optional opt-command-line no-reset)
   "Invoke the trepan8 Ruby debugger and start the Emacs user interface.
 
 String COMMAND-LINE specifies how to run trepan8.
@@ -59,6 +59,6 @@ marginal icons is reset."
     )
   )
 
-(defalias 'trepan8 'realgud-trepan8)
+(defalias 'trepan8 'realgud:trepan8)
 
 (provide-me "realgud-")

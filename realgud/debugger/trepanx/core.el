@@ -7,7 +7,7 @@
 			 "../../common/core"
 			 "../../common/lang")
 		       "realgud-")
-(require-relative-list '("init") "realgud-trepanx-")
+(require-relative-list '("init") "realgud:trepanx-")
 
 (declare-function realgud-parse-command-arg  'realgud-core)
 (declare-function realgud-query-cmdline      'realgud-core)
@@ -160,4 +160,4 @@ breakpoints, etc.)."
   (interactive)
   (customize-group 'trepanx))
 
-(provide-me "realgud-trepanx-")
+(provide-me "realgud:trepanx-")
