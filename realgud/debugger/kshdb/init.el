@@ -13,7 +13,7 @@
 (defvar realgud-pat-hash)
 (declare-function make-realgud-loc-pat (realgud-loc))
 
-(defvar realgud-kshdb-pat-hash (make-hash-table :test 'equal)
+(defvar realgud:kshdb-pat-hash (make-hash-table :test 'equal)
   "Hash key is the what kind of pattern we want to match:
 backtrace, prompt, etc.  The values of a hash entry is a
 realgud-loc-pat struct")
@@ -22,7 +22,7 @@ realgud-loc-pat struct")
 ;; before a command prompt.
 ;; For example:
 ;;   (/etc/init.d/apparmor:35):
-(setf (gethash "loc" realgud-kshdb-pat-hash)
+(setf (gethash "loc" realgud:kshdb-pat-hash)
       (make-realgud-loc-pat
        :regexp "\\(^\\|\n\\)(\\([^:]+\\):\\([0-9]*\\))"
        :file-group 2
@@ -32,14 +32,14 @@ realgud-loc-pat struct")
 ;;   kshdb<10>
 ;;   kshdb<(5)>
 ;;   kshdb<<1>>
-(setf (gethash "prompt" realgud-kshdb-pat-hash)
+(setf (gethash "prompt" realgud:kshdb-pat-hash)
       (make-realgud-loc-pat
        :regexp   "^kshdb[<]+[(]*\\([0-9]+\\)[)]*[>]+ "
        :num 1
        ))
 
 ;;  Regular expression that describes a "breakpoint set" line
-(setf (gethash "brkpt-set" realgud-kshdb-pat-hash)
+(setf (gethash "brkpt-set" realgud:kshdb-pat-hash)
       (make-realgud-loc-pat
        :regexp "^Breakpoint \\([0-9]+\\) set in file \\(.+\\), line \\([0-9]+\\).\n"
        :num 1
@@ -49,7 +49,7 @@ realgud-loc-pat struct")
 ;; Regular expression that describes a debugger "delete" (breakpoint) response.
 ;; For example:
 ;;   Removed 1 breakpoint(s).
-(setf (gethash "brkpt-del" realgud-kshdb-pat-hash)
+(setf (gethash "brkpt-del" realgud:kshdb-pat-hash)
       (make-realgud-loc-pat
        :regexp "^Removed \\([0-9]+\\) breakpoints(s).\n"
        :num 1))
@@ -59,7 +59,7 @@ realgud-loc-pat struct")
 ;;   ->0 in file `/etc/apparmor/fns' at line 24
 ;;   ##1 /etc/apparmor/fns called from file `/etc/init.d/apparmor' at line 35
 ;;   ##2 /etc/init.d/apparmor called from file `/usr/bin/kshdb' at line 129
-(setf (gethash "debugger-backtrace" realgud-kshdb-pat-hash)
+(setf (gethash "debugger-backtrace" realgud:kshdb-pat-hash)
       (make-realgud-loc-pat
        :regexp 	(concat realgud-shell-frame-start-regexp
 			realgud-shell-frame-num-regexp "[ ]?"
@@ -73,10 +73,10 @@ realgud-loc-pat struct")
       )
 
 ;; Regular expression that for a termination message.
-(setf (gethash "termination" realgud-kshdb-pat-hash)
+(setf (gethash "termination" realgud:kshdb-pat-hash)
        "^kshdb: That's all, folks...\n")
 
-(setf (gethash "font-lock-keywords" realgud-kshdb-pat-hash)
+(setf (gethash "font-lock-keywords" realgud:kshdb-pat-hash)
       '(
 	;; The frame number and first type name, if present.
 	;; E.g. ->0 in file `/etc/init.d/apparmor' at line 35
@@ -100,15 +100,15 @@ realgud-loc-pat struct")
 	;;  (0 trepan-frames-current-frame-face append))
 	))
 
-(setf (gethash "kshdb" realgud-pat-hash) realgud-kshdb-pat-hash)
+(setf (gethash "kshdb" realgud-pat-hash) realgud:kshdb-pat-hash)
 
-(defvar realgud-kshdb-command-hash (make-hash-table :test 'equal)
+(defvar realgud:kshdb-command-hash (make-hash-table :test 'equal)
   "Hash key is command name like 'quit' and the value is
   the trepan command to use, like 'quit!'")
 
-;; (setf (gethash "quit" realgud-kshdb-command-hash) "quit!")
-(setf (gethash "kshdb" realgud-command-hash realgud-kshdb-command-hash))
+;; (setf (gethash "quit" realgud:kshdb-command-hash) "quit!")
+(setf (gethash "kshdb" realgud-command-hash realgud:kshdb-command-hash))
 
-(setf (gethash "kshdb" realgud-pat-hash) realgud-kshdb-pat-hash)
+(setf (gethash "kshdb" realgud-pat-hash) realgud:kshdb-pat-hash)
 
-(provide-me "realgud-kshdb-")
+(provide-me "realgud:kshdb-")

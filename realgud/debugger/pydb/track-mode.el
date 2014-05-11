@@ -11,7 +11,7 @@
                          "../../common/track-mode"
                          )
                        "realgud-")
-(require-relative-list '("core" "init") "realgud-pydb-")
+(require-relative-list '("core" "init") "realgud:pydb-")
 
 (realgud-track-mode-vars "pydb")
 
@@ -56,4 +56,4 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
       ))
 )
 
-(provide-me "realgud-pydb-")
+(provide-me "realgud:pydb-")

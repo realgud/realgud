@@ -1,9 +1,9 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2014 Rocky Bernstein <rocky@gnu.org>
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
 (require-relative-list '("../../common/track" "../../common/core") "realgud-")
-(require-relative-list '("init") "realgud-kshdb-")
+(require-relative-list '("init") "realgud:kshdb-")
 
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
@@ -156,4 +156,4 @@ breakpoints, etc.)."
   (interactive)
   (customize-group 'kshdb))
 
-(provide-me "realgud-kshdb-")
+(provide-me "realgud:kshdb-")

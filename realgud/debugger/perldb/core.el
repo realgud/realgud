@@ -6,7 +6,7 @@
 			 "../../common/core"
 			 "../../common/lang")
 		       "realgud-")
-(require-relative-list '("init") "realgud-perldb-")
+(require-relative-list '("init") "realgud:perldb-")
 
 (declare-function realgud-lang-mode? 'realgud-lang)
 (declare-function realgud-parse-command-arg 'realgud-core)
@@ -18,21 +18,21 @@
 (defvar perldb-minibuffer-history nil
   "minibuffer history list for the command `perldb'.")
 
-(easy-mmode-defmap realgud-perldb-minibuffer-local-map
+(easy-mmode-defmap realgud:perldb-minibuffer-local-map
   '(("\C-i" . comint-dynamic-complete-filename))
   "Keymap for minibuffer prompting of perldb startup command."
   :inherit minibuffer-local-map)
 
 ;; FIXME: I think this code and the keymaps and history
 ;; variable chould be generalized, perhaps via a macro.
-(defun realgud-perldb-query-cmdline (&optional opt-debugger)
+(defun realgud:perldb-query-cmdline (&optional opt-debugger)
   (realgud-query-cmdline
-   'realgud-perldb-suggest-invocation
-   realgud-perldb-minibuffer-local-map
-   'realgud-perldb-minibuffer-history
+   'realgud:perldb-suggest-invocation
+   realgud:perldb-minibuffer-local-map
+   'realgud:perldb-minibuffer-history
    opt-debugger))
 
-(defun realgud-perldb-parse-cmd-args (orig-args)
+(defun realgud:perldb-parse-cmd-args (orig-args)
   "Parse command line ARGS for the annotate level and name of script to debug.
 
 ARGS should contain a tokenized list of the command line to run.
@@ -102,14 +102,14 @@ NOTE: the above should have each item listed in quotes.
     ))
 
 ; # To silence Warning: reference to free variable
-(defvar realgud-perldb-command-name)
+(defvar realgud:perldb-command-name)
 
-(defun realgud-perldb-suggest-invocation (debugger-name)
+(defun realgud:perldb-suggest-invocation (debugger-name)
   "Suggest a perldb command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation realgud-perldb-command-name perldb-minibuffer-history
+  (realgud-suggest-invocation realgud:perldb-command-name perldb-minibuffer-history
 			   "perl" "\\.pl$"))
 
-(defun realgud-perldb-reset ()
+(defun realgud:perldb-reset ()
   "Perldb cleanup - remove debugger's internal buffers (frame,
 breakpoints, etc.)."
   (interactive)
@@ -128,9 +128,9 @@ breakpoints, etc.)."
 ;; 	  perldb-debugger-support-minor-mode-map-when-deactive))
 
 
-(defun realgud-perldb-customize ()
+(defun realgud:perldb-customize ()
   "Use `customize' to edit the settings of the `perldb' debugger."
   (interactive)
-  (customize-group 'realgud-perldb))
+  (customize-group 'realgud:perldb))
 
-(provide-me "realgud-perldb-")
+(provide-me "realgud:perldb-")

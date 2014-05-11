@@ -4,7 +4,7 @@
 (require 'load-relative)
 (require-relative-list '("../../common/track" "../../common/lang"
 			 "../../common/core") "realgud-")
-(require-relative-list '("init") "realgud-gub-")
+(require-relative-list '("init") "realgud:gub-")
 
 (declare-function realgud-query-cmdline      'realgud-core)
 (declare-function realgud-suggest-invocation 'realgud-core)
@@ -87,7 +87,7 @@ NOTE: the above should have each item listed in quotes.
       (list gub-name gub-args go-prog-and-args)
     ))
 
-(defconst realgud-gub-auto-suffix-regexp
+(defconst realgud:gub-auto-suffix-regexp
   "\\.go$"
   "Go file suffix"
 )
@@ -98,7 +98,7 @@ NOTE: the above should have each item listed in quotes.
 	)
     (if (realgud-lang-mode? filename "go")
 	(progn
-	  (if (string-match realgud-gub-auto-suffix-regexp filename)
+	  (if (string-match realgud:gub-auto-suffix-regexp filename)
 	      (setq priority 5)
 	    (setq priority 7))
 	  ))
@@ -117,7 +117,7 @@ NOTE: the above should have each item listed in quotes.
 ;; into one that invokes an Emacs-enabled debugging session.
 ;; "--debugger" in inserted as the first switch.
 
-(defun realgud-gub-massage-args (command-line)
+(defun realgud:gub-massage-args (command-line)
   (let* ((new-args (list "--debugger"))
 	 (args (split-string-and-unquote command-line))
 	 (program (car args))
@@ -170,4 +170,4 @@ breakpoints, etc.)."
   (interactive)
   (customize-group 'gub))
 
-(provide-me "realgud-gub-")
+(provide-me "realgud:gub-")

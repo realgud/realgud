@@ -13,7 +13,7 @@
 (defvar realgud-pat-hash)
 (declare-function make-realgud-loc-pat (realgud-loc))
 
-(defvar realgud-pydb-pat-hash (make-hash-table :test 'equal)
+(defvar realgud:pydb-pat-hash (make-hash-table :test 'equal)
   "Hash key is the what kind of pattern we want to match:
 backtrace, prompt, etc.  The values of a hash entry is a
 realgud-loc-pat struct")
@@ -27,24 +27,24 @@ realgud-loc-pat struct")
 ;;   > /usr/bin/zonetab2pot.py(15)<module>()
 ;; or MS Windows:
 ;;   > c:\\mydirectory\\gcd.py(10)<module>
-(setf (gethash "loc" realgud-pydb-pat-hash)
+(setf (gethash "loc" realgud:pydb-pat-hash)
       (make-realgud-loc-pat
        :regexp "^(\\(\\(?:[a-zA-Z]:\\)?[-a-zA-Z0-9_/.\\\\ ]+\\):\\([0-9]+\\))"
        :file-group 1
        :line-group 2))
 
-(setf (gethash "prompt" realgud-pydb-pat-hash)
+(setf (gethash "prompt" realgud:pydb-pat-hash)
       (make-realgud-loc-pat
        :regexp   "^[(]+Pydb[)]+ "
        ))
 
 ;;  Regular expression that describes a Python backtrace line.
-(setf (gethash "lang-backtrace" realgud-pydb-pat-hash)
+(setf (gethash "lang-backtrace" realgud:pydb-pat-hash)
       realgud-python-backtrace-loc-pat)
 
 ;;  Regular expression that describes a "breakpoint set" line. For example:
 ;;     Breakpoint 1 at /usr/bin/pydb:7
-(setf (gethash "brkpt-set" realgud-pydb-pat-hash)
+(setf (gethash "brkpt-set" realgud:pydb-pat-hash)
       (make-realgud-loc-pat
        :regexp "^Breakpoint \\([0-9]+\\) at[ \t\n]+\\(.+\\):\\([0-9]+\\)\\(\n\\|$\\)"
        :num 1
@@ -52,12 +52,12 @@ realgud-loc-pat struct")
        :line-group 3))
 
 ;;  Regular expression that describes a "delete breakpoint" line
-(setf (gethash "brkpt-del" realgud-pydb-pat-hash)
+(setf (gethash "brkpt-del" realgud:pydb-pat-hash)
       (make-realgud-loc-pat
        :regexp "^Deleted breakpoint \\([0-9]+\\)\n"
        :num 1))
 
-(setf (gethash "font-lock-keywords" realgud-pydb-pat-hash)
+(setf (gethash "font-lock-keywords" realgud:pydb-pat-hash)
       '(
 	;; The frame number and first type name, if present.
 	("^\\(->\\|##\\)\\([0-9]+\\) \\(<module>\\)? *\\([a-zA-Z_][a-zA-Z0-9_]*\\)(\\(.+\\))?"
@@ -87,13 +87,13 @@ realgud-loc-pat struct")
 	;;  (0 pydb-frames-current-frame-face append))
 	))
 
-(setf (gethash "pydb" realgud-pat-hash) realgud-pydb-pat-hash)
+(setf (gethash "pydb" realgud-pat-hash) realgud:pydb-pat-hash)
 
-(defvar realgud-pydb-command-hash (make-hash-table :test 'equal)
+(defvar realgud:pydb-command-hash (make-hash-table :test 'equal)
   "Hash key is command name like 'shell' and the value is
   the pydb command to use, like 'python'")
 
-(setf (gethash "shell" realgud-pydb-command-hash) "python")
-(setf (gethash "pydb" realgud-command-hash) realgud-pydb-command-hash)
+(setf (gethash "shell" realgud:pydb-command-hash) "python")
+(setf (gethash "pydb" realgud-command-hash) realgud:pydb-command-hash)
 
-(provide-me "realgud-pydb-")
+(provide-me "realgud:pydb-")

@@ -6,7 +6,7 @@
 			 "../../common/core"
 			 "../../common/lang")
 		       "realgud-")
-(require-relative-list '("init") "realgud-pydb-")
+(require-relative-list '("init") "realgud:pydb-")
 
 
 ;; FIXME: I think the following could be generalized and moved to
@@ -150,4 +150,4 @@ breakpoints, etc.)."
   (interactive)
   (customize-group 'pydb))
 
-(provide-me "realgud-pydb-")
+(provide-me "realgud:pydb-")

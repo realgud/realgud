@@ -1,6 +1,6 @@
 (require 'test-simple)
 (load-file "../realgud/debugger/pydb/pydb.el")
-(declare-function pydb-parse-cmd-args 'realgud-pydb)
+(declare-function pydb-parse-cmd-args 'realgud:pydb)
 
 (test-simple-start)
 

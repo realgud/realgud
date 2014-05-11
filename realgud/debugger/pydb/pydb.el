@@ -3,10 +3,10 @@
 (require 'load-relative)
 (require-relative-list '("../../common/helper"
 			 "../../common/track") "realgud-")
-(require-relative-list '("core" "track-mode") "realgud-pydb-")
+(require-relative-list '("core" "track-mode") "realgud:pydb-")
 
-(declare-function pydb-query-cmdline  'realgud-pydb-core)
-(declare-function pydb-parse-cmd-args 'realgud-pydb-core)
+(declare-function pydb-query-cmdline  'realgud:pydb-core)
+(declare-function pydb-parse-cmd-args 'realgud:pydb-core)
 (declare-function realgud-run-process 'realgud-core)
 
 ;; This is needed, or at least the docstring part of it is needed to
@@ -36,7 +36,7 @@ This should be an executable on your path, or an absolute file name."
 ;;
 
 ;;;###autoload
-(defun realgud-pydb (&optional opt-command-line no-reset)
+(defun realgud:pydb (&optional opt-command-line no-reset)
   "Invoke the pydb Python debugger and start the Emacs user interface.
 
 String COMMAND-LINE specifies how to run pydb.
@@ -64,6 +64,6 @@ marginal icons is reset."
   )
 
 
-(defalias 'pydb 'realgud-pydb)
+(defalias 'pydb 'realgud:pydb)
 
 (provide-me "realgud-")

@@ -110,7 +110,7 @@
      "./realgud/debugger/nodejs/nodejs"
      "./realgud/debugger/pdb/pdb"
      "./realgud/debugger/perldb/perldb"
-     "./realgud/debugger/pydb/pydb"
+    "./realgud/debugger/pydb/pydb"
      "./realgud/debugger/pydbgr/pydbgr"
      "./realgud/debugger/rdebug/rdebug"
      "./realgud/debugger/remake/remake"

@@ -32,6 +32,7 @@ test: check
 check-short:
 	$(MAKE) check 2>&1  | $(RUBY) make-check-filter.rb
 
+#: Run all tests without and show just the failure lines
 check-terse:
 	$(MAKE) check 2>&1  | $(RUBY) make-check-filter.rb | grep failure
 

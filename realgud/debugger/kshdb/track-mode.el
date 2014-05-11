@@ -10,7 +10,7 @@
 			 "../../common/track-mode"
 			 )
 		       "realgud-")
-(require-relative-list '("core" "init") "realgud-kshdb-")
+(require-relative-list '("core" "init") "realgud:kshdb-")
 
 (declare-function realgud-track-set-debugger 'realgud-track-mode)
 (declare-function realgud-track-mode-setup   'realgud-track-mode)
@@ -56,4 +56,4 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
       ))
 )
 
-(provide-me "realgud-kshdb-")
+(provide-me "realgud:kshdb-")

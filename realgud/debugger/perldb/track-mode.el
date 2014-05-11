@@ -10,22 +10,22 @@
 			 "../../common/track-mode"
 			 )
 		       "realgud-")
-(require-relative-list '("core" "init") "realgud-perldb-")
+(require-relative-list '("core" "init") "realgud:perldb-")
 (require-relative-list '("../../lang/perl") "realgud-lang-")
 
 (realgud-track-mode-vars "perldb")
 
 (declare-function realgud-cmd-remap           'realgud-cmds)
 (declare-function realgud-perl-populate-command-keys
-		  'realgud-perldb)
+		  'realgud:perldb)
 (declare-function realgud-track-mode 'realgud-track-mode)
 (declare-function realgud-track-mode-setup    realgud-track-mode)
 (declare-function realgud-track-set-debugger 'realgud-track-mode)
 
 (realgud-perl-populate-command-keys perldb-track-mode-map )
 
-(defun realgud-perldb-track-mode-hook()
-  (if realgud-perldb-track-mode
+(defun realgud:perldb-track-mode-hook()
+  (if realgud:perldb-track-mode
       (progn
 	(use-local-map perldb-track-mode-map)
 	(message "using perldb mode map")
@@ -33,7 +33,7 @@
     (message "perldb track-mode-hook disable called"))
 )
 
-(define-minor-mode realgud-perldb-track-mode
+(define-minor-mode realgud:perldb-track-mode
   "Minor mode for tracking perl5db source locations inside a process shell via realgud. perl5db is the stock Perl debugger.
 
 If called interactively with no prefix argument, the mode is toggled. A prefix argument, captured as ARG, enables the mode if the argument is positive, and disables it otherwise.
@@ -48,16 +48,16 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   :keymap perldb-track-mode-map
 
   (realgud-track-set-debugger "perldb")
-  (if realgud-perldb-track-mode
+  (if realgud:perldb-track-mode
       (progn
 	(setq realgud-track-mode 't)
-	(run-mode-hooks (intern (realgud-perldb-track-mode-hook))))
+	(run-mode-hooks (intern (realgud:perldb-track-mode-hook))))
     (progn
       (setq realgud-track-mode nil)
       ))
 )
 
-(defun realgud-perldb-backtrace(arg)
+(defun realgud:perldb-backtrace(arg)
   (interactive "p")
   (realgud-cmd-remap arg "backtrace" "T" "T")
 )
@@ -67,6 +67,6 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   [remap realgud-cmd-newer-frame] 'undefined)
 (define-key perldb-short-key-mode-map
   [remap realgud-cmd-older-frame] 'undefined)
-(define-key perldb-short-key-mode-map "T" 'realgud-perldb-backtrace)
+(define-key perldb-short-key-mode-map "T" 'realgud:perldb-backtrace)
 
-(provide-me "realgud-perldb-")
+(provide-me "realgud:perldb-")

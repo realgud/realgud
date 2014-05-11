@@ -3,7 +3,7 @@
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("../../common/track") "realgud-")
-(require-relative-list '("core" "track-mode") "realgud-kshdb-")
+(require-relative-list '("core" "track-mode") "realgud:kshdb-")
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
 (defgroup kshdb nil
@@ -25,8 +25,8 @@ This should be an executable on your path, or an absolute file name."
   :group 'kshdb)
 
 (declare-function kshdb-track-mode (bool))
-(declare-function kshdb-query-cmdline  'realgud-kshdb-core)
-(declare-function kshdb-parse-cmd-args 'realgud-kshdb-core)
+(declare-function kshdb-query-cmdline  'realgud:kshdb-core)
+(declare-function kshdb-parse-cmd-args 'realgud:kshdb-core)
 (declare-function realgud-run-process 'realgud-core)
 
 ;; -------------------------------------------------------------------
@@ -34,7 +34,7 @@ This should be an executable on your path, or an absolute file name."
 ;;
 
 ;;;###autoload
-(defun realgud-kshdb (&optional opt-command-line no-reset)
+(defun realgud:kshdb (&optional opt-command-line no-reset)
   "Invoke the kshdb Z-shell debugger and start the Emacs user interface.
 
 String COMMAND-LINE specifies how to run kshdb.
@@ -56,7 +56,7 @@ marginal icons is reset."
 		      'kshdb-track-mode no-reset)
     ))
 
-(defalias 'kshdb 'realgud-kshdb)
+(defalias 'kshdb 'realgud:kshdb)
 (provide-me "realgud-")
 
 ;;; kshdb.el ends here

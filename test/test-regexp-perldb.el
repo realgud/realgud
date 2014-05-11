@@ -12,7 +12,7 @@
 (set (make-local-variable 'loc-pat)
      (gethash "loc"    (gethash dbg-name realgud-pat-hash)))
 (set (make-local-variable 'prompt-pat)
-     (gethash "prompt" realgud-perldb-pat-hash))
+     (gethash "prompt" realgud:perldb-pat-hash))
 
 (setq dbgr (make-realgud-cmdbuf-info
 		  :debugger-name dbg-name
@@ -58,7 +58,7 @@
 
 (note "debugger-backtrace")
 (setq realgud-bt-pat  (gethash "debugger-backtrace"
-			    realgud-perldb-pat-hash))
+			    realgud:perldb-pat-hash))
 (setq s1
       "$ = main::top_navigation_panel called from file `./latex2html' line 7400
 p")
@@ -77,7 +77,7 @@ p")
 
 (note "debugger-errmsg")
 (setq realgud-bt-pat  (gethash "perl-errmsg"
-			    realgud-perldb-pat-hash))
+			    realgud:perldb-pat-hash))
 (setq s1
       "Use of uninitialized value $lines[0] in join or string at bin/../lib/LineCache.pm line 548.")
 (setq realgud-bt-re (realgud-loc-pat-regexp realgud-bt-pat))
@@ -100,7 +100,7 @@ p")
  	main::foo(3) called at foo3.pl line 8
 ")
 (setq lang-bt-pat (gethash "lang-backtrace"
-			   realgud-perldb-pat-hash))
+			   realgud:perldb-pat-hash))
 (setq carp-bt-re (realgud-loc-pat-regexp lang-bt-pat))
 (setq file-group (realgud-loc-pat-file-group lang-bt-pat))
 (setq line-group (realgud-loc-pat-line-group lang-bt-pat))

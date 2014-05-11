@@ -600,7 +600,7 @@ debugger with that information"
 			     "realgud:trepanpl")
 		 ((or (equal debugger-name "perldb")
 		      (equal debugger-name "perl5db"))
-		      "realgud-perldb")
+		      "realgud:perldb")
 		 ('t debugger-name)))
 	       (specific-track-mode (intern (concat prefix "-track-mode")))
 	       )

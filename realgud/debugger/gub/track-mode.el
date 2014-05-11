@@ -10,7 +10,7 @@
 			 "../../common/track-mode"
 			 )
 		       "realgud-")
-(require-relative-list '("core" "init") "realgud-gub-")
+(require-relative-list '("core" "init") "realgud:gub-")
 
 (realgud-track-mode-vars "gub")
 
@@ -19,14 +19,14 @@
 (declare-function realgud-track-set-debugger 'realgud-track-mode)
 (declare-function realgud-track-mode-setup 'realgud-track-mode)
 
-(defun realgud-gub-goto-location (pt)
+(defun realgud:gub-goto-location (pt)
   "Display the location mentioned in a location
 described by PT."
   (interactive "d")
   (realgud-goto-line-for-pt pt "general-location"))
 
 
-(defun realgud-gub-goto-panic-location (pt)
+(defun realgud:gub-goto-panic-location (pt)
   "Display the location mentioned in a location
 described by PT."
   (interactive "d")
@@ -38,9 +38,9 @@ described by PT."
 (define-key gub-track-mode-map
   (kbd "C-c !b") 'realgud-goto-debugger-backtrace-line)
 (define-key gub-track-mode-map
-  (kbd "C-c !s") 'realgud-gub-goto-location)
+  (kbd "C-c !s") 'realgud:gub-goto-location)
 (define-key gub-track-mode-map
-  (kbd "C-c !p") 'realgud-gub-goto-panic-location)
+  (kbd "C-c !p") 'realgud:gub-goto-panic-location)
 
 (defun gub-track-mode-hook()
   (if gub-track-mode
@@ -76,4 +76,4 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
       ))
 )
 
-(provide-me "realgud-gub-")
+(provide-me "realgud:gub-")

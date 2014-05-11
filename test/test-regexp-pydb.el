@@ -6,16 +6,16 @@
 
 
 (set (make-local-variable 'bps-pat)
-      (gethash "brkpt-set" realgud-pydb-pat-hash))
+      (gethash "brkpt-set" realgud:pydb-pat-hash))
 
 (set (make-local-variable 'loc-pat)
-     (gethash "loc"       realgud-pydb-pat-hash))
+     (gethash "loc"       realgud:pydb-pat-hash))
 
 (set (make-local-variable 'prompt-pat)
-      (gethash "prompt"    realgud-pydb-pat-hash))
+      (gethash "prompt"    realgud:pydb-pat-hash))
 
 (set (make-local-variable 'tb-pat)
-      (gethash "lang-backtrace" realgud-pydb-pat-hash))
+      (gethash "lang-backtrace" realgud:pydb-pat-hash))
 
 ;; FIXME: we get a void variable somewhere in here when running
 ;;        even though we define it in lexical-let. Dunno why.
