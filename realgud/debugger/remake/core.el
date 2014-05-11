@@ -3,7 +3,7 @@
 
 (require 'load-relative)
 (require-relative-list '("../../common/track" "../../common/core") "realgud-")
-(require-relative-list '("init") "realgud-remake-")
+(require-relative-list '("init") "realgud:remake-")
 
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
@@ -92,12 +92,12 @@ we might return:
 	   )))
       (list remake-name makefile-name remake-args))))
 
-(defconst realgud-remake-auto-suffix-regexp
+(defconst realgud:remake-auto-suffix-regexp
   "\\.\\(am\\|in\\)$"
   "Common automake and autoconf Makefile suffixes"
 )
 
-(defconst realgud-remake-makefile-regexp
+(defconst realgud:remake-makefile-regexp
   "\\(^[Mm]akefile$\\|\\.Makefile$\\|\\.mk\\)$"
   "Regular expression matching common Makefile names"
 )
@@ -108,16 +108,16 @@ we might return:
 	)
     (if (realgud-lang-mode? filename "makefile")
 	(progn
-	  (if (string-match realgud-remake-makefile-regexp filename)
+	  (if (string-match realgud:remake-makefile-regexp filename)
 	      (setq priority 8)
-	    (if (string-match realgud-remake-auto-suffix-regexp filename)
+	    (if (string-match realgud:remake-auto-suffix-regexp filename)
 		(setq priority 5)
 	      (setq priority 7)))
 	  ))
     ;; The file isn't in a makefile-mode buffer,
     ;; Check for an executable file with a .mk extension.
     (if (setq is-not-directory (not (file-directory-p filename)))
-	(if (and (string-match realgud-remake-makefile-regexp filename))
+	(if (and (string-match realgud:remake-makefile-regexp filename))
 	    (if (< priority 6)
 		(progn
 		  (setq priority 6)))))
@@ -180,7 +180,7 @@ given priority, we use the first one we find."
 ;; into one that invokes an Emacs-enabled debugging session.
 ;; "--debugger" in inserted as the first switch.
 
-(defun realgud-remake-massage-args (command-line)
+(defun realgud:remake-massage-args (command-line)
   (let* ((new-args (list "--debugger"))
 	 (args (split-string-and-unquote command-line))
 	 (program (car args))
@@ -233,4 +233,4 @@ breakpoints, etc.)."
   (interactive)
   (customize-group 'remake))
 
-(provide-me "realgud-remake-")
+(provide-me "realgud:remake-")

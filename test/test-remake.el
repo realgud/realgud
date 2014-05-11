@@ -22,9 +22,9 @@ file-name-directory that was failing"
   )
 
 (note "can deal with no Makefile name")
-;; If realgud-remake is successful we switch buffers
+;; If realgud:remake is successful we switch buffers
 (setq my-buf (current-buffer))
-(realgud-remake "remake --debugger")
+(realgud:remake "remake --debugger")
 (assert-t (not (eq (current-buffer) my-buf)))
 (delete-process "foo")
 (switch-to-buffer my-buf)

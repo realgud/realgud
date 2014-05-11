@@ -1,9 +1,9 @@
-;;; Copyright (C) 2011, 2013 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011, 2013-2014 Rocky Bernstein <rocky@gnu.org>
 ;;  `remake' Main interface to remake via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("../../common/track") "realgud-")
-(require-relative-list '("core" "track-mode") "realgud-remake-")
+(require-relative-list '("core" "track-mode") "realgud:remake-")
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
 (defgroup remake nil
@@ -13,8 +13,8 @@
   :group 'make
   :version "23.1")
 
-(declare-function remake-query-cmdline  'realgud-remake-core)
-(declare-function remake-parse-cmd-args 'realgud-remake-core)
+(declare-function remake-query-cmdline  'realgud:remake-core)
+(declare-function remake-parse-cmd-args 'realgud:remake-core)
 (declare-function realgud-run-process 'realgud-core)
 
 ;; -------------------------------------------------------------------
@@ -29,8 +29,8 @@ This should be an executable on your path, or an absolute file name."
   :type 'string
   :group 'remake)
 
-(defun realgud-remake-fn (&optional opt-command-line no-reset)
-  "See `realgud-remake' for details"
+(defun realgud:remake-fn (&optional opt-command-line no-reset)
+  "See `realgud:remake' for details"
 
   (let* ((cmd-str (or opt-command-line (remake-query-cmdline "remake")))
 	 (cmd-args (split-string-and-unquote cmd-str))
@@ -66,7 +66,7 @@ This should be an executable on your path, or an absolute file name."
   )
 
 ;;;###autoload
-(defun realgud-remake (&optional opt-command-line no-reset)
+(defun realgud:remake (&optional opt-command-line no-reset)
   "Invoke the GNU Make debugger, remake and start the Emacs user interface.
 
 String COMMAND-LINE specifies how to run remake.
@@ -80,10 +80,10 @@ marginal icons is reset."
 
 
   (interactive)
-  (realgud-remake-fn opt-command-line no-reset)
+  (realgud:remake-fn opt-command-line no-reset)
   )
 
-(defalias 'remake 'realgud-remake)
+(defalias 'remake 'realgud:remake)
 
 (provide-me "realgud-")
 ;;; remake.el ends here

@@ -4,7 +4,7 @@
 (require 'load-relative)
 (require-relative-list '("../../common/track" "../../common/core")
 		       "realgud-")
-(require-relative-list '("init") "realgud-nodejs-")
+(require-relative-list '("init") "realgud:nodejs-")
 
 (declare-function realgud-parse-command-arg  'realgud-core)
 (declare-function realgud-query-cmdline      'realgud-core)
@@ -12,10 +12,10 @@
 
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
-(defvar realgud-nodejs-minibuffer-history nil
+(defvar realgud:nodejs-minibuffer-history nil
   "minibuffer history list for the command `nodejs'.")
 
-(easy-mmode-defmap realgud-nodejs-minibuffer-local-map
+(easy-mmode-defmap realgud:nodejs-minibuffer-local-map
   '(("\C-i" . comint-dynamic-complete-filename))
   "Keymap for minibuffer prompting of nodejs startup command."
   :inherit minibuffer-local-map)
@@ -24,9 +24,9 @@
 ;; variable chould be generalized, perhaps via a macro.
 (defun nodejs-query-cmdline (&optional opt-debugger)
   (realgud-query-cmdline
-   'realgud-nodejs-suggest-invocation
-   realgud-nodejs-minibuffer-local-map
-   'realgud-nodejs-minibuffer-history
+   'realgud:nodejs-suggest-invocation
+   realgud:nodejs-minibuffer-local-map
+   'realgud:nodejs-minibuffer-history
    opt-debugger))
 
 (defun nodejs-parse-cmd-args (orig-args)
@@ -107,13 +107,13 @@ NOTE: the above should have each item listed in quotes.
       (list debugger-args script-args annotate-p)))))
 
 (defvar nodejs-command-name) ; # To silence Warning: reference to free variable
-(defun realgud-nodejs-suggest-invocation (debugger-name)
+(defun realgud:nodejs-suggest-invocation (debugger-name)
   "Suggest a nodejs command invocation via `realgud-suggest-invocaton'"
   (realgud-suggest-invocation nodejs-command-name
-			      realgud-nodejs-minibuffer-history
+			      realgud:nodejs-minibuffer-history
 			      "js" "\\.js$"))
 
-(defun realgud-nodejs-remove-ansi-shmutz()
+(defun realgud:nodejs-remove-ansi-shmutz()
   "Remove ASCII escape sequences that node.js 'decorates' in
 prompts and interactive output with"
   (add-to-list
@@ -122,7 +122,7 @@ prompts and interactive output with"
      (replace-regexp-in-string "\033\\[[0-9]+[GKJ]" "" output)))
   )
 
-(defun realgud-nodejs-reset ()
+(defun realgud:nodejs-reset ()
   "Nodejs cleanup - remove debugger's internal buffers (frame,
 breakpoints, etc.)."
   (interactive)
@@ -141,9 +141,9 @@ breakpoints, etc.)."
 ;; 	  nodejs-debugger-support-minor-mode-map-when-deactive))
 
 
-(defun realgud-nodejs-customize ()
+(defun realgud:nodejs-customize ()
   "Use `customize' to edit the settings of the `nodejs' debugger."
   (interactive)
   (customize-group 'nodejs))
 
-(provide-me "realgud-nodejs-")
+(provide-me "realgud:nodejs-")

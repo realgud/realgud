@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2011, 2014 Rocky Bernstein <rocky@gnu.org>
 ;;; gdb debugger
 
 (eval-when-compile (require 'cl))

@@ -5,9 +5,9 @@
 (test-simple-start)
 
 (set (make-local-variable 'prompt-pat)
-     (gethash "prompt"             realgud-remake-pat-hash))
+     (gethash "prompt"             realgud:remake-pat-hash))
 (set (make-local-variable 'frame-pat)
-     (gethash "debugger-backtrace" realgud-remake-pat-hash))
+     (gethash "debugger-backtrace" realgud:remake-pat-hash))
 
 (note "remake prompt")
 (prompt-match "remake<10> "  "10")

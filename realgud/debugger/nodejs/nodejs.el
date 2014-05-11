@@ -3,9 +3,9 @@
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("../../common/track") "realgud-")
-(require-relative-list '("core" "track-mode") "realgud-nodejs-")
+(require-relative-list '("core" "track-mode") "realgud:nodejs-")
 
-(declare-function realgud-nodejs-remove-ansi-shmutz 'realgud-core)
+(declare-function realgud:nodejs-remove-ansi-shmutz 'realgud-core)
 
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
@@ -27,8 +27,8 @@ This should be an executable on your path, or an absolute file name."
   :group 'nodejs)
 
 (declare-function nodejs-track-mode (bool))
-(declare-function nodejs-query-cmdline  'realgud-nodejs-core)
-(declare-function nodejs-parse-cmd-args 'realgud-nodejs-core)
+(declare-function nodejs-query-cmdline  'realgud:nodejs-core)
+(declare-function nodejs-parse-cmd-args 'realgud:nodejs-core)
 (declare-function realgud-run-process 'realgud-core)
 
 ;; -------------------------------------------------------------------
@@ -36,7 +36,7 @@ This should be an executable on your path, or an absolute file name."
 ;;
 
 ;;;###autoload
-(defun realgud-nodejs (&optional opt-command-line no-reset)
+(defun realgud:nodejs (&optional opt-command-line no-reset)
   "Invoke the nodejs shell debugger and start the Emacs user interface.
 
 String COMMAND-LINE specifies how to run nodejs.
@@ -61,11 +61,11 @@ marginal icons is reset."
 	(with-current-buffer cmd-buf
 	  ;; FIXME should allow customization whether to do or not
 	  ;; and also only do if hook is not already there.
-	  (realgud-nodejs-remove-ansi-shmutz)
+	  (realgud:nodejs-remove-ansi-shmutz)
 	  )
       )
     ))
 
-(defalias 'nodejs 'realgud-nodejs)
+(defalias 'nodejs 'realgud:nodejs)
 
 (provide-me "realgud-")

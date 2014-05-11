@@ -10,40 +10,40 @@
 		       "realgud-")
 (require-relative-list '("../../lang/posix-shell") "realgud-lang-")
 
-(defvar realgud-nodejs-pat-hash)
+(defvar realgud:nodejs-pat-hash)
 (declare-function make-realgud-loc-pat (realgud-loc))
 
-(defvar realgud-nodejs-pat-hash (make-hash-table :test 'equal)
+(defvar realgud:nodejs-pat-hash (make-hash-table :test 'equal)
   "Hash key is the what kind of pattern we want to match:
 backtrace, prompt, etc.  The values of a hash entry is a
 realgud-loc-pat struct")
 
-(defvar realgud-nodejs-term-escape "[[0-9]+[GKJ]"
+(defvar realgud:nodejs-term-escape "[[0-9]+[GKJ]"
   "Escape sequence regular expression pattern nodejs often puts in around prompts")
 
 ;; Regular expression that describes a nodejs location generally shown
 ;; before a command prompt.
 ;; For example:
 ;;   break in /home/indutny/Code/git/indutny/myscript.js:1
-(setf (gethash "loc" realgud-nodejs-pat-hash)
+(setf (gethash "loc" realgud:nodejs-pat-hash)
       (make-realgud-loc-pat
        :regexp (format
 		"\\(?:%s\\)*break in \\([^:]+\\):\\([0-9]*\\)"
-		realgud-nodejs-term-escape)
+		realgud:nodejs-term-escape)
        :file-group 1
        :line-group 2))
 
 ;; Regular expression that describes a nodejs command prompt
 ;; For example:
 ;;   debug>
-(setf (gethash "prompt" realgud-nodejs-pat-hash)
+(setf (gethash "prompt" realgud:nodejs-pat-hash)
       (make-realgud-loc-pat
-       :regexp (format "^\\(?:%s\\)*debug> " realgud-nodejs-term-escape)
+       :regexp (format "^\\(?:%s\\)*debug> " realgud:nodejs-term-escape)
        ))
 
 ;;  Regular expression that describes a "breakpoint set" line
 ;; * 4 var count = 0;
-(setf (gethash "brkpt-set" realgud-nodejs-pat-hash)
+(setf (gethash "brkpt-set" realgud:nodejs-pat-hash)
       (make-realgud-loc-pat
        :regexp "^[*] \\([0-9]+\\) "
        :line-group 1))
@@ -51,7 +51,7 @@ realgud-loc-pat struct")
 ;; Regular expression that describes a debugger "delete" (breakpoint) response.
 ;; For example:
 ;;   Removed 1 breakpoint(s).
-(setf (gethash "brkpt-del" realgud-nodejs-pat-hash)
+(setf (gethash "brkpt-del" realgud:nodejs-pat-hash)
       (make-realgud-loc-pat
        :regexp "^Removed \\([0-9]+\\) breakpoint(s).\n"
        :num 1))
@@ -67,7 +67,7 @@ realgud-loc-pat struct")
 ;; #6 Module.runMain module.js:497:10
 ; ;#7 timers.js:110:15
 
-;; (setf (gethash "debugger-backtrace" realgud-nodejs-pat-hash)
+;; (setf (gethash "debugger-backtrace" realgud:nodejs-pat-hash)
 ;;       (make-realgud-loc-pat
 ;;        :regexp 	(concat realgud-shell-frame-start-regexp
 ;; 			realgud-shell-frame-num-regexp "[ ]?"
@@ -81,10 +81,10 @@ realgud-loc-pat struct")
 ;;       )
 
 ;; ;; Regular expression that for a termination message.
-;; (setf (gethash "termination" realgud-nodejs-pat-hash)
+;; (setf (gethash "termination" realgud:nodejs-pat-hash)
 ;;        "^nodejs: That's all, folks...\n")
 
-(setf (gethash "font-lock-keywords" realgud-nodejs-pat-hash)
+(setf (gethash "font-lock-keywords" realgud:nodejs-pat-hash)
       '(
 	;; The frame number and first type name, if present.
 	;; E.g. ->0 in file `/etc/init.d/apparmor' at line 35
@@ -106,20 +106,20 @@ realgud-loc-pat struct")
 	 (1 realgud-line-number-face))
 	))
 
-(setf (gethash "nodejs" realgud-pat-hash) realgud-nodejs-pat-hash)
+(setf (gethash "nodejs" realgud-pat-hash) realgud:nodejs-pat-hash)
 
-(defvar realgud-nodejs-command-hash (make-hash-table :test 'equal)
+(defvar realgud:nodejs-command-hash (make-hash-table :test 'equal)
   "Hash key is command name like 'finish' and the value is
   the nodejs command to use, like 'out'")
 
-(setf (gethash "nodejs" realgud-command-hash realgud-nodejs-command-hash))
+(setf (gethash "nodejs" realgud-command-hash realgud:nodejs-command-hash))
 
-(setf (gethash "backtrace"  realgud-nodejs-command-hash) "T")
-(setf (gethash "continue"   realgud-nodejs-command-hash) "cont")
-(setf (gethash "quit"       realgud-nodejs-command-hash) "quit")
-(setf (gethash "finish"     realgud-nodejs-command-hash) "out")
-(setf (gethash "shell"      realgud-nodejs-command-hash)  "repl")
-(setf (gethash "step"       realgud-nodejs-command-hash) "step")
-(setf (gethash "next"       realgud-nodejs-command-hash) "next")
+(setf (gethash "backtrace"  realgud:nodejs-command-hash) "T")
+(setf (gethash "continue"   realgud:nodejs-command-hash) "cont")
+(setf (gethash "quit"       realgud:nodejs-command-hash) "quit")
+(setf (gethash "finish"     realgud:nodejs-command-hash) "out")
+(setf (gethash "shell"      realgud:nodejs-command-hash)  "repl")
+(setf (gethash "step"       realgud:nodejs-command-hash) "step")
+(setf (gethash "next"       realgud:nodejs-command-hash) "next")
 
-(provide-me "realgud-nodejs-")
+(provide-me "realgud:nodejs-")
