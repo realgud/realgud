@@ -14,24 +14,24 @@
 
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
-(defvar realgud-gdb-minibuffer-history nil
+(defvar realgud:gdb-minibuffer-history nil
   "minibuffer history list for the command `gdb'.")
 
-(easy-mmode-defmap realgud-gdb-minibuffer-local-map
+(easy-mmode-defmap realgud:gdb-minibuffer-local-map
   '(("\C-i" . comint-dynamic-complete-filename))
   "Keymap for minibuffer prompting of gud startup command."
   :inherit minibuffer-local-map)
 
 ;; FIXME: I think this code and the keymaps and history
 ;; variable chould be generalized, perhaps via a macro.
-(defun realgud-gdb-query-cmdline (&optional opt-debugger)
+(defun realgud:gdb-query-cmdline (&optional opt-debugger)
   (realgud-query-cmdline
-   'realgud-gdb-suggest-invocation
-   realgud-gdb-minibuffer-local-map
-   'realgud-gdb-minibuffer-history
+   'realgud:gdb-suggest-invocation
+   realgud:gdb-minibuffer-local-map
+   'realgud:gdb-minibuffer-history
    opt-debugger))
 
-(defun realgud-gdb-parse-cmd-args (orig-args)
+(defun realgud:gdb-parse-cmd-args (orig-args)
   "Parse command line ARGS for the annotate level and name of script to debug.
 
 ARGS should contain a tokenized list of the command line to run.
@@ -114,14 +114,14 @@ NOTE: the above should have each item listed in quotes.
 	     )))
 	(list debugger-args script-args annotate-p)))))
 
-(defvar realgud-gdb-command-name)
-(defun realgud-gdb-suggest-invocation (debugger-name)
+(defvar realgud:gdb-command-name)
+(defun realgud:gdb-suggest-invocation (debugger-name)
   "Suggest a gdb command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation realgud-gdb-command-name realgud-gdb-minibuffer-history
+  (realgud-suggest-invocation realgud:gdb-command-name realgud:gdb-minibuffer-history
 			   "c" "\\.\\([ch]\\)\\(pp\\)?")
 )
 
-(defun realgud-gdb-reset ()
+(defun realgud:gdb-reset ()
   "Gdb cleanup - remove debugger's internal buffers (frame,
 breakpoints, etc.)."
   (interactive)
@@ -140,9 +140,9 @@ breakpoints, etc.)."
 ;; 	  gdb-debugger-support-minor-mode-map-when-deactive))
 
 
-(defun realgud-gdb-customize ()
-  "Use `customize' to edit the settings of the `realgud-gdb' debugger."
+(defun realgud:gdb-customize ()
+  "Use `customize' to edit the settings of the `realgud:gdb' debugger."
   (interactive)
-  (customize-group 'realgud-gdb))
+  (customize-group 'realgud:gdb))
 
-(provide-me "realgud-gdb-")
+(provide-me "realgud:gdb-")

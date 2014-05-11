@@ -4,7 +4,7 @@
 (require 'load-relative)
 (require-relative-list '("../../common/track" "../../common/core")
 		       "realgud-")
-(require-relative-list '("init") "realgud-zshdb-")
+(require-relative-list '("init") "realgud:zshdb-")
 
 (declare-function realgud-parse-command-arg  'realgud-core)
 (declare-function realgud-query-cmdline      'realgud-core)
@@ -162,4 +162,4 @@ breakpoints, etc.)."
   (interactive)
   (customize-group 'zshdb))
 
-(provide-me "realgud-zshdb-")
+(provide-me "realgud:zshdb-")

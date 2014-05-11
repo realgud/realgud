@@ -50,7 +50,7 @@
 ;    -----------------------------------
 ;;   bashdb         bashdb        bash
 ;;   Devel::Trepan  trepan.pl     Perl5
-;;   gdb            realgud-gdb   gdb
+;;   gdb            realgud:gdb   gdb
 ;;   gub            gub           Go SSA debugger
 ;;   kshdb          kshdb         Korn Shell 93u+
 ;;   nodejs         nodejs        node.js javascript debugger

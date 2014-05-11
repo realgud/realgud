@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2014 Rocky Bernstein <rocky@gnu.org>
 ;;; Regular expressions for Z shell debugger: zshdb
 
 (eval-when-compile (require 'cl))
@@ -13,7 +13,7 @@
 (defvar realgud-pat-hash)
 (declare-function make-realgud-loc-pat (realgud-loc))
 
-(defvar realgud-zshdb-pat-hash (make-hash-table :test 'equal)
+(defvar realgud:zshdb-pat-hash (make-hash-table :test 'equal)
   "Hash key is the what kind of pattern we want to match:
 backtrace, prompt, etc.  The values of a hash entry is a
 realgud-loc-pat struct")
@@ -22,7 +22,7 @@ realgud-loc-pat struct")
 ;; before a command prompt.
 ;; For example:
 ;;   (/etc/init.d/apparmor:35):
-(setf (gethash "loc" realgud-zshdb-pat-hash)
+(setf (gethash "loc" realgud:zshdb-pat-hash)
       (make-realgud-loc-pat
        :regexp "\\(^\\|\n\\)(\\([^:]+\\):\\([0-9]*\\))"
        :file-group 2
@@ -32,14 +32,14 @@ realgud-loc-pat struct")
 ;;   zshdb<10>
 ;;   zshdb<(5)>
 ;;   zshdb<<1>>
-(setf (gethash "prompt" realgud-zshdb-pat-hash)
+(setf (gethash "prompt" realgud:zshdb-pat-hash)
       (make-realgud-loc-pat
        :regexp   "^zshdb[<]+[(]*\\([0-9]+\\)[)]*[>]+ "
        :num 1
        ))
 
 ;;  Regular expression that describes a "breakpoint set" line
-(setf (gethash "brkpt-set" realgud-zshdb-pat-hash)
+(setf (gethash "brkpt-set" realgud:zshdb-pat-hash)
       (make-realgud-loc-pat
        :regexp "^Breakpoint \\([0-9]+\\) set in file \\(.+\\), line \\([0-9]+\\).\n"
        :num 1
@@ -49,7 +49,7 @@ realgud-loc-pat struct")
 ;; Regular expression that describes a debugger "delete" (breakpoint) response.
 ;; For example:
 ;;   Removed 1 breakpoint(s).
-(setf (gethash "brkpt-del" realgud-zshdb-pat-hash)
+(setf (gethash "brkpt-del" realgud:zshdb-pat-hash)
       (make-realgud-loc-pat
        :regexp "^Removed \\([0-9]+\\) breakpoints(s).\n"
        :num 1))
@@ -59,7 +59,7 @@ realgud-loc-pat struct")
 ;;   ->0 in file `/etc/apparmor/fns' at line 24
 ;;   ##1 /etc/apparmor/fns called from file `/etc/init.d/apparmor' at line 35
 ;;   ##2 /etc/init.d/apparmor called from file `/usr/bin/zshdb' at line 129
-(setf (gethash "debugger-backtrace" realgud-zshdb-pat-hash)
+(setf (gethash "debugger-backtrace" realgud:zshdb-pat-hash)
       (make-realgud-loc-pat
        :regexp 	(concat realgud-shell-frame-start-regexp
 			realgud-shell-frame-num-regexp "[ ]?"
@@ -73,10 +73,10 @@ realgud-loc-pat struct")
       )
 
 ;; Regular expression that for a termination message.
-(setf (gethash "termination" realgud-zshdb-pat-hash)
+(setf (gethash "termination" realgud:zshdb-pat-hash)
        "^zshdb: That's all, folks...\n")
 
-(setf (gethash "font-lock-keywords" realgud-zshdb-pat-hash)
+(setf (gethash "font-lock-keywords" realgud:zshdb-pat-hash)
       '(
 	;; The frame number and first type name, if present.
 	;; E.g. ->0 in file `/etc/init.d/apparmor' at line 35
@@ -100,13 +100,13 @@ realgud-loc-pat struct")
 	;;  (0 trepan-frames-current-frame-face append))
 	))
 
-(defvar realgud-zshdb-command-hash (make-hash-table :test 'equal)
+(defvar realgud:zshdb-command-hash (make-hash-table :test 'equal)
   "Hash key is command name like 'quit' and the value is
   the trepan command to use, like 'quit!'")
 
-(setf (gethash "quit" realgud-zshdb-command-hash) "quit!")
-(setf (gethash "zshdb" realgud-command-hash realgud-zshdb-command-hash))
+(setf (gethash "quit" realgud:zshdb-command-hash) "quit!")
+(setf (gethash "zshdb" realgud-command-hash realgud:zshdb-command-hash))
 
-(setf (gethash "zshdb" realgud-pat-hash) realgud-zshdb-pat-hash)
+(setf (gethash "zshdb" realgud-pat-hash) realgud:zshdb-pat-hash)
 
-(provide-me "realgud-zshdb-")
+(provide-me "realgud:zshdb-")

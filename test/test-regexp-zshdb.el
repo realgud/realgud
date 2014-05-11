@@ -4,8 +4,8 @@
 
 (test-simple-start)
 
-(setq prompt-pat (gethash "prompt"             realgud-zshdb-pat-hash))
-(setq frame-pat  (gethash "debugger-backtrace" realgud-zshdb-pat-hash))
+(setq prompt-pat (gethash "prompt"             realgud:zshdb-pat-hash))
+(setq frame-pat  (gethash "debugger-backtrace" realgud:zshdb-pat-hash))
 
 (note "zshdb prompt matching")
 (prompt-match "zshdb<10> "  "10")

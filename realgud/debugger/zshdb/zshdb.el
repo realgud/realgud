@@ -3,11 +3,11 @@
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("../../common/track") "realgud-")
-(require-relative-list '("core" "track-mode") "realgud-zshdb-")
+(require-relative-list '("core" "track-mode") "realgud:zshdb-")
 
 (declare-function zshdb-track-mode (bool))
-(declare-function zshdb-query-cmdline  'realgud-zshdb-core)
-(declare-function zshdb-parse-cmd-args 'realgud-zshdb-core)
+(declare-function zshdb-query-cmdline  'realgud:zshdb-core)
+(declare-function zshdb-parse-cmd-args 'realgud:zshdb-core)
 (declare-function realgud-run-process 'realgud-core)
 
 ;; This is needed, or at least the docstring part of it is needed to
@@ -37,7 +37,7 @@ This should be an executable on your path, or an absolute file name."
 ;;
 
 ;;;###autoload
-(defun realgud-zshdb (&optional opt-command-line no-reset)
+(defun realgud:zshdb (&optional opt-command-line no-reset)
   "Invoke the zshdb Z-shell debugger and start the Emacs user interface.
 
 String COMMAND-LINE specifies how to run zshdb.
@@ -59,7 +59,7 @@ marginal icons is reset."
 		      'zshdb-track-mode no-reset)
     ))
 
-(defalias 'zshdb 'realgud-zshdb)
+(defalias 'zshdb 'realgud:zshdb)
 (provide-me "realgud-")
 
 ;;; zshdb.el ends here

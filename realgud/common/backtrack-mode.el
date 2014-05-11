@@ -39,7 +39,7 @@ debugger with that information"
   (let ((regexp-hash (gethash debugger-name realgud-pat-hash)))
     (if regexp-hash
 	(let* ((prefix
-		(if (equal debugger-name "gdb") "realgud-gdb" debugger-name))
+		(if (equal debugger-name "gdb") "realgud:gdb" debugger-name))
 	       (specific-track-mode (intern (concat prefix "-backtrack-mode")))
 	       )
 	  (if (and (not (eval specific-track-mode))

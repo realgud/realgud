@@ -594,7 +594,7 @@ debugger with that information"
     (if regexp-hash
 	(let* ((prefix
 		(cond
-		 ((equal debugger-name "gdb") "realgud-gdb")
+		 ((equal debugger-name "gdb") "realgud:gdb")
 		 ((or (equal debugger-name "trepan.pl")
 		      (equal debugger-name "trepanpl"))
 			     "realgud:trepanpl")
