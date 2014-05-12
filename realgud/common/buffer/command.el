@@ -2,6 +2,7 @@
 ;;; Copyright (C) 2010-2012, 2014 Rocky Bernstein <rocky@gnu.org>
 
 (require 'load-relative)
+(require 'json)
 (require-relative-list
  '("../fringe" "../helper" "../loc" "../lochist" "../regexp") "realgud-")
 
@@ -108,9 +109,9 @@ Information is put in an internal buffer called *Describe*."
 		(list
 		 (format "realgud-cmdbuf-info for %s\n\n" cmdbuf-name)
 		 (format "Debugger name (debugger-name):\t%s\n"
-			 (realgud-cmdbuf-info-debugger-name info))
+			 (json-encode (realgud-cmdbuf-info-debugger-name info)))
 		 (format "Command-line args (cmd-args):\t%s\n"
-			 (realgud-cmdbuf-info-cmd-args info))
+			 (json-encode (realgud-cmdbuf-info-cmd-args info)))
 		 (format "Selected window should contain source? (in-srcbuf?): %s\n"
 			 (realgud-cmdbuf-info-in-srcbuf? info))
 		 (format "Last input end:\t%s\n"
@@ -120,7 +121,7 @@ Information is put in an internal buffer called *Describe*."
 		 (format "Breakpoint list (bp-list):\t %s\n"
 			 (realgud-cmdbuf-info-bp-list info))
 		 (format "Remap table for debugger commands: %s\n"
-			 (realgud-cmdbuf-info-cmd-hash info))
+			 (json-encode (realgud-cmdbuf-info-cmd-hash info)))
 		 (format "Source buffers seen (srcbuf-list): %s\n"
 			 (realgud-cmdbuf-info-srcbuf-list info))
 		 (format "Backtrace buffer (bt):\t%s\n"

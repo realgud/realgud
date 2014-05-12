@@ -30,6 +30,7 @@ send that input onto the process."
 
 (defvar realgud-last-output-start)
 (defun fake-output-filter(process string)
+  "A process output filter that saves the results into a temporary buffer."
   (with-current-buffer (get-buffer-create "*realgud-process-output-temp*")
     (goto-char (point-max))
     (set (make-local-variable 'realgud-last-output-start)
@@ -38,7 +39,7 @@ send that input onto the process."
     (goto-char (point-max))))
 
 (defun realgud-send-command-process (process command-str)
-  "Sent Invoke the debugger COMMAND adding that command and the
+  "Invoke debugger COMMAND adding that command and the
 results into the command buffer."
   (fset 'comint-output-filter (symbol-function 'fake-output-filter))
   (apply comint-input-sender (list process command-str))
