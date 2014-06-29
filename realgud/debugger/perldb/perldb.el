@@ -37,9 +37,10 @@
 (defun realgud:perldb (&optional opt-command-line no-reset)
   "Invoke the Perl debugger and start the Emacs user interface.
 
-String COMMAND-LINE specifies how to run perldb.
+OPT-COMMAND-LINE is treated like a shell string; arguments are
+tokenized by `split-string-and-unquote'.
 
-Normally command buffers are reused when the same debugger is
+Normally, command buffers are reused when the same debugger is
 reinvoked inside a command buffer with a similar command. If we
 discover that the buffer has prior command-buffer information and
 NO-RESET is nil, then that information which may point into other

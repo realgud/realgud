@@ -38,19 +38,22 @@ This should be an executable on your path, or an absolute file name."
 (defun realgud:pdb (&optional opt-command-line no-reset)
   "Invoke the pdb Python debugger and start the Emacs user interface.
 
-String COMMAND-LINE specifies how to run pdb.
+String OPT-COMMAND-LINE specifies how to run pdb. You will be prompted
+for a command line is one isn't supplied.
 
-Normally command buffers are reused when the same debugger is
+OPT-COMMAND-LINE is treated like a shell string; arguments are
+tokenized by `split-string-and-unquote'.
+
+Normally, command buffers are reused when the same debugger is
 reinvoked inside a command buffer with a similar command. If we
 discover that the buffer has prior command-buffer information and
 NO-RESET is nil, then that information which may point into other
 buffers and source buffers which may contain marks and fringe or
-marginal icons is reset."
-
-
+marginal icons is reset. See `loc-changes-clear-buffer' to clear
+fringe and marginal icons.
+"
   (interactive)
-  (let* (
-	 (cmd-str (or opt-command-line (pdb-query-cmdline
+  (let* ((cmd-str (or opt-command-line (pdb-query-cmdline
 					"pdb")))
 	 (cmd-args (split-string-and-unquote cmd-str))
 	 (parsed-args (pdb-parse-cmd-args cmd-args))

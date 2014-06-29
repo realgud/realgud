@@ -116,11 +116,12 @@ return the first argument is always removed.
 
 (defun realgud-run-process(debugger-name script-filename cmd-args
 				      track-mode-func &optional no-reset)
-  "Runs `realgud-exec-shell with DEBUGGER-NAME SCRIPT-FILENAME PROGRAM-ARGS
-NO-RESET and SCRIPT-ARGS. If this succeeeds we call TRACK-MODE-FUNC
-and save cmd-args in command-buffer for use if we want to restarting.
-If we don't succeed in running the program we will switch to the command buffer
-which shows details of the error. The command buffer or nil is returned"
+  "Runs `realgud-exec-shell' with DEBUGGER-NAME SCRIPT-FILENAME
+and CMD-ARGS If this succeeds, we call TRACK-MODE-FUNC and save
+CMD-ARGS in command-buffer for use if we want to restart.  If
+we don't succeed in running the program, we will switch to the
+command buffer which shows details of the error. The command
+buffer or nil is returned"
 
   (let ((cmd-buf))
     (condition-case nil

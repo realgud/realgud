@@ -1,5 +1,5 @@
 ;;; Copyright (C) 2010-2011, 2014 Rocky Bernstein <rocky@gnu.org>
-;;  `realgud-gdb' Main interface to gdb via Emacs
+;;  `realgud:gdb' Main interface to gdb via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("core" "track-mode") "realgud:gdb-")
@@ -37,16 +37,19 @@ This should be an executable on your path, or an absolute file name."
 
 ;;;###autoload
 (defun realgud:gdb (&optional opt-command-line no-reset)
-  "Invoke the gdb Ruby debugger and start the Emacs user interface.
+  "Invoke the gdb debugger and start the Emacs user interface.
 
-String COMMAND-LINE specifies how to run gdb.
+OPT-COMMAND-LINE is treated like a shell string; arguments are
+tokenized by `split-string-and-unquote'.
 
-Normally command buffers are reused when the same debugger is
+Normally, command buffers are reused when the same debugger is
 reinvoked inside a command buffer with a similar command. If we
 discover that the buffer has prior command-buffer information and
 NO-RESET is nil, then that information which may point into other
 buffers and source buffers which may contain marks and fringe or
-marginal icons is reset."
+marginal icons is reset. See `loc-changes-clear-buffer' to clear
+fringe and marginal icons.
+"
 
   (interactive)
   (let* ((cmd-str (or opt-command-line (realgud:gdb-query-cmdline "gdb")))
