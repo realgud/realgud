@@ -216,13 +216,31 @@ marginal icons is reset."
   (let* ((starting-directory
 	  (or (file-name-directory script-filename)
 	      default-directory "./"))
-	 (cmdproc-buffer
-	  (get-buffer-create
-	   (format "*%s %s shell*"
-		   (file-name-nondirectory debugger-name)
-		   (file-name-nondirectory script-filename))))
+	 (cmdproc-buffer-name
+	  (format "*%s %s shell*"
+		  (file-name-nondirectory debugger-name)
+		  (file-name-nondirectory script-filename)))
+	 (cmdproc-buffer (get-buffer-create cmdproc-buffer-name))
 	 (realgud-buf (current-buffer))
+	 (cmd-args (cons program args))
 	 (process (get-buffer-process cmdproc-buffer)))
+
+
+    (with-current-buffer cmdproc-buffer
+      ;; If the found command buffer isn't for the same debugger
+      ;; invocation command, rename that and start a new one.
+      ;;
+      ;; For example: "bashdb /tmp/foo" does not match "bashdb
+      ;; /etc/foo" even though they both canonicalize to the buffer
+      ;; "*bashdb foo shell*"
+      (unless (and (realgud-cmdbuf?)
+		 (equal cmd-args
+			(realgud-cmdbuf-info-cmd-args realgud-cmdbuf-info)))
+	(rename-uniquely)
+	(setq cmdproc-buffer (get-buffer-create cmdproc-buffer-name))
+	(setq process nil)
+	))
+
     (unless (and process (eq 'run (process-status process)))
       (with-current-buffer cmdproc-buffer
 	(and (realgud-cmdbuf?) (not no-reset) (realgud-reset))

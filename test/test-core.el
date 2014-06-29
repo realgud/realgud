@@ -1,18 +1,23 @@
 (require 'test-simple)
-(eval-when-compile
-  (defvar trepan-core)
-)
+(eval-when-compile (defvar trepan-core))
 
+(declare-function __FILE__ 'require-relative)
 (setq trepan-core "../realgud/debugger/trepan/core.el")
 (load-file "../realgud/common/core.el")
 
 (declare-function realgud-parse-command-arg, 'realgud-core)
 (declare-function trepan-parse-cmd-args      'realgud:trepan)
 
-;; We use a specific langues to test core. Here we use trepan.
+;; We use a specific language to test core. Here we use trepan.
 (load-file "../realgud/debugger/trepan/core.el")
 
 (test-simple-start)
+
+;; FIXME: Add a test of relgud-exec-shell where
+;; we have two invocation of different files that canonicalize
+;; to the same buffer. Make sure the buffers are distinct.
+;; For example: bashdb /etc/profile should not match
+;; bashdb /tmp/profile
 
 
 (lexical-let ((opt-two-args '("0" "C" "e" "E" "F" "i")))
