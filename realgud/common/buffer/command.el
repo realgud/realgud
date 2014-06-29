@@ -92,7 +92,7 @@
 (realgud-struct-field-setter "realgud-cmdbuf-info" "src-shortkey?")
 (realgud-struct-field-setter "realgud-cmdbuf-info" "in-debugger?")
 
-(defun realgud-cmdbuf-info-describe (&optional buffer)
+(defun realgud:cmdbuf-info-describe (&optional buffer)
   "Display realgud-cmdcbuf-info fields of BUFFER.
 BUFFER is either a debugger command or source buffer. If BUFFER is not given
 the current buffer is used as a starting point.
@@ -129,7 +129,7 @@ Information is put in an internal buffer called *Describe*."
 		 (format "In debugger? (in-debugger?):\t%s\n"
 			 (realgud-cmdbuf-info-in-debugger? info))
 		 ))
-	  (realgud-loc-hist-describe (realgud-cmdbuf-info-loc-hist info))
+	  (realgud:loc-hist-describe (realgud-cmdbuf-info-loc-hist info))
 	  )
 	)
     (message "Buffer %s is not a debugger source or command buffer; nothing done."

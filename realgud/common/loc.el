@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2012 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2012, 2014 Rocky Bernstein <rocky@gnu.org>
 ;;; Debugger location
 ;;; Commentary:
 
@@ -25,7 +25,7 @@ want to save the values that were seen/requested originally."
 
 (defalias 'realgud-loc? 'realgud-loc-p)
 
-(defun realgud-loc-describe (loc)
+(defun realgud:loc-describe (loc)
   "Display realgud-cmdcbuf-info.
 Information is put in an internal buffer called *Describe*."
   (interactive "")

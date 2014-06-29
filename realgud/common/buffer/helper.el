@@ -6,9 +6,10 @@
 
 (declare-function realgud-backtrace?        'realgud-buffer-backtace)
 (declare-function realgud-cmdbuf?           'realgud-buffer-command)
-(declare-function realgud-loc-hist-describe 'realgud-lochist)
+(declare-function realgud:loc-hist-describe 'realgud-lochist)
 (declare-function realgud-loc-hist-item     'realgud-lochist)
 (declare-function realgud-srcbuf?           'realgud-buffer-command)
+(declare-function buffer-killed?            'realgud-helper)
 
 (defvar realgud-cmdbuf-info)
 
@@ -125,7 +126,7 @@ we don't find anything."
     )
 )
 
-(defun realgud-srcbuf-info-describe (&optional buffer)
+(defun realgud:srcbuf-info-describe (&optional buffer)
   "Provide descriptive information of the buffer-local variable
 `realgud-srcbuf-info', a defstruct. BUFFER if given is the buffer to
 use to get the information from.
@@ -142,19 +143,21 @@ use to get the information from.
 	      )
 	  (switch-to-buffer (get-buffer-create "*Describe*"))
 	  (delete-region (point-min) (point-max))
-	  (insert (format "srcbuf-info for %s\n" srcbuf-name))
-	  (insert (format "Was previously read only?: %s\n"
-			  (realgud-srcbuf-info-was-read-only? info)))
-	  (insert (format "Command Process buffer: %s\n"
-			  (realgud-srcbuf-info-cmdproc info)))
+	  (mapc 'insert
+		(list
+		 (format "srcbuf-info for %s\n" srcbuf-name)
+		 (format "Was previously read only?: %s\n"
+			 (realgud-srcbuf-info-was-read-only? info))
+		 (format "Command Process buffer: %s\n"
+			 (realgud-srcbuf-info-cmdproc info))
 
-	  ;; FIXME This info isn't part of the src info structure.
-	  (insert (format "Overlay arrow 1: %s\n" a1))
-	  (insert (format "Overlay arrow 2: %s\n" a2))
-	  (insert (format "Overlay arrow 3: %s\n" a3))
-	  (insert (format "Location history:\n"))
-
-	  (realgud-loc-hist-describe  (realgud-srcbuf-info-loc-hist info))
+		 ;; FIXME This info isn't part of the src info structure.
+		 (format "Overlay arrow 1: %s\n" a1)
+		 (format "Overlay arrow 2: %s\n" a2)
+		 (format "Overlay arrow 3: %s\n" a3)
+		 (format "Location history:\n")
+		 ))
+	  (realgud:loc-hist-describe  (realgud-srcbuf-info-loc-hist info))
 	  )
 	)
     (message "Buffer %s is not a debugger source buffer; nothing done."

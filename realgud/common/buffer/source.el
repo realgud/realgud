@@ -46,40 +46,6 @@ to be debugged."
 )
 
 
-(defun realgud-srcbuf-info-describe (&optional buffer)
-  "Display realgud-srcbuf-info fields of BUFFER.
-BUFFER is either a debugger command or source buffer. If BUFFER is not given
-the current buffer is used as a starting point.
-Information is put in an internal buffer called *Describe*."
-  (interactive "")
-  (setq buffer (realgud-get-srcbuf buffer))
-  (if buffer
-      (with-current-buffer buffer
-	(let ((info realgud-srcbuf-info)
-	      (srcbuf-name (buffer-name)))
-	  (switch-to-buffer (get-buffer-create "*Describe*"))
-	  (delete-region (point-min) (point-max))
-	  (mapc 'insert
-		(list
-		 (format "realgud-srcbuf-info for %s\n\n" srcbuf-name)
-		 (format "Command process buffer (cmdproc): %s\n"
-			 (realgud-srcbuf-info-cmdproc info))
-		 (format "Current debugger position (cur-pos): %s\n"
-			 (realgud-srcbuf-info-cur-pos info))
-		 (format "Was source previously in short-key mode? (short-key?): %s\n"
-			 (realgud-srcbuf-info-short-key? info))
-
-		 (format "Was source previously read only? (was-read-only): %s\n"
-			 (realgud-srcbuf-info-was-read-only? info))
-
-		 )))
-	)
-    (message "Buffer %s is not a debugger buffer; nothing done."
-	     (or buffer (current-buffer)))
-    )
-  )
-
-
 (defalias 'realgud-srcbuf-info? 'realgud-srcbuf-p)
 
 ;; FIXME: figure out how to put in a loop.

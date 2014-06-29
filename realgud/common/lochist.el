@@ -11,7 +11,7 @@
 (require 'load-relative)
 (require-relative-list '("loc") "realgud-")
 
-(declare-function realgud-loc-describe 'realgud-loc)
+(declare-function realgud:loc-describe 'realgud-loc)
 
 (defcustom realgud-loc-hist-size 20  ; For testing. Should really be larger.
   "Size of dbgr position history ring"
@@ -23,7 +23,7 @@
   (position -1)
   (ring (make-ring realgud-loc-hist-size)))
 
-(defun realgud-loc-hist-describe(loc-hist)
+(defun realgud:loc-hist-describe(loc-hist)
   "Format LOC-HIST values inside buffer *Describe*"
   (switch-to-buffer (get-buffer-create "*Describe*"))
   (mapc 'insert
@@ -35,7 +35,7 @@
 	(i 1))
     (while (and (setq loc (elt locs i)) (realgud-loc? loc) (<= i (length locs)))
       (insert (format "    i: %d\n" i))
-      (realgud-loc-describe loc)
+      (realgud:loc-describe loc)
       (insert "    ----\n")
       (setq i (1+ i))
       )
