@@ -13,6 +13,7 @@
 /elpa
 /install-sh
 /missing
+/tmp
 Makefile
 Makefile.in
 elc-stamp
