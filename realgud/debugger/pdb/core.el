@@ -1,4 +1,4 @@
-;;; Copyright (C) 2012-2013 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2012-2014 Rocky Bernstein <rocky@gnu.org>
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
@@ -34,9 +34,9 @@
    opt-debugger))
 
 (defun pdb-parse-cmd-args (orig-args)
-  "Parse command line ARGS for the annotate level and name of script to debug.
+  "Parse command line ORIG-ARGS for the annotate level and name of script to debug.
 
-ARGS should contain a tokenized list of the command line to run.
+ORIG-ARGS should contain a tokenized list of the command line to run.
 
 We return the a list containing
 - the command processor (e.g. python) and it's arguments if any - a list of strings
@@ -49,9 +49,7 @@ For example for the following input
    '(python2.6 -O -Qold ./gcd.py a b))
 
 we might return:
-   ((python2.6 -O -Qold) (pdb) (./gcd.py a b) 't)
-
-NOTE: the above should have each item listed in quotes.
+   ((\"python2.6\" \"-O\" \"-Qold\") (\"pdb\") (\"/tmp/gcd.py\" \"a\" \"b\") nil)
 "
 
   ;; Parse the following kind of pattern:
