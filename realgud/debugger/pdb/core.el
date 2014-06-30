@@ -120,8 +120,8 @@ NOTE: the above should have each item listed in quotes.
 	    (nconc debugger-args (car pair))
 	    (setq args (cadr pair)))
 	   ;; Anything else must be the script to debug.
-	   (t (setq script-name arg)
-	      (setq script-args args))
+	   (t (setq script-name (expand-file-name arg))
+	      (setq script-args (cons script-name (cdr args))))
 	   )))
       (list interpreter-args debugger-args script-args annotate-p))))
 

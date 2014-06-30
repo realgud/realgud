@@ -18,15 +18,15 @@
    (format "%s %s %s %S" debugger-name script-filename cmd-args
 	   track-mode-func))
   (assert-equal "pdb" debugger-name "debugger name gets passed")
-  (assert-equal "./gcd.py" script-filename "file name check")
+  (assert-equal (expand-file-name "./gcd.py") script-filename "file name check")
   (assert-equal '("3" "5") (cddr cmd-args) "command args listified")
   (assert-equal 'pdb-track-mode track-mode-func)
   )
 
 (note "pdb-parse-cmd-args")
-(assert-equal '(nil ("pdb") ("foo") nil)
+(assert-equal (list nil '("pdb") (list (expand-file-name "foo")) nil)
 	      (pdb-parse-cmd-args '("pdb" "foo")))
-(assert-equal '(nil ("pdb") ("program.py" "foo") nil)
+(assert-equal (list nil '("pdb") (list (expand-file-name "program.py") "foo") nil)
 	      (pdb-parse-cmd-args
 	       '("pdb" "program.py" "foo")))
 

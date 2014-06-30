@@ -1,6 +1,7 @@
 ;;; Copyright (C) 2012, 2014 Rocky Bernstein <rocky@gnu.org>
 ;;  `pdb' Main interface to pdb via Emacs
 (require 'load-relative)
+(require 'list-utils)
 (require-relative-list '("../../common/helper"
 			 "../../common/track") "realgud-")
 (require-relative-list '("core" "track-mode") "realgud:pdb-")
@@ -57,10 +58,12 @@ fringe and marginal icons.
 					"pdb")))
 	 (cmd-args (split-string-and-unquote cmd-str))
 	 (parsed-args (pdb-parse-cmd-args cmd-args))
-	 (script-args (cdr cmd-args))
+	 (script-args (caddr parsed-args))
 	 (script-name (car script-args))
+	 (parsed-cmd-args
+	  (list-utils-flatten (list (cadr parsed-args) (caddr parsed-args))))
 	 (cmd-buf))
-    (realgud-run-process "pdb" script-name cmd-args
+    (realgud-run-process "pdb" script-name parsed-cmd-args
 		      'pdb-track-mode no-reset)
     )
   )
