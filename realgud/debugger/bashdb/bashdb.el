@@ -1,5 +1,6 @@
 ;;; Copyright (C) 2011, 2013-2014 Rocky Bernstein <rocky@gnu.org>
 ;;  `bashdb' Main interface to bashdb via Emacs
+(require 'list-utils)
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("../../common/track") "realgud-")
@@ -37,8 +38,13 @@ This should be an executable on your path, or an absolute file name."
 (defun realgud:bashdb (&optional opt-command-line no-reset)
   "Invoke the bashdb shell debugger and start the Emacs user interface.
 
+String OPT-COMMAND-LINE specifies how to run bash. You will be prompted
+for a command line is one isn't supplied.
+
 OPT-COMMAND-LINE is treated like a shell string; arguments are
-tokenized by `split-string-and-unquote'.
+tokenized by `split-string-and-unquote'. The tokenized string is
+parsed by `bashdb-parse-cmd-args' and path elements found by that
+are expanded using `expand-file-name'.
 
 Normally, command buffers are reused when the same debugger is
 reinvoked inside a command buffer with a similar command. If we
@@ -52,10 +58,12 @@ fringe and marginal icons.
   (let* ((cmd-str (or opt-command-line (bashdb-query-cmdline "bashdb")))
 	 (cmd-args (split-string-and-unquote cmd-str))
 	 (parsed-args (bashdb-parse-cmd-args cmd-args))
-	 (script-args (cdr cmd-args))
+	 (script-args (caddr parsed-args))
 	 (script-name (car script-args))
+	 (parsed-cmd-args
+	  (list-utils-flatten (list (cadr parsed-args) (caddr parsed-args))))
 	 (cmd-buf))
-    (realgud-run-process "bashdb" script-name cmd-args
+    (realgud-run-process "bashdb" script-name parsed-cmd-args
 		      'bashdb-track-mode no-reset)
     ))
 

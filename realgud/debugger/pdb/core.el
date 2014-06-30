@@ -38,11 +38,11 @@
 
 ORIG-ARGS should contain a tokenized list of the command line to run.
 
-We return the a list containing
-- the command processor (e.g. python) and it's arguments if any - a list of strings
-- the name of the debugger given (e.g. pdb) and its arguments - a list of strings
-- the script name and its arguments - list of strings
-- whether the annotate or emacs option was given ('-A', '--annotate' or '--emacs) - a boolean
+We return the a list containing:
+* the command processor (e.g. python) and it's arguments if any - a list of strings
+* the name of the debugger given (e.g. pdb) and its arguments - a list of strings
+* the script name and its arguments - list of strings
+* whether the annotate or emacs option was given ('-A', '--annotate' or '--emacs) - a boolean
 
 For example for the following input
   (map 'list 'symbol-name
@@ -50,6 +50,8 @@ For example for the following input
 
 we might return:
    ((\"python2.6\" \"-O\" \"-Qold\") (\"pdb\") (\"/tmp/gcd.py\" \"a\" \"b\") nil)
+
+Note that the script name path has been expanded via `expand-file-name'.
 "
 
   ;; Parse the following kind of pattern:

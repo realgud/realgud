@@ -1,7 +1,7 @@
 ;;; Copyright (C) 2012, 2014 Rocky Bernstein <rocky@gnu.org>
 ;;  `pdb' Main interface to pdb via Emacs
-(require 'load-relative)
 (require 'list-utils)
+(require 'load-relative)
 (require-relative-list '("../../common/helper"
 			 "../../common/track") "realgud-")
 (require-relative-list '("core" "track-mode") "realgud:pdb-")
@@ -43,7 +43,9 @@ String OPT-COMMAND-LINE specifies how to run pdb. You will be prompted
 for a command line is one isn't supplied.
 
 OPT-COMMAND-LINE is treated like a shell string; arguments are
-tokenized by `split-string-and-unquote'.
+tokenized by `split-string-and-unquote'. The tokenized string is
+parsed by `pdb-parse-cmd-args' and path elements found by that
+are expanded using `expand-file-name'.
 
 Normally, command buffers are reused when the same debugger is
 reinvoked inside a command buffer with a similar command. If we

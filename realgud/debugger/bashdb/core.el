@@ -30,24 +30,26 @@
    opt-debugger))
 
 (defun bashdb-parse-cmd-args (orig-args)
-  "Parse command line ARGS for the annotate level and name of script to debug.
+  "Parse command line ORIG-ARGS for the annotate level and name of script to debug.
 
-ARGS should contain a tokenized list of the command line to run.
+ORIG-ARGS should contain a tokenized list of the command line to run.
 
-We return the a list containing
-- the command processor (e.g. bashdb) and it's arguments if any - a list of strings
-- the name of the debugger given (e.g. bashdb) and its arguments - a list of strings
-- the script name and its arguments - list of strings
-- whether the annotate or emacs option was given ('-A', '--annotate' or '--emacs) - a boolean
+We return the a list containing:
+* the command processor (e.g. bashdb) and it's arguments if any - a list of strings
+* the name of the debugger given (e.g. bashdb) and its arguments - a list of strings
+* the script name and its arguments - list of strings
+* whether the annotate or emacs option was given ('-A', '--annotate' or '--emacs) - a boolean
+
+The script name and options mentioning paths are file expanded
 
 For example for the following input
   (map 'list 'symbol-name
-   '(bash -W -C /tmp bashdb --emacs ./gcd.sh a b))
+   '(bash --norc bashdb -l . --emacs ./gcd.sh a b))
 
 we might return:
-   ((bash -W -C) (bashdb --emacs) (./gcd.sh a b) 't)
+   ((\"bash\" \"--norc\") (\"bashdb\" \"-l\" \"/tmp\" \"--emacs\") (\"/tmp/gcd.sh\" \"a\" \"b\") t)
 
-NOTE: the above should have each item listed in quotes.
+Note that path elements have been expanded via `expand-file-name'.
 "
 
   ;; Parse the following kind of pattern:
@@ -69,6 +71,7 @@ NOTE: the above should have each item listed in quotes.
 	 (if (member system-type (list 'windows-nt 'cygwin 'msdos))
 	     "^bash*\\(.exe\\)?$"
 	   "^bash*$"))
+	(bashdb-two-arg-name)
 
 	;; Things returned
 	(script-name nil)
@@ -119,15 +122,20 @@ NOTE: the above should have each item listed in quotes.
 	   ((string-match "^--annotate=[0-9]" arg)
 	    (nconc debugger-args (list (pop args)) )
 	    (setq annotate-p t))
-	   ;; Options with arguments.
+	   ;; Library option
+	   ((member arg '("--library" "-l"))
+	    (setq arg (pop args))
+	    (nconc debugger-args
+		   (list arg (expand-file-name (pop args)))))
+	   ;; Other options with arguments.
 	   ((string-match "^-" arg)
 	    (setq pair (realgud-parse-command-arg
 			args bashdb-two-args bashdb-opt-two-args))
 	    (nconc debugger-args (car pair))
 	    (setq args (cadr pair)))
 	   ;; Anything else must be the script to debug.
-	   (t (setq script-name arg)
-	      (setq script-args args))
+	   (t (setq script-name (expand-file-name arg))
+	      (setq script-args (cons script-name (cdr args))))
 	   )))
       (list interpreter-args debugger-args script-args annotate-p))))
 
