@@ -32,25 +32,23 @@
    opt-debugger))
 
 (defun realgud:trepanpl-parse-cmd-args (orig-args)
-  "Parse command line ARGS for the annotate level and name of script to debug.
+  "Parse command line ORIG-ARGS for the annotate level and name of script to debug.
 
-ARGS should contain a tokenized list of the command line to run.
+ORIG_ARGS should contain a tokenized list of the command line to run.
 
-We return the a list containing
+We return the a list containing:
+* the command processor (e.g. perl) and it's arguments if any - a list of strings
+* the name of the debugger given (e.g. trepan.pl) and its arguments - a list of strings
+* the script name and its arguments - list of strings
 
-- the command processor (e.g. perl) and it's arguments if any - a
-  list of strings
-
-- the script name and its arguments - list of strings
-
-For example for the following input
+For example for the following input:
   (map 'list 'symbol-name
-   '(perl5.10 -W -C /tmp trepan.pl --emacs ./gcd.pl a b))
+   '(perl5.10 -w -I . trepan.pl --cd . ./gcd.pl a b))
 
 we might return:
-   ((perl -W -C) (trepan.pl --emacs) (./gcd.pl a b) 't)
+   ((\"perl\" \"-w\" \"-I\" \"/tmp\") (\"trepan.pl\" \"cd\" \"/tmp\") (\"/tmp/gcd.pl\" \"a\" \"b\"))
 
-NOTE: the above should have each item listed in quotes.
+Note that the script name path has been expanded via `expand-file-name'.
 "
 
   ;; Parse the following kind of pattern:
@@ -58,7 +56,7 @@ NOTE: the above should have each item listed in quotes.
   (let (
         (args orig-args)
         (pair)          ;; temp return from
-        (perl-opt-two-args '("0" "C" "D" "i" "l" "m" "-module" "x"))
+        (perl-opt-two-args '("0" "C" "D" "i" "I" "l" "m" "-module" "x"))
         ;; Perl doesn't have mandatory 2-arg options in our sense,
         ;; since the two args can be run together, e.g. "-C/tmp" or "-C /tmp"
         ;;
@@ -99,7 +97,37 @@ NOTE: the above should have each item listed in quotes.
           (nconc interpreter-args (car pair))
           (setq args (cadr pair))))
 
-      (list interpreter-args args))
+      ;; Remove "trepan.pl" from "trepan.pl --trepan.pl-options script
+      ;; --script-options"
+      (setq debugger-name (file-name-sans-extension
+			   (file-name-nondirectory (car args))))
+      (unless (string-match "^trepan.pl$" debugger-name)
+	(message
+	 "Expecting debugger name `%s' to be `trepan.pl'"
+	 debugger-name))
+      (setq debugger-args (list (pop args)))
+
+      ;; Skip to the first non-option argument.
+      (while (and args (not script-name))
+	(let ((arg (car args)))
+	  (cond
+	   ((member arg
+		    '("--cmddir" "--batch" "--cd" "--include" "-I" "--module" "-M"
+		      "-c" "--command"))
+	    (setq arg (pop args))
+	    (nconc debugger-args
+		   (list arg (expand-file-name (pop args)))))
+	   ;; Other options with arguments.
+	   ((string-match "^-" arg)
+	    (setq pair (realgud-parse-command-arg
+			args trepanpl-two-args trepanpl-opt-two-args))
+	    (nconc debugger-args (car pair))
+	    (setq args (cadr pair)))
+	   ;; Anything else must be the script to debug.
+	   (t (setq script-name (expand-file-name arg))
+	      (setq script-args (cons script-name (cdr args))))
+	   )))
+      (list interpreter-args debugger-args script-args))
     ))
 
 ; # To silence Warning: reference to free variable

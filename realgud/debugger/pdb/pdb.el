@@ -25,15 +25,14 @@
 This should be an executable on your path, or an absolute file name."
   :type 'string
   :group 'pdb)
-
-(declare-function pdb-track-mode (bool))
-(declare-function pdb-query-cmdline  'realgud:pdb-core)
-(declare-function pdb-parse-cmd-args 'realgud:pdb-core)
-(declare-function realgud-run-process 'realgud-core)
-
 ;; -------------------------------------------------------------------
 ;; The end.
 ;;
+
+(declare-function pdb-track-mode     'realgud:pdb-track)
+(declare-function pdb-query-cmdline  'realgud:pdb-core)
+(declare-function pdb-parse-cmd-args 'realgud:pdb-core)
+(declare-function realgud-run-process 'realgud-core)
 
 ;;;###autoload
 (defun realgud:pdb (&optional opt-command-line no-reset)
@@ -64,7 +63,7 @@ fringe and marginal icons.
 	 (script-name (car script-args))
 	 (parsed-cmd-args
 	  (list-utils-flatten (list (cadr parsed-args) (caddr parsed-args))))
-	 (cmd-buf))
+	 )
     (realgud-run-process "pdb" script-name parsed-cmd-args
 		      'pdb-track-mode no-reset)
     )

@@ -44,7 +44,7 @@ We return the a list containing:
 * the script name and its arguments - list of strings
 * whether the annotate or emacs option was given ('-A', '--annotate' or '--emacs) - a boolean
 
-For example for the following input
+For example for the following input:
   (map 'list 'symbol-name
    '(python2.6 -O -Qold ./gcd.py a b))
 
