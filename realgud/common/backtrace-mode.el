@@ -13,7 +13,7 @@
     (suppress-keymap map)
     (realgud-populate-common-keys map)
     (define-key map "."       'realgud-backtrace-moveto-frame-selected)
-    (define-key map "r"       'realgud-backtrace-init)
+    (define-key map "r"       'realgud:backtrace-init)
     (define-key map [double-mouse-1] 'realgud-goto-frame-mouse)
     (define-key map [mouse-2] 'realgud-goto-frame-mouse)
     (define-key map [mouse-3] 'realgud-goto-frame-mouse)

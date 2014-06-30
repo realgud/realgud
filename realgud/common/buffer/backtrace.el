@@ -51,7 +51,7 @@
 )
 
 ;; FIXME: create this in a new frame.
-(defun realgud-backtrace-init ()
+(defun realgud:backtrace-init ()
   (interactive)
   (let ((buffer (current-buffer))
   	(cmdbuf (realgud-get-cmdbuf))

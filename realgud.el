@@ -99,7 +99,7 @@
   :version "23.1")
 
 ;; FIXME: extend require-relative for "autoload".
-(defun realgud-load-features()
+(defun realgud:load-features()
   (require-relative-list
    '(
      "./realgud/common/track-mode"
@@ -141,7 +141,7 @@
   (realgud-string-starts-with (symbol-name feature) prefix)
   )
 
-(defun realgud-loaded-features()
+(defun realgud:loaded-features()
   "Return a list of loaded debugger features. These are the
 features that start with 'realgud-' and also include standalone debugger features
 like 'pydbgr'."
@@ -169,26 +169,26 @@ like 'pydbgr'."
       )
 )
 
-(defun realgud-unload-features()
+(defun realgud:unload-features()
   "Remove all features loaded from this package. Used in
 `realgud-reload-features'. See that."
   (interactive "")
-  (let ((result (realgud-loaded-features)))
+  (let ((result (realgud:loaded-features)))
     (dolist (feature result result)
       (unload-feature feature 't)))
   )
 
-(defun realgud-reload-features()
+(defun realgud:reload-features()
   "Reload all features loaded from this package. Useful if have
 changed some code or want to reload another version, say a newer
 development version and you already have this package loaded."
   (interactive "")
-  (realgud-unload-features)
-  (realgud-load-features)
+  (realgud:unload-features)
+  (realgud:load-features)
   )
 
 ;; Load everything.
-(realgud-load-features)
+(realgud:load-features)
 
 (provide-me)
 

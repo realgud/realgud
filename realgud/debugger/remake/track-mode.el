@@ -20,9 +20,9 @@
 (realgud-track-mode-vars "remake")
 
 (define-key remake-track-mode-map
-  (kbd "C-c !!") 'realgud-goto-lang-backtrace-line)
+  (kbd "C-c !!") 'realgud:goto-lang-backtrace-line)
 (define-key remake-track-mode-map
-  (kbd "C-c !b") 'realgud-goto-debugger-backtrace-line)
+  (kbd "C-c !b") 'realgud:goto-debugger-backtrace-line)
 
 (defun remake-track-mode-hook()
   (if remake-track-mode

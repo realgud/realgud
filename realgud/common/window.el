@@ -3,10 +3,11 @@
 (require-relative-list '("helper") "realgud-")
 (require-relative-list '("buffer/helper") "realgud-buffer-")
 
-(declare-function realgud-backtrace-init    'realgud-buffer-helper)
+(declare-function realgud:backtrace-init    'realgud-buffer-helper)
 (declare-function realgud-get-backtrace-buf 'realgud-buffer-helper)
 (declare-function realgud-get-cmdbuf        'realgud-buffer-helper)
 (declare-function realgud-get-srcbuf        'realgud-buffer-helper)
+(declare-function buffer-killed?            'realgud-helper)
 
 (declare-function one-window-p(bool))
 
@@ -141,7 +142,7 @@ See also `realgud-window-src'"
   "Refresh backtrace information and display that in a buffer"
   (interactive)
   (with-current-buffer-safe (realgud-get-cmdbuf)
-    (realgud-backtrace-init)
+    (realgud:backtrace-init)
     (realgud-window-bt-undisturb-src)
     )
   )

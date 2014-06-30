@@ -34,9 +34,9 @@ described by PT."
 
 
 (define-key gub-track-mode-map
-  (kbd "C-c !!") 'realgud-goto-lang-backtrace-line)
+  (kbd "C-c !!") 'realgud:goto-lang-backtrace-line)
 (define-key gub-track-mode-map
-  (kbd "C-c !b") 'realgud-goto-debugger-backtrace-line)
+  (kbd "C-c !b") 'realgud:goto-debugger-backtrace-line)
 (define-key gub-track-mode-map
   (kbd "C-c !s") 'realgud:gub-goto-location)
 (define-key gub-track-mode-map

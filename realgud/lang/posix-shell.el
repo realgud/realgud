@@ -36,8 +36,8 @@ traceback) line."  )
   "Bind the debugger function key layout used by many debuggers.
 
 \\{realgud-example-map-standard}"
-  (define-key map (kbd "C-c !b") 'realgud-goto-debugger-backtrace-line)
-  (define-key map (kbd "C-c !!") 'realgud-goto-lang-backtrace-line)
+  (define-key map (kbd "C-c !b") 'realgud:goto-debugger-backtrace-line)
+  (define-key map (kbd "C-c !!") 'realgud:goto-lang-backtrace-line)
   )
 
 

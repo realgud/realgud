@@ -59,25 +59,25 @@ traceback) line."  )
 
 ;; FIXME: there is probably a less redundant way to do the following
 ;; FNS.
-(defun realgud-rails-goto-backtrace-line (pt)
+(defun realgud:rails-goto-backtrace-line (pt)
   "Display the location mentioned by the Rails backtrace line
 described by PT."
   (interactive "d")
   (realgud-goto-line-for-pt pt "rails-backtrace"))
 
-(defun realgud-rubinius-goto-Xagent-backtrace-line (pt)
+(defun realgud:rubinius-goto-Xagent-backtrace-line (pt)
   "Display the location mentioned by the Rubinius Xagent- backtrace line
 described by PT."
   (interactive "d")
   (realgud-goto-line-for-pt pt "rubinius-backtrace-Xagent"))
 
-(defun realgud-ruby-goto-backtrace-line (pt)
+(defun realgud:ruby-goto-backtrace-line (pt)
   "Display the location mentioned by the Ruby backtrace line
 described by PT."
   (interactive "d")
   (realgud-goto-line-for-pt pt "lang-backtrace"))
 
-(defun realgud-ruby-goto-dollar-bang-line (pt)
+(defun realgud:ruby-goto-dollar-bang-line (pt)
   "Display the location mentioned by the Ruby backtrace line
 described by PT."
   (interactive "d")
@@ -87,10 +87,10 @@ described by PT."
   "Bind the debugger function key layout used by many debuggers.
 
 \\{realgud-example-map-standard}"
-  (define-key map (kbd "C-c !l") 'realgud-goto-lang-backtrace-line)
-  (define-key map (kbd "C-c !!") 'realgud-ruby-goto-dollar-bang-line)
-  (define-key map (kbd "C-c !b") 'realgud-goto-debugger-backtrace-line)
-  (define-key map (kbd "C-c !r") 'realgud-rails-goto-backtrace-line)
+  (define-key map (kbd "C-c !l") 'realgud:goto-lang-backtrace-line)
+  (define-key map (kbd "C-c !!") 'realgud:ruby-goto-dollar-bang-line)
+  (define-key map (kbd "C-c !b") 'realgud:goto-debugger-backtrace-line)
+  (define-key map (kbd "C-c !r") 'realgud:rails-goto-backtrace-line)
   )
 
 

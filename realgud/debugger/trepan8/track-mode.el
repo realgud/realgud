@@ -24,9 +24,7 @@
 (realgud-ruby-populate-command-keys trepan8-track-mode-map)
 
 (define-key trepan8-track-mode-map
-  (kbd "C-c !x") 'realgud-rubinius-goto-Xagent-backtrace-line)
-(define-key trepan8-track-mode-map
-  (kbd "C-c !!") 'realgud-ruby-goto-dollar-bang-line)
+  (kbd "C-c !!") 'realgud:ruby-goto-dollar-bang-line)
 
 (defun trepan8-track-mode-hook()
   (use-local-map trepan8-track-mode-map)

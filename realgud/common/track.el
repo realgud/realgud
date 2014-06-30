@@ -633,7 +633,7 @@ described by PT."
     )
   )
 
-(defun realgud-goto-debugger-backtrace-line (pt)
+(defun realgud:goto-debugger-backtrace-line (pt)
   "Display the location mentioned by the debugger backtrace line
 described by PT."
   (interactive "d")
@@ -641,7 +641,7 @@ described by PT."
     (message "Didn't match a debugger backtrace location.")
     ))
 
-(defun realgud-goto-lang-backtrace-line (pt)
+(defun realgud:goto-lang-backtrace-line (pt)
   "Display the location mentioned by the programming-language backtrace line
 described by PT."
   (interactive "d")
