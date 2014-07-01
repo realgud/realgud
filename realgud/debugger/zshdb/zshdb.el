@@ -1,5 +1,6 @@
 ;;; Copyright (C) 2011, 2014 Rocky Bernstein <rocky@gnu.org>
 ;;  `zshdb' Main interface to zshdb via Emacs
+(require 'list-utils)
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("../../common/track") "realgud-")
@@ -36,30 +37,43 @@ This should be an executable on your path, or an absolute file name."
 ;; The end.
 ;;
 
+(declare-function zshdb-track-mode     'realgud-bashdb-track-mode)
+(declare-function zshdb-query-cmdline  'realgud:zshdb-core)
+(declare-function zshdb-parse-cmd-args 'realgud:zshdb-core)
+(declare-function realgud-run-process  'realgud-core)
+
 ;;;###autoload
 (defun realgud:zshdb (&optional opt-command-line no-reset)
   "Invoke the zshdb Z-shell debugger and start the Emacs user interface.
 
 String COMMAND-LINE specifies how to run zshdb.
 
-Normally command buffers are reused when the same debugger is
+OPT-COMMAND-LINE is treated like a shell string; arguments are
+tokenized by `split-string-and-unquote'. The tokenized string is
+parsed by `bashdb-parse-cmd-args' and path elements found by that
+are expanded using `expand-file-name'.
+
+Normally, command buffers are reused when the same debugger is
 reinvoked inside a command buffer with a similar command. If we
 discover that the buffer has prior command-buffer information and
 NO-RESET is nil, then that information which may point into other
 buffers and source buffers which may contain marks and fringe or
-marginal icons is reset."
+marginal icons is reset. See `loc-changes-clear-buffer' to clear
+fringe and marginal icons.
+"
   (interactive)
   (let* ((cmd-str (or opt-command-line (zshdb-query-cmdline "zshdb")))
 	 (cmd-args (split-string-and-unquote cmd-str))
 	 (parsed-args (zshdb-parse-cmd-args cmd-args))
-	 (script-args (cdr cmd-args))
+	 (script-args (caddr parsed-args))
 	 (script-name (car script-args))
-	 (cmd-buf))
-    (realgud-run-process "zshdb" script-name cmd-args
+	 (parsed-cmd-args
+	  (list-utils-flatten (list (cadr parsed-args) (caddr parsed-args))))
+	 )
+    (realgud-run-process "zshdb" script-name parsed-cmd-args
 		      'zshdb-track-mode no-reset)
     ))
 
 (defalias 'zshdb 'realgud:zshdb)
-(provide-me "realgud-")
 
-;;; zshdb.el ends here
+(provide-me "realgud-")
