@@ -30,6 +30,7 @@
    'zshdb-minibuffer-history
    opt-debugger))
 
+;;; FIXME: DRY this with other *-parse-cmd-args routines
 (defun zshdb-parse-cmd-args (orig-args)
   "Parse command line ORIG-ARGS for the annotate level and name of script to debug.
 

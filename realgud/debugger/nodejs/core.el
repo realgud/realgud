@@ -29,24 +29,25 @@
    'realgud:nodejs-minibuffer-history
    opt-debugger))
 
+;;; FIXME: DRY this with other *-parse-cmd-args routines
 (defun nodejs-parse-cmd-args (orig-args)
-  "Parse command line ARGS for the annotate level and name of script to debug.
+  "Parse command line ORIG-ARGS for the annotate level and name of script to debug.
 
-ARGS should contain a tokenized list of the command line to run.
+ORIG-ARGS should contain a tokenized list of the command line to run.
 
 We return the a list containing
-- the name of the debugger given (e.g. nodejs) and its arguments - a list of strings
-- the script name and its arguments - list of strings
-- whether the annotate or emacs option was given ('-A', '--annotate' or '--emacs) - a boolean
+* the name of the debugger given (e.g. nodejs) and its arguments - a list of strings
+* the script name and its arguments - list of strings
+* whether the annotate or emacs option was given ('-A', '--annotate' or '--emacs) - a boolean
 
 For example for the following input
   (map 'list 'symbol-name
-   '(node --interactive --debugger-port 5858 /tmp nodejs ./gcd.rb a b))
+   '(node --interactive --debugger-port 5858 /tmp nodejs ./gcd.js a b))
 
 we might return:
-   ((node --interactive --debugger-port 5858) (./gcd.rb a b) 't)
+   ((\"node\" \"--interactive\" \"--debugger-port\" \"5858\") (\"./gcd.js\" \"a\" \"b\"))
 
-NOTE: the above should have each item listed in quotes.
+Note that path elements have been expanded via `expand-file-name'.
 "
 
   ;; Parse the following kind of pattern:
@@ -68,11 +69,10 @@ NOTE: the above should have each item listed in quotes.
 	(debugger-name nil)
 	(debugger-args '())
 	(script-args '())
-	(annotate-p nil))
-
+	)
     (if (not (and args))
 	;; Got nothing: return '(nil, nil, nil)
-	(list debugger-args script-args annotate-p)
+	(list debugger-args script-args)
       ;; else
       (progn
 	;; Remove "nodejs" from "nodejs --nodejs-options script
@@ -101,10 +101,10 @@ NOTE: the above should have each item listed in quotes.
 	      (nconc debugger-args (car pair))
 	      (setq args (cadr pair)))
 	   ;; Anything else must be the script to debug.
-	     (t (setq script-name arg)
-	      (setq script-args args))
+	     (t (setq script-name (expand-file-name arg))
+	      (setq script-args (cons script-name (cdr args))))
 	   )))
-      (list debugger-args script-args annotate-p)))))
+      (list debugger-args script-args)))))
 
 (defvar nodejs-command-name) ; # To silence Warning: reference to free variable
 (defun realgud:nodejs-suggest-invocation (debugger-name)

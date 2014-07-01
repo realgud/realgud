@@ -34,6 +34,7 @@ This should be an executable on your path, or an absolute file name."
 (declare-function pdb-parse-cmd-args 'realgud:pdb-core)
 (declare-function realgud-run-process 'realgud-core)
 
+; ### FIXME: DRY with other top-level routines
 ;;;###autoload
 (defun realgud:pdb (&optional opt-command-line no-reset)
   "Invoke the pdb Python debugger and start the Emacs user interface.

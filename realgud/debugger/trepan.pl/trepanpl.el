@@ -34,6 +34,7 @@ This should be an executable on your path, or an absolute file name."
 (declare-function realgud:trepanpl-parse-cmd-args 'realgud-trepanpl-core)
 (declare-function realgud-run-process             'realgud-core)
 
+; ### FIXME: DRY with other top-level routines
 ;;;###autoload
 (defun realgud:trepanpl (&optional opt-command-line no-reset)
   "Invoke the trepan.pl Perl debugger and start the Emacs user interface.

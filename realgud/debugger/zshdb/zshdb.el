@@ -42,6 +42,7 @@ This should be an executable on your path, or an absolute file name."
 (declare-function zshdb-parse-cmd-args 'realgud:zshdb-core)
 (declare-function realgud-run-process  'realgud-core)
 
+; ### FIXME: DRY with other top-level routines
 ;;;###autoload
 (defun realgud:zshdb (&optional opt-command-line no-reset)
   "Invoke the zshdb Z-shell debugger and start the Emacs user interface.
