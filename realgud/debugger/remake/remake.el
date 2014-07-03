@@ -2,7 +2,8 @@
 ;;  `remake' Main interface to remake via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
-(require-relative-list '("../../common/track") "realgud-")
+(require-relative-list '("../../common/track")  "realgud-")
+(require-relative-list '("../../common/run")    "realgud:")
 (require-relative-list '("core" "track-mode") "realgud:remake-")
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
@@ -15,7 +16,7 @@
 
 (declare-function remake-query-cmdline  'realgud:remake-core)
 (declare-function remake-parse-cmd-args 'realgud:remake-core)
-(declare-function realgud-run-process 'realgud-core)
+(declare-function realgud-run-process   'realgud-core)
 
 ;; -------------------------------------------------------------------
 ;; User definable variables
@@ -29,10 +30,11 @@ This should be an executable on your path, or an absolute file name."
   :type 'string
   :group 'remake)
 
-(defun realgud:remake-fn (&optional opt-command-line no-reset)
+;;;###autoload
+(defun realgud:remake-fn (&optional opt-cmd-line no-reset)
   "See `realgud:remake' for details"
 
-  (let* ((cmd-str (or opt-command-line (remake-query-cmdline "remake")))
+  (let* ((cmd-str (or opt-cmd-line (remake-query-cmdline "remake")))
 	 (cmd-args (split-string-and-unquote cmd-str))
 	 (parsed-args (remake-parse-cmd-args cmd-args))
 	 (remake-program (car parsed-args))
@@ -63,24 +65,6 @@ This should be an executable on your path, or an absolute file name."
     ;; 	(message "Error running remake command"))
     ;;   )
     )
-  )
-
-;;;###autoload
-(defun realgud:remake (&optional opt-command-line no-reset)
-  "Invoke the GNU Make debugger, remake and start the Emacs user interface.
-
-String COMMAND-LINE specifies how to run remake.
-
-Normally command buffers are reused when the same debugger is
-reinvoked inside a command buffer with a similar command. If we
-discover that the buffer has prior command-buffer information and
-NO-RESET is nil, then that information which may point into other
-buffers and source buffers which may contain marks and fringe or
-marginal icons is reset."
-
-
-  (interactive)
-  (realgud:remake-fn opt-command-line no-reset)
   )
 
 (defalias 'remake 'realgud:remake)

@@ -4,9 +4,11 @@
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("../../common/track") "realgud-")
+(require-relative-list '("../../common/run")    "realgud:")
 (require-relative-list '("core" "track-mode") "realgud:nodejs-")
 
 (declare-function realgud:nodejs-remove-ansi-shmutz 'realgud-core)
+(declare-function realgud:run-debugger 'realgud:run)
 
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
@@ -34,7 +36,7 @@ This should be an executable on your path, or an absolute file name."
 (declare-function nodejs-track-mode     'realgud-nodejs-track-mode)
 (declare-function nodejs-query-cmdline  'realgud:nodejs-core)
 (declare-function nodejs-parse-cmd-args 'realgud:nodejs-core)
-(declare-function realgud-run-process 'realgud-core)
+(declare-function realgud:run-process   'realgud:run)
 
 ; ### FIXME: DRY with other top-level routines
 ;;;###autoload
@@ -64,7 +66,7 @@ fringe and marginal icons.
 	 (script-name (car script-args))
 	 (parsed-cmd-args
 	  (list-utils-flatten (list (car parsed-args) (cadr parsed-args))))
-	 (cmd-buf  (realgud-run-process "node" script-name
+	 (cmd-buf  (realgud:run-process "node" script-name
 					parsed-cmd-args
 					'nodejs-track-mode no-reset))
 	 )

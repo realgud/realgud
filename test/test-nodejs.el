@@ -9,11 +9,11 @@
 
 (test-simple-start)
 
-;; Save value realgud-run-process and change it to something we want
-(setq test:run-process-save (symbol-function 'realgud-run-process))
-(defun realgud-run-process(debugger-name script-filename cmd-args
-				      track-mode-func &optional no-reset)
-  "Fake realgud-run-process used in testing"
+;; Save value realgud:run-process and change it to something we want
+(setq test:run-process-save (symbol-function 'realgud:run-process))
+(defun realgud:run-process(debugger-name script-filename cmd-args
+					 track-mode-func &optional no-reset)
+  "Fake realgud:run-process used in testing"
   (note
    (format "%s %s %s %S" debugger-name script-filename cmd-args
 	   track-mode-func))
@@ -30,7 +30,7 @@
 ;; FIXME: need to mock remove-ansi-schmutz in realgud:nodejs
 ;; (realgud:nodejs "node debug ./gcd.js 3 5")
 
-;; Restore the old value of realgud-run-process
-(fset 'realgud-run-process test:run-process-save)
+;; Restore the old value of realgud:run-process
+(fset 'realgud:run-process test:run-process-save)
 
 (end-tests)

@@ -3,8 +3,10 @@
 (require 'list-utils)
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
-(require-relative-list '("../../common/track") "realgud-")
-(require-relative-list '("core" "track-mode") "realgud:bashdb-")
+(require-relative-list '("../../common/track")  "realgud-")
+(require-relative-list '("../../common/run")    "realgud:")
+(require-relative-list '("core" "track-mode")   "realgud:bashdb-")
+
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
 (defgroup bashdb nil
@@ -32,16 +34,16 @@ This should be an executable on your path, or an absolute file name."
 (declare-function bashdb-track-mode     'realgud-bashdb-track-mode)
 (declare-function bashdb-query-cmdline  'realgud:bashdb-core)
 (declare-function bashdb-parse-cmd-args 'realgud:bashdb-core)
-(declare-function realgud-run-process 'realgud-core)
+(declare-function realgud:run-debugger 'realgud:run)
 
 ;;;###autoload
-(defun realgud:bashdb (&optional opt-command-line no-reset)
+(defun realgud:bashdb (&optional opt-cmd-line no-reset)
   "Invoke the bashdb shell debugger and start the Emacs user interface.
 
-String OPT-COMMAND-LINE specifies how to run bash. You will be prompted
+String OPT-CMD-LINE specifies how to run bash. You will be prompted
 for a command line is one isn't supplied.
 
-OPT-COMMAND-LINE is treated like a shell string; arguments are
+OPT-CMD-LINE is treated like a shell string; arguments are
 tokenized by `split-string-and-unquote'. The tokenized string is
 parsed by `bashdb-parse-cmd-args' and path elements found by that
 are expanded using `expand-file-name'.
@@ -55,17 +57,9 @@ marginal icons is reset. See `loc-changes-clear-buffer' to clear
 fringe and marginal icons.
 "
   (interactive)
-  (let* ((cmd-str (or opt-command-line (bashdb-query-cmdline "bashdb")))
-	 (cmd-args (split-string-and-unquote cmd-str))
-	 (parsed-args (bashdb-parse-cmd-args cmd-args))
-	 (script-args (caddr parsed-args))
-	 (script-name (car script-args))
-	 (parsed-cmd-args
-	  (list-utils-flatten (list (cadr parsed-args) (caddr parsed-args))))
-	 )
-    (realgud-run-process "bashdb" script-name parsed-cmd-args
-		      'bashdb-track-mode no-reset)
-    ))
+  (realgud:run-debugger "bashdb" 'bashdb-query-cmdline 'bashdb-parse-cmd-args
+			'bashdb-track-mode-hook opt-cmd-line no-reset)
+  )
 
 (defalias 'bashdb 'realgud:bashdb)
 

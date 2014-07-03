@@ -3,8 +3,9 @@
 (require 'list-utils)
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
-(require-relative-list '("../../common/track") "realgud-")
-(require-relative-list '("core" "track-mode") "realgud:zshdb-")
+(require-relative-list '("../../common/track")  "realgud-")
+(require-relative-list '("../../common/run")    "realgud:")
+(require-relative-list '("core" "track-mode")   "realgud:zshdb-")
 
 (declare-function zshdb-track-mode (bool))
 (declare-function zshdb-query-cmdline  'realgud:zshdb-core)
@@ -40,18 +41,18 @@ This should be an executable on your path, or an absolute file name."
 (declare-function zshdb-track-mode     'realgud-bashdb-track-mode)
 (declare-function zshdb-query-cmdline  'realgud:zshdb-core)
 (declare-function zshdb-parse-cmd-args 'realgud:zshdb-core)
-(declare-function realgud-run-process  'realgud-core)
+(declare-function realgud:run-debugger 'realgud:run)
 
 ; ### FIXME: DRY with other top-level routines
 ;;;###autoload
-(defun realgud:zshdb (&optional opt-command-line no-reset)
+(defun realgud:zshdb (&optional opt-cmd-line no-reset)
   "Invoke the zshdb Z-shell debugger and start the Emacs user interface.
 
 String COMMAND-LINE specifies how to run zshdb.
 
-OPT-COMMAND-LINE is treated like a shell string; arguments are
+OPT-CMD-LINE is treated like a shell string; arguments are
 tokenized by `split-string-and-unquote'. The tokenized string is
-parsed by `bashdb-parse-cmd-args' and path elements found by that
+parsed by `zshdb-parse-cmd-args' and path elements found by that
 are expanded using `expand-file-name'.
 
 Normally, command buffers are reused when the same debugger is
@@ -63,17 +64,9 @@ marginal icons is reset. See `loc-changes-clear-buffer' to clear
 fringe and marginal icons.
 "
   (interactive)
-  (let* ((cmd-str (or opt-command-line (zshdb-query-cmdline "zshdb")))
-	 (cmd-args (split-string-and-unquote cmd-str))
-	 (parsed-args (zshdb-parse-cmd-args cmd-args))
-	 (script-args (caddr parsed-args))
-	 (script-name (car script-args))
-	 (parsed-cmd-args
-	  (list-utils-flatten (list (cadr parsed-args) (caddr parsed-args))))
-	 )
-    (realgud-run-process "zshdb" script-name parsed-cmd-args
-		      'zshdb-track-mode no-reset)
-    ))
+  (realgud:run-debugger "zshdb" 'zshdb-query-cmdline 'zshdb-parse-cmd-args
+			'zshdb-track-mode-hook opt-cmd-line no-reset)
+  )
 
 (defalias 'zshdb 'realgud:zshdb)
 

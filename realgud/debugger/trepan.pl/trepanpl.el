@@ -3,8 +3,10 @@
 (require 'list-utils)
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
-(require-relative-list '("../../common/track") "realgud-")
-(require-relative-list '("core" "track-mode") "realgud:trepanpl-")
+(require-relative-list '("../../common/track")  "realgud-")
+(require-relative-list '("../../common/run")    "realgud:")
+(require-relative-list '("core" "track-mode")   "realgud:trepanpl-")
+
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
 (defgroup trepanpl nil
@@ -32,7 +34,7 @@ This should be an executable on your path, or an absolute file name."
 (declare-function realgud:trepanpl-track-mode     'realgud-trepanpl-track)
 (declare-function realgud:trepanpl-query-cmdline  'realgud-trepanpl-core)
 (declare-function realgud:trepanpl-parse-cmd-args 'realgud-trepanpl-core)
-(declare-function realgud-run-process             'realgud-core)
+(declare-function realgud:run-process             'realgud-run)
 
 ; ### FIXME: DRY with other top-level routines
 ;;;###autoload
@@ -65,7 +67,7 @@ fringe and marginal icons.
 	 (parsed-cmd-args
 	  (list-utils-flatten (list (cadr parsed-args) (caddr parsed-args))))
 	 )
-    (realgud-run-process "trepan.pl" script-name parsed-cmd-args
+    (realgud:run-process "trepan.pl" script-name parsed-cmd-args
 			 'realgud:trepanpl-track-mode no-reset)
     )
   )

@@ -4,7 +4,8 @@
 (require 'load-relative)
 (require-relative-list '("../../common/helper"
 			 "../../common/track") "realgud-")
-(require-relative-list '("core" "track-mode") "realgud:pdb-")
+(require-relative-list '("../../common/run")   "realgud:")
+(require-relative-list '("core" "track-mode")  "realgud:pdb-")
 
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
@@ -29,17 +30,17 @@ This should be an executable on your path, or an absolute file name."
 ;; The end.
 ;;
 
-(declare-function pdb-track-mode     'realgud:pdb-track)
-(declare-function pdb-query-cmdline  'realgud:pdb-core)
-(declare-function pdb-parse-cmd-args 'realgud:pdb-core)
-(declare-function realgud-run-process 'realgud-core)
+(declare-function pdb-track-mode       'realgud:pdb-track)
+(declare-function pdb-query-cmdline    'realgud:pdb-core)
+(declare-function pdb-parse-cmd-args   'realgud:pdb-core)
+(declare-function realgud:run-debugger 'realgud:run)
 
 ; ### FIXME: DRY with other top-level routines
 ;;;###autoload
-(defun realgud:pdb (&optional opt-command-line no-reset)
+(defun realgud:pdb (&optional opt-cmd-line no-reset)
   "Invoke the pdb Python debugger and start the Emacs user interface.
 
-String OPT-COMMAND-LINE specifies how to run pdb. You will be prompted
+String OPT-CMD-LINE specifies how to run pdb. You will be prompted
 for a command line is one isn't supplied.
 
 OPT-COMMAND-LINE is treated like a shell string; arguments are
@@ -56,18 +57,8 @@ marginal icons is reset. See `loc-changes-clear-buffer' to clear
 fringe and marginal icons.
 "
   (interactive)
-  (let* ((cmd-str (or opt-command-line (pdb-query-cmdline
-					"pdb")))
-	 (cmd-args (split-string-and-unquote cmd-str))
-	 (parsed-args (pdb-parse-cmd-args cmd-args))
-	 (script-args (caddr parsed-args))
-	 (script-name (car script-args))
-	 (parsed-cmd-args
-	  (list-utils-flatten (list (cadr parsed-args) (caddr parsed-args))))
-	 )
-    (realgud-run-process "pdb" script-name parsed-cmd-args
-		      'pdb-track-mode no-reset)
-    )
+  (realgud:run-debugger "pdb" 'pdb-query-cmdline 'pdb-parse-cmd-args
+			'pdb-track-mode-hook opt-cmd-line no-reset)
   )
 
 

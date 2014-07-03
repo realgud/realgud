@@ -34,10 +34,10 @@
 ;;
 
 ;;;###autoload
-(defun realgud:perldb (&optional opt-command-line no-reset)
+(defun realgud:perldb (&optional opt-cmd-line no-reset)
   "Invoke the Perl debugger and start the Emacs user interface.
 
-OPT-COMMAND-LINE is treated like a shell string; arguments are
+OPT-CMD-LINE is treated like a shell string; arguments are
 tokenized by `split-string-and-unquote'.
 
 Normally, command buffers are reused when the same debugger is
@@ -47,7 +47,7 @@ NO-RESET is nil, then that information which may point into other
 buffers and source buffers which may contain marks and fringe or
 marginal icons is reset."
   (interactive)
-  (let* ((cmd-str (or opt-command-line (realgud:perldb-query-cmdline "perldb")))
+  (let* ((cmd-str (or opt-cmd-line (realgud:perldb-query-cmdline "perldb")))
 	 (cmd-args (split-string-and-unquote cmd-str))
 	 (parsed-args (realgud:perldb-parse-cmd-args cmd-args))
 	 (script-args (cadr parsed-args))
