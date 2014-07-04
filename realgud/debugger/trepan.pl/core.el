@@ -101,8 +101,7 @@ Note that the script name path has been expanded via `expand-file-name'.
 
       ;; Remove "trepan.pl" from "trepan.pl --trepan.pl-options script
       ;; --script-options"
-      (setq debugger-name (file-name-sans-extension
-			   (file-name-nondirectory (car args))))
+      (setq debugger-name (file-name-nondirectory (car args)))
       (unless (string-match "^trepan.pl$" debugger-name)
 	(message
 	 "Expecting debugger name `%s' to be `trepan.pl'"

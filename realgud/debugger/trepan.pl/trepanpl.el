@@ -34,7 +34,7 @@ This should be an executable on your path, or an absolute file name."
 (declare-function realgud:trepanpl-track-mode     'realgud-trepanpl-track)
 (declare-function realgud:trepanpl-query-cmdline  'realgud-trepanpl-core)
 (declare-function realgud:trepanpl-parse-cmd-args 'realgud-trepanpl-core)
-(declare-function realgud:run-process             'realgud-run)
+(declare-function realgud:run-debugger             'realgud:run)
 
 ;;;###autoload
 (defun realgud:trepanpl (&optional opt-cmd-line no-reset)
