@@ -34,6 +34,16 @@
 
 (defvar realgud-srcbuf-info)
 
+(defun realgud:expand-file-name-if-exists (filename)
+  "Return FILENAME expanded using `expand-file-name' if that name exists.
+Otherwise, just return FILENAME."
+  (let* ((expanded-filename (expand-file-name filename))
+	 (result (cond ((file-exists-p expanded-filename)
+			  expanded-filename)
+			 ('t filename))))
+    result)
+)
+
 (defun realgud-suggest-invocation
   (debugger-name minibuffer-history lang-str lang-ext-regexp
 		 &optional last-resort)

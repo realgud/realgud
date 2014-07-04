@@ -8,6 +8,7 @@
                        "realgud-")
 (require-relative-list '("init") "realgud:trepanpl-")
 
+(declare-function realgud:expand-file-name-if-exists 'realgud-core)
 (declare-function realgud-parse-command-arg  'realgud-core)
 (declare-function realgud-query-cmdline      'realgud-core)
 (declare-function realgud-suggest-invocation 'realgud-core)
@@ -125,7 +126,7 @@ Note that the script name path has been expanded via `expand-file-name'.
 	    (nconc debugger-args (car pair))
 	    (setq args (cadr pair)))
 	   ;; Anything else must be the script to debug.
-	   (t (setq script-name (expand-file-name arg))
+	   (t (setq script-name (realgud:expand-file-name-if-exists arg))
 	      (setq script-args (cons script-name (cdr args))))
 	   )))
       (list interpreter-args debugger-args script-args))

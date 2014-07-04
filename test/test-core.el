@@ -5,6 +5,7 @@
 (setq trepan-core "../realgud/debugger/trepan/core.el")
 (load-file "../realgud/common/core.el")
 
+(declare-function realgud:expand-file-name-if-exists 'realgud-core)
 (declare-function realgud-parse-command-arg, 'realgud-core)
 (declare-function trepan-parse-cmd-args      'realgud:trepan)
 
@@ -19,6 +20,15 @@
 ;; For example: bashdb /etc/profile should not match
 ;; bashdb /tmp/profile
 
+(note "realgud:expand-file-name-if-exists")
+
+(assert-equal (realgud:expand-file-name-if-exists "file-not-here")
+	      "file-not-here" "no expansion when expanded file doesn't exist")
+
+(assert-equal (realgud:expand-file-name-if-exists ".")
+	      (expand-file-name "."))
+
+(note "realgud-parse-...")
 
 (lexical-let ((opt-two-args '("0" "C" "e" "E" "F" "i")))
   (assert-equal '(("-0" "a") nil)

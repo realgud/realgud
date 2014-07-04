@@ -36,15 +36,14 @@ This should be an executable on your path, or an absolute file name."
 (declare-function realgud:trepanpl-parse-cmd-args 'realgud-trepanpl-core)
 (declare-function realgud:run-process             'realgud-run)
 
-; ### FIXME: DRY with other top-level routines
 ;;;###autoload
-(defun realgud:trepanpl (&optional opt-command-line no-reset)
+(defun realgud:trepanpl (&optional opt-cmd-line no-reset)
   "Invoke the trepan.pl Perl debugger and start the Emacs user interface.
 
-String OPT-COMMAND-LINE specifies how to run trepan.pl. You will be prompted
+String OPT-CMD-LINE specifies how to run trepan.pl. You will be prompted
 for a command line is one isn't supplied.
 
-OPT-COMMAND-LINE is treated like a shell string; arguments are
+OPT-CMD-LINE is treated like a shell string; arguments are
 tokenized by `split-string-and-unquote'. The tokenized string is
 parsed by `realgud:trepanpl-parse-cmd-args' and path elements found by that
 are expanded using `expand-file-name'.
@@ -58,18 +57,9 @@ marginal icons is reset. See `loc-changes-clear-buffer' to clear
 fringe and marginal icons.
 "
   (interactive)
-  (let* ((cmd-str (or opt-command-line
-		      (realgud:trepanpl-query-cmdline "trepan.pl")))
-	 (cmd-args (split-string-and-unquote cmd-str))
-	 (parsed-args (realgud:trepanpl-parse-cmd-args cmd-args))
-	 (script-args (caddr parsed-args))
-	 (script-name (car script-args))
-	 (parsed-cmd-args
-	  (list-utils-flatten (list (cadr parsed-args) (caddr parsed-args))))
-	 )
-    (realgud:run-process "trepan.pl" script-name parsed-cmd-args
-			 'realgud:trepanpl-track-mode no-reset)
-    )
+  (realgud:run-debugger "trepan.pl" 'realgud:trepanpl-query-cmdline
+			'realgud:trepanpl-parse-cmd-args
+			'realgud:trepanpl-track-mode-hook opt-cmd-line no-reset)
   )
 
 (defalias 'trepan.pl 'realgud:trepanpl)

@@ -22,17 +22,20 @@
     (assert-equal  expanded-name script-filename "file name check")
     (assert-equal (list "-I" (expand-file-name ".") expanded-name "3" "5")
 		  (cdr cmd-args) "command args listified")
-    (assert-equal 'realgud:trepanpl-track-mode track-mode-func)
+    (assert-equal 'realgud:trepanpl-track-mode-hook track-mode-func)
     ))
 
 (note "realgud:trepanpl-parse-cmd-args")
-(assert-equal (list nil '("trepan.pl") (list (expand-file-name "foo")))
+(assert-equal (list nil '("trepan.pl") '("foo"))
 	      (realgud:trepanpl-parse-cmd-args '("trepan.pl" "foo")))
-(assert-equal (list '("perl5.8") '("trepan.pl") (list (expand-file-name "foo")))
+(assert-equal (list '("perl5.8") '("trepan.pl") '("foo"))
 	      (realgud:trepanpl-parse-cmd-args '("perl5.8" "trepan.pl" "foo")))
-(assert-equal (list nil '("trepan.pl") (list (expand-file-name "program.pl") "foo"))
+(assert-equal (list nil '("trepan.pl") '("program.pl" "foo"))
 	      (realgud:trepanpl-parse-cmd-args
 	       '("trepan.pl" "program.pl" "foo")))
+(assert-equal (list nil '("trepan.pl") (list (expand-file-name "gcd.pl") "foo"))
+	      (realgud:trepanpl-parse-cmd-args
+	       '("trepan.pl" "gcd.pl" "foo")))
 
 (realgud:trepanpl "trepanpl -I . ./gcd.pl 3 5")
 
