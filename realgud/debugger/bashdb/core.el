@@ -18,7 +18,7 @@
 
 (easy-mmode-defmap bashdb-minibuffer-local-map
   '(("\C-i" . comint-dynamic-complete-filename))
-  "Keymap for minibuffer prompting of gud startup command."
+  "Keymap for minibuffer prompting of bashdb startup command."
   :inherit minibuffer-local-map)
 
 ;; FIXME: I think this code and the keymaps and history
@@ -37,7 +37,7 @@
 ORIG-ARGS should contain a tokenized list of the command line to run.
 
 We return the a list containing:
-* the command processor (e.g. bashdb) and it's arguments if any - a list of strings
+* the command processor (e.g. bash) and it's arguments if any - a list of strings
 * the name of the debugger given (e.g. bashdb) and its arguments - a list of strings
 * the script name and its arguments - list of strings
 * whether the annotate or emacs option was given ('-A', '--annotate' or '--emacs) - a boolean
