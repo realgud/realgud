@@ -40,12 +40,12 @@ This should be an executable on your path, or an absolute file name."
 
 ; ### FIXME: DRY with other top-level routines
 ;;;###autoload
-(defun realgud:nodejs (&optional opt-command-line no-reset)
+(defun realgud:nodejs (&optional opt-cmd-line no-reset)
   "Invoke the nodejs shell debugger and start the Emacs user interface.
 
-String COMMAND-LINE specifies how to run nodejs.
+String OPT-CMD-LINE specifies how to run nodejs.
 
-OPT-COMMAND-LINE is treated like a shell string; arguments are
+OPT-CMD-LINE is treated like a shell string; arguments are
 tokenized by `split-string-and-unquote'. The tokenized string is
 parsed by `nodejs-parse-cmd-args' and path elements found by that
 are expanded using `expand-file-name'.
@@ -59,17 +59,9 @@ marginal icons is reset. See `loc-changes-clear-buffer' to clear
 fringe and marginal icons.
 "
   (interactive)
-  (let* ((cmd-str (or opt-command-line (nodejs-query-cmdline "nodejs")))
-	 (cmd-args (split-string-and-unquote cmd-str))
-	 (parsed-args (nodejs-parse-cmd-args cmd-args))
-	 (script-args (cadr parsed-args))
-	 (script-name (car script-args))
-	 (parsed-cmd-args
-	  (list-utils-flatten (list (car parsed-args) (cadr parsed-args))))
-	 (cmd-buf  (realgud:run-process "node" script-name
-					parsed-cmd-args
-					'nodejs-track-mode no-reset))
-	 )
+  (let ((cmd-buf
+	 (realgud:run-debugger "node" 'nodejs-query-cmdline 'nodejs-parse-cmd-args
+			       'nodejs-track-mode-hook opt-cmd-line no-reset)))
     (if cmd-buf
 	(with-current-buffer cmd-buf
 	  ;; FIXME should allow customization whether to do or not

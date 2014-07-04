@@ -16,7 +16,7 @@ and CMD-ARGS If this succeeds, we call TRACK-MODE-HOOK and save
 CMD-ARGS in command-buffer for use if we want to restart.  If
 we don't succeed in running the program, we will switch to the
 command buffer which shows details of the error. The command
-buffer or nil is returned"
+buffer or nil is returned."
 
   (let ((cmd-buf))
     (condition-case nil
@@ -36,7 +36,7 @@ buffer or nil is returned"
 	    )
 	(progn
 	  (if cmd-buf (switch-to-buffer cmd-buf))
-	  (message "Error running command: %s %s" debugger-name script-filename)
+	  (message "Error running command: %s" (mapconcat 'identity cmd-args " "))
 	  )
 	)
       )
@@ -57,6 +57,9 @@ OPT-COMMAND-LINE is treated like a shell string; arguments are
 tokenized by `split-string-and-unquote'. The tokenized string is
 parsed by PARSE-CMD-FN and path elements found by that
 are expanded using `expand-file-name'.
+
+If successful, The command buffer of the debugger process is returned.
+Otherwise nil is returned.
 "
   (let* ((cmd-str (or opt-command-line (funcall query-cmdline-fn debugger-name)))
 	 (cmd-args (split-string-and-unquote cmd-str))
@@ -64,7 +67,7 @@ are expanded using `expand-file-name'.
 	 (script-args (caddr parsed-args))
 	 (script-name (car script-args))
 	 (parsed-cmd-args
-	  (list-utils-flatten (list (cadr parsed-args) (caddr parsed-args))))
+	  (remove-if 'nil (list-utils-flatten parsed-args)))
 	 )
     (realgud:run-process debugger-name script-name parsed-cmd-args
 			 track-mode-hook no-reset)
@@ -72,3 +75,7 @@ are expanded using `expand-file-name'.
   )
 
 (provide-me "realgud:")
+
+;; Local Variables:
+;; byte-compile-warnings: (not cl-functions)
+;; End:

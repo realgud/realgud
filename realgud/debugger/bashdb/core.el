@@ -2,6 +2,7 @@
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
+(require 'list-utils)
 (require-relative-list '("../../common/track" "../../common/core")
 		       "realgud-")
 (require-relative-list '("init") "realgud:bashdb-")
@@ -73,6 +74,7 @@ Note that path elements have been expanded via `expand-file-name'.
 	     "^bash*\\(.exe\\)?$"
 	   "^bash*$"))
 	(bashdb-two-arg-name)
+	(debugger-flag nil) ;; 't if "bash --debugger" given
 
 	;; Things returned
 	(script-name nil)
@@ -97,18 +99,22 @@ Note that path elements have been expanded via `expand-file-name'.
 		    (string-match "^-" (car args)))
 	  (setq pair (realgud-parse-command-arg
 		      args bash-two-args bash-opt-two-args))
+	  (if (equal "--debugger" (caar pair))
+	      (setq debugger-flag 't))
 	  (nconc interpreter-args (car pair))
 	  (setq args (cadr pair))))
 
       ;; Remove "bashdb" from "bashdb --bashdb-options script
       ;; --script-options"
-      (setq debugger-name (file-name-sans-extension
-			   (file-name-nondirectory (car args))))
-      (unless (string-match "^bashdb$" debugger-name)
-	(message
-	 "Expecting debugger name `%s' to be `bashdb'"
-	 debugger-name))
-      (setq debugger-args (list (pop args)))
+      (unless debugger-flag
+	(setq debugger-name (file-name-sans-extension
+			     (file-name-nondirectory (car args))))
+	(unless (string-match "^bashdb$" debugger-name)
+	  (message
+	   "Expecting debugger name `%s' to be `bashdb'"
+	   debugger-name))
+	(setq debugger-args (list (pop args)))
+	)
 
       ;; Skip to the first non-option argument.
       (while (and args (not script-name))

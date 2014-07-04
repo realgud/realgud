@@ -45,7 +45,7 @@ For example for the following input
    '(node --interactive --debugger-port 5858 /tmp nodejs ./gcd.js a b))
 
 we might return:
-   ((\"node\" \"--interactive\" \"--debugger-port\" \"5858\") (\"./gcd.js\" \"a\" \"b\"))
+   ((\"node\" \"--interactive\" \"--debugger-port\" \"5858\") nil (\"./gcd.js\" \"a\" \"b\"))
 
 Note that path elements have been expanded via `expand-file-name'.
 "
@@ -67,12 +67,12 @@ Note that path elements have been expanded via `expand-file-name'.
 	;; Things returned
 	(script-name nil)
 	(debugger-name nil)
-	(debugger-args '())
+	(interpreter-args '())
 	(script-args '())
 	)
     (if (not (and args))
 	;; Got nothing: return '(nil, nil, nil)
-	(list debugger-args script-args)
+	(list interpreter-args script-args)
       ;; else
       (progn
 	;; Remove "nodejs" from "nodejs --nodejs-options script
@@ -83,14 +83,14 @@ Note that path elements have been expanded via `expand-file-name'.
 	  (message
 	   "Expecting debugger name `%s' to be `node'"
 	   debugger-name))
-	(setq debugger-args (list (pop args)))
+	(setq interpreter-args (list (pop args)))
 
 	;; Skip to the first non-option argument.
 	(while (and args (not script-name))
 	  (let ((arg (car args)))
 	    (cond
 	     ((equal "debug" arg)
-	      (nconc debugger-args (list arg))
+	      (nconc interpreter-args (list arg))
 	      (setq args (cdr args))
 	      )
 
@@ -98,13 +98,13 @@ Note that path elements have been expanded via `expand-file-name'.
 	     ((string-match "^-" arg)
 	      (setq pair (realgud-parse-command-arg
 			  args nodejs-two-args nodejs-opt-two-args))
-	      (nconc debugger-args (car pair))
+	      (nconc interpreter-args (car pair))
 	      (setq args (cadr pair)))
 	   ;; Anything else must be the script to debug.
 	     (t (setq script-name (expand-file-name arg))
 	      (setq script-args (cons script-name (cdr args))))
 	   )))
-      (list debugger-args script-args)))))
+      (list interpreter-args nil script-args)))))
 
 (defvar nodejs-command-name) ; # To silence Warning: reference to free variable
 (defun realgud:nodejs-suggest-invocation (debugger-name)

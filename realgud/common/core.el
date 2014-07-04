@@ -209,7 +209,8 @@ marginal icons is reset."
       (with-current-buffer cmdproc-buffer
 	(and (realgud-cmdbuf?) (not no-reset) (realgud-reset))
 	(setq default-directory default-directory)
-	(insert "Current directory is " default-directory "\n")
+	(insert "Current directory: " default-directory "\n")
+ 	(insert "Command: " (mapconcat 'identity cmd-args " ") "\n")
 
 	;; For term.el
 	;; (term-mode)
@@ -235,16 +236,18 @@ marginal icons is reset."
 
 	(setq process (get-buffer-process cmdproc-buffer))
 
-	(if (and process (eq 'run (process-status process)))
-	    (let ((src-buffer (find-file-noselect script-filename))
-		  (cmdline-list (cons program args)))
-	      ;; is this right?
-	      (point-max)
-	      (realgud-srcbuf-init src-buffer cmdproc-buffer))
+	(when (and process (eq 'run (process-status process)))
+	  (let ((src-buffer (find-file-noselect script-filename))
+		(cmdline-list (cons program args)))
+	    ;; is this right?
+	    (point-max)
+	    (realgud-srcbuf-init src-buffer cmdproc-buffer))
 	  (insert
 	   (format
-	    "Failed to invoke debugger %s on program %s with args %s"
-	    debugger-name program args)))
+	    "Failed to invoke debugger %s on program %s with args %s\n"
+	    debugger-name program (mapconcat 'identity args " ")))
+	  (error cmdproc-buffer)
+	  )
 	(process-put process 'buffer cmdproc-buffer)))
     cmdproc-buffer))
 
