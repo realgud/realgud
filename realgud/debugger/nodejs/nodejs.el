@@ -38,7 +38,6 @@ This should be an executable on your path, or an absolute file name."
 (declare-function nodejs-parse-cmd-args 'realgud:nodejs-core)
 (declare-function realgud:run-process   'realgud:run)
 
-; ### FIXME: DRY with other top-level routines
 ;;;###autoload
 (defun realgud:nodejs (&optional opt-cmd-line no-reset)
   "Invoke the nodejs shell debugger and start the Emacs user interface.
