@@ -6,6 +6,7 @@
 		       "realgud-")
 (require-relative-list '("init") "realgud:nodejs-")
 
+(declare-function realgud:expand-file-name-if-exists 'realgud-core)
 (declare-function realgud-parse-command-arg  'realgud-core)
 (declare-function realgud-query-cmdline      'realgud-core)
 (declare-function realgud-suggest-invocation 'realgud-core)
@@ -40,12 +41,12 @@ We return the a list containing
 * the script name and its arguments - list of strings
 * whether the annotate or emacs option was given ('-A', '--annotate' or '--emacs) - a boolean
 
-For example for the following input
+For example for the following input:
   (map 'list 'symbol-name
    '(node --interactive --debugger-port 5858 /tmp nodejs ./gcd.js a b))
 
 we might return:
-   ((\"node\" \"--interactive\" \"--debugger-port\" \"5858\") nil (\"./gcd.js\" \"a\" \"b\"))
+   ((\"node\" \"--interactive\" \"--debugger-port\" \"5858\") nil (\"/tmp/gcd.js\" \"a\" \"b\"))
 
 Note that path elements have been expanded via `expand-file-name'.
 "
@@ -72,7 +73,7 @@ Note that path elements have been expanded via `expand-file-name'.
 	)
     (if (not (and args))
 	;; Got nothing: return '(nil, nil, nil)
-	(list interpreter-args script-args)
+	(list interpreter-args nil script-args)
       ;; else
       (progn
 	;; Remove "nodejs" from "nodejs --nodejs-options script
@@ -100,11 +101,12 @@ Note that path elements have been expanded via `expand-file-name'.
 			  args nodejs-two-args nodejs-opt-two-args))
 	      (nconc interpreter-args (car pair))
 	      (setq args (cadr pair)))
-	   ;; Anything else must be the script to debug.
-	     (t (setq script-name (expand-file-name arg))
-	      (setq script-args (cons script-name (cdr args))))
-	   )))
-      (list interpreter-args nil script-args)))))
+	     ;; Anything else must be the script to debug.
+	     (t (setq script-name (realgud:expand-file-name-if-exists arg))
+	       (setq script-args (cons script-name (cdr args))))
+	     )))
+	(list interpreter-args nil script-args)))
+    ))
 
 (defvar nodejs-command-name) ; # To silence Warning: reference to free variable
 (defun realgud:nodejs-suggest-invocation (debugger-name)

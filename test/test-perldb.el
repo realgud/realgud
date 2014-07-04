@@ -1,13 +1,22 @@
 (require 'test-simple)
 (load-file "../realgud/debugger/perldb/perldb.el")
+
+(declare-function realgud:perldb-parse-cmd-args 'realgud:perldb)
+(declare-function realgud:perldb        'realgud:perldb)
+(declare-function __FILE__              'require-relative)
+
 (declare-function realgud-perldb-parse-cmd-args 'realgud-perldb)
 (test-simple-start)
 
 (note "realgud:perldb-parse-cmd-args")
-(assert-equal '(("perl" "-W" "-d") ("gcd.rb" "a" "b"))
+(assert-equal (list
+	       '("perl" "-W" "-d") nil
+	       (list (expand-file-name"gcd.rb") "a" "b"))
 	      (realgud:perldb-parse-cmd-args
 	       '("perl" "-W" "-d" "gcd.rb" "a" "b")))
-(assert-equal '(("perl5.10.1" "-C" "/tmp" "-d") ("gcd.rb"))
+(assert-equal (list
+	       '("perl5.10.1" "-C" "/tmp" "-d") nil
+		(list (expand-file-name "gcd.rb")))
 	      (realgud:perldb-parse-cmd-args
 	       '("perl5.10.1" "-C" "/tmp" "-d" "gcd.rb")))
 

@@ -24,8 +24,8 @@
 
 (realgud-perl-populate-command-keys perldb-track-mode-map )
 
-(defun realgud:perldb-track-mode-hook()
-  (if realgud:perldb-track-mode
+(defun perldb-track-mode-hook()
+  (if perldb-track-mode
       (progn
 	(use-local-map perldb-track-mode-map)
 	(message "using perldb mode map")
@@ -33,7 +33,7 @@
     (message "perldb track-mode-hook disable called"))
 )
 
-(define-minor-mode realgud:perldb-track-mode
+(define-minor-mode perldb-track-mode
   "Minor mode for tracking perl5db source locations inside a process shell via realgud. perl5db is the stock Perl debugger.
 
 If called interactively with no prefix argument, the mode is toggled. A prefix argument, captured as ARG, enables the mode if the argument is positive, and disables it otherwise.
@@ -48,10 +48,10 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   :keymap perldb-track-mode-map
 
   (realgud-track-set-debugger "perldb")
-  (if realgud:perldb-track-mode
+  (if perldb-track-mode
       (progn
-	(setq realgud-track-mode 't)
-	(run-mode-hooks (intern (realgud:perldb-track-mode-hook))))
+	(realgud-track-mode-setup 't)
+	(run-mode-hooks (intern (perldb-track-mode-hook))))
     (progn
       (setq realgud-track-mode nil)
       ))

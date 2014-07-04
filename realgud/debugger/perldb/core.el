@@ -1,4 +1,4 @@
-;;; Copyright (C) 2011, 2013 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011, 2013-2014 Rocky Bernstein <rocky@gnu.org>
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
@@ -8,9 +8,10 @@
 		       "realgud-")
 (require-relative-list '("init") "realgud:perldb-")
 
-(declare-function realgud-lang-mode? 'realgud-lang)
-(declare-function realgud-parse-command-arg 'realgud-core)
-(declare-function realgud-query-cmdline 'realgud-core)
+(declare-function realgud-lang-mode?         'realgud-lang)
+(declare-function realgud:expand-file-name-if-exists 'realgud-core)
+(declare-function realgud-parse-command-arg  'realgud-core)
+(declare-function realgud-query-cmdline      'realgud-core)
 (declare-function realgud-suggest-invocation 'realgud-core)
 
 ;; FIXME: I think the following could be generalized and moved to
@@ -32,26 +33,27 @@
    'realgud:perldb-minibuffer-history
    opt-debugger))
 
+;;; FIXME: DRY this with other *-parse-cmd-args routines
 (defun realgud:perldb-parse-cmd-args (orig-args)
   "Parse command line ARGS for the annotate level and name of script to debug.
 
-ARGS should contain a tokenized list of the command line to run.
+ORIG-ARGS should contain a tokenized list of the command line to run.
 
 We return the a list containing
 
-- the command processor (e.g. perl) and it's arguments if any - a
+* the command processor (e.g. perl) and it's arguments if any - a
   list of strings
 
-- the script name and its arguments - list of strings
+* the script name and its arguments - list of strings
 
-For example for the following input
+For example for the following input:
   (map 'list 'symbol-name
    '(perl -W -C /tmp -d ./gcd.pl a b))
 
 we might return:
-   ((perl -W -C -d) (./gcd.pl a b))
+   ((\"perl\" \"-W\" \"-C\" \"-d\") nil (\"/tmp/gcd.pl\" \"a\" \"b\"))
 
-NOTE: the above should have each item listed in quotes.
+Note that path elements have been expanded via `expand-file-name'.
 "
 
   ;; Parse the following kind of pattern:
@@ -81,24 +83,30 @@ NOTE: the above should have each item listed in quotes.
 	)
 
     (if (not (and args))
-	;; Got nothing: return '(nil, nil)
-	(list interpreter-args script-args)
+	;; Got nothing
+	(list interpreter-args nil script-args)
       ;; else
-      ;; Strip off optional "perl" or "perl5.10.1" etc.
+      ;; Remove "perl" or "perl5.10.1" etc.
       (when (string-match interp-regexp
 			  (file-name-sans-extension
 			   (file-name-nondirectory (car args))))
 	(setq interpreter-args (list (pop args)))
 
-	;; Strip off Perl-specific options
-	(while (and args
-		    (string-match "^-" (car args)))
-	  (setq pair (realgud-parse-command-arg
-		      args perl-two-args perl-opt-two-args))
-	  (nconc interpreter-args (car pair))
-	  (setq args (cadr pair))))
-
-      (list interpreter-args args))
+	;; Skip to the first non-option argument
+	(while (and args (not script-name))
+	  (let ((arg (car args)))
+	    (cond
+	     ;; Options with arguments.
+	     ((string-match "^-" (car args))
+	      (setq pair (realgud-parse-command-arg
+			  args perl-two-args perl-opt-two-args))
+	      (nconc interpreter-args (car pair))
+	      (setq args (cadr pair)))
+	     ;; Anything else must be the script to debug.
+	     (t (setq script-name (realgud:expand-file-name-if-exists arg))
+		(setq script-args (cons script-name (cdr args))))
+	     )))
+	(list interpreter-args nil script-args)))
     ))
 
 ; # To silence Warning: reference to free variable

@@ -68,7 +68,8 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   (if trepan-track-mode
       (progn
 	(realgud-track-mode-setup 't)
-	(trepan-track-mode-hook))
+	(setq trepan-track-mode nil)
+	(run-mode-hooks (intern (trepan-track-mode-hook))))
     (progn
       (setq realgud-track-mode nil)
       ))

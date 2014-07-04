@@ -4,7 +4,7 @@
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("../../common/run")    "realgud:")
-(require-relative-list '("core" "track-mode") "realgud:nodejs-")
+(require-relative-list '("core" "track-mode")   "realgud:nodejs-")
 
 (declare-function realgud:nodejs-remove-ansi-shmutz 'realgud-core)
 (declare-function realgud:run-debugger 'realgud:run)
