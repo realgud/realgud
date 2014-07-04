@@ -1,8 +1,8 @@
 ;;; Copyright (C) 2010-2014 Rocky Bernstein <rocky@gnu.org>
 ;;  `trepan3k' Main interface to trepan3k via Emacs
 (require 'load-relative)
-(require-relative-list '("../../common/helper"
-			 "../../common/track") "realgud-")
+(require-relative-list '("../../common/helper") "realgud-")
+(require-relative-list '("../../common/run")    "realgud:")
 (require-relative-list '("core" "track-mode") "realgud:trepan3k-")
 
 ;; This is needed, or at least the docstring part of it is needed to
@@ -16,10 +16,10 @@
 
 (declare-function trepan3k-query-cmdline  'realgud:trepan3k-core)
 (declare-function trepan3k-parse-cmd-args 'realgud:trepan3k-core)
-(declare-function realgud-run-process 'realgud-core)
+(declare-function realgud:run-debugger    'realgud:run)
 
 ;; -------------------------------------------------------------------
-;; User definable variables
+;; User-definable variables
 ;;
 
 (defcustom trepan3k-command-name
@@ -37,31 +37,25 @@ This should be an executable on your path, or an absolute file name."
 ;;
 
 ;;;###autoload
-(defun realgud:trepan3k (&optional opt-command-line no-reset)
+(defun realgud:trepan3k (&optional opt-cmd-line no-reset)
   "Invoke the trepan3k Python debugger and start the Emacs user interface.
 
-String COMMAND-LINE specifies how to run trepan3k.
+String OPT-CMD-LINE is treated like a shell string; arguments are
+tokenized by `split-string-and-unquote'. The tokenized string is
+parsed by `trepan2-parse-cmd-args' and path elements found by that
+are expanded using `expand-file-name'.
 
-Normally command buffers are reused when the same debugger is
+Normally, command buffers are reused when the same debugger is
 reinvoked inside a command buffer with a similar command. If we
 discover that the buffer has prior command-buffer information and
 NO-RESET is nil, then that information which may point into other
 buffers and source buffers which may contain marks and fringe or
-marginal icons is reset."
-
-
+marginal icons is reset. See `loc-changes-clear-buffer' to clear
+fringe and marginal icons.
+"
   (interactive)
-  (let* (
-	 (cmd-str (or opt-command-line (trepan3k-query-cmdline
-					"trepan3k")))
-	 (cmd-args (split-string-and-unquote cmd-str))
-	 (parsed-args (trepan3k-parse-cmd-args cmd-args))
-	 (script-args (cdr cmd-args))
-	 (script-name (car script-args))
-	 (cmd-buf))
-    (realgud-run-process "trepan3k" script-name cmd-args
-		      'trepan3k-track-mode no-reset)
-    )
+  (realgud:run-debugger "trepan3k" 'trepan3k-query-cmdline 'trepan3k-parse-cmd-args
+			'trepan3k-track-mode-hook opt-cmd-line no-reset)
   )
 
 

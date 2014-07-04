@@ -8,6 +8,11 @@
                        "realgud-")
 (require-relative-list '("init") "realgud:trepan-")
 
+(declare-function realgud:expand-file-name-if-exists 'realgud-core)
+(declare-function realgud-parse-command-arg  'realgud-core)
+(declare-function realgud-query-cmdline      'realgud-core)
+(declare-function realgud-suggest-invocation 'realgud-core)
+
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
 (defvar trepan-minibuffer-history nil
@@ -20,29 +25,29 @@
 
 ;; FIXME: I think this code and the keymaps and history
 ;; variable chould be generalized, perhaps via a macro.
-(defun trepan-query-cmdline (&optional opt-debugger)
+(defun realgud:trepan-query-cmdline (&optional opt-debugger)
   (realgud-query-cmdline
    'trepan-suggest-invocation
    trepan-minibuffer-local-map
    'trepan-minibuffer-history
    opt-debugger))
 
-(defun trepan-parse-cmd-args (orig-args)
+(defun realgud:trepan-parse-cmd-args (orig-args)
   "Parse command line ARGS for the annotate level and name of script to debug.
 
-ARGS should contain a tokenized list of the command line to run.
+ORIG-ARGS should contain a tokenized list of the command line to run.
 
 We return the a list containing
 
-- the command processor (e.g. ruby) and it's arguments if any - a
+* the command processor (e.g. ruby) and it's arguments if any - a
   list of strings
 
-- the name of the debugger given (e.g. trepan) and its arguments
+* the name of the debugger given (e.g. trepan) and its arguments
   - a list of strings
 
-- the script name and its arguments - list of strings
+* the script name and its arguments - list of strings
 
-- whether the annotate or emacs option was given ('-A',
+* whether the annotate or emacs option was given ('-A',
   '--annotate' or '--emacs) - a boolean
 
 For example for the following input
@@ -52,7 +57,7 @@ For example for the following input
 we might return:
    ((ruby1.9 -W -C) (trepan --emacs) (./gcd.rb a b) 't)
 
-NOTE: the above should have each item listed in quotes.
+Note that the script name path has been expanded via `expand-file-name'.
 "
 
   ;; Parse the following kind of pattern:
@@ -131,8 +136,8 @@ NOTE: the above should have each item listed in quotes.
             (nconc debugger-args (car pair))
             (setq args (cadr pair)))
            ;; Anything else must be the script to debug.
-           (t (setq script-name arg)
-              (setq script-args args))
+	   (t (setq script-name (realgud:expand-file-name-if-exists arg))
+	      (setq script-args (cons script-name (cdr args))))
            )))
       (list interpreter-args debugger-args script-args annotate-p))))
 

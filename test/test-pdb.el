@@ -3,7 +3,7 @@
 
 (eval-when-compile (defvar test:run-process-save))
 
-(declare-function pdb-parse-cmd-args 'realgud:pdb)
+(declare-function pdb-parse-cmd-args 'realgud:pdb-core)
 (declare-function realgud:pdb        'realgud:pdb)
 (declare-function __FILE__           'require-relative)
 

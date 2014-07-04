@@ -3,7 +3,6 @@
 (require 'list-utils)
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
-(require-relative-list '("../../common/track")  "realgud-")
 (require-relative-list '("../../common/run")    "realgud:")
 (require-relative-list '("core" "track-mode")   "realgud:bashdb-")
 
@@ -16,7 +15,7 @@
   :version "23.1")
 
 ;; -------------------------------------------------------------------
-;; User definable variables
+;; User-definable variables
 ;;
 
 (defcustom bashdb-command-name

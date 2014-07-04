@@ -1,11 +1,9 @@
 ;;; Copyright (C) 2012, 2014 Rocky Bernstein <rocky@gnu.org>
 ;;  `pdb' Main interface to pdb via Emacs
-(require 'list-utils)
 (require 'load-relative)
-(require-relative-list '("../../common/helper"
-			 "../../common/track") "realgud-")
-(require-relative-list '("../../common/run")   "realgud:")
-(require-relative-list '("core" "track-mode")  "realgud:pdb-")
+(require-relative-list '("core" "track-mode") "realgud:pdb-")
+(require-relative-list '("../../common/run")  "realgud:")
+(require-relative-list '("core" "track-mode") "realgud:pdb-")
 
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
@@ -17,7 +15,7 @@
   :version "23.1")
 
 ;; -------------------------------------------------------------------
-;; User definable variables
+;; User-definable variables
 ;;
 
 (defcustom pdb-command-name
@@ -35,7 +33,6 @@ This should be an executable on your path, or an absolute file name."
 (declare-function pdb-parse-cmd-args   'realgud:pdb-core)
 (declare-function realgud:run-debugger 'realgud:run)
 
-; ### FIXME: DRY with other top-level routines
 ;;;###autoload
 (defun realgud:pdb (&optional opt-cmd-line no-reset)
   "Invoke the pdb Python debugger and start the Emacs user interface.

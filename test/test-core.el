@@ -6,8 +6,8 @@
 (load-file "../realgud/common/core.el")
 
 (declare-function realgud:expand-file-name-if-exists 'realgud-core)
-(declare-function realgud-parse-command-arg, 'realgud-core)
-(declare-function trepan-parse-cmd-args      'realgud:trepan)
+(declare-function realgud-parse-command-arg,     'realgud-core)
+(declare-function realgud:trepan-parse-cmd-args  'realgud:trepan)
 
 ;; We use a specific language to test core. Here we use trepan.
 (load-file "../realgud/debugger/trepan/core.el")
@@ -56,27 +56,27 @@
 
   (assert-equal
    '(("/usr/bin/ruby1.9" "-W") ("trepan") ("foo") nil)
-   (trepan-parse-cmd-args
+   (realgud:trepan-parse-cmd-args
     '("/usr/bin/ruby1.9" "-W" "trepan" "foo"))
      "Separate Ruby with its arg from debugger and its arg.")
 
   (assert-equal
    '(("ruby1.9" "-T3") ("trepan" "--port" "123") ("bar") nil)
-   (trepan-parse-cmd-args
+   (realgud:trepan-parse-cmd-args
     '("ruby1.9" "-T3" "trepan" "--port" "123" "bar"))
    "Ruby with two args and trepan with two args")
 
   (assert-equal
    '(nil ("trepan" "--port" "1" "--annotate=3")
 	 ("foo" "a") t)
-   (trepan-parse-cmd-args
+   (realgud:trepan-parse-cmd-args
     '("trepan" "--port" "1" "--annotate=3" "foo" "a"))
   "trepan with annotate args")
 
   (assert-equal
    '(nil ("trepan" "--port" "123")
 	 ("foo" "--emacs" "a") nil)
-   (trepan-parse-cmd-args
+   (realgud:trepan-parse-cmd-args
     '("trepan" "--port" "123" "foo" "--emacs" "a"))
    "trepan with --emacs in the wrong place")
 
@@ -84,7 +84,7 @@
    '(("ruby" "-I/usr/lib/ruby")
      ("trepan" "-h" "foo" "--emacs")
      ("baz") t)
-   (trepan-parse-cmd-args
+   (realgud:trepan-parse-cmd-args
     '("ruby" "-I/usr/lib/ruby" "trepan" "-h" "foo"
       "--emacs" "baz"))
      "trepan with emacs")
