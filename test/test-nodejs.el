@@ -24,7 +24,7 @@
     ))
 
 (note "nodejs-parse-cmd-args")
-(assert-equal (list '("node" "debug") (list (expand-file-name "foo")))
+(assert-equal (list '("node" "debug") nil (list (expand-file-name "foo")))
 	      (nodejs-parse-cmd-args '("node" "debug" "foo")))
 
 ;; FIXME: need to mock remove-ansi-schmutz in realgud:nodejs

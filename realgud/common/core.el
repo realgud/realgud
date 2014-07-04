@@ -236,12 +236,13 @@ marginal icons is reset."
 
 	(setq process (get-buffer-process cmdproc-buffer))
 
-	(when (and process (eq 'run (process-status process)))
+	(if (and process (eq 'run (process-status process)))
 	  (let ((src-buffer (find-file-noselect script-filename))
 		(cmdline-list (cons program args)))
 	    ;; is this right?
 	    (point-max)
 	    (realgud-srcbuf-init src-buffer cmdproc-buffer))
+	  ;; else
 	  (insert
 	   (format
 	    "Failed to invoke debugger %s on program %s with args %s\n"
