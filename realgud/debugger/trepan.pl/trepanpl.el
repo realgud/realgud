@@ -1,6 +1,5 @@
 ;;; Copyright (C) 2011, 2014 Rocky Bernstein <rocky@gnu.org>
 ;;  `trepanpl' Main interface to trepanpl via Emacs
-(require 'list-utils)
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("../../common/track")  "realgud-")
@@ -57,10 +56,23 @@ marginal icons is reset. See `loc-changes-clear-buffer' to clear
 fringe and marginal icons.
 "
   (interactive)
-  (realgud:run-debugger "trepan.pl" 'realgud:trepanpl-query-cmdline
-			'realgud:trepanpl-parse-cmd-args
-			'realgud:trepanpl-track-mode-hook opt-cmd-line no-reset)
-  )
+  (let ((cmdbuf
+	(realgud:run-debugger "trepan.pl" 'realgud:trepanpl-query-cmdline
+			      'realgud:trepanpl-parse-cmd-args
+			      'realgud:trepanpl-track-mode-hook opt-cmd-line no-reset)))
+    ;; FIXME: Move the below into realgud:run-debugger by passing a
+    ;; minibuffer-history list. The calculation to get a string is
+    ;; already done there.
+    (require 'list-utils)
+    (declare-function list-utils-uniq 'list-utils)
+    (if cmdbuf
+	(let* ((info realgud-cmdbuf-info)
+	       (cmd-args (realgud-cmdbuf-info-cmd-args info))
+	       (cmd-str  (mapconcat 'identity  cmd-args " ")))
+	(push cmd-str trepanpl-minibuffer-history)
+	(setq trepanpl-minibuffer-history (list-utils-uniq trepanpl-minibuffer-history))
+	))
+    ))
 
 (defalias 'trepan.pl 'realgud:trepanpl)
 (provide-me "realgud-")

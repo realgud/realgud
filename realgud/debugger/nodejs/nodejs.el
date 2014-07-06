@@ -23,7 +23,7 @@
 
 (defcustom nodejs-command-name
   "node debug"
-  "File name for executing the Ruby debugger and command options.
+  "File name for executing the Javascript debugger and command options.
 This should be an executable on your path, or an absolute file name."
   :type 'string
   :group 'nodejs)
