@@ -3,11 +3,12 @@
 
 (require 'list-utils)
 (require 'load-relative)
-(require-relative-list '("core") "realgud-")
+(require-relative-list '("core" "track") "realgud-")
 (require-relative-list '("buffer/command") "realgud-buffer-")
 
 (declare-function realgud-cmdbuf-info-in-debugger?=   'realgud-buffer-command)
 (declare-function realgud-cmdbuf-info-cmd-args=       'realgud-buffer-command)
+(declare-function realgud-track-set-debugger          'realgud-track)
 
 (defun realgud:run-process(debugger-name script-filename cmd-args
 				      track-mode-hook &optional no-reset)
@@ -30,7 +31,7 @@ buffer or nil is returned."
       (if (and process (eq 'run (process-status process)))
 	  (progn
 	    (switch-to-buffer cmd-buf)
-	    (funcall track-mode-hook)
+	    (realgud-track-set-debugger debugger-name)
 	    (realgud-cmdbuf-info-in-debugger?= 't)
 	    (realgud-cmdbuf-info-cmd-args= cmd-args)
 	    )

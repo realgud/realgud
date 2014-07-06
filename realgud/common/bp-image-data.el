@@ -1,3 +1,4 @@
+(require 'load-relative)
 (defconst realgud-bp-xpm-data
         "/* XPM */
 static char *magick[] = {

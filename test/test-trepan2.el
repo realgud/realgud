@@ -1,6 +1,8 @@
 (require 'test-simple)
 (load-file "../realgud/debugger/trepan2/trepan2.el")
 (declare-function trepan2-parse-cmd-args 'realgud:trepan2)
+(declare-function __FILE__               'require-relative)
+
 
 (test-simple-start)
 

@@ -15,7 +15,8 @@
 
 (require-relative-list  '("buffer/command") "realgud-buffer-")
 
-(declare-function realgud-track-set-debugger 'realgud-track)
+(declare-function realgud-populate-debugger-menu 'realgud-menu)
+(declare-function realgud-track-set-debugger     'realgud-track)
 
 (defvar realgud-backtrack-mode-map
   (let ((map (make-sparse-keymap)))

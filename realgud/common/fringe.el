@@ -1,5 +1,7 @@
 ;;; Copyright (C) 2010, 2012, 2014 Rocky Bernstein <rocky@gnu.org>
 ;; Fringe marks for history of stopping points
+(require 'load-relative)
+(require-relative-list '("helper" ) "realgud-")
 
 (declare-function realgud-loc-hist-item-at       'realgud-lochist)
 
