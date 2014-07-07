@@ -1,7 +1,12 @@
 (require 'test-simple)
+(load-file "../realgud/common/buffer/command.el")
 (load-file "../realgud/debugger/trepan.pl/trepanpl.el")
 
-(eval-when-compile (defvar test:run-process-save))
+(eval-when-compile
+  (defvar temp-cmdbuf)
+  (defvar test:run-process-save)
+  (defvar realgud-pat-hash)
+)
 
 (declare-function realgud:trepanpl-parse-cmd-args 'realgud:trepanpl)
 (declare-function realgud:trepanpl                'realgud:trepanpl)
@@ -23,7 +28,9 @@
     (assert-equal (list "-I" (expand-file-name ".") expanded-name "3" "5")
 		  (cdr cmd-args) "command args listified")
     (assert-equal 'realgud:trepanpl-track-mode-hook track-mode-func)
-    ))
+    )
+  nil
+  )
 
 (note "realgud:trepanpl-parse-cmd-args")
 (assert-equal (list nil '("trepan.pl") '("foo"))

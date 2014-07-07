@@ -65,7 +65,7 @@ fringe and marginal icons.
     ;; already done there.
     (require 'list-utils)
     (declare-function list-utils-uniq 'list-utils)
-    (if cmdbuf
+    (if (and cmdbuf realgud-cmdbuf-info)
 	(let* ((info realgud-cmdbuf-info)
 	       (cmd-args (realgud-cmdbuf-info-cmd-args info))
 	       (cmd-str  (mapconcat 'identity  cmd-args " ")))
