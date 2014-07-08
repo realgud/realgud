@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2011, 2012 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2012, 2014 Rocky Bernstein <rocky@gnu.org>
 ;;  `pydbgr' Main interface to pydbgr via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper"
@@ -14,8 +14,13 @@
   :group 'python
   :version "23.1")
 
+(declare-function pydbgr-query-cmdline  'realgud-pydbgr-core)
+(declare-function pydbgr-parse-cmd-args 'realgud-pydbgr-core)
+(declare-function pydbgr-track-mode     'realgud:pydbgr-track-mode)
+(declare-function realgud:run-debugger  'realgud:run)
+
 ;; -------------------------------------------------------------------
-;; User definable variables
+;; User-definable variables
 ;;
 
 (defcustom pydbgr-command-name
@@ -26,43 +31,34 @@ This should be an executable on your path, or an absolute file name."
   :type 'string
   :group 'pydbgr)
 
-(declare-function pydbgr-track-mode (bool))
-(declare-function pydbgr-query-cmdline  'realgud-pydbgr-core)
-(declare-function pydbgr-parse-cmd-args 'realgud-pydbgr-core)
-(declare-function realgud-run-process 'realgud-core)
-
 ;; -------------------------------------------------------------------
 ;; The end.
 ;;
 
 ;;;###autoload
-(defun realgud-pydbgr (&optional opt-command-line no-reset)
+(defun realgud-pydbgr (&optional opt-cmd-line no-reset)
   "Invoke the pydbgr Python debugger and start the Emacs user interface.
 
-String COMMAND-LINE specifies how to run pydbgr.
+String OPT-CMD-LINE is treated like a shell string; arguments are
+tokenized by `split-string-and-unquote'. The tokenized string is
+parsed by `pydbgr-parse-cmd-args' and path elements found by that
+are expanded using `expand-file-name'.
 
-Normally command buffers are reused when the same debugger is
+Normally, command buffers are reused when the same debugger is
 reinvoked inside a command buffer with a similar command. If we
 discover that the buffer has prior command-buffer information and
 NO-RESET is nil, then that information which may point into other
 buffers and source buffers which may contain marks and fringe or
-marginal icons is reset."
-
-
+marginal icons is reset. See `loc-changes-clear-buffer' to clear
+fringe and marginal icons.
+"
   (interactive)
-  (let* (
-	 (cmd-str (or opt-command-line (pydbgr-query-cmdline
-					"pydbgr")))
-	 (cmd-args (split-string-and-unquote cmd-str))
-	 (parsed-args (pydbgr-parse-cmd-args cmd-args))
-	 (script-args (cdr cmd-args))
-	 (script-name (car script-args))
-	 (cmd-buf))
-    (realgud-run-process "pydbgr" script-name cmd-args
-		      'pydbgr-track-mode no-reset)
-    )
+  (realgud:run-debugger "pydbgr"
+			'pydbgr-query-cmdline
+			'pydbgr-parse-cmd-args
+			'pydbgr-track-mode-hook
+			opt-cmd-line no-reset)
   )
-
 
 (defalias 'pydbgr 'realgud-pydbgr)
 

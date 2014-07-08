@@ -2,11 +2,7 @@
 (load-file "../realgud/common/buffer/command.el")
 (load-file "../realgud/debugger/trepan.pl/trepanpl.el")
 
-(eval-when-compile
-  (defvar temp-cmdbuf)
-  (defvar test:run-process-save)
-  (defvar realgud-pat-hash)
-)
+(eval-when-compile (defvar test:run-process-save))
 
 (declare-function realgud:trepanpl-parse-cmd-args 'realgud:trepanpl)
 (declare-function realgud:trepanpl                'realgud:trepanpl)
@@ -29,7 +25,7 @@
 		  (cdr cmd-args) "command args listified")
     (assert-equal 'realgud:trepanpl-track-mode-hook track-mode-func)
     )
-  nil
+  nil ;; Make sure trepanpl doesn't try to do anything with cmdbuf
   )
 
 (note "realgud:trepanpl-parse-cmd-args")

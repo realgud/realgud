@@ -16,6 +16,7 @@
 
 (declare-function trepan2-query-cmdline  'realgud:trepan2-core)
 (declare-function trepan2-parse-cmd-args 'realgud:trepan2-core)
+(declare-function trepan2-track-mode     'realgud:pydbgr-track-mode)
 (declare-function realgud:run-debugger   'realgud:run)
 
 ;; -------------------------------------------------------------------
@@ -30,7 +31,6 @@ This should be an executable on your path, or an absolute file name."
   :type 'string
   :group 'trepan2)
 
-(declare-function trepan2-track-mode (bool))
 
 ;; -------------------------------------------------------------------
 ;; The end.
@@ -54,8 +54,11 @@ marginal icons is reset. See `loc-changes-clear-buffer' to clear
 fringe and marginal icons.
 "
   (interactive)
-  (realgud:run-debugger "trepan2" 'trepan2-query-cmdline 'trepan2-parse-cmd-args
-			'trepan2-track-mode-hook opt-cmd-line no-reset)
+  (realgud:run-debugger "trepan2"
+			'trepan2-query-cmdline
+			'trepan2-parse-cmd-args
+			'trepan2-track-mode-hook
+			opt-cmd-line no-reset)
   )
 
 

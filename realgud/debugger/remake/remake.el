@@ -16,7 +16,7 @@
 
 (declare-function remake-query-cmdline  'realgud:remake-core)
 (declare-function remake-parse-cmd-args 'realgud:remake-core)
-(declare-function realgud-run-process   'realgud-core)
+(declare-function realgud:run-process   'realgud:run)
 
 ;; -------------------------------------------------------------------
 ;; User definable variables
@@ -41,7 +41,7 @@ This should be an executable on your path, or an absolute file name."
 	 (makefile-name (or (cadr parsed-args) "Makefile"))
 	 (makefile-args (caddr parsed-args))
 	 (cmd-buf))
-    (realgud-run-process "remake" makefile-name
+    (realgud:run-process "remake" makefile-name
 		      (cons remake-program makefile-args)
 		      'remake-track-mode no-reset)
 
