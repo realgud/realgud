@@ -1,11 +1,18 @@
 (require 'test-simple)
 (load-file "../realgud/debugger/remake/core.el")
 
+(declare-function __FILE__ 'require-relative)
+(declare-function remake-parse-cmd-args        'realgud-remake-core)
+(declare-function remake-suggest-Makefile      'realgud-remake-core)
+(declare-function remake-suggest-file-priority 'realgud-remake-core)
+
 (test-simple-start)
 
-(assert-equal '("remake" "Makefile" ("-X" "-f" "Makefile"))
+(assert-equal (list "remake" (expand-file-name "Makefile")
+		    (list "-X" "-f" (expand-file-name "Makefile")))
 	      (remake-parse-cmd-args
-	       '("remake" "-X" "-f" "Makefile")) "remake-parse-cmd-args")
+	       '("remake" "-X" "-f" "Makefile"))
+	      "remake-parse-cmd-args")
 
 (assert-equal "Makefile" (remake-suggest-Makefile) "remake-suggest-Makefile")
 

@@ -16,7 +16,7 @@
 
 (declare-function remake-query-cmdline  'realgud:remake-core)
 (declare-function remake-parse-cmd-args 'realgud:remake-core)
-(declare-function realgud:run-process   'realgud:run)
+(declare-function realgud:run-debugger  'realgud:run)
 
 ;; -------------------------------------------------------------------
 ;; User definable variables
@@ -31,40 +31,14 @@ This should be an executable on your path, or an absolute file name."
   :group 'remake)
 
 ;;;###autoload
-(defun realgud:remake-fn (&optional opt-cmd-line no-reset)
+(defun realgud:remake (&optional opt-cmd-line no-reset)
   "See `realgud:remake' for details"
-
-  (let* ((cmd-str (or opt-cmd-line (remake-query-cmdline "remake")))
-	 (cmd-args (split-string-and-unquote cmd-str))
-	 (parsed-args (remake-parse-cmd-args cmd-args))
-	 (remake-program (car parsed-args))
-	 (makefile-name (or (cadr parsed-args) "Makefile"))
-	 (makefile-args (caddr parsed-args))
-	 (cmd-buf))
-    (realgud:run-process "remake" makefile-name
-		      (cons remake-program makefile-args)
-		      'remake-track-mode no-reset)
-
-    ;; ;; Parse the command line and pick out the script name and whether
-    ;; ;; --annotate has been set.
-
-    ;; (condition-case nil
-    ;; 	(setq cmd-buf
-    ;; 	      (apply 'realgud-exec-shell "remake" makefile-name
-    ;; 		     remake-program no-reset makefile-args))
-    ;;   (error nil))
-    ;; ;; FIXME: Is there probably is a way to remove the
-    ;; ;; below test and combine in condition-case?
-    ;; (let ((process (get-buffer-process cmd-buf)))
-    ;;   (if (and process (eq 'run (process-status process)))
-    ;; 	  (progn
-    ;; 	    (switch-to-buffer cmd-buf)
-    ;; 	    (remake-track-mode 't)
-    ;; 	    (realgud-cmdbuf-info-cmd-args= cmd-args)
-    ;; 	    )
-    ;; 	(message "Error running remake command"))
-    ;;   )
-    )
+  (interactive)
+  (realgud:run-debugger "remake"
+			'remake-query-cmdline
+			'remake-parse-cmd-args
+			'remake-track-mode-hook
+			opt-cmd-line no-reset)
   )
 
 (defalias 'remake 'realgud:remake)

@@ -5,6 +5,11 @@
 (require-relative-list '("../../common/track" "../../common/core") "realgud-")
 (require-relative-list '("init") "realgud:kshdb-")
 
+(declare-function realgud:expand-file-name-if-exists 'realgud-core)
+(declare-function realgud-parse-command-arg  'realgud-core)
+(declare-function realgud-query-cmdline      'realgud-core)
+(declare-function realgud-suggest-invocation 'realgud-core)
+
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
 (defvar kshdb-minibuffer-history nil
@@ -24,6 +29,7 @@
    'kshdb-minibuffer-history
    opt-debugger))
 
+;;; FIXME: DRY this with other *-parse-cmd-args routines
 (defun kshdb-parse-cmd-args (orig-args)
   "Parse command line ARGS for the annotate level and name of script to debug.
 
@@ -121,8 +127,8 @@ NOTE: the above should have each item listed in quotes.
 	    (nconc debugger-args (car pair))
 	    (setq args (cadr pair)))
 	   ;; Anything else must be the script to debug.
-	   (t (setq script-name arg)
-	      (setq script-args args))
+	   (t (setq script-name (realgud:expand-file-name-if-exists arg))
+	       (setq script-args (cons script-name (cdr args))))
 	   )))
       (list interpreter-args debugger-args script-args annotate-p))))
 

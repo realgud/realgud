@@ -2,9 +2,20 @@
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
-(require-relative-list '("../../common/track" "../../common/core") "realgud-")
+(require-relative-list '("../../common/track" "../../common/core")
+		       "realgud-")
+(require-relative-list '("../../common/buffer/command")
+		       "realgud-buffer-")
 (require-relative-list '("init") "realgud:remake-")
 
+(declare-function realgud:expand-file-name-if-exists 'realgud-core)
+(declare-function realgud-parse-command-arg  'realgud-core)
+(declare-function realgud-query-cmdline      'realgud-core)
+(declare-function realgud-suggest-invocation 'realgud-core)
+(declare-function realgud-cmdbuf-command-string
+		                             'realgud-buffer-command)
+(declare-function realgud-cmdbuf-debugger-name
+		                             'realgud-buffer-command)
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
 (defvar remake-minibuffer-history nil
@@ -83,7 +94,8 @@ we might return:
 
 	   ((member arg '("--file" "--makefile" "-f"))
 	    (setq remake-args (nconc remake-args (list arg)))
-	    (setq makefile-name (pop args))
+	    (setq makefile-name (realgud:expand-file-name-if-exists
+				 (pop args)))
 	    (setq remake-args (nconc remake-args
 				     (list (format "%s" makefile-name)))))
 

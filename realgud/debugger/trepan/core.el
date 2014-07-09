@@ -129,6 +129,12 @@ Note that the script name path has been expanded via `expand-file-name'.
            ((string-match "^--annotate=[0-9]" arg)
             (nconc debugger-args (list (pop args)) )
             (setq annotate-p t))
+	   ;; path-argument options
+	   ((member arg '("--include" "-I" "--require" "-I"))
+	    (setq arg (pop args))
+	    (nconc debugger-args
+		   (list arg (realgud:expand-file-name-if-exists
+			      (pop args)))))
            ;; Options with arguments.
            ((string-match "^-" arg)
             (setq pair (realgud-parse-command-arg

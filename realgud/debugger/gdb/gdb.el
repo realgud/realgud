@@ -25,21 +25,22 @@ This should be an executable on your path, or an absolute file name."
   :type 'string
   :group 'realgud:gdb)
 
-(declare-function gdb-track-mode (bool))
+(declare-function realgud:gdb-track-mode     'realgud:gdb-track-mode)
 (declare-function realgud-command            'realgud:gdb-core)
 (declare-function realgud:gdb-parse-cmd-args 'realgud:gdb-core)
 (declare-function realgud:gdb-query-cmdline  'realgud:gdb-core)
-(declare-function realgud-run-process        'realgud-core)
+(declare-function realgud:run-process        'realgud-core)
 
 ;; -------------------------------------------------------------------
 ;; The end.
 ;;
 
+(require 'list-utils)
 ;;;###autoload
-(defun realgud:gdb (&optional opt-command-line no-reset)
+(defun realgud:gdb (&optional opt-cmd-line no-reset)
   "Invoke the gdb debugger and start the Emacs user interface.
 
-OPT-COMMAND-LINE is treated like a shell string; arguments are
+OPT-CMD-LINE is treated like a shell string; arguments are
 tokenized by `split-string-and-unquote'.
 
 Normally, command buffers are reused when the same debugger is
@@ -52,13 +53,16 @@ fringe and marginal icons.
 "
 
   (interactive)
-  (let* ((cmd-str (or opt-command-line (realgud:gdb-query-cmdline "gdb")))
+  (let* ((cmd-str (or opt-cmd-line (realgud:gdb-query-cmdline "gdb")))
 	 (cmd-args (split-string-and-unquote cmd-str))
 	 (parsed-args (realgud:gdb-parse-cmd-args cmd-args))
-	 (script-args (cdr cmd-args))
-	 (script-name (expand-file-name (car script-args)))
-	 (cmd-buf (realgud-run-process realgud:gdb-command-name (car script-args) cmd-args
-				     'realgud:gdb-track-mode nil))
+	 (script-args (caddr parsed-args))
+	 (script-name (car script-args))
+	 (parsed-cmd-args
+	  (remove-if 'nil (list-utils-flatten parsed-args)))
+	 (cmd-buf (realgud:run-process realgud:gdb-command-name
+				       script-name parsed-cmd-args
+				       'realgud:gdb-track-mode-hook nil))
 	 )
     (if cmd-buf
 	(with-current-buffer cmd-buf
@@ -66,27 +70,10 @@ fringe and marginal icons.
 	  )
       )
     )
-
-    ;; ;; Parse the command line and pick out the script name and whether
-    ;; ;; --annotate has been set.
-
-    ;; (condition-case nil
-    ;; 	(setq cmd-buf
-    ;; 	      (apply 'realgud-exec-shell "gdb" (car script-args)
-    ;; 		     (car cmd-args) nil
-    ;; 		     (cons script-name (cddr cmd-args))))
-    ;; (error nil))
-    ;; ;; FIXME: Is there probably is a way to remove the
-    ;; ;; below test and combine in condition-case?
-    ;; (let ((process (get-buffer-process cmd-buf)))
-    ;;   (if (and process (eq 'run (process-status process)))
-    ;; 	  (progn
-    ;; 	    (switch-to-buffer cmd-buf)
-    ;; 	    (realgud:gdb-track-mode 't)
-    ;; 	    (realgud-cmdbuf-info-cmd-args= cmd-args)
-    ;; 	    )
-    ;; 	(message "Error running gdb command"))
-    ;; )
-    )
+  )
 
 (provide-me "realgud-")
+
+;; Local Variables:
+;; byte-compile-warnings: (not cl-functions)
+;; End:

@@ -7,6 +7,7 @@
 			 "../../common/lang")
 		       "realgud-")
 
+(declare-function realgud:expand-file-name-if-exists 'realgud-core)
 (declare-function realgud-lang-mode? 'realgud-lang)
 (declare-function realgud-parse-command-arg 'realgud-core)
 (declare-function realgud-query-cmdline 'realgud-core)
@@ -34,21 +35,22 @@
 (defun realgud:gdb-parse-cmd-args (orig-args)
   "Parse command line ARGS for the annotate level and name of script to debug.
 
-ARGS should contain a tokenized list of the command line to run.
+ORIG_ARGS should contain a tokenized list of the command line to run.
 
 We return the a list containing
-- the name of the debugger given (e.g. gdb) and its arguments - a list of strings
-- the script name and its arguments - list of strings
-- whether the annotate or emacs option was given ('-A', '--annotate' or '--emacs) - a boolean
+* the name of the debugger given (e.g. gdb) and its arguments - a list of strings
+* nil (a placehoder in other routines of this ilk for a debugger
+* the script name and its arguments - list of strings
+* whether the annotate or emacs option was given ('-A', '--annotate' or '--emacs) - a boolean
 
 For example for the following input
   (map 'list 'symbol-name
-   '(gdb --tty /dev/pts/1 --emacs ./gcd.py a b))
+   '(gdb --tty /dev/pts/1 -cd ~ --emacs ./gcd.py a b))
 
 we might return:
-   ((gdb --tty /dev/pts/1 --emacs) (./gcd.py a b) 't)
+   ((\"gdb\" \"--tty\" \"/dev/pts/1\" \"-cd\" \"home/rocky\' \"--emacs\") nil \"(/tmp/gcd.py a b\") 't\")
 
-NOTE: the above should have each item listed in quotes.
+Note that path elements have been expanded via `expand-file-name'.
 "
 
   ;; Parse the following kind of pattern:
@@ -74,8 +76,8 @@ NOTE: the above should have each item listed in quotes.
 	(annotate-p nil))
 
     (if (not (and args))
-	;; Got nothing: return '(nil nil nil)
-	(list debugger-args script-args annotate-p)
+	;; Got nothing: return '(nil nil nil nil)
+	(list debugger-args nil script-args annotate-p)
       ;; else
       (progn
 
@@ -102,6 +104,12 @@ NOTE: the above should have each item listed in quotes.
 	     ((string-match "^--annotate=[0-9]" arg)
 	      (nconc debugger-args (list (pop args) (pop args)) )
 	      (setq annotate-p t))
+	     ;; path-argument ooptions
+	     ((member arg '("-cd" ))
+	      (setq arg (pop args))
+	      (nconc debugger-args
+		     (list arg (realgud:expand-file-name-if-exists
+				(pop args)))))
 	     ;; Options with arguments.
 	     ((string-match "^-" arg)
 	      (setq pair (realgud-parse-command-arg
@@ -112,7 +120,7 @@ NOTE: the above should have each item listed in quotes.
 	     (t (setq script-name arg)
 		(setq script-args args))
 	     )))
-	(list debugger-args script-args annotate-p)))))
+	(list debugger-args nil script-args annotate-p)))))
 
 (defvar realgud:gdb-command-name)
 (defun realgud:gdb-suggest-invocation (debugger-name)
