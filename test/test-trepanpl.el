@@ -5,7 +5,7 @@
 (eval-when-compile (defvar test:run-process-save))
 
 (declare-function realgud:trepanpl-parse-cmd-args 'realgud:trepanpl)
-(declare-function realgud:trepanpl                'realgud:trepanpl)
+(declare-function realgud:trepan.pl               'realgud:trepanpl)
 (declare-function __FILE__                        'require-relative)
 
 (test-simple-start)
@@ -41,7 +41,7 @@
 	      (realgud:trepanpl-parse-cmd-args
 	       '("trepan.pl" "gcd.pl" "foo")))
 
-(realgud:trepanpl "trepanpl -I . ./gcd.pl 3 5")
+(realgud:trepan.pl "trepanpl -I . ./gcd.pl 3 5")
 
 ;; Restore the old value of realgud:run-process
 (fset 'realgud:run-process test:run-process-save)
