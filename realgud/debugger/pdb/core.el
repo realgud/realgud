@@ -16,7 +16,7 @@
 
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
-(defvar pdb-minibuffer-history nil
+(defvar realgud:pdb-minibuffer-history nil
   "minibuffer history list for the command `pdb'.")
 
 (easy-mmode-defmap pdb-minibuffer-local-map
@@ -30,7 +30,7 @@
   (realgud-query-cmdline
    'pdb-suggest-invocation
    pdb-minibuffer-local-map
-   'pdb-minibuffer-history
+   'realgud:pdb-minibuffer-history
    opt-debugger))
 
 (defun pdb-parse-cmd-args (orig-args)
@@ -128,8 +128,9 @@ Note that the script name path has been expanded via `expand-file-name'.
 (defvar pdb-command-name) ; # To silence Warning: reference to free variable
 (defun pdb-suggest-invocation (debugger-name)
   "Suggest a pdb command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation pdb-command-name pdb-minibuffer-history
-			   "python" "\\.py"))
+  (realgud-suggest-invocation pdb-command-name
+			      realgud:pdb-minibuffer-history
+			      "python" "\\.py"))
 
 (defun pdb-reset ()
   "Pdb cleanup - remove debugger's internal buffers (frame,

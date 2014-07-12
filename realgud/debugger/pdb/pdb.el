@@ -54,8 +54,11 @@ marginal icons is reset. See `loc-changes-clear-buffer' to clear
 fringe and marginal icons.
 "
   (interactive)
-  (realgud:run-debugger "pdb" 'pdb-query-cmdline 'pdb-parse-cmd-args
-			'pdb-track-mode-hook opt-cmd-line no-reset)
+  (realgud:run-debugger "pdb" 'pdb-query-cmdline
+			'pdb-parse-cmd-args
+			'pdb-track-mode-hook
+			'realgud:pdb-minibuffer-history
+			opt-cmd-line no-reset)
   )
 
 

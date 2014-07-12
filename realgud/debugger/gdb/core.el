@@ -125,8 +125,9 @@ Note that path elements have been expanded via `expand-file-name'.
 (defvar realgud:gdb-command-name)
 (defun realgud:gdb-suggest-invocation (debugger-name)
   "Suggest a gdb command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation realgud:gdb-command-name realgud:gdb-minibuffer-history
-			   "c" "\\.\\([ch]\\)\\(pp\\)?")
+  (realgud-suggest-invocation realgud:gdb-command-name
+			      realgud:gdb-minibuffer-history
+			      "c" "\\.\\([ch]\\)\\(pp\\)?")
 )
 
 (defun realgud:gdb-reset ()

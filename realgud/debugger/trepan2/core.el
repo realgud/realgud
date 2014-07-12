@@ -15,8 +15,8 @@
 
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
-(defvar trepan2-minibuffer-history nil
-  "minibuffer history list for the command `trepan2'.")
+(defvar realgud:trepan2-minibuffer-history nil
+  "minibuffer history list for the command `realgud:trepan2'.")
 
 (easy-mmode-defmap trepan2-minibuffer-local-map
   '(("\C-i" . comint-dynamic-complete-filename))
@@ -29,7 +29,7 @@
   (realgud-query-cmdline
    'trepan2-suggest-invocation
    trepan2-minibuffer-local-map
-   'trepan2-minibuffer-history
+   'realgud:trepan2-minibuffer-history
    opt-debugger))
 
 (defun trepan2-parse-cmd-args (orig-args)
@@ -139,8 +139,9 @@ NOTE: the above should have each item listed in quotes.
 (defvar trepan2-command-name) ; # To silence Warning: reference to free variable
 (defun trepan2-suggest-invocation (debugger-name)
   "Suggest a trepan2 command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation trepan2-command-name trepan2-minibuffer-history
-			   "python" "\\.py"))
+  (realgud-suggest-invocation trepan2-command-name
+			      realgud:trepan2-minibuffer-history
+			      "python" "\\.py"))
 
 (defun trepan2-reset ()
   "Trepan2 cleanup - remove debugger's internal buffers (frame,

@@ -38,6 +38,7 @@ This should be an executable on your path, or an absolute file name."
 			'remake-query-cmdline
 			'remake-parse-cmd-args
 			'remake-track-mode-hook
+			'realgud:remake-minibuffer-history
 			opt-cmd-line no-reset)
   )
 

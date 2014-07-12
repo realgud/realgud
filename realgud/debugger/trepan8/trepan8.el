@@ -52,8 +52,11 @@ marginal icons is reset. See `loc-changes-clear-buffer' to clear
 fringe and marginal icons.
 "
   (interactive)
-  (realgud:run-debugger "trepan8" 'trepan8-query-cmdline 'trepan8-parse-cmd-args
-			'trepan8-track-mode-hook opt-cmd-line no-reset)
+  (realgud:run-debugger "trepan8" 'trepan8-query-cmdline
+			'trepan8-parse-cmd-args
+			'trepan8-track-mode-hook
+			'realgud:trepan8-minibuffer-history
+			opt-cmd-line no-reset)
   )
 
 (defalias 'trepan8 'realgud:trepan8)

@@ -12,7 +12,8 @@
 ;; Save value realgud:run-process and change it to something we want
 (setq test:run-process-save (symbol-function 'realgud:run-process))
 (defun realgud:run-process(debugger-name script-filename cmd-args
-				      track-mode-func &optional no-reset)
+				      track-mode-func minibuf-history
+				      &optional no-reset)
   "Fake realgud:run-process used in testing"
   (note
    (format "%s %s %s %S" debugger-name script-filename cmd-args

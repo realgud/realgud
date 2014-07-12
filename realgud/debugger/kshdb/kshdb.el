@@ -53,7 +53,8 @@ marginal icons is reset."
 	 (script-name (car script-args))
 	 (cmd-buf))
     (realgud-run-process "kshdb" script-name cmd-args
-		      'kshdb-track-mode no-reset)
+			 'realgud:kshdb-minibuffer-history
+			 'kshdb-track-mode no-reset)
     ))
 
 (defalias 'kshdb 'realgud:kshdb)

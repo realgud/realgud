@@ -14,8 +14,8 @@
 
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
-(defvar bashdb-minibuffer-history nil
-  "minibuffer history list for the command `bashdb'.")
+(defvar realgud:bashdb-minibuffer-history nil
+  "minibuffer history list for the command `realgud:bashdb'.")
 
 (easy-mmode-defmap bashdb-minibuffer-local-map
   '(("\C-i" . comint-dynamic-complete-filename))
@@ -28,7 +28,7 @@
   (realgud-query-cmdline
    'bashdb-suggest-invocation
    bashdb-minibuffer-local-map
-   'bashdb-minibuffer-history
+   'realgud:bashdb-minibuffer-history
    opt-debugger))
 
 ;;; FIXME: DRY this with other *-parse-cmd-args routines
@@ -151,8 +151,9 @@ Note that path elements have been expanded via `expand-file-name'.
 (defvar bashdb-command-name) ; # To silence Warning: reference to free variable
 (defun bashdb-suggest-invocation (debugger-name)
   "Suggest a bashdb command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation bashdb-command-name bashdb-minibuffer-history
-			   "Shell-script" "\\.sh$"))
+  (realgud-suggest-invocation bashdb-command-name
+			      realgud:bashdb-minibuffer-history
+			      "Shell-script" "\\.sh$"))
 
 (defun bashdb-reset ()
   "Bashdb cleanup - remove debugger's internal buffers (frame,

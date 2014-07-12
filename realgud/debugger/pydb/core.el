@@ -9,9 +9,14 @@
 (require-relative-list '("init") "realgud:pydb-")
 
 
+(declare-function realgud-lang-mode? 'realgud-lang)
+(declare-function realgud-parse-command-arg 'realgud-core)
+(declare-function realgud-query-cmdline 'realgud-core)
+(declare-function realgud-suggest-invocation 'realgud-core)
+
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
-(defvar pydb-minibuffer-history nil
+(defvar realgud:pydb-minibuffer-history nil
   "minibuffer history list for the command `pydb'.")
 
 (easy-mmode-defmap pydb-minibuffer-local-map
@@ -25,7 +30,7 @@
   (realgud-query-cmdline
    'pydb-suggest-invocation
    pydb-minibuffer-local-map
-   'pydb-minibuffer-history
+   'realgud:pydb-minibuffer-history
    opt-debugger))
 
 (defun pydb-parse-cmd-args (orig-args)
@@ -123,8 +128,9 @@ NOTE: the above should have each item listed in quotes.
 (defvar pydb-command-name) ; # To silence Warning: reference to free variable
 (defun pydb-suggest-invocation (debugger-name)
   "Suggest a pydb command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation pydb-command-name pydb-minibuffer-history
-			   "python" "\\.py"))
+  (realgud-suggest-invocation pydb-command-name
+			      realgud:pydb-minibuffer-history
+			      "python" "\\.py"))
 
 (defun pydb-reset ()
   "Pydb cleanup - remove debugger's internal buffers (frame,

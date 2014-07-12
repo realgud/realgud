@@ -58,6 +58,7 @@ fringe and marginal icons.
 			'trepan2-query-cmdline
 			'trepan2-parse-cmd-args
 			'trepan2-track-mode-hook
+			'realgud-trepan2-minibuffer-history
 			opt-cmd-line no-reset)
   )
 

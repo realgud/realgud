@@ -12,7 +12,7 @@
 
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
-(defvar gub-minibuffer-history nil
+(defvar realgud:gub-minibuffer-history nil
   "minibuffer history list for the command `gub'.")
 
 (easy-mmode-defmap gub-minibuffer-local-map
@@ -26,7 +26,7 @@
   (realgud-query-cmdline
    'gub-suggest-invocation
    gub-minibuffer-local-map
-   'gub-minibuffer-history
+   'realgud:gub-minibuffer-history
    opt-debugger))
 
 (defun gub-parse-cmd-args (orig-args)
@@ -110,8 +110,9 @@ NOTE: the above should have each item listed in quotes.
 
 (defun gub-suggest-invocation (debugger-name)
   "Suggest a command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation gub-command-name gub-minibuffer-history
-                           "go" "\\.go$" "gub.sh"))
+  (realgud-suggest-invocation gub-command-name
+			      realgud:gub-minibuffer-history
+			      "go" "\\.go$" "gub.sh"))
 
 ;; Convert a command line as would be typed normally to run a script
 ;; into one that invokes an Emacs-enabled debugging session.

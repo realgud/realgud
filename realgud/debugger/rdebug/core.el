@@ -8,9 +8,14 @@
 		       "realgud-")
 (require-relative-list '("init") "realgud-rdebug-")
 
+(declare-function realgud-lang-mode? 'realgud-lang)
+(declare-function realgud-parse-command-arg 'realgud-core)
+(declare-function realgud-query-cmdline 'realgud-core)
+(declare-function realgud-suggest-invocation 'realgud-core)
+
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
-(defvar rdebug-minibuffer-history nil
+(defvar realgud:rdebug-minibuffer-history nil
   "minibuffer history list for the command `rdebug'.")
 
 (easy-mmode-defmap rdebug-minibuffer-local-map
@@ -24,7 +29,7 @@
   (realgud-query-cmdline
    'rdebug-suggest-invocation
    rdebug-minibuffer-local-map
-   'rdebug-minibuffer-history
+   'realgud:rdebug-minibuffer-history
    opt-debugger))
 
 (defun rdebug-parse-cmd-args (orig-args)
@@ -128,8 +133,9 @@ NOTE: the above should have each item listed in quotes.
 (defvar rdebug-command-name)
 (defun rdebug-suggest-invocation (debugger-name)
   "Suggest a rdebug command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation rdebug-command-name rdebug-minibuffer-history
-			   "ruby" "\\.rb$" "rdebug"))
+  (realgud-suggest-invocation rdebug-command-name
+			      realgud:rdebug-minibuffer-history
+			      "ruby" "\\.rb$" "rdebug"))
 
 (defun rdebug-reset ()
   "Rdebug cleanup - remove debugger's internal buffers (frame,

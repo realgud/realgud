@@ -15,8 +15,8 @@
 
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
-(defvar trepanx-minibuffer-history nil
-  "minibuffer history list for the command `trepanx'.")
+(defvar realgud:trepanx-minibuffer-history nil
+  "minibuffer history list for the command `realgud:trepanx'.")
 
 (easy-mmode-defmap trepanx-minibuffer-local-map
   '(("\C-i" . comint-dynamic-complete-filename))
@@ -29,7 +29,7 @@
   (realgud-query-cmdline
    'trepanx-suggest-invocation
    trepanx-minibuffer-local-map
-   'trepanx-minibuffer-history
+   'realgud:trepanx-minibuffer-history
    opt-debugger))
 
 (defun trepanx-parse-cmd-args (orig-args)
@@ -133,8 +133,9 @@ NOTE: the above should have each item listed in quotes.
 (defvar trepanx-command-name) ; # To silence Warning: reference to free variable
 (defun trepanx-suggest-invocation (debugger-name)
   "Suggest a trepanx command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation trepanx-command-name trepanx-minibuffer-history
-			   "ruby" "\\.rb$" "trepanx"))
+  (realgud-suggest-invocation trepanx-command-name
+			      realgud:trepanx-minibuffer-history
+			      "ruby" "\\.rb$" "trepanx"))
 
 (defun trepanx-reset ()
   "Trepanx cleanup - remove debugger's internal buffers (frame,

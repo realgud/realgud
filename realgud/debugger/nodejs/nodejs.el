@@ -58,8 +58,11 @@ fringe and marginal icons.
 "
   (interactive)
   (let ((cmd-buf
-	 (realgud:run-debugger "node" 'nodejs-query-cmdline 'nodejs-parse-cmd-args
-			       'nodejs-track-mode-hook opt-cmd-line no-reset)))
+	 (realgud:run-debugger "node"
+			       'nodejs-query-cmdline 'nodejs-parse-cmd-args
+			       'nodejs-track-mode-hook
+			       'nodejs-minibuffer-history
+			       opt-cmd-line no-reset)))
     (if cmd-buf
 	(with-current-buffer cmd-buf
 	  ;; FIXME should allow customization whether to do or not

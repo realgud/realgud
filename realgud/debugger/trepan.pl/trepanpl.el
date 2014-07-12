@@ -36,7 +36,7 @@ This should be an executable on your path, or an absolute file name."
 (declare-function realgud:run-debugger             'realgud:run)
 
 ;;;###autoload
-(defun realgud:trepanpl (&optional opt-cmd-line no-reset)
+(defun realgud:trepan.pl (&optional opt-cmd-line no-reset)
   "Invoke the trepan.pl Perl debugger and start the Emacs user interface.
 
 String OPT-CMD-LINE specifies how to run trepan.pl. You will be prompted
@@ -56,24 +56,12 @@ marginal icons is reset. See `loc-changes-clear-buffer' to clear
 fringe and marginal icons.
 "
   (interactive)
-  (let ((cmdbuf
-	(realgud:run-debugger "trepan.pl" 'realgud:trepanpl-query-cmdline
-			      'realgud:trepanpl-parse-cmd-args
-			      'realgud:trepanpl-track-mode-hook opt-cmd-line no-reset)))
-    ;; FIXME: Move the below into realgud:run-debugger by passing a
-    ;; minibuffer-history list. The calculation to get a string is
-    ;; already done there.
-    (require 'list-utils)
-    (declare-function list-utils-uniq 'list-utils)
-    (if (and cmdbuf realgud-cmdbuf-info)
-	(let* ((info realgud-cmdbuf-info)
-	       (cmd-args (realgud-cmdbuf-info-cmd-args info))
-	       (cmd-str  (mapconcat 'identity  cmd-args " ")))
-	(push cmd-str trepanpl-minibuffer-history)
-	(setq trepanpl-minibuffer-history (list-utils-uniq trepanpl-minibuffer-history))
-	))
-    ))
+  (realgud:run-debugger "trepan.pl" 'realgud:trepanpl-query-cmdline
+			'realgud:trepanpl-parse-cmd-args
+			'realgud:trepanpl-track-mode-hook
+			'realgud:trepanpl-minibuffer-history
+			opt-cmd-line no-reset))
 
-(defalias 'trepan.pl 'realgud:trepanpl)
+(defalias 'trepan.pl 'realgud:trepan.pl)
 (provide-me "realgud-")
 ;;; trepanpl.el ends here

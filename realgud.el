@@ -171,7 +171,7 @@ like 'pydbgr'."
 
 (defun realgud:unload-features()
   "Remove all features loaded from this package. Used in
-`realgud-reload-features'. See that."
+`realgud:reload-features'. See that."
   (interactive "")
   (let ((result (realgud:loaded-features)))
     (dolist (feature result result)

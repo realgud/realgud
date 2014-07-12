@@ -15,8 +15,8 @@
 
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
-(defvar trepanpl-minibuffer-history nil
-  "minibuffer history list for the command `trepanpl'.")
+(defvar realgud:trepanpl-minibuffer-history nil
+  "minibuffer history list for the command `realgud:trepan.pl'.")
 
 (easy-mmode-defmap realgud:trepanpl-minibuffer-local-map
   '(("\C-i" . comint-dynamic-complete-filename))
@@ -137,8 +137,8 @@ Note that the script name path has been expanded via `expand-file-name'.
 (defun realgud:trepanpl-suggest-invocation (debugger-name)
   "Suggest a trepanpl command invocation via `realgud-suggest-invocaton'"
   (realgud-suggest-invocation realgud:trepanpl-command-name
-                           trepanpl-minibuffer-history
-                           "perl" "\\.pl$" "trepan.pl"))
+			      realgud:trepanpl-minibuffer-history
+			      "perl" "\\.pl$" "trepan.pl"))
 
 (defun realgud:trepanpl-reset ()
   "Trepanpl cleanup - remove debugger's internal buffers (frame,
@@ -160,7 +160,8 @@ breakpoints, etc.)."
 
 
 (defun realgud:trepanpl-customize ()
-  "Use `customize' to edit the settings of the `trepanpl' debugger."
+  "Use `customize' to edit the settings of the
+`realgud:trepan.pl' debugger."
   (interactive)
   (customize-group 'realgud:trepanpl))
 

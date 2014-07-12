@@ -18,7 +18,7 @@
 		                             'realgud-buffer-command)
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
-(defvar remake-minibuffer-history nil
+(defvar realgud:remake-minibuffer-history nil
   "minibuffer history list for the command `remake'.")
 
 (easy-mmode-defmap remake-minibuffer-local-map
@@ -32,7 +32,7 @@
   (realgud-query-cmdline
    'remake-suggest-invocation
    remake-minibuffer-local-map
-   'remake-minibuffer-history
+   'realgud:remake-minibuffer-history
    opt-debugger))
 
 (defun remake-parse-cmd-args (orig-args)

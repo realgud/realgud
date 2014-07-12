@@ -11,7 +11,8 @@
 (declare-function realgud-track-set-debugger          'realgud-track)
 
 (defun realgud:run-process(debugger-name script-filename cmd-args
-				      track-mode-hook &optional no-reset)
+					 track-mode-hook minibuffer-history
+					 &optional no-reset)
   "Runs `realgud-exec-shell' with DEBUGGER-NAME SCRIPT-FILENAME
 and CMD-ARGS If this succeeds, we call TRACK-MODE-HOOK and save
 CMD-ARGS in command-buffer for use if we want to restart.  If
@@ -34,10 +35,21 @@ buffer or nil is returned."
 	    (realgud-track-set-debugger debugger-name)
 	    (realgud-cmdbuf-info-in-debugger?= 't)
 	    (realgud-cmdbuf-info-cmd-args= cmd-args)
-	    )
+	    (when cmd-buf
+	      (switch-to-buffer cmd-buf)
+	      (when realgud-cmdbuf-info
+		(let* ((info realgud-cmdbuf-info)
+		       (cmd-args (realgud-cmdbuf-info-cmd-args info))
+		       (cmd-str  (mapconcat 'identity  cmd-args " ")))
+		  (set minibuffer-history
+		       (list-utils-uniq (cons cmd-str
+					      (eval minibuffer-history)))
+		       ))
+		)))
+	;; else
 	(progn
 	  (if cmd-buf (switch-to-buffer cmd-buf))
-	  (message "Error running command: %s" (mapconcat 'identity cmd-args " "))
+	  (message "Error running command: %s" (mapconcat 'identity cmd-args "[ "))
 	  )
 	)
       )
@@ -46,8 +58,9 @@ buffer or nil is returned."
   )
 
 (defun realgud:run-debugger (debugger-name query-cmdline-fn parse-cmd-args-fn
-					   track-mode-hook
-					   opt-command-line no-reset)
+					   track-mode-hook minibuffer-history
+					   &optional opt-command-line
+					   no-reset)
   "Invoke the a debugger and start the Emacs user interface.
 
 String OPT-COMMAND-LINE specifies how to run DEBUGGER-NAME. You
@@ -71,7 +84,7 @@ Otherwise nil is returned.
 	  (remove-if 'nil (list-utils-flatten parsed-args)))
 	 )
     (realgud:run-process debugger-name script-name parsed-cmd-args
-			 track-mode-hook no-reset)
+			 track-mode-hook minibuffer-history no-reset)
     )
   )
 

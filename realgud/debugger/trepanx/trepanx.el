@@ -55,7 +55,9 @@ marginal icons is reset."
 	 (script-name (car script-args))
 	 (cmd-buf))
     (realgud-run-process "trepanx" script-name cmd-args
-		      'trepanx-track-mode no-reset)
+		      'trepanx-track-mode
+		      'realgud:trepanx-minibuffer-history
+		      no-reset)
     )
   )
 

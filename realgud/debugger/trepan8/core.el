@@ -16,8 +16,8 @@
 
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
-(defvar trepan8-minibuffer-history nil
-  "minibuffer history list for the command `trepan8'.")
+(defvar realgud:trepan8-minibuffer-history nil
+  "minibuffer history list for the command `realgud:trepan8'.")
 
 (easy-mmode-defmap trepan8-minibuffer-local-map
   '(("\C-i" . comint-dynamic-complete-filename))
@@ -30,7 +30,7 @@
   (realgud-query-cmdline
    'trepan8-suggest-invocation
    trepan8-minibuffer-local-map
-   'trepan8-minibuffer-history
+   'realgud:trepan8-minibuffer-history
    opt-debugger))
 
 (defun trepan8-parse-cmd-args (orig-args)
@@ -134,8 +134,9 @@ Note that the script name path has been expanded via `expand-file-name'.
 (defvar trepan8-command-name) ; # To silence Warning: reference to free variable
 (defun trepan8-suggest-invocation (debugger-name)
   "Suggest a trepan8 command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation trepan8-command-name trepan8-minibuffer-history
-			   "ruby" "\\.rb$"))
+  (realgud-suggest-invocation trepan8-command-name
+			      realgud:trepan8-minibuffer-history
+			      "ruby" "\\.rb$"))
 
 (defun trepan8-reset ()
   "Trepan8 cleanup - remove debugger's internal buffers (frame,

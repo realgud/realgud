@@ -12,7 +12,7 @@
 
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
-(defvar kshdb-minibuffer-history nil
+(defvar realgud:kshdb-minibuffer-history nil
   "minibuffer history list for the command `kshdb'.")
 
 (easy-mmode-defmap kshdb-minibuffer-local-map
@@ -26,7 +26,7 @@
   (realgud-query-cmdline
    'kshdb-suggest-invocation
    kshdb-minibuffer-local-map
-   'kshdb-minibuffer-history
+   'realgud:kshdb-minibuffer-history
    opt-debugger))
 
 ;;; FIXME: DRY this with other *-parse-cmd-args routines
@@ -135,8 +135,9 @@ NOTE: the above should have each item listed in quotes.
 (defvar kshdb-command-name) ; # To silence Warning: reference to free variable
 (defun kshdb-suggest-invocation (debugger-name)
   "Suggest a kshdb command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation kshdb-command-name kshdb-minibuffer-history
-			   "Shell-script" "\\.sh$"))
+  (realgud-suggest-invocation kshdb-command-name
+			      realgud:kshdb-minibuffer-history
+			      "Shell-script" "\\.sh$"))
 
 (defun kshdb-reset ()
   "Kshdb cleanup - remove debugger's internal buffers (frame,

@@ -55,21 +55,12 @@ marginal icons is reset. See `loc-changes-clear-buffer' to clear
 fringe and marginal icons.
 "
   (interactive)
-  (let ((cmd-buf
-	 (realgud:run-debugger "perldb"
-			       'realgud:perldb-query-cmdline
-			       'realgud:perldb-parse-cmd-args
-			       'perldb-track-mode-hook
-			       opt-cmd-line no-reset))
-	)
-    (if cmd-buf
-	(with-current-buffer cmd-buf
-	  ;; FIXME: figure out why track mode is not set initially
-	  (setq perldb-track-mode 't)
-	  (perldb-track-mode)
-	  )
-      )))
-
+  (realgud:run-debugger "perldb"
+			'realgud:perldb-query-cmdline
+			'realgud:perldb-parse-cmd-args
+			'perldb-track-mode-hook
+			'perldb-minibuffer-history
+			opt-cmd-line no-reset))
 
 (defalias 'perl5db 'realgud:perldb)
 (defalias 'perldb 'realgud:perldb)

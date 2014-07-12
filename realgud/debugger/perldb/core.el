@@ -16,7 +16,7 @@
 
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
-(defvar perldb-minibuffer-history nil
+(defvar realgud:perldb-minibuffer-history nil
   "minibuffer history list for the command `perldb'.")
 
 (easy-mmode-defmap realgud:perldb-minibuffer-local-map
@@ -114,8 +114,9 @@ Note that path elements have been expanded via `expand-file-name'.
 
 (defun realgud:perldb-suggest-invocation (debugger-name)
   "Suggest a perldb command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation realgud:perldb-command-name perldb-minibuffer-history
-			   "perl" "\\.pl$"))
+  (realgud-suggest-invocation realgud:perldb-command-name
+			      realgud:perldb-minibuffer-history
+			      "perl" "\\.pl$"))
 
 (defun realgud:perldb-reset ()
   "Perldb cleanup - remove debugger's internal buffers (frame,
