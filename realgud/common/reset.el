@@ -2,11 +2,17 @@
 ;; reset state on quit or restart
 
 (require 'load-relative)
+(require 'loc-changes)
 (require-relative-list '("bp" "fringe" "helper") "realgud-")
 (require-relative-list '("buffer/helper" "buffer/command" "buffer/source")
 		       "realgud-buffer-")
 
-(declare-function realgud-bp-remove-icons 'realgud-buffer-command)
+(declare-function loc-changes-clear-buffer       'loc-changes)
+(declare-function realgud-bp-remove-icons        'realgud-buffer-command)
+(declare-function realgud-cmdbuf?                'realgud-buffer-command)
+(declare-function realgud-get-cmdbuf-from-srcbuf 'realgud-buffer-helper)
+(declare-function realgud-fringe-erase-history-arrows
+		  'realgud-buffer-command)
 
 (defun realgud-reset (&optional opt-buffer)
   "Reset state prior to quitting or restarting"

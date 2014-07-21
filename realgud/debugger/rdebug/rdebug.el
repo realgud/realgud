@@ -13,9 +13,9 @@
   :group 'realgud
   :version "23.1")
 
-(declare-function rdebug-query-cmdline  'realgud-rdebug-core)
-(declare-function rdebug-parse-cmd-args 'realgud-rdebug-core)
-(declare-function realgud-run-process 'realgud-core)
+(declare-function rdebug-query-cmdline   'realgud-rdebug-core)
+(declare-function rdebug-parse-cmd-args  'realgud-rdebug-core)
+(declare-function realgud:run-debugger   'realgud:run)
 
 ;; -------------------------------------------------------------------
 ;; User definable variables
@@ -89,30 +89,30 @@ a tokenized list of the command line."
 
 
 ;;;###autoload
-(defun realgud-rdebug (&optional opt-command-line no-reset)
+(defun realgud:rdebug (&optional opt-cmd-line no-reset)
   "Invoke the rdebug Ruby debugger and start the Emacs user interface.
 
-String COMMAND-LINE specifies how to run rdebug.
+String OPT-CMD-LINE is treated like a shell string; arguments are
+tokenized by `split-string-and-unquote'. The tokenized string is
+parsed by `trepan8-parse-cmd-args' and path elements found by that
+are expanded using `realgud:expand-file-name-if-exists'.
 
-Normally command buffers are reused when the same debugger is
+Normally, command buffers are reused when the same debugger is
 reinvoked inside a command buffer with a similar command. If we
 discover that the buffer has prior command-buffer information and
 NO-RESET is nil, then that information which may point into other
 buffers and source buffers which may contain marks and fringe or
-marginal icons is reset."
+marginal icons is reset. See `loc-changes-clear-buffer' to clear
+fringe and marginal icons.
+"
   (interactive)
-  (let* ((cmd-str (or opt-command-line (rdebug-query-cmdline "rdebug")))
-	 (cmd-args (split-string-and-unquote cmd-str))
-	 (parsed-args (rdebug-parse-cmd-args cmd-args))
-	 (script-name-annotate-p (rdebug-get-script-name cmd-args))
-	 (script-name (car script-name-annotate-p))
-	 (annotate-p  (cadr script-name-annotate-p))
-	 (script-args (cdr cmd-args))
-	 (cmd-buf))
-    (realgud-run-process "rdebug" script-name cmd-args
-		      'rdebug-track-mode no-reset)
-    )
+  (realgud:run-debugger "rdebug" 'rdebug-query-cmdline
+			'rdebug-parse-cmd-args
+			'rdebug-track-mode-hook
+			'realgud:rdebug-minibuffer-history
+			opt-cmd-line no-reset)
   )
 
-(defalias 'rdebug 'realgud-rdebug)
+
+(defalias 'rdebug 'realgud:rdebug)
 (provide-me "realgud-")

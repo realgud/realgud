@@ -7,7 +7,7 @@
 
 (declare-function trepan8-query-cmdline  'realgud:trepan8-core)
 (declare-function trepan8-parse-cmd-args 'realgud:trepan8-core)
-(declare-function realgud:run-debugger 'realgud:run)
+(declare-function realgud:run-debugger   'realgud:run)
 
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
@@ -41,7 +41,7 @@ This should be an executable on your path, or an absolute file name."
 String OPT-CMD-LINE is treated like a shell string; arguments are
 tokenized by `split-string-and-unquote'. The tokenized string is
 parsed by `trepan8-parse-cmd-args' and path elements found by that
-are expanded using `expand-file-name'.
+are expanded using `realgud:expand-file-name-if-exists'.
 
 Normally, command buffers are reused when the same debugger is
 reinvoked inside a command buffer with a similar command. If we

@@ -9,6 +9,85 @@
 (declare-function realgud-cmdbuf-info-in-debugger?=   'realgud-buffer-command)
 (declare-function realgud-cmdbuf-info-cmd-args=       'realgud-buffer-command)
 (declare-function realgud-track-set-debugger          'realgud-track)
+(declare-function realgud-parse-command-arg           'realgud-core)
+(declare-function realgud:expand-file-name-if-exists  'realgud-core)
+
+(defun realgud:parse-cmd-args(args two-args opt-two-args interp-regexp debugger-regexp
+				   path-args-list annotate-args)
+  "Parse command line ARGS for the annotate level and name of script to debug.
+
+ARGS should contain a tokenized list of the command line to run.
+
+We return the a list containing:
+* the command processor (e.g. bash) and it's arguments if any - a list of strings
+* the name of the debugger given (e.g. bashdb) and its arguments - a list of strings.
+  If there is no debugger, for example gdb, nodejs then nil is returned.
+* the script name and its arguments - list of strings
+* whether the annotate or emacs option was given ('-A', '--annotate' or '--emacs) - a boolean
+
+The script name and options mentioning paths are file expanded
+
+For example for the following input
+  (map 'list 'symbol-name
+   '(bash --norc bashdb -l . --emacs ./gcd.sh a b))
+
+we might return:
+   ((\"bash\" \"--norc\") (\"bashdb\" \"-l\" \"/tmp\" \"--emacs\") (\"/tmp/gcd.sh\" \"a\" \"b\") t)
+
+Note that path elements have been expanded via `expand-file-name'.
+"
+  ;; Parse the following kind of pattern:
+  ;;  [bash bash-options] bashdb bashdb-options script-name script-options
+  (let (
+	(pair)
+	;; Things returned
+	(script-name nil)
+	(debugger-name nil)
+	(interpreter-args '())
+	(debugger-args '())
+	(script-args '())
+	(annotate-p nil))
+
+    (if (not (and args))
+	;; Got nothing: return '(nil, nil nil nil)
+	(list interpreter-args debugger-args script-args annotate-p)
+      ;; else
+      ;; Strip off optional interpreter name
+      (when (and interp-regexp
+		 (string-match interp-regexp
+			       (file-name-sans-extension
+				(file-name-nondirectory (car args)))))
+	(setq interpreter-args (list (pop args)))
+
+	;; Strip off compiler/intepreter-specific options
+	(while (and args
+		    (string-match "^-" (car args)))
+	  (setq pair (realgud-parse-command-arg
+		      args two-args opt-two-args))
+	  (nconc interpreter-args (car pair))
+	  (setq args (cadr pair))))
+
+      ;; Skip to the first non-option argument.
+      (while (and args (not script-name))
+	(let ((arg (car args)))
+	  (cond
+	   ;; path-like options
+	   ((member arg path-args-list)
+	    (setq arg (pop args))
+	    (nconc debugger-args
+		   (list arg (realgud:expand-file-name-if-exists
+			      (pop args)))))
+	   ;; Other options with arguments.
+	   ((string-match "^-" arg)
+	    (setq pair (realgud-parse-command-arg
+			args two-args opt-two-args))
+	    (nconc debugger-args (car pair))
+	    (setq args (cadr pair)))
+	   ;; Anything else must be the script to debug.
+	   (t (setq script-name (realgud:expand-file-name-if-exists arg))
+	      (setq script-args (cons script-name (cdr args))))
+	   )))
+      (list interpreter-args debugger-args script-args annotate-p))))
 
 (defun realgud:run-process(debugger-name script-filename cmd-args
 					 track-mode-hook minibuffer-history

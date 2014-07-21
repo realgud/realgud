@@ -52,7 +52,7 @@ For example for the following input
 we might return:
    ((\"bash\" \"--norc\") (\"bashdb\" \"-l\" \"/tmp\" \"--emacs\") (\"/tmp/gcd.sh\" \"a\" \"b\") t)
 
-Note that path elements have been expanded via `expand-file-name'.
+Note that path elements have been expanded via `realgud:expand-file-name-if-exists'.
 "
 
   ;; Parse the following kind of pattern:
@@ -122,8 +122,7 @@ Note that path elements have been expanded via `expand-file-name'.
 	(let ((arg (car args)))
 	  (cond
 	   ;; Annotation or emacs option with level number.
-	   ((or (member arg '("--annotate" "-A"))
-		(equal arg "--emacs"))
+	   ((member arg '("--annotate" "-A" "--emacs"))
 	    (setq annotate-p t)
 	    (nconc debugger-args (list (pop args))))
 	   ;; Combined annotation and level option.

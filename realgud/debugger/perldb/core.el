@@ -53,7 +53,7 @@ For example for the following input:
 we might return:
    ((\"perl\" \"-W\" \"-C\" \"-d\") nil (\"/tmp/gcd.pl\" \"a\" \"b\"))
 
-Note that path elements have been expanded via `expand-file-name'.
+Note that path elements have been expanded via `realgud:expand-file-name-if-exists'.
 "
 
   ;; Parse the following kind of pattern:
