@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010-2013 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2014 Rocky Bernstein <rocky@gnu.org>
 ;;  tracks shell output
 
 (eval-when-compile (require 'cl))
@@ -11,6 +11,17 @@
    "send"   "shortkey") "realgud-")
 
 (require-relative-list  '("buffer/command") "realgud-buffer-")
+
+;; FIXME figure out if I can put this in something like a header file.
+(declare-function realgud-fringe-erase-history-arrows 'realgud-buffer-command)
+(declare-function realgud-populate-debugger-menu      'realgud-menu)
+(declare-function realgud-track-set-debugger          'realgud-track)
+(declare-function realgud-cmdbuf-info-divert-output?=
+		  'realgud-buffer-command)
+(declare-function realgud-cmdbuf-info-prior-prompt-regexp
+		  'realgud-buffer-command)
+(declare-function realgud-cmdbuf-info-set?
+		  'realgud-buffer-command)
 
 (defvar realgud-track-mode-map
   (let ((map  (realgud-populate-debugger-menu (make-sparse-keymap))))
@@ -26,9 +37,6 @@
 
 (set-keymap-parent realgud-track-mode-map shell-mode-map)
 
-
-;; FIXME figure out if I can put this in something like a header file.
-(declare-function realgud-track-set-debugger (debugger-name &optional hash))
 
 (define-minor-mode realgud-track-mode
   "Minor mode for tracking debugging inside a process shell."
@@ -111,7 +119,7 @@ of this mode."
 	(force-mode-line-update)
 	;; FIXME: This is a workaround. Without this, we comint doesn't
 	;; process commands
-	(comint-mode)
+	(unless (member 'comint-mode minor-mode-list) (comint-mode))
 	)
 
       ;; FIXME: restore/unchain old process sentinels.
