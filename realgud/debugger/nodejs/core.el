@@ -80,9 +80,9 @@ Note that path elements have been expanded via `expand-file-name'.
 	;; --script-options"
 	(setq debugger-name (file-name-sans-extension
 			     (file-name-nondirectory (car args))))
-	(unless (string-match "^node$" debugger-name)
+	(unless (string-match "^node\\(?:js\\)$" debugger-name)
 	  (message
-	   "Expecting debugger name `%s' to be `node'"
+	   "Expecting debugger name `%s' to be `node' or `nodejs'"
 	   debugger-name))
 	(setq interpreter-args (list (pop args)))
 

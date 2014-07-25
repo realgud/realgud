@@ -7,7 +7,7 @@
 (require-relative-list '("core" "track-mode") "realgud:remake-")
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
-(defgroup remake nil
+(defgroup realgud:remake nil
   "The GNU Make debugger: remake"
   :group 'processes
   :group 'realgud

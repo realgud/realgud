@@ -8,7 +8,7 @@
 
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
-(defgroup bashdb nil
+(defgroup realgud:bashdb nil
   "The bash debugger: bashdb (realgud variant)"
   :group 'processes
   :group 'realgud

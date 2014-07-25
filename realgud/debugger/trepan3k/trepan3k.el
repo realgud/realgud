@@ -7,7 +7,7 @@
 
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
-(defgroup trepan3k nil
+(defgroup realgud:trepan3k nil
   "The Python trepan3k debugger"
   :group 'processes
   :group 'realgud

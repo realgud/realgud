@@ -14,7 +14,7 @@
 
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
-(defgroup zshdb nil
+(defgroup realgud:zshdb nil
   "The Zsh debugger: zshdb"
   :group 'processes
   :group 'realgud

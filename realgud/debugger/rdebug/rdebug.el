@@ -6,7 +6,7 @@
 (require-relative-list '("core" "track-mode") "realgud-rdebug-")
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
-(defgroup rdebug nil
+(defgroup realgud:rdebug nil
   "ruby-debug (rdebug)"
   :group 'processes
   :group 'ruby

@@ -18,7 +18,7 @@
 (declare-function realgud-track-set-debugger          'realgud-track)
 (declare-function realgud-cmdbuf-info-divert-output?=
 		  'realgud-buffer-command)
-(declare-function realgud-cmdbuf-info-prior-prompt-regexp
+(declare-function realgud-cmdbuf-info-prior-prompt-regexp=
 		  'realgud-buffer-command)
 (declare-function realgud-cmdbuf-info-set?
 		  'realgud-buffer-command)
@@ -161,14 +161,14 @@ the name of the debugger which is used to preface variables."
       (setq realgud-track-mode nil)
       )))
 
-(defun realgud-track-mode-disable()
+(defun realgud:track-mode-disable()
   "Disable the debugger track-mode hook"
   (interactive "")
   (if realgud-track-mode
       (setq realgud-track-mode nil)
     (message "Debugger is not in track mode")))
 
-(defun realgud-track-mode-enable()
+(defun realgud:track-mode-enable()
   "Enable the debugger track-mode hook"
   (interactive "")
   (if realgud-track-mode

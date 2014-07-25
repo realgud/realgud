@@ -8,7 +8,7 @@
 
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
-(defgroup trepanpl nil
+(defgroup realgud:trepanpl nil
   "The Perl \"trepanning\" debugger"
   :group 'processes
   :group 'perl

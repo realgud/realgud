@@ -6,7 +6,7 @@
 (require-relative-list '("core" "track-mode") "realgud:gub-")
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
-(defgroup gub nil
+(defgroup realgud:gub nil
   "The Go SSA interpreter debugger: gub"
   :group 'processes
   :group 'realgud

@@ -11,7 +11,7 @@
 
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
-(defgroup pydb nil
+(defgroup realgud:pydb nil
   "The Python pydb debugger"
   :group 'processes
   :group 'realgud

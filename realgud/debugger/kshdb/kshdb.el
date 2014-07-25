@@ -6,7 +6,7 @@
 (require-relative-list '("core" "track-mode") "realgud:kshdb-")
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
-(defgroup kshdb nil
+(defgroup realgud:kshdb nil
   "The Korn shell debugger: kshdb"
   :group 'processes
   :group 'realgud

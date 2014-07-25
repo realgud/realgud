@@ -11,7 +11,7 @@
 
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
-(defgroup trepanx nil
+(defgroup realgud:trepanx nil
   "The Rubinius \"trepanning\" debugger"
   :group 'processes
   :group 'ruby

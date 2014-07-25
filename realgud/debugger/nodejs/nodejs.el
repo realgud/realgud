@@ -11,7 +11,7 @@
 
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 23.
-(defgroup nodejs nil
+(defgroup realgud:nodejs nil
   "The nodejs debugger"
   :group 'processes
   :group 'realgud
@@ -58,7 +58,7 @@ fringe and marginal icons.
 "
   (interactive)
   (let ((cmd-buf
-	 (realgud:run-debugger "node"
+	 (realgud:run-debugger "nodejs"
 			       'nodejs-query-cmdline 'nodejs-parse-cmd-args
 			       'nodejs-track-mode-hook
 			       'nodejs-minibuffer-history
