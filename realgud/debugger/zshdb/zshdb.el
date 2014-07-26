@@ -38,7 +38,7 @@ This should be an executable on your path, or an absolute file name."
 ;; The end.
 ;;
 
-(declare-function zshdb-track-mode     'realgud-bashdb-track-mode)
+(declare-function zshdb-track-mode     'realgud-zshdb-track-mode)
 (declare-function zshdb-query-cmdline  'realgud:zshdb-core)
 (declare-function zshdb-parse-cmd-args 'realgud:zshdb-core)
 (declare-function realgud:run-debugger 'realgud:run)

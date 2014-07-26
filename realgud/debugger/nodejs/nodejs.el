@@ -61,7 +61,7 @@ fringe and marginal icons.
 	 (realgud:run-debugger "nodejs"
 			       'nodejs-query-cmdline 'nodejs-parse-cmd-args
 			       'nodejs-track-mode-hook
-			       'nodejs-minibuffer-history
+			       'realgud:nodejs-minibuffer-history
 			       opt-cmd-line no-reset)))
     (if cmd-buf
 	(with-current-buffer cmd-buf
@@ -71,6 +71,7 @@ fringe and marginal icons.
 	  )
       )))
 
-(defalias 'nodejs 'realgud:nodejs)
+;; There is already a nodejs command in `nodejs-repl'.
+;; (defalias 'nodejs 'realgud:nodejs)
 
 (provide-me "realgud-")

@@ -13,6 +13,7 @@
 /elpa
 /install-sh
 /missing
+/test/npm-debug.log
 /tmp
 Makefile
 Makefile.in
