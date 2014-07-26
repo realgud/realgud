@@ -76,13 +76,13 @@ Note that path elements have been expanded via `expand-file-name'.
 	(list interpreter-args nil script-args)
       ;; else
       (progn
-	;; Remove "nodejs" from "nodejs --nodejs-options script
-	;; --script-options"
+	;; Remove "nodejs" (or "nodemon" or "node") from invocation like:
+	;; nodejs --nodejs-options script --script-options
 	(setq debugger-name (file-name-sans-extension
 			     (file-name-nondirectory (car args))))
-	(unless (string-match "^node\\(?:js\\)$" debugger-name)
+	(unless (string-match "^node\\(?:js\\|mon\\)$" debugger-name)
 	  (message
-	   "Expecting debugger name `%s' to be `node' or `nodejs'"
+	   "Expecting debugger name `%s' to be `node', `nodemon', or `nodejs'"
 	   debugger-name))
 	(setq interpreter-args (list (pop args)))
 
@@ -146,6 +146,6 @@ breakpoints, etc.)."
 (defun realgud:nodejs-customize ()
   "Use `customize' to edit the settings of the `nodejs' debugger."
   (interactive)
-  (customize-group 'nodejs))
+  (customize-group 'realgud:nodejs))
 
 (provide-me "realgud:nodejs-")

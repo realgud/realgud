@@ -151,9 +151,9 @@ breakpoints, etc.)."
 ;; 	  pdb-debugger-support-minor-mode-map-when-deactive))
 
 
-(defun pdb-customize ()
+(defun realgud:pdb-customize ()
   "Use `customize' to edit the settings of the `pdb' debugger."
   (interactive)
-  (customize-group 'pdb))
+  (customize-group 'realgud:pdb))
 
 (provide-me "realgud:pdb-")

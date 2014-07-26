@@ -173,9 +173,9 @@ breakpoints, etc.)."
 ;; 	  bashdb-debugger-support-minor-mode-map-when-deactive))
 
 
-(defun bashdb-customize ()
+(defun realgud:bashdb-customize ()
   "Use `customize' to edit the settings of the `bashdb' debugger."
   (interactive)
-  (customize-group 'bashdb))
+  (customize-group 'realgud:bashdb))
 
 (provide-me "realgud:bashdb-")

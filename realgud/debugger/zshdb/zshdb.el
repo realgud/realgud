@@ -48,7 +48,7 @@ This should be an executable on your path, or an absolute file name."
 (defun realgud:zshdb (&optional opt-cmd-line no-reset)
   "Invoke the zshdb Z-shell debugger and start the Emacs user interface.
 
-String COMMAND-LINE specifies how to run zshdb.
+String OPT-CMD-LINE specifies how to run zshdb.
 
 OPT-CMD-LINE is treated like a shell string; arguments are
 tokenized by `split-string-and-unquote'. The tokenized string is

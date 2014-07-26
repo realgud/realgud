@@ -158,9 +158,9 @@ breakpoints, etc.)."
 ;; 	  kshdb-debugger-support-minor-mode-map-when-deactive))
 
 
-(defun kshdb-customize ()
+(defun realgud:kshdb-customize ()
   "Use `customize' to edit the settings of the `kshdb' debugger."
   (interactive)
-  (customize-group 'kshdb))
+  (customize-group 'realgud:kshdb))
 
 (provide-me "realgud:kshdb-")

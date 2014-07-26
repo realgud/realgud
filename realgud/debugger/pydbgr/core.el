@@ -162,9 +162,9 @@ breakpoints, etc.)."
 ;; 	  pydbgr-debugger-support-minor-mode-map-when-deactive))
 
 
-(defun pydbgr-customize ()
+(defun realgud:pydbgr-customize ()
   "Use `customize' to edit the settings of the `pydbgr' debugger."
   (interactive)
-  (customize-group 'pydbgr))
+  (customize-group 'realgud:pydbgr))
 
 (provide-me "realgud-pydbgr-")

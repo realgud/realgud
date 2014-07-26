@@ -151,9 +151,8 @@ breakpoints, etc.)."
 ;; 	  pydb-debugger-support-minor-mode-map-when-deactive))
 
 
-(defun pydb-customize ()
+(defun realgud:pydb-customize ()
   "Use `customize' to edit the settings of the `pydb' debugger."
   (interactive)
-  (customize-group 'pydb))
-
+  (customize-group 'realgud:pydb))
 (provide-me "realgud:pydb-")

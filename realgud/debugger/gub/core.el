@@ -166,9 +166,9 @@ breakpoints, etc.)."
 ;; 	  gub-debugger-support-minor-mode-map-when-deactive))
 
 
-(defun gub-customize ()
+(defun realgud:gub-customize ()
   "Use `customize' to edit the settings of the `gub' debugger."
   (interactive)
-  (customize-group 'gub))
+  (customize-group 'realgud:gub))
 
 (provide-me "realgud:gub-")

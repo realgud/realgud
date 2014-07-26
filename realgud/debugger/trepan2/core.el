@@ -162,9 +162,9 @@ breakpoints, etc.)."
 ;; 	  trepan2-debugger-support-minor-mode-map-when-deactive))
 
 
-(defun trepan2-customize ()
+(defun realgud:trepan2-customize ()
   "Use `customize' to edit the settings of the `trepan2' debugger."
   (interactive)
-  (customize-group 'trepan2))
+  (customize-group 'realgud:trepan2))
 
 (provide-me "realgud:trepan2-")

@@ -240,9 +240,9 @@ breakpoints, etc.)."
 ;; 	  remake-debugger-support-minor-mode-map-when-deactive))
 
 
-(defun remake-customize ()
+(defun realgud:remake-customize ()
   "Use `customize' to edit the settings of the `remake' debugger."
   (interactive)
-  (customize-group 'remake))
+  (customize-group 'realgud:remake))
 
 (provide-me "realgud:remake-")

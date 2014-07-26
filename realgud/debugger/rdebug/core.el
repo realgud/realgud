@@ -156,9 +156,9 @@ breakpoints, etc.)."
 ;; 	  rdebug-debugger-support-minor-mode-map-when-deactive))
 
 
-(defun rdebug-customize ()
+(defun realgud:rdebug-customize ()
   "Use `customize' to edit the settings of the `rdebug' debugger."
   (interactive)
-  (customize-group 'rdebug))
+  (customize-group 'realgud:rdebug))
 
 (provide-me "realgud-rdebug-")

@@ -164,9 +164,9 @@ breakpoints, etc.)."
 ;; 	  zshdb-debugger-support-minor-mode-map-when-deactive))
 
 
-(defun zshdb-customize ()
+(defun realgud:zshdb-customize ()
   "Use `customize' to edit the settings of the `zshdb' debugger."
   (interactive)
-  (customize-group 'zshdb))
+  (customize-group 'realgud:zshdb))
 
 (provide-me "realgud:zshdb-")

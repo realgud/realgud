@@ -157,9 +157,9 @@ breakpoints, etc.)."
 ;; 	  trepan8-debugger-support-minor-mode-map-when-deactive))
 
 
-(defun trepan8-customize ()
+(defun realgud:trepan8-customize ()
   "Use `customize' to edit the settings of the `trepan8' debugger."
   (interactive)
-  (customize-group 'trepan8))
+  (customize-group 'realgud:trepan8))
 
 (provide-me "realgud:trepan8-")
