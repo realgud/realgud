@@ -1,5 +1,5 @@
 ;;; Copyright (C) 2010-2014 Rocky Bernstein <rocky@gnu.org>
-;;  tracks shell output
+;;; tracks shell output
 
 (eval-when-compile (require 'cl))
 (require 'shell)

@@ -55,7 +55,7 @@
     ;; (define-key map [menu-bar debugger stack goto]
     ;;   '(menu-item "Goto frame" realgud-goto-frame))
     map)
-  "Keymap to navigate dbgr stack frames.")
+  "Keymap to navigate realgud stack frames.")
 
 (defun realgud-backtrace-mode (&optional cmdbuf)
   "Major mode for displaying the stack frames.
@@ -64,7 +64,7 @@
   (kill-all-local-variables)
   (setq buffer-read-only 't)
   (setq major-mode 'realgud-backtrace-mode)
-  (setq mode-name "dbgr Stack Frames")
+  (setq mode-name "Realgud Stack Frames")
   ;; (set (make-local-variable 'realgud-secondary-buffer) t)
   (setq mode-line-process 'realgud-mode-line-process)
   (use-local-map realgud-backtrace-mode-map)

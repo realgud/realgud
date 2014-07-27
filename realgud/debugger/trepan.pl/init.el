@@ -184,7 +184,7 @@ backtrace listing.")
   "Hash key is command name like 'quit' and the value is
   the trepanpl command to use, like 'quit!'")
 
-(setf (gethash "break"  realgud:trepanpl-command-hash) "break %f %l")
+(setf (gethash "break"  realgud:trepanpl-command-hash) "break %x %l")
 (setf (gethash "quit"   realgud:trepanpl-command-hash) "quit!")
 (setf (gethash realgud:trepanpl-debugger-name
 	       realgud-command-hash) realgud:trepanpl-command-hash)

@@ -23,7 +23,7 @@
   "Return a menu item entry with the correct key bindings.
 
 A command can be bound to a number of different key sequences. If
-the dbgr common map contains a binding it is displayed in the
+the realgud common map contains a binding it is displayed in the
 menu. (The common map typically contains function key bindings.)"
   (let ((key-binding (where-is-internal cmd (list common-map) t))
         (hint '()))
@@ -176,7 +176,7 @@ menu. (The common map typically contains function key bindings.)"
 
     ;; (define-key map [menu-bar debugger options customize]
     ;;   (realgud-menu-item menu-map
-    ;;                     "Customize Dbgr" 'realgud-customize))
+    ;;                     "Customize Realgud" 'realgud-customize))
 
     ;; (define-key map [menu-bar debugger options line1] '(menu-item "--"))
 

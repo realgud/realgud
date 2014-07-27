@@ -14,7 +14,7 @@
 (declare-function realgud:loc-describe 'realgud-loc)
 
 (defcustom realgud-loc-hist-size 20  ; For testing. Should really be larger.
-  "Size of dbgr position history ring"
+  "Size of realgud's position history ring"
   :type 'integer
   :group 'realgud)
 

@@ -6,19 +6,21 @@
 (require 'load-relative)
 (require-relative-list  '("buffer/command" "buffer/source")
 			"realgud-buffer-")
+(require-relative-list  '("shortkey") "realgud-")
 
 (declare-function realgud-cmdbuf-add-srcbuf           'realgud-buffer-command)
 (declare-function realgud-cmdbuf?                     'realgud-buffer-command)
 (declare-function realgud-srcbuf-init-or-update       'realgud-source)
+(declare-function realgud-short-key-mode-setup        'realgud-shortkey)
 
 (defun realgud:attach-source-buffer(srcbuf)
   "Associate a source buffer with the current command buffer"
+  (interactive "bsource buffer: ")
   (unless (realgud-cmdbuf?)
     (error "The command only works inside a command buffer"))
   (unless (get-buffer-process (current-buffer))
     (warn "Can't find a process for command buffer %s" (current-buffer)))
 
-  (interactive "bsource buffer: ")
   (let* ((cmdbuf (current-buffer))
 	 (shortkey-mode? (realgud-sget 'cmdbuf-info 'src-shortkey?)))
     (if (stringp srcbuf) (setq srcbuf (get-buffer srcbuf)))

@@ -23,7 +23,7 @@
   "File name for executing the bash debugger and command options.
 This should be an executable on your path, or an absolute file name."
   :type 'string
-  :group 'realgud)
+  :group 'realgud:bashdb)
 
 ;; -------------------------------------------------------------------
 ;; The end.

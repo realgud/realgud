@@ -29,13 +29,13 @@
     (t (:weight bold)))
   "Face used to highlight debugger run information."
   :group 'realgud
-  :version "23.1")
+  :version "24.1")
 
 (defface debugger-not-running
   '((t :inherit font-lock-warning-face))
   "Face used when debugger or process is not running."
   :group 'realgud
-  :version "23.1")
+  :version "24.1")
 
 
 (defstruct realgud-cmdbuf-info

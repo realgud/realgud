@@ -55,7 +55,7 @@ if none has been set in the command hash."
 
 (defun realgud-cmd-break(arg)
   "Set a breakpoint at the current line"
-  (interactive "p")
+  (interactive "bsource buffer: ")
   (realgud-cmd-remap arg "break" "break %X:%l" "b")
   )
 

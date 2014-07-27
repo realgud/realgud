@@ -8,7 +8,7 @@
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 24.
 (defgroup realgud:pydbgr nil
-  "The Python pydbgr debugger"
+  "The realgud interface to the Python pydbgr debugger"
   :group 'realgud
   :group 'python
   :version "24.1")
