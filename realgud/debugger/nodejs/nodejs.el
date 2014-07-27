@@ -10,23 +10,22 @@
 (declare-function realgud:run-debugger 'realgud:run)
 
 ;; This is needed, or at least the docstring part of it is needed to
-;; get the customization menu to work in Emacs 23.
+;; get the customization menu to work in Emacs 24.
 (defgroup realgud:nodejs nil
-  "The nodejs debugger"
-  :group 'processes
+  "The realgud interface to the nodejs debugger"
   :group 'realgud
-  :version "23.1")
+  :version "24.1")
 
 ;; -------------------------------------------------------------------
 ;; User-definable variables
 ;;
 
-(defcustom nodejs-command-name
+(defcustom realgud:nodejs-command-name
   "node debug"
   "File name for executing the Javascript debugger and command options.
 This should be an executable on your path, or an absolute file name."
   :type 'string
-  :group 'nodejs)
+  :group 'realgud:nodejs)
 
 ;; -------------------------------------------------------------------
 ;; The end.

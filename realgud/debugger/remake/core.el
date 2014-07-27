@@ -171,7 +171,8 @@ given priority, we use the first one we find."
       result)
     )
 
-(defvar remake-command-name) ; # To silence Warning: reference to free variable
+;; To silence Warning: reference to free variable
+(defvar realgud:remake-command-name)
 
 (defun remake-suggest-invocation (debugger-name)
   "Suggest a remake command invocation via `realgud-suggest-invocaton'"

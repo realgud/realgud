@@ -138,10 +138,12 @@ Note that path elements have been expanded via `realgud:expand-file-name-if-exis
 	   )))
       (list interpreter-args debugger-args script-args annotate-p))))
 
-(defvar zshdb-command-name) ; # To silence Warning: reference to free variable
+;; To silence Warning: reference to free variable
+(defvar realgud:zshdb-command-name)
+
 (defun zshdb-suggest-invocation (debugger-name)
   "Suggest a zshdb command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation zshdb-command-name
+  (realgud-suggest-invocation realgud:zshdb-command-name
 			      realgud:zshdb-minibuffer-history
 			      "Shell-script" "\\.sh$"))
 

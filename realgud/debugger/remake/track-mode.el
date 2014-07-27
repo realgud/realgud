@@ -45,7 +45,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   ;; :lighter " remake"   ;; mode-line indicator from realgud-track is sufficient.
   ;; The minor mode bindings.
   :global nil
-  :group 'remake
+  :group 'realgud:remake
   :keymap remake-track-mode-map
 
   (realgud-track-set-debugger "remake")

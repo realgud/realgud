@@ -136,10 +136,12 @@ NOTE: the above should have each item listed in quotes.
 	   )))
       (list interpreter-args debugger-args script-args annotate-p))))
 
-(defvar pydbgr-command-name) ; # To silence Warning: reference to free variable
+;; To silence Warning: reference to free variable
+(defvar realgud:pydbgr-command-name)
+
 (defun pydbgr-suggest-invocation (debugger-name)
   "Suggest a pydbgr command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation pydbgr-command-name
+  (realgud-suggest-invocation realgud:pydbgr-command-name
 			      realgud:pydbgr-minibuffer-history
 			      "python" "\\.py"))
 

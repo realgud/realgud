@@ -6,24 +6,22 @@
 (require-relative-list '("core" "track-mode") "realgud:pdb-")
 
 ;; This is needed, or at least the docstring part of it is needed to
-;; get the customization menu to work in Emacs 23.
+;; get the customization menu to work in Emacs 24.
 (defgroup realgud:pdb nil
-  "The Python pdb debugger (realgud variant)"
-  :group 'processes
+  "The realgud interface to the Python pdb debugger"
   :group 'realgud
-  :group 'python
-  :version "23.1")
+  :version "24.1")
 
 ;; -------------------------------------------------------------------
 ;; User-definable variables
 ;;
 
-(defcustom pdb-command-name
+(defcustom realgud:pdb-command-name
   "pdb"
   "File name for executing the stock Python debugger and command options.
 This should be an executable on your path, or an absolute file name."
   :type 'string
-  :group 'pdb)
+  :group 'realgud:pdb)
 ;; -------------------------------------------------------------------
 ;; The end.
 ;;

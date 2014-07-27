@@ -45,7 +45,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   ;; :lighter " zshdb"   ;; mode-line indicator from realgud-track is sufficient.
   ;; The minor mode bindings.
   :global nil
-  :group 'zshdb
+  :group 'realgud:zshdb
   :keymap zshdb-track-mode-map
 
   (realgud-track-set-debugger "zshdb")

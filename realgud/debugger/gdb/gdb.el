@@ -5,13 +5,11 @@
 (require-relative-list '("core" "track-mode") "realgud:gdb-")
 
 ;; This is needed, or at least the docstring part of it is needed to
-;; get the customization menu to work in Emacs 23.
+;; get the customization menu to work in Emacs 24.
 (defgroup realgud:gdb nil
-  "The dbgr interface to gdb"
-  :group 'processes
+  "The realgud interface to gdb"
   :group 'realgud
-  :group 'gdb
-  :version "23.1")
+  :version "24.1")
 
 ;; -------------------------------------------------------------------
 ;; User definable variables

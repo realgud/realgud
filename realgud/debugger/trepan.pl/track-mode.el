@@ -35,7 +35,7 @@ described by PT."
 (realgud-perl-populate-command-keys trepanpl-track-mode-map)
 
 (defun realgud:trepanpl-track-mode-hook()
-  (if realgud:trepanpl-track-mode
+  (if trepanpl-track-mode
       (progn
         (use-local-map trepanpl-track-mode-map)
         (message "using trepanpl mode map")
@@ -54,7 +54,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   ;; :lighter " trepanpl"   ;; mode-line indicator from realgud-track is sufficient.
   ;; The minor mode bindings.
   :global nil
-  :group 'trepanpl
+  :group 'realgud:trepanpl
   :keymap trepanpl-track-mode-map
 
   (realgud-track-set-debugger "trepan.pl")

@@ -39,7 +39,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   ;; :lighter " nodejs"   ;; mode-line indicator from realgud-track is sufficient.
   ;; The minor mode bindings.
   :global nil
-  :group 'nodejs
+  :group 'realgud:nodejs
 
   :keymap nodejs-track-mode-map
 

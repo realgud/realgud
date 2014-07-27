@@ -35,7 +35,7 @@ described by PT."
   ;; :lighter " trepan"   ;; mode-line indicator from realgud-track is sufficient.
   ;; The minor mode bindings.
   :global nil
-  :group 'trepan
+  :group 'realgud:trepan
   :keymap trepan-backtrack-mode-map
 
   (realgud-backtrack-set-debugger "trepan")

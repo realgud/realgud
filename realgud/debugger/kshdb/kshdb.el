@@ -5,24 +5,23 @@
 (require-relative-list '("../../common/track") "realgud-")
 (require-relative-list '("core" "track-mode") "realgud:kshdb-")
 ;; This is needed, or at least the docstring part of it is needed to
-;; get the customization menu to work in Emacs 23.
+;; get the customization menu to work in Emacs 24.
 (defgroup realgud:kshdb nil
-  "The Korn shell debugger: kshdb"
-  :group 'processes
+  "The realgud interface to the Korn shell debugger, kshdb"
   :group 'realgud
-  :version "23.1")
+  :version "24.1")
 
 ;; -------------------------------------------------------------------
 ;; User definable variables
 ;;
 
-(defcustom kshdb-command-name
+(defcustom realgud:kshdb-command-name
   ;;"kshdb --emacs 3"
   "kshdb"
   "File name for executing the kshdb and its command options.
 This should be an executable on your path, or an absolute file name."
   :type 'string
-  :group 'kshdb)
+  :group 'realgud:kshdb)
 
 (declare-function kshdb-track-mode (bool))
 (declare-function kshdb-query-cmdline  'realgud:kshdb-core)

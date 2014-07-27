@@ -136,10 +136,12 @@ NOTE: the above should have each item listed in quotes.
 	   )))
       (list interpreter-args debugger-args script-args annotate-p))))
 
-(defvar trepan2-command-name) ; # To silence Warning: reference to free variable
+;; To silence Warning: reference to free variable
+(defvar realgud:trepan2-command-name)
+
 (defun trepan2-suggest-invocation (debugger-name)
   "Suggest a trepan2 command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation trepan2-command-name
+  (realgud-suggest-invocation realgud:trepan2-command-name
 			      realgud:trepan2-minibuffer-history
 			      "python" "\\.py"))
 

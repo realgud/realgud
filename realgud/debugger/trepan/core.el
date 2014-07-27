@@ -147,10 +147,12 @@ Note that the script name path has been expanded via `expand-file-name'.
            )))
       (list interpreter-args debugger-args script-args annotate-p))))
 
-(defvar trepan-command-name) ; # To silence Warning: reference to free variable
+;; To silence Warning: reference to free variable
+(defvar realgud:trepan-command-name)
+
 (defun trepan-suggest-invocation (debugger-name)
   "Suggest a trepan command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation trepan-command-name
+  (realgud-suggest-invocation realgud:trepan-command-name
 			      realgud:trepan-minibuffer-history
 			      "ruby" "\\.rb$" "trepan"))
 

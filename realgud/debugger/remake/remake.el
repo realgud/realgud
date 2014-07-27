@@ -6,10 +6,9 @@
 (require-relative-list '("../../common/run")    "realgud:")
 (require-relative-list '("core" "track-mode") "realgud:remake-")
 ;; This is needed, or at least the docstring part of it is needed to
-;; get the customization menu to work in Emacs 23.
+;; get the customization menu to work in Emacs 24.
 (defgroup realgud:remake nil
-  "The GNU Make debugger: remake"
-  :group 'processes
+  "The realgud interface to the GNU Make debugger"
   :group 'realgud
   :group 'make
   :version "23.1")
@@ -22,13 +21,13 @@
 ;; User definable variables
 ;;
 
-(defcustom remake-command-name
+(defcustom realgud:remake-command-name
   ;;"remake --emacs 3"
   "remake"
   "File name for executing the GNU make debugger, remake, and command options.
 This should be an executable on your path, or an absolute file name."
   :type 'string
-  :group 'remake)
+  :group 'realgud:remake)
 
 ;;;###autoload
 (defun realgud:remake (&optional opt-cmd-line no-reset)

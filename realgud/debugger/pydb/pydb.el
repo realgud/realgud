@@ -10,24 +10,23 @@
 (declare-function realgud:run-debugger 'realgud:run)
 
 ;; This is needed, or at least the docstring part of it is needed to
-;; get the customization menu to work in Emacs 23.
+;; get the customization menu to work in Emacs 24.
 (defgroup realgud:pydb nil
-  "The Python pydb debugger"
-  :group 'processes
+  "The realgud interface to the Python pydb debugger"
   :group 'realgud
   :group 'python
-  :version "23.1")
+  :version "24.1")
 
 ;; -------------------------------------------------------------------
 ;; User-definable variables
 ;;
 
-(defcustom pydb-command-name
+(defcustom realgud:pydb-command-name
   "pydb"
   "File name for executing the stock Python debugger and command options.
 This should be an executable on your path, or an absolute file name."
   :type 'string
-  :group 'pydb)
+  :group 'realgud:pydb)
 
 (declare-function pydb-track-mode (bool))
 

@@ -132,10 +132,12 @@ NOTE: the above should have each item listed in quotes.
 	   )))
       (list interpreter-args debugger-args script-args annotate-p))))
 
-(defvar kshdb-command-name) ; # To silence Warning: reference to free variable
+;;To silence Warning: reference to free variable
+(defvar realgud:kshdb-command-name)
+
 (defun kshdb-suggest-invocation (debugger-name)
   "Suggest a kshdb command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation kshdb-command-name
+  (realgud-suggest-invocation realgud:kshdb-command-name
 			      realgud:kshdb-minibuffer-history
 			      "Shell-script" "\\.sh$"))
 

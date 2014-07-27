@@ -108,10 +108,12 @@ Note that path elements have been expanded via `expand-file-name'.
 	(list interpreter-args nil script-args)))
     ))
 
-(defvar nodejs-command-name) ; # To silence Warning: reference to free variable
+;; To silence Warning: reference to free variable
+(defvar realgud:nodejs-command-name)
+
 (defun realgud:nodejs-suggest-invocation (debugger-name)
   "Suggest a nodejs command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation nodejs-command-name
+  (realgud-suggest-invocation realgud:nodejs-command-name
 			      realgud:nodejs-minibuffer-history
 			      "js" "\\.js$"))
 

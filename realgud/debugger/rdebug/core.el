@@ -130,10 +130,10 @@ NOTE: the above should have each item listed in quotes.
 	   )))
       (list interpreter-args debugger-args script-args annotate-p))))
 
-(defvar rdebug-command-name)
+(defvar realgud:rdebug-command-name)
 (defun rdebug-suggest-invocation (debugger-name)
   "Suggest a rdebug command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation rdebug-command-name
+  (realgud-suggest-invocation realgud:rdebug-command-name
 			      realgud:rdebug-minibuffer-history
 			      "ruby" "\\.rb$" "rdebug"))
 

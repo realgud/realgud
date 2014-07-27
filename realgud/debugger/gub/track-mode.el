@@ -62,7 +62,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   ;; :lighter " gub"   ;; mode-line indicator from realgud-track is sufficient.
   ;; The minor mode bindings.
   :global nil
-  :group 'gub
+  :group 'realgud:gub
   :keymap gub-track-mode-map
 
   (realgud-track-set-debugger "gub")

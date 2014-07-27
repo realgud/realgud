@@ -43,7 +43,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   ;; :lighter " bashdb"   ;; mode-line indicator from realgud-track is sufficient.
   ;; The minor mode bindings.
   :global nil
-  :group 'bashdb
+  :group 'realgud:bashdb
   :keymap bashdb-track-mode-map
 
   (realgud-track-set-debugger "bashdb")

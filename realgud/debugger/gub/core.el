@@ -106,11 +106,12 @@ NOTE: the above should have each item listed in quotes.
     )
 )
 
-(defvar gub-command-name) ; # To silence Warning: reference to free variable
+;; To silence Warning: reference to free variable
+(defvar realgud:gub-command-name)
 
 (defun gub-suggest-invocation (debugger-name)
   "Suggest a command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation gub-command-name
+  (realgud-suggest-invocation realgud:gub-command-name
 			      realgud:gub-minibuffer-history
 			      "go" "\\.go$" "gub.sh"))
 

@@ -8,13 +8,11 @@
 (declare-function realgud:run-debugger 'realgud:run)
 
 ;; This is needed, or at least the docstring part of it is needed to
-;; get the customization menu to work in Emacs 23.
+;; get the customization menu to work in Emacs 24.
 (defgroup realgud:perldb nil
-  "The Perl debugger (realgud variant)"
-  :group 'processes
+  "The realgud interface to the Perl debugger, perldb"
   :group 'realgud
-  :group 'perl
-  :version "23.1")
+  :version "24.1")
 
 ;; -------------------------------------------------------------------
 ;; User-definable variables
@@ -63,6 +61,6 @@ fringe and marginal icons.
 			opt-cmd-line no-reset))
 
 (defalias 'perl5db 'realgud:perldb)
-(defalias 'perldb 'realgud:perldb)
+;; (defalias 'perldb 'realgud:perldb)
 
 (provide-me "realgud-")

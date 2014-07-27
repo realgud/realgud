@@ -43,7 +43,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   ;; :lighter " pydb"   ;; mode-line indicator from realgud-track is sufficient.
   ;; The minor mode bindings.
   :global nil
-  :group 'pydb
+  :group 'realgud:pydb
   :keymap pydb-track-mode-map
   (realgud-track-set-debugger "pydb")
   (if pydb-track-mode

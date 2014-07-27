@@ -10,13 +10,12 @@
 (declare-function realgud:run-debugger 'realgud:run)
 
 ;; This is needed, or at least the docstring part of it is needed to
-;; get the customization menu to work in Emacs 23.
+;; get the customization menu to work in Emacs 24.
 (defgroup realgud:trepan nil
-  "The Ruby 1.9.2 1.9.3 \"trepanning\" debugger"
-  :group 'processes
+  "The realgud interface to the Ruby 1.9.2 1.9.3 \"trepanning\" debugger"
   :group 'ruby
   :group 'realgud
-  :version "23.1")
+  :version "24.1")
 
 ;; -------------------------------------------------------------------
 ;; User-definable variables
@@ -28,7 +27,7 @@
   "File name for executing the Ruby debugger and command options.
 This should be an executable on your path, or an absolute file name."
   :type 'string
-  :group 'trepan)
+  :group 'realgud:trepan)
 
 ;;;###autoload
 (defun realgud:trepan (&optional opt-cmd-line no-reset)

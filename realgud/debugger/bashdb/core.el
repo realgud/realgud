@@ -147,10 +147,12 @@ Note that path elements have been expanded via `realgud:expand-file-name-if-exis
 	   )))
       (list interpreter-args debugger-args script-args annotate-p))))
 
-(defvar bashdb-command-name) ; # To silence Warning: reference to free variable
+;; To silence Warning: reference to free variable
+(defvar realgud:bashdb-command-name)
+
 (defun bashdb-suggest-invocation (debugger-name)
   "Suggest a bashdb command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation bashdb-command-name
+  (realgud-suggest-invocation realgud:bashdb-command-name
 			      realgud:bashdb-minibuffer-history
 			      "Shell-script" "\\.sh$"))
 

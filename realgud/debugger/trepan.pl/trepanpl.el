@@ -7,13 +7,12 @@
 (require-relative-list '("core" "track-mode")   "realgud:trepanpl-")
 
 ;; This is needed, or at least the docstring part of it is needed to
-;; get the customization menu to work in Emacs 23.
+;; get the customization menu to work in Emacs 24.
 (defgroup realgud:trepanpl nil
-  "The Perl \"trepanning\" debugger"
-  :group 'processes
+  "The realgud interface to the Perl \"trepanning\" debugger"
   :group 'perl
   :group 'realgud
-  :version "23.1")
+  :version "24.1")
 
 ;; -------------------------------------------------------------------
 ;; User definable variables
@@ -24,7 +23,7 @@
   "File name for executing the Perl debugger and command options.
 This should be an executable on your path, or an absolute file name."
   :type 'string
-  :group 'trepanpl)
+  :group 'realgud:trepanpl)
 
 ;; -------------------------------------------------------------------
 ;; The end.

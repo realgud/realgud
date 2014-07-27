@@ -125,10 +125,12 @@ NOTE: the above should have each item listed in quotes.
 	   )))
       (list interpreter-args debugger-args script-args annotate-p))))
 
-(defvar pydb-command-name) ; # To silence Warning: reference to free variable
+;; To silence Warning: reference to free variable
+(defvar realgud:pydb-command-name)
+
 (defun pydb-suggest-invocation (debugger-name)
   "Suggest a pydb command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation pydb-command-name
+  (realgud-suggest-invocation realgud:pydb-command-name
 			      realgud:pydb-minibuffer-history
 			      "python" "\\.py"))
 

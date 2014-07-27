@@ -130,10 +130,12 @@ NOTE: the above should have each item listed in quotes.
 	   )))
       (list interpreter-args debugger-args script-args annotate-p))))
 
-(defvar trepanx-command-name) ; # To silence Warning: reference to free variable
+;; To silence Warning: reference to free variable
+(defvar realgud:trepanx-command-name)
+
 (defun trepanx-suggest-invocation (debugger-name)
   "Suggest a trepanx command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation trepanx-command-name
+  (realgud-suggest-invocation realgud:trepanx-command-name
 			      realgud:trepanx-minibuffer-history
 			      "ruby" "\\.rb$" "trepanx"))
 

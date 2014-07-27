@@ -1,8 +1,8 @@
 ;;; Copyright (C) 2010-2014 Rocky Bernstein <rocky@gnu.org>
 ; (require 'term)
-(if (< emacs-major-version 23)
+(if (< emacs-major-version 24)
     (error
-     "You need at least Emacs 23 or greater to run this - you have version %d"
+     "You need at least Emacs 24 or greater to run this - you have version %d"
      emacs-major-version))
 
 (require 'comint)

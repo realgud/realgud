@@ -6,13 +6,12 @@
 (require-relative-list '("core" "track-mode") "realgud:trepan3k-")
 
 ;; This is needed, or at least the docstring part of it is needed to
-;; get the customization menu to work in Emacs 23.
+;; get the customization menu to work in Emacs 24.
 (defgroup realgud:trepan3k nil
-  "The Python trepan3k debugger"
-  :group 'processes
+  "The realgud interface to the Python debugger, trepan3k"
   :group 'realgud
   :group 'python
-  :version "23.1")
+  :version "24.1")
 
 (declare-function trepan3k-query-cmdline  'realgud:trepan3k-core)
 (declare-function trepan3k-parse-cmd-args 'realgud:trepan3k-core)
@@ -22,13 +21,13 @@
 ;; User-definable variables
 ;;
 
-(defcustom trepan3k-command-name
+(defcustom realgud:trepan3k-command-name
   ;;"trepan3k --emacs 3"
   "trepan3k"
   "File name for executing the Python debugger and command options.
 This should be an executable on your path, or an absolute file name."
   :type 'string
-  :group 'trepan3k)
+  :group 'realgud:trepan3k)
 
 (declare-function trepan3k-track-mode (bool))
 

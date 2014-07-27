@@ -44,7 +44,7 @@ a process shell.
   ;; :lighter " pdb"   ;; mode-line indicator from realgud-track is sufficient.
   ;; The minor mode bindings.
   :global nil
-  :group 'pdb
+  :group 'realgud:pdb
   :keymap pdb-track-mode-map
   (realgud-track-set-debugger "pdb")
   (if pdb-track-mode

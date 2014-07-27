@@ -7,24 +7,23 @@
 (require-relative-list '("core" "track-mode")   "realgud:bashdb-")
 
 ;; This is needed, or at least the docstring part of it is needed to
-;; get the customization menu to work in Emacs 23.
+;; get the customization menu to work in Emacs 24.
 (defgroup realgud:bashdb nil
-  "The bash debugger: bashdb (realgud variant)"
-  :group 'processes
+  "The realgud interface to bashdb"
   :group 'realgud
-  :version "23.1")
+  :version "24.1")
 
 ;; -------------------------------------------------------------------
 ;; User-definable variables
 ;;
 
-(defcustom bashdb-command-name
+(defcustom realgud:bashdb-command-name
   ;;"bashdb --emacs 3"
   "bashdb"
   "File name for executing the bash debugger and command options.
 This should be an executable on your path, or an absolute file name."
   :type 'string
-  :group 'bashdb)
+  :group 'realgud)
 
 ;; -------------------------------------------------------------------
 ;; The end.

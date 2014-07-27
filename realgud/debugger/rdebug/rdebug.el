@@ -5,13 +5,11 @@
 			 "../../common/track") "realgud-")
 (require-relative-list '("core" "track-mode") "realgud-rdebug-")
 ;; This is needed, or at least the docstring part of it is needed to
-;; get the customization menu to work in Emacs 23.
+;; get the customization menu to work in Emacs 24.
 (defgroup realgud:rdebug nil
-  "ruby-debug (rdebug)"
-  :group 'processes
-  :group 'ruby
+  "The realgud interface to the Ruby debugger, rdebug"
   :group 'realgud
-  :version "23.1")
+  :version "24.1")
 
 (declare-function rdebug-query-cmdline   'realgud-rdebug-core)
 (declare-function rdebug-parse-cmd-args  'realgud-rdebug-core)
@@ -21,13 +19,13 @@
 ;; User definable variables
 ;;
 
-(defcustom rdebug-command-name
+(defcustom realgud:rdebug-command-name
   ;;"rdebug --emacs 3"
   "rdebug"
   "File name for executing the Ruby debugger and command options.
 This should be an executable on your path, or an absolute file name."
   :type 'string
-  :group 'rdebug)
+  :group 'realgud:rdebug)
 
 (declare-function rdebug-track-mode (bool))
 

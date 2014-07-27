@@ -42,7 +42,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   ;; :lighter " rdebug"   ;; mode-line indicator from realgud-track is sufficient.
   ;; The minor mode bindings.
   :global nil
-  :group 'rdebug
+  :group 'realgud:rdebug
   :keymap rdebug-track-mode-map
   (rdebug-track-mode-internal rdebug-track-mode)
 )

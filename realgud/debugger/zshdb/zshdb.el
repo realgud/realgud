@@ -13,24 +13,23 @@
 (declare-function realgud-run-process 'realgud-core)
 
 ;; This is needed, or at least the docstring part of it is needed to
-;; get the customization menu to work in Emacs 23.
+;; get the customization menu to work in Emacs 24.
 (defgroup realgud:zshdb nil
-  "The Zsh debugger: zshdb"
-  :group 'processes
+  "The realgud interface to the Zsh debugger, zshdb"
   :group 'realgud
-  :version "23.1")
+  :version "24.1")
 
 ;; -------------------------------------------------------------------
 ;; User definable variables
 ;;
 
-(defcustom zshdb-command-name
+(defcustom realgud:zshdb-command-name
   ;;"zshdb --emacs 3"
   "zshdb"
   "File name for executing the zshdb and its command options.
 This should be an executable on your path, or an absolute file name."
   :type 'string
-  :group 'zshdb)
+  :group 'realgud:zshdb)
 
 (declare-function zshdb-track-mode (bool))
 

@@ -41,7 +41,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   ;; :lighter " trepan8"   ;; mode-line indicator from realgud-track is sufficient.
   ;; The minor mode bindings.
   :global nil
-  :group 'trepan8
+  :group 'realgud:trepan8
   :keymap trepan8-track-mode-map
 
   (realgud-track-set-debugger "trepan8")

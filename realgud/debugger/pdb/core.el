@@ -125,10 +125,12 @@ Note that the script name path has been expanded via `expand-file-name'.
 	   )))
       (list interpreter-args debugger-args script-args annotate-p))))
 
-(defvar pdb-command-name) ; # To silence Warning: reference to free variable
+;; To silence Warning: reference to free variable
+(defvar realgud:pdb-command-name)
+
 (defun pdb-suggest-invocation (debugger-name)
   "Suggest a pdb command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation pdb-command-name
+  (realgud-suggest-invocation realgud:pdb-command-name
 			      realgud:pdb-minibuffer-history
 			      "python" "\\.py"))
 

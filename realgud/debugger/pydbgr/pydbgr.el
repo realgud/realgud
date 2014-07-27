@@ -6,13 +6,12 @@
 (require-relative-list '("core" "track-mode") "realgud-pydbgr-")
 
 ;; This is needed, or at least the docstring part of it is needed to
-;; get the customization menu to work in Emacs 23.
+;; get the customization menu to work in Emacs 24.
 (defgroup realgud:pydbgr nil
   "The Python pydbgr debugger"
-  :group 'processes
   :group 'realgud
   :group 'python
-  :version "23.1")
+  :version "24.1")
 
 (declare-function pydbgr-query-cmdline  'realgud-pydbgr-core)
 (declare-function pydbgr-parse-cmd-args 'realgud-pydbgr-core)
@@ -23,13 +22,13 @@
 ;; User-definable variables
 ;;
 
-(defcustom pydbgr-command-name
+(defcustom realgud:pydbgr-command-name
   ;;"pydbgr --emacs 3"
   "pydbgr"
   "File name for executing the Python debugger and command options.
 This should be an executable on your path, or an absolute file name."
   :type 'string
-  :group 'pydbgr)
+  :group 'realgud:pydbgr)
 
 ;; -------------------------------------------------------------------
 ;; The end.
