@@ -2,6 +2,7 @@
 (load-file "../realgud/common/buffer/source.el")
 (load-file "../realgud/common/buffer/command.el")
 (load-file "../realgud/debugger/trepan/init.el")
+(load-file "../realgud/debugger/trepan/track-mode.el")
 
 (declare-function realgud-cmdbuf-init 'realgud-buffer-command)
 (declare-function realgud-srcbuf-init 'realgud-buffer-source)
