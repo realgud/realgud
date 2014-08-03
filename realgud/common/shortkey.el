@@ -119,8 +119,10 @@ MODE-ON? a boolean which specifies if we are going into or out of this mode."
     ;;   (realgud-cmdbuf-info-in-srcbuf?= mode-on?)
     ;;   )
     ))
-    (error "buffer %s does not seem to be attached to a debugger"
-      (buffer-name))))
+    (progn
+      (setq realgud-short-key-mode nil)
+      (error "buffer %s does not seem to be attached to a debugger"
+	   (buffer-name)))))
 
 (defun realgud-short-key-mode-off ()
   "Turn off `realgud-short-key-mode' in all buffers."
