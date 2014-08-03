@@ -164,8 +164,17 @@ icons and resets short-key mode."
     )
   )
 
+(defun realgud-kill-buffer-hook ()
+  "When realgud buffer is killed call `realgud-terminate' to clean up.
+Note: `realgud-term-sentinel' is not helpful in this case because when
+it is called buffer and its data is already gone"
+  (let ((cmdbuf (realgud-get-cmdbuf (current-buffer))))
+    (if cmdbuf (realgud-terminate cmdbuf)))
+)
+(add-hook 'kill-buffer-hook 'realgud-kill-buffer-hook)
+
 (defun realgud-term-sentinel (process string)
-  "Called when PROCESS dies. We call `realgud-quit' to clean up."
+  "Called when PROCESS dies. We call `realgud-terminate' to clean up."
   (let ((cmdbuf (realgud-get-cmdbuf)))
     (if cmdbuf (realgud-terminate cmdbuf)))
   (message "That's all folks.... %s" string))
