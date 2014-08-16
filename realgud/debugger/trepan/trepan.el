@@ -21,7 +21,7 @@
 ;; User-definable variables
 ;;
 
-(defcustom trepan-command-name
+(defcustom realgud:trepan-command-name
   ;;"trepan --emacs 3"
   "trepan"
   "File name for executing the Ruby debugger and command options.
