@@ -16,7 +16,7 @@
 
 (declare-function realgud-goto-line-for-pt 'realgud-track-mode)
 (declare-function realgud-track-mode 'realgud-track-mode)
-(declare-function realgud-track-set-debugger 'realgud-track-mode)
+(declare-function realgud:track-set-debugger 'realgud-track-mode)
 (declare-function realgud-track-mode-setup 'realgud-track-mode)
 
 (defun realgud:gub-goto-location (pt)
@@ -65,7 +65,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   :group 'realgud:gub
   :keymap gub-track-mode-map
 
-  (realgud-track-set-debugger "gub")
+  (realgud:track-set-debugger "gub")
   (if gub-track-mode
       (progn
 	(setq realgud-track-mode 't)

@@ -16,7 +16,7 @@
 (declare-function realgud-track-mode 'realgud-track-mode)
 (declare-function realgud-track-mode-hook 'realgud-track-mode)
 (declare-function realgud-track-mode-setup 'realgud-track-mode)
-(declare-function realgud-track-set-debugger 'realgud-track-mode)
+(declare-function realgud:track-set-debugger 'realgud-track-mode)
 (declare-function realgud-goto-line-for-pt 'realgud-track-mode)
 
 (realgud-track-mode-vars "trepan")
@@ -64,7 +64,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   :global nil
   :group 'realgud:trepan
   :keymap trepan-track-mode-map
-  (realgud-track-set-debugger "trepan")
+  (realgud:track-set-debugger "trepan")
   (if trepan-track-mode
       (progn
 	(realgud-track-mode-setup 't)

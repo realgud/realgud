@@ -16,7 +16,7 @@
 (declare-function realgud-track-mode 'realgud-track-mode)
 (declare-function realgud-track-mode-hook 'realgud-track-mode)
 (declare-function realgud-track-mode-setup 'realgud-track-mode)
-(declare-function realgud-track-set-debugger 'realgud-track-mode)
+(declare-function realgud:track-set-debugger 'realgud-track-mode)
 (declare-function realgud-python-populate-command-keys 'realgud-lang-python)
 
 (realgud-track-mode-vars "trepan3k")
@@ -48,7 +48,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   :global nil
   :group 'realgud:trepan3k
   :keymap trepan3k-track-mode-map
-  (realgud-track-set-debugger "trepan3k")
+  (realgud:track-set-debugger "trepan3k")
   (if trepan3k-track-mode
       (progn
 	(setq realgud-track-mode 't)

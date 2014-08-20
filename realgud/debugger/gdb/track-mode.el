@@ -17,7 +17,7 @@
 (declare-function realgud-track-mode 'realgud-track-mode)
 (declare-function realgud-track-mode-hook 'realgud-track-mode)
 (declare-function realgud-track-mode-setup 'realgud-track-mode)
-(declare-function realgud-track-set-debugger 'realgud-track-mode)
+(declare-function realgud:track-set-debugger 'realgud-track-mode)
 
 (define-key realgud:gdb-track-mode-map
   (kbd "C-c !b") 'realgud:goto-debugger-backtrace-line)
@@ -43,7 +43,7 @@ Key bindings:
   :keymap realgud:gdb-track-mode-map
   (if realgud:gdb-track-mode
       (progn
-	(realgud-track-set-debugger "gdb")
+	(realgud:track-set-debugger "gdb")
 	(setq realgud-track-mode 't)
         (realgud-track-mode-setup 't)
         (realgud:gdb-track-mode-hook))

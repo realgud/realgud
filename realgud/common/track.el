@@ -24,9 +24,7 @@
   :type 'symbolp
   :group 'realgud)
 
-(make-variable-buffer-local  (defvar realgud-track-mode))
-(fn-p-to-fn?-alias 'realgud-loc-p)
-
+(declare-function fn-p-to-fn?-alias                   'realgud-helper)
 (declare-function realgud-bp-add-info                 'realgud-bp)
 (declare-function realgud-bp-del-info                 'realgud-bp)
 (declare-function realgud-cmdbuf-add-srcbuf           'realgud-buffer-command)
@@ -42,18 +40,26 @@
 (declare-function realgud-cmdbuf-mode-line-update     'realgud-buffer-command)
 (declare-function realgud-cmdbuf-pat                  'realgud-buffer-command)
 (declare-function realgud-cmdbuf?                     'realgud-buffer-command)
+(declare-function realgud-cmdbuf-info-in-srcbuf?=     'realgud-buffer-command)
 (declare-function realgud-terminate                   'realgud-core)
 (declare-function realgud-file-loc-from-line          'realgud-file)
 (declare-function realgud-fringe-history-set          'realgud-fringe)
 (declare-function realgud-get-cmdbuf                  'realgud-buffer-command)
+(declare-function realgud-get-srcbuf-from-cmdbuf      'realgud-buffer-helper)
 (declare-function realgud-loc-goto                    'realgud-loc)
 (declare-function realgud-loc-hist-add                'realgud-lochist)
 (declare-function realgud-loc-hist-index              'realgud-lochist)
 (declare-function realgud-loc-hist-item               'realgud-lochist)
 (declare-function realgud-loc?                        'realgud-loc)
+(declare-function realgud-short-key-mode-setup        'realgud-shortkey)
 (declare-function realgud-srcbuf-init-or-update       'realgud-source)
 (declare-function realgud-srcbuf-loc-hist             'realgud-source)
 (declare-function realgud-window-src                  'realgud-window)
+(declare-function realgud-window-src-undisturb-cmd    'realgud-window)
+(declare-function realgud-window-update-position      'realgud-window)
+
+(make-variable-buffer-local  (defvar realgud-track-mode))
+(fn-p-to-fn?-alias 'realgud-loc-p)
 
 (defvar realgud-track-divert-string)
 
@@ -580,7 +586,7 @@ find a location. non-nil if we can find a location.
       ))
     )
 
-(defun realgud-track-set-debugger (debugger-name)
+(defun realgud:track-set-debugger (debugger-name)
   "Set debugger name and information associated with that debugger for
 the buffer process. This info is returned or nil if we can't find a
 debugger with that information"

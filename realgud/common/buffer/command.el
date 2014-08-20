@@ -223,7 +223,7 @@ Information is put in an internal buffer called *Describe*."
 ;; inside pat-hash
 ;;
 ;; To do this however we need to fix up the caller
-;; realgud-track-set-debugger by changing realgud-pat-hash to store a hash
+;; realgud:track-set-debugger by changing realgud-pat-hash to store a hash
 ;; rather than the loc, file, and line fields; those fields then get
 ;; removed.
 

@@ -15,7 +15,7 @@
 ;; FIXME figure out if I can put this in something like a header file.
 (declare-function realgud-fringe-erase-history-arrows 'realgud-buffer-command)
 (declare-function realgud-populate-debugger-menu      'realgud-menu)
-(declare-function realgud-track-set-debugger          'realgud-track)
+(declare-function realgud:track-set-debugger          'realgud-track)
 (declare-function realgud-cmdbuf-info-divert-output?=
 		  'realgud-buffer-command)
 (declare-function realgud-cmdbuf-info-prior-prompt-regexp=
@@ -77,7 +77,7 @@ of this mode."
 	(set-process-sentinel process 'realgud-term-sentinel)
 	(unless (and (realgud-cmdbuf-info-set?)
 		     (realgud-sget 'cmdbuf-info 'debugger-name))
-	  (call-interactively 'realgud-track-set-debugger))
+	  (call-interactively 'realgud:track-set-debugger))
 	(if (boundp 'comint-last-output-start)
 	    (progn
 	      (realgud-cmdbuf-info-prior-prompt-regexp= comint-prompt-regexp)
@@ -151,7 +151,7 @@ Use the command `%s-track-mode' to toggle or set this variable." name name))
 (defun realgud-track-mode-body(name)
   "Used in by custom debuggers: pydbgr, trepan, gdb, etc. NAME is
 the name of the debugger which is used to preface variables."
-  (realgud-track-set-debugger name)
+  (realgud:track-set-debugger name)
   (funcall (intern (concat "realgud-define-" name "-commands")))
   (if (intern (concat name "-track-mode"))
       (progn

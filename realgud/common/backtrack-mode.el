@@ -16,7 +16,7 @@
 (require-relative-list  '("buffer/command") "realgud-buffer-")
 
 (declare-function realgud-populate-debugger-menu 'realgud-menu)
-(declare-function realgud-track-set-debugger     'realgud-track)
+(declare-function realgud:track-set-debugger     'realgud-track)
 
 (defvar realgud-backtrack-mode-map
   (let ((map (make-sparse-keymap)))
@@ -31,7 +31,7 @@
   "Keymap used in `realgud-backtrack-minor-mode'.")
 
 ;; FIXME figure out if I can put this in something like a header file.
-;; FIXME: combine with realgud-track-set-debugger's completing read
+;; FIXME: combine with realgud:track-set-debugger's completing read
 (defun realgud-backtrack-set-debugger (debugger-name)
   "Set debugger name This info is returned or nil if we can't find a
 debugger with that information"
@@ -83,7 +83,7 @@ Use the command `%s-track-mode' to toggle or set this variable." name name))
 (defun realgud-backtrack-mode-body(name)
   "Used in by custom debuggers: pydbgr, trepan, gdb, etc. NAME is
 the name of the debugger which is used to preface variables."
-  (realgud-track-set-debugger name)
+  (realgud:track-set-debugger name)
   (funcall (intern (concat "realgud-define-" name "-commands")))
   (if (intern (concat name "-backtrack-mode"))
       (progn

@@ -18,7 +18,7 @@
 (declare-function realgud-track-mode 'realgud-track-mode)
 (declare-function realgud-track-mode-hook 'realgud-track-mode)
 (declare-function realgud-track-mode-setup 'realgud-track-mode)
-(declare-function realgud-track-set-debugger 'realgud-track-mode)
+(declare-function realgud:track-set-debugger 'realgud-track-mode)
 
 (realgud-ruby-populate-command-keys rdebug-track-mode-map)
 
@@ -49,7 +49,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
 
 ;; Broken out as a function for debugging
 (defun rdebug-track-mode-internal (&optional arg)
-  (realgud-track-set-debugger "rdebug")
+  (realgud:track-set-debugger "rdebug")
   (if rdebug-track-mode
       (progn
 	(setq realgud-track-mode 't)

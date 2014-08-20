@@ -16,7 +16,7 @@
 
 (declare-function realgud-track-mode 'realgud-track-mode)
 (declare-function realgud-track-mode-setup 'realgud-track-mode)
-(declare-function realgud-track-set-debugger 'realgud-track-mode)
+(declare-function realgud:track-set-debugger 'realgud-track-mode)
 (declare-function realgud-python-populate-command-keys 'realgud-lang-python)
 
 (realgud-python-populate-command-keys pdb-track-mode-map)
@@ -46,7 +46,7 @@ a process shell.
   :global nil
   :group 'realgud:pdb
   :keymap pdb-track-mode-map
-  (realgud-track-set-debugger "pdb")
+  (realgud:track-set-debugger "pdb")
   (if pdb-track-mode
       (progn
         (setq realgud-track-mode 't)

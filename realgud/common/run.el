@@ -8,7 +8,7 @@
 
 (declare-function realgud-cmdbuf-info-in-debugger?=   'realgud-buffer-command)
 (declare-function realgud-cmdbuf-info-cmd-args=       'realgud-buffer-command)
-(declare-function realgud-track-set-debugger          'realgud-track)
+(declare-function realgud:track-set-debugger          'realgud-track)
 (declare-function realgud-parse-command-arg           'realgud-core)
 (declare-function realgud:expand-file-name-if-exists  'realgud-core)
 
@@ -111,7 +111,7 @@ buffer or nil is returned."
       (if (and process (eq 'run (process-status process)))
 	  (progn
 	    (switch-to-buffer cmd-buf)
-	    (realgud-track-set-debugger debugger-name)
+	    (realgud:track-set-debugger debugger-name)
 	    (realgud-cmdbuf-info-in-debugger?= 't)
 	    (realgud-cmdbuf-info-cmd-args= cmd-args)
 	    (when cmd-buf

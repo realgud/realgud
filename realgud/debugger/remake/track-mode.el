@@ -13,9 +13,9 @@
 (require-relative-list '("core" "init") "realgud:remake-")
 
 (declare-function realgud-cmd-remap          'realgud-cmds)
-(declare-function realgud-track-set-debugger 'realgud-track-mode)
+(declare-function realgud:track-set-debugger 'realgud-track-mode)
 (declare-function realgud-track-mode-setup   'realgud-track-mode)
-(declare-function realgud-track-set-debugger 'realgud-track-mode)
+(declare-function realgud:track-set-debugger 'realgud-track-mode)
 
 (realgud-track-mode-vars "remake")
 
@@ -48,7 +48,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   :group 'realgud:remake
   :keymap remake-track-mode-map
 
-  (realgud-track-set-debugger "remake")
+  (realgud:track-set-debugger "remake")
   (if remake-track-mode
       (progn
 	(setq realgud-track-mode 't)

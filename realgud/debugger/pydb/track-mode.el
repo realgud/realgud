@@ -17,7 +17,7 @@
 
 (declare-function realgud-track-mode 'realgud-track-mode)
 (declare-function realgud-track-mode-setup 'realgud-track-mode)
-(declare-function realgud-track-set-debugger 'realgud-track-mode)
+(declare-function realgud:track-set-debugger 'realgud-track-mode)
 (declare-function realgud-python-populate-command-keys 'realgud-lang-python)
 
 (realgud-python-populate-command-keys pydb-track-mode-map)
@@ -45,7 +45,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   :global nil
   :group 'realgud:pydb
   :keymap pydb-track-mode-map
-  (realgud-track-set-debugger "pydb")
+  (realgud:track-set-debugger "pydb")
   (if pydb-track-mode
       (progn
         (setq realgud-track-mode 't)

@@ -19,7 +19,7 @@
 (declare-function realgud-track-mode         'realgud-track-mode)
 (declare-function realgud-track-mode-hook    'realgud-track-mode)
 (declare-function realgud-track-mode-setup   'realgud-track-mode)
-(declare-function realgud-track-set-debugger 'realgud-track-mode)
+(declare-function realgud:track-set-debugger 'realgud-track-mode)
 (declare-function realgud-perl-populate-command-keys 'realgud-lang-perl)
 
 
@@ -57,7 +57,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   :group 'realgud:trepanpl
   :keymap trepanpl-track-mode-map
 
-  (realgud-track-set-debugger "trepan.pl")
+  (realgud:track-set-debugger "trepan.pl")
   (if realgud:trepanpl-track-mode
       (progn
         (realgud-track-mode-setup 't)

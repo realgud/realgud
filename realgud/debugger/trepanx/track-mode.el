@@ -20,7 +20,7 @@
 (declare-function realgud-track-mode 'realgud-track-mode)
 (declare-function realgud-track-mode-hook 'realgud-track-mode)
 (declare-function realgud-track-mode-setup 'realgud-track-mode)
-(declare-function realgud-track-set-debugger 'realgud-track-mode)
+(declare-function realgud:track-set-debugger 'realgud-track-mode)
 (declare-function realgud-ruby-populate-command-keys 'realgud-lang-ruby)
 
 (realgud-ruby-populate-command-keys trepanx-track-mode-map)
@@ -48,7 +48,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   :group 'realgud:trepanx
   :keymap trepanx-track-mode-map
 
-  (realgud-track-set-debugger "trepanx")
+  (realgud:track-set-debugger "trepanx")
   (if trepanx-track-mode
       (progn
 	(realgud-track-mode-setup 't)

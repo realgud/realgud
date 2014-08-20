@@ -13,7 +13,7 @@
 (require-relative-list '("core" "init") "realgud:nodejs-")
 
 (declare-function realgud-cmd-remap          'realgud-cmds)
-(declare-function realgud-track-set-debugger 'realgud-track-mode)
+(declare-function realgud:track-set-debugger 'realgud-track-mode)
 (declare-function realgud-track-mode-setup   'realgud-track-mode)
 
 (realgud-track-mode-vars "nodejs")
@@ -43,12 +43,12 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
 
   :keymap nodejs-track-mode-map
 
-  (realgud-track-set-debugger "nodejs")
+  (realgud:track-set-debugger "nodejs")
   (realgud:nodejs-track-mode-internal)
 )
 
 (defun realgud:nodejs-track-mode-internal (&optional arg)
-  (realgud-track-set-debugger "nodejs")
+  (realgud:track-set-debugger "nodejs")
   (if nodejs-track-mode
       (progn
         (realgud-track-mode-setup 't)

@@ -14,7 +14,7 @@
 (require-relative "../../lang/posix-shell" nil "realgud-lang-")
 
 (declare-function realgud-cmd-remap          'realgud-cmds)
-(declare-function realgud-track-set-debugger 'realgud-track-mode)
+(declare-function realgud:track-set-debugger 'realgud-track-mode)
 (declare-function realgud-track-mode-setup   'realgud-track-mode)
 (declare-function realgud-posix-shell-populate-command-keys
 		  'realgud-lang-posix-shell)
@@ -48,7 +48,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   :group 'realgud:zshdb
   :keymap zshdb-track-mode-map
 
-  (realgud-track-set-debugger "zshdb")
+  (realgud:track-set-debugger "zshdb")
   (if zshdb-track-mode
       (progn
 	(setq realgud-track-mode 't)

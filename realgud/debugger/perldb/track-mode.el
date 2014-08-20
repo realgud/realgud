@@ -20,7 +20,7 @@
 		  'realgud:perldb)
 (declare-function realgud-track-mode 'realgud-track-mode)
 (declare-function realgud-track-mode-setup    realgud-track-mode)
-(declare-function realgud-track-set-debugger 'realgud-track-mode)
+(declare-function realgud:track-set-debugger 'realgud-track-mode)
 
 (realgud-perl-populate-command-keys perldb-track-mode-map )
 
@@ -47,7 +47,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   :group 'realgud:perldb
   :keymap perldb-track-mode-map
 
-  (realgud-track-set-debugger "perldb")
+  (realgud:track-set-debugger "perldb")
   (if perldb-track-mode
       (progn
 	(realgud-track-mode-setup 't)
