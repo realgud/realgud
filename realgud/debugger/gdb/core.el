@@ -11,7 +11,6 @@
 (declare-function realgud-lang-mode? 'realgud-lang)
 (declare-function realgud-parse-command-arg 'realgud-core)
 (declare-function realgud-query-cmdline 'realgud-core)
-(declare-function realgud-suggest-invocation 'realgud-core)
 
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
@@ -123,12 +122,41 @@ Note that path elements have been expanded via `expand-file-name'.
 	(list debugger-args nil script-args annotate-p)))))
 
 (defvar realgud:gdb-command-name)
-(defun realgud:gdb-suggest-invocation (debugger-name)
-  "Suggest a gdb command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation realgud:gdb-command-name
-			      realgud:gdb-minibuffer-history
-			      "c" "\\.\\([ch]\\)\\(pp\\)?")
-)
+
+(defun realgud:gdb-suggest-invocation (&optional debugger-name)
+  "Suggest a gdb command invocation. If the current buffer is a C
+source file and there is an executable with the extension
+stripped, then use the executable name.  Next try to find an
+executable in the default-directory that doesn't have an
+extension Next, try to use the first value of MINIBUFFER-HISTORY
+if that exists. When all else fails return the empty string."
+  (let* ((lang-ext-regexp "\\.\\([ch]\\)\\(pp\\)?")
+	 (file-list (directory-files default-directory))
+	 (priority 2)
+	 (try-filename (file-name-base (buffer-file-name))))
+    (if (member try-filename (directory-files default-directory))
+    	(concat "gdb " try-filename)
+      ;; else
+      (progn
+	;; FIXME: I think a better test would be to look for
+	;; c-mode in the buffer that have a corresponding executable
+	(while (and (setq try-filename (car-safe file-list)) (< priority 8))
+	  (setq file-list (cdr file-list))
+	  (if (and (file-executable-p try-filename)
+		   (not (file-directory-p try-filename)))
+	      (if (equal try-filename (file-name-sans-extension try-filename))
+		  (setq priority 8)
+		(setq priority 7))))
+	)
+      (if (< priority 6)
+	  (cond
+	   (realgud:gdb-minibuffer-history
+	    (car realgud:gdb-minibuffer-history))
+	   (t "gdb "))
+	(concat "gdb " try-filename)
+	)
+    )))
+
 
 (defun realgud:gdb-reset ()
   "Gdb cleanup - remove debugger's internal buffers (frame,
