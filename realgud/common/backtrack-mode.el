@@ -1,8 +1,8 @@
-;;; Copyright (C) 2011, 2013 Rocky Bernstein <rocky@gnu.org> Used to parse
-;;;  programming-language backtrace-like tracks output. In contrast to
-;;;  track-mode, there doesn't have to be a process shell arround
-;;; Compare with backtrace-mode.el which handles backtraces inside the
-;;; debugger
+;;; Copyright (C) 2011, 2013, 2014 Rocky Bernstein <rocky@gnu.org>
+;;;  Used to parse programming-language backtrace-like tracks
+;;;  output. In contrast to track-mode, there doesn't have to be a
+;;;  process shell arround Compare with backtrace-mode.el which
+;;;  handles backtraces inside the debugger
 
 (eval-when-compile (require 'cl))
 (require 'shell)
@@ -15,8 +15,9 @@
 
 (require-relative-list  '("buffer/command") "realgud-buffer-")
 
-(declare-function realgud-populate-debugger-menu 'realgud-menu)
-(declare-function realgud:track-set-debugger     'realgud-track)
+(declare-function realgud:debugger-name-transform 'realgud-helper)
+(declare-function realgud-populate-debugger-menu  'realgud-menu)
+(declare-function realgud:track-set-debugger      'realgud-track)
 
 (defvar realgud-backtrack-mode-map
   (let ((map (make-sparse-keymap)))
@@ -39,8 +40,7 @@ debugger with that information"
    (list (completing-read "Debugger name: " realgud-pat-hash)))
   (let ((regexp-hash (gethash debugger-name realgud-pat-hash)))
     (if regexp-hash
-	(let* ((prefix
-		(if (equal debugger-name "gdb") "realgud:gdb" debugger-name))
+	(let* ((prefix (realgud:debugger-name-transform debugger-name))
 	       (specific-track-mode (intern (concat prefix "-backtrack-mode")))
 	       )
 	  (if (and (not (eval specific-track-mode))

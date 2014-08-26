@@ -20,4 +20,8 @@
 (assert-t (functionp 'realgud-test-info-name=))
 (assert-equal "foo" (realgud-test-info-name= "foo"))
 
+(note "realgud:debugger-name-transform")
+(assert-equal "trepan" (realgud:debugger-name-transform "trepan"))
+(assert-equal "realgud:gdb" (realgud:debugger-name-transform "gdb"))
+
 (end-tests)

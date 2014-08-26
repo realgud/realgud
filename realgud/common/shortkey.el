@@ -1,15 +1,17 @@
 ;;; Copyright (C) 2010-2014 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
-(require-relative-list '("custom" "key" "menu") "realgud-")
+(require-relative-list '("custom" "helper" "key" "menu") "realgud-")
 (require-relative-list '("buffer/command" "buffer/helper" "buffer/source")
 		       "realgud-buffer-")
 
-(declare-function realgud-cmdbuf?     'realgud-buffer-command)
-(declare-function realgud-get-cmdbuf  'realgud-buffer-helper)
-(declare-function realgud-populate-common-keys        'realgud-key)
-(declare-function realgud-populate-debugger-menu      'realgud-menu)
-(declare-function realgud-srcbuf-info-short-key?=,    'realgud-source)
-(declare-function realgud-srcbuf-info-was-read-only?= 'realgud-source)
+(declare-function realgud-cmdbuf?                    'realgud-buffer-command)
+(declare-function realgud:debugger-name-transform       'realgud-helper)
+(declare-function realgud-get-cmdbuf                  'realgud-buffer-helper)
+(declare-function realgud-populate-common-keys          'realgud-key)
+(declare-function realgud-populate-src-buffer-map-plain 'realgud-key)
+(declare-function realgud-populate-debugger-menu        'realgud-menu)
+(declare-function realgud-srcbuf-info-short-key?=,      'realgud-source)
+(declare-function realgud-srcbuf-info-was-read-only?=   'realgud-source)
 (declare-function realgud-srcbuf?                     'realgud-buffer-source)
 
 (defvar realgud-short-key-mode-map
@@ -61,7 +63,9 @@ The buffer is read-only when the minor mode is active.
   (when (realgud-cmdbuf? cmdbuf)
     (with-current-buffer cmdbuf
       (let* ((info realgud-cmdbuf-info)
-	     (debugger-name (realgud-cmdbuf-info-debugger-name info))
+	     (debugger-name
+	      (realgud:debugger-name-transform
+	       (realgud-cmdbuf-info-debugger-name info)))
 	     (keymap-symbol
 	      (intern
 	       (replace-regexp-in-string

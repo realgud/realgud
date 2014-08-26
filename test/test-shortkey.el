@@ -1,10 +1,9 @@
 (require 'test-simple)
 (load-file "../realgud/common/shortkey.el")
 (load-file "../realgud/common/buffer/command.el")
-(declare-function realgud-cmdbuf-init 'realgud-buffer-command)
-(declare-function realgud-cmdbuf-init 'realgud-shortkey-mode-setup)
-(declare-function realgud-cmdbuf-init 'realgud-shortkey-mode-map)
-(declare-function realgud-cmdbuf-init 'realgud-get-short-key-mode-map)
+(declare-function realgud-cmdbuf-init            'realgud-buffer-command)
+(declare-function realgud-shortkey-mode-setup    'realgud-shortkey)
+(declare-function realgud-get-short-key-mode-map 'realgud-shortkey)
 
 (eval-when-compile
   (defvar temp-cmdbuf)

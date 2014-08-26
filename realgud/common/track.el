@@ -41,6 +41,7 @@
 (declare-function realgud-cmdbuf-pat                  'realgud-buffer-command)
 (declare-function realgud-cmdbuf?                     'realgud-buffer-command)
 (declare-function realgud-cmdbuf-info-in-srcbuf?=     'realgud-buffer-command)
+(declare-function realgud:debugger-name-transform     'realgud-helper)
 (declare-function realgud-terminate                   'realgud-core)
 (declare-function realgud-file-loc-from-line          'realgud-file)
 (declare-function realgud-fringe-history-set          'realgud-fringe)
@@ -598,13 +599,7 @@ debugger with that information"
 	(command-hash (gethash debugger-name realgud-command-hash))
 	)
     (if regexp-hash
-	(let* ((prefix
-		(cond
-		 ((equal debugger-name "gdb") "realgud:gdb")
-		 ((or (equal debugger-name "trepan.pl")
-		      (equal debugger-name "trepanpl"))
-			     "realgud:trepanpl")
-		 ('t debugger-name)))
+	(let* ((prefix (realgud:debugger-name-transform debugger-name))
 	       (specific-track-mode (intern (concat prefix "-track-mode")))
 	       )
 	  (realgud-cmdbuf-init (current-buffer) debugger-name regexp-hash
