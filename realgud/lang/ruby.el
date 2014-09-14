@@ -83,7 +83,7 @@ described by PT."
   (interactive "d")
   (realgud-goto-line-for-pt pt "dollar-bang-backtrace"))
 
-(defun realgud-ruby-populate-command-keys (&optional map)
+(defun realgud:ruby-populate-command-keys (&optional map)
   "Bind the debugger function key layout used by many debuggers.
 
 \\{realgud-example-map-standard}"

@@ -12,8 +12,8 @@
 (declare-function realgud-get-command  'realgud-buffer-command)
 (declare-function realgud-get-bpnum-from-line-num 'realgud-buffer-source)
 
-(declare-function realgud-terminate 'realgud-core)
-(declare-function realgud-terminate-srcbuf 'realdgud-core)
+(declare-function realgud:terminate 'realgud-core)
+(declare-function realgud:terminate-srcbuf 'realdgud-core)
 
 (defun realgud-cmd-remap(arg cmd-name default-cmd-template key
 			  &optional no-record? frame-switch? realgud-prompts?)
@@ -204,7 +204,7 @@ underlying debugger has died or you want to get out of all
 shortkey modes in the source window and possibly restart
 debugging after editing source."
   (interactive "p")
-  (realgud-terminate (current-buffer))
+  (realgud:terminate (current-buffer))
 )
 
 (defun realgud-cmd-quit (&optional arg)
@@ -224,10 +224,10 @@ debugging after editing source."
 	      (setq cmd "quit"))
 	    )
 	  (realgud-command cmd arg 't)
-	  (if cmdbuf (realgud-terminate cmdbuf))
+	  (if cmdbuf (realgud:terminate cmdbuf))
 	  )
       ; else
-      (realgud-terminate-srcbuf buffer)
+      (realgud:terminate-srcbuf buffer)
       )
     )
   )

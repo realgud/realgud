@@ -7,6 +7,7 @@
 
 (require 'comint)
 (require 'load-relative)
+(require 'loc-changes)
 (require-relative-list '("fringe" "helper" "lang" "reset")
 		       "realgud-")
 (require-relative-list '("buffer/command" "buffer/source") "realgud-buffer-")
@@ -24,7 +25,7 @@
 (declare-function realgud-command-string              'realgud-buffer-command)
 (declare-function realgud-fringe-erase-history-arrows 'realgud-buffer-command)
 (declare-function realgud-get-cmdbuf                  'realgud-helper)
-(declare-function realgud-reset                       'realgud-reset)
+(declare-function realgud:reset                       'realgud-reset)
 (declare-function realgud-short-key-mode-setup        'realgud-shortkey)
 (declare-function realgud-srcbuf-command-string       'realgud-buffer-source)
 (declare-function realgud-srcbuf-debugger-name        'realgud-buffer-source)
@@ -123,7 +124,7 @@ return the first argument is always removed.
 	(cons (list arg) (list remaining))))
      (t (cons (list arg) (list remaining))))))
 
-(defun realgud-terminate-srcbuf (&optional srcbuf)
+(defun realgud:terminate-srcbuf (&optional srcbuf)
   "Resets source buffer."
   (interactive "bsource buffer: ")
   (if (stringp srcbuf) (setq srcbuf (get-buffer srcbuf)))
@@ -133,10 +134,11 @@ return the first argument is always removed.
     (when (realgud-srcbuf?)
       (realgud-short-key-mode-setup nil)
       (redisplay)
-      ))
-  )
+      )
+    (loc-changes-clear-buffer)
+    ))
 
-(defun realgud-terminate (&optional buf)
+(defun realgud:terminate (&optional buf)
   "Resets state in all buffers associated with source or command
 buffer BUF) This does things like remove fringe arrows breakpoint
 icons and resets short-key mode."
@@ -153,7 +155,7 @@ icons and resets short-key mode."
 	      (dolist (srcbuf (realgud-cmdbuf-info-srcbuf-list realgud-cmdbuf-info))
 		(if (realgud-srcbuf? srcbuf)
 		    (with-current-buffer srcbuf
-		      (realgud-terminate-srcbuf srcbuf)
+		      (realgud:terminate-srcbuf srcbuf)
 		      ))
 		)
 	    )
@@ -165,18 +167,18 @@ icons and resets short-key mode."
   )
 
 (defun realgud:kill-buffer-hook ()
-  "When a realgud command buffer is killed, call `realgud-terminate' to
+  "When a realgud command buffer is killed, call `realgud:terminate' to
 clean up.
 Note that `realgud-term-sentinel' is not helpful here because
 the buffer and data associated with it are already gone."
-  (when (realgud-cmdbuf?) (realgud-terminate (current-buffer)))
+  (when (realgud-cmdbuf?) (realgud:terminate (current-buffer)))
 )
 (add-hook 'kill-buffer-hook 'realgud:kill-buffer-hook)
 
 (defun realgud-term-sentinel (process string)
-  "Called when PROCESS dies. We call `realgud-terminate' to clean up."
+  "Called when PROCESS dies. We call `realgud:terminate' to clean up."
   (let ((cmdbuf (realgud-get-cmdbuf)))
-    (if cmdbuf (realgud-terminate cmdbuf)))
+    (if cmdbuf (realgud:terminate cmdbuf)))
   (message "That's all folks.... %s" string))
 
 (defun realgud-exec-shell (debugger-name script-filename program
@@ -226,7 +228,7 @@ marginal icons is reset."
 
     (unless (and process (eq 'run (process-status process)))
       (with-current-buffer cmdproc-buffer
-	(and (realgud-cmdbuf?) (not no-reset) (realgud-reset))
+	(and (realgud-cmdbuf?) (not no-reset) (realgud:reset))
 	(setq default-directory default-directory)
 	(insert "Current directory: " default-directory "\n")
  	(insert "Command: " (mapconcat 'identity cmd-args " ") "\n")

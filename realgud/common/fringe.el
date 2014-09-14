@@ -5,6 +5,8 @@
 
 (declare-function realgud-loc-hist-item-at       'realgud-lochist)
 (declare-function buffer-killed?                 'helper)
+(declare-function realgud-loc-cmd-marker         'realgud-loc)
+(declare-function realgud-loc-marker             'realgud-loc)
 
 ;; Bitmap for hollow overlay-arrow in fringe
 (if (display-images-p)

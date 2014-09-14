@@ -19,9 +19,9 @@
 (declare-function realgud-track-mode-hook 'realgud-track-mode)
 (declare-function realgud-track-mode-setup 'realgud-track-mode)
 (declare-function realgud:track-set-debugger 'realgud-track-mode)
-(declare-function realgud-ruby-populate-command-keys 'realgud-lang-ruby)
+(declare-function realgud:ruby-populate-command-keys 'realgud-lang-ruby)
 
-(realgud-ruby-populate-command-keys trepan8-track-mode-map)
+(realgud:ruby-populate-command-keys trepan8-track-mode-map)
 
 (define-key trepan8-track-mode-map
   (kbd "C-c !!") 'realgud:ruby-goto-dollar-bang-line)

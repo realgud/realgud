@@ -17,13 +17,13 @@
 
 (declare-function realgud-track-mode(bool))
 
-(declare-function realgud-track-mode 'realgud-track-mode)
-(declare-function realgud-track-mode-hook 'realgud-track-mode)
-(declare-function realgud-track-mode-setup 'realgud-track-mode)
-(declare-function realgud:track-set-debugger 'realgud-track-mode)
-(declare-function realgud-ruby-populate-command-keys 'realgud-lang-ruby)
+(declare-function realgud:ruby-populate-command-keys 'realgud-lang-ruby)
+(declare-function realgud-track-mode                 'realgud-track-mode)
+(declare-function realgud-track-mode-hook            'realgud-track-mode)
+(declare-function realgud-track-mode-setup           'realgud-track-mode)
+(declare-function realgud:track-set-debugger         'realgud-track-mode)
 
-(realgud-ruby-populate-command-keys trepanx-track-mode-map)
+(realgud:ruby-populate-command-keys trepanx-track-mode-map)
 
 (define-key trepanx-track-mode-map
   (kbd "C-c !x") 'realgud:rubinius-goto-Xagent-backtrace-line)

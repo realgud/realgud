@@ -7,6 +7,7 @@
 (require-relative-list '(
 			 "../../common/cmds"
 			 "../../common/menu"
+			 "../../common/track-mode"
 			 "../../common/backtrack-mode"
 			 )
 		       "realgud-")
@@ -18,6 +19,8 @@
 
 (declare-function realgud-backtrack-mode         'realgud-common-backtrack-mode)
 (declare-function realgud-backtrack-set-debugger 'realgud-common-backtrack-mode)
+(declare-function realgud-goto-line-for-pt       'realgud-common-backtrack-mode)
+(declare-function realgud:ruby-populate-command-keys 'realgud-lang-ruby)
 
 (defun realgud:trepan-goto-control-frame-line (pt)
   "Display the location mentioned by a control-frame line
@@ -25,7 +28,7 @@ described by PT."
   (interactive "d")
   (realgud-goto-line-for-pt pt "control-frame"))
 
-(realgud-ruby-populate-command-keys trepan-backtrack-mode-map)
+(realgud:ruby-populate-command-keys trepan-backtrack-mode-map)
 (define-key trepan-backtrack-mode-map
   (kbd "C-c !c") 'realgud:trepan-goto-control-frame-line)
 

@@ -14,7 +14,7 @@
 (declare-function realgud-fringe-erase-history-arrows
 		  'realgud-buffer-command)
 
-(defun realgud-reset (&optional opt-buffer)
+(defun realgud:reset (&optional opt-buffer)
   "Reset state prior to quitting or restarting"
   (interactive)
   (let* ((buf (or opt-buffer (current-buffer)))

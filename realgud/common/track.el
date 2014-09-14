@@ -1,5 +1,5 @@
 ;;; Copyright (C) 2011-2014 Rocky Bernstein <rocky@gnu.org>
-(declare-function realgud-terminate &optional cmdbuf)
+(declare-function realgud:terminate &optional cmdbuf)
 
 (defconst realgud-track-char-range 10000
   "Max number of characters from end of buffer to search for stack entry.")
@@ -42,7 +42,7 @@
 (declare-function realgud-cmdbuf?                     'realgud-buffer-command)
 (declare-function realgud-cmdbuf-info-in-srcbuf?=     'realgud-buffer-command)
 (declare-function realgud:debugger-name-transform     'realgud-helper)
-(declare-function realgud-terminate                   'realgud-core)
+(declare-function realgud:terminate                   'realgud-core)
 (declare-function realgud-file-loc-from-line          'realgud-file)
 (declare-function realgud-fringe-history-set          'realgud-fringe)
 (declare-function realgud-get-cmdbuf                  'realgud-buffer-command)
@@ -513,13 +513,13 @@ loc-regexp pattern"
 
 
 (defun realgud-track-termination?(text)
-  "Return 't and call realgud-terminate-cmdbuf we we have a termination message"
+  "Return 't and call `realgud:terminate' we we have a termination message"
   (if (realgud-cmdbuf?)
       (let ((termination-re (realgud-cmdbuf-pat "termination"))
 	    )
 	(if (and termination-re (string-match termination-re text))
 	    (progn
-	      (realgud-terminate (current-buffer))
+	      (realgud:terminate (current-buffer))
 	      't)
 	  nil)
 	)

@@ -21,7 +21,7 @@
 
 (realgud-track-mode-vars "trepan")
 
-(declare-function realgud-ruby-populate-command-keys 'realgud-lang-ruby)
+(declare-function realgud:ruby-populate-command-keys 'realgud-lang-ruby)
 
 (defun realgud:trepan-goto-control-frame-line (pt)
   "Display the location mentioned by a control-frame line
@@ -35,7 +35,7 @@ described by PT."
   (interactive "d")
   (realgud-goto-line-for-pt pt "syntax-error"))
 
-(realgud-ruby-populate-command-keys trepan-track-mode-map)
+(realgud:ruby-populate-command-keys trepan-track-mode-map)
 
 (define-key trepan-track-mode-map
   (kbd "C-c !c") 'realgud:trepan-goto-control-frame-line)
