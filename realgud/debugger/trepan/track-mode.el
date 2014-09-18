@@ -21,6 +21,11 @@
 
 (realgud-track-mode-vars "trepan")
 
+(define-key realgud-track-mode-map
+  (kbd "C-c !!") 'realgud:goto-lang-backtrace-line)
+(define-key realgud-track-mode-map
+  (kbd "C-c !b") 'realgud:goto-debugger-backtrace-line)
+
 (declare-function realgud:ruby-populate-command-keys 'realgud-lang-ruby)
 
 (defun realgud:trepan-goto-control-frame-line (pt)
