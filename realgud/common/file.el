@@ -23,7 +23,8 @@ found"
     nil))
 
 (defun realgud-file-loc-from-line(filename line-number
-					&optional cmd-marker bp-num ignore-file-re)
+					   &optional cmd-marker source-text
+					   bp-num ignore-file-re)
   "Return a realgud-loc for FILENAME and LINE-NUMBER
 
 CMD-MARKER and BP-NUM get stored in the realgud-loc object. IGNORE-FILE-RE
@@ -69,6 +70,7 @@ problem as best as we can determine."
 			 :cmd-marker  cmd-marker
 			 :filename    filename
 			 :line-number line-number
+			 :source-text source-text
 			 :marker      (make-marker)
 			 )
 		      (format "File %s has only %d lines. (Line %d requested.)"

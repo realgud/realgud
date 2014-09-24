@@ -143,7 +143,8 @@ evaluating (realgud-cmdbuf-info-loc-regexp realgud-cmdbuf-info)"
   (interactive "r")
   (if (> from to) (psetq to from from to))
   (let* ((text (buffer-substring-no-properties from to))
-	 (loc (realgud-track-loc text cmd-mark nil nil nil no-warn-if-no-match?))
+	 (loc (realgud-track-loc text cmd-mark
+				 nil nil nil nil no-warn-if-no-match?))
 	 ;; If we see a selected frame number, it is stored
 	 ;; in frame-num. Otherwise, nil.
 	 (frame-num)
@@ -350,18 +351,21 @@ Otherwise return nil."
 			   (realgud-sget 'cmdbuf-info 'file-group)))
 	   (line-group (or opt-line-group
 			   (realgud-sget 'cmdbuf-info 'line-group)))
+	   (text-group (realgud-sget 'cmdbuf-info 'text-group))
 	   (ignore-file-re (or opt-ignore-file-re
 			       (realgud-sget 'cmdbuf-info 'ignore-file-re)))
 	   )
 	(if loc-regexp
 	    (if (string-match loc-regexp text)
 		(let* ((filename (match-string file-group text))
-		       (line-str (match-string line-group text))
+		       (line-str   (match-string line-group text))
+		       (source-str (match-string text-group text))
 		       (lineno (string-to-number (or line-str "1"))))
 		  (unless line-str (message "line number not found -- using 1"))
 		  (if (and filename lineno)
-		      (realgud-file-loc-from-line filename lineno cmd-mark nil
-					       ignore-file-re)
+		      (realgud-file-loc-from-line filename lineno cmd-mark
+						  source-str nil
+						  ignore-file-re)
 		    nil))
 	      (unless no-warn-on-no-match?
 		(message "Unable to file and line number for given line"))
@@ -394,6 +398,7 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 		    (loc-regexp     (realgud-loc-pat-regexp loc-pat))
 		    (file-group     (realgud-loc-pat-file-group loc-pat))
 		    (line-group     (realgud-loc-pat-line-group loc-pat))
+		    (text-group     (realgud-loc-pat-text-group loc-pat))
 		    (ignore-file-re (realgud-loc-pat-ignore-file-re loc-pat))
 		    )
 		(if loc-regexp
@@ -401,6 +406,7 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 			(let* ((bp-num (match-string bp-num-group text))
 			       (filename (match-string file-group text))
 			       (line-str (match-string line-group text))
+			       (source-str (match-string text-group text))
 			       (lineno (string-to-number (or line-str "1")))
 			       )
 			  (unless line-str
@@ -410,6 +416,7 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 				     (realgud-file-loc-from-line
 				      filename lineno
 				      cmd-mark
+				      source-str
 				      (string-to-number bp-num)
 				      ignore-file-re
 				      )))

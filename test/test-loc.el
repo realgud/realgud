@@ -1,5 +1,13 @@
 (require 'test-simple)
+(load-file "../realgud/common/buffer/source.el")
 (load-file "../realgud/common/loc.el")
+
+(declare-function __FILE__                    'require-relative)
+(declare-function make-realgud-loc            'realgud-loc)
+(declare-function realgud-loc-cmd-marker      'realgud-loc)
+(declare-function realgud-loc-line-number     'realgud-loc)
+(declare-function realgud-loc-marker          'realgud-loc)
+(declare-function realgud-loc-marker=         'realgud-loc)
 
 (test-simple-start)
 
@@ -26,7 +34,8 @@
 		     :marker source-marker
 		     :cmd-marker cmd-marker
 		     ))
-	 (good-loc3 (realgud-loc-current buff cmd-marker)))
+	 ;; (good-loc3 (realgud-loc-current buff cmd-marker))
+	 )
 
     (assert-equal 5 (realgud-loc-line-number good-loc) "line-number extraction")
 

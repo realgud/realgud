@@ -69,6 +69,7 @@
   loc-regexp   ;; Location regular expression string
   file-group
   line-group
+  text-group
   ignore-file-re
 
   loc-hist     ;; ring of locations seen in the course of execution
@@ -243,6 +244,7 @@ as a main program."
 	     :loc-regexp (realgud-sget 'loc-pat 'regexp)
 	     :file-group (realgud-sget 'loc-pat 'file-group)
 	     :line-group (realgud-sget 'loc-pat 'line-group)
+	     :text-group (realgud-sget 'loc-pat 'text-group)
 	     :ignore-file-re (realgud-sget 'loc-pat 'ignore-file-re)
 	     :loc-hist (make-realgud-loc-hist)
 	     :regexp-hash regexp-hash

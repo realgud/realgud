@@ -59,7 +59,7 @@ to be debugged."
        realgud-srcbuf-info
        (realgud-srcbuf-info? realgud-srcbuf-info)))
 
-(defun realgud-srcbuf? ( &optional buffer)
+(defun realgud-srcbuf? (&optional buffer)
   "Return true if BUFFER is a debugger source buffer."
   (with-current-buffer-safe (or buffer (current-buffer))
     (and (realgud-srcbuf-info-set?)

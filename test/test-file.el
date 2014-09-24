@@ -2,8 +2,9 @@
 (load-file "../realgud/common/loc.el")
 (load-file "../realgud/common/file.el")
 
+(declare-function __FILE__                     'require-relative)
 (declare-function realgud-file-loc-from-line   'realgud-file)
-(declare-function realgud-file-line-count 'realgud-file)
+(declare-function realgud-file-line-count      'realgud-file)
 (declare-function realgud-loc?(loc))
 
 (test-simple-start)

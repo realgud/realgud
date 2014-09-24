@@ -2,7 +2,7 @@
 (load-file "../realgud/common/helper.el")
 
 (declare-function realgud-struct-field-setter 'realgud-helper)
-(declare-function realgud-test-info-name= (__FILE__))
+(declare-function __FILE__                    'require-relative)
 
 (test-simple-start)
 

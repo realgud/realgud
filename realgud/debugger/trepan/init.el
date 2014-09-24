@@ -23,9 +23,10 @@ realgud-loc-pat struct")
 ;; C> (/tmp/eval.rb:2)
 (setf (gethash "loc" realgud:trepan-pat-hash)
       (make-realgud-loc-pat
-       :regexp ".. (\\(?:.+ \\(?:via\\|remapped\\) \\)?\\(.+\\):\\([0-9]+\\)\\(?: @[0-9]+\\)?)"
+       :regexp ".. (\\(?:.+ \\(?:via\\|remapped\\) \\)?\\(.+\\):\\([0-9]+\\)\\(?: @[0-9]+\\)?)\\(?:\n\\(.*?\\)\n\\)?"
        :file-group 1
-       :line-group 2))
+       :line-group 2
+       :text-group 3))
 
 ;; Regular expression that describes a trepan command prompt
 ;; For example:

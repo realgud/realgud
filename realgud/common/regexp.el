@@ -1,10 +1,12 @@
-;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2011, 2014 Rocky Bernstein <rocky@gnu.org>
 ;;; FIXME - think of a better name.
+;;;
 ;;; Debugger regular expressions for many kinds of
 ;;;  debuggers
 
-;;; Here we have regular expressions and names for matched patterns
-;;; of those regular expressions.
+;;; Here we have hash tables used in each kind of debugger
+;;; and names for patterns matching fields in a location
+;;; structure
 
 ;;; Code:
 
@@ -19,12 +21,13 @@
 a string output by a debugger inside a process shell"
   (num)
   (regexp)
-  (file-group)
-  (line-group)
-  (char-offset-group)
+  (file-group)         ;; Filename position in struct
+  (line-group)         ;; Line number poistion in struct
+  (char-offset-group)  ;; Character offset position in struct
   (instruction-address-group)
   (column-group)
   (ignore-file-re)
+  (text-group)         ;; Some source text that should found at position
 )
 
 (defvar realgud-pat-hash (make-hash-table :test 'equal)

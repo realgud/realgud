@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2011, 2012 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2012, 2014 Rocky Bernstein <rocky@gnu.org>
 ;;; trepan2: Python 2.5 but less than 3K
 
 (eval-when-compile (require 'cl))
@@ -30,9 +30,11 @@ realgud-loc-pat struct")
 ;;   (c:\\mydirectory\\gcd.py:10): <module>
 (setf (gethash "loc" realgud:trepan2-pat-hash)
       (make-realgud-loc-pat
-       :regexp "^(\\(\\(?:[a-zA-Z]:\\)?[-a-zA-Z0-9_/.\\\\ ]+\\):\\([0-9]+\\)\\(?: remapped .*\\)?)"
+       :regexp "^(\\(\\(?:[a-zA-Z]:\\)?[-a-zA-Z0-9_/.\\\\ ]+\\):\\([0-9]+\\)\\(?: remapped .*?\\)?)\\(?:\n\\(.*?\\)\n\\)?"
        :file-group 1
-       :line-group 2))
+       :line-group 2
+       :text-group 3))
+
 
 (setf (gethash "prompt" realgud:trepan2-pat-hash)
       (make-realgud-loc-pat
