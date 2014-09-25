@@ -9,7 +9,7 @@
 (declare-function realgud-loc-filename         'realgud-loc)
 (declare-function realgud-loc-p                'realgud-loc)
 (declare-function realgud-loc-line-number      'realgud-loc)
-(declare-function realgud-track-from-region    'realgud-track)
+(declare-function realgud:track-from-region    'realgud-track)
 (declare-function realgud-track-loc            'realgud-track)
 (declare-function realgud-track-loc-remaining  'realgud-track)
 (declare-function realgud-track-selected-frame 'realgud-track)
@@ -108,7 +108,7 @@ trepan: That's all, folks...
 
 (makunbound 'realgud-cmdbuf-info)
 (assert-raises error
-	       (realgud-track-from-region (point-min)
+	       (realgud:track-from-region (point-min)
 				       (point-max))
 	       "invalid cmdbuf")
 

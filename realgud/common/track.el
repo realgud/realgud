@@ -96,9 +96,9 @@ marks set in buffer-local variables to extract text"
 	  ;; Done with using old command buffer's last-input-end.
 	  ;; Update that for next time.
 	  (realgud-cmdbuf-info-last-input-end= last-output-start)
-	  (realgud-track-from-region last-output-start
-				  last-output-end cmd-mark cmd-buff
-				  't 't))
+	  (realgud:track-from-region last-output-start
+				     last-output-end cmd-mark cmd-buff
+				     't 't))
 	)
     )
   )
@@ -112,7 +112,7 @@ marks set in buffer-local variables to extract text"
   (if realgud-track-mode
       (lexical-let* ((cmd-buff (current-buffer))
 		     (cmd-mark (point-marker))
-		     (loc (realgud-track-from-region eshell-last-output-start
+		     (loc (realgud:track-from-region eshell-last-output-start
 						  eshell-last-output-end cmd-mark)))
 	(realgud-track-loc-action loc cmd-buff 't)))
   )
@@ -127,8 +127,8 @@ marks set in buffer-local variables to extract text"
       (realgud-track-loc text (point-marker))
     ))
 
-(defun realgud-track-from-region(from to &optional cmd-mark opt-cmdbuf
-				   shortkey-on-tracing? no-warn-if-no-match?)
+(defun realgud:track-from-region(from to &optional cmd-mark opt-cmdbuf
+				      shortkey-on-tracing? no-warn-if-no-match?)
   "Find and position a buffer at the location found in the marked region.
 
 You might want to use this function interactively after marking a
@@ -359,7 +359,8 @@ Otherwise return nil."
 	    (if (string-match loc-regexp text)
 		(let* ((filename (match-string file-group text))
 		       (line-str   (match-string line-group text))
-		       (source-str (match-string text-group text))
+		       (source-str (and text-group
+					(match-string text-group text)))
 		       (lineno (string-to-number (or line-str "1"))))
 		  (unless line-str (message "line number not found -- using 1"))
 		  (if (and filename lineno)
@@ -368,7 +369,7 @@ Otherwise return nil."
 						  ignore-file-re)
 		    nil))
 	      (unless no-warn-on-no-match?
-		(message "Unable to file and line number for given line"))
+		(message "Unable to match file and line number"))
 	      )
 	  (and (message (concat "Buffer variable for regular expression pattern not"
 				" given and not passed as a parameter")) nil)))
