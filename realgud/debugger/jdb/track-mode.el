@@ -1,0 +1,83 @@
+;;; Copyright (C) Rocky Bernstein <rocky@gnu.org>
+;;; Java "jdb" Debugger tracking a comint or eshell buffer.
+
+(eval-when-compile (require 'cl))
+(require 'load-relative)
+(require-relative-list '(
+			 "../../common/cmds"
+			 "../../common/menu"
+			 "../../common/track"
+			 "../../common/track-mode"
+			 )
+		       "realgud-")
+(require-relative-list '("core" "init") "realgud:jdb-")
+(require-relative-list '("../../lang/ruby") "realgud-lang-")
+
+(declare-function realgud-track-mode 'realgud-track-mode)
+(declare-function realgud-track-mode-hook 'realgud-track-mode)
+(declare-function realgud-track-mode-setup 'realgud-track-mode)
+(declare-function realgud:track-set-debugger 'realgud-track-mode)
+(declare-function realgud-goto-line-for-pt 'realgud-track-mode)
+
+(realgud-track-mode-vars "jdb")
+
+(define-key realgud-track-mode-map
+  (kbd "C-c !!") 'realgud:goto-lang-backtrace-line)
+(define-key realgud-track-mode-map
+  (kbd "C-c !b") 'realgud:goto-debugger-backtrace-line)
+
+(declare-function realgud:ruby-populate-command-keys 'realgud-lang-ruby)
+
+(defun realgud:jdb-goto-control-frame-line (pt)
+  "Display the location mentioned by a control-frame line
+described by PT."
+  (interactive "d")
+  (realgud-goto-line-for-pt pt "control-frame"))
+
+(defun realgud:jdb-goto-syntax-error-line (pt)
+  "Display the location mentioned in a Syntax error line
+described by PT."
+  (interactive "d")
+  (realgud-goto-line-for-pt pt "syntax-error"))
+
+(realgud:ruby-populate-command-keys jdb-track-mode-map)
+
+(define-key jdb-track-mode-map
+  (kbd "C-c !c") 'realgud:jdb-goto-control-frame-line)
+(define-key jdb-track-mode-map
+  (kbd "C-c !s") 'realgud:jdb-goto-syntax-error-line)
+
+(defun jdb-track-mode-hook()
+  (if jdb-track-mode
+      (progn
+	(use-local-map jdb-track-mode-map)
+	(message "using jdb mode map")
+	)
+    (message "jdb track-mode-hook disable called"))
+)
+
+(define-minor-mode jdb-track-mode
+  "Minor mode for tracking jdb source locations inside a process shell via realgud. jdb is a Ruby debugger.
+
+If called interactively with no prefix argument, the mode is toggled. A prefix argument, captured as ARG, enables the mode if the argument is positive, and disables it otherwise.
+
+\\{jdb-track-mode-map}
+"
+  :init-value nil
+  ;; :lighter " jdb"   ;; mode-line indicator from realgud-track is sufficient.
+  ;; The minor mode bindings.
+  :global nil
+  :group 'realgud:jdb
+  :keymap jdb-track-mode-map
+  (realgud:track-set-debugger "jdb")
+  (if jdb-track-mode
+      (progn
+	(realgud-track-mode-setup 't)
+	(setq jdb-track-mode nil)
+	(run-mode-hooks (intern (jdb-track-mode-hook))))
+    (progn
+      (setq realgud-track-mode nil)
+      ))
+)
+
+(provide-me "realgud:jdb-")

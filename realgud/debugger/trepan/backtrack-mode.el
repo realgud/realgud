@@ -1,6 +1,6 @@
 ;;; Copyright (C) 2011, 2014 Rocky Bernstein <rocky@gnu.org>
 
-;;; Mode for parsing various kinds of backtraces found in the Ruby
+;;; Mode for parsing various kinds of backtraces found in Ruby
 
 (eval-when-compile (require 'cl))
 (require 'load-relative)
