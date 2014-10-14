@@ -3,6 +3,16 @@
 (load-file "../realgud/debugger/jdb/init.el")
 (load-file "./regexp-helper.el")
 
+(declare-function __FILE__              'require-relative)
+
+(eval-when-compile
+  (defvar dbg-name)
+  (defvar realgud-pat-hash)
+  (defvar loc-pat)
+  (defvar test-dbgr)
+  (defvar test-text)
+)
+
 (test-simple-start)
 
 ; Some setup usually done in setting up the buffer.
@@ -11,11 +21,11 @@
 (setq dbg-name "jdb")
 
 (setq loc-pat (gethash "loc" (gethash dbg-name realgud-pat-hash)))
-(setq dbgr (make-realgud-cmdbuf-info
-		  :debugger-name dbg-name
-		  :loc-regexp (realgud-loc-pat-regexp loc-pat)
-		  :file-group (realgud-loc-pat-file-group loc-pat)
-		  :line-group (realgud-loc-pat-line-group loc-pat)))
+(setq test-dbgr (make-realgud-cmdbuf-info
+		 :debugger-name dbg-name
+		 :loc-regexp (realgud-loc-pat-regexp loc-pat)
+		 :file-group (realgud-loc-pat-file-group loc-pat)
+		 :line-group (realgud-loc-pat-line-group loc-pat)))
 
 ;; FIXME: we get a void variable somewhere in here when running
 ;;        even though we define it in lexical-let. Dunno why.
@@ -24,15 +34,15 @@
 
   (note "traceback location matching")
 
-  (assert-t (numberp (cmdbuf-loc-match text dbgr)) "breakpoint location")
+  (assert-t (numberp (cmdbuf-loc-match text test-dbgr)) "breakpoint location")
   (assert-equal "7"
-	      (match-string (realgud-cmdbuf-info-line-group dbgr)
+	      (match-string (realgud-cmdbuf-info-line-group test-dbgr)
 			    text) "extract line number from breakpoint"))
 
 (let ((text "Step completed: \"thread=main\", TestMe.main(), line=71 bci=0"))
-  (assert-t (numberp (cmdbuf-loc-match text dbgr)) "breakpoint location")
+  (assert-t (numberp (cmdbuf-loc-match text test-dbgr)) "breakpoint location")
   (assert-equal "71"
-		(match-string (realgud-cmdbuf-info-line-group dbgr)
+		(match-string (realgud-cmdbuf-info-line-group test-dbgr)
 			      text) "extract line number from step"))
 
 ;; (note "debugger-backtrace")

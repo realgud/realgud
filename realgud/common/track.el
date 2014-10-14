@@ -354,14 +354,23 @@ Otherwise return nil."
 	   (text-group (realgud-sget 'cmdbuf-info 'text-group))
 	   (ignore-file-re (or opt-ignore-file-re
 			       (realgud-sget 'cmdbuf-info 'ignore-file-re)))
+	   (callback-loc-fn (realgud-sget 'cmdbuf-info 'callback-loc-fn))
 	   )
 	(if loc-regexp
 	    (if (string-match loc-regexp text)
-		(let* ((filename (match-string file-group text))
-		       (line-str   (match-string line-group text))
-		       (source-str (and text-group
-					(match-string text-group text)))
-		       (lineno (string-to-number (or line-str "1"))))
+		(let* ((filename)
+		       (line-str)
+		       (source-str)
+		       (lineno))
+
+		  (cond (callback-loc-fn (funcall 'callback-loc-fn text cmd-mark))
+			('t
+			 (setq filename (match-string file-group text))
+			 (setq line-str   (match-string line-group text))
+			 (setq source-str (and text-group
+					       (match-string text-group text)))
+			 (setq lineno (string-to-number (or line-str "1")))))
+
 		  (unless line-str (message "line number not found -- using 1"))
 		  (if (and filename lineno)
 		      (realgud-file-loc-from-line filename lineno cmd-mark

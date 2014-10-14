@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010-2013 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2014 Rocky Bernstein <rocky@gnu.org>
 ;;; trepan3k: Python 3.2 and beyond
 
 (eval-when-compile (require 'cl))
@@ -32,7 +32,9 @@ realgud-loc-pat struct")
       (make-realgud-loc-pat
        :regexp "^(\\(\\(?:[a-zA-Z]:\\)?[-a-zA-Z0-9_/.\\\\ ]+\\):\\([0-9]+\\)\\(?: remapped .*\\)?)"
        :file-group 1
-       :line-group 2))
+       :line-group 2
+       :text-group 3
+       :ignore-file-re  realgud-python-ignore-file-re))
 
 (setf (gethash "prompt" realgud:trepan3k-pat-hash)
       (make-realgud-loc-pat

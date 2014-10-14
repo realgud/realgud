@@ -15,6 +15,11 @@
   "A realgud-loc-pat struct that describes a Python backtrace (or
 traceback) line."  )
 
+;;  Regular expression that pseudo-files in caller. For example:
+;;    <string>
+(defconst realgud-python-ignore-file-re "<string>"
+  "Regular expression that pseudo-files of caller()")
+
 (defun realgud-python-populate-command-keys (&optional map)
   "Bind the debugger function key layout used by many debuggers.
 

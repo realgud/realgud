@@ -13,6 +13,10 @@
 (declare-function realgud-query-cmdline      'realgud-core)
 (declare-function realgud-suggest-invocation 'realgud-core)
 
+(defvar realgud:jdb-classpath-string (or (getenv "CLASSPATH") ".")
+  "Java CLASSPATH search path to use in looking for source code. We take
+this initially from the CLASSPATH environment variable.")
+
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
 (defvar realgud:jdb-minibuffer-history nil
@@ -31,6 +35,9 @@
    jdb-minibuffer-local-map
    'realgud:jdb-minibuffer-history
    opt-debugger))
+
+(defun realgud:jdb-loc-fn-callback(text cmd-mark)
+  (error "not implemented yet"))
 
 (defun realgud:jdb-parse-cmd-args (orig-args)
   "Parse command line ARGS for the annotate level and name of script to debug.
@@ -86,7 +93,9 @@ Note that the script name path has been expanded via `expand-file-name'.
 
       ;; Skip to the first non-option argument.
       (while (and args (not program-args))
-        (let ((arg (car args)))
+        (let ((arg (car args))
+	      (pair)
+	      )
           (cond
            ;; Options with arguments.
            ((string-match "^-" arg)
@@ -95,8 +104,8 @@ Note that the script name path has been expanded via `expand-file-name'.
             (nconc debugger-args (car pair))
             (setq args (cadr pair)))
            ;; Anything else must be the script to debug.
-	   (t (setq script-name arg)
-	      (setq script-args (cons script-name (cdr args))))
+	   (t (setq java-name arg)
+	      (setq program-args (cons java-name (cdr args))))
            )))
       (list java-name debugger-args program-args)))))
 

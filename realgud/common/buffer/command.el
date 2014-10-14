@@ -64,6 +64,10 @@
                        ;; debugger.
   cmd-hash             ;; Allows us to remap command names like
                        ;; quit => quit!
+  callback-loc-fn      ;; If we need, as in the case of Java, to do
+                       ;; special handling to map output to a file
+                       ;; location, this is set to that special
+                       ;; function
 
   ;; FIXME: REMOVE THIS and use regexp-hash
   loc-regexp   ;; Location regular expression string
@@ -92,6 +96,7 @@
 (realgud-struct-field-setter "realgud-cmdbuf-info" "prior-prompt-regexp")
 (realgud-struct-field-setter "realgud-cmdbuf-info" "src-shortkey?")
 (realgud-struct-field-setter "realgud-cmdbuf-info" "in-debugger?")
+(realgud-struct-field-setter "realgud-cmdbuf-info" "callback-loc-fn")
 
 (defun realgud:cmdbuf-info-describe (&optional buffer)
   "Display realgud-cmdcbuf-info fields of BUFFER.
@@ -219,7 +224,7 @@ Information is put in an internal buffer called *Describe*."
 		       cmd-args)))))
      (t nil)))
 
-;; FIXME pat-hash should not be optional. And while I am at it, remove
+;; FIXME cmd-hash should not be optional. And while I am at it, remove
 ;; parameters loc-regexp, file-group, and line-group which can be found
 ;; inside pat-hash
 ;;
@@ -231,8 +236,8 @@ Information is put in an internal buffer called *Describe*."
 (defun realgud-cmdbuf-init
   (cmd-buf debugger-name regexp-hash &optional cmd-hash)
   "Initialize CMD-BUF for a working with a debugger.
-DEBUGGER-NAME is the name of the debugger.
-as a main program."
+DEBUGGER-NAME is the name of the debugger; REGEXP-HASH are debugger-specific
+values set in the debugger's init.el."
   (with-current-buffer-safe cmd-buf
     (let ((realgud-loc-pat (gethash "loc" regexp-hash))
 	  (font-lock-keywords)
@@ -253,6 +258,7 @@ as a main program."
 	     :cmd-hash cmd-hash
 	     :src-shortkey? 't
 	     :in-debugger? nil
+	     :callback-loc-fn (gethash "loc-callback-fn" regexp-hash)
 	     ))
       (setq font-lock-keywords (realgud-cmdbuf-pat "font-lock-keywords"))
       (if font-lock-keywords

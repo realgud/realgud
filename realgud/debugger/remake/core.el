@@ -2,7 +2,7 @@
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
-(require-relative-list '("../../common/track" "../../common/core")
+(require-relative-list '("../../common/track" "../../common/core" "../../common/lang")
 		       "realgud-")
 (require-relative-list '("../../common/buffer/command")
 		       "realgud-buffer-")
@@ -12,6 +12,7 @@
 (declare-function realgud-parse-command-arg  'realgud-core)
 (declare-function realgud-query-cmdline      'realgud-core)
 (declare-function realgud-suggest-invocation 'realgud-core)
+(declare-function realgud-lang-mode?         'realgud-lang)
 (declare-function realgud-cmdbuf-command-string
 		                             'realgud-buffer-command)
 (declare-function realgud-cmdbuf-debugger-name

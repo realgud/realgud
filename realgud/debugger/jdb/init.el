@@ -21,6 +21,8 @@ name. For example java.lang.Class.getDeclaredMethods")
 backtrace, prompt, etc.  The values of a hash entry is a
 realgud-loc-pat struct")
 
+(setf (gethash "loc-callback-fn" realgud:jdb-pat-hash) 'realgud:jdb-loc-fn-callback)
+
 ;; Regular expression that describes a jdb location generally shown
 ;; before a command prompt. For example:
 ;;   Breakpoint hit: "thread=main", TestMe.main(), line=7 bci=0
@@ -51,6 +53,7 @@ realgud-loc-pat struct")
 ;;  [1] TestMe.main (TestMe.java:7)
 (setf (gethash "lang-backtrace" realgud:jdb-pat-hash)
   (make-realgud-loc-pat
+   ;; FIXME: use realgud:jdb-identifier
    :regexp "^\\(?:[\t ]*\\[\\[0-9]+\\] \\)\\([A-Za-z_.][A-Za-z0-9.]+\\):\\([0-9]+\\)"
    :file-group 1
    :line-group 2))
@@ -96,12 +99,6 @@ backtrace listing.")
 	       realgud:jdb-frame-file-regexp)
        :num 1))
 
-(setf (gethash "control-frame" realgud:jdb-pat-hash)
-      (make-realgud-loc-pat
-       :regexp "^c:\\([0-9]+\\) p:\\([0-9]+\\) s:\\([0-9]+\\) b:\\([0-9]+\\) l:\\([0-9a-f]+\\) d:\\([0-9a-f]+\\) \\([A-Z]+\\) \\(.+\\):\\([0-9]+\\)"
-       :file-group 8
-       :line-group 9))
-
 ;; Regular expression that describes a jdb backtrace line.
 ;; For example:
 ;;  [1] TestMe.main (TestMe.java:7)
@@ -119,6 +116,7 @@ backtrace listing.")
 (setf (gethash "font-lock-keywords" realgud:jdb-pat-hash)
       '(
 	;; The frame number and first type name, if present.
+	;; FIXME: use realgud:jdb-identifier
 	("^\\(-->\\|   \\)? #\\([0-9]+\\) \\([A-Z]+\\) *\\([A-Z_][a-zA-Z0-9_]*\\)[#]\\([a-zA-Z_][a-zA-Z_[0-9]]*\\)?"
 	 (2 realgud-backtrace-number-face)
 	 (3 font-lock-keyword-face)         ; e.g. METHOD, TOP

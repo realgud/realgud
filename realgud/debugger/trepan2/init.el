@@ -33,7 +33,8 @@ realgud-loc-pat struct")
        :regexp "^(\\(\\(?:[a-zA-Z]:\\)?[-a-zA-Z0-9_/.\\\\ ]+\\):\\([0-9]+\\)\\(?: remapped .*?\\)?)\\(?:\n\\(.*?\\)\n\\)?"
        :file-group 1
        :line-group 2
-       :text-group 3))
+       :text-group 3
+       :ignore-file-re  realgud-python-ignore-file-re))
 
 
 (setf (gethash "prompt" realgud:trepan2-pat-hash)
