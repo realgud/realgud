@@ -110,5 +110,6 @@ realgud-loc-pat struct")
 (setf (gethash "kshdb" realgud-command-hash realgud:kshdb-command-hash))
 
 (setf (gethash "kshdb" realgud-pat-hash) realgud:kshdb-pat-hash)
+(setf (gethash "clear" realgud:kshdb-command-hash) "clear %l")
 
 (provide-me "realgud:kshdb-")

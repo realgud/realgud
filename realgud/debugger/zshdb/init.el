@@ -108,5 +108,6 @@ realgud-loc-pat struct")
 (setf (gethash "zshdb" realgud-command-hash realgud:zshdb-command-hash))
 
 (setf (gethash "zshdb" realgud-pat-hash) realgud:zshdb-pat-hash)
+(setf (gethash "clear"  realgud:zshdb-command-hash) "clear %l")
 
 (provide-me "realgud:zshdb-")

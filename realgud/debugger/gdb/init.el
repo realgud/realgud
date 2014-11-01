@@ -91,6 +91,7 @@ realgud-loc-pat struct")
   the gdb command to use, like 'continue'")
 
 (setf (gethash "break"    realgud:gdb-command-hash) "break %l")
+(setf (gethash "clear"    realgud:gdb-command-hash) "clear %l")
 (setf (gethash "continue" realgud:gdb-command-hash) "continue")
 (setf (gethash "quit"     realgud:gdb-command-hash) "quit")
 (setf (gethash "run"      realgud:gdb-command-hash) "run")

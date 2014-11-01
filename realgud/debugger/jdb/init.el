@@ -188,12 +188,13 @@ backtrace listing.")
 (setf (gethash realgud:jdb-debugger-name
 	       realgud-command-hash) realgud:jdb-command-hash)
 
-(setf (gethash "backtrace" realgud:jdb-command-hash) "where")
-(setf (gethash "break"     realgud:jdb-command-hash) "stop at %c:%l")
-(setf (gethash "continue"  realgud:jdb-command-hash) "cont")
-(setf (gethash "finish"    realgud:jdb-command-hash) "step up")
-(setf (gethash "up"        realgud:jdb-command-hash) "up\C-Mwhere")
-(setf (gethash "down"      realgud:jdb-command-hash) "down\C-Mwhere")
+(setf (gethash "backtrace"   realgud:jdb-command-hash) "where")
+(setf (gethash "break"       realgud:jdb-command-hash) "stop at %c:%l")
+(setf (gethash "clear"       realgud:jdb-command-hash) "clear %c:%l")
+(setf (gethash "continue"    realgud:jdb-command-hash) "cont")
+(setf (gethash "finish"      realgud:jdb-command-hash) "step up")
+(setf (gethash "up"          realgud:jdb-command-hash) "up\C-Mwhere")
+(setf (gethash "down"        realgud:jdb-command-hash) "down\C-Mwhere")
 
 
 (provide-me "realgud:jdb-")
