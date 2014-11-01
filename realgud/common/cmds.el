@@ -44,7 +44,7 @@ if none has been set in the command hash."
     )
   ;; FIXME: this is a one-time thing. Put in caller.
   (local-set-key (format "\C-c%s" key)
-		 (intern (format "realgud-cmd-%s" cmd-name)))
+		   (intern (format "realgud-cmd-%s" cmd-name)))
   )
 
 (defun realgud-cmd-backtrace(arg)
@@ -55,9 +55,13 @@ if none has been set in the command hash."
 
 (defun realgud-cmd-break(arg)
   "Set a breakpoint at the current line"
-  (interactive "bsource buffer: ")
-  (realgud-cmd-remap arg "break" "break %X:%l" "b")
-  )
+  (interactive "p")
+  (realgud-cmd-remap arg "break" "break %X:%l" "b"))
+
+(defun realgud-cmd-clear(line-num)
+  "Delete breakpoint at the current line"
+  (interactive "")
+  (realgud-cmd-remap line-num "clear" "clear %l" "X"))
 
 (defun realgud-cmd-continue(&optional arg)
     "Continue execution."
@@ -65,8 +69,8 @@ if none has been set in the command hash."
     (realgud-cmd-remap arg "continue" "continue" "c")
 )
 
-(defun realgud-cmd-delete(arg)
-    "Delete breakpoint."
+(defun realgud-cmd-delete(&optional arg)
+    "Delete breakpoint by number."
     (interactive "pBreakpoint number: ")
     (let* ((line-num (line-number-at-pos))
 	   (arg (realgud-get-bpnum-from-line-num line-num)))

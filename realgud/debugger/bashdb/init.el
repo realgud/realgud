@@ -107,5 +107,6 @@ realgud-loc-pat struct")
 
 (setf (gethash "quit" realgud:bashdb-command-hash) "quit!")
 (setf (gethash "bashdb" realgud-command-hash realgud:bashdb-command-hash))
+(setf (gethash "clear"  realgud:bashdb-command-hash) "clear %l")
 
 (provide-me "realgud:bashdb-")

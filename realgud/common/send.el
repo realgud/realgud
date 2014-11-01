@@ -95,6 +95,8 @@ Some %-escapes in the string arguments are expanded. These are:
   %l -- Number of current source line.
   %p -- Numeric prefix argument converted to a string
         If no prefix argument %p is the null string.
+  %c -- Fully qualified class name derived from the expression
+        surrounding point.
   %s -- value of opt-str.
 
 "

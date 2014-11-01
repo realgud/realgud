@@ -79,6 +79,7 @@ realgud-loc-pat struct")
 
 (setf (gethash "backtrace" realgud:perldb-command-hash) "T")
 (setf (gethash "break"     realgud:perldb-command-hash) "b %l")
+(setf (gethash "clear"     realgud:perldb-command-hash) "B %l")
 (setf (gethash "continue"  realgud:perldb-command-hash) "c")
 (setf (gethash "eval"      realgud:perldb-command-hash) "x %s")
 (setf (gethash "quit"      realgud:perldb-command-hash) "q")

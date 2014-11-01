@@ -143,8 +143,7 @@ evaluating (realgud-cmdbuf-info-loc-regexp realgud-cmdbuf-info)"
   (interactive "r")
   (if (> from to) (psetq to from from to))
   (let* ((text (buffer-substring-no-properties from to))
-	 (loc (realgud-track-loc text cmd-mark
-				 nil nil nil nil no-warn-if-no-match?))
+	 (loc (realgud-track-loc text cmd-mark))
 	 ;; If we see a selected frame number, it is stored
 	 ;; in frame-num. Otherwise, nil.
 	 (frame-num)
@@ -377,8 +376,6 @@ Otherwise return nil."
 						  source-str nil
 						  ignore-file-re)
 		    nil))
-	      (unless no-warn-on-no-match?
-		(message "Unable to match file and line number"))
 	      )
 	  (and (message (concat "Buffer variable for regular expression pattern not"
 				" given and not passed as a parameter")) nil)))
@@ -416,7 +413,7 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 			(let* ((bp-num (match-string bp-num-group text))
 			       (filename (match-string file-group text))
 			       (line-str (match-string line-group text))
-			       (source-str (match-string text-group text))
+			       (source-str (and text-group (match-string text-group text)))
 			       (lineno (string-to-number (or line-str "1")))
 			       )
 			  (unless line-str
