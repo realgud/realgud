@@ -24,9 +24,10 @@ realgud-loc-pat struct")
 ;;   (/etc/init.d/apparmor:35):
 (setf (gethash "loc" realgud:bashdb-pat-hash)
       (make-realgud-loc-pat
-       :regexp "\\(?:^\\|\n\\)(\\([^:]+\\):\\([0-9]*\\))"
+       :regexp "\\(?:^\\|\n\\)(\\([^:]+\\):\\([0-9]*\\)):\\(?:\n[0-9]+:\\(.+\\)\\)?"
        :file-group 1
-       :line-group 2))
+       :line-group 2
+       :text-group 3))
 
 ;; Regular expression that describes a bashdb command prompt
 ;; For example:
