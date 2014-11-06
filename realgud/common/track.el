@@ -366,10 +366,13 @@ Otherwise return nil."
 			('t
 			 (setq filename (match-string file-group text))
 			 (setq line-str   (match-string line-group text))
-			 (setq source-str (and text-group
-					       (match-string text-group text)))
+			 (setq source-str
+			       (and text-group
+				    (match-string text-group text)))
 			 (setq lineno (string-to-number (or line-str "1")))))
 
+		  (when source-str
+		    (setq source-str (ansi-color-filter-apply source-str)))
 		  (unless line-str (message "line number not found -- using 1"))
 		  (if (and filename lineno)
 		      (realgud-file-loc-from-line filename lineno cmd-mark
