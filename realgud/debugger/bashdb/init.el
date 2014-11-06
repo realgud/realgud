@@ -106,8 +106,9 @@ realgud-loc-pat struct")
   "Hash key is command name like 'quit' and the value is
   the bashdb command to use, like 'quit!'")
 
-(setf (gethash "quit" realgud:bashdb-command-hash) "quit!")
 (setf (gethash "bashdb" realgud-command-hash realgud:bashdb-command-hash))
+
 (setf (gethash "clear"  realgud:bashdb-command-hash) "clear %l")
+(setf (gethash "quit"   realgud:bashdb-command-hash) "quit!")
 
 (provide-me "realgud:bashdb-")
