@@ -16,9 +16,11 @@
 (declare-function realgud:terminate-srcbuf 'realdgud-core)
 
 (defun realgud-cmd-remap(arg cmd-name default-cmd-template key
-			  &optional no-record? frame-switch? realgud-prompts?)
+			     &optional no-record? frame-switch?
+			     realgud-prompts?)
   "Run debugger command CMD-NAME using DEFAULT-CMD-TEMPLATE
-if none has been set in the command hash."
+if none has been set in the command hash. If key is given we'll set
+a shortcut for that key."
   (let ((buffer (current-buffer))
 	(cmdbuf (realgud-get-cmdbuf))
 	(cmd-hash)
@@ -43,8 +45,10 @@ if none has been set in the command hash."
     ;; 	  ))
     )
   ;; FIXME: this is a one-time thing. Put in caller.
-  (local-set-key (format "\C-c%s" key)
-		   (intern (format "realgud-cmd-%s" cmd-name)))
+  (if key
+      (local-set-key (format "\C-c%s" key)
+		     (intern (format "realgud-cmd-%s" cmd-name)))
+    )
   )
 
 (defun realgud-cmd-backtrace(arg)
@@ -60,7 +64,7 @@ if none has been set in the command hash."
 
 (defun realgud-cmd-clear(line-num)
   "Delete breakpoint at the current line"
-  (interactive "")
+  (interactive "p")
   (realgud-cmd-remap line-num "clear" "clear %l" "X"))
 
 (defun realgud-cmd-continue(&optional arg)
@@ -115,9 +119,10 @@ This command is often referred to as 'step out' as opposed to
     (realgud-cmd-remap arg "finish" "finish" ".")
 )
 
-(defun realgud-cmd-frame(&optional arg)
+(defun realgud-cmd-frame(arg)
     "Change the current frame number to the value of the numeric argument.
 If no argument specified use 0 or the most recent frame."
+    (interactive "p")
     (realgud-cmd-remap arg "frame" "frame %p" "f" t t)
 )
 

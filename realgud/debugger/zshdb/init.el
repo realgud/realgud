@@ -108,7 +108,7 @@ realgud-loc-pat struct")
   "Hash key is command name like 'quit' and the value is
   the zshdb command to use, like 'quit!'")
 
-(setf (gethash "zshdb"  realgud-command-hash realgud:zshdb-command-hash))
+(setf (gethash "zshdb"  realgud-command-hash) realgud:zshdb-command-hash)
 
 (setf (gethash "clear"  realgud:zshdb-command-hash) "clear %l")
 (setf (gethash "quit"   realgud:zshdb-command-hash) "quit!")

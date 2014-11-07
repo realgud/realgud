@@ -24,7 +24,7 @@ realgud-loc-pat struct")
 ;;   (/etc/init.d/apparmor:35):
 (setf (gethash "loc" realgud:bashdb-pat-hash)
       (make-realgud-loc-pat
-       :regexp "\\(?:^\\|\n\\)(\\([^:]+\\):\\([0-9]*\\)):\\(?:\n[0-9]+:\\(.+\\)\\)?"
+       :regexp "\\(?:^\\|\n\\)(\\([^:]+\\):\\([0-9]*\\)):\\(?:\n[0-9]+:	\\(.+\\)\\)?"
        :file-group 1
        :line-group 2
        :text-group 3))
@@ -106,7 +106,7 @@ realgud-loc-pat struct")
   "Hash key is command name like 'quit' and the value is
   the bashdb command to use, like 'quit!'")
 
-(setf (gethash "bashdb" realgud-command-hash realgud:bashdb-command-hash))
+(setf (gethash "bashdb" realgud-command-hash) realgud:bashdb-command-hash)
 
 (setf (gethash "clear"  realgud:bashdb-command-hash) "clear %l")
 (setf (gethash "quit"   realgud:bashdb-command-hash) "quit!")
