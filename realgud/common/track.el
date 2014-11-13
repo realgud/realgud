@@ -378,11 +378,11 @@ Otherwise return nil."
 							 source-str nil
 							 ignore-file-re)
 			   ;; else
-			   nil))))
+			   nil)))))
 	  ;; else
 	  (and (message
 		(concat "Buffer variable for regular expression pattern not"
-			" given and not passed as a parameter")) nil))))
+			" given and not passed as a parameter")) nil)))
     ;; else
     (and (message "Current buffer %s is not a debugger command buffer"
 		  (current-buffer)) nil)

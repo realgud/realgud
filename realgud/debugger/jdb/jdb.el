@@ -1,5 +1,10 @@
 ;;; Copyright (C) 2014 Rocky Bernstein <rocky@gnu.org>
 ;;  `jdb' Main interface to jdb via Emacs
+
+(require 'gud) ;; For class-path and source-path handling
+(require 'cl)
+(require 'list-utils)
+
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("../../common/run")    "realgud:")
@@ -8,6 +13,7 @@
 (declare-function realgud:jdb-query-cmdline  'realgud:jdb-core)
 (declare-function realgud:jdb-parse-cmd-args 'realgud:jdb-core)
 (declare-function realgud:run-process        'realgud:core)
+
 
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 24.
@@ -47,6 +53,19 @@ marginal icons is reset. See `loc-changes-clear-buffer' to clear
 fringe and marginal icons.
 "
   (interactive)
+
+  (setq gud-jdb-classpath nil)
+  (setq gud-jdb-sourcepath nil)
+  ;; Set gud-jdb-classpath from the CLASSPATH environment variable,
+  ;; if CLASSPATH is set.
+  (setq gud-jdb-classpath-string (or (getenv "CLASSPATH") "."))
+  (if gud-jdb-classpath-string
+      (setq gud-jdb-classpath
+	    (gud-jdb-parse-classpath-string gud-jdb-classpath-string)))
+
+  ;; reset for future invocations
+  (setq gud-jdb-classpath-string nil)
+
   (let* (
 	 (cmd-str (or opt-cmd-line (realgud:jdb-query-cmdline "jdb")))
 	 (cmd-args (split-string-and-unquote cmd-str))
@@ -54,7 +73,7 @@ fringe and marginal icons.
 	 (script-args (caddr parsed-args))
 	 (script-name (car script-args))
 	 (parsed-cmd-args
-	  (remove-if 'nil (list-utils-flatten parsed-args)))
+	  (cl-remove-if 'nil (list-utils-flatten parsed-args)))
 	 )
     (realgud:run-process "jdb" script-name parsed-cmd-args
 			 'jdb-track-mode-hook

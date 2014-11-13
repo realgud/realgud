@@ -1,5 +1,7 @@
 ;;; Copyright (C) 2010-2011, 2014 Rocky Bernstein <rocky@gnu.org>
 ;;  `realgud:gdb' Main interface to gdb via Emacs
+(require 'cl)
+(require 'list-utils)
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("core" "track-mode") "realgud:gdb-")
@@ -33,7 +35,6 @@ This should be an executable on your path, or an absolute file name."
 ;; The end.
 ;;
 
-(require 'list-utils)
 ;;;###autoload
 (defun realgud:gdb (&optional opt-cmd-line no-reset)
   "Invoke the gdb debugger and start the Emacs user interface.
@@ -57,7 +58,7 @@ fringe and marginal icons.
 	 (script-args (caddr parsed-args))
 	 (script-name (car script-args))
 	 (parsed-cmd-args
-	  (remove-if 'nil (list-utils-flatten parsed-args)))
+	  (cl-remove-if 'nil (list-utils-flatten parsed-args)))
 	 (cmd-buf (realgud:run-process realgud:gdb-command-name
 				       script-name parsed-cmd-args
 				       'realgud:gdb-track-mode-hook

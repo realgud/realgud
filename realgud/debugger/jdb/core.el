@@ -1,6 +1,9 @@
 ;;; Copyright (C) 2014 Rocky Bernstein <rocky@gnu.org>
 (eval-when-compile (require 'cl))
 
+;; We use gud to handle the classpath-to-filename mapping
+(require 'gud)
+
 (require 'load-relative)
 (require-relative-list '("../../common/track"
                          "../../common/core"
@@ -9,15 +12,13 @@
                        "realgud-")
 (require-relative-list '("init") "realgud:jdb-")
 
+(declare-function gud-find-source            'gud)
+
 (declare-function realgud:expand-file-name-if-exists 'realgud-core)
 (declare-function realgud-parse-command-arg  'realgud-core)
 (declare-function realgud-query-cmdline      'realgud-core)
 (declare-function realgud-suggest-invocation 'realgud-core)
 (declare-function realgud-file-loc-from-line 'realgud-file)
-
-(defvar realgud:jdb-classpath-string (or (getenv "CLASSPATH") ".")
-  "Java CLASSPATH search path to use in looking for source code. We take
-this initially from the CLASSPATH environment variable.")
 
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
@@ -41,8 +42,8 @@ this initially from the CLASSPATH environment variable.")
 (defun realgud:jdb-loc-fn-callback(text filename lineno text-group
 					ignore-file-re cmd-mark)
 
-  ;; FIXME resolve filename using classpath better.
-  (realgud-file-loc-from-line (concat filename ".java") lineno cmd-mark
+  (realgud-file-loc-from-line (gud-jdb-find-source filename)
+			      lineno cmd-mark
 			      nil nil
 			      ignore-file-re))
 

@@ -13,12 +13,12 @@
 (require-relative-list '("core" "init") "realgud:trepanpl-")
 (require-relative-list '("../../lang/perl") "realgud-lang-")
 
-(realgud-track-mode-vars "trepanpl")
+(realgud-track-mode-vars "realgud:trepanpl")
 
 (declare-function realgud-goto-line-for-pt   'realgud-track-mode)
 (declare-function realgud-track-mode         'realgud-track-mode)
-(declare-function realgud-track-mode-hook    'realgud-track-mode)
 (declare-function realgud-track-mode-setup   'realgud-track-mode)
+(declare-function realgud:track-mode-hook    'realgud-track-mode)
 (declare-function realgud:track-set-debugger 'realgud-track-mode)
 (declare-function realgud-perl-populate-command-keys 'realgud-lang-perl)
 
@@ -29,33 +29,35 @@ described by PT."
   (interactive "d")
   (realgud-goto-line-for-pt pt "syntax-error"))
 
-(define-key trepanpl-track-mode-map
+(define-key realgud:trepanpl-track-mode-map
   (kbd "C-c !s") 'realgud:trepanpl-goto-syntax-error-line)
 
-(realgud-perl-populate-command-keys trepanpl-track-mode-map)
+(realgud-perl-populate-command-keys realgud:trepanpl-track-mode-map)
 
 (defun realgud:trepanpl-track-mode-hook()
-  (if trepanpl-track-mode
+  (if realgud:trepanpl-track-mode
       (progn
-        (use-local-map trepanpl-track-mode-map)
+        (use-local-map realgud:trepanpl-track-mode-map)
         (message "using trepanpl mode map")
         )
     (message "trepan.pl track-mode-hook disable called"))
 )
 
 (define-minor-mode realgud:trepanpl-track-mode
-  "Minor mode for tracking trepan.pl source locations inside a process shell via realgud. trepan.pl is a Perl debugger see URL `https://metacpan.org/pod/Devel::Trepan'.
+  "Minor mode for tracking trepan.pl source locations inside a
+process shell via realgud. trepan.pl is a Perl debugger see URL
+`https://metacpan.org/pod/Devel::Trepan'.
 
-If called interactively with no prefix argument, the mode is toggled. A prefix argument, captured as ARG, enables the mode if the argument is positive, and disables it otherwise.
-
-\\{trepanpl-track-mode-map}
+If called interactively with no prefix argument, the mode is
+toggled. A prefix argument, captured as ARG, enables the mode if
+the argument is positive, and disables it otherwise.
 "
   :init-value nil
   ;; :lighter " trepanpl"   ;; mode-line indicator from realgud-track is sufficient.
   ;; The minor mode bindings.
   :global nil
   :group 'realgud:trepanpl
-  :keymap trepanpl-track-mode-map
+  :keymap realgud:trepanpl-track-mode-map
 
   (realgud:track-set-debugger "trepan.pl")
   (if realgud:trepanpl-track-mode
@@ -67,6 +69,6 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
       ))
 )
 
-(define-key trepanpl-short-key-mode-map "T" 'realgud-cmd-backtrace)
+(define-key realgud:trepanpl-short-key-mode-map "T" 'realgud-cmd-backtrace)
 
 (provide-me "realgud:trepanpl-")
