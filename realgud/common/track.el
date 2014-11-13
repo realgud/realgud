@@ -357,31 +357,33 @@ Otherwise return nil."
 	   )
 	(if loc-regexp
 	    (if (string-match loc-regexp text)
-		(let* ((filename)
-		       (line-str)
-		       (source-str)
-		       (lineno))
-
-		  (cond (callback-loc-fn (funcall 'callback-loc-fn text cmd-mark))
+		(let* ((filename (match-string file-group text))
+		       (line-str (match-string line-group text))
+		       (source-str (and text-group
+					(match-string text-group text)))
+		       (lineno (string-to-number (or line-str "1"))))
+		  (cond (callback-loc-fn
+			 (funcall callback-loc-fn text
+				  filename lineno text-group
+				  ignore-file-re cmd-mark))
 			('t
-			 (setq filename (match-string file-group text))
-			 (setq line-str   (match-string line-group text))
-			 (setq source-str
-			       (and text-group
-				    (match-string text-group text)))
-			 (setq lineno (string-to-number (or line-str "1")))))
-
-		  (when source-str
-		    (setq source-str (ansi-color-filter-apply source-str)))
-		  (unless line-str (message "line number not found -- using 1"))
-		  (if (and filename lineno)
-		      (realgud-file-loc-from-line filename lineno cmd-mark
-						  source-str nil
-						  ignore-file-re)
-		    nil))
-	      )
-	  (and (message (concat "Buffer variable for regular expression pattern not"
-				" given and not passed as a parameter")) nil)))
+			 (when source-str
+			   (setq source-str (ansi-color-filter-apply
+					     source-str)))
+			 (unless line-str
+			   (message "line number not found -- using 1"))
+			 (if (and filename lineno)
+			     (realgud-file-loc-from-line filename lineno
+							 cmd-mark
+							 source-str nil
+							 ignore-file-re)
+			   ;; else
+			   nil))))
+	  ;; else
+	  (and (message
+		(concat "Buffer variable for regular expression pattern not"
+			" given and not passed as a parameter")) nil))))
+    ;; else
     (and (message "Current buffer %s is not a debugger command buffer"
 		  (current-buffer)) nil)
     )
