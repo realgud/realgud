@@ -30,7 +30,7 @@ realgud-loc-pat struct")
 ;;   (c:\\mydirectory\\gcd.py:10): <module>
 (setf (gethash "loc" realgud:trepan2-pat-hash)
       (make-realgud-loc-pat
-       :regexp "^(\\(\\(?:[a-zA-Z]:\\)?[-a-zA-Z0-9_/.\\\\ ]+\\):\\([0-9]+\\)\\(?: remapped .*?\\)?)\\(?:\n\\(.*?\\)\n\\)?"
+       :regexp "^(\\(\\(?:[a-zA-Z]:\\)?[-a-zA-Z0-9_/.\\\\ ]+\\):\\([0-9]+\\)\\(?: remapped .*?\\)?): \\(?:<module>\\)?\\(?:\n.. [0-9]+ \\(.*?\\)\n\\)?"
        :file-group 1
        :line-group 2
        :text-group 3

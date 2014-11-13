@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010-2011, 2013 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2011, 2013-2014 Rocky Bernstein <rocky@gnu.org>
 ; Should realgud-file-loc-from-line be here or elsewhere?
 (require 'load-relative)
 (require 'compile) ;; for compilation-find-file
@@ -13,7 +13,7 @@
 (declare-function buffer-killed? 'helper)
 (declare-function compilation-find-file 'compile)
 
-(defun realgud-file-line-count(filename)
+(defun realgud:file-line-count(filename)
   "Return the number of lines in file FILENAME, or nil FILENAME can't be
 found"
   (if (file-exists-p filename)
@@ -22,6 +22,26 @@ found"
 	  (line-number-at-pos (point-max))))
     nil))
 
+(defun realgud:file-column-from-string(filename line-number source-text)
+  "Return the column of the first columnt position of SOURCE-TEXT
+at LINE-NUMBER or nil if it is not there"
+  (condition-case nil
+      (if (file-exists-p filename)
+	  (let ((file-buffer (find-file-noselect filename)))
+	    (with-current-buffer-safe file-buffer
+	      (save-excursion
+		(goto-char (point-min))
+		(forward-line (1- line-number))
+		(if (search-forward source-text (point-at-eol))
+		    (- (current-column)
+		       (length source-text))))))
+	;; else
+	nil)
+    (error nil))
+)
+
+
+;; FIXME: should allow column number to be passed in.
 (defun realgud-file-loc-from-line(filename line-number
 					   &optional cmd-marker source-text
 					   bp-num ignore-file-re)
@@ -61,18 +81,24 @@ problem as best as we can determine."
       (if (integerp line-number)
 	  (if (> line-number 0)
 	      (lexical-let ((line-count))
-		(if (setq line-count (realgud-file-line-count filename))
+		(if (setq line-count (realgud:file-line-count filename))
 		    (if (> line-count line-number)
-			; And you thought we'd never get around to
-			; doing something other than validation?
-			(make-realgud-loc
-			 :num         bp-num
-			 :cmd-marker  cmd-marker
-			 :filename    filename
-			 :line-number line-number
-			 :source-text source-text
-			 :marker      (make-marker)
-			 )
+			(let ((column-number
+			      (realgud:file-column-from-string filename
+							       line-number
+							       source-text)))
+			  ;; And you thought we'd never get around to
+			  ;; doing something other than validation?
+			  (make-realgud-loc
+			   :num           bp-num
+			   :cmd-marker    cmd-marker
+			   :filename      filename
+			   :line-number   line-number
+			   :column-number column-number
+			   :source-text   source-text
+			   :marker        (make-marker)
+			   ))
+		      ;; else
 		      (format "File %s has only %d lines. (Line %d requested.)"
 			      filename line-count line-number))
 		  (format "Problem getting line count for file `%s'" filename)))

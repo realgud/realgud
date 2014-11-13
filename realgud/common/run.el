@@ -128,7 +128,7 @@ buffer or nil is returned."
 	;; else
 	(progn
 	  (if cmd-buf (switch-to-buffer cmd-buf))
-	  (message "Error running command: %s" (mapconcat 'identity cmd-args "[ "))
+	  (message "Error running command: %s" (mapconcat 'identity cmd-args " "))
 	  )
 	)
       )

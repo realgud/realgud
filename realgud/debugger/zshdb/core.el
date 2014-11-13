@@ -6,6 +6,7 @@
 		       "realgud-")
 (require-relative-list '("init") "realgud:zshdb-")
 
+(declare-function realgud:expand-file-name-if-exists 'realgud-core)
 (declare-function realgud-parse-command-arg  'realgud-core)
 (declare-function realgud-query-cmdline      'realgud-core)
 (declare-function realgud-suggest-invocation 'realgud-core)
@@ -18,7 +19,7 @@
 
 (easy-mmode-defmap zshdb-minibuffer-local-map
   '(("\C-i" . comint-dynamic-complete-filename))
-  "Keymap for minibuffer prompting of gud startup command."
+  "Keymap for minibuffer prompting of zshdb startup command."
   :inherit minibuffer-local-map)
 
 ;; FIXME: I think this code and the keymaps and history
@@ -125,7 +126,8 @@ Note that path elements have been expanded via `realgud:expand-file-name-if-exis
 	   ((member arg '("--library" "-l"))
 	    (setq arg (pop args))
 	    (nconc debugger-args
-		   (list arg (expand-file-name (pop args)))))
+		   (list arg (realgud:expand-file-name-if-exists
+			      (pop args)))))
 	   ;; Other options with arguments.
 	   ((string-match "^-" arg)
 	    (setq pair (realgud-parse-command-arg
@@ -133,7 +135,7 @@ Note that path elements have been expanded via `realgud:expand-file-name-if-exis
 	    (nconc debugger-args (car pair))
 	    (setq args (cadr pair)))
 	   ;; Anything else must be the script to debug.
-	   (t (setq script-name (expand-file-name arg))
+	   (t (setq script-name (realgud:expand-file-name-if-exists arg))
 	      (setq script-args (cons script-name (cdr args))))
 	   )))
       (list interpreter-args debugger-args script-args annotate-p))))

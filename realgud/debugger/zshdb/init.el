@@ -10,7 +10,7 @@
 		       "realgud-")
 (require-relative-list '("../../lang/posix-shell") "realgud-lang-")
 
-(defvar realgud-pat-hash)
+(defvar realgud:zshdb-pat-hash)
 (declare-function make-realgud-loc-pat (realgud-loc))
 
 (defvar realgud:zshdb-pat-hash (make-hash-table :test 'equal)
@@ -24,10 +24,12 @@ realgud-loc-pat struct")
 ;;   (/etc/init.d/apparmor:35):
 (setf (gethash "loc" realgud:zshdb-pat-hash)
       (make-realgud-loc-pat
-       :regexp "\\(^\\|\n\\)(\\([^:]+\\):\\([0-9]*\\))"
-       :file-group 2
-       :line-group 3))
+       :regexp "\\(?:^\\|\n\\)(\\([^:]+\\):\\([0-9]*\\)):\\(?:\n\\(.+\\)\\)?"
+       :file-group 1
+       :line-group 2
+       :text-group 3))
 
+;; Regular expression that describes a zshdb command prompt
 ;; For example:
 ;;   zshdb<10>
 ;;   zshdb<(5)>
@@ -51,7 +53,7 @@ realgud-loc-pat struct")
 ;;   Removed 1 breakpoint(s).
 (setf (gethash "brkpt-del" realgud:zshdb-pat-hash)
       (make-realgud-loc-pat
-       :regexp "^Removed \\([0-9]+\\) breakpoints(s).\n"
+       :regexp "^Removed \\([0-9]+\\) breakpoint(s).\n"
        :num 1))
 
 ;; Regular expression that describes a debugger "backtrace" command line.
@@ -100,14 +102,20 @@ realgud-loc-pat struct")
 	;;  (0 trepan-frames-current-frame-face append))
 	))
 
+(setf (gethash "zshdb" realgud-pat-hash) realgud:zshdb-pat-hash)
+
 (defvar realgud:zshdb-command-hash (make-hash-table :test 'equal)
   "Hash key is command name like 'quit' and the value is
-  the trepan command to use, like 'quit!'")
+  the zshdb command to use, like 'quit!'")
 
-(setf (gethash "quit" realgud:zshdb-command-hash) "quit!")
-(setf (gethash "zshdb" realgud-command-hash realgud:zshdb-command-hash))
+(setf (gethash "zshdb"  realgud-command-hash realgud:zshdb-command-hash))
 
+<<<<<<< HEAD
 (setf (gethash "zshdb" realgud-pat-hash) realgud:zshdb-pat-hash)
 (setf (gethash "clear"  realgud:zshdb-command-hash) "clear %l")
+=======
+(setf (gethash "clear"  realgud:zshdb-command-hash) "clear %l")
+(setf (gethash "quit"   realgud:zshdb-command-hash) "quit!")
+>>>>>>> master
 
 (provide-me "realgud:zshdb-")
