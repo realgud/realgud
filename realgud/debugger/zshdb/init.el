@@ -110,12 +110,7 @@ realgud-loc-pat struct")
 
 (setf (gethash "zshdb"  realgud-command-hash realgud:zshdb-command-hash))
 
-<<<<<<< HEAD
-(setf (gethash "zshdb" realgud-pat-hash) realgud:zshdb-pat-hash)
-(setf (gethash "clear"  realgud:zshdb-command-hash) "clear %l")
-=======
 (setf (gethash "clear"  realgud:zshdb-command-hash) "clear %l")
 (setf (gethash "quit"   realgud:zshdb-command-hash) "quit!")
->>>>>>> master
 
 (provide-me "realgud:zshdb-")

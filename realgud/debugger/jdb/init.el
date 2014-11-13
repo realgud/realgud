@@ -31,6 +31,7 @@ realgud-loc-pat struct")
 (setf (gethash "loc" realgud:jdb-pat-hash)
       (make-realgud-loc-pat
        :regexp "\\(?:Breakpoint hit\\|Step completed\\): \"thread=.+\", \\(.+\\)?[.]\\(.+\\)(), line=\\([0-9]+\\) bci="
+       :file-group 1
        :line-group 3))
 
 ;; Regular expression that describes a jdb command prompt

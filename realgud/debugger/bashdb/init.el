@@ -107,7 +107,6 @@ realgud-loc-pat struct")
   the bashdb command to use, like 'quit!'")
 
 (setf (gethash "bashdb" realgud-command-hash realgud:bashdb-command-hash))
-(setf (gethash "clear"  realgud:bashdb-command-hash) "clear %l")
 
 (setf (gethash "clear"  realgud:bashdb-command-hash) "clear %l")
 (setf (gethash "quit"   realgud:bashdb-command-hash) "quit!")
