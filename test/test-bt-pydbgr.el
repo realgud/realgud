@@ -1,3 +1,4 @@
+(require 'test-simple)
 (load-file "./bt-helper.el")
 (load-file "../realgud/debugger/pydbgr/init.el")
 

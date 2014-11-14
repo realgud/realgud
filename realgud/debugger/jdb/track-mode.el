@@ -44,7 +44,7 @@ described by PT."
   (kbd "C-c !s") 'realgud:jdb-goto-syntax-error-line)
 
 (defun realgud:jdb-track-mode-hook()
-  (if realgu:jdb-track-mode
+  (if realgud:jdb-track-mode
       (progn
 	(realgud:track-set-debugger "jdb")
 	(setq realgud-track-mode 't)
@@ -59,21 +59,19 @@ described by PT."
   "Minor mode for tracking jdb source locations inside a process shell via realgud. jdb is a Ruby debugger.
 
 If called interactively with no prefix argument, the mode is toggled. A prefix argument, captured as ARG, enables the mode if the argument is positive, and disables it otherwise.
-
-\\{jdb-track-mode-map}
 "
   :init-value nil
   ;; :lighter " jdb"   ;; mode-line indicator from realgud-track is sufficient.
   ;; The minor mode bindings.
   :global nil
   :group 'realgud:jdb
-  :keymap jdb-track-mode-map
+  :keymap realgud:jdb-track-mode-map
   (realgud:track-set-debugger "jdb")
-  (if jdb-track-mode
+  (if realgud:jdb-track-mode
       (progn
 	(realgud-track-mode-setup 't)
-	(setq jdb-track-mode nil)
-	(run-mode-hooks (intern (jdb-track-mode-hook))))
+	(setq realgud:jdb-track-mode nil)
+	(run-mode-hooks (intern (realgud:jdb-track-mode-hook))))
     (progn
       (setq realgud-track-mode nil)
       ))

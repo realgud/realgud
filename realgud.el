@@ -97,7 +97,7 @@
   "The Grand Cathedral Debugger rewrite"
   :group 'processes
   :group 'tools
-  :version "23.1")
+  :version "24.2")
 
 ;; FIXME: extend require-relative for "autoload".
 (defun realgud:load-features()
@@ -107,11 +107,12 @@
      "./realgud/debugger/bashdb/bashdb"
      "./realgud/debugger/gdb/gdb"
      "./realgud/debugger/gub/gub"
+     "./realgud/debugger/jdb/jdb"
      "./realgud/debugger/kshdb/kshdb"
      "./realgud/debugger/nodejs/nodejs"
      "./realgud/debugger/pdb/pdb"
      "./realgud/debugger/perldb/perldb"
-    "./realgud/debugger/pydb/pydb"
+     "./realgud/debugger/pydb/pydb"
      "./realgud/debugger/pydbgr/pydbgr"
      "./realgud/debugger/rdebug/rdebug"
      "./realgud/debugger/remake/remake"

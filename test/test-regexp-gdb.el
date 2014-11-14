@@ -5,6 +5,14 @@
 
 (test-simple-start)
 
+(eval-when-compile
+  (defvar dbg-name)
+  (defvar realgud-pat-hash)
+  (defvar loc-pat)
+  (defvar test-dbgr)
+  (defvar test-text)
+)
+
 ; Some setup usually done in setting up the buffer.
 ; We customize this for this debugger.
 ; FIXME: encapsulate this.

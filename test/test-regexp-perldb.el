@@ -5,6 +5,17 @@
 
 (test-simple-start)
 
+(eval-when-compile
+  (defvar dbg-name)
+  (defvar realgud:perldb-pat-hash)
+  (defvar panic-tb)
+  (defvar loc-pat)
+  (defvar pos)
+  (defvar prompt-pat)
+  (defvar test-dbgr)
+  (defvar test-text)
+)
+
 ; Some setup usually done in setting up the buffer.
 ; We customize this for this debugger.
 ; FIXME: encapsulate this.
@@ -28,33 +39,33 @@
 			      "(eval 1006)[../example/eval.pl:5]")
 	      "perldb file ignore matching")
 
-(setq text "main::(/usr/bin/latex2html:102):")
+(setq test-text "main::(/usr/bin/latex2html:102):")
 
-(assert-t (numberp (cmdbuf-loc-match text dbgr)) "basic location")
+(assert-t (numberp (cmdbuf-loc-match test-text dbgr)) "basic location")
 (assert-equal "/usr/bin/latex2html"
-	      (match-string (realgud-cmdbuf-info-file-group dbgr) text)
+	      (match-string (realgud-cmdbuf-info-file-group dbgr) test-text)
 	      "extract file name")
 
-(setq text "main::((eval 6)[eval.pl:5]:2):	$x = 2;")
+(setq test-text "main::((eval 6)[eval.pl:5]:2):	$x = 2;")
 
-(assert-t (numberp (cmdbuf-loc-match text dbgr)) "eval location")
+(assert-t (numberp (cmdbuf-loc-match test-text dbgr)) "eval location")
 (assert-equal "(eval 6)[eval.pl:5]"
-	      (match-string (realgud-cmdbuf-info-file-group dbgr) text)
+	      (match-string (realgud-cmdbuf-info-file-group dbgr) test-text)
 	      "extract file name")
 
 (assert-equal "2"
 	      (match-string (realgud-cmdbuf-info-line-group dbgr)
-			    text) "extract line number")
+			    test-text) "extract line number")
 
 (note "location for with CODE in it")
-(setq text "main::CODE(0x9407ac8)(l2hconf.pm:6):")
-(assert-t (numberp (cmdbuf-loc-match text dbgr)))
+(setq test-text "main::CODE(0x9407ac8)(l2hconf.pm:6):")
+(assert-t (numberp (cmdbuf-loc-match test-text dbgr)))
 (assert-equal "l2hconf.pm"
 	      (match-string (realgud-cmdbuf-info-file-group dbgr)
-			    text))
+			    test-text))
 (assert-equal "6"
 	      (match-string (realgud-cmdbuf-info-line-group dbgr)
-			    text))
+			    test-text))
 
 (note "debugger-backtrace")
 (setq realgud-bt-pat  (gethash "debugger-backtrace"
