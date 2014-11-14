@@ -63,6 +63,14 @@ fringe and marginal icons.
       (setq gud-jdb-classpath
 	    (gud-jdb-parse-classpath-string gud-jdb-classpath-string)))
 
+  (setq gud-jdb-class-source-alist
+	(gud-jdb-build-class-source-alist
+	 (setq gud-jdb-source-files
+	       (gud-jdb-build-source-files-list gud-jdb-directories
+						"\\.java$"))))
+  (fset 'gud-jdb-find-source 'gud-jdb-find-source-file)
+
+
   ;; reset for future invocations
   (setq gud-jdb-classpath-string nil)
 

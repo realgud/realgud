@@ -364,7 +364,7 @@ Otherwise return nil."
 		       (lineno (string-to-number (or line-str "1"))))
 		  (cond (callback-loc-fn
 			 (funcall callback-loc-fn text
-				  filename lineno text-group
+				  filename lineno source-str
 				  ignore-file-re cmd-mark))
 			('t
 			 (when source-str

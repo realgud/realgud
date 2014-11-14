@@ -5,6 +5,6 @@
 (declare-function __FILE__  'require-relative)
 (declare-function realgud:jdb-parse-cmd-args 'realgud:jdb-core)
 
-(assert-equal '("jdb" nil ("TestMe"))
-	      (realgud:jdb-parse-cmd-args '("jdb" "TestMe")))
+(assert-equal '("jdb" nil ("./TestMe.java"))
+	      (realgud:jdb-parse-cmd-args '("jdb" "./TestMe.java")))
 (end-tests)

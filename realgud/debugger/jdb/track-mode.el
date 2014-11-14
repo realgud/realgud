@@ -19,14 +19,12 @@
 (declare-function realgud:track-set-debugger 'realgud-track-mode)
 (declare-function realgud-goto-line-for-pt 'realgud-track-mode)
 
-(realgud-track-mode-vars "jdb")
+(realgud-track-mode-vars "realgud:jdb")
 
 (define-key realgud-track-mode-map
   (kbd "C-c !!") 'realgud:goto-lang-backtrace-line)
 (define-key realgud-track-mode-map
   (kbd "C-c !b") 'realgud:goto-debugger-backtrace-line)
-
-(declare-function realgud:ruby-populate-command-keys 'realgud-lang-ruby)
 
 (defun realgud:jdb-goto-control-frame-line (pt)
   "Display the location mentioned by a control-frame line
@@ -40,23 +38,24 @@ described by PT."
   (interactive "d")
   (realgud-goto-line-for-pt pt "syntax-error"))
 
-(realgud:ruby-populate-command-keys jdb-track-mode-map)
-
-(define-key jdb-track-mode-map
+(define-key realgud:jdb-track-mode-map
   (kbd "C-c !c") 'realgud:jdb-goto-control-frame-line)
-(define-key jdb-track-mode-map
+(define-key realgud:jdb-track-mode-map
   (kbd "C-c !s") 'realgud:jdb-goto-syntax-error-line)
 
-(defun jdb-track-mode-hook()
-  (if jdb-track-mode
+(defun realgud:jdb-track-mode-hook()
+  (if realgu:jdb-track-mode
       (progn
-	(use-local-map jdb-track-mode-map)
-	(message "using jdb mode map")
-	)
-    (message "jdb track-mode-hook disable called"))
+	(realgud:track-set-debugger "jdb")
+	(setq realgud-track-mode 't)
+        (realgud-track-mode-setup 't)
+        (realgud:jdb-track-mode-hook))
+    (progn
+      (setq realgud-track-mode nil)
+      ))
 )
 
-(define-minor-mode jdb-track-mode
+(define-minor-mode realgud:jdb-track-mode
   "Minor mode for tracking jdb source locations inside a process shell via realgud. jdb is a Ruby debugger.
 
 If called interactively with no prefix argument, the mode is toggled. A prefix argument, captured as ARG, enables the mode if the argument is positive, and disables it otherwise.

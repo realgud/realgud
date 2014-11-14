@@ -39,12 +39,13 @@
    'realgud:jdb-minibuffer-history
    opt-debugger))
 
-(defun realgud:jdb-loc-fn-callback(text filename lineno text-group
+(defun realgud:jdb-loc-fn-callback(text filename lineno source-str
 					ignore-file-re cmd-mark)
 
-  (realgud-file-loc-from-line (gud-jdb-find-source filename)
+  (realgud-file-loc-from-line (or (gud-jdb-find-source filename)
+				  (concat filename ".java"))
 			      lineno cmd-mark
-			      nil nil
+			      source-str nil
 			      ignore-file-re))
 
 (defun realgud:jdb-parse-cmd-args (orig-args)
@@ -54,20 +55,17 @@ ORIG-ARGS should contain a tokenized list of the command line to run.
 
 We return the a list containing
 
-* the command processor (e.g. java) and it's arguments if any - a
-  list of strings
+* the command debuger (e.g. jdb)
 
-* the name of the debugger given (e.g. jdb) and its arguments
-  - a list of strings
+* debugger command rguments if any - a list of strings
 
 * the script name and its arguments - list of strings
 
 For example for the following input
-  (map 'list 'symbol-name
-   '(jdb -W -C /tmp jdb --emacs ./gcd.java a b))
+   '(\"jdb\" \"-classpath . ./TestMe.java a b\"))
 
 we might return:
-   ((jdb) (jdb --emacs) (./gcd.java a b) 't)
+   (\"jdb\" nil \"TestMe\"))
 
 Note that the script name path has been expanded via `expand-file-name'.
 "
@@ -84,7 +82,7 @@ Note that the script name path has been expanded via `expand-file-name'.
         ;;
         ;; One dash is added automatically to the below, so
         ;; attach is really -attach
-	(jdb-two-args '("attach" "sourcepath" "dbgtrace"))
+	(jdb-two-args '("attach" "sourcepath" "classpath" "dbgtrace"))
 
         ;; Things returned
         (debugger-args '())
@@ -97,7 +95,7 @@ Note that the script name path has been expanded via `expand-file-name'.
       ;; Strip off optional "jdb" or "jdb.exe" etc.
       (when (string-match interp-regexp (car args))
 	(setq jdb-name (car args))
-        (setq program-args (cdr args)))
+        (setq program-args (nconc program-args (cdr args))))
 
       (list jdb-name debugger-args program-args))))
 

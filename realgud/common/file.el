@@ -55,7 +55,7 @@ expressions. For example (eval 1) of Perl <string> of Python.
 If we're unable find the source code we return a string describing the
 problem as best as we can determine."
 
-  (unless (file-readable-p filename)
+  (unless (and filename (file-readable-p filename))
     (if (and ignore-file-re (string-match ignore-file-re filename))
 	(message "tracking ignored for psuedo-file %s" filename)
       ; else
@@ -77,7 +77,7 @@ problem as best as we can determine."
 	      )
 	  )))
       ))
-  (if (file-readable-p filename)
+  (if (and filename (file-readable-p filename))
       (if (integerp line-number)
 	  (if (> line-number 0)
 	      (lexical-let ((line-count))
