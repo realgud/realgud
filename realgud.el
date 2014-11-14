@@ -1,7 +1,7 @@
 ;;; realgud.el --- A modular front-end for interacting with external debuggers
 
 ;; Author: Rocky Bernstein
-;; Version: 0.2.1
+;; Version: 0.2.2
 ;; Package-Requires: ((load-relative "20130410") (list-utils "20140508") (loc-changes "20130723") (test-simple  "20130710"))
 ;; URL: http://github.com/rocky/emacs-dbgr
 ;; Compatibility: GNU Emacs 24.x
@@ -48,31 +48,32 @@
 
 ;;   NAME           INVOCATION**  WHAT
 ;    -----------------------------------
-;;   bashdb         bashdb        bash
-;;   Devel::Trepan  trepan.pl     Perl5
-;;   gdb            realgud:gdb   gdb
-;;   gub            gub           Go SSA debugger
-;;   kshdb          kshdb         Korn Shell 93u+
-;;   nodejs         nodejs        node.js javascript debugger
-;;   pdb            pdb           stock C Python debugger
-;;   perldb         perldb        stock Perl5 debugger
-;;   pydb           pydb          slighly enhanced pdb for Python 2.x
-;;   pydbgr         pydbgr        obsolete trepanning debugger for Python 2.x
-;;   rb8-trepanning trepan8       MRI Ruby 1.8 and an unpatched YARV 1.9
-;;   rbx-trepanning trepanx       trepanning debugger for Rubinius Ruby
-;;   remake         remake        GNU Make
-;;   ruby-debug     rdebug        Ruby
-;;   trepanning     trepan        trepanning debugger for a patched Ruby 1.9
-;;   trepan2        trepan2       trepanning debugger for Python 2.x
-;;   trepan3k       trepan3k      trepanning debugger for Python 3.x
-;;   zshdb          zshdb         Zsh
+;;   bashdb         bashdb         bash
+;;   Devel::Trepan  trepan.pl      Perl5
+;;   gdb            realgud:gdb    gdb
+;;   gub            gub            Go SSA debugger
+;;   jdb            realgud:jdb    Java jdb debugger
+;;   kshdb          kshdb          Korn Shell 93u+
+;;   nodejs         nodejs         node.js javascript debugger
+;;   pdb            realgud:pdb    stock C Python debugger
+;;   perldb         realgud:perldb stock Perl5 debugger
+;;   pydb           pydb           slighly enhanced pdb for Python 2.x
+;;   pydbgr         pydbgr         obsolete trepanning debugger for Python 2.x
+;;   rb8-trepanning trepan8        MRI Ruby 1.8 and an unpatched YARV 1.9
+;;   rbx-trepanning trepanx        trepanning debugger for Rubinius Ruby
+;;   remake         remake         GNU Make
+;;   ruby-debug     rdebug         Ruby
+;;   trepanning     trepan         trepanning debugger for a patched Ruby 1.9
+;;   trepan2        trepan2        trepanning debugger for Python 2.x
+;;   trepan3k       trepan3k       trepanning debugger for Python 3.x
+;;   zshdb          zshdb          Zsh
 ;;
 ;;
-;; **gdb invocation requires the realgud- preface to disambiguate it
-;; from the older, preexisting emacs command. The other invocations
-;; also accept realgud: prefaces, e.g. realgud:bashdb or realgud:pdb.
-;; Alas there is older obsolete Emacs code out there for bashdb,
-;; kshdb, and rdebug.
+;; **gdb, jdb, perldb, pdb invocations require the realgud: preface to
+;; disambiguate it from older, preexisting emacs commands in `gud'. The other
+;; invocations also accept realgud: prefaces, e.g. realgud:bashdb or
+;; realgud:rdebug.  Alas there are older obsolete (i.e. often written by me)
+;; Emacs packages out there for bashdb, kshdb, nodejs, pydb, rdebug, zshdb.
 
 ;; If you don't see your favorite debugger above, see URL
 ;; `https://github.com/rocky/emacs-dbgr/wiki/How-to-add-a-new-debugger/'
