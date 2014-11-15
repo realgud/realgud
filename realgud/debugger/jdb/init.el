@@ -54,11 +54,11 @@ realgud-loc-pat struct")
 
 ;; Regular expression that describes a Java backtrace line.
 ;; For example:
-;;  [1] TestMe.main (TestMe.java:7)
+;;  [1] ca.snpEffect.commandLine.SnpEff.run (SnpEff.java:7)
 (setf (gethash "lang-backtrace" realgud:jdb-pat-hash)
   (make-realgud-loc-pat
    ;; FIXME: use realgud:jdb-identifier
-   :regexp "^\\(?:[\t ]*\\[\\[0-9]+\\] \\)\\([A-Za-z_.][A-Za-z0-9.]+\\):\\([0-9]+\\)"
+   :regexp "^\\(?:[	 ]*[\\[0-9\\]+]\\) \\([A-Za-z_.][A-Za-z0-9.]+\\) (\\([A-Za-z_.][A-Za-z0-9.]+\\):\\([0-9]+\\))"
    :file-group 1
    :line-group 2))
 
