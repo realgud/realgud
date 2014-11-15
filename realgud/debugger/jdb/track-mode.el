@@ -46,10 +46,9 @@ described by PT."
 (defun realgud:jdb-track-mode-hook()
   (if realgud:jdb-track-mode
       (progn
-	(realgud:track-set-debugger "jdb")
-	(setq realgud-track-mode 't)
-        (realgud-track-mode-setup 't)
-        (realgud:jdb-track-mode-hook))
+	(use-local-map realgud:jdb-track-mode-map)
+	(message "using realgud:jdb-track-mode-map"))
+    ;; else
     (progn
       (setq realgud-track-mode nil)
       ))
@@ -71,7 +70,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
       (progn
 	(realgud-track-mode-setup 't)
 	(setq realgud:jdb-track-mode nil)
-	(run-mode-hooks (intern (realgud:jdb-track-mode-hook))))
+	(run-mode-hooks (intern "realgud:jdb-track-mode-hook")))
     (progn
       (setq realgud-track-mode nil)
       ))

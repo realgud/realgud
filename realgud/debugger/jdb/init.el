@@ -38,12 +38,14 @@ realgud-loc-pat struct")
 ;; Regular expression that describes a jdb command prompt
 ;; For example:
 ;;   main[1]
+;;   main[2]
 ;;   >
-;; FIXME: I think the pattern is thread-name[thread-number]
+;; FIXME: I think the pattern is thread-name[stack-level]
 ;; Here, we only deal with main.
 (setf (gethash "prompt" realgud:jdb-pat-hash)
       (make-realgud-loc-pat
-       :regexp "^\\(main\\[1\\]\\|>\\) "
+       :regexp "^\\(?:main\\[\\([0-9]+\\)\\]\\|>\\) "
+       :num 1
        ))
 
 ;; Regular expression that describes a Java syntax error line.
