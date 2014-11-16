@@ -137,6 +137,13 @@
 		    ,string  0 (length ,prefix))
   )
 
+(defun realgud:strip (str)
+      "Remove leading and tailing whitespace from STR."
+      (while (string-match "\\`\n+\\|^\\s-+\\|\\s-+$\\|\n+\\'"
+                           str)
+        (setq str (replace-match "" t t str)))
+      str)
+
 (defun realgud-feature-starts-with(feature prefix)
   "realgud-strings-starts-with on stringified FEATURE and PREFIX."
   (declare (indent 1))

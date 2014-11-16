@@ -3,17 +3,19 @@
 
 ;; We use gud to handle the classpath-to-filename mapping
 (require 'gud)
+(require 'compile) ;; for compilation-find-file
 
 (require 'load-relative)
 (require-relative-list '("../../common/track"
                          "../../common/core"
-                         "../../common/lang"
-                         "../../common/file")
+                         "../../common/file"
+                         "../../common/lang")
                        "realgud-")
 (require-relative-list '("init") "realgud:jdb-")
 
 (declare-function gud-find-source            'gud)
 
+(declare-function realgud:strip              'realgud)
 (declare-function realgud:expand-file-name-if-exists 'realgud-core)
 (declare-function realgud-parse-command-arg  'realgud-core)
 (declare-function realgud-query-cmdline      'realgud-core)
@@ -39,14 +41,63 @@
    'realgud:jdb-minibuffer-history
    opt-debugger))
 
+(defun realgud:jdb-dot-to-slash (str)
+  "Change '.' to '/' in STR but chop off from the last . to the end. For example
+ca.mgcill.rocky.snpEff.main => ca/mcgill/rocky/snpEff"
+      (setq str (replace-regexp-in-string "\\([^\\.]+\\.\\)[^\\.]+$" "\\1" str))
+      (setq str (replace-regexp-in-string "\\.$" "" str))
+      (setq str (replace-regexp-in-string "\\." "/" str))
+      str)
+
+(defvar realgud:jdb-file-remap (make-hash-table :test 'equal)
+  "How to remap Java files in jdb when we otherwise can't find in
+  the filesystem. The hash key is the file string we saw, and the
+  value is associated filesystem string presumably in the
+  filesystem")
+
+(defun realgud:jdb-find-file(filename)
+  "A find-file specific for java/jdb. We use `gdb-jdb-find-source' to map a
+name to a filename. Failing that we can add on .java to the name. Failing that
+we will prompt for a mapping and save that in `realgud:jdb-file-remap' when
+that works."
+  (let* ((transformed-file)
+	 (stripped-filename (realgud:strip filename))
+	 (gud-jdb-filename (gud-jdb-find-source stripped-filename))
+	)
+    (cond
+     ((and gud-jdb-filename (file-exists-p gud-jdb-filename))
+      gud-jdb-filename)
+     ((file-exists-p (setq transformed-file (concat stripped-filename ".java")))
+      transformed-file)
+     ('t
+      (if (gethash stripped-filename realgud:jdb-file-remap)
+	  (let ((remapped-filename))
+	    (setq remapped-filename (gethash stripped-filename realgud:jdb-file-remap))
+    	      (if (file-exists-p remapped-filename)
+    		  remapped-filename
+		;; else
+    		(and (remhash filename realgud-file-remap) nil))
+    	  ;; else
+    	  (let ((remapped-filename)
+		(guess-filename (realgud:jdb-dot-to-slash filename)))
+    	    (setq remapped-filename
+    		  (buffer-file-name
+    		   (compilation-find-file (point-marker) guess-filename nil)))
+    	    (when (and remapped-filename (file-exists-p remapped-filename))
+    	      (puthash stripped-filename remapped-filename realgud:jdb-file-remap)
+    	      remapped-filename
+    	      ))
+    	  ))
+      ))
+    ))
+
 (defun realgud:jdb-loc-fn-callback(text filename lineno source-str
 					ignore-file-re cmd-mark)
-
-  (realgud-file-loc-from-line (or (gud-jdb-find-source filename)
-				  (concat filename ".java"))
+  (realgud-file-loc-from-line filename lineno
+			      cmd-mark source-str nil
 			      lineno cmd-mark
 			      source-str nil
-			      ignore-file-re))
+			      nil 'realgud:jdb-find-file))
 
 (defun realgud:jdb-parse-cmd-args (orig-args)
   "Parse command line ARGS for the annotate level and name of script to debug.
@@ -55,7 +106,7 @@ ORIG-ARGS should contain a tokenized list of the command line to run.
 
 We return the a list containing
 
-* the command debuger (e.g. jdb)
+* the command debugger (e.g. jdb)
 
 * debugger command rguments if any - a list of strings
 

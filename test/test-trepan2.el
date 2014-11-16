@@ -1,7 +1,11 @@
 (require 'test-simple)
 (load-file "../realgud/debugger/trepan2/trepan2.el")
-(declare-function trepan2-parse-cmd-args 'realgud:trepan2)
-(declare-function __FILE__               'require-relative)
+(load-file "../realgud/debugger/trepan2/core.el")
+(load-file "../realgud.el")
+
+(declare-function trepan2-parse-cmd-args    'realgud:trepan2)
+(declare-function realgud:trepan2-find-file 'realgud:trepan2-core)
+(declare-function __FILE__                  'require-relative)
 
 
 (test-simple-start)
@@ -22,5 +26,17 @@
 (assert-equal '(nil ("trepan2") ("program.py" "foo") nil)
 	      (trepan2-parse-cmd-args
 	       '("trepan2" "program.py" "foo")))
+
+(note "realgud:trepan2-find-file")
+(assert-nil (realgud:trepan2-find-file "<string>")
+	    "Should ignore psuedo file")
+
+(eval-when-compile
+  (defvar test-python-file))
+
+(set (make-local-variable 'test-python-file)
+     (concat (file-name-directory (__FILE__)) "gcd.py"))
+(assert-equal test-python-file (realgud:trepan2-find-file test-python-file)
+	    "Should ignore psuedo file")
 
 (end-tests)

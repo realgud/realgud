@@ -9,7 +9,7 @@
   (defvar dbg-name)
   (defvar realgud:gub-pat-hash)
   (defvar panic-tb)
-  (defvar tb)
+  (defvar test-tb)
   (defvar prompt-pat)
   (defvar test-dbgr)
   (defvar test-text)
@@ -28,7 +28,7 @@
 (prompt-match "gub[32@5]: ")
 
 (setup-regexp-vars realgud:gub-pat-hash)
-(set (make-local-variable 'tb)
+(set (make-local-variable 'test-tb)
      (gethash "lang-backtrace"  realgud:gub-pat-hash))
 
 (note "go lang traceback")
@@ -36,10 +36,10 @@
 
 (assert-t (numberp (tb-loc-match test-text)) "go traceback location")
 (assert-equal "/usr/local/go/src/pkg/runtime/panic.c"
-	      (match-string (realgud-loc-pat-file-group tb)
+	      (match-string (realgud-loc-pat-file-group test-tb)
 			    test-text) "extract traceback file name")
 (assert-equal "482"
-	      (match-string (realgud-loc-pat-line-group tb)
+	      (match-string (realgud-loc-pat-line-group test-tb)
 			    test-text)   "extract traceback line number")
 
 (note "panic traceback")
@@ -51,12 +51,10 @@
 (assert-t (numberp (string-match (realgud-loc-pat-regexp panic-tb) test-text))
 	  "go panic location")
 (assert-equal "/tmp/github.com/rocky/ssa-interp/eval/selectorexpr.go"
-	      (match-string (realgud-loc-pat-file-group tb)
+	      (match-string (realgud-loc-pat-file-group test-tb)
 			    test-text) "extract panic traceback file name")
 (assert-equal "18"
-	      (match-string (realgud-loc-pat-line-group tb)
+	      (match-string (realgud-loc-pat-line-group test-tb)
 			    test-text)   "extract panic traceback line number")
-
-
 
 (end-tests)

@@ -1,3 +1,4 @@
+(require 'test-simple)
 (load-file "./regexp-helper.el")
 (load-file "../realgud/common/regexp.el")
 (load-file "../realgud/debugger/gub/init.el")
