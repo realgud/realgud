@@ -19,7 +19,7 @@
 (setq dbg-name "gdb")
 
 (setq loc-pat (gethash "loc" (gethash dbg-name realgud-pat-hash)))
-(setq dbgr (make-realgud-cmdbuf-info
+(setq test-dbgr (make-realgud-cmdbuf-info
 		  :debugger-name dbg-name
 		  :loc-regexp (realgud-loc-pat-regexp loc-pat)
 		  :file-group (realgud-loc-pat-file-group loc-pat)
@@ -28,16 +28,16 @@
 ;; FIXME: we get a void variable somewhere in here when running
 ;;        even though we define it in lexical-let. Dunno why.
 ;;        setq however will workaround this.
-(setq text "/home/rocky/c/ctest.c:80:2000:beg:0x8048748>")
+(setq test-text "/home/rocky/c/ctest.c:80:2000:beg:0x8048748>")
 (note "traceback location matching")
 
-(assert-t (numberp (cmdbuf-loc-match text dbgr)) "basic location")
+(assert-t (numberp (cmdbuf-loc-match test-text test-dbgr)) "basic location")
 (assert-equal "/home/rocky/c/ctest.c"
-	      (match-string (realgud-cmdbuf-info-file-group dbgr)
-			    text) "extract file name")
+	      (match-string (realgud-cmdbuf-info-file-group test-dbgr)
+			    test-text) "extract file name")
 (assert-equal "80"
-	      (match-string (realgud-cmdbuf-info-line-group dbgr)
-			    text) "extract line number")
+	      (match-string (realgud-cmdbuf-info-line-group test-dbgr)
+			    test-text) "extract line number")
 (note "debugger-backtrace")
 (setq realgud-bt-pat  (gethash "debugger-backtrace"
 			    realgud:gdb-pat-hash))

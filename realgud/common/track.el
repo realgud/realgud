@@ -362,14 +362,14 @@ Otherwise return nil."
 		       (source-str (and text-group
 					(match-string text-group text)))
 		       (lineno (string-to-number (or line-str "1"))))
+		  (when source-str
+		    (setq source-str (ansi-color-filter-apply
+				      source-str)))
 		  (cond (callback-loc-fn
 			 (funcall callback-loc-fn text
 				  filename lineno source-str
 				  ignore-file-re cmd-mark))
 			('t
-			 (when source-str
-			   (setq source-str (ansi-color-filter-apply
-					     source-str)))
 			 (unless line-str
 			   (message "line number not found -- using 1"))
 			 (if (and filename lineno)

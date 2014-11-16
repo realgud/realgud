@@ -73,31 +73,29 @@ that works."
       (if (gethash stripped-filename realgud:jdb-file-remap)
 	  (let ((remapped-filename))
 	    (setq remapped-filename (gethash stripped-filename realgud:jdb-file-remap))
-    	      (if (file-exists-p remapped-filename)
-    		  remapped-filename
-		;; else
-    		(and (remhash filename realgud-file-remap) nil))
-    	  ;; else
-    	  (let ((remapped-filename)
-		(guess-filename (realgud:jdb-dot-to-slash filename)))
-    	    (setq remapped-filename
-    		  (buffer-file-name
-    		   (compilation-find-file (point-marker) guess-filename nil)))
-    	    (when (and remapped-filename (file-exists-p remapped-filename))
-    	      (puthash stripped-filename remapped-filename realgud:jdb-file-remap)
-    	      remapped-filename
-    	      ))
-    	  ))
-      ))
-    ))
+	    (if (file-exists-p remapped-filename)
+		remapped-filename
+	      ;; else
+	      (and (remhash filename realgud-file-remap) nil)))
+	;; else
+	(let ((remapped-filename)
+	      (guess-filename (realgud:jdb-dot-to-slash filename)))
+	  (setq remapped-filename
+		(buffer-file-name
+		 (compilation-find-file (point-marker) guess-filename nil)))
+	  (when (and remapped-filename (file-exists-p remapped-filename))
+	    (puthash stripped-filename remapped-filename realgud:jdb-file-remap)
+	    remapped-filename
+	    ))
+	))
+     ))
+  )
 
 (defun realgud:jdb-loc-fn-callback(text filename lineno source-str
 					ignore-file-re cmd-mark)
   (realgud-file-loc-from-line filename lineno
 			      cmd-mark source-str nil
-			      lineno cmd-mark
-			      source-str nil
-			      nil 'realgud:jdb-find-file))
+			      ignore-file-re 'realgud:jdb-find-file))
 
 (defun realgud:jdb-parse-cmd-args (orig-args)
   "Parse command line ARGS for the annotate level and name of script to debug.
