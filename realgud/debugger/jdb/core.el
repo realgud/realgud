@@ -44,8 +44,8 @@
 (defun realgud:jdb-dot-to-slash (str)
   "Change '.' to '/' in STR but chop off from the last . to the end. For example
 ca.mgcill.rocky.snpEff.main => ca/mcgill/rocky/snpEff"
-      (setq str (replace-regexp-in-string "\\([^\\.]+\\.\\)[^\\.]+$" "\\1" str))
-      (setq str (replace-regexp-in-string "\\.$" "" str))
+      ;;(setq str (replace-regexp-in-string "\\([^\\.]+\\.\\)[^\\.]+$" "\\1" str))
+      ;;(setq str (replace-regexp-in-string "\\.$" "" str))
       (setq str (replace-regexp-in-string "\\." "/" str))
       str)
 
@@ -82,7 +82,8 @@ that works."
 	      (guess-filename (realgud:jdb-dot-to-slash filename)))
 	  (setq remapped-filename
 		(buffer-file-name
-		 (compilation-find-file (point-marker) guess-filename nil)))
+		 (compilation-find-file (point-marker) guess-filename
+					nil "%s.java")))
 	  (when (and remapped-filename (file-exists-p remapped-filename))
 	    (puthash stripped-filename remapped-filename realgud:jdb-file-remap)
 	    remapped-filename

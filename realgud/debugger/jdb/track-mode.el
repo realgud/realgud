@@ -20,7 +20,8 @@
 (declare-function realgud-goto-line-for-pt 'realgud-track-mode)
 
 (realgud-track-mode-vars "realgud:jdb")
-(defvaralias 'jdb-short-key-mode-map 'realgud:jdb-short-key-mode-map)
+;;(defvaralias 'jdb-short-key-mode-map 'realgud:jdb-short-key-mode-map)
+;;(defvaralias 'jdb-track-mode         'realgud:track-mode)
 
 (define-key realgud-track-mode-map
   (kbd "C-c !!") 'realgud:goto-lang-backtrace-line)

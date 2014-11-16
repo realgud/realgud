@@ -61,7 +61,8 @@ we may also consult PYTHONPATH."
 	    (let ((remapped-filename))
 	      (setq remapped-filename
 		    (buffer-file-name
-		     (compilation-find-file (point-marker) stripped-filename nil)))
+		     (compilation-find-file (point-marker) stripped-filename
+					    nil "%s.py")))
 	      (when (and remapped-filename (file-exists-p remapped-filename))
 		(puthash filename remapped-filename realgud-file-remap)
 		remapped-filename
