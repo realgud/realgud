@@ -133,7 +133,7 @@ if that exists. When all else fails return the empty string."
   (let* ((lang-ext-regexp "\\.\\([ch]\\)\\(pp\\)?")
 	 (file-list (directory-files default-directory))
 	 (priority 2)
-	 (try-filename (file-name-base (buffer-file-name))))
+	 (try-filename (file-name-base (or (buffer-file-name) "gdb"))))
     (if (member try-filename (directory-files default-directory))
     	(concat "gdb " try-filename)
       ;; else
