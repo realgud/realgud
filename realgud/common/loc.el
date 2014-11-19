@@ -13,6 +13,7 @@
 ;; FIXME: removed because of recursive loads
 ;; (require-relative-list '("buffer/helper") "realgud-buffer-")
 
+(declare-function realgud:strip                  'realgud)
 (declare-function realgud-get-cmdbuf-from-srcbuf 'realgud-buffer-helper)
 (declare-function realgud-srcbuf?                'realgud-buffer-source)
 
@@ -115,7 +116,7 @@ the source-code buffer, is returned. Otherwise, nil is returned."
 		(setq use-marker 't)
 		(let ((current-text (realgud:buffer-line-no-props))
 		      (loc-text (realgud-loc-source-text loc)))
-		  (unless (equal current-text loc-text)
+		  (unless (equal (realgud:strip current-text) (realgud:strip loc-text))
 		    (loc-changes-goto line-number)
 		    (setq current-text (realgud:buffer-line-no-props))
 		    (when (equal current-text loc-text)
@@ -124,6 +125,7 @@ the source-code buffer, is returned. Otherwise, nil is returned."
 		    )))
 	      (if use-marker
 		  (goto-char (marker-position marker))
+		;; else
 		;; We don't have a position set in the source buffer
 		;; so find it and go there. We use `loc-changes-goto'
 		;; to find that spot. `loc-changes-goto' keeps a
@@ -132,6 +134,8 @@ the source-code buffer, is returned. Otherwise, nil is returned."
 		;; reliable.
 		(let ((src-marker))
 		  (loc-changes-goto line-number)
+		  (when column-number
+		    (move-to-column column-number))
 		  (setq src-marker (point-marker))
 		  (realgud-loc-marker= loc src-marker)
 		  ))))

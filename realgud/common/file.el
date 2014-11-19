@@ -10,7 +10,9 @@
   value is associated filesystem string presumably in the
   filesystem")
 
-(declare-function buffer-killed? 'helper)
+(declare-function realgud:strip         'realgud)
+(declare-function realgud-loc-goto      'realgud-loc)
+(declare-function buffer-killed?        'helper)
 (declare-function compilation-find-file 'compile)
 
 (defun realgud:file-line-count(filename)
@@ -22,8 +24,9 @@ found"
 	  (line-number-at-pos (point-max))))
     nil))
 
-(defun realgud:file-column-from-string(filename line-number source-text)
-  "Return the column of the first columnt position of SOURCE-TEXT
+(defun realgud:file-column-from-string(filename line-number source-text
+						&optional no-strip-blanks)
+  "Return the column of the first column position of SOURCE-TEXT
 at LINE-NUMBER or nil if it is not there"
   (condition-case nil
       (if (file-exists-p filename)
@@ -32,6 +35,8 @@ at LINE-NUMBER or nil if it is not there"
 	      (save-excursion
 		(goto-char (point-min))
 		(forward-line (1- line-number))
+		(unless no-strip-blanks
+		  (setq source-text (realgud:strip source-text)))
 		(if (search-forward source-text (point-at-eol))
 		    (- (current-column)
 		       (length source-text))))))
@@ -47,7 +52,8 @@ at LINE-NUMBER or nil if it is not there"
 					   ;; FIXME: remove ignore-file-re and cover with
 					   ;; find-file-fn.
 					   ignore-file-re find-file-fn)
-  "Return a realgud-loc for FILENAME and LINE-NUMBER
+  "Return a realgud-loc for FILENAME and LINE-NUMBER and the
+other optional position information.
 
 CMD-MARKER and BP-NUM get stored in the realgud-loc
 object. FIND-FILE-FN is a function which do special things to
@@ -94,21 +100,22 @@ problem as best as we can determine."
 		  (lexical-let ((line-count))
 		    (if (setq line-count (realgud:file-line-count filename))
 			(if (> line-count line-number)
-			    (let ((column-number
-				   (realgud:file-column-from-string filename
+			    (let* ((column-number
+				    (realgud:file-column-from-string filename
 								    line-number
-								    source-text)))
-			      ;; And you thought we'd never get around to
-			      ;; doing something other than validation?
-			      (make-realgud-loc
-			       :num           bp-num
-			       :cmd-marker    cmd-marker
-			       :filename      filename
-			       :line-number   line-number
-			       :column-number column-number
-			       :source-text   source-text
-			       :marker        (make-marker)
-			       ))
+								    source-text))
+				   ;; And you thought we'd never get around to
+				   ;; doing something other than validation?
+				   (loc (make-realgud-loc
+					 :num           bp-num
+					 :cmd-marker    cmd-marker
+					 :filename      filename
+					 :line-number   line-number
+					 :column-number column-number
+					 :source-text   source-text
+					 :marker        (make-marker)
+					 )))
+			      loc)
 			  ;; else
 			  (format "File %s has only %d lines. (Line %d requested.)"
 				  filename line-count line-number))

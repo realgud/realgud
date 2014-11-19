@@ -121,8 +121,10 @@ for example to indicate a debugger position."
 	  (realgud-fringe-set-arrow 'realgud-overlay-arrow2 cmd-mark2)))
     (when loc1
       (realgud-fringe-set-arrow 'realgud-overlay-arrow1 mark1)
-      (if (and do-cmdbuf? cmd-mark1)
-	  (realgud-fringe-set-arrow 'realgud-overlay-arrow1 cmd-mark1)))
+      (when (and do-cmdbuf? cmd-mark1)
+	  (realgud-fringe-set-arrow 'realgud-overlay-arrow1 cmd-mark1)
+	  (goto-char (marker-position cmd-mark1)))
+      )
     ))
 
 (defun realgud-fringe-erase-history-arrows ()

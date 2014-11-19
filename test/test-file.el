@@ -40,44 +40,46 @@
 
 (fset 'compilation-find-file (lambda(mark test-filename opt)
 			       (get-buffer "*scratch*")))
-(assert-equal
- "File named `not-found-file' not readable"
- (realgud-file-loc-from-line
-		  "not-found-file" 5 (make-marker))
- )
 
-(assert-t (stringp (realgud-file-loc-from-line test-filename 5.5))
-	  "invalid real line number")
+(save-excursion
+  (assert-equal
+   "File named `not-found-file' not readable"
+   (realgud-file-loc-from-line
+    "not-found-file" 5 (make-marker))
+   )
 
-(assert-t (stringp (realgud-file-loc-from-line test-filename -1))
-	  "negative number")
+  (assert-t (stringp (realgud-file-loc-from-line test-filename 5.5))
+	    "invalid real line number")
 
-(note "realgud-file-loc-from-line information")
+  (assert-t (stringp (realgud-file-loc-from-line test-filename -1))
+	    "negative number")
 
-(assert-t (stringp (realgud-file-loc-from-line test-filename 10001))
-	  "Line number too large for file")
+  (note "realgud-file-loc-from-line information")
 
-(setq test-file-loc (realgud-file-loc-from-line (__FILE__) 5 nil ";; Note"))
-(assert-t (realgud-loc? test-file-loc)
-			"Ok loc creation - no cmd marker")
+  (assert-t (stringp (realgud-file-loc-from-line test-filename 10001))
+	    "Line number too large for file")
 
-(assert-t (realgud-loc?
-	   (realgud-file-loc-from-line test-filename 30 (make-marker)))
-	  "Ok loc creation - cmd marker")
+  (setq test-file-loc (realgud-file-loc-from-line (__FILE__) 5 nil ";; Note"))
+  (assert-t (realgud-loc? test-file-loc)
+	    "Ok loc creation - no cmd marker")
 
-(assert-equal 5 (realgud-loc-line-number test-file-loc))
-(assert-equal 0 (realgud-loc-column-number test-file-loc))
-(assert-equal (__FILE__) (realgud-loc-filename test-file-loc))
+  (assert-t (realgud-loc?
+	     (realgud-file-loc-from-line test-filename 30 (make-marker)))
+	    "Ok loc creation - cmd marker")
 
-(note "realgud-file-loc-from-line remapping")
+  (assert-equal 5 (realgud-loc-line-number test-file-loc))
+  (assert-equal 0 (realgud-loc-column-number test-file-loc))
+  (assert-equal (__FILE__) (realgud-loc-filename test-file-loc))
 
-(setq remap-filename " bogus remap-filename.el")
+  (note "realgud-file-loc-from-line remapping")
 
-(assert-equal
- (format "File named `%s' not readable" remap-filename)
- (realgud-file-loc-from-line
-		  remap-filename 5 (make-marker))
-		 )
+  (setq remap-filename " bogus remap-filename.el")
+
+  (assert-equal
+   (format "File named `%s' not readable" remap-filename)
+   (realgud-file-loc-from-line
+    remap-filename 5 (make-marker))
+   ))
 
 
 (puthash remap-filename test-filename realgud-file-remap)
