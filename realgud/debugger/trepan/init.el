@@ -16,6 +16,8 @@
 backtrace, prompt, etc.  The values of a hash entry is a
 realgud-loc-pat struct")
 
+(setf (gethash "loc-callback-fn" realgud:trepan-pat-hash) 'realgud:trepan-loc-fn-callback)
+
 ;; Regular expression that describes a trepan location generally shown
 ;; before a command prompt.
 ;; For example:

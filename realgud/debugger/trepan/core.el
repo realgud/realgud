@@ -1,6 +1,7 @@
 ;;; Copyright (C) 2010, 2012, 2014 Rocky Bernstein <rocky@gnu.org>
 (eval-when-compile (require 'cl))
 
+(require 'compile) ;; for compilation-find-file
 (require 'load-relative)
 (require-relative-list '("../../common/track"
                          "../../common/core"
@@ -8,10 +9,12 @@
                        "realgud-")
 (require-relative-list '("init") "realgud:trepan-")
 
+(declare-function realgud:strip              'realgud)
 (declare-function realgud:expand-file-name-if-exists 'realgud-core)
 (declare-function realgud-parse-command-arg  'realgud-core)
 (declare-function realgud-query-cmdline      'realgud-core)
 (declare-function realgud-suggest-invocation 'realgud-core)
+(declare-function realgud-file-loc-from-line 'realgud-file)
 
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
@@ -22,6 +25,56 @@
   '(("\C-i" . comint-dynamic-complete-filename))
   "Keymap for minibuffer prompting of gud startup command."
   :inherit minibuffer-local-map)
+
+(defvar realgud:trepan-file-remap (make-hash-table :test 'equal)
+  "How to remap Python files in trepan when we otherwise can't
+  find in the filesystem. The hash key is the file string we saw,
+  and the value is associated filesystem string presumably in the
+  filesystem")
+
+;; FIXME: this code could be generalized and put in a common place.
+(defun realgud:trepan-find-file(filename)
+  "A find-file specific for python/trepan. We strip off trailing
+blanks. Failing that we will prompt for a mapping and save that
+in variable `realgud:trepan-file-remap' when that works. In the future,
+we may also consult PYTHONPATH."
+  (let* ((transformed-file)
+	 (stripped-filename (realgud:strip filename))
+	 (ignore-file-re realgud-python-ignore-file-re)
+	)
+    (cond
+     ((file-exists-p filename) filename)
+     ((file-exists-p stripped-filename) stripped-filename)
+     ((string-match ignore-file-re filename)
+	(message "tracking ignored for psuedo-file: %s" filename) nil)
+     ('t
+      ;; FIXME search RUBYLIB if not absolute file?
+      (if (gethash filename realgud-file-remap)
+	  (let ((remapped-filename))
+	    (setq remapped-filename (gethash filename realgud:trepan-file-remap))
+	    (if (file-exists-p remapped-filename)
+		remapped-filename
+	      ;; else
+	      (and (remhash filename realgud-file-remap)) nil)
+	    ;; else
+	    (let ((remapped-filename))
+	      (setq remapped-filename
+		    (buffer-file-name
+		     (compilation-find-file (point-marker) stripped-filename
+					    nil "%s.rb")))
+	      (when (and remapped-filename (file-exists-p remapped-filename))
+		(puthash filename remapped-filename realgud-file-remap)
+		remapped-filename
+		))
+	    ))
+      ))
+    ))
+
+(defun realgud:trepan-loc-fn-callback(text filename lineno source-str
+					   ignore-file-re cmd-mark)
+  (realgud-file-loc-from-line filename lineno
+			      cmd-mark source-str nil nil
+			      'realgud:trepan-find-file))
 
 ;; FIXME: I think this code and the keymaps and history
 ;; variable chould be generalized, perhaps via a macro.

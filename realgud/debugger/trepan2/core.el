@@ -28,7 +28,7 @@
   :inherit minibuffer-local-map)
 
 (defvar realgud:trepan2-file-remap (make-hash-table :test 'equal)
-  "How to remap Python files in treapn2 when we otherwise can't
+  "How to remap Python files in trepan2 when we otherwise can't
   find in the filesystem. The hash key is the file string we saw,
   and the value is associated filesystem string presumably in the
   filesystem")
@@ -74,7 +74,7 @@ we may also consult PYTHONPATH."
 (defun realgud:trepan2-loc-fn-callback(text filename lineno source-str
 					    ignore-file-re cmd-mark)
   (realgud-file-loc-from-line filename lineno
-			      cmd-mark source-str nil
+			      cmd-mark source-str nil nil
 			      'realgud:trepan2-find-file))
 
 ;; FIXME: I think this code and the keymaps and history
@@ -89,7 +89,7 @@ we may also consult PYTHONPATH."
 (defun trepan2-parse-cmd-args (orig-args)
   "Parse command line ARGS for the annotate level and name of script to debug.
 
-ARGS should contain a tokenized list of the command line to run.
+ORIG-ARGS should contain a tokenized list of the command line to run.
 
 We return the a list containing
 - the command processor (e.g. python) and it's arguments if any - a list of strings

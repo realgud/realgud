@@ -67,7 +67,7 @@ problem as best as we can determine."
 
   (unless (and filename (file-readable-p filename))
     (if find-file-fn
-      (setq filename (funcall find-file-fn filename))
+	(setq filename (funcall find-file-fn filename))
       ;; FIXME: Remove the below by refactoring to use the above find-file-fn
       ;; else
       (if (and ignore-file-re (string-match ignore-file-re filename))
