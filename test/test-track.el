@@ -2,6 +2,7 @@
 (load-file "../realgud/common/track.el")
 (load-file "../realgud/common/core.el")
 (load-file "../realgud/common/loc.el")
+(load-file "../realgud/debugger/trepan/core.el")
 (load-file "../realgud/debugger/trepan/init.el")
 
 (declare-function __FILE__                     'require-relative)
