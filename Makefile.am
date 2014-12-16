@@ -39,3 +39,13 @@ check-terse:
 #: Run "make install"
 install-short:
 	$(MAKE) install 2>&1  | $(RUBY) make-check-filter.rb
+
+if MAINTAINER_MODE
+
+CL = ChangeLog
+ChangeLog:
+	git log --pretty --numstat --summary | $(GIT2CL) > $@
+
+ACLOCAL_AMFLAGS=-I .
+
+endif
