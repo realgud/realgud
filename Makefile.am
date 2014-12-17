@@ -17,8 +17,12 @@ EXTRA_DIST+=common.mk README.md THANKS
 
 if MAINTAINER_MODE
 
+#: Remove change log: ChangeLog
+rmChangeLog:
+	rm ChangeLog || true
+
 #: Create a ChangeLog file from git logs
-ChangeLog:
+ChangeLog: rmChangeLog
 	git log --pretty --numstat --summary | $(GIT2CL) > $@
 
 ACLOCAL_AMFLAGS=-I .
@@ -40,12 +44,4 @@ check-terse:
 install-short:
 	$(MAKE) install 2>&1  | $(RUBY) make-check-filter.rb
 
-if MAINTAINER_MODE
-
-CL = ChangeLog
-ChangeLog:
-	git log --pretty --numstat --summary | $(GIT2CL) > $@
-
-ACLOCAL_AMFLAGS=-I .
-
-endif
+.PHONY: test check check-short rmChangeLog
