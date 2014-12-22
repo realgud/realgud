@@ -26,6 +26,7 @@ function FN-SYM."
   (cond
    ((equal debugger-name "gdb") "realgud:gdb")
    ((equal debugger-name "jdb") "realgud:jdb")
+   ((equal debugger-name "tortoise") "gub")
    ((or (equal debugger-name "trepan.pl")
 	(equal debugger-name "trepanpl"))
     "realgud:trepanpl")

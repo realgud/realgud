@@ -616,19 +616,25 @@ debugger with that information"
 
   (let ((regexp-hash (gethash debugger-name realgud-pat-hash))
 	(command-hash (gethash debugger-name realgud-command-hash))
+	(transform-name debugger-name)
 	)
+    (unless regexp-hash
+      (setq transform-name (realgud:debugger-name-transform debugger-name))
+      (setq regexp-hash (gethash transform-name realgud-pat-hash))
+      (setq command-hash (gethash transform-name realgud-command-hash))
+      )
     (if regexp-hash
 	(let* ((prefix (realgud:debugger-name-transform debugger-name))
 	       (specific-track-mode (intern (concat prefix "-track-mode")))
 	       )
-	  (realgud-cmdbuf-init (current-buffer) debugger-name regexp-hash
+	  (realgud-cmdbuf-init (current-buffer) transform-name regexp-hash
 			    command-hash)
 	  (if (and (not (eval specific-track-mode))
 		   (functionp specific-track-mode))
 	      (funcall specific-track-mode 't))
 	  )
       (progn
-	(message "I Don't have %s listed as a debugger." debugger-name)
+	(message "I don't have %s listed as a debugger." debugger-name)
 	nil)
       )))
 
