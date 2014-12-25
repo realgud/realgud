@@ -24,7 +24,7 @@ This should be an executable on your path, or an absolute file name."
 
 (declare-function gub-query-cmdline  'realgud-gub-core)
 (declare-function gub-parse-cmd-args 'realgud-gub-core)
-(declare-function realgud-run-process 'realgud-core)
+(declare-function realgud:run-process 'realgud-core)
 
 
 (defun realgud-gub-fn (&optional opt-command-line no-reset)
@@ -38,7 +38,7 @@ This should be an executable on your path, or an absolute file name."
 	 (go-prog-and-args (caddr parsed-args))
 	 (script-filename (car go-prog-and-args))
 	 (cmd-buf))
-    (realgud-run-process gub-program script-filename cmd-args
+    (realgud:run-process gub-program script-filename cmd-args
 			 'gub-track-mode no-reset)
     )
   )
