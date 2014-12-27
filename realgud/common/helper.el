@@ -1,6 +1,14 @@
 ;;; Copyright (C) 2010, 2014 Rocky Bernstein <rocky@gnu.org>
 ;;; Miscellaneous utility functions
 (require 'load-relative)
+
+(defun realgud:ends-with (s ending)
+  "Return non-nil if string S ends with ENDING."
+  (cond ((>= (length s) (length ending))
+	 (let ((elength (length ending)))
+	   (string= (substring s (- 0 elength)) ending)))
+	(t nil)))
+
 (defun fn-p-to-fn?-alias (fn-sym)
   "FN-SYM is assumed to be a symbol which is a function.  If it
 ends in a 'p' or '-p', that suffix is stripped; in either case, a
@@ -26,7 +34,7 @@ function FN-SYM."
   (cond
    ((equal debugger-name "gdb") "realgud:gdb")
    ((equal debugger-name "jdb") "realgud:jdb")
-   ((equal debugger-name "tortoise") "gub")
+   ((realgud:ends-with debugger-name "tortoise") "gub")
    ((or (equal debugger-name "trepan.pl")
 	(equal debugger-name "trepanpl"))
     "realgud:trepanpl")
