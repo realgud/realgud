@@ -2,13 +2,6 @@
 ;;; Miscellaneous utility functions
 (require 'load-relative)
 
-(defun realgud:ends-with (s ending)
-  "Return non-nil if string S ends with ENDING."
-  (cond ((>= (length s) (length ending))
-	 (let ((elength (length ending)))
-	   (string= (substring s (- 0 elength)) ending)))
-	(t nil)))
-
 (defun fn-p-to-fn?-alias (fn-sym)
   "FN-SYM is assumed to be a symbol which is a function.  If it
 ends in a 'p' or '-p', that suffix is stripped; in either case, a
@@ -31,14 +24,16 @@ function FN-SYM."
 (defun realgud:debugger-name-transform (debugger-name)
   "In some cases we need to prefix a short debugger name, like
 'gdb' with 'realgud:'. This does that."
-  (cond
-   ((equal debugger-name "gdb") "realgud:gdb")
-   ((equal debugger-name "jdb") "realgud:jdb")
-   ((realgud:ends-with debugger-name "tortoise") "gub")
-   ((or (equal debugger-name "trepan.pl")
-	(equal debugger-name "trepanpl"))
-    "realgud:trepanpl")
-   ('t debugger-name)))
+  (let ((debugger-name-short
+	 (file-name-sans-extension (file-name-nondirectory debugger-name))))
+    (cond
+     ((equal debugger-name-short "gdb") "realgud:gdb")
+     ((equal debugger-name-short "jdb") "realgud:jdb")
+     ((equal debugger-name-short "tortoise") "gub")
+     ((or (equal debugger-name-short "trepan.pl")
+	  (equal debugger-name-short "trepanpl"))
+      "realgud:trepanpl")
+     ('t debugger-name-short))))
 
 (defun buffer-killed? (buffer)
   "Return t if BUFFER is killed."

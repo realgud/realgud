@@ -26,7 +26,7 @@ This should be an executable on your path, or an absolute file name."
 (declare-function kshdb-track-mode (bool))
 (declare-function kshdb-query-cmdline  'realgud:kshdb-core)
 (declare-function kshdb-parse-cmd-args 'realgud:kshdb-core)
-(declare-function realgud-run-process 'realgud-core)
+(declare-function realgud:run-process 'realgud-core)
 
 ;; -------------------------------------------------------------------
 ;; The end.
@@ -34,7 +34,7 @@ This should be an executable on your path, or an absolute file name."
 
 ;;;###autoload
 (defun realgud:kshdb (&optional opt-command-line no-reset)
-  "Invoke the kshdb Z-shell debugger and start the Emacs user interface.
+  "Invoke the Korn shell debugger, kshdb, and start the Emacs user interface.
 
 String COMMAND-LINE specifies how to run kshdb.
 
@@ -51,7 +51,7 @@ marginal icons is reset."
 	 (script-args (cdr cmd-args))
 	 (script-name (car script-args))
 	 (cmd-buf))
-    (realgud-run-process "kshdb" script-name cmd-args
+    (realgud:run-process "kshdb" script-name cmd-args
 			 'realgud:kshdb-minibuffer-history
 			 'kshdb-track-mode no-reset)
     ))
