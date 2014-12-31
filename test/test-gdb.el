@@ -4,12 +4,27 @@
 (load-file "../realgud/debugger/gdb/core.el")
 (load-file "./regexp-helper.el")
 
-(eval-when-compile (defvar realgud:gdb-minibuffer-history))
+(eval-when-compile
+  (defvar realgud:gdb-minibuffer-history)
+  (defvar test:realgud-gdb-executable-save)
+  (defvar test:realgud-minibuffer-history-save)
+)
 
 (declare-function realgud:gdb-suggest-invocation 'realgud:bashdb)
 (declare-function __FILE__              'require-relative)
 
 (test-simple-start)
+
+;; Save value realgud:run-process and change it to something we want
+(setq test:realgud-gdb-executable-save (symbol-function 'realgud:gdb-executable))
+(setq test:realgud-minibuffer-history-save realgud:gdb-minibuffer-history)
+
+(defun realgud:gdb-executable (filename)
+  "Mock function for testing"
+  (cond ((equal filename "bar.sh") 7)
+	((equal filename "foo") 8)
+	((equal filename "baz") 8)
+	(t 3)))
 
 (setq realgud:gdb-minibuffer-history nil)
 
@@ -42,5 +57,8 @@
 
 (end-tests)
 
+;; Restore the old values.
 ;; You might have to run the below if you run this interactively.
+(fset 'realgud:gdb-executable test:realgud-gdb-executable-save)
+(setq realgud:gdb-minibuffer-history test:realgud-minibuffer-history-save)
 (setq default-directory (file-name-directory (__FILE__)))

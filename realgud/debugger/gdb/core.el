@@ -123,6 +123,16 @@ Note that path elements have been expanded via `expand-file-name'.
 
 (defvar realgud:gdb-command-name)
 
+(defun realgud:gdb-executable (file-name)
+"Return a priority for wehther file-name is likely we can run gdb on"
+  (let ((output (shell-command-to-string (format "file %s" file-name))))
+    (cond
+     ((string-match "ASCII" output) 2)
+     ((string-match "ELF" output) 7)
+     ((string-match "executable" output) 6)
+     ('t 5))))
+
+
 (defun realgud:gdb-suggest-invocation (&optional debugger-name)
   "Suggest a gdb command invocation. Here is the priority we use:
 * an executable file with the name of the current buffer stripped of its extension
@@ -134,36 +144,36 @@ When all else fails return the empty string."
 	 (priority 2)
 	 (best-filename nil)
 	 (try-filename (file-name-base (or (buffer-file-name) "gdb"))))
-    (if (member try-filename (directory-files default-directory))
-    	(concat "gdb " try-filename)
+    (when (member try-filename (directory-files default-directory))
+	(setq best-filename try-filename)
+	(setq priority (+ (realgud:gdb-executable try-filename) 2)))
+
+    ;; FIXME: I think a better test would be to look for
+    ;; c-mode in the buffer that have a corresponding executable
+    (while (and (setq try-filename (car-safe file-list)) (< priority 8))
+      (setq file-list (cdr file-list))
+      (if (and (file-executable-p try-filename)
+	       (not (file-directory-p try-filename)))
+	  (if (equal try-filename (file-name-sans-extension try-filename))
+	      (progn
+		(setq best-filename try-filename)
+		(setq priority (1+ (realgud:gdb-executable best-filename))))
+	    ;; else
+	    (progn
+	      (setq best-filename try-filename)
+	      (setq priority (realgud:gdb-executable best-filename))
+	      ))
+	))
+    (if (< priority 8)
+	(cond
+	 (realgud:gdb-minibuffer-history
+	  (car realgud:gdb-minibuffer-history))
+	 ((equal priority 7)
+	  (concat "gdb " best-filename))
+	 (t "gdb "))
       ;; else
-      (progn
-	;; FIXME: I think a better test would be to look for
-	;; c-mode in the buffer that have a corresponding executable
-	(while (and (setq try-filename (car-safe file-list)) (< priority 8))
-	  (setq file-list (cdr file-list))
-	  (if (and (file-executable-p try-filename)
-		   (not (file-directory-p try-filename)))
-	      (if (equal try-filename (file-name-sans-extension try-filename))
-		  (progn
-		    (setq best-filename try-filename)
-		    (setq priority 8))
-		;; else
-		(progn
-		  (setq best-filename try-filename)
-		  (setq priority 7)
-		)))
-	  ))
-      (if (< priority 8)
-	  (cond
-	   (realgud:gdb-minibuffer-history
-	    (car realgud:gdb-minibuffer-history))
-	   ((equal priority 7)
-	    (concat "gdb " best-filename))
-	   (t "gdb "))
-	;; else
-	(concat "gdb " best-filename))
-    )))
+      (concat "gdb " best-filename))
+    ))
 
 (defun realgud:gdb-reset ()
   "Gdb cleanup - remove debugger's internal buffers (frame,
