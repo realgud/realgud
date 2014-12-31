@@ -124,15 +124,15 @@ Note that path elements have been expanded via `expand-file-name'.
 (defvar realgud:gdb-command-name)
 
 (defun realgud:gdb-suggest-invocation (&optional debugger-name)
-  "Suggest a gdb command invocation. If the current buffer is a C
-source file and there is an executable with the extension
-stripped, then use the executable name.  Next try to find an
-executable in the default-directory that doesn't have an
-extension Next, try to use the first value of MINIBUFFER-HISTORY
-if that exists. When all else fails return the empty string."
-  (let* ((lang-ext-regexp "\\.\\([ch]\\)\\(pp\\)?")
-	 (file-list (directory-files default-directory))
+  "Suggest a gdb command invocation. Here is the priority we use:
+* an executable file with the name of the current buffer stripped of its extension
+* any executable file in the current directory with no extension
+* the last invocation in gdb:minibuffer-history
+* any executable in the current directory
+When all else fails return the empty string."
+  (let* ((file-list (directory-files default-directory))
 	 (priority 2)
+	 (best-filename nil)
 	 (try-filename (file-name-base (or (buffer-file-name) "gdb"))))
     (if (member try-filename (directory-files default-directory))
     	(concat "gdb " try-filename)
@@ -145,18 +145,25 @@ if that exists. When all else fails return the empty string."
 	  (if (and (file-executable-p try-filename)
 		   (not (file-directory-p try-filename)))
 	      (if (equal try-filename (file-name-sans-extension try-filename))
-		  (setq priority 8)
-		(setq priority 7))))
-	)
-      (if (< priority 6)
+		  (progn
+		    (setq best-filename try-filename)
+		    (setq priority 8))
+		;; else
+		(progn
+		  (setq best-filename try-filename)
+		  (setq priority 7)
+		)))
+	  ))
+      (if (< priority 8)
 	  (cond
 	   (realgud:gdb-minibuffer-history
 	    (car realgud:gdb-minibuffer-history))
+	   ((equal priority 7)
+	    (concat "gdb " best-filename))
 	   (t "gdb "))
-	(concat "gdb " try-filename)
-	)
+	;; else
+	(concat "gdb " best-filename))
     )))
-
 
 (defun realgud:gdb-reset ()
   "Gdb cleanup - remove debugger's internal buffers (frame,
