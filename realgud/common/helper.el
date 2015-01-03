@@ -30,7 +30,7 @@ function FN-SYM."
      ((equal debugger-name-short "gdb") "realgud:gdb")
      ((equal debugger-name-short "jdb") "realgud:jdb")
      ((equal debugger-name-short "tortoise") "gub")
-     ((or (equal debugger "trepan.pl")
+     ((or (equal debugger-name "trepan.pl")
 	  (equal debugger-name-short "trepanpl"))
       "realgud:trepanpl")
      ('t debugger-name-short))))
