@@ -34,7 +34,7 @@ realgud-loc-pat struct")
 ;;	visitInstr: *fr.get(instr.Addr).(*Value) = copyVal(fr.get(instr.Val))
 ;; sa-interp/interp/interp.go:604 (0x50b5b1)
 ;;	runFrame: switch visitInstr(fr, instr) {
-(setf (gethash "lang-backtrace" realgud:trepan-pat-hash)
+(setf (gethash "lang-backtrace" realgud:gub-pat-hash)
   (make-realgud-loc-pat
    :regexp
    "\\(?:^\\|\n\\)\\(\\(?:[a-zA-Z]:\\)?[a-zA-Z0-9_/.\\\\][-a-zA-Z0-9_/.\\\\]*\\.go\\):\\([0-9]+\\)"
