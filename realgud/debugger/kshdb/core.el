@@ -43,33 +43,34 @@ We return the a list containing
 
 For example for the following input
   (map 'list 'symbol-name
-   '(zsh -W -C /tmp kshdb --emacs ./gcd.rb a b))
+   '(ksh -W -C /tmp kshdb --emacs ./gcd.rb a b))
 
 we might return:
-   ((zsh -W -C) (kshdb --emacs) (./gcd.rb a b) 't)
+   ((ksh -W -C) (kshdb --emacs) (./gcd.rb a b) 't)
 
 NOTE: the above should have each item listed in quotes.
 "
 
   ;; Parse the following kind of pattern:
-  ;;  [zsh zsh-options] kshdb kshdb-options script-name script-options
+  ;;  [ksh ksh-options] kshdb kshdb-options script-name script-options
   (let (
 	(args orig-args)
 	(pair)          ;; temp return from
-	;; zsh doesn't have any optional two-arg options
-	(zsh-opt-two-args '())
-	(zsh-two-args '("o" "c"))
+	;; ksh doesn't have any optional two-arg options
+	(ksh-opt-two-args '())
+	(ksh-two-args '("o" "c"))
 
 	;; One dash is added automatically to the below, so
 	;; h is really -h and -host is really --host.
 	(kshdb-two-args '("A" "-annotate" "l" "-library"
+			  "-highlight" "-no-highlight"
 			   "c" "-command" "-t" "-tty"
 			   "x" "-eval-command"))
 	(kshdb-opt-two-args '())
 	(interp-regexp
 	 (if (member system-type (list 'windows-nt 'cygwin 'msdos))
-	     "^zsh*\\(.exe\\)?$"
-	   "^zsh*$"))
+	     "^ksh*\\(.exe\\)?$"
+	   "^ksh*$"))
 
 	;; Things returned
 	(script-name nil)
@@ -93,7 +94,7 @@ NOTE: the above should have each item listed in quotes.
 	(while (and args
 		    (string-match "^-" (car args)))
 	  (setq pair (realgud-parse-command-arg
-		      args zsh-two-args zsh-opt-two-args))
+		      args ksh-two-args ksh-opt-two-args))
 	  (nconc interpreter-args (car pair))
 	  (setq args (cadr pair))))
 

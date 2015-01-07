@@ -1,4 +1,5 @@
 (require 'test-simple)
+(require 'load-relative)
 (load-file "../realgud/debugger/bashdb/bashdb.el")
 (load-file "../realgud/common/core.el")
 

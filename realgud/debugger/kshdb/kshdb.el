@@ -34,7 +34,7 @@ This should be an executable on your path, or an absolute file name."
 
 ;;;###autoload
 (defun realgud:kshdb (&optional opt-command-line no-reset)
-  "Invoke the kshdb Z-shell debugger and start the Emacs user interface.
+  "Invoke the Korn shell debugger, kshdb, and start the Emacs user interface.
 
 String COMMAND-LINE specifies how to run kshdb.
 

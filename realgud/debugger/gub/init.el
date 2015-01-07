@@ -28,6 +28,20 @@ realgud-loc-pat struct")
        :file-group 1
        :line-group 2))
 
+;; Regular expression that describes a Go backtrace line.
+;; For example:
+;; ssa-interp/interp/interp.go:202 (0x506c84)
+;;	visitInstr: *fr.get(instr.Addr).(*Value) = copyVal(fr.get(instr.Val))
+;; sa-interp/interp/interp.go:604 (0x50b5b1)
+;;	runFrame: switch visitInstr(fr, instr) {
+(setf (gethash "lang-backtrace" realgud:gub-pat-hash)
+  (make-realgud-loc-pat
+   :regexp
+   "\\(?:^\\|\n\\)\\(\\(?:[a-zA-Z]:\\)?[a-zA-Z0-9_/.\\\\][-a-zA-Z0-9_/.\\\\]*\\.go\\):\\([0-9]+\\)"
+   :file-group 1
+   :line-group 2))
+
+
 ;; Regular expression that describes a gub location generally shown
 ;; before a command prompt.
 ;; For example:
