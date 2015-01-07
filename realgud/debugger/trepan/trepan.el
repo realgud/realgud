@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010-2011, 2013-2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2011, 2013-2015 Rocky Bernstein <rocky@gnu.org>
 ;;  `trepan' Main interface to trepan via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
@@ -49,7 +49,6 @@ fringe and marginal icons.
   (interactive)
   (realgud:run-debugger "trepan" 'realgud:trepan-query-cmdline
 			'realgud:trepan-parse-cmd-args
-			'trepan-track-mode-hook
 			'realgud:trepan-minibuffer-history
 			opt-cmd-line no-reset)
   )

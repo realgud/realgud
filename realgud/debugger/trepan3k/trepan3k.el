@@ -56,7 +56,6 @@ fringe and marginal icons.
   (realgud:run-debugger "trepan3k"
 			'trepan3k-query-cmdline
 			'trepan3k-parse-cmd-args
-			'trepan3k-track-mode-hook
 			'realgud:trepan3k-minibuffer-history
 			opt-cmd-line no-reset)
   )

@@ -1,8 +1,10 @@
 (require 'test-simple)
+(require 'load-relative)
 (load-file "./bt-helper.el")
 (load-file "../realgud/debugger/rdebug/init.el")
 
 (declare-function setup-bt 'realgud-bt-helper)
+(declare-function __FILE__ 'require-relative)
 
 (test-simple-start)
 

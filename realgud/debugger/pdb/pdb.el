@@ -54,7 +54,6 @@ fringe and marginal icons.
   (interactive)
   (realgud:run-debugger "pdb" 'pdb-query-cmdline
 			'pdb-parse-cmd-args
-			'pdb-track-mode-hook
 			'realgud:pdb-minibuffer-history
 			opt-cmd-line no-reset)
   )

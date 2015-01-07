@@ -1,4 +1,4 @@
-;;; Copyright (C) 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2014-2015 Rocky Bernstein <rocky@gnu.org>
 ;;  `nodejs' Main interface to nodejs debugger via Emacs
 (require 'list-utils)
 (require 'load-relative)
@@ -59,7 +59,6 @@ fringe and marginal icons.
   (let ((cmd-buf
 	 (realgud:run-debugger "nodejs"
 			       'nodejs-query-cmdline 'nodejs-parse-cmd-args
-			       'nodejs-track-mode-hook
 			       'realgud:nodejs-minibuffer-history
 			       opt-cmd-line no-reset)))
     (if cmd-buf

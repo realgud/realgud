@@ -1,4 +1,4 @@
-;;; Copyright (C) 2011, 2013-2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011, 2013-2015 Rocky Bernstein <rocky@gnu.org>
 ;;  `remake' Main interface to remake via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
@@ -36,7 +36,6 @@ This should be an executable on your path, or an absolute file name."
   (realgud:run-debugger "remake"
 			'remake-query-cmdline
 			'remake-parse-cmd-args
-			'remake-track-mode-hook
 			'realgud:remake-minibuffer-history
 			opt-cmd-line no-reset)
   )

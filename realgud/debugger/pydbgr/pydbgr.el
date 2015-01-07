@@ -55,7 +55,6 @@ fringe and marginal icons.
   (realgud:run-debugger "pydbgr"
 			'pydbgr-query-cmdline
 			'pydbgr-parse-cmd-args
-			'pydbgr-track-mode-hook
 			'realgud:pydbgr-minibuffer-history
 			opt-cmd-line no-reset)
   )

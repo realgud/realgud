@@ -23,8 +23,8 @@
 			      text)   "extract traceback line number")
   )
 
-(lexical-let ((text
-	       "/tmp/gems/rake-0.8.7/lib/rake.rb:597:in `invoke_with_call_chain'"))
+(let ((text
+       "/tmp/gems/rake-0.8.7/lib/rake.rb:597:in `invoke_with_call_chain'"))
 
   (assert-t (numberp (loc-match text bt)) "traceback location with in")
   (assert-equal "/tmp/gems/rake-0.8.7/lib/rake.rb"

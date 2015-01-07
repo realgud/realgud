@@ -12,15 +12,13 @@
 ;; Save value realgud:run-process and change it to something we want
 (setq test:run-process-save (symbol-function 'realgud:run-process))
 (defun realgud:run-process(debugger-name script-filename cmd-args
-				      track-mode-func
-				      &optional no-reset)
+				      minibuffer-histroy &optional no-reset)
   "Fake realgud:run-process used in testing"
   (note
    (format "%s %s %s" debugger-name script-filename cmd-args))
   (assert-equal "pdb" debugger-name "debugger name gets passed")
   (assert-equal (expand-file-name "./gcd.py") script-filename "file name check")
   (assert-equal '("3" "5") (cddr cmd-args) "command args listified")
-  (assert-equal 'pdb-track-mode-hook track-mode-func)
   )
 
 (note "pdb-parse-cmd-args")

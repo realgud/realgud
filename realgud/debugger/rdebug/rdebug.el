@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010-2011, 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2011, 2014-2015 Rocky Bernstein <rocky@gnu.org>
 ;;  `rdebug' Main interface to rdebug via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper"
@@ -106,7 +106,6 @@ fringe and marginal icons.
   (interactive)
   (realgud:run-debugger "rdebug" 'rdebug-query-cmdline
 			'rdebug-parse-cmd-args
-			'rdebug-track-mode-hook
 			'realgud:rdebug-minibuffer-history
 			opt-cmd-line no-reset)
   )

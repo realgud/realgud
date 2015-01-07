@@ -1,4 +1,5 @@
 (require 'test-simple)
+(require 'load-relative)
 (load-file "./regexp-helper.el")
 (load-file "../realgud/common/regexp.el")
 (load-file "../realgud/debugger/gub/init.el")
@@ -12,6 +13,7 @@
 (declare-function realgud-cmdbuf-info-line-group 'realgud-regexp)
 (declare-function realgud-cmdbuf-info            'realgud-regexp)
 (declare-function make-realgud-cmdbuf-info       'realgud-regexp)
+(declare-function __FILE__                       'require-relative)
 
 (test-simple-start)
 

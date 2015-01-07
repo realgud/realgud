@@ -1,7 +1,10 @@
 (require 'test-simple)
+(require 'load-relative)
 (load-file "../realgud/common/buffer/command.el")
 (load-file "../realgud/debugger/gdb/init.el")
 (load-file "./regexp-helper.el")
+
+(declare-function __FILE__              'require-relative)
 
 (test-simple-start)
 

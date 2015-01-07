@@ -64,7 +64,6 @@ fringe and marginal icons.
   (interactive)
   (realgud:run-debugger "zshdb" 'zshdb-query-cmdline
 			'zshdb-parse-cmd-args
-			'zshdb-track-mode-hook
 			'realgud:zshdb-minibuffer-history
 			opt-cmd-line no-reset)
   )

@@ -55,7 +55,6 @@ fringe and marginal icons.
   (realgud:run-debugger "perldb"
 			'realgud:perldb-query-cmdline
 			'realgud:perldb-parse-cmd-args
-			'perldb-track-mode-hook
 			'perldb-minibuffer-history
 			opt-cmd-line no-reset))
 

@@ -137,7 +137,7 @@ details of the error. The command buffer or nil is returned."
   )
 
 (defun realgud:run-debugger (debugger-name query-cmdline-fn parse-cmd-args-fn
-					   track-mode-hook minibuffer-history
+					   minibuffer-history
 					   &optional opt-command-line
 					   no-reset)
   "Invoke the a debugger and start the Emacs user interface.

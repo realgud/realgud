@@ -53,7 +53,6 @@ fringe and marginal icons.
 "
   (interactive)
   (realgud:run-debugger "pydb" 'pydb-query-cmdline 'pydb-parse-cmd-args
-			'pydb-track-mode-hook
 			'realgud:pydb-minibuffer-history
 			opt-cmd-line no-reset)
   )
