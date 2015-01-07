@@ -1,4 +1,4 @@
-;;; Copyright (C) 2011-2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011-2015 Rocky Bernstein <rocky@gnu.org>
 (declare-function realgud:terminate &optional cmdbuf)
 
 (defconst realgud-track-char-range 10000
@@ -625,6 +625,7 @@ debugger with that information"
       )
     (if regexp-hash
 	(let* ((prefix (realgud:debugger-name-transform debugger-name))
+	       (mode-name (concat " " (capitalize prefix) "-Track"))
 	       (specific-track-mode (intern (concat prefix "-track-mode")))
 	       )
 	  (realgud-cmdbuf-init (current-buffer) transform-name regexp-hash

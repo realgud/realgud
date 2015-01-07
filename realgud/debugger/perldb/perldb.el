@@ -1,4 +1,4 @@
-;;; Copyright (C) 2011, 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011, 2014-2015 Rocky Bernstein <rocky@gnu.org>
 ;;  `perldb' Main interface to perl debugger via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
@@ -31,7 +31,6 @@
 (declare-function perldb-track-mode (bool))
 (declare-function realgud:perldb-query-cmdline  'realgud:perldb-core)
 (declare-function realgud:perldb-parse-cmd-args 'realgud:perldb-core)
-(declare-function realgud-run-process 'realgud-core)
 
 ;;;###autoload
 (defun realgud:perldb (&optional opt-cmd-line no-reset)

@@ -1,4 +1,4 @@
-;;; Copyright (C) 2011, 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011, 2014-2015 Rocky Bernstein <rocky@gnu.org>
 ;;  `kshdb' Main interface to kshdb via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
@@ -26,7 +26,7 @@ This should be an executable on your path, or an absolute file name."
 (declare-function kshdb-track-mode (bool))
 (declare-function kshdb-query-cmdline  'realgud:kshdb-core)
 (declare-function kshdb-parse-cmd-args 'realgud:kshdb-core)
-(declare-function realgud-run-process 'realgud-core)
+(declare-function realgud:run-process 'realgud-run)
 
 ;; -------------------------------------------------------------------
 ;; The end.
@@ -51,9 +51,9 @@ marginal icons is reset."
 	 (script-args (cdr cmd-args))
 	 (script-name (car script-args))
 	 (cmd-buf))
-    (realgud-run-process "kshdb" script-name cmd-args
+    (realgud:run-process "kshdb" script-name cmd-args
 			 'realgud:kshdb-minibuffer-history
-			 'kshdb-track-mode no-reset)
+			 no-reset)
     ))
 
 (defalias 'kshdb 'realgud:kshdb)

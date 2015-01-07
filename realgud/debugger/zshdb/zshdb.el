@@ -1,4 +1,4 @@
-;;; Copyright (C) 2011, 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011, 2014-2015 Rocky Bernstein <rocky@gnu.org>
 ;;  `zshdb' Main interface to zshdb via Emacs
 (require 'list-utils)
 (require 'load-relative)
@@ -10,7 +10,6 @@
 (declare-function zshdb-track-mode (bool))
 (declare-function zshdb-query-cmdline  'realgud:zshdb-core)
 (declare-function zshdb-parse-cmd-args 'realgud:zshdb-core)
-(declare-function realgud-run-process 'realgud-core)
 
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 24.

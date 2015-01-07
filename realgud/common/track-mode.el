@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010-2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2015 Rocky Bernstein <rocky@gnu.org>
 ;;; tracks shell output
 
 (eval-when-compile (require 'cl))
@@ -14,7 +14,6 @@
 
 ;; FIXME figure out if I can put this in something like a header file.
 (declare-function realgud-fringe-erase-history-arrows 'realgud-buffer-command)
-(declare-function realgud-populate-debugger-menu      'realgud-menu)
 (declare-function realgud:track-set-debugger          'realgud-track)
 (declare-function realgud-cmdbuf-info-divert-output?=
 		  'realgud-buffer-command)
@@ -24,7 +23,7 @@
 		  'realgud-buffer-command)
 
 (defvar realgud-track-mode-map
-  (let ((map  (realgud-populate-debugger-menu (make-sparse-keymap))))
+  (let ((map  (make-sparse-keymap)))
     (define-key map [M-right]	'realgud-track-hist-newest)
     (define-key map [M-down]	'realgud-track-hist-newer)
     (define-key map [M-up]	'realgud-track-hist-older)
@@ -35,8 +34,16 @@
     map)
   "Keymap used in `realgud-track-minor-mode'.")
 
-(set-keymap-parent realgud-track-mode-map shell-mode-map)
-
+(setq realgud-track-mode-map
+  (let ((map  (copy-keymap realgud:debugger-mode-map)))
+    (define-key map [M-right]	'realgud-track-hist-newest)
+    (define-key map [M-down]	'realgud-track-hist-newer)
+    (define-key map [M-up]	'realgud-track-hist-older)
+    (define-key map [M-print]	'realgud-track-hist-older)
+    (define-key map [M-S-down]	'realgud-track-hist-newest)
+    (define-key map [M-S-up]	'realgud-track-hist-oldest)
+    (define-key map "\C-cS" 'realgud-window-src-undisturb-cmd)
+    map))
 
 (define-minor-mode realgud-track-mode
   "Minor mode for tracking debugging inside a process shell."
@@ -131,7 +138,7 @@ of this mode."
 ;;   (defvar trepan-track-mode nil
 ;;     "Non-nil if using trepan track-mode ... "
 ;;   (defvar trepan-track-mode-map (make-sparse-keymap))
-;;   (set-keymap-parent trepan-track-mode-map realgud-track-mode-map)
+;;   (set-keymap-parent trepan-track-mode-map shell-mode-map)
 ;;   (defvar trepan-short-key-mode-map (make-sparse-keymap))
 ;;   (set-keymap-parent trepan-short-key-mode-map realgud-short-key-mode-map)
 (defmacro realgud-track-mode-vars (name)
@@ -141,9 +148,8 @@ of this mode."
 Use the command `%s-track-mode' to toggle or set this variable." name name))
      (defvar ,(intern (concat name "-track-mode-map")) (make-sparse-keymap)
        ,(format "Keymap used in `%s-track-mode'." name))
-     (set-keymap-parent ,(intern (concat name "-track-mode-map")) realgud-track-mode-map)
+     (set-keymap-parent ,(intern (concat name "-track-mode-map")) shell-mode-map)
      (defvar ,(intern (concat name "-short-key-mode-map")) (make-sparse-keymap))
-     (set-keymap-parent ,(intern (concat name "-short-key-mode-map")) realgud-short-key-mode-map)
     ))
 
 ;; FIXME: The below could be a macro? I have a hard time getting

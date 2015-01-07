@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010-2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2015 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
 (require-relative-list '("custom" "helper" "key" "menu") "realgud-")
 (require-relative-list '("buffer/command" "buffer/helper" "buffer/source")
@@ -9,17 +9,15 @@
 (declare-function realgud-get-cmdbuf                  'realgud-buffer-helper)
 (declare-function realgud-populate-common-keys          'realgud-key)
 (declare-function realgud-populate-src-buffer-map-plain 'realgud-key)
-(declare-function realgud-populate-debugger-menu        'realgud-menu)
 (declare-function realgud-srcbuf-info-short-key?=,      'realgud-source)
 (declare-function realgud-srcbuf-info-was-read-only?=   'realgud-source)
 (declare-function realgud-srcbuf?                     'realgud-buffer-source)
 
-(defvar realgud-short-key-mode-map
-  (let ((map (make-sparse-keymap)))
+(defvar realgud:shortkey-mode-map
+  (let ((map (copy-keymap realgud:debugger-mode-map)))
     (suppress-keymap map)
     (realgud-populate-common-keys map)
     (realgud-populate-src-buffer-map-plain map)
-    (realgud-populate-debugger-menu map)
     (define-key map "1"        'realgud-goto-arrow1)
     (define-key map "2"        'realgud-goto-arrow2)
     (define-key map "3"        'realgud-goto-arrow3)
@@ -50,12 +48,12 @@
   "Minor mode with short keys for source buffers for the `dbgr' debugger.
 The buffer is read-only when the minor mode is active.
 
-\\{realgud-short-key-mode-map}"
+\\{realgud:shortkey-mode-map}"
   :group 'realgud
   :global nil
   :init-value nil
   :lighter " ShortKeys"
-  :keymap realgud-short-key-mode-map
+  :keymap realgud:shortkey-mode-map
   ;; executed on activation/deactivation:
   (realgud-short-key-mode-setup realgud-short-key-mode))
 
@@ -143,8 +141,7 @@ This includes the keys bound to `realgud-key-prefix' (typically C-x
 C-a)."
   (realgud-populate-src-buffer-map-plain map)
   (realgud-populate-common-keys map)
-  (realgud-populate-debugger-menu map)
-  (let ((prefix-map (make-sparse-keymap)))
+  (let ((prefix-map (copy-keymap realgud:debugger-mode-map)))
     (realgud-populate-src-buffer-map-plain prefix-map)
     (define-key map realgud-key-prefix prefix-map)))
 

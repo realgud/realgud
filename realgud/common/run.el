@@ -1,6 +1,7 @@
-;;; Copyright (C) 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2014-2015 Rocky Bernstein <rocky@gnu.org>
 ; (require 'term)
 
+(require 'shell)
 (require 'list-utils)
 (require 'load-relative)
 (require-relative-list '("core" "track") "realgud-")
@@ -90,14 +91,13 @@ Note that path elements have been expanded via `expand-file-name'.
       (list interpreter-args debugger-args script-args annotate-p))))
 
 (defun realgud:run-process(debugger-name script-filename cmd-args
-					 track-mode-hook minibuffer-history
+					 minibuffer-history
 					 &optional no-reset)
   "Runs `realgud-exec-shell' with DEBUGGER-NAME SCRIPT-FILENAME
-and CMD-ARGS If this succeeds, we call TRACK-MODE-HOOK and save
-CMD-ARGS in command-buffer for use if we want to restart.  If
-we don't succeed in running the program, we will switch to the
-command buffer which shows details of the error. The command
-buffer or nil is returned."
+and CMD-ARGS If this succeeds, we save CMD-ARGS in command-buffer
+for use if we want to restart.  If we don't succeed in running
+the program, we will switch to the command buffer which shows
+details of the error. The command buffer or nil is returned."
 
   (let ((cmd-buf))
     (condition-case nil
@@ -163,7 +163,7 @@ Otherwise nil is returned.
 	  (remove-if 'nil (list-utils-flatten parsed-args)))
 	 )
     (realgud:run-process debugger-name script-name parsed-cmd-args
-			 track-mode-hook minibuffer-history no-reset)
+			 minibuffer-history no-reset)
     )
   )
 

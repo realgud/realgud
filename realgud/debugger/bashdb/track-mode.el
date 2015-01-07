@@ -1,4 +1,4 @@
-;;; Copyright (C) 2012-2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2012-2015 Rocky Bernstein <rocky@gnu.org>
 ;;; Bash Debugger tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))
@@ -20,7 +20,6 @@
 		  'realgud-lang-posix-shell)
 
 (realgud-track-mode-vars "bashdb")
-(realgud-posix-shell-populate-command-keys bashdb-track-mode-map)
 
 (declare-function realgud-track-mode(bool))
 

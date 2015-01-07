@@ -1,4 +1,4 @@
-;;; Copyright (C) 2011, 2013-2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011, 2013-2015 Rocky Bernstein <rocky@gnu.org>
 ;;  `bashdb' Main interface to bashdb via Emacs
 (require 'list-utils)
 (require 'load-relative)
@@ -11,7 +11,7 @@
 (defgroup realgud:bashdb nil
   "The realgud interface to bashdb"
   :group 'realgud
-  :version "24.1")
+  :version "24.3")
 
 ;; -------------------------------------------------------------------
 ;; User-definable variables

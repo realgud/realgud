@@ -13,18 +13,16 @@
 ;; Save value realgud:run-process and change it to something we want
 (setq test:run-process-save (symbol-function 'realgud:run-process))
 (defun realgud:run-process(debugger-name script-filename cmd-args
-				      track-mode-func minibuf-history
+				      minibuf-history
 				      &optional no-reset)
   "Fake realgud:run-process used in testing"
   (note
-   (format "%s %s %s %S" debugger-name script-filename cmd-args
-	   track-mode-func))
+   (format "%s %s %s" debugger-name script-filename cmd-args))
   (assert-equal "trepan.pl" debugger-name "debugger name gets passed")
   (let ((expanded-name (expand-file-name "./gcd.pl")))
     (assert-equal  expanded-name script-filename "file name check")
     (assert-equal (list "-I" (expand-file-name ".") expanded-name "3" "5")
 		  (cdr cmd-args) "command args listified")
-    (assert-equal 'realgud:trepanpl-track-mode-hook track-mode-func)
     )
   nil ;; Make sure trepanpl doesn't try to do anything with cmdbuf
   )
