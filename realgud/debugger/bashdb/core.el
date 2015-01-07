@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010-2011, 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2011, 2014-2015 Rocky Bernstein <rocky@gnu.org>
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
@@ -154,7 +154,7 @@ Note that path elements have been expanded via `realgud:expand-file-name-if-exis
   "Suggest a bashdb command invocation via `realgud-suggest-invocaton'"
   (realgud-suggest-invocation realgud:bashdb-command-name
 			      realgud:bashdb-minibuffer-history
-			      "Shell-script" "\\.sh$"))
+			      "sh" "\\.\\(?:ba\\)?sh$"))
 
 (defun bashdb-reset ()
   "Bashdb cleanup - remove debugger's internal buffers (frame,

@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2012, 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2012, 2014-2015 Rocky Bernstein <rocky@gnu.org>
 ;;; Programming language specific stuff.
 (require 'load-relative)
 
@@ -19,7 +19,7 @@ starts LANG-STR."
 	  ))
   )
 
-(defun realgud-suggest-file-from-buffer (lang-str &optional opt-buff-list)
+(defun realgud:suggest-file-from-buffer (lang-str &optional opt-buff-list)
     "Suggest the first in the buffer list for which test-func is
     't. Typically this is used. To search for a buffer in one of
     the programming modes like Ruby or Python."
@@ -89,7 +89,7 @@ Within a given priority, we use the first one we find."
 	    ))
 	)
       (if (< priority 6)
-	  (if (setq file (realgud-suggest-file-from-buffer lang-str))
+	  (if (setq file (realgud:suggest-file-from-buffer lang-str))
 	      (setq result file)
 	    (if last-resort (setq result last-resort))))
       result)

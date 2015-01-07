@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010-2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2015 Rocky Bernstein <rocky@gnu.org>
 ; (require 'term)
 (if (< emacs-major-version 24)
     (error
@@ -55,6 +55,7 @@ variables. Next, try to use the first value of MINIBUFFER-HISTORY
 if that exists.  Finally we try to find a suitable program file
 using LANG-STR and LANG-EXT-REGEXP."
   (let* ((buf (current-buffer))
+	 (filename)
 	 (cmd-str-cmdbuf (realgud-cmdbuf-command-string buf))
 	 )
     (cond
@@ -62,6 +63,8 @@ using LANG-STR and LANG-EXT-REGEXP."
       cmd-str-cmdbuf)
      ((and minibuffer-history (listp minibuffer-history))
       (car minibuffer-history))
+     ((setq filename (realgud:suggest-file-from-buffer lang-str))
+      (concat debugger-name " " filename))
      (t (concat debugger-name " "
 		(realgud-suggest-lang-file lang-str lang-ext-regexp last-resort)))
      )))

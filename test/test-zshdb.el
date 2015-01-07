@@ -7,6 +7,7 @@
 (eval-when-compile (defvar test:run-process-save))
 
 (declare-function zshdb-parse-cmd-args 'realgud:zshdb)
+(declare-function zshdb-suggest-invocation 'realgud:zshdb)
 (declare-function realgud:zshdb        'realgud:zshdb)
 (declare-function __FILE__             'require-relative)
 
@@ -37,6 +38,10 @@
 			  "foo") nil)
 	      (zshdb-parse-cmd-args
 	       '("zshdb" "program.sh" "foo")))
+
+(with-current-buffer (find-file "gcd.sh")
+  (shell-script-mode)
+  (assert-matches "zshdb .+gcd.sh$" (zshdb-suggest-invocation "zshdb")))
 
 (realgud:zshdb "zshdb ./gcd.sh 3 5")
 ;; Restore the old value of realgud:run-process

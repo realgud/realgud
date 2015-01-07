@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2014-2015 Rocky Bernstein <rocky@gnu.org>
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
@@ -140,7 +140,7 @@ NOTE: the above should have each item listed in quotes.
   "Suggest a kshdb command invocation via `realgud-suggest-invocaton'"
   (realgud-suggest-invocation realgud:kshdb-command-name
 			      realgud:kshdb-minibuffer-history
-			      "Shell-script" "\\.sh$"))
+			      "sh" "\\.\\(?:k\\)?sh$"))
 
 (defun kshdb-reset ()
   "Kshdb cleanup - remove debugger's internal buffers (frame,

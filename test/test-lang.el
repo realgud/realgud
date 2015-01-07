@@ -13,7 +13,7 @@
 (test-simple-start)
 
 (declare-function realgud-suggest-lang-file 'realgud-lang)
-(declare-function realgud-suggest-file-from-buffer 'realgud-lang)
+(declare-function realgud:suggest-file-from-buffer 'realgud-lang)
 (declare-function realgud-lang-mode? 'realgud-lang)
 (declare-function __FILE__           'require-relative)
 
@@ -44,7 +44,7 @@
 
 (assert-t (file-exists-p (realgud-suggest-lang-file "bogus" "\\.bogus$")))
 
-(note "realgud-suggest-file-from-buffer")
+(note "realgud:suggest-file-from-buffer")
 
 
 (with-current-buffer
@@ -54,7 +54,7 @@
   (message "set major mode to %s" major-mode)
   )
 (assert-equal (buffer-file-name elisp-buffer)
-                                (realgud-suggest-file-from-buffer
+                                (realgud:suggest-file-from-buffer
                                  "emacs-lisp"
                                  (list elisp-buffer))
                                 "realgud-lang-mode? with Lisp file")

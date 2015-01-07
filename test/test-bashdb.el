@@ -2,12 +2,14 @@
 (require 'load-relative)
 (load-file "../realgud/debugger/bashdb/bashdb.el")
 (load-file "../realgud/common/core.el")
+(load-file "../realgud/common/lang.el")
 
 (declare-function realgud:expand-file-name-if-exists 'realgud-core)
 
 (eval-when-compile (defvar test:run-process-save))
 
 (declare-function bashdb-parse-cmd-args 'realgud:bashdb)
+(declare-function bashdb-suggest-invocation 'realgud:bzshdb)
 (declare-function realgud:bashdb        'realgud:bashdb)
 (declare-function __FILE__              'require-relative)
 
@@ -38,6 +40,9 @@
 			  "foo") nil)
 	      (bashdb-parse-cmd-args
 	       '("bashdb" "program.sh" "foo")))
+(with-current-buffer (find-file "gcd.sh")
+  (shell-script-mode)
+  (assert-matches "bashdb .+gcd.sh$" (bashdb-suggest-invocation "bashdb")))
 
 (realgud:bashdb "bashdb -l . ./gcd.sh 3 5")
 ;; Restore the old value of realgud:run-process
