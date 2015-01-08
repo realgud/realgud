@@ -14,6 +14,8 @@
 (declare-function __FILE__              'require-relative)
 
 (test-simple-start)
+(make-local-variable 'realgud:bashdb-minibuffer-history)
+(setq realgud:bashdb-minibuffer-history nil)
 
 ;; Save value realgud:run-process and change it to something we want
 (setq test:run-process-save (symbol-function 'realgud:run-process))
@@ -42,7 +44,7 @@
 	       '("bashdb" "program.sh" "foo")))
 (with-current-buffer (find-file "gcd.sh")
   (shell-script-mode)
-  (assert-matches "bashdb .+gcd.sh$" (bashdb-suggest-invocation "bashdb")))
+  (assert-matches "bashdb .*gcd.sh$" (bashdb-suggest-invocation "bashdb")))
 
 (realgud:bashdb "bashdb -l . ./gcd.sh 3 5")
 ;; Restore the old value of realgud:run-process
