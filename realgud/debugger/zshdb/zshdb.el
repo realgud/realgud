@@ -62,7 +62,7 @@ marginal icons is reset. See `loc-changes-clear-buffer' to clear
 fringe and marginal icons.
 "
   (interactive)
-  (realgud:run-debugger "zshdb" 'zshdb-query-cmdline
+  (realgud:run-debugger realgud:zshdb-command-name 'zshdb-query-cmdline
 			'zshdb-parse-cmd-args
 			'realgud:zshdb-minibuffer-history
 			opt-cmd-line no-reset)

@@ -55,7 +55,8 @@ marginal icons is reset. See `loc-changes-clear-buffer' to clear
 fringe and marginal icons.
 "
   (interactive)
-  (realgud:run-debugger "bashdb" 'bashdb-query-cmdline 'bashdb-parse-cmd-args
+  (realgud:run-debugger realgud:bashdb-command-name
+			'bashdb-query-cmdline 'bashdb-parse-cmd-args
 			'realgud:bashdb-minibuffer-history
 			opt-cmd-line no-reset)
   )

@@ -48,10 +48,10 @@ We return the a list containing
 - command args (which includes the makefile name)
 
 For example for the following input
-  '(\"gmake\" \"-x\" \"/tmp/Makefile\")
+  '(\"remake\" \"-x\" \"/tmp/Makefile\")
 
 we might return:
-   (\"gmake\" \"/tmp/Makefile\" (\"-x\" \"/tmp/Makefile\"))
+   (\"remake\" \"/tmp/Makefile\" (\"-x\" \"/tmp/Makefile\"))
 
 "
 

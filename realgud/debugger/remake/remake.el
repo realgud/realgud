@@ -11,11 +11,40 @@
   "The realgud interface to the GNU Make debugger"
   :group 'realgud
   :group 'make
-  :version "23.1")
+  :version "24.1")
 
 (declare-function remake-query-cmdline  'realgud:remake-core)
 (declare-function remake-parse-cmd-args 'realgud:remake-core)
 (declare-function realgud:run-debugger  'realgud:run)
+
+(defun realgud:remake-run-debugger (&optional opt-command-line
+				    no-reset)
+  "Invoke the a debugger and start the Emacs user interface.
+
+String OPT-COMMAND-LINE specifies how to run DEBUGGER-NAME. You
+will be prompted for a command line using QUERY-CMDLINE-FN is one
+isn't supplied.
+
+OPT-COMMAND-LINE is treated like a shell string; arguments are
+tokenized by `split-string-and-unquote'. The tokenized string is
+parsed by PARSE-CMD-FN and path elements found by that
+are expanded using `expand-file-name'.
+
+If successful, The command buffer of the debugger process is returned.
+Otherwise nil is returned.
+"
+  (let* ((cmd-str (or opt-command-line (remake-query-cmdline
+					realgud:remake-command-name)))
+	 (cmd-args (split-string-and-unquote cmd-str))
+	 (parsed-args (remake-parse-cmd-args cmd-args))
+	 (debugger (car parsed-args))
+	 (script-args (caddr parsed-args))
+	 (script-name (cadr parsed-args))
+	 )
+    (realgud:run-process debugger script-name cmd-args
+			 realgud:remake-minibuffer-history no-reset)
+    )
+  )
 
 ;; -------------------------------------------------------------------
 ;; User definable variables
@@ -33,11 +62,7 @@ This should be an executable on your path, or an absolute file name."
 (defun realgud:remake (&optional opt-cmd-line no-reset)
   "See `realgud:remake' for details"
   (interactive)
-  (realgud:run-debugger "remake"
-			'remake-query-cmdline
-			'remake-parse-cmd-args
-			'realgud:remake-minibuffer-history
-			opt-cmd-line no-reset)
+  (realgud:remake-run-debugger opt-cmd-line no-reset)
   )
 
 (defalias 'remake 'realgud:remake)

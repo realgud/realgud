@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010-2012, 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2012, 2014-2015 Rocky Bernstein <rocky@gnu.org>
 ;;  `trepan2' Main interface to trepan2 via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
@@ -11,7 +11,7 @@
   "The realgud interface to the Python trepan2 debugger"
   :group 'realgud
   :group 'python
-  :version "23.1")
+  :version "24.2")
 
 (declare-function trepan2-query-cmdline  'realgud:trepan2-core)
 (declare-function trepan2-parse-cmd-args 'realgud:trepan2-core)
@@ -53,7 +53,7 @@ marginal icons is reset. See `loc-changes-clear-buffer' to clear
 fringe and marginal icons.
 "
   (interactive)
-  (realgud:run-debugger "trepan2"
+  (realgud:run-debugger realgud:trepan2-command-name
 			'trepan2-query-cmdline
 			'trepan2-parse-cmd-args
 			'realgud:trepan2-minibuffer-history
