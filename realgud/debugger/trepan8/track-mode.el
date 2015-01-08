@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010-2011, 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2011, 2014-2015 Rocky Bernstein <rocky@gnu.org>
 ;;; Ruby "trepan8" Debugger tracking a comint buffer.
 
 (eval-when-compile (require 'cl))
@@ -48,7 +48,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   (if trepan8-track-mode
       (progn
 	(realgud-track-mode 't)
-	(run-mode-hooks (intern (trepan8-track-mode-hook))))
+	(trepan8-track-mode-hook))
     (progn
       (realgud-track-mode nil)
       ))

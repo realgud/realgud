@@ -24,7 +24,7 @@
 		  'realgud-buffer-command)
 
 (defvar realgud-track-mode-map
-  (let ((map  (copy-keymap comint-mode-map)))
+  (let ((map  (copy-keymap shell-mode-map)))
     (realgud-populate-debugger-menu map)
     (define-key map [M-right]	'realgud-track-hist-newest)
     (define-key map [M-down]	'realgud-track-hist-newer)

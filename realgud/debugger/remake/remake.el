@@ -16,6 +16,7 @@
 (declare-function remake-query-cmdline  'realgud:remake-core)
 (declare-function remake-parse-cmd-args 'realgud:remake-core)
 (declare-function realgud:run-debugger  'realgud:run)
+(declare-function realgud:run-process   'realgud:run)
 
 (defun realgud:remake-run-debugger (&optional opt-command-line
 				    no-reset)
@@ -33,8 +34,7 @@ are expanded using `expand-file-name'.
 If successful, The command buffer of the debugger process is returned.
 Otherwise nil is returned.
 "
-  (let* ((cmd-str (or opt-command-line (remake-query-cmdline
-					realgud:remake-command-name)))
+  (let* ((cmd-str (or opt-command-line (remake-query-cmdline "remake")))
 	 (cmd-args (split-string-and-unquote cmd-str))
 	 (parsed-args (remake-parse-cmd-args cmd-args))
 	 (debugger (car parsed-args))

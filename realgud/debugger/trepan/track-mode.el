@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2012-2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2012-2015 Rocky Bernstein <rocky@gnu.org>
 ;;; Ruby "trepan" Debugger tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))
@@ -73,8 +73,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   (if trepan-track-mode
       (progn
 	(realgud-track-mode-setup 't)
-	(setq trepan-track-mode nil)
-	(run-mode-hooks (intern (trepan-track-mode-hook))))
+        (trepan-track-mode-hook))
     (progn
       (setq realgud-track-mode nil)
       ))

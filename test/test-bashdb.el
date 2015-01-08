@@ -1,12 +1,16 @@
 (require 'test-simple)
 (require 'load-relative)
 (load-file "../realgud/debugger/bashdb/bashdb.el")
+(load-file "../realgud/debugger/bashdb/core.el")
 (load-file "../realgud/common/core.el")
 (load-file "../realgud/common/lang.el")
 
 (declare-function realgud:expand-file-name-if-exists 'realgud-core)
 
-(eval-when-compile (defvar test:run-process-save))
+(eval-when-compile
+  (defvar test:run-process-save)
+  (defvar realgud:bashdb-minibuffer-history)
+  )
 
 (declare-function bashdb-parse-cmd-args 'realgud:bashdb)
 (declare-function bashdb-suggest-invocation 'realgud:bzshdb)

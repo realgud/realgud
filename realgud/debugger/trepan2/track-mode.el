@@ -1,4 +1,4 @@
-;; Copyright (C) 2010, 2012-2014 Rocky Bernstein <rocky@gnu.org>
+;; Copyright (C) 2010, 2012-2015 Rocky Bernstein <rocky@gnu.org>
 ;;
 ;; Python "trepan2" Debugger tracking a comint buffer.
 
@@ -51,8 +51,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   (if trepan2-track-mode
       (progn
 	(setq realgud-track-mode 't)
-	(realgud-track-mode-setup 't)
-	(run-mode-hooks (intern (trepan2-track-mode-hook))))
+        (trepan2-track-mode-hook))
     (progn
       (setq realgud-track-mode nil)
       ))

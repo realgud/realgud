@@ -1,4 +1,4 @@
-;;; Copyright (C) 2013-2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2013-2015 Rocky Bernstein <rocky@gnu.org>
 ;;; Golang SSA gub tracking a comint buffer.
 
 (eval-when-compile (require 'cl))
@@ -69,7 +69,6 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   (if gub-track-mode
       (progn
 	(setq realgud-track-mode 't)
-        (realgud-track-mode-setup 't)
         (gub-track-mode-hook))
     (progn
       (setq realgud-track-mode nil)

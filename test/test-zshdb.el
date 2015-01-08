@@ -4,7 +4,10 @@
 
 (declare-function realgud:expand-file-name-if-exists 'realgud-core)
 
-(eval-when-compile (defvar test:run-process-save))
+(eval-when-compile
+  (defvar test:run-process-save)
+  (defvar realgud:zshdb-minibuffer-history)
+  )
 
 (declare-function zshdb-parse-cmd-args 'realgud:zshdb)
 (declare-function zshdb-suggest-invocation 'realgud:zshdb)
@@ -13,7 +16,7 @@
 
 (test-simple-start)
 (make-local-variable 'realgud:zshdb-minibuffer-history)
-(setq realgud:bashdb-minibuffer-history nil)
+(setq realgud:zshdb-minibuffer-history nil)
 
 ;; Save value realgud:run-process and change it to something we want
 (setq test:run-process-save (symbol-function 'realgud:run-process))

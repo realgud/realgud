@@ -51,7 +51,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   (if perldb-track-mode
       (progn
 	(realgud-track-mode-setup 't)
-	(run-mode-hooks (intern (perldb-track-mode-hook))))
+	(perldb-track-mode-hook))
     (progn
       (setq realgud-track-mode nil)
       ))

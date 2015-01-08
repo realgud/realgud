@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2012, 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2012, 2015 Rocky Bernstein <rocky@gnu.org>
 ;;; Ruby "rdebug" Debugger tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))
@@ -54,7 +54,6 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   (if rdebug-track-mode
       (progn
 	(setq realgud-track-mode 't)
-	(realgud-track-mode-setup 't)
 	(rdebug-track-mode-hook))
     (progn
       (setq realgud-track-mode nil)

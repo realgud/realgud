@@ -1,4 +1,4 @@
-;;; Copyright (C) 2011, 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011, 2014-2015 Rocky Bernstein <rocky@gnu.org>
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
@@ -175,10 +175,13 @@ given priority, we use the first one we find."
 ;; To silence Warning: reference to free variable
 (defvar realgud:remake-command-name)
 
-(defun remake-suggest-invocation (debugger-name)
+;; Note opt-debugger is not used. It has to be there because
+;; realgud-suggest-invocation passes an argument.
+(defun remake-suggest-invocation (&optional opt-debugger)
   "Suggest a remake command invocation via `realgud-suggest-invocaton'"
 
   (let* ((buf (current-buffer))
+	 (debugger-name realgud:remake-command-name)
 	 (cmd-str-cmdbuf (realgud-cmdbuf-command-string buf))
 	 )
     (cond

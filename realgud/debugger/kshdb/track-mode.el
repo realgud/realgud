@@ -1,4 +1,4 @@
-;;; Copyright (C) 2012, 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2012, 2014-2015 Rocky Bernstein <rocky@gnu.org>
 ;;; "kshdb" Debugger tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))
@@ -49,7 +49,6 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   (if kshdb-track-mode
       (progn
 	(realgud-track-mode 't)
-        (realgud-track-mode-setup 't)
         (kshdb-track-mode-hook))
     (progn
       (realgud-track-mode nil)

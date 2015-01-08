@@ -53,7 +53,7 @@ marginal icons is reset. See `loc-changes-clear-buffer' to clear
 fringe and marginal icons.
 "
   (interactive)
-  (realgud:run-debugger realgud:trepan2-command-name
+  (realgud:run-debugger "trepan2"
 			'trepan2-query-cmdline
 			'trepan2-parse-cmd-args
 			'realgud:trepan2-minibuffer-history

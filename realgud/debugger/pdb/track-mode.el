@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2012-2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2012-2015 Rocky Bernstein <rocky@gnu.org>
 ;;; Python "pdb" Debugger tracking a comint buffer.
 
 (eval-when-compile (require 'cl))
@@ -50,7 +50,6 @@ a process shell.
   (if pdb-track-mode
       (progn
         (setq realgud-track-mode 't)
-        (realgud-track-mode-setup 't)
         (pdb-track-mode-hook))
     (progn
       (setq realgud-track-mode nil)

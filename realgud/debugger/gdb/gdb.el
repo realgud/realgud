@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010-2011, 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2011, 2014-2015 Rocky Bernstein <rocky@gnu.org>
 ;;  `realgud:gdb' Main interface to gdb via Emacs
 (require 'cl)
 (require 'list-utils)
@@ -20,7 +20,7 @@
 (defcustom realgud:gdb-command-name
   ;;"gdb --emacs 3"
   "gdb"
-  "File name for executing the Ruby debugger and command options.
+  "File name for executing the and command options.
 This should be an executable on your path, or an absolute file name."
   :type 'string
   :group 'realgud:gdb)
