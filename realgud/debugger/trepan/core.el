@@ -40,7 +40,7 @@ in variable `realgud:trepan-file-remap' when that works. In the future,
 we may also consult PYTHONPATH."
   (let* ((transformed-file)
 	 (stripped-filename (realgud:strip filename))
-	 (ignore-file-re realgud-python-ignore-file-re)
+	 (ignore-file-re)
 	)
     (cond
      ((file-exists-p filename) filename)

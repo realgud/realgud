@@ -1,4 +1,5 @@
 (require 'test-simple)
+(require 'load-relative)
 (load-file "../realgud/debugger/pdb/pdb.el")
 
 (eval-when-compile (defvar test:run-process-save))

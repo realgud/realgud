@@ -15,6 +15,7 @@
 (declare-function comint-exec  'comint)
 (declare-function comint-mode  'comint)
 (declare-function realgud-bp-remove-icons             'realgud-bp)
+(declare-function realgud:suggest-file-from-buffer    'realgud-lang)
 (declare-function realgud-cmdbuf-args=                'realgud-buffer-command)
 (declare-function realgud-cmdbuf-command-string       'realgud-buffer-command)
 (declare-function realgud-cmdbuf-debugger-name        'realgud-buffer-command)

@@ -53,7 +53,6 @@
 (tear-down)
 
 
-(assert-raises error (realgud-command "testing")
-	       "realgud-realgud-command - not a command buffer")
+(assert-raises error (realgud-command "testing"))
 
 (end-tests)

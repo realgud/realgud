@@ -1,3 +1,4 @@
+(require 'load-relative)
 (require 'test-simple)
 (load-file "../realgud/common/buffer/command.el")
 (load-file "../realgud/debugger/trepan/init.el")
@@ -11,6 +12,7 @@
 (declare-function realgud-loc-pat-file-group     'realgud-regexp)
 (declare-function realgud-loc-pat-line-group     'realgud-regexp)
 (declare-function realgud-loc-pat-regexp         'realgud-regexp)
+(declare-function __FILE__                        'require-relative)
 
 (test-simple-start)
 

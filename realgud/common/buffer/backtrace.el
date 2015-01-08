@@ -1,5 +1,5 @@
 ;;; Backtrace buffer
-;;; Copyright (C) 2010-2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2015 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
 (eval-when-compile (require 'cl-lib))
 (require-relative-list
@@ -8,6 +8,8 @@
 (require-relative-list
  '("command") "realgud-buffer-")
 
+(declare-function realgud-cmdbuf-debugger-name 'realgud-buffer-command)
+(declare-function realgud-cmdbuf?              'realgud-buffer-command)
 (declare-function realgud-backtrace-mode (cmdbuf))
 (declare-function realgud-cmd-backtrace (arg))
 (declare-function realgud-cmdbuf-pat(key))

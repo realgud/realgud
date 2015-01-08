@@ -1,4 +1,5 @@
 (require 'test-simple)
+(require 'load-relative)
 (load-file "../realgud/common/shortkey.el")
 (load-file "../realgud/common/buffer/command.el")
 (declare-function realgud-cmdbuf-init            'realgud-buffer-command)
@@ -13,11 +14,12 @@
   (defvar nodejs-short-key-mode-map)
 )
 
+(declare-function __FILE__           'require-relative)
 
 (test-simple-start)
 
 (note "realgud-shortkey")
-(assert-raises error (realgud-shortkey-mode-setup 't))
+(assert-raises error (realgud-shortkey-mode-setup))
 (assert-nil (realgud-get-short-key-mode-map (current-buffer)))
 
 (note "realgud-get-short-key-mode-map")

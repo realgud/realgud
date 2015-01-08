@@ -7,6 +7,7 @@
 (declare-function realgud-cmdbuf?                    'realgud-buffer-command)
 (declare-function realgud:debugger-name-transform       'realgud-helper)
 (declare-function realgud-get-cmdbuf                  'realgud-buffer-helper)
+(declare-function realgud-populate-debugger-menu        'realgud-menu)
 (declare-function realgud-populate-common-keys          'realgud-key)
 (declare-function realgud-populate-src-buffer-map-plain 'realgud-key)
 (declare-function realgud-srcbuf-info-short-key?=,      'realgud-source)
@@ -14,8 +15,9 @@
 (declare-function realgud-srcbuf?                     'realgud-buffer-source)
 
 (defvar realgud:shortkey-mode-map
-  (let ((map (copy-keymap realgud:debugger-mode-map)))
+  (let ((map (make-sparse-keymap)))
     (suppress-keymap map)
+    (realgud-populate-debugger-menu map)
     (realgud-populate-common-keys map)
     (realgud-populate-src-buffer-map-plain map)
     (define-key map "1"        'realgud-goto-arrow1)
@@ -141,7 +143,8 @@ This includes the keys bound to `realgud-key-prefix' (typically C-x
 C-a)."
   (realgud-populate-src-buffer-map-plain map)
   (realgud-populate-common-keys map)
-  (let ((prefix-map (copy-keymap realgud:debugger-mode-map)))
+  (let ((prefix-map (make-sparse-keymap)))
+    (realgud-populate-debugger-menu map)
     (realgud-populate-src-buffer-map-plain prefix-map)
     (define-key map realgud-key-prefix prefix-map)))
 
