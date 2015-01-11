@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2011, 2015 Rocky Bernstein <rocky@gnu.org>
 ;;; Regular expressions for Bash shell debugger: bashdb
 
 (eval-when-compile (require 'cl))
@@ -110,5 +110,6 @@ realgud-loc-pat struct")
 
 (setf (gethash "clear"  realgud:bashdb-command-hash) "clear %l")
 (setf (gethash "quit"   realgud:bashdb-command-hash) "quit!")
+(setf (gethash "until"  realgud:bashdb-command-hash) "continue %l")
 
 (provide-me "realgud:bashdb-")

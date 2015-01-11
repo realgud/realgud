@@ -216,6 +216,16 @@ debugging after editing source."
   (realgud:terminate (current-buffer))
 )
 
+(defun realgud-cmd-until(&optional arg)
+    "Run until the completion of the current stack frame.
+
+Continue until the current line. In some cases this is really
+two commands - setting a temporary breakpoint on the line and
+continuing execution."
+    (interactive "p")
+    (realgud-cmd-remap arg "until" "until" "u")
+)
+
 (defun realgud-cmd-quit (&optional arg)
   "Gently terminate execution of the debugged program."
   (interactive "p")

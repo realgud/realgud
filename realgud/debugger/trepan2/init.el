@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010-2012, 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2012, 2014-2015 Rocky Bernstein <rocky@gnu.org>
 ;;; trepan2: Python 2.5 but less than 3K
 
 (eval-when-compile (require 'cl))
@@ -97,6 +97,7 @@ realgud-loc-pat struct")
   the trepan2 command to use, like 'python'")
 
 (setf (gethash "shell" realgud:trepan2-command-hash) "python")
+(setf (gethash "until" realgud:trepan2-command-hash) "continue %l")
 (setf (gethash "trepan2" realgud-command-hash) realgud:trepan2-command-hash)
 
 (provide-me "realgud:trepan2-")

@@ -100,6 +100,7 @@ Nor does it touch prefix keys; for that see `realgud-populate-keys-standard'"
     (define-key map "F" 'realgud-window-bt)
     (define-key map "Q" 'realgud-cmd-terminate)
     (define-key map "S" 'realgud-window-src-undisturb-cmd)
+    (define-key map "U" 'realgud-cmd-until)
 
     (define-key map [M-down]    'realgud-track-hist-newer)
     (define-key map [M-kp-2]    'realgud-track-hist-newer)

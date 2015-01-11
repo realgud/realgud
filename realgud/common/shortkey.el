@@ -26,12 +26,13 @@
     (define-key map "b"        'realgud-cmd-break)
     (define-key map "c"        'realgud-cmd-continue)
     (define-key map "e"        'realgud-cmd-eval-region)
+    (define-key map "U"        'realgud-cmd-until)
 
     ;; FIXME: these can go to a common routine
     (define-key map "<"        'realgud-cmd-newer-frame)
     (define-key map ">"        'realgud-cmd-older-frame)
-    (define-key map "d"        'realgud-cmd-newer-frame)
-    (define-key map "u"        'realgud-cmd-older-frame)
+    (define-key map "u"        'realgud-cmd-newer-frame)
+    (define-key map "d"        'realgud-cmd-older-frame)
     (define-key map "l"        'realgud-recenter-arrow)
     (define-key map "B"        'realgud:backtrace-init)
     (define-key map "C"        'realgud-window-cmd-undisturb-src)

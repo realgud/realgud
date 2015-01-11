@@ -4,8 +4,10 @@
 
 (declare-function __FILE__                    'require-relative)
 (declare-function make-realgud-loc            'realgud-loc)
+(declare-function realgud-loc-hist-add       'realgud-lochist)
 (declare-function realgud-loc-hist-ring       'realgud-lochist)
 (declare-function realgud-loc-hist-item       'realgud-lochist)
+(declare-function realgud-loc-hist-position   'realgud-lochist)
 (declare-function realgud-loc-hist-index      'realgud-lochist)
 (declare-function realgud-loc-hist-newest     'realgud-lochist)
 

@@ -1,4 +1,4 @@
-;;; Copyright (C) 2011-2012, 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011-2012, 2014-2015 Rocky Bernstein <rocky@gnu.org>
 ;;; Trepanning Perl debugger
 (eval-when-compile (require 'cl))
 
@@ -186,6 +186,7 @@ backtrace listing.")
 
 (setf (gethash "break"  realgud:trepanpl-command-hash) "break %x %l")
 (setf (gethash "quit"   realgud:trepanpl-command-hash) "quit!")
+(setf (gethash "until"   realgud:trepanpl-command-hash) "continue %l")
 (setf (gethash realgud:trepanpl-debugger-name
 	       realgud-command-hash) realgud:trepanpl-command-hash)
 

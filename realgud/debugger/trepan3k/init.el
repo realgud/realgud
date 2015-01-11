@@ -97,5 +97,6 @@ realgud-loc-pat struct")
 
 (setf (gethash "shell" realgud:trepan3k-command-hash) "python")
 (setf (gethash "trepan3k" realgud-command-hash) realgud:trepan3k-command-hash)
+(setf (gethash "trepan3k" realgud-command-hash) realgud:trepan3k-command-hash)
 
 (provide-me "realgud:trepan3k-")

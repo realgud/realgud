@@ -3,6 +3,9 @@
 (load-file "../realgud/debugger/perldb/init.el")
 (load-file "./regexp-helper.el")
 
+(declare-function __FILE__              'require-relative)
+(declare-function prompt-match          'regexp-helper)
+
 (test-simple-start)
 
 (eval-when-compile

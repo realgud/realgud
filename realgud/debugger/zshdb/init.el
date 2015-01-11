@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2014-2015 Rocky Bernstein <rocky@gnu.org>
 ;;; Regular expressions for Z shell debugger: zshdb
 
 (eval-when-compile (require 'cl))
@@ -112,5 +112,6 @@ realgud-loc-pat struct")
 
 (setf (gethash "clear"  realgud:zshdb-command-hash) "clear %l")
 (setf (gethash "quit"   realgud:zshdb-command-hash) "quit!")
+(setf (gethash "until"  realgud:zshdb-command-hash) "continue %l")
 
 (provide-me "realgud:zshdb-")

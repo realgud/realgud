@@ -166,6 +166,7 @@ backtrace listing.")
 (setf (gethash "run"       realgud:gub-command-hash) "R")
 (setf (gethash "step"      realgud:gub-command-hash) "step")
 (setf (gethash "next"      realgud:gub-command-hash) "next")
+(setf (gethash "until"     realgud:gub-command-hash) "until %l")
 (setf (gethash "gub" realgud-command-hash) realgud:gub-command-hash)
 
 

@@ -9,11 +9,10 @@
 (test-simple-start)
 
 (eval-when-compile
-  (defvar dbg-name)
-  (defvar realgud-pat-hash)
-  (defvar loc-pat)
-  (defvar test-dbgr)
-  (defvar test-text)
+  (defvar dbg-name)   (defvar realgud-pat-hash)   (defvar realgud-bt-hash)
+  (defvar loc-pat)    (defvar prompt-pat)         (defvar s1)
+  (defvar file-group) (defvar line-group)         (defvar pos)
+  (defvar test-dbgr)  (defvar test-text)
 )
 
 ; Some setup usually done in setting up the buffer.

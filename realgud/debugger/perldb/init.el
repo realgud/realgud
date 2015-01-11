@@ -1,4 +1,4 @@
-;;; Copyright (C) 2011, 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011, 2014-2015 Rocky Bernstein <rocky@gnu.org>
 ;;; Stock Perl debugger perldb
 
 (eval-when-compile (require 'cl))
@@ -87,6 +87,7 @@ realgud-loc-pat struct")
 (setf (gethash "run"       realgud:perldb-command-hash) "R")
 (setf (gethash "step"      realgud:perldb-command-hash) "s")
 (setf (gethash "next"      realgud:perldb-command-hash) "n")
+(setf (gethash "until"     realgud:perldb-command-hash) "c %l")
 (setf (gethash "perldb" realgud-command-hash) realgud:perldb-command-hash)
 
 (provide-me "realgud:perldb-")

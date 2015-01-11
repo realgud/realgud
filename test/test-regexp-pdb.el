@@ -2,15 +2,14 @@
 (load-file "../realgud/debugger/pdb/init.el")
 (load-file "./regexp-helper.el")
 
+(declare-function __FILE__              'require-relative)
+(declare-function prompt-match          'regexp-helper)
+
 (test-simple-start)
 
 (eval-when-compile
-  (defvar loc-pat)
-  (defvar prompt-pat)
-  (defvar realgud:pdb-pat-hash)
-  (defvar tb-pat)
-  (defvar test-text)
-  (defvar prompt-str)
+  (defvar loc-pat)   (defvar prompt-pat) (defvar realgud:pdb-pat-hash)
+  (defvar tb-pat)    (defvar test-text)  (defvar prompt-str)
   (defvar bps-pat)
 )
 
