@@ -16,7 +16,7 @@
 
 (declare-function realgud-track-mode 'realgud-track-mode)
 (declare-function realgud-track-mode-hook 'realgud-track-mode)
-(declare-function realgud-track-mode-setup 'realgud-track-mode)
+(declare-function realgud-track-mode-setup   'realgud-track-mode)
 (declare-function realgud:track-set-debugger 'realgud-track-mode)
 (declare-function realgud-python-populate-command-keys 'realgud-lang-python)
 

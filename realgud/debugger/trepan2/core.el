@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2014-2015 Rocky Bernstein <rocky@gnu.org>
 (eval-when-compile (require 'cl))
 
 (require 'compile) ;; for compilation-find-file
@@ -197,7 +197,8 @@ NOTE: the above should have each item listed in quotes.
   "Suggest a trepan2 command invocation via `realgud-suggest-invocaton'"
   (realgud-suggest-invocation realgud:trepan2-command-name
 			      realgud:trepan2-minibuffer-history
-			      "python" "\\.py"))
+			      "python" "\\.py"
+			      realgud:trepan2-command-name))
 
 (defun trepan2-reset ()
   "Trepan2 cleanup - remove debugger's internal buffers (frame,

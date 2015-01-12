@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2015 Rocky Bernstein <rocky@gnu.org>
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
@@ -9,8 +9,8 @@
 (require-relative-list '("init") "realgud-rdebug-")
 
 (declare-function realgud-lang-mode? 'realgud-lang)
-(declare-function realgud-parse-command-arg 'realgud-core)
-(declare-function realgud-query-cmdline 'realgud-core)
+(declare-function realgud-parse-command-arg  'realgud-core)
+(declare-function realgud-query-cmdline      'realgud-core)
 (declare-function realgud-suggest-invocation 'realgud-core)
 
 ;; FIXME: I think the following could be generalized and moved to
@@ -135,7 +135,8 @@ NOTE: the above should have each item listed in quotes.
   "Suggest a rdebug command invocation via `realgud-suggest-invocaton'"
   (realgud-suggest-invocation realgud:rdebug-command-name
 			      realgud:rdebug-minibuffer-history
-			      "ruby" "\\.rb$" "rdebug"))
+			      "ruby" "\\.rb$"
+			      realgud:rdebug-command-name))
 
 (defun rdebug-reset ()
   "Rdebug cleanup - remove debugger's internal buffers (frame,

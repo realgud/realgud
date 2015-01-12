@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2013-2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2013-2015 Rocky Bernstein <rocky@gnu.org>
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
@@ -143,7 +143,8 @@ NOTE: the above should have each item listed in quotes.
   "Suggest a trepan3k command invocation via `realgud-suggest-invocaton'"
   (realgud-suggest-invocation realgud:trepan3k-command-name
 			      realgud:trepan3k-minibuffer-history
-			      "python" "\\.py"))
+			      "python" "\\.py"
+			      realgud:trepan3k-command-name))
 
 (defun trepan3k-reset ()
   "Trepan3k cleanup - remove debugger's internal buffers (frame,

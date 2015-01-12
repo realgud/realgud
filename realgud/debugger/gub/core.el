@@ -113,7 +113,7 @@ NOTE: the above should have each item listed in quotes.
   "Suggest a command invocation via `realgud-suggest-invocaton'"
   (realgud-suggest-invocation realgud:gub-command-name
 			      realgud:gub-minibuffer-history
-			      "go" "\\.go$" "gub.sh"))
+			      "go" "\\.go$"))
 
 ;; Convert a command line as would be typed normally to run a script
 ;; into one that invokes an Emacs-enabled debugging session.

@@ -14,7 +14,6 @@
 (require-relative "../../lang/posix-shell" nil "realgud-lang-")
 
 (declare-function realgud-track-mode 'realgud-track-mode)
-(declare-function realgud-cmd-remap          'realgud-cmds)
 (declare-function realgud-track-mode-hook 'realgud-track-mode)
 (declare-function realgud-track-mode-setup   'realgud-track-mode)
 (declare-function realgud:track-set-debugger 'realgud-track-mode)

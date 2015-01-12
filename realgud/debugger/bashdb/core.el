@@ -154,7 +154,8 @@ Note that path elements have been expanded via `realgud:expand-file-name-if-exis
   "Suggest a bashdb command invocation via `realgud-suggest-invocaton'"
   (realgud-suggest-invocation realgud:bashdb-command-name
 			      realgud:bashdb-minibuffer-history
-			      "sh" "\\.\\(?:ba\\)?sh$"))
+			      "sh" "\\.\\(?:ba\\)?sh$"
+			      realgud:bashdb-command-name))
 
 (defun bashdb-reset ()
   "Bashdb cleanup - remove debugger's internal buffers (frame,
