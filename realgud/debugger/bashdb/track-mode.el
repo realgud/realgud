@@ -1,5 +1,5 @@
 ;;; Copyright (C) 2012-2015 Rocky Bernstein <rocky@gnu.org>
-;;; Bash Debugger tracking a comint or eshell buffer.
+;;; Bash Debugger tracking in a comint buffer.
 
 (eval-when-compile (require 'cl))
 (require 'load-relative)
@@ -13,15 +13,15 @@
 (require-relative-list '("core" "init") "realgud:bashdb-")
 (require-relative "../../lang/posix-shell" nil "realgud-lang-")
 
+(declare-function realgud-track-mode 'realgud-track-mode)
 (declare-function realgud-cmd-remap          'realgud-cmds)
-(declare-function realgud:track-set-debugger 'realgud-track-mode)
+(declare-function realgud-track-mode-hook 'realgud-track-mode)
 (declare-function realgud-track-mode-setup   'realgud-track-mode)
+(declare-function realgud:track-set-debugger 'realgud-track-mode)
 (declare-function realgud-posix-shell-populate-command-keys
 		  'realgud-lang-posix-shell)
 
 (realgud-track-mode-vars "bashdb")
-
-(declare-function realgud-track-mode(bool))
 
 (defun bashdb-track-mode-hook()
   (if bashdb-track-mode

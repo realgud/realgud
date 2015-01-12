@@ -8,6 +8,7 @@
 ;; We want the doc strings from gdb-like commands for our help
 ;; menus.
 (require-relative-list '("cmds") "realgud-")
+(require-relative-list  '("buffer/command") "realgud-buffer-")
 
 ;; Note: We want the key binding to show in the menu. However, our
 ;; situation is a little bit complex:
@@ -55,6 +56,12 @@ menu. (The common map typically contains function key bindings.)"
 			 'realgud-window-src-undisturb-cmd
 			 :enable '(and (realgud-get-process) (not (realgud-srcbuf?)))
 			 :help (documentation 'realgud-window-src-undisturb-cmd)
+			 ))
+
+    (define-key debugger-map [info]
+      (realgud-menu-item debugger-map "Debugger Info"
+			 'realgud:cmdbuf-info-describe
+			 :help (documentation 'realgud:cmdbuf-info-describe)
 			 ))
 
     (define-key debugger-map [backtrace]

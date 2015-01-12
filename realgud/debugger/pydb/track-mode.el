@@ -48,7 +48,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   (realgud:track-set-debugger "pydb")
   (if pydb-track-mode
       (progn
-        (setq realgud-track-mode 't)
+	(realgud-track-mode-setup 't)
         (pydb-track-mode-hook))
     (progn
       (setq realgud-track-mode nil)

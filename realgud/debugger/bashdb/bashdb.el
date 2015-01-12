@@ -56,7 +56,8 @@ fringe and marginal icons.
 "
   (interactive)
   (realgud:run-debugger "bashdb"
-			'bashdb-query-cmdline 'bashdb-parse-cmd-args
+			'bashdb-query-cmdline
+			'bashdb-parse-cmd-args
 			'realgud:bashdb-minibuffer-history
 			opt-cmd-line no-reset)
   )

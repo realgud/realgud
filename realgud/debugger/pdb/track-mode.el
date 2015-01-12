@@ -49,7 +49,7 @@ a process shell.
   (realgud:track-set-debugger "pdb")
   (if pdb-track-mode
       (progn
-        (setq realgud-track-mode 't)
+	(realgud-track-mode-setup 't)
         (pdb-track-mode-hook))
     (progn
       (setq realgud-track-mode nil)

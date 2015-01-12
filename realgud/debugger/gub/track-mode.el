@@ -68,7 +68,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   (realgud:track-set-debugger "gub")
   (if gub-track-mode
       (progn
-	(setq realgud-track-mode 't)
+	(realgud-track-mode-setup 't)
         (gub-track-mode-hook))
     (progn
       (setq realgud-track-mode nil)

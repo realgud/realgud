@@ -51,8 +51,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   (realgud:track-set-debugger "zshdb")
   (if zshdb-track-mode
       (progn
-	(setq realgud-track-mode 't)
-        (realgud-track-mode-setup 't)
+	(realgud-track-mode-setup 't)
         (zshdb-track-mode-hook))
     (progn
       (setq realgud-track-mode nil)

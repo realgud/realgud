@@ -1,6 +1,6 @@
 ;; Copyright (C) 2010, 2012-2015 Rocky Bernstein <rocky@gnu.org>
 ;;
-;; Python "trepan2" Debugger tracking a comint buffer.
+;; Python "trepan2" Debugger tracking in a comint buffer.
 
 (eval-when-compile (require 'cl))
 (require 'load-relative)
@@ -35,7 +35,7 @@
 )
 
 (define-minor-mode trepan2-track-mode
-  "Minor mode for tracking trepan2 source locations inside a process shell via realgud. trepan2 is a Python debugger. See URL `https://code.google.com/p/pydbgr/'.
+  "Minor mode for tracking trepan2 source locations inside a process shell via realgud. trepan2 is a Python debugger. See URL `https://github.com/rocky/emacs-dbgr/rocky/python2-trepan/'.
 
 If called interactively with no prefix argument, the mode is toggled. A prefix argument, captured as ARG, enables the mode if the argument is positive, and disables it otherwise.
 
@@ -47,10 +47,11 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   :global nil
   :group 'realgud:trepan2
   :keymap trepan2-track-mode-map
+
   (realgud:track-set-debugger "trepan2")
   (if trepan2-track-mode
       (progn
-	(setq realgud-track-mode 't)
+	(realgud-track-mode-setup 't)
         (trepan2-track-mode-hook))
     (progn
       (setq realgud-track-mode nil)

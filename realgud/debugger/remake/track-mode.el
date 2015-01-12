@@ -51,7 +51,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   (realgud:track-set-debugger "remake")
   (if remake-track-mode
       (progn
-	(setq realgud-track-mode 't)
+	(realgud-track-mode-setup 't)
         (remake-track-mode-hook))
     (progn
       (setq realgud-track-mode nil)
