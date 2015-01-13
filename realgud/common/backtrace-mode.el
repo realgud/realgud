@@ -1,5 +1,5 @@
 ;;; Debugger Backtrace buffer mode settings
-;;; Copyright (C) 2011, 2013 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2011, 2013, 2015 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
 (require-relative-list  '("menu" "key") "realgud-")
 (require-relative-list  '("buffer/command") "realgud-buffer-")
@@ -23,10 +23,10 @@
 
     ;; FIXME: these can go to a common routine. See also shortkey.el and
     ;; key.el
-    (define-key map "<"       'realgud-cmd-newer-frame)
-    (define-key map ">"       'realgud-cmd-older-frame)
-    (define-key map "d"       'realgud-cmd-newer-frame)
-    (define-key map "u"       'realgud-cmd-older-frame)
+    (define-key map "<"       'realgud:cmd-newer-frame)
+    (define-key map ">"       'realgud:cmd-older-frame)
+    (define-key map "d"       'realgud:cmd-newer-frame)
+    (define-key map "u"       'realgud:cmd-older-frame)
     (define-key map "C"       'realgud-window-cmd-undisturb-src)
     (define-key map "F"       'realgud-window-bt)
     (define-key map "S"       'realgud-window-src-undisturb-cmd)

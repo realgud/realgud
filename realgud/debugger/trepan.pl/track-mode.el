@@ -69,6 +69,6 @@ the argument is positive, and disables it otherwise.
       ))
 )
 
-(define-key realgud:trepanpl-short-key-mode-map "T" 'realgud-cmd-backtrace)
+(define-key realgud:trepanpl-short-key-mode-map "T" 'realgud:cmd-backtrace)
 
 (provide-me "realgud:trepanpl-")

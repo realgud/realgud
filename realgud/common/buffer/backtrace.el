@@ -11,7 +11,7 @@
 (declare-function realgud-cmdbuf-debugger-name 'realgud-buffer-command)
 (declare-function realgud-cmdbuf?              'realgud-buffer-command)
 (declare-function realgud-backtrace-mode (cmdbuf))
-(declare-function realgud-cmd-backtrace (arg))
+(declare-function realgud:cmd-backtrace (arg))
 (declare-function realgud-cmdbuf-pat(key))
 (declare-function realgud-cmdbuf-info-in-srcbuf?= (arg))
 (declare-function realgud-get-cmdbuf 'realgud-buffer-helper)
@@ -25,7 +25,7 @@
                    ;; frame
 )
 
-(declare-function realgud-cmd-frame(num))
+(declare-function realgud:cmd-frame(num))
 (declare-function realgud-get-cmdbuf(&optional opt-buffer))
 (declare-function realgud-command (fmt &optional arg no-record?
 				    frame-switch? realgud-prompts?))
@@ -74,7 +74,7 @@
 	(realgud-cmdbuf-info-in-srcbuf?= (not (realgud-cmdbuf? buffer)))
 	(realgud-cmdbuf-info-divert-output?= 't)
 	(setq realgud-track-divert-string nil)
-	(realgud-cmd-backtrace 0)
+	(realgud:cmd-backtrace 0)
 	(while (and (eq 'run (process-status process))
 		    (null realgud-track-divert-string)
 		    (> 1000 (setq sleep-count (1+ sleep-count))))
@@ -225,7 +225,7 @@ not updating the frame stack."
           (while (not (string= acc ""))
             (if (not (realgud-goto-entry-try acc))
                 (setq acc (substring acc 1))
-              (realgud-cmd-frame (string-to-number acc))
+              (realgud:cmd-frame (string-to-number acc))
               ;; Break loop.
               (setq acc "")))))
     (message "`realgud-goto-frame-n' must be bound to a number key")))
@@ -283,7 +283,7 @@ non-digit will start entry number from the beginning again."
   (if (realgud-backtrace?)
       (let ((frame-num (get-text-property (point) 'frame-num)))
 	(if frame-num
-	    (realgud-cmd-frame frame-num)
+	    (realgud:cmd-frame frame-num)
 	  (message "No frame property found at this point")
 	  )
 	)

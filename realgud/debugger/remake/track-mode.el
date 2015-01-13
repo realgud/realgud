@@ -12,7 +12,7 @@
 		       "realgud-")
 (require-relative-list '("core" "init") "realgud:remake-")
 
-(declare-function realgud-cmd-remap          'realgud-cmds)
+(declare-function realgud:cmd-remap          'realgud-cmds)
 (declare-function realgud:track-set-debugger 'realgud-track-mode)
 (declare-function realgud-track-mode-setup   'realgud-track-mode)
 (declare-function realgud:track-set-debugger 'realgud-track-mode)
@@ -58,6 +58,6 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
       ))
 )
 
-(define-key remake-short-key-mode-map "T" 'realgud-cmd-backtrace)
+(define-key remake-short-key-mode-map "T" 'realgud:cmd-backtrace)
 
 (provide-me "realgud:remake-")

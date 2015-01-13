@@ -89,73 +89,73 @@ menu. (The common map typically contains function key bindings.)"
 			 ))
 
     (define-key debugger-map [break]
-	(realgud-menu-item debugger-map "Set Breakpoint" 'realgud-cmd-break
+	(realgud-menu-item debugger-map "Set Breakpoint" 'realgud:cmd-break
 			   :enable '(realgud-get-process)
-			   :help (documentation 'realgud-cmd-break)
+			   :help (documentation 'realgud:cmd-break)
 			   ))
 
     (define-key debugger-map [continue]
-      (realgud-menu-item debugger-map "Continue" 'realgud-cmd-continue
+      (realgud-menu-item debugger-map "Continue" 'realgud:cmd-continue
 			 :enable '(realgud-get-process)
-			 :help (documentation 'realgud-cmd-continue)
+			 :help (documentation 'realgud:cmd-continue)
 			 ))
 
     (define-key debugger-map [until]
-      (realgud-menu-item debugger-map "Continue to Line" 'realgud-cmd-until
+      (realgud-menu-item debugger-map "Continue to Line" 'realgud:cmd-until
 			 :enable '(and (realgud-get-process) realgud-short-key-mode)
-			 :help (documentation 'realgud-cmd-until)
+			 :help (documentation 'realgud:cmd-until)
 			 ))
 
     (define-key debugger-map [next]
-      (realgud-menu-item debugger-map "Next (step through)" 'realgud-cmd-next
+      (realgud-menu-item debugger-map "Next (step through)" 'realgud:cmd-next
 			 :enable '(realgud-get-process)
-			   :help (documentation 'realgud-cmd-next)
+			   :help (documentation 'realgud:cmd-next)
 			   ))
 
     (define-key debugger-map [finish]
-      (realgud-menu-item debugger-map "Finish (step out)" 'realgud-cmd-finish
+      (realgud-menu-item debugger-map "Finish (step out)" 'realgud:cmd-finish
 			 :enable '(realgud-get-process)
-			   :help (documentation 'realgud-cmd-finish)
+			   :help (documentation 'realgud:cmd-finish)
 			   ))
 
     (define-key debugger-map [step]
-      (realgud-menu-item debugger-map "Step (step into)" 'realgud-cmd-step
+      (realgud-menu-item debugger-map "Step (step into)" 'realgud:cmd-step
 			 :enable '(realgud-get-process)
-			 :help (documentation 'realgud-cmd-step)
+			 :help (documentation 'realgud:cmd-step)
 			 ))
 
     (define-key debugger-map [menu-bar debugger line1] '(menu-item "--"))
 
     (define-key debugger-map [down]
-      (realgud-menu-item debugger-map "Down Stack" 'realgud-cmd-newer-frame
+      (realgud-menu-item debugger-map "Down Stack" 'realgud:cmd-newer-frame
 			 :enable '(realgud-get-process)
-			 :help (documentation 'realgud-cmd-newer-frame)
+			 :help (documentation 'realgud:cmd-newer-frame)
 			 ))
 
     (define-key debugger-map [up]
-      (realgud-menu-item debugger-map "Up Stack" 'realgud-cmd-older-frame
+      (realgud-menu-item debugger-map "Up Stack" 'realgud:cmd-older-frame
 			 :enable '(realgud-get-process)
-			 :help (documentation 'realgud-cmd-older-frame)
+			 :help (documentation 'realgud:cmd-older-frame)
 			 ))
 
     (define-key debugger-map [menu-bar debugger line1] '(menu-item "--"))
 
     (define-key debugger-map [quit]
-      (realgud-menu-item debugger-map "Quit" 'realgud-cmd-quit
+      (realgud-menu-item debugger-map "Quit" 'realgud:cmd-quit
 			 :enable '(realgud-get-process)
-			 :help (documentation 'realgud-cmd-quit)
+			 :help (documentation 'realgud:cmd-quit)
 			 ))
 
     (define-key debugger-map [restart]
-      (realgud-menu-item debugger-map "Restart" 'realgud-cmd-restart
+      (realgud-menu-item debugger-map "Restart" 'realgud:cmd-restart
 			 :enable '(realgud-get-process)
-			 :help (documentation 'realgud-cmd-restart)
+			 :help (documentation 'realgud:cmd-restart)
 			 ))
 
     (define-key debugger-map [eval]
-      (realgud-menu-item debugger-map "Evaluate Region" 'realgud-cmd-eval-region
+      (realgud-menu-item debugger-map "Evaluate Region" 'realgud:cmd-eval-region
 			 :enable '(realgud-get-process)
-			 :help (documentation 'realgud-cmd-eval-region)
+			 :help (documentation 'realgud:cmd-eval-region)
 			 ))
 
     (define-key debugger-map [Recenter]

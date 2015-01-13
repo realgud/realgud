@@ -23,6 +23,7 @@
 (declare-function realgud-cmdbuf-info-set?
 		  'realgud-buffer-command)
 
+
 (defvar realgud-track-mode-map
   (let ((map  (copy-keymap shell-mode-map)))
     (realgud-populate-debugger-menu map)
@@ -35,6 +36,33 @@
     (define-key map "\C-cS" 'realgud-window-src-undisturb-cmd)
     map)
   "Keymap used in `realgud-track-minor-mode'.")
+
+(defvar realgud:tool-bar-map
+  (let ((map (make-sparse-keymap)))
+    (dolist (x '((realgud:cmd-break . "gud/break")
+		 ;; (realgud:cmd-remove . "gud/remove")
+		 ;; (realgud:cmd-print . "gud/print")
+		 ;; (realgud:cmd-pstar . "gud/pstar")
+		 ;; (realgud:cmd-pp . "gud/pp")
+		 ;; (realgud:cmd-watch . "gud/watch")
+		 (realgud:cmd-restart . "gud/run")
+		 ;; (realgud:cmd-go . "gud/go")
+		 ;; (realgud:cmd-stop-subjob . "gud/stop")
+		 (realgud:cmd-continue . "gud/cont")
+		 (realgud:cmd-until . "gud/until")
+		 (realgud:cmd-next . "gud/next")
+		 (realgud:cmd-step . "gud/step")
+		 (realgud:cmd-finish . "gud/finish")
+		 ;; (realgud:cmd-nexti . "gud/nexti")
+		 ;; (realgud:cmd-stepi . "gud/stepi")
+		 (realgud:cmd-older-frame . "gud/up")
+		 (realgud:cmd-newer-frame . "gud/down")
+		 (realgud:cmdbuf-info-describe . "info"))
+	       map)
+      (tool-bar-local-item-from-menu
+       (car x) (cdr x) map realgud-track-mode-map)))
+  "toolbar use when `realgud' interface is active"
+  )
 
 (define-minor-mode realgud-track-mode
   "Minor mode for tracking debugging inside a process shell."
@@ -90,16 +118,19 @@ of this mode."
 			    (realgud-loc-pat-regexp prompt-pat)))))
 	  (set-marker comint-last-output-start (point)))
 
+	(set (make-local-variable 'tool-bar-map) realgud:tool-bar-map)
 	(add-hook 'comint-output-filter-functions
 		  'realgud-track-comint-output-filter-hook)
 	(add-hook 'eshell-output-filter-functions
 		  'realgud-track-eshell-output-filter-hook)
 	(run-mode-hooks 'realgud-track-mode-hook))
+  ;; else
     (progn
       (if (and (boundp 'comint-last-output-start) realgud-cmdbuf-info)
 	(setq comint-prompt-regexp
 	   (realgud-sget 'cmdbuf-info 'prior-prompt-regexp))
 	)
+      (kill-local-variable 'realgud:tool-bar-map)
       (realgud-fringe-erase-history-arrows)
       (remove-hook 'comint-output-filter-functions
       		   'realgud-track-comint-output-filter-hook)

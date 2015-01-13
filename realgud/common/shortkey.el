@@ -23,23 +23,23 @@
     (define-key map "1"        'realgud-goto-arrow1)
     (define-key map "2"        'realgud-goto-arrow2)
     (define-key map "3"        'realgud-goto-arrow3)
-    (define-key map "b"        'realgud-cmd-break)
-    (define-key map "c"        'realgud-cmd-continue)
-    (define-key map "e"        'realgud-cmd-eval-region)
-    (define-key map "U"        'realgud-cmd-until)
+    (define-key map "b"        'realgud:cmd-break)
+    (define-key map "c"        'realgud:cmd-continue)
+    (define-key map "e"        'realgud:cmd-eval-region)
+    (define-key map "U"        'realgud:cmd-until)
 
     ;; FIXME: these can go to a common routine
-    (define-key map "<"        'realgud-cmd-newer-frame)
-    (define-key map ">"        'realgud-cmd-older-frame)
-    (define-key map "u"        'realgud-cmd-newer-frame)
-    (define-key map "d"        'realgud-cmd-older-frame)
+    (define-key map "<"        'realgud:cmd-newer-frame)
+    (define-key map ">"        'realgud:cmd-older-frame)
+    (define-key map "u"        'realgud:cmd-newer-frame)
+    (define-key map "d"        'realgud:cmd-older-frame)
     (define-key map "l"        'realgud-recenter-arrow)
     (define-key map "B"        'realgud:backtrace-init)
     (define-key map "C"        'realgud-window-cmd-undisturb-src)
     (define-key map "S"        'realgud-window-src-undisturb-cmd)
 
-    (define-key map "R"        'realgud-cmd-restart)
-    (define-key map "!"        'realgud-cmd-shell)
+    (define-key map "R"        'realgud:cmd-restart)
+    (define-key map "!"        'realgud:cmd-shell)
     (define-key map [insert]   'realgud-short-key-mode)
     (define-key map [(control x)(control q)] 'realgud-short-key-mode)
     map)
@@ -90,9 +90,13 @@ MODE-ON? a boolean which specifies if we are going into or out of this mode."
       ;; If there's a shortkey keymap that is custom
       ;; for this debugger mode, use it.
       (when shortkey-keymap
-	(if mode-on?
-	    (use-local-map shortkey-keymap)
-	  (use-local-map nil)
+	(cond
+	 (mode-on?
+	  (set (make-local-variable 'tool-bar-map) realgud:tool-bar-map)
+	  (use-local-map shortkey-keymap))
+	 ('t
+	  (kill-local-variable 'realgud:tool-bar-map)
+	  (use-local-map nil))
 	  ))
 
       ;; Ensure action only is performed when the state actually is toggled.

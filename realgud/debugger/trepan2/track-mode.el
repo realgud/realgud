@@ -58,6 +58,6 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
       ))
 )
 
-(define-key trepan2-short-key-mode-map "T" 'realgud-cmd-backtrace)
+(define-key trepan2-short-key-mode-map "T" 'realgud:cmd-backtrace)
 
 (provide-me "realgud:trepan2-")

@@ -1,4 +1,4 @@
-;;; Copyright (C) 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2014-2015 Rocky Bernstein <rocky@gnu.org>
 ;;; nodejs tracking a comint buffer.
 
 (eval-when-compile (require 'cl))
@@ -12,7 +12,7 @@
 		       "realgud-")
 (require-relative-list '("core" "init") "realgud:nodejs-")
 
-(declare-function realgud-cmd-remap          'realgud-cmds)
+(declare-function realgud:cmd-remap          'realgud-cmds)
 (declare-function realgud:track-set-debugger 'realgud-track-mode)
 (declare-function realgud-track-mode-setup   'realgud-track-mode)
 
@@ -61,22 +61,22 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
 (defun realgud:nodejs-set-break(arg)
   "Set a breakpoint at the current line"
   (interactive "p")
-  (realgud-cmd-remap arg "break" "setBreakpoint('%X',%l)" "b")
+  (realgud:cmd-remap arg "break" "setBreakpoint('%X',%l)" "b")
   )
 
 ;; ;; Debugger commands that nodejs doesn't have
 ;; (define-key nodejs-track-mode-map
-;;   [remap realgud-cmd-newer-frame] 'undefined)
+;;   [remap realgud:cmd-newer-frame] 'undefined)
 ;; (define-key nodejs-track-mode-map
-;;   [remap realgud-cmd-older-frame] 'undefined)
+;;   [remap realgud:cmd-older-frame] 'undefined)
 (define-key nodejs-short-key-mode-map
-  [remap realgud-cmd-step] 'realgud-cmd-step-no-arg)
+  [remap realgud:cmd-step] 'realgud:cmd-step-no-arg)
 (define-key nodejs-short-key-mode-map
-  [remap realgud-cmd-step] 'realgud-cmd-step-no-arg)
+  [remap realgud:cmd-step] 'realgud:cmd-step-no-arg)
 (define-key nodejs-short-key-mode-map
-  [remap realgud-cmd-next] 'realgud-cmd-next-no-arg)
+  [remap realgud:cmd-next] 'realgud:cmd-next-no-arg)
 (define-key nodejs-short-key-mode-map
-  [remap realgud-cmd-break] 'realgud:nodejs-set-break)
-(define-key nodejs-short-key-mode-map "T" 'realgud-cmd-backtrace)
+  [remap realgud:cmd-break] 'realgud:nodejs-set-break)
+(define-key nodejs-short-key-mode-map "T" 'realgud:cmd-backtrace)
 
 (provide-me "realgud:nodejs-")
