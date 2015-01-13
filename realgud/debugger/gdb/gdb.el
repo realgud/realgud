@@ -61,7 +61,6 @@ fringe and marginal icons.
 	  (cl-remove-if 'nil (list-utils-flatten parsed-args)))
 	 (cmd-buf (realgud:run-process realgud:gdb-command-name
 				       script-name parsed-cmd-args
-				       'realgud:gdb-track-mode-hook
 				       'realgud:gdb-minibuffer-history
 				       nil))
 	 )

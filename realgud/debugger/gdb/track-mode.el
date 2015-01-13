@@ -44,7 +44,8 @@ Key bindings:
   (if realgud:gdb-track-mode
       (progn
 	(realgud:track-set-debugger "gdb")
-        (realgud:gdb-track-mode-hook))
+        (realgud:gdb-track-mode-hook)
+        (realgud:track-mode-enable))
     (progn
       (setq realgud-track-mode nil)
       ))

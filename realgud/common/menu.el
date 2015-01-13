@@ -126,14 +126,14 @@ menu. (The common map typically contains function key bindings.)"
 
     (define-key debugger-map [menu-bar debugger line1] '(menu-item "--"))
 
-    (define-key debugger-map [up]
-      (realgud-menu-item debugger-map "Up Stack" 'realgud-cmd-newer-frame
+    (define-key debugger-map [down]
+      (realgud-menu-item debugger-map "Down Stack" 'realgud-cmd-newer-frame
 			 :enable '(realgud-get-process)
 			 :help (documentation 'realgud-cmd-newer-frame)
 			 ))
 
-    (define-key debugger-map [down]
-      (realgud-menu-item debugger-map "Down Stack" 'realgud-cmd-older-frame
+    (define-key debugger-map [up]
+      (realgud-menu-item debugger-map "Up Stack" 'realgud-cmd-older-frame
 			 :enable '(realgud-get-process)
 			 :help (documentation 'realgud-cmd-older-frame)
 			 ))
