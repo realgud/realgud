@@ -1,18 +1,19 @@
 ;;; Copyright (C) 2010-2015 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
-(require-relative-list '("custom" "helper" "key" "menu") "realgud-")
+(require-relative-list '("custom" "helper" "key" "lochist" "menu")
+		       "realgud-")
 (require-relative-list '("buffer/command" "buffer/helper" "buffer/source")
 		       "realgud-buffer-")
 
-(declare-function realgud-cmdbuf?                    'realgud-buffer-command)
+(declare-function realgud-cmdbuf?                       'realgud-buffer-command)
 (declare-function realgud:debugger-name-transform       'realgud-helper)
-(declare-function realgud-get-cmdbuf                  'realgud-buffer-helper)
+(declare-function realgud-get-cmdbuf                    'realgud-buffer-helper)
 (declare-function realgud-populate-debugger-menu        'realgud-menu)
 (declare-function realgud-populate-common-keys          'realgud-key)
 (declare-function realgud-populate-src-buffer-map-plain 'realgud-key)
 (declare-function realgud-srcbuf-info-short-key?=,      'realgud-source)
 (declare-function realgud-srcbuf-info-was-read-only?=   'realgud-source)
-(declare-function realgud-srcbuf?                     'realgud-buffer-source)
+(declare-function realgud-srcbuf?                       'realgud-buffer-source)
 
 (defvar realgud:shortkey-mode-map
   (let ((map (make-sparse-keymap)))
@@ -23,6 +24,12 @@
     (define-key map "1"        'realgud-goto-arrow1)
     (define-key map "2"        'realgud-goto-arrow2)
     (define-key map "3"        'realgud-goto-arrow3)
+    (define-key map "4"        'realgud:goto-loc-hist-4)
+    (define-key map "5"        'realgud:goto-loc-hist-5)
+    (define-key map "6"        'realgud:goto-loc-hist-6)
+    (define-key map "7"        'realgud:goto-loc-hist-7)
+    (define-key map "8"        'realgud:goto-loc-hist-8)
+    (define-key map "9"        'realgud:goto-loc-hist-9)
     (define-key map "b"        'realgud:cmd-break)
     (define-key map "c"        'realgud:cmd-continue)
     (define-key map "e"        'realgud:cmd-eval-region)
@@ -31,8 +38,8 @@
     ;; FIXME: these can go to a common routine
     (define-key map "<"        'realgud:cmd-newer-frame)
     (define-key map ">"        'realgud:cmd-older-frame)
-    (define-key map "u"        'realgud:cmd-newer-frame)
-    (define-key map "d"        'realgud:cmd-older-frame)
+    (define-key map "d"        'realgud:cmd-newer-frame)
+    (define-key map "u"        'realgud:cmd-older-frame)
     (define-key map "l"        'realgud-recenter-arrow)
     (define-key map "B"        'realgud:backtrace-init)
     (define-key map "C"        'realgud-window-cmd-undisturb-src)
@@ -152,6 +159,49 @@ C-a)."
     (realgud-populate-debugger-menu map)
     (realgud-populate-src-buffer-map-plain prefix-map)
     (define-key map realgud-key-prefix prefix-map)))
+
+(defun realgud:goto-loc-hist(num)
+  "Go to position nth from the newest position."
+  (let ((cmdbuf (realgud-get-cmdbuf)))
+    (if cmdbuf
+      (let* ((loc-hist (realgud-cmdbuf-loc-hist cmdbuf))
+	    (loc (realgud-loc-hist-item-at loc-hist (- num)))
+	    (loc-marker (realgud-loc-marker loc)))
+	(switch-to-buffer (marker-buffer loc-marker))
+	(goto-char loc-marker))
+      ;; else
+	(message "No command buffer associated with this buffer")
+    )))
+
+
+(defun realgud:goto-loc-hist-4 ()
+  "Go to position 4th from the newest position."
+  (interactive "")
+  (realgud:goto-loc-hist 4))
+
+(defun realgud:goto-loc-hist-5 ()
+  "Go to position 5th from the newest position."
+  (interactive "")
+  (realgud:goto-loc-hist 5))
+
+(defun realgud:goto-loc-hist-6 ()
+  (interactive "")
+  (realgud:goto-loc-hist 6))
+
+(defun realgud:goto-loc-hist-7 ()
+  "Go to position 7th from the newest position."
+  (interactive "")
+  (realgud:goto-loc-hist 7))
+
+(defun realgud:goto-loc-hist-8 ()
+  "Go to position 8th from the newest position."
+  (interactive "")
+  (realgud:goto-loc-hist 8))
+
+(defun realgud:goto-loc-hist-9 ()
+  "Go to position 9th from the newest position."
+  (interactive "")
+  (realgud:goto-loc-hist 9))
 
 (provide-me "realgud-")
 

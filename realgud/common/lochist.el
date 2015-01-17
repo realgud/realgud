@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2012, 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2012, 2014-2015 Rocky Bernstein <rocky@gnu.org>
 ;;; Debugger location ring
 ;;; Commentary:
 
