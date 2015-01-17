@@ -6,7 +6,7 @@
 
 (declare-function realgud-cmdbuf-init 'realgud-buffer-command)
 (declare-function realgud-srcbuf-init 'realgud-buffer-source)
-(declare-function __FILE__            'require-relative)
+(declare-function __FILE__            'load-relative)
 
 (declare-function realgud-srcbuf?                   'realgud-buffer-source)
 (declare-function realgud-srcbuf-loc-p              'realgud-loc)

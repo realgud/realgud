@@ -2,7 +2,7 @@
 (require 'load-relative)
 (load-file "../realgud/debugger/rdebug/rdebug.el")
 (declare-function rdebug-get-script-name 'realgud-rdebug)
-(declare-function __FILE__               'require-relative)
+(declare-function __FILE__               'load-relative)
 (test-simple-start)
 
 (note "rdebug-get-script-name")

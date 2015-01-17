@@ -3,7 +3,7 @@
 
 (declare-function realgud:perldb-parse-cmd-args 'realgud:perldb)
 (declare-function realgud:perldb        'realgud:perldb)
-(declare-function __FILE__              'require-relative)
+(declare-function __FILE__              'load-relative)
 
 (declare-function realgud-perldb-parse-cmd-args 'realgud-perldb)
 (test-simple-start)

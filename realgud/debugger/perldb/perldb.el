@@ -55,7 +55,7 @@ fringe and marginal icons.
   (realgud:run-debugger "perldb"
 			'realgud:perldb-query-cmdline
 			'realgud:perldb-parse-cmd-args
-			'perldb-minibuffer-history
+			'realgud:perldb-minibuffer-history
 			opt-cmd-line no-reset))
 
 (defalias 'perl5db 'realgud:perldb)

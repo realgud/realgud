@@ -4,7 +4,7 @@
 (load-file "../realgud/debugger/trepan2/init.el")
 
 (declare-function setup-bt 'realgud-bt-helper)
-(declare-function __FILE__ 'require-relative)
+(declare-function __FILE__ 'load-relative)
 
 (test-simple-start)
 

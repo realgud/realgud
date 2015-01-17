@@ -3,7 +3,7 @@
 (load-file "../realgud/debugger/jdb/core.el")
 (test-simple-start)
 
-(declare-function __FILE__  'require-relative)
+(declare-function __FILE__  'load-relative)
 (declare-function realgud:jdb-parse-cmd-args 'realgud:jdb-core)
 (declare-function realgud:jdb-dot-to-slash   'realgud:jdb-core)
 

@@ -2,7 +2,7 @@
 (load-file "../realgud/common/buffer/source.el")
 (load-file "../realgud/common/loc.el")
 
-(declare-function __FILE__                    'require-relative)
+(declare-function __FILE__                    'load-relative)
 (declare-function make-realgud-loc            'realgud-loc)
 (declare-function realgud-loc-cmd-marker      'realgud-loc)
 (declare-function realgud-loc-line-number     'realgud-loc)

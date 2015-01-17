@@ -1,7 +1,7 @@
 (require 'test-simple)
 (load-file "../realgud/debugger/remake/core.el")
 
-(declare-function __FILE__ 'require-relative)
+(declare-function __FILE__ 'load-relative)
 (declare-function remake-parse-cmd-args        'realgud-remake-core)
 (declare-function remake-suggest-Makefile      'realgud-remake-core)
 (declare-function remake-suggest-file-priority 'realgud-remake-core)

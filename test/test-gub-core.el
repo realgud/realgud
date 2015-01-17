@@ -1,7 +1,7 @@
 (require 'test-simple)
 (load-file "../realgud/debugger/gub/core.el")
 
-(declare-function __FILE__ 'require-relative)
+(declare-function __FILE__ 'load-relative)
 (declare-function gub-parse-cmd-args 'realgud-gub-core)
 
 (test-simple-start)

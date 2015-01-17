@@ -4,7 +4,7 @@
 (load-file "../realgud/debugger/gdb/init.el")
 (load-file "./regexp-helper.el")
 
-(declare-function __FILE__              'require-relative)
+(declare-function __FILE__              'load-relative)
 
 (test-simple-start)
 

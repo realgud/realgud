@@ -2,7 +2,7 @@
 (load-file "../realgud/debugger/pdb/init.el")
 (load-file "./regexp-helper.el")
 
-(declare-function __FILE__              'require-relative)
+(declare-function __FILE__              'load-relative)
 (declare-function prompt-match          'regexp-helper)
 
 (test-simple-start)

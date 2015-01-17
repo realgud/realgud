@@ -5,7 +5,7 @@
 
 (declare-function nodejs-parse-cmd-args 'realgud:nodejs)
 (declare-function nodejs                'realgud:nodejs)
-(declare-function __FILE__              'require-relative)
+(declare-function __FILE__              'load-relative)
 
 (test-simple-start)
 

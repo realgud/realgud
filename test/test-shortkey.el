@@ -14,7 +14,7 @@
   (defvar nodejs-short-key-mode-map)
 )
 
-(declare-function __FILE__           'require-relative)
+(declare-function __FILE__           'load-relative)
 
 (test-simple-start)
 

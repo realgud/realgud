@@ -13,7 +13,7 @@
 (declare-function realgud-cmdbuf-info-line-group 'realgud-regexp)
 (declare-function realgud-cmdbuf-info            'realgud-regexp)
 (declare-function make-realgud-cmdbuf-info       'realgud-regexp)
-(declare-function __FILE__                       'require-relative)
+(declare-function __FILE__                       'load-relative)
 
 (test-simple-start)
 

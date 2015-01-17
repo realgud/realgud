@@ -4,7 +4,7 @@
 (declare-function realgud:loaded-features    'realgud)
 (declare-function realgud:unload-features    'realgud-regexp)
 (declare-function realgud-string-starts-with 'realgud-regexp)
-(declare-function __FILE__                   'require-relative)
+(declare-function __FILE__                   'load-relative)
 
 (test-simple-start)
 

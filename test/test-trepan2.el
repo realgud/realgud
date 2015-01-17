@@ -5,7 +5,7 @@
 
 (declare-function trepan2-parse-cmd-args    'realgud:trepan2)
 (declare-function realgud:trepan2-find-file 'realgud:trepan2-core)
-(declare-function __FILE__                  'require-relative)
+(declare-function __FILE__                  'load-relative)
 
 
 (test-simple-start)

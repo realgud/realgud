@@ -5,7 +5,7 @@
 (load-file "../realgud/debugger/trepan/core.el")
 (load-file "../realgud/debugger/trepan/init.el")
 
-(declare-function __FILE__                     'require-relative)
+(declare-function __FILE__                     'load-relative)
 (declare-function realgud-cmdbuf-init          'realgud-buffer-command)
 (declare-function realgud-loc-filename         'realgud-loc)
 (declare-function realgud-loc-p                'realgud-loc)

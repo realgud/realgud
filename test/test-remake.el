@@ -5,7 +5,7 @@
 (eval-when-compile (defvar my-buf))
 
 (declare-function realgud:remake        'realgud:remake)
-(declare-function __FILE__              'require-relative)
+(declare-function __FILE__              'load-relative)
 
 (test-simple-start)
 

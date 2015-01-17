@@ -6,7 +6,7 @@
 
 (declare-function pdb-parse-cmd-args 'realgud:pdb-core)
 (declare-function realgud:pdb        'realgud:pdb)
-(declare-function __FILE__           'require-relative)
+(declare-function __FILE__           'load-relative)
 
 (test-simple-start)
 

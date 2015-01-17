@@ -15,7 +15,7 @@
 (declare-function bashdb-parse-cmd-args 'realgud:bashdb)
 (declare-function bashdb-suggest-invocation 'realgud:bzshdb)
 (declare-function realgud:bashdb        'realgud:bashdb)
-(declare-function __FILE__              'require-relative)
+(declare-function __FILE__              'load-relative)
 
 (test-simple-start)
 (make-local-variable 'realgud:bashdb-minibuffer-history)

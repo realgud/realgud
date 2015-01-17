@@ -2,7 +2,7 @@
 (require 'load-relative)
 (load-file "../realgud/debugger/pydbgr/pydbgr.el")
 (declare-function pydbgr-parse-cmd-args 'pydbgr-pdb)
-(declare-function __FILE__              'require-relative)
+(declare-function __FILE__              'load-relative)
 
 (test-simple-start)
 

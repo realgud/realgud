@@ -18,18 +18,22 @@ realgud-loc-pat struct")
 (declare-function make-realgud-loc "realgud-loc" (a b c d e f))
 
 ;; Regular expression that describes a perldb location generally shown
-;; before a command prompt.
+;; before a command prompt. We include matching the source text so we
+;; can save that.
 ;;
 ;; Program-location lines look like this:
+;;  File::Basename::dirname(/usr/share/perl/5.16.0/File/Basename.pm:284):
+;;  284:	    my $path = shift;
+;;
 ;;   main::(/usr/bin/latex2html:102):
-;;   main::CODE(0x9407ac8)(l2hconf.pm:6):
 ;; or MS Windows:
 ;;   ???
 (setf (gethash "loc" realgud:perldb-pat-hash)
       (make-realgud-loc-pat
-       :regexp "\\(?:CODE(0x[0-9a-h]+)\\)?(\\(.+\\):\\(\[0-9]+\\)):"
+       :regexp "\\(?:CODE(0x[0-9a-h]+)\\)?(\\(.+\\):\\(\[0-9]+\\)):\\(?:\n[0-9]+:\t\\(.*?\\)\n\\)?"
        :file-group 1
-       :line-group 2))
+       :line-group 2
+       :text-group 3))
 
 ;; perldb debugger prompt.
 ;; Examples:

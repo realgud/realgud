@@ -15,7 +15,7 @@
 (declare-function realgud-suggest-lang-file 'realgud-lang)
 (declare-function realgud:suggest-file-from-buffer 'realgud-lang)
 (declare-function realgud-lang-mode? 'realgud-lang)
-(declare-function __FILE__           'require-relative)
+(declare-function __FILE__           'load-relative)
 
 (note "realgud-lang-mode?")
 

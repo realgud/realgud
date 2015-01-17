@@ -1,9 +1,10 @@
 (require 'test-simple)
 (load-file "../realgud/common/buffer/command.el")
+(load-file "../realgud/lang/perl.el")
 (load-file "../realgud/debugger/perldb/init.el")
 (load-file "./regexp-helper.el")
 
-(declare-function __FILE__              'require-relative)
+(declare-function __FILE__              'load-relative)
 (declare-function prompt-match          'regexp-helper)
 
 (test-simple-start)
@@ -11,12 +12,20 @@
 (eval-when-compile
   (defvar dbg-name)
   (defvar realgud:perldb-pat-hash)
+  (defvar realgud-pat-hash)
   (defvar panic-tb)
   (defvar loc-pat)
   (defvar pos)
   (defvar prompt-pat)
   (defvar test-dbgr)
+  (defvar carp-bt-re)
+  (defvar file-group)
+  (defvar line-group)
   (defvar test-text)
+  (defvar lang-bt-pat)
+  (defvar lang-bt-re)
+  (defvar realgud-bt-pat)
+  (defvar realgud-perl-ignnore-file-re)
 )
 
 ; Some setup usually done in setting up the buffer.
@@ -28,11 +37,13 @@
 (set (make-local-variable 'prompt-pat)
      (gethash "prompt" realgud:perldb-pat-hash))
 
-(setq dbgr (make-realgud-cmdbuf-info
-		  :debugger-name dbg-name
-		  :loc-regexp (realgud-loc-pat-regexp loc-pat)
-		  :file-group (realgud-loc-pat-file-group loc-pat)
-		  :line-group (realgud-loc-pat-line-group loc-pat)))
+(setq test-dbgr (make-realgud-cmdbuf-info
+		 :debugger-name dbg-name
+		 :loc-regexp (realgud-loc-pat-regexp loc-pat)
+		 :file-group (realgud-loc-pat-file-group loc-pat)
+		 :line-group (realgud-loc-pat-line-group loc-pat)
+		 :text-group (realgud-loc-pat-text-group loc-pat)
+		 ))
 
 (note "prompt")
 (prompt-match "  DB<2> "  "2")
@@ -44,30 +55,51 @@
 
 (setq test-text "main::(/usr/bin/latex2html:102):")
 
-(assert-t (numberp (cmdbuf-loc-match test-text dbgr)) "basic location")
+(assert-t (numberp (cmdbuf-loc-match test-text test-dbgr)) "basic location")
 (assert-equal "/usr/bin/latex2html"
-	      (match-string (realgud-cmdbuf-info-file-group dbgr) test-text)
+	      (match-string (realgud-cmdbuf-info-file-group test-dbgr)
+			    test-text)
 	      "extract file name")
+
+(setq test-text "File::Basename::dirname(/usr/share/perl/5.16.0/File/Basename.pm:284):
+284:	    my $path = shift;
+")
+
+(assert-t (numberp (cmdbuf-loc-match test-text test-dbgr))
+	  "location with source")
+(assert-equal "/usr/share/perl/5.16.0/File/Basename.pm"
+	      (match-string (realgud-cmdbuf-info-file-group test-dbgr)
+			    test-text)
+	      "extract file name when we have source text")
+(assert-equal "284"
+	      (match-string (realgud-cmdbuf-info-line-group test-dbgr)
+			    test-text)
+	      "extract line number when we have source text")
+(assert-equal "    my $path = shift;"
+	      (match-string (realgud-cmdbuf-info-text-group test-dbgr)
+			    test-text)
+	      "extract source text")
 
 (setq test-text "main::((eval 6)[eval.pl:5]:2):	$x = 2;")
 
-(assert-t (numberp (cmdbuf-loc-match test-text dbgr)) "eval location")
+(assert-t (numberp (cmdbuf-loc-match test-text test-dbgr)) "eval location")
 (assert-equal "(eval 6)[eval.pl:5]"
-	      (match-string (realgud-cmdbuf-info-file-group dbgr) test-text)
+	      (match-string (realgud-cmdbuf-info-file-group test-dbgr)
+			    test-text)
 	      "extract file name")
 
 (assert-equal "2"
-	      (match-string (realgud-cmdbuf-info-line-group dbgr)
+	      (match-string (realgud-cmdbuf-info-line-group test-dbgr)
 			    test-text) "extract line number")
 
 (note "location for with CODE in it")
 (setq test-text "main::CODE(0x9407ac8)(l2hconf.pm:6):")
-(assert-t (numberp (cmdbuf-loc-match test-text dbgr)))
+(assert-t (numberp (cmdbuf-loc-match test-text test-dbgr)))
 (assert-equal "l2hconf.pm"
-	      (match-string (realgud-cmdbuf-info-file-group dbgr)
+	      (match-string (realgud-cmdbuf-info-file-group test-dbgr)
 			    test-text))
 (assert-equal "6"
-	      (match-string (realgud-cmdbuf-info-line-group dbgr)
+	      (match-string (realgud-cmdbuf-info-line-group test-dbgr)
 			    test-text))
 
 (note "debugger-backtrace")

@@ -4,7 +4,7 @@
 
 ;; Note the below line number is tested so it must match what's listed
 ;; below.
-(declare-function __FILE__                     'require-relative)
+(declare-function __FILE__                     'load-relative)
 
 (declare-function realgud-file-loc-from-line   'realgud-file)
 (declare-function realgud:file-line-count      'realgud-file)

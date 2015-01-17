@@ -17,16 +17,27 @@
 backtrace, prompt, etc.  The values of a hash entry is a
 realgud-loc-pat struct")
 
-;; Regular expression that describes a trepanpl location generally shown
-;; before a command prompt.
-;; For example:
-;; -- main::(/tmp/linecache.pl:64)
+;; Regular expression that describes a trepan.pl location generally shown
+;; before a command prompt. We include matching the source text so we
+;; can save that.
+;;
+;; Program-location lines look like this:
 ;; -- File::Basename::(/usr/share/perl/5.14/File/Basename.pm:284 @0x8918b70)
+;; my $dirname = dirname(__FILE__);
+;;
+;; or for an eval'd expression:
+;; -- main::((eval 1189)[/tmp/test.pl:2] remapped /tmp/JLlH.pl:1 @0xadcbda0)
+;; $x = 1 + 2;
+;;
+;; or at a function call without the Perl OpCode position or source text:
+;; -> main::(example/gcd.pl:8)
+
 (setf (gethash "loc" realgud:trepanpl-pat-hash)
       (make-realgud-loc-pat
-       :regexp ".. \\(?:.+::\\)?(\\(?:.+ \\(?:via\\|remapped\\) \\)?\\(.+\\):\\([0-9]+\\)\\(?: @0x[0-9a-f]+\\)?)"
+       :regexp ".. \\(?:.+::\\)?(\\(?:.+ \\(?:via\\|remapped\\) \\)?\\(.+\\):\\([0-9]+\\)\\(?: @0x[0-9a-f]+\\)?)\\(?:\n\\(.*?\\)\n\\)?"
        :file-group 1
        :line-group 2
+       :text-group 3
        :ignore-file-re  realgud-perl-ignore-file-re)
       )
 

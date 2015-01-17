@@ -9,7 +9,7 @@
 (declare-function realgud-loc-pat-regexp         'realgud-regexp)
 (declare-function realgud-loc-pat-file-group     'realgud-regexp)
 (declare-function realgud-loc-pat-line-group     'realgud-regexp)
-(declare-function __FILE__                       'require-relative)
+(declare-function __FILE__                       'load-relative)
 
 (test-simple-start)
 

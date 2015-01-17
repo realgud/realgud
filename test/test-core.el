@@ -1,7 +1,7 @@
 (require 'test-simple)
 (eval-when-compile (defvar trepan-core))
 
-(declare-function __FILE__ 'require-relative)
+(declare-function __FILE__ 'load-relative)
 (setq trepan-core "../realgud/debugger/trepan/core.el")
 (load-file "../realgud/common/core.el")
 
