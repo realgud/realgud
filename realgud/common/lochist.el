@@ -56,16 +56,24 @@ component in LOC-HIST"
    loc-hist
    (realgud-loc-hist-position loc-hist)))
 
-(defun realgud-loc-hist-add(loc-hist item)
+(defun realgud-loc-hist-add(loc-hist loc)
   "Add FRAME to LOC-HIST"
   ;; Switching frames shouldn't save a new ring
   ;; position. Also make sure no position is different.
   ;; Perhaps duplicates should be controlled by an option.
-  (let* ((ring (realgud-loc-hist-ring loc-hist)))
-    ;;(unless (equal (realgud-loc-hist-item loc-hist) item)
+  (let* ((ring (realgud-loc-hist-ring loc-hist))
+	 (old-loc (realgud-loc-hist-item loc-hist)))
+    (unless (and
+	     old-loc
+	     (equal (realgud-loc-filename old-loc)
+		    (realgud-loc-filename loc))
+	     (equal (realgud-loc-line-number old-loc)
+		    (realgud-loc-line-number loc))
+	     (equal (realgud-loc-column-number old-loc)
+		    (realgud-loc-column-number old-loc)))
       (setf (realgud-loc-hist-position loc-hist) 0)
-      (ring-insert ring item)
-    ;;)
+      (ring-insert ring loc)
+    )
     ))
 
 (defun realgud-loc-hist-clear(loc-hist)
