@@ -42,12 +42,20 @@ without buffer properties."
   (buffer-substring-no-properties (point-at-bol)
 				  (point-at-eol)))
 
-(defun realgud:follow-link(event)
+(defun realgud:loc-follow(mark)
+  (when (markerp mark)
+    (let ((buffer (marker-buffer mark)))
+      (bury-buffer buffer)
+      (set-buffer buffer)
+      (goto-char mark)
+      (display-buffer buffer)
+    )))
+
+(defun realgud:loc-follow-event(event)
   (interactive "e")
   (let* ((pos (posn-point (event-end event)))
-	 (loc (get-text-property pos 'loc)))
-    (if (realgud-loc-p loc)
-	(realgud-loc-goto loc))))
+	 (mark (get-text-property pos 'mark)))
+    (realgud:loc-follow mark)))
 
 (defun realgud:follow-file(event)
   (interactive "e")
@@ -63,18 +71,13 @@ Information is put in an internal buffer called *Describe*."
   (switch-to-buffer (get-buffer-create "*Describe*"))
   (let ((link-start) (link-end) (map) (filename))
     (insert "    filename     : ")
-    (setq link-start (point))
     (setq filename (realgud-loc-filename loc))
-    (insert filename)
-    (setq link-end (point))
-    (add-text-properties
-     link-start link-end
-     '(mouse-face highlight
-  		  help-echo "mouse-2: visit this file"))
-    (setq map (make-sparse-keymap))
-    (define-key map [mouse-2] 'realgud:follow-file)
-    (put-text-property link-start link-end 'keymap map)
-    (put-text-property link-start link-end 'file filename)
+    (put-text-property
+     (insert-text-button filename
+			 'action 'realgud:follow-file
+			 'help-echo "mouse-2: visit this file")
+     (point)
+     'file filename)
     (insert "\n")
     (mapc 'insert
 	  (list
@@ -85,30 +88,20 @@ Information is put in an internal buffer called *Describe*."
 	   ))
     ;; Make locations clickable
     (insert "    source marker: ")
-    (setq link-start (point))
-    (insert (format "%s" (realgud-loc-marker loc)))
-    (setq link-end (point))
-    (add-text-properties
-     link-start link-end
-     '(mouse-face highlight
-  		  help-echo "mouse-2: go to this location"))
-    (setq map (make-sparse-keymap))
-    (define-key map [mouse-2] 'realgud:follow-link)
-    (define-key map [follow-link] 'mouse-face)
-    (put-text-property link-start link-end 'keymap map)
-    (put-text-property link-start link-end 'loc loc)
+    (put-text-property
+     (insert-text-button (format "%s" (realgud-loc-marker loc))
+			 'action 'realgud:loc-follow-event
+			 'help-echo "mouse-2: go to this source location")
+     (point)
+     'mark (realgud-loc-marker loc))
+
     (insert "\n    cmdbuf marker: ")
-    (setq link-start (point))
-    (insert (format "%s" (realgud-loc-cmd-marker loc)))
-    (setq link-end (point))
-    (add-text-properties
-     link-start link-end
-     '(mouse-face highlight
-    		  help-echo "mouse-2: go to this location"))
-    (setq map (make-sparse-keymap))
-    (define-key map [mouse-2] 'realgud:follow-link)
-    (define-key map [return] 'realgud:follow-link)
-    (put-text-property link-start link-end 'keymap map)
+    (put-text-property
+     (insert-text-button (format "%s" (realgud-loc-cmd-marker loc))
+			 'action 'realgud:loc-follow-event
+			 'help-echo "mouse-2: go to this command-buffer location")
+     (point)
+     'mark (realgud-loc-cmd-marker loc))
     (insert "\n")
     )
   )
@@ -171,7 +164,8 @@ the source-code buffer, is returned. Otherwise, nil is returned."
 		(setq use-marker 't)
 		(let ((current-text (realgud:buffer-line-no-props))
 		      (loc-text (realgud-loc-source-text loc)))
-		  (unless (equal (realgud:strip current-text) (realgud:strip loc-text))
+		  (unless (and loc-text
+			       (equal (realgud:strip current-text) (realgud:strip loc-text)))
 		    (loc-changes-goto line-number)
 		    (setq current-text (realgud:buffer-line-no-props))
 		    (when (equal current-text loc-text)

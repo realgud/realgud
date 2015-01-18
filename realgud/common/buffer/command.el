@@ -1,6 +1,7 @@
 ;;; process-command buffer things
-;;; Copyright (C) 2010-2012, 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2012, 2014-2015 Rocky Bernstein <rocky@gnu.org>
 
+(require 'markdown-mode)
 (require 'load-relative)
 (require 'json)
 (require-relative-list
@@ -98,6 +99,26 @@
 (realgud-struct-field-setter "realgud-cmdbuf-info" "in-debugger?")
 (realgud-struct-field-setter "realgud-cmdbuf-info" "callback-loc-fn")
 
+(defun realgud:cmdbuf-follow-buffer(event)
+  (interactive "e")
+  (let* ((pos (posn-point (event-end event)))
+	 (buffer (get-text-property pos 'buffer)))
+    (find-file-other-window (buffer-file-name buffer))))
+
+(defun realgud:cmdbuf-buffers-describe (buffer-list)
+  (insert "Source Buffers Seen\n-------------------\n\n")
+  (dolist (buffer buffer-list)
+    (insert "* ")
+    (put-text-property
+     (insert-text-button
+      (buffer-name buffer)
+      'action 'realgud:cmdbuf-follow-buffer
+      'help-echo "mouse-2: visit this file")
+     (point)
+     'buffer buffer)
+    (insert "\n")
+    ))
+
 (defun realgud:cmdbuf-info-describe (&optional buffer)
   "Display realgud-cmdcbuf-info fields of BUFFER.
 BUFFER is either a debugger command or source buffer. If BUFFER is not given
@@ -110,33 +131,38 @@ Information is put in an internal buffer called *Describe*."
 	(let ((info realgud-cmdbuf-info)
 	      (cmdbuf-name (buffer-name)))
 	  (switch-to-buffer (get-buffer-create "*Describe*"))
+	  (markdown-mode)
+	  (setq buffer-read-only 'nil)
 	  (delete-region (point-min) (point-max))
 	  (mapc 'insert
 		(list
-		 (format "realgud-cmdbuf-info for %s\n\n" cmdbuf-name)
-		 (format "Debugger name (debugger-name):\t%s\n"
+		 (format "realgud-cmdbuf-info for %s\n===========================\n\n"
+			 cmdbuf-name)
+		 (format "_Debugger name_ (`debugger-name`):\t%s\n"
 			 (json-encode (realgud-cmdbuf-info-debugger-name info)))
-		 (format "Command-line args (cmd-args):\t%s\n"
+		 (format "_Command-line args_ (`cmd-args`):\t%s\n"
 			 (json-encode (realgud-cmdbuf-info-cmd-args info)))
-		 (format "Selected window should contain source? (in-srcbuf?): %s\n"
+		 (format "_Selected window should contain source?_ (`in-srcbuf?`): %s\n"
 			 (realgud-cmdbuf-info-in-srcbuf? info))
-		 (format "Last input end:\t%s\n"
+		 (format "_Last input end_:\t%s\n"
 			 (realgud-cmdbuf-info-last-input-end info))
-		 (format "Source should go into short-key mode? (src-shortkey?): %s\n"
+		 (format "\n_Source should go into short-key mode?_ (`src-shortkey?`): %s\n"
 			 (realgud-cmdbuf-info-src-shortkey? info))
-		 (format "Breakpoint list (bp-list):\t %s\n"
+		 (format "_Breakpoint list_ (`bp-list`):\t %s\n"
 			 (realgud-cmdbuf-info-bp-list info))
-		 (format "Remap table for debugger commands: %s\n"
+		 (format "_Remap table for debugger commands_:\n\t%s\n"
 			 (json-encode (realgud-cmdbuf-info-cmd-hash info)))
-		 (format "Source buffers seen (srcbuf-list): %s\n"
-			 (realgud-cmdbuf-info-srcbuf-list info))
-		 (format "Backtrace buffer (bt):\t%s\n"
+		 (format "\n_Backtrace buffer_ (`bt`):\t%s\n"
 			 (realgud-cmdbuf-info-bt-buf info))
-		 (format "In debugger? (in-debugger?):\t%s\n"
+		 (format "_In debugger?_ (`in-debugger?`):\t%s\n"
 			 (realgud-cmdbuf-info-in-debugger? info))
 		 ))
+	  (insert "\n")
+	  (realgud:cmdbuf-buffers-describe (realgud-cmdbuf-info-srcbuf-list info))
+	  (insert "\n")
 	  (realgud:loc-hist-describe (realgud-cmdbuf-info-loc-hist info))
-	  (read-only-mode)
+	  (goto-char (point-min))
+	  (setq buffer-read-only 't)
 	  )
 	)
     (message "Buffer %s is not a debugger source or command buffer; nothing done."
