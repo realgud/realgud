@@ -136,6 +136,7 @@ Information is put in an internal buffer called *Describe*."
 			 (realgud-cmdbuf-info-in-debugger? info))
 		 ))
 	  (realgud:loc-hist-describe (realgud-cmdbuf-info-loc-hist info))
+	  (read-only-mode)
 	  )
 	)
     (message "Buffer %s is not a debugger source or command buffer; nothing done."

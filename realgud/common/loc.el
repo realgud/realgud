@@ -42,22 +42,77 @@ without buffer properties."
   (buffer-substring-no-properties (point-at-bol)
 				  (point-at-eol)))
 
+(defun realgud:follow-link(event)
+  (interactive "e")
+  (let* ((pos (posn-point (event-end event)))
+	 (loc (get-text-property pos 'loc)))
+    (if (realgud-loc-p loc)
+	(realgud-loc-goto loc))))
+
+(defun realgud:follow-file(event)
+  (interactive "e")
+  (let* ((pos (posn-point (event-end event)))
+	 (filename (get-text-property pos 'file)))
+    (if (stringp filename)
+	(find-file-other-window filename))))
+
 (defun realgud:loc-describe (loc)
   "Display realgud-cmdcbuf-info.
 Information is put in an internal buffer called *Describe*."
   (interactive "")
   (switch-to-buffer (get-buffer-create "*Describe*"))
-  (mapc 'insert
-	(list
-	 (format "    num          : %s\n" (realgud-loc-num loc))
-	 (format "    filename     : %s\n" (realgud-loc-filename loc))
-	 (format "    line number  : %s\n" (realgud-loc-line-number loc))
-	 (format "    column number: %s\n" (realgud-loc-column-number loc))
-	 (format "    source text  : %s\n" (realgud-loc-source-text loc))
-	 (format "    source marker: %s\n" (realgud-loc-marker loc))
-	 (format "    cmdbuf marker: %s\n" (realgud-loc-cmd-marker loc))
-	 ))
+  (let ((link-start) (link-end) (map) (filename))
+    (insert "    filename     : ")
+    (setq link-start (point))
+    (setq filename (realgud-loc-filename loc))
+    (insert filename)
+    (setq link-end (point))
+    (add-text-properties
+     link-start link-end
+     '(mouse-face highlight
+  		  help-echo "mouse-2: visit this file"))
+    (setq map (make-sparse-keymap))
+    (define-key map [mouse-2] 'realgud:follow-file)
+    (put-text-property link-start link-end 'keymap map)
+    (put-text-property link-start link-end 'file filename)
+    (insert "\n")
+    (mapc 'insert
+	  (list
+	   (format "    line number  : %s\n" (realgud-loc-line-number loc))
+	   (format "    brkpt num    : %s\n" (realgud-loc-num loc))
+	   (format "    column number: %s\n" (realgud-loc-column-number loc))
+	   (format "    source text  : %s\n" (realgud-loc-source-text loc))
+	   ))
+    ;; Make locations clickable
+    (insert "    source marker: ")
+    (setq link-start (point))
+    (insert (format "%s" (realgud-loc-marker loc)))
+    (setq link-end (point))
+    (add-text-properties
+     link-start link-end
+     '(mouse-face highlight
+  		  help-echo "mouse-2: go to this location"))
+    (setq map (make-sparse-keymap))
+    (define-key map [mouse-2] 'realgud:follow-link)
+    (define-key map [follow-link] 'mouse-face)
+    (put-text-property link-start link-end 'keymap map)
+    (put-text-property link-start link-end 'loc loc)
+    (insert "\n    cmdbuf marker: ")
+    (setq link-start (point))
+    (insert (format "%s" (realgud-loc-cmd-marker loc)))
+    (setq link-end (point))
+    (add-text-properties
+     link-start link-end
+     '(mouse-face highlight
+    		  help-echo "mouse-2: go to this location"))
+    (setq map (make-sparse-keymap))
+    (define-key map [mouse-2] 'realgud:follow-link)
+    (define-key map [return] 'realgud:follow-link)
+    (put-text-property link-start link-end 'keymap map)
+    (insert "\n")
+    )
   )
+
 
 (defun realgud-loc-current(&optional source-buffer cmd-marker)
   "Create a location object for the point in the current buffer.
