@@ -5,6 +5,8 @@
 
 (test-simple-start)
 
+(declare-function __FILE__                       'load-relative)
+
 (eval-when-compile
   (defvar dbg-name)
   (defvar realgud:gub-pat-hash)

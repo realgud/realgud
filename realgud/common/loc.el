@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2012, 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2012, 2014-2015 Rocky Bernstein <rocky@gnu.org>
 ;;; Debugger location
 ;;; Commentary:
 
@@ -70,7 +70,7 @@ Information is put in an internal buffer called *Describe*."
   (interactive "")
   (switch-to-buffer (get-buffer-create "*Describe*"))
   (let ((link-start) (link-end) (map) (filename))
-    (insert "    filename     : ")
+    (insert "  - filename      :: ")
     (setq filename (realgud-loc-filename loc))
     (put-text-property
      (insert-text-button filename
@@ -81,13 +81,14 @@ Information is put in an internal buffer called *Describe*."
     (insert "\n")
     (mapc 'insert
 	  (list
-	   (format "    line number  : %s\n" (realgud-loc-line-number loc))
-	   (format "    brkpt num    : %s\n" (realgud-loc-num loc))
-	   (format "    column number: %s\n" (realgud-loc-column-number loc))
-	   (format "    source text  : %s\n" (realgud-loc-source-text loc))
+	   (format "  - line number   :: %s\n" (realgud-loc-line-number loc))
+	   (format "  - brkpt num     :: %s\n" (realgud-loc-num loc))
+	   (format "  - column number :: %s\n"
+		   (realgud-loc-column-number loc))
+	   (format "  - source text   :: %s\n" (realgud-loc-source-text loc))
 	   ))
     ;; Make locations clickable
-    (insert "    source marker: ")
+    (insert "  - source marker :: ")
     (put-text-property
      (insert-text-button (format "%s" (realgud-loc-marker loc))
 			 'action 'realgud:loc-follow-event
@@ -95,7 +96,7 @@ Information is put in an internal buffer called *Describe*."
      (point)
      'mark (realgud-loc-marker loc))
 
-    (insert "\n    cmdbuf marker: ")
+    (insert "\n  - cmdbuf marker :: ")
     (put-text-property
      (insert-text-button (format "%s" (realgud-loc-cmd-marker loc))
 			 'action 'realgud:loc-follow-event

@@ -15,7 +15,7 @@
   (defvar realgud-pat-hash)
   (defvar panic-tb)
   (defvar loc-pat)
-  (defvar pos)
+  (defvar test-pos)
   (defvar prompt-pat)
   (defvar test-dbgr)
   (defvar carp-bt-re)
@@ -25,6 +25,7 @@
   (defvar lang-bt-pat)
   (defvar lang-bt-re)
   (defvar realgud-bt-pat)
+  (defvar test-s1)
   (defvar realgud-perl-ignnore-file-re)
 )
 
@@ -105,42 +106,42 @@
 (note "debugger-backtrace")
 (setq realgud-bt-pat  (gethash "debugger-backtrace"
 			    realgud:perldb-pat-hash))
-(setq s1
+(setq test-s1
       "$ = main::top_navigation_panel called from file `./latex2html' line 7400
 p")
 (setq realgud-bt-re (realgud-loc-pat-regexp realgud-bt-pat))
 (setq file-group (realgud-loc-pat-file-group realgud-bt-pat))
 (setq line-group (realgud-loc-pat-line-group realgud-bt-pat))
-(assert-equal 30 (string-match realgud-bt-re s1))
+(assert-equal 30 (string-match realgud-bt-re test-s1))
 (assert-equal "./latex2html"
-	      (substring s1
+	      (substring test-s1
 			 (match-beginning file-group)
 			 (match-end file-group)))
 (assert-equal "7400"
-	      (substring s1
+	      (substring test-s1
 			 (match-beginning line-group)
 			 (match-end line-group)))
 
 (note "debugger-errmsg")
 (setq realgud-bt-pat  (gethash "perl-errmsg"
 			    realgud:perldb-pat-hash))
-(setq s1
+(setq test-s1
       "Use of uninitialized value $lines[0] in join or string at bin/../lib/LineCache.pm line 548.")
 (setq realgud-bt-re (realgud-loc-pat-regexp realgud-bt-pat))
 (setq file-group (realgud-loc-pat-file-group realgud-bt-pat))
 (setq line-group (realgud-loc-pat-line-group realgud-bt-pat))
-(assert-equal 54 (string-match realgud-bt-re s1))
+(assert-equal 54 (string-match realgud-bt-re test-s1))
 (assert-equal "bin/../lib/LineCache.pm"
-	      (substring s1
+	      (substring test-s1
 			 (match-beginning file-group)
 			 (match-end file-group)))
 (assert-equal "548"
-	      (substring s1
+	      (substring test-s1
 			 (match-beginning line-group)
 			 (match-end line-group)))
 
 (note "carp-backtrace")
-(setq s1
+(setq test-s1
       " at /tmp/foo.pl line 7
  	main::__ANON__('Illegal division by zero at /tmp/foo.pl line 4.\x{a}') called at foo2.pl line 5
  	main::foo(3) called at foo3.pl line 8
@@ -150,35 +151,35 @@ p")
 (setq carp-bt-re (realgud-loc-pat-regexp lang-bt-pat))
 (setq file-group (realgud-loc-pat-file-group lang-bt-pat))
 (setq line-group (realgud-loc-pat-line-group lang-bt-pat))
-(assert-equal 0 (string-match carp-bt-re s1))
+(assert-equal 0 (string-match carp-bt-re test-s1))
 (assert-equal "/tmp/foo.pl"
-	      (substring s1
+	      (substring test-s1
 			 (match-beginning file-group)
 			 (match-end file-group)))
 (assert-equal "7"
-	      (substring s1
+	      (substring test-s1
 			 (match-beginning line-group)
 			 (match-end line-group)))
-(setq pos (match-end 0))
+(setq test-pos (match-end 0))
 
-(assert-equal 22 (string-match carp-bt-re s1 pos))
+(assert-equal 22 (string-match carp-bt-re test-s1 test-pos))
 (assert-equal "foo2.pl"
-	      (substring s1
+	      (substring test-s1
 			 (match-beginning file-group)
 			 (match-end file-group)))
 (assert-equal "5"
-	      (substring s1
+	      (substring test-s1
 			 (match-beginning line-group)
 			 (match-end line-group)))
 
-(setq pos (match-end 0))
-(assert-equal 119 (string-match carp-bt-re s1 pos))
+(setq test-pos (match-end 0))
+(assert-equal 119 (string-match carp-bt-re test-s1 test-pos))
 (assert-equal "foo3.pl"
-	      (substring s1
+	      (substring test-s1
 			 (match-beginning file-group)
 			 (match-end file-group)))
 (assert-equal "8"
-	      (substring s1
+	      (substring test-s1
 			 (match-beginning line-group)
 			 (match-end line-group)))
 

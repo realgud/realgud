@@ -8,12 +8,15 @@
 (declare-function realgud-cmdbuf?                       'realgud-buffer-command)
 (declare-function realgud:debugger-name-transform       'realgud-helper)
 (declare-function realgud-get-cmdbuf                    'realgud-buffer-helper)
+(declare-function realgud-loc-hist-item-at              'realgud-lochist)
 (declare-function realgud-populate-debugger-menu        'realgud-menu)
 (declare-function realgud-populate-common-keys          'realgud-key)
 (declare-function realgud-populate-src-buffer-map-plain 'realgud-key)
 (declare-function realgud-srcbuf-info-short-key?=,      'realgud-source)
 (declare-function realgud-srcbuf-info-was-read-only?=   'realgud-source)
 (declare-function realgud-srcbuf?                       'realgud-buffer-source)
+
+;; (devar realgud::tool-bar-map) ;; fully defined in track-mode.el
 
 (defvar realgud:shortkey-mode-map
   (let ((map (make-sparse-keymap)))

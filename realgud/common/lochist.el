@@ -7,8 +7,8 @@
 
 ;;; Code:
 
-(require 'markdown-mode)
 (require 'ring)
+(require 'org)
 (require 'load-relative)
 (require-relative-list '("loc") "realgud-")
 
@@ -27,17 +27,18 @@
 (defun realgud:loc-hist-describe(loc-hist)
   "Format LOC-HIST values inside buffer *Describe*"
   (switch-to-buffer (get-buffer-create "*Describe*"))
-  (markdown-mode)
-  (insert "Source Positions Stopped At\n---------------------------\n")
+  (org-mode)
+  (insert "** Source Positions Stopped At\n")
   (mapc 'insert
 	(list
-	 (format "  buffer size: %d\n" realgud-loc-hist-size)
-	 (format "  position   : %d\n" (realgud-loc-hist-position loc-hist))))
+	 (format "  -  buffer size  :: %d\n" realgud-loc-hist-size)
+	 (format "  -  position     :: %d\n"
+		 (realgud-loc-hist-position loc-hist))))
   (let ((locs (cddr (realgud-loc-hist-ring loc-hist)))
 	(loc)
 	(i 0))
     (while (and (< i (length locs)) (setq loc (elt locs i)) (realgud-loc? loc) )
-      (insert (format "*%d*\n" i))
+      (insert (format "*** %d\n" i))
       (realgud:loc-describe loc)
       (setq i (1+ i))
       )

@@ -1,7 +1,7 @@
 ;;; process-command buffer things
 ;;; Copyright (C) 2010-2012, 2014-2015 Rocky Bernstein <rocky@gnu.org>
 
-(require 'markdown-mode)
+(require 'org)
 (require 'load-relative)
 (require 'json)
 (require-relative-list
@@ -106,9 +106,9 @@
     (find-file-other-window (buffer-file-name buffer))))
 
 (defun realgud:cmdbuf-buffers-describe (buffer-list)
-  (insert "Source Buffers Seen\n-------------------\n\n")
+  (insert "** Source Buffers Seen\n")
   (dolist (buffer buffer-list)
-    (insert "* ")
+    (insert "  - ")
     (put-text-property
      (insert-text-button
       (buffer-name buffer)
@@ -131,30 +131,31 @@ Information is put in an internal buffer called *Describe*."
 	(let ((info realgud-cmdbuf-info)
 	      (cmdbuf-name (buffer-name)))
 	  (switch-to-buffer (get-buffer-create "*Describe*"))
-	  (markdown-mode)
 	  (setq buffer-read-only 'nil)
 	  (delete-region (point-min) (point-max))
+	  (org-mode)
+	  (insert "#+STARTUP: showall\n")
+	  ;;(insert "#+OPTIONS:    H:2 num:nil toc:t \\n:nil ::t |:t ^:nil -:t f:t *:t tex:t d:(HIDE) tags:not-in-toc\n")
+	  (insert (format "#+TITLE: Debugger info for %s\n" cmdbuf-name))
 	  (mapc 'insert
 		(list
-		 (format "realgud-cmdbuf-info for %s\n===========================\n\n"
-			 cmdbuf-name)
-		 (format "_Debugger name_ (`debugger-name`):\t%s\n"
+		 (format "  - Debugger name     ::\t%s\n"
 			 (json-encode (realgud-cmdbuf-info-debugger-name info)))
-		 (format "_Command-line args_ (`cmd-args`):\t%s\n"
+		 (format "  - Command-line args ::\t%s\n"
 			 (json-encode (realgud-cmdbuf-info-cmd-args info)))
-		 (format "_Selected window should contain source?_ (`in-srcbuf?`): %s\n"
+		 (format "  - Selected window should contain source? :: %s\n"
 			 (realgud-cmdbuf-info-in-srcbuf? info))
-		 (format "_Last input end_:\t%s\n"
+		 (format "  - Last input end    ::\t%s\n"
 			 (realgud-cmdbuf-info-last-input-end info))
-		 (format "\n_Source should go into short-key mode?_ (`src-shortkey?`): %s\n"
+		 (format "  - Source should go into short-key mode? :: %s\n"
 			 (realgud-cmdbuf-info-src-shortkey? info))
-		 (format "_Breakpoint list_ (`bp-list`):\t %s\n"
+		 (format "  - Breakpoint list   ::\t %s\n"
 			 (realgud-cmdbuf-info-bp-list info))
-		 (format "_Remap table for debugger commands_:\n\t%s\n"
+		 (format "  - Remap table for debugger commands ::\n\t%s\n"
 			 (json-encode (realgud-cmdbuf-info-cmd-hash info)))
-		 (format "\n_Backtrace buffer_ (`bt`):\t%s\n"
+		 (format "  - Backtrace buffer  ::\t%s\n"
 			 (realgud-cmdbuf-info-bt-buf info))
-		 (format "_In debugger?_ (`in-debugger?`):\t%s\n"
+		 (format "  - In debugger?      ::\t%s\n"
 			 (realgud-cmdbuf-info-in-debugger? info))
 		 ))
 	  (insert "\n")
