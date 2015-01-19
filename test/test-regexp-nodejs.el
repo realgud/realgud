@@ -2,6 +2,8 @@
 (load-file "../realgud/debugger/nodejs/init.el")
 (load-file "./regexp-helper.el")
 
+(declare-function realgud-cmdbuf-info-loc-regexp 'realgud-buffer-command)
+(declare-function cmdbuf-loc-match               'realgud-regexp)
 (declare-function loc-match	                 'realgud-helper)
 (declare-function prompt-match                   'regexp-helper)
 (declare-function realgud-loc-pat-num            'realgud-regexp)

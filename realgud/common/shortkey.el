@@ -170,8 +170,7 @@ C-a)."
       (let* ((loc-hist (realgud-cmdbuf-loc-hist cmdbuf))
 	    (loc (realgud-loc-hist-item-at loc-hist (- num)))
 	    (loc-marker (realgud-loc-marker loc)))
-	(switch-to-buffer (marker-buffer loc-marker))
-	(goto-char loc-marker))
+	(realgud:loc-follow loc-marker))
       ;; else
 	(message "No command buffer associated with this buffer")
     )))

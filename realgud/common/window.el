@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2014-2015 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
 (require-relative-list '("helper") "realgud-")
 (require-relative-list '("buffer/helper") "realgud-buffer-")
@@ -15,18 +15,10 @@
   "Update BUFFER to position specified with MARKER.
 We assume MARKER points inside BUFFER"
   (with-current-buffer buffer
+    (goto-char marker)
     (let ((window (get-buffer-window buffer)))
-      (if window
-	  (progn
-	    (select-window window)
-	    (if marker
-		(progn
-		  (goto-char marker)
-		  (redisplay)
-		  ))
-	    )
-	)))
-  )
+      (if window (set-window-point window marker))
+      )))
 
 
 (defun realgud-window-src ( &optional opt-buffer )
