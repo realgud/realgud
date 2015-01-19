@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2012, 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2012, 2014-2015 Rocky Bernstein <rocky@gnu.org>
 ;; Fringe marks for history of stopping points
 (require 'load-relative)
 (require-relative-list '("helper") "realgud-")
@@ -6,6 +6,7 @@
 (declare-function realgud-loc-hist-item-at       'realgud-lochist)
 (declare-function buffer-killed?                 'helper)
 (declare-function realgud-loc-cmd-marker         'realgud-loc)
+(declare-function realgud:loc-follow             'realgud-loc)
 (declare-function realgud-loc-marker             'realgud-loc)
 
 ;; Bitmap for hollow overlay-arrow in fringe
