@@ -327,7 +327,7 @@ command-process buffer has stored."
   "Return a marker to current source location stored in the history ring."
   (with-current-buffer cmd-buf
     (lexical-let* ((loc (realgud-loc-hist-item (realgud-cmdbuf-loc-hist cmd-buf))))
-      (and loc (realgud:loc-marker loc)))))
+      (and loc (realgud-loc-marker loc)))))
 
 (defun realgud-cmdbuf-mode-line-update (&optional opt-cmdbuf)
   "Force update of command buffer to include process status"

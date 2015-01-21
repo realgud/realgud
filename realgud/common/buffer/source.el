@@ -14,7 +14,7 @@
 (declare-function buffer-loc-line-number? 'realgud-loc)
 (declare-function realgud-cmdbuf-add-srcbuf 'realgud-cmdbuf)
 (declare-function realgud-cmdbuf-info-bp-list 'realgud-cmdbuf)
-(declare-function realgud:loc-marker          'realgud-loc)
+(declare-function realgud-loc-marker          'realgud-loc)
 (declare-function realgud-loc-line-number     'realgud-loc)
 (declare-function realgud-loc-num             'realgud-loc)
 (declare-function make-realgud-loc-hist       'realgud-lochist)
@@ -131,7 +131,7 @@ BUFFER which should be an initialized source buffer."
 	      (delq nil
 		    (mapcar (lambda (loc)
 			      (cond ((eq src-buffer
-					 (marker-buffer (realgud:loc-marker loc)))
+					 (marker-buffer (realgud-loc-marker loc)))
 				     loc)
 				    (nil)))
 			    bp-list))
