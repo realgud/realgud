@@ -8,7 +8,6 @@
 ;; We want the doc strings from gdb-like commands for our help
 ;; menus.
 (require-relative-list '("cmds") "realgud-")
-(require-relative-list  '("buffer/command") "realgud-buffer-")
 
 ;; Note: We want the key binding to show in the menu. However, our
 ;; situation is a little bit complex:

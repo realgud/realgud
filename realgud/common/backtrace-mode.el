@@ -27,8 +27,10 @@
     (define-key map ">"       'realgud:cmd-older-frame)
     (define-key map "d"       'realgud:cmd-newer-frame)
     (define-key map "u"       'realgud:cmd-older-frame)
+    (define-key map "q"       'realgud:cmd-quit)
     (define-key map "C"       'realgud-window-cmd-undisturb-src)
     (define-key map "F"       'realgud-window-bt)
+    (define-key map "I"       'realgud:cmdbuf-info-describe)
     (define-key map "S"       'realgud-window-src-undisturb-cmd)
 
     (define-key map "n"       'realgud-backtrace-moveto-frame-next)

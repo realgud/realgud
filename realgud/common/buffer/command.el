@@ -1,11 +1,11 @@
 ;;; process-command buffer things
 ;;; Copyright (C) 2010-2012, 2014-2015 Rocky Bernstein <rocky@gnu.org>
 
-(require 'org)
 (require 'load-relative)
 (require 'json)
 (require-relative-list
- '("../fringe" "../helper" "../loc" "../lochist" "../regexp") "realgud-")
+ '("../fringe"  "../loc" "../lochist" "../regexp")  "realgud-")
+(require-relative-list '("info")  "realgud-buffer-")
 
 (declare-function realgud-get-cmdbuf 'realgud-buffer-helper)
 
@@ -133,10 +133,10 @@ Information is put in an internal buffer called *Describe*."
 	  (switch-to-buffer (get-buffer-create "*Describe*"))
 	  (setq buffer-read-only 'nil)
 	  (delete-region (point-min) (point-max))
-	  (org-mode)
 	  (insert "#+STARTUP: showall\n")
 	  ;;(insert "#+OPTIONS:    H:2 num:nil toc:t \\n:nil ::t |:t ^:nil -:t f:t *:t tex:t d:(HIDE) tags:not-in-toc\n")
 	  (insert (format "#+TITLE: Debugger info for %s\n" cmdbuf-name))
+	  (insert "** General Information\n")
 	  (mapc 'insert
 		(list
 		 (format "  - Debugger name     ::\t%s\n"
@@ -163,7 +163,7 @@ Information is put in an internal buffer called *Describe*."
 	  (insert "\n")
 	  (realgud:loc-hist-describe (realgud-cmdbuf-info-loc-hist info))
 	  (goto-char (point-min))
-	  (setq buffer-read-only 't)
+	  (realgud:info-mode)
 	  )
 	)
     (message "Buffer %s is not a debugger source or command buffer; nothing done."

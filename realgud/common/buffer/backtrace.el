@@ -85,7 +85,7 @@
 	  ;; else
 	  ;; (message "+++4 %s" realgud-track-divert-string)
 	  (let ((bt-buffer (get-buffer-create
-			    (format "*%s backtrace*"
+			    (format "*Backtrace %s*"
 				    (realgud-get-buffer-base-name
 				     (buffer-name)))))
 		(divert-string realgud-track-divert-string)

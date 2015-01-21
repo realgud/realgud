@@ -46,6 +46,7 @@
     (define-key map "l"        'realgud-recenter-arrow)
     (define-key map "B"        'realgud:backtrace-init)
     (define-key map "C"        'realgud-window-cmd-undisturb-src)
+    (define-key map "I"        'realgud:cmdbuf-info-describe)
     (define-key map "S"        'realgud-window-src-undisturb-cmd)
 
     (define-key map "R"        'realgud:cmd-restart)
