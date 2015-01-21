@@ -45,10 +45,9 @@ without buffer properties."
 (defun realgud:loc-follow(mark)
   (when (markerp mark)
     (let ((buffer (marker-buffer mark)))
-      (bury-buffer buffer)
       (set-buffer buffer)
+      (set-window-point (display-buffer buffer) mark)
       (goto-char mark)
-      (display-buffer buffer)
     )))
 
 (defun realgud:loc-follow-event(event)

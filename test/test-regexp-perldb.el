@@ -6,6 +6,7 @@
 
 (declare-function __FILE__              'load-relative)
 (declare-function prompt-match          'regexp-helper)
+(declare-function cmdbuf-loc-match      'realgud-regexp)
 
 (test-simple-start)
 
@@ -25,8 +26,9 @@
   (defvar lang-bt-pat)
   (defvar lang-bt-re)
   (defvar realgud-bt-pat)
+  (defvar realgud-bt-re)
   (defvar test-s1)
-  (defvar realgud-perl-ignnore-file-re)
+  (defvar realgud-perl-ignore-file-re)
 )
 
 ; Some setup usually done in setting up the buffer.

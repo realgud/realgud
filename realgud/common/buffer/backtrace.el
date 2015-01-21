@@ -25,7 +25,7 @@
                    ;; frame
 )
 
-(declare-function realgud:cmd-frame(num))
+(declare-function realgud:cmd-frame 'realgud-buffer-command)
 (declare-function realgud-get-cmdbuf(&optional opt-buffer))
 (declare-function realgud-command (fmt &optional arg no-record?
 				    frame-switch? realgud-prompts?))
@@ -96,7 +96,7 @@
 	      (delete-region (point-min) (point-max))
 	      (if divert-string
 		  (let* ((triple
-			  (realgud-backtrace-add-text-properties frame-pat
+			  (realgud:backtrace-add-text-properties frame-pat
 							      divert-string
 							      indicator-re))
 			 (string-with-props (car triple))
@@ -290,6 +290,19 @@ non-digit will start entry number from the beginning again."
     )
   )
 
+(defun realgud-goto-frame-mouse (event)
+  (interactive "e")
+  (let* ((pos (posn-point (event-end event)))
+	 (frame-num (get-text-property pos 'frame-num)))
+    (if (realgud-backtrace?)
+	(if frame-num
+	    (realgud:cmd-frame frame-num)
+	  (message "No frame property found at this point")
+	  )
+      )
+    )
+)
+
 (defun realgud-goto-frame-n ()
   "Go to the frame number indicated by the accumulated numeric keys just entered.
 
@@ -303,7 +316,7 @@ non-digit will start entry number from the beginning again."
       (setq realgud-goto-entry-acc ""))
   (realgud-goto-frame-n-internal (this-command-keys)))
 
-(defun realgud-backtrace-add-text-properties  (frame-pat &optional opt-string
+(defun realgud:backtrace-add-text-properties  (frame-pat &optional opt-string
 						      frame-indicator-re)
   "Parse STRING and add properties for that"
 
@@ -341,7 +354,6 @@ non-digit will start entry number from the beginning again."
 						help-echo
 						"mouse-2: goto this frame")
 				   string)
-
 	      )
 	  ; else
 	  (progn
@@ -356,11 +368,9 @@ non-digit will start entry number from the beginning again."
 				 '(mouse-face highlight
 					      help-echo
 					      "mouse-2: goto this frame")
-				   string)
+				 string)
 	    )
 	  )
-
-
 	(put-text-property (match-beginning 0) (match-end 0)
 			   'frame-num  frame-num string)
 	(setq last-pos (match-end 0))

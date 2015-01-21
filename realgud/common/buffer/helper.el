@@ -45,7 +45,7 @@ assumed to be a process-command buffer."
 		     (realgud-loc-hist-item
 		      (realgud-cmdbuf-info-loc-hist realgud-cmdbuf-info)))))
 	    (if loc
-		(marker-buffer (realgud-loc-marker loc))
+		(marker-buffer (realgud:loc-marker loc))
 	      nil)
 	    ))
       nil)))
