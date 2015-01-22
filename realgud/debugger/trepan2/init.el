@@ -42,6 +42,32 @@ realgud-loc-pat struct")
        :regexp   "^(trepan2) "
        ))
 
+(defconst realgud:trepan2-frame-start-regexp
+  "\\(?:^\\|\n\\)\\(->\\|##\\)")
+
+(defconst realgud:trepan2-frame-num-regexp
+  "\\([0-9]+\\)")
+
+;; Regular expression that describes a trepan2 backtrace line.
+;; For example:
+;; ->0 get_distribution(dist='trepan==0.3.9')
+;;     called from file '/python2.7/dist-packages/pkg_res.py' at line 341
+;; ##1 load_entry_point(dist='tr=0.3.9', group='console_scripts', name='tr')
+;;     called from file '/python2.7/dist-packages/pkg_res.py' at line 351
+;; ##2 <module> exec()
+
+(setf (gethash "debugger-backtrace" realgud:trepan2-pat-hash)
+  (make-realgud-loc-pat
+   :regexp (concat
+	    realgud:trepan2-frame-start-regexp
+	    realgud:trepan2-frame-num-regexp "[ ]?"
+	    "\\(?:.*\\)\n"
+	    "\\(?:[\t]called from \\)?\\([^:]+\\) at line:\\([0-9]+\\)")
+   :file-group 1
+   :line-group 2
+   :ignore-file-re  realgud-python-ignore-file-re)
+  )
+
 ;;  Regular expression that describes a Python backtrace line.
 (setf (gethash "lang-backtrace" realgud:trepan2-pat-hash)
       realgud-python-backtrace-loc-pat)

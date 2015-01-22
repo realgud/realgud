@@ -99,7 +99,8 @@
 			  (realgud:backtrace-add-text-properties frame-pat
 							      divert-string
 							      indicator-re))
-			 (string-with-props (car triple))
+			 (string-with-props
+			  (ansi-color-filter-apply (car triple)))
 			 (frame-num-pos-list (caddr triple))
 			 )
 		    (setq selected-frame-num (cadr triple))
@@ -287,6 +288,30 @@ non-digit will start entry number from the beginning again."
 	  (message "No frame property found at this point")
 	  )
 	)
+    )
+  )
+
+(defun realgud-goto-frame-1 ()
+  "Go to the frame 1"
+  (interactive)
+  (if (realgud-backtrace?)
+      (realgud:cmd-frame 1)
+    )
+  )
+
+(defun realgud-goto-frame-2 ()
+  "Go to the frame 2"
+  (interactive)
+  (if (realgud-backtrace?)
+      (realgud:cmd-frame 2)
+    )
+  )
+
+(defun realgud-goto-frame-3 ()
+  "Go to the frame 3"
+  (interactive)
+  (if (realgud-backtrace?)
+      (realgud:cmd-frame 3)
     )
   )
 

@@ -21,6 +21,8 @@
 
 (defvar realgud-backtrack-mode-map
   (let ((map (make-sparse-keymap)))
+    (define-key map [frames-menu]
+      (list 'menu-item "Specific Frames" 'realgud:frames-menu))
     (define-key map [M-right]	'realgud-track-hist-newest)
     (define-key map [M-down]	'realgud-track-hist-newer)
     (define-key map [M-up]	'realgud-track-hist-older)

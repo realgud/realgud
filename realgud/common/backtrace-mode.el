@@ -8,6 +8,19 @@
 (declare-function realgud-populate-common-keys 'realgud-menu)
 (declare-function realgud-cmdbuf-pat 'realgud-menu)
 
+(defvar realgud:frames-menu nil
+  "Frames menu in Backtrace menu.")
+
+;; (setq realgud:frames-menu
+;;       (let ((map (make-sparse-keymap "Goto Specific Frames")))
+;; 	(define-key map [frames-menu]
+;; 	  (list 'menu-item "Specific Frames" 'realgud:frames-menu))
+;; 	(realgud-menu-item map "Frame 1" 'realgud-goto-frame-1)
+;; 	(realgud-menu-item map "Frame 2" 'realgud-goto-frame-2)
+;; 	(realgud-menu-item map "Frame 3" 'realgud-goto-frame-3)
+;; 	)
+;;       map)
+
 (defvar realgud-backtrace-mode-map
   (let ((map  (realgud-populate-debugger-menu (make-sparse-keymap))))
     (suppress-keymap map)
@@ -20,6 +33,9 @@
     (define-key map [up]      'realgud-backtrace-moveto-frame-prev)
     (define-key map [down]    'realgud-backtrace-moveto-frame-next)
     (define-key map "l"       'realgud-recenter-arrow)
+
+    (define-key map [frames-menu]
+      (list 'menu-item "Specific Frames" 'realgud:frames-menu))
 
     ;; FIXME: these can go to a common routine. See also shortkey.el and
     ;; key.el
@@ -47,15 +63,12 @@
     (define-key map "9"       'realgud-goto-frame-n)
     (define-key map [(control m)] 'realgud-goto-frame)
 
-    ;; ;; --------------------
-    ;; ;; The "Stack window" submenu.
-    ;; (let ((submenu (make-sparse-keymap)))
+    ;; --------------------
+    ;; The "Stack window" submenu.
+    ;; (let ((submenu realgud:frames-menu))
     ;;   (define-key-after map [menu-bar debugger stack]
     ;;     (cons "Stack window" submenu)
     ;;     'placeholder))
-
-    ;; (define-key map [menu-bar debugger stack goto]
-    ;;   '(menu-item "Goto frame" realgud-goto-frame))
     map)
   "Keymap to navigate realgud stack frames.")
 
