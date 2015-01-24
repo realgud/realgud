@@ -74,7 +74,7 @@ realgud-loc-pat struct")
        :line-group 5)
       )
 
-;; Regular expression that for a termination message.
+;; Regular expression for a termination message.
 (setf (gethash "termination" realgud:bashdb-pat-hash)
        "^bashdb: That's all, folks...\n")
 

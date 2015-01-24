@@ -85,6 +85,10 @@ realgud-loc-pat struct")
        :regexp "^Deleted breakpoint \\([0-9]+\\)\n"
        :num 1))
 
+;; Regular expression for a termination message.
+(setf (gethash "termination" realgud:trepan3k-pat-hash)
+       "^trepan3k: That's all, folks...\n")
+
 (setf (gethash "font-lock-keywords" realgud:trepan3k-pat-hash)
       '(
 	;; The frame number and first type name, if present.

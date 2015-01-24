@@ -561,8 +561,10 @@ loc-regexp pattern"
 			  (substring text 0 (match-beginning 0)))
 		    ;; We've got desired output, so reset divert output.
 		    (realgud-cmdbuf-info-divert-output?= nil)
-		    (kill-region realgud-last-output-start to)
-		    ;; FIXME: DELETE output. Or do elsewhere?
+		    (cond ((search-backward-regexp prompt-regexp)
+			   (kill-region realgud-last-output-start (point))
+			   (goto-char (point-max)))
+			  ('t (kill-region realgud-last-output-start to)))
 		    )
 	      ))
 	  )
