@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010-2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2015 Rocky Bernstein <rocky@gnu.org>
 ;;; trepan3k: Python 3.2 and beyond
 
 (eval-when-compile (require 'cl))
@@ -38,8 +38,34 @@ realgud-loc-pat struct")
 
 (setf (gethash "prompt" realgud:trepan3k-pat-hash)
       (make-realgud-loc-pat
-       :regexp   "^(Trepan3k) "
+       :regexp   "^(trepan3k) "
        ))
+
+(defconst realgud:trepan2-frame-start-regexp
+  "\\(?:^\\|\n\\)\\(->\\|##\\)")
+
+(defconst realgud:trepan2-frame-num-regexp
+  "\\([0-9]+\\)")
+
+;; Regular expression that describes a trepan3 backtrace line.
+;; For example:
+;; ->0 get_distribution(dist='trepan==0.3.9')
+;;     called from file '/python2.7/dist-packages/pkg_res.py' at line 341
+;; ##1 load_entry_point(dist='tr=0.3.9', group='console_scripts', name='tr')
+;;     called from file '/python2.7/dist-packages/pkg_res.py' at line 351
+;; ##2 <module> exec()
+
+(setf (gethash "debugger-backtrace" realgud:trepan3k-pat-hash)
+  (make-realgud-loc-pat
+   :regexp (concat
+	    realgud:trepan2-frame-start-regexp
+	    realgud:trepan2-frame-num-regexp "[ ]?"
+	    "\\(?:.*\\)\n"
+	    "\\(?:[\t]called from \\)?\\([^:]+\\) at line:\\([0-9]+\\)")
+   :file-group 1
+   :line-group 2
+   :ignore-file-re  realgud-python-ignore-file-re)
+  )
 
 ;;  Regular expression that describes a Python backtrace line.
 (setf (gethash "lang-backtrace" realgud:trepan3k-pat-hash)
@@ -96,7 +122,7 @@ realgud-loc-pat struct")
   the trepan3k command to use, like 'python'")
 
 (setf (gethash "shell" realgud:trepan3k-command-hash) "python")
-(setf (gethash "trepan3k" realgud-command-hash) realgud:trepan3k-command-hash)
+(setf (gethash "until" realgud-command-hash) "continue %l")
 (setf (gethash "trepan3k" realgud-command-hash) realgud:trepan3k-command-hash)
 
 (provide-me "realgud:trepan3k-")
