@@ -18,7 +18,7 @@
 backtrace, prompt, etc.  The values of a hash entry is a
 realgud-loc-pat struct")
 
-(declare-function make-realgud-loc "realgud-loc" (a b c d e f))
+(declare-function make-realgud-loc 'realgud-loc)
 
 ;; Regular expression that describes a trepan3k location generally shown
 ;; before a command prompt.
@@ -53,51 +53,18 @@ realgud-loc-pat struct")
 
 ;;  Regular expression that describes a "breakpoint set" line
 (setf (gethash "brkpt-set" realgud:trepan3k-pat-hash)
-      (make-realgud-loc-pat
-       :regexp "^Breakpoint \\([0-9]+\\) set at line \\([0-9]+\\)[ \t\n]+of file \\(.+\\)\\(\n\\|$\\)"
-       :num 1
-       :file-group 3
-       :line-group 2))
+      realgud:python-trepan-brkpt-set-pat)
 
 ;;  Regular expression that describes a "delete breakpoint" line
 (setf (gethash "brkpt-del" realgud:trepan3k-pat-hash)
-      (make-realgud-loc-pat
-       :regexp "^Deleted breakpoint \\([0-9]+\\)\n"
-       :num 1))
+      realgud:python-trepan-brkpt-del-pat)
 
 ;; Regular expression for a termination message.
 (setf (gethash "termination" realgud:trepan3k-pat-hash)
        "^trepan3k: That's all, folks...\n")
 
 (setf (gethash "font-lock-keywords" realgud:trepan3k-pat-hash)
-      '(
-	;; The frame number and first type name, if present.
-	("^\\(->\\|##\\)\\([0-9]+\\) \\(<module>\\)? *\\([a-zA-Z_][a-zA-Z0-9_]*\\)(\\(.+\\))?"
-	 (2 realgud-backtrace-number-face)
-	 (4 font-lock-function-name-face nil t))     ; t means optional.
-
-	;; Parameter sequence, E.g. gcd(a=3, b=5)
-	;;                             ^^^^^^^^^
-	("(\\(.+\\))"
-	 (1 font-lock-variable-name-face))
-
-	;; File name. E.g  file '/test/gcd.py'
-	;;                 ------^^^^^^^^^^^^-
-	("[ \t]+file '\\([^ ]+*\\)'"
-	 (1 realgud-file-name-face))
-
-	;; Line number. E.g. at line 28
-        ;;                  ---------^^
-	("[ \t]+at line \\([0-9]+\\)$"
-	 (1 realgud-line-number-face))
-
-	;; Function name.
-	("\\<\\([a-zA-Z_][a-zA-Z0-9_]*\\)\\.\\([a-zA-Z_][a-zA-Z0-9_]*\\)"
-	 (1 font-lock-type-face)
-	 (2 font-lock-function-name-face))
-	;; (trepan3k-frames-match-current-line
-	;;  (0 trepan3k-frames-current-frame-face append))
-	))
+      realgud:python-debugger-font-lock-keywords)
 
 (setf (gethash "trepan3k" realgud-pat-hash) realgud:trepan3k-pat-hash)
 

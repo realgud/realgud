@@ -22,12 +22,7 @@ realgud-loc-pat struct")
 ;; before a command prompt.
 ;; For example:
 ;;   (/etc/init.d/apparmor:35):
-(setf (gethash "loc" realgud:zshdb-pat-hash)
-      (make-realgud-loc-pat
-       :regexp "\\(?:^\\|\n\\)(\\([^:]+\\):\\([0-9]*\\)):\\(?:\n\\(.+\\)\\)?"
-       :file-group 1
-       :line-group 2
-       :text-group 3))
+(setf (gethash "loc" realgud:zshdb-pat-hash) realgud:POSIX-debugger-loc-pat)
 
 ;; Regular expression that describes a zshdb command prompt
 ;; For example:
@@ -40,21 +35,15 @@ realgud-loc-pat struct")
        :num 1
        ))
 
-;;  Regular expression that describes a "breakpoint set" line
+;;  Regular expression that describes a "breakpoint set" line.
 (setf (gethash "brkpt-set" realgud:zshdb-pat-hash)
-      (make-realgud-loc-pat
-       :regexp "^Breakpoint \\([0-9]+\\) set in file \\(.+\\), line \\([0-9]+\\).\n"
-       :num 1
-       :file-group 2
-       :line-group 3))
+      realgud:POSIX-debugger-brkpt-set-pat)
 
 ;; Regular expression that describes a debugger "delete" (breakpoint) response.
 ;; For example:
 ;;   Removed 1 breakpoint(s).
 (setf (gethash "brkpt-del" realgud:zshdb-pat-hash)
-      (make-realgud-loc-pat
-       :regexp "^Removed \\([0-9]+\\) breakpoint(s).\n"
-       :num 1))
+      realgud:POSIX-debugger-brkpt-del-pat)
 
 ;; Regular expression that describes a debugger "backtrace" command line.
 ;; For example:
@@ -62,45 +51,14 @@ realgud-loc-pat struct")
 ;;   ##1 /etc/apparmor/fns called from file `/etc/init.d/apparmor' at line 35
 ;;   ##2 /etc/init.d/apparmor called from file `/usr/bin/zshdb' at line 129
 (setf (gethash "debugger-backtrace" realgud:zshdb-pat-hash)
-      (make-realgud-loc-pat
-       :regexp 	(concat realgud-shell-frame-start-regexp
-			realgud-shell-frame-num-regexp "[ ]?"
-			"\\(.*\\)"
-			realgud-shell-frame-file-regexp
-			"\\(?:" realgud-shell-frame-line-regexp "\\)?"
-			)
-       :num 2
-       :file-group 4
-       :line-group 5)
-      )
+      realgud:POSIX-debugger-backtrace-pat)
 
 ;; Regular expression that for a termination message.
 (setf (gethash "termination" realgud:zshdb-pat-hash)
        "^zshdb: That's all, folks...\n")
 
 (setf (gethash "font-lock-keywords" realgud:zshdb-pat-hash)
-      '(
-	;; The frame number and first type name, if present.
-	;; E.g. ->0 in file `/etc/init.d/apparmor' at line 35
-	;;      --^-
-	("^\\(->\\|##\\)\\([0-9]+\\) "
-	 (2 realgud-backtrace-number-face))
-
-	;; File name.
-	;; E.g. ->0 in file `/etc/init.d/apparmor' at line 35
-	;;          ---------^^^^^^^^^^^^^^^^^^^^-
-	("[ \t]+\\(in\\|from\\) file `\\(.+\\)'"
-	 (2 realgud-file-name-face))
-
-	;; File name.
-	;; E.g. ->0 in file `/etc/init.d/apparmor' at line 35
-	;;                                         --------^^
-	;; Line number.
-	("[ \t]+at line \\([0-9]+\\)$"
-	 (1 realgud-line-number-face))
-	;; (trepan-frames-match-current-line
-	;;  (0 trepan-frames-current-frame-face append))
-	))
+      realgud:POSIX-debugger-font-lock-keywords)
 
 (setf (gethash "zshdb" realgud-pat-hash) realgud:zshdb-pat-hash)
 
