@@ -342,33 +342,35 @@ non-digit will start entry number from the beginning again."
   (realgud-goto-frame-n-internal (this-command-keys)))
 
 (defun realgud:backtrace-add-text-properties  (frame-pat &optional opt-string
-						      frame-indicator-re)
+							 frame-indicator-re)
   "Parse STRING and add properties for that"
 
-  (let ((string (or opt-string
+  (let* ((string (or opt-string
 		    (buffer-substring (point-min) (point-max))
 		    ))
-	(frame-regexp (realgud-loc-pat-regexp frame-pat))
-	(frame-group-pat (realgud-loc-pat-num frame-pat))
-	(alt-frame-num -1)
-	(last-pos 0)
-	(selected-frame-num nil)
-	(frame-num-pos-list '())
-	)
-    (while (string-match frame-regexp string last-pos)
+	 (stripped-string (ansi-color-filter-apply string))
+	 (frame-regexp (realgud-loc-pat-regexp frame-pat))
+	 (frame-group-pat (realgud-loc-pat-num frame-pat))
+	 (alt-frame-num -1)
+	 (last-pos 0)
+	 (selected-frame-num nil)
+	 (frame-num-pos-list '())
+	 )
+    (while (string-match frame-regexp stripped-string last-pos)
       (let ((frame-num-str)
 	    (frame-num)
 
 	    ;; FIXME: Remove hack that 1 is always the frame indicator.
 	    (frame-indicator
-	     (substring string (match-beginning 1) (match-end 1)))
+	     (substring stripped-string (match-beginning 1) (match-end 1)))
 	    (frame-num-pos)
 
 	    )
 	(if frame-group-pat
 	    (progn
 	      (setq frame-num-str
-		    (substring string (match-beginning frame-group-pat)
+		    (substring stripped-string
+			       (match-beginning frame-group-pat)
 			       (match-end frame-group-pat)))
 	      (setq frame-num (string-to-number frame-num-str))
 	      (setq frame-num-pos (match-beginning frame-group-pat))
@@ -383,7 +385,7 @@ non-digit will start entry number from the beginning again."
 	  ; else
 	  (progn
 	    (setq frame-num-str
-		    (substring string (match-beginning 0)
+		    (substring stripped-string (match-beginning 0)
 			       (match-end 0)))
 	    (setq frame-num (incf alt-frame-num))
 	    (setq frame-num-pos (match-beginning 0))

@@ -60,10 +60,11 @@ realgud-loc-pat struct")
    :regexp (concat
 	    realgud:trepan2-frame-start-regexp
 	    realgud:trepan2-frame-num-regexp "[ ]?"
-	    "\\(?:.*\\)\n"
-	    "\\(?:[\t]called from \\)?\\([^:]+\\) at line:\\([0-9]+\\)")
-   :file-group 1
-   :line-group 2
+	    "\\(?:.*?\\)\\(?:[\n\t ]\\)"
+	    "\\(?:[\t]called from \\)?\\([^:]+?\\) at line \\([0-9]+\\)")
+   :num 2
+   :file-group 3
+   :line-group 4
    :ignore-file-re  realgud-python-ignore-file-re)
   )
 
