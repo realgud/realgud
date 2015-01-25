@@ -7,7 +7,7 @@
 
 (require 'load-relative)
 (require 'loc-changes)
-(require-relative-list '("fringe") "realgud-")
+(require-relative-list '("fringe" "follow") "realgud-")
 (require-relative-list '("buffer/source") "realgud-buffer-")
 
 ;; FIXME: removed because of recursive loads
@@ -42,27 +42,6 @@ without buffer properties."
   (buffer-substring-no-properties (point-at-bol)
 				  (point-at-eol)))
 
-(defun realgud:loc-follow(mark)
-  (when (markerp mark)
-    (let ((buffer (marker-buffer mark)))
-      (set-buffer buffer)
-      (set-window-point (display-buffer buffer) mark)
-      (goto-char mark)
-    )))
-
-(defun realgud:loc-follow-event(event)
-  (interactive "e")
-  (let* ((pos (posn-point (event-end event)))
-	 (mark (get-text-property pos 'mark)))
-    (realgud:loc-follow mark)))
-
-(defun realgud:follow-file(event)
-  (interactive "e")
-  (let* ((pos (posn-point (event-end event)))
-	 (filename (get-text-property pos 'file)))
-    (if (stringp filename)
-	(find-file-other-window filename))))
-
 (defun realgud:loc-describe (loc)
   "Display realgud-cmdcbuf-info.
 Information is put in an internal buffer called *Describe*."
@@ -73,8 +52,8 @@ Information is put in an internal buffer called *Describe*."
     (setq filename (realgud-loc-filename loc))
     (put-text-property
      (insert-text-button filename
-			 'action 'realgud:follow-file
-			 'help-echo "mouse-2: visit this file")
+			 'action 'realgud:follow-event
+			 'help-echo "mouse-2: go to this file")
      (point)
      'file filename)
     (insert "\n")
@@ -90,7 +69,7 @@ Information is put in an internal buffer called *Describe*."
     (insert "  - source marker :: ")
     (put-text-property
      (insert-text-button (format "%s" (realgud-loc-marker loc))
-			 'action 'realgud:loc-follow-event
+			 'action 'realgud:follow-event
 			 'help-echo "mouse-2: go to this source location")
      (point)
      'mark (realgud-loc-marker loc))
@@ -98,7 +77,7 @@ Information is put in an internal buffer called *Describe*."
     (insert "\n  - cmdbuf marker :: ")
     (put-text-property
      (insert-text-button (format "%s" (realgud-loc-cmd-marker loc))
-			 'action 'realgud:loc-follow-event
+			 'action 'realgud:follow-event
 			 'help-echo "mouse-2: go to this command-buffer location")
      (point)
      'mark (realgud-loc-cmd-marker loc))

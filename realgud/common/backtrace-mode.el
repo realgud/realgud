@@ -27,9 +27,12 @@
     (realgud-populate-common-keys map)
     (define-key map "."       'realgud-backtrace-moveto-frame-selected)
     (define-key map "r"       'realgud:backtrace-init)
-    (define-key map [double-mouse-1] 'realgud-goto-frame-mouse)
-    (define-key map [mouse-2] 'realgud-goto-frame-mouse)
-    (define-key map [mouse-3] 'realgud-goto-frame-mouse)
+    (define-key map [double-mouse-1] 'realgud:follow-event)
+    (define-key map [mouse-2] 'realgud:follow-event)
+    (define-key map [enter]   'realgud:follow-event)
+    (define-key map [mouse-3] 'realgud:follow-event)
+    (define-key map [enter]   'realgud:follow-event)
+    (define-key map [return]  'realgud:follow-point)
     (define-key map [up]      'realgud-backtrace-moveto-frame-prev)
     (define-key map [down]    'realgud-backtrace-moveto-frame-next)
     (define-key map "l"       'realgud-recenter-arrow)
@@ -61,7 +64,6 @@
     (define-key map "7"       'realgud-goto-frame-n)
     (define-key map "8"       'realgud-goto-frame-n)
     (define-key map "9"       'realgud-goto-frame-n)
-    (define-key map [(control m)] 'realgud-goto-frame)
 
     ;; --------------------
     ;; The "Stack window" submenu.

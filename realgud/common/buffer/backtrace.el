@@ -3,7 +3,7 @@
 (require 'load-relative)
 (eval-when-compile (require 'cl-lib))
 (require-relative-list
- '("../key" "helper") "realgud-")
+ '("../key" "helper" "follow") "realgud-")
 
 (require-relative-list
  '("command") "realgud-buffer-")
@@ -341,8 +341,8 @@ non-digit will start entry number from the beginning again."
       (setq realgud-goto-entry-acc ""))
   (realgud-goto-frame-n-internal (this-command-keys)))
 
-(defun realgud:backtrace-add-text-properties  (frame-pat &optional opt-string
-							 frame-indicator-re)
+(defun realgud:backtrace-add-text-properties(frame-pat &optional opt-string
+						       frame-indicator-re)
   "Parse STRING and add properties for that"
 
   (let* ((string (or opt-string
@@ -351,6 +351,7 @@ non-digit will start entry number from the beginning again."
 	 (stripped-string (ansi-color-filter-apply string))
 	 (frame-regexp (realgud-loc-pat-regexp frame-pat))
 	 (frame-group-pat (realgud-loc-pat-num frame-pat))
+	 (file-group-pat (realgud-loc-pat-file-group frame-pat))
 	 (alt-frame-num -1)
 	 (last-pos 0)
 	 (selected-frame-num nil)
@@ -377,9 +378,9 @@ non-digit will start entry number from the beginning again."
 	      (add-to-list 'frame-num-pos-list frame-num-pos 't)
 	      (add-text-properties (match-beginning frame-group-pat)
 				   (match-end frame-group-pat)
-				   '(mouse-face highlight
-						help-echo
-						"mouse-2: goto this frame")
+				   (list 'mouse-face 'highlight
+					 'help-echo "mouse-2: goto this frame"
+					 'frame frame-num)
 				   string)
 	      )
 	  ; else
@@ -390,14 +391,25 @@ non-digit will start entry number from the beginning again."
 	    (setq frame-num (incf alt-frame-num))
 	    (setq frame-num-pos (match-beginning 0))
 	    (add-to-list 'frame-num-pos-list frame-num-pos 't)
-	    (add-text-properties (match-beginning 0)
-				 (match-end 0)
-				 '(mouse-face highlight
-					      help-echo
-					      "mouse-2: goto this frame")
+	    (add-text-properties (match-beginning 0) (match-end 0)
+				 (list 'mouse-face 'highlight
+				       'help-echo "mouse-2: goto this frame"
+				       'frame frame-num)
 				 string)
 	    )
 	  )
+	(when file-group-pat
+	  (let ((filename (substring stripped-string
+				     (match-beginning file-group-pat)
+				     (match-end file-group-pat))))
+	    (add-text-properties (match-beginning file-group-pat)
+				 (match-end file-group-pat)
+				 (list 'mouse-face 'highlight
+				       'help-echo "mouse-2: goto this file"
+				       'action 'realgud:follow-event
+				       'file filename)
+				 string)
+	    ))
 	(put-text-property (match-beginning 0) (match-end 0)
 			   'frame-num  frame-num string)
 	(setq last-pos (match-end 0))

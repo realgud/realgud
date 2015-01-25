@@ -60,9 +60,9 @@ realgud-loc-pat struct")
   (make-realgud-loc-pat
    :regexp (concat
 	    realgud:trepan2-frame-start-regexp
-	    realgud:trepan2-frame-num-regexp "[ ]?"
-	    "\\(?:.*?\\)\\(?:[\n\t ]\\)"
-	    "\\(?:[\t]called from \\)?\\([^:]+?\\) at line \\([0-9]+\\)")
+	    realgud:trepan2-frame-num-regexp "[ ]"
+	    "\\(?:.*?)\\)\\(?:[\n\t ]+?\\)"
+	    "\\(?:called from file \\)?'\\([^:]+?\\)' at line \\([0-9]+\\)")
    :num 2
    :file-group 3
    :line-group 4
