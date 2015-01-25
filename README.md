@@ -15,4 +15,3 @@ To get started using, see the
 [notes on using realgud](http://wiki.github.com/rocky/emacs-dbgr/how-to-use).
 
 *Author:*  Rocky Bernstein <rocky@gnu.org> <br>
-[![endorse](https://api.coderwall.com/rocky/endorsecount.png)](https://coderwall.com/rocky)
