@@ -82,10 +82,6 @@
 (setq test-pos (match-end 0))
 (assert-equal 120 test-pos)
 
-;; FIXME: we get a void variable somewhere in here when running
-;;        even though we define it in lexical-let. Dunno why.
-;;        setq however will workaround this.
-
 (setq helper-tb  (gethash "lang-backtrace" realgud:trepan2-pat-hash))
 
 (note "traceback location matching")

@@ -23,7 +23,7 @@
 	  ((stringp filename)
 	   (find-file-other-window filename))
 	  ((numberp frame-num) (realgud:cmd-frame frame-num))
-	  ('t (message "No location property find here")))
+	  ('t (message "No location property found here")))
     ))
 
 (defun realgud:follow-point()

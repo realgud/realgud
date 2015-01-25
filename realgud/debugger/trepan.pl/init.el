@@ -52,15 +52,30 @@ realgud-loc-pat struct")
        :regexp "^(+trepanpl\\(@[0-9]+\\|@main\\)?)+: "
        ))
 
+(defconst realgud:trepanpl-frame-start-regexp
+  "\\(^\\|\n\\)\\(?:-->\\|   \\) #")
+
+(defconst realgud:trepanpl-frame-num-regexp
+  "\\([0-9]+\\)")
+
 ;; Regular expression that describes a Perl backtrace line.
 ;; For example:
-;; $ = main::top_navigation_panel called from file `./latex2html' line 7400
-;; $ = main::BEGIN() called from file `(eval 19)[/usr/bin/latex2html:126]' line 2
+;; --> #0 @ = File::Basename::fileparse('/usr/local/bin/trepan.pl') in
+;;	file `/usr/share/perl/5.18.2/File/Basename.pm' at line 107
+;;     #1 @ = File::Basename::dirname('/usr/local/bin/trepan.pl') in
+;; 	file `/usr/share/perl/5.18.2/File/Basename.pm' at line 294
+;;     #2 file `/usr/local/bin/trepan.pl' at line 11
 (setf (gethash "debugger-backtrace" realgud:trepanpl-pat-hash)
   (make-realgud-loc-pat
-   :regexp "^\\(?:[\t]from \\)?\\([^:]+\\):\\([0-9]+\\)\\(?:in `.*'\\)?"
-   :file-group 1
-   :line-group 2
+   :regexp (concat
+	    realgud:trepanpl-frame-start-regexp
+	    realgud:trepanpl-frame-num-regexp
+	    "\\(?: [$@] = .* in\\)?"
+	    "[\n\t ]+?file `"
+	    "\\(.*\\)' at line \\([0-9]+\\)")
+   :num 2
+   :file-group 3
+   :line-group 4
    :ignore-file-re  realgud-perl-ignore-file-re)
   )
 

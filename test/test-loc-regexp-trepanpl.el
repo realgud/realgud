@@ -11,6 +11,7 @@
 (declare-function realgud-cmdbuf-info-line-group 'realgud-regexp)
 (declare-function realgud-cmdbuf-info            'realgud-regexp)
 (declare-function make-realgud-cmdbuf-info       'realgud-regexp)
+(declare-function realgud-loc-pat-num            'realgud-regexp)
 (declare-function test-simple-start 'test-simple)
 (declare-function assert-t 'test-simple)
 (declare-function assert-equal 'test-simple)
@@ -20,11 +21,18 @@
 (test-simple-start)
 
 (eval-when-compile
+  (defvar file-group)
+  (defvar frame-re)
+  (defvar line-group)
+  (defvar num-group)
+  (defvar test-pos)
   (defvar dbg-name)
   (defvar realgud-pat-hash)
   (defvar loc-pat)
   (defvar test-dbgr)
-  (defvar test-text)
+  (defvar test-s1)
+  (defvar realgud-pat-bt)
+  (defvar realgud:trepanpl-pat-hash)
 )
 
 ; Some setup usually done in setting up the buffer.
@@ -40,34 +48,78 @@
 		 :line-group (realgud-loc-pat-line-group loc-pat)))
 
 
-(setq test-text "-- main::(../example/gcd.pl:18)")
-(assert-t (numberp (cmdbuf-loc-match test-text test-dbgr)) "basic location")
+(setq test-s1 "-- main::(../example/gcd.pl:18)")
+(assert-t (numberp (cmdbuf-loc-match test-s1 test-dbgr)) "basic location")
 
-(assert-equal 0 (cmdbuf-loc-match test-text test-dbgr))
+(assert-equal 0 (cmdbuf-loc-match test-s1 test-dbgr))
 
 (note "extract location fields")
 (assert-equal "../example/gcd.pl"
 	      (match-string (realgud-cmdbuf-info-file-group test-dbgr)
-			    test-text))
+			    test-s1))
 
 (assert-equal "18"
 	      (match-string
 	       (realgud-cmdbuf-info-line-group test-dbgr)
-	       test-text) "extract line number")
+	       test-s1) "extract line number")
 
 
 (note "Test with hex location")
-(setq test-text "-- File::Basename::(/usr/share/perl/5.14/File/Basename.pm:284 @0x8918b70)")
-(assert-t (numberp (cmdbuf-loc-match test-text test-dbgr)) "basic location")
-(assert-equal 0 (cmdbuf-loc-match test-text test-dbgr))
+(setq test-s1 "-- File::Basename::(/usr/share/perl/5.14/File/Basename.pm:284 @0x8918b70)")
+(assert-t (numberp (cmdbuf-loc-match test-s1 test-dbgr)) "basic location")
+(assert-equal 0 (cmdbuf-loc-match test-s1 test-dbgr))
 
 (assert-equal "/usr/share/perl/5.14/File/Basename.pm"
 	      (match-string (realgud-cmdbuf-info-file-group test-dbgr)
-			    test-text))
+			    test-s1))
 
 (assert-equal "284"
 	      (match-string
 	       (realgud-cmdbuf-info-line-group test-dbgr)
-	       test-text) "extract line number")
+	       test-s1) "extract line number")
+
+
+(note "debugger-backtrace")
+(setq realgud-pat-bt  (gethash "debugger-backtrace"
+			     realgud:trepanpl-pat-hash))
+(setq test-s1
+      "--> #0 @ = File::Basename::fileparse('/usr/local/bin/trepan.pl') in
+	file `/usr/share/perl/5.18.2/File/Basename.pm' at line 107
+    #1 @ = File::Basename::dirname('/usr/local/bin/trepan.pl') in
+	file `/usr/share/perl/5.18.2/File/Basename1.pm' at line 294
+    #2 file `/usr/local/bin/trepan.pl' at line 11
+")
+(setq frame-re (realgud-loc-pat-regexp realgud-pat-bt))
+(setq num-group (realgud-loc-pat-num realgud-pat-bt))
+(setq file-group (realgud-loc-pat-file-group realgud-pat-bt))
+(setq line-group (realgud-loc-pat-line-group realgud-pat-bt))
+(assert-equal 0 (string-match frame-re test-s1))
+(assert-equal "0" (substring test-s1
+			     (match-beginning num-group)
+			     (match-end num-group)))
+(assert-equal "/usr/share/perl/5.18.2/File/Basename.pm"
+	      (substring test-s1
+			 (match-beginning file-group)
+			 (match-end file-group)))
+(assert-equal "107"
+	      (substring test-s1
+			 (match-beginning line-group)
+			 (match-end line-group)))
+(setq test-pos (match-end 0))
+
+(assert-equal 127 (string-match frame-re test-s1 test-pos))
+(assert-equal "1" (substring test-s1
+			     (match-beginning num-group)
+			     (match-end num-group)))
+(assert-equal "/usr/share/perl/5.18.2/File/Basename1.pm"
+	      (substring test-s1
+			 (match-beginning file-group)
+			 (match-end file-group)))
+(assert-equal "294"
+	      (substring test-s1
+			 (match-beginning line-group)
+			 (match-end line-group)))
+(setq test-pos (match-end 0))
+(assert-equal 254 test-pos)
 
 (end-tests)
