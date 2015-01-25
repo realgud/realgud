@@ -29,25 +29,14 @@ realgud-loc-pat struct")
 ;; or MS Windows:
 ;;   (c:\\mydirectory\\gcd.py:10): <module>
 (setf (gethash "loc" realgud:trepan3k-pat-hash)
-      (make-realgud-loc-pat
-       :regexp "^(\\(\\(?:[a-zA-Z]:\\)?[-a-zA-Z0-9_/.\\\\ ]+\\):\\([0-9]+\\)\\(?: remapped .*\\)?)"
-       :file-group 1
-       :line-group 2
-       :text-group 3
-       :ignore-file-re  realgud-python-ignore-file-re))
+      realgud:python-trepan-loc-pat)
 
 (setf (gethash "prompt" realgud:trepan3k-pat-hash)
       (make-realgud-loc-pat
        :regexp   "^(trepan3k) "
        ))
 
-(defconst realgud:trepan2-frame-start-regexp
-  "\\(?:^\\|\n\\)\\(->\\|##\\)")
-
-(defconst realgud:trepan2-frame-num-regexp
-  "\\([0-9]+\\)")
-
-;; Regular expression that describes a trepan3 backtrace line.
+;; Regular expression that describes a trepan3k backtrace line.
 ;; For example:
 ;; ->0 get_distribution(dist='trepan==0.3.9')
 ;;     called from file '/python2.7/dist-packages/pkg_res.py' at line 341
@@ -56,17 +45,7 @@ realgud-loc-pat struct")
 ;; ##2 <module> exec()
 
 (setf (gethash "debugger-backtrace" realgud:trepan3k-pat-hash)
-  (make-realgud-loc-pat
-   :regexp (concat
-	    realgud:trepan2-frame-start-regexp
-	    realgud:trepan2-frame-num-regexp "[ ]?"
-	    "\\(?:.*?\\)\\(?:[\n\t ]\\)"
-	    "\\(?:[\t]called from \\)?\\([^:]+?\\) at line \\([0-9]+\\)")
-   :num 2
-   :file-group 3
-   :line-group 4
-   :ignore-file-re  realgud-python-ignore-file-re)
-  )
+      realgud:python-trepan-backtrace-pat)
 
 ;;  Regular expression that describes a Python backtrace line.
 (setf (gethash "lang-backtrace" realgud:trepan3k-pat-hash)

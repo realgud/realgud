@@ -2,6 +2,7 @@
 *~
 /*-pkg.el
 /*.tar.gz
+/.python-version
 /COPYING
 /README
 /aclocal.m4
