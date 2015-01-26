@@ -6,7 +6,7 @@
 ;; below.
 (declare-function __FILE__                     'load-relative)
 
-(declare-function realgud-file-loc-from-line   'realgud-file)
+(declare-function realgud:file-loc-from-line   'realgud-file)
 (declare-function realgud:file-line-count      'realgud-file)
 (declare-function realgud:file-column-from-string 'realgud-file)
 (declare-function realgud-loc?                 'realgud-loc)
@@ -41,7 +41,7 @@
 	  "File found")
 
 
-(note "realgud-file-loc-from-line")
+(note "realgud:file-loc-from-line")
 
 (fset 'compilation-find-file (lambda(mark test-filename opt)
 			       (get-buffer "*scratch*")))
@@ -50,27 +50,27 @@
   ;; NOTE: this calls compilation-find-file which prompts for a file
   ;; (assert-equal
   ;;  "File named `not-found-file' not readable"
-  ;;  (realgud-file-loc-from-line
+  ;;  (realgud:file-loc-from-line
   ;;   "not-found-file" 5 (make-marker))
   ;;  )
 
-  (assert-t (stringp (realgud-file-loc-from-line test-filename 5.5))
+  (assert-t (stringp (realgud:file-loc-from-line test-filename 5.5))
 	    "invalid real line number")
 
-  (assert-t (stringp (realgud-file-loc-from-line test-filename -1))
+  (assert-t (stringp (realgud:file-loc-from-line test-filename -1))
 	    "negative number")
 
-  (note "realgud-file-loc-from-line information")
+  (note "realgud:file-loc-from-line information")
 
-  (assert-t (stringp (realgud-file-loc-from-line test-filename 10001))
+  (assert-t (stringp (realgud:file-loc-from-line test-filename 10001))
 	    "Line number too large for file")
 
-  (setq test-file-loc (realgud-file-loc-from-line (__FILE__) 5 nil ";; Note"))
+  (setq test-file-loc (realgud:file-loc-from-line (__FILE__) 5 nil ";; Note"))
   (assert-t (realgud-loc? test-file-loc)
 	    "Ok loc creation - no cmd marker")
 
   (assert-t (realgud-loc?
-	     (realgud-file-loc-from-line test-filename 30 (make-marker)))
+	     (realgud:file-loc-from-line test-filename 30 (make-marker)))
 	    "Ok loc creation - cmd marker")
 
   (assert-equal 5 (realgud-loc-line-number test-file-loc))
@@ -80,13 +80,13 @@
 
   (assert-equal (__FILE__) (realgud-loc-filename test-file-loc))
 
-  (note "realgud-file-loc-from-line remapping")
+  (note "realgud:file-loc-from-line remapping")
 
   (setq remap-filename " bogus remap-filename.el")
 
   ;; (assert-equal
   ;;  (format "File named `%s' not readable" remap-filename)
-  ;;  (realgud-file-loc-from-line
+  ;;  (realgud:file-loc-from-line
   ;;   remap-filename 5 (make-marker))
   ;;  )
   )
@@ -95,7 +95,7 @@
 (puthash remap-filename test-filename realgud-file-remap)
 
 (assert-t (realgud-loc?
-	   (realgud-file-loc-from-line remap-filename 30))
+	   (realgud:file-loc-from-line remap-filename 30))
 	  "Ok loc creation with remap - no cmd marker")
 
 ;; FIXME: don't know why this fails in batch

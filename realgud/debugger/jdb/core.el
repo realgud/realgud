@@ -20,7 +20,7 @@
 (declare-function realgud-parse-command-arg  'realgud-core)
 (declare-function realgud-query-cmdline      'realgud-core)
 (declare-function realgud-suggest-invocation 'realgud-core)
-(declare-function realgud-file-loc-from-line 'realgud-file)
+(declare-function realgud:file-loc-from-line 'realgud-file)
 
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
@@ -94,7 +94,7 @@ that works."
 
 (defun realgud:jdb-loc-fn-callback(text filename lineno source-str
 					ignore-file-re cmd-mark)
-  (realgud-file-loc-from-line filename lineno
+  (realgud:file-loc-from-line filename lineno
 			      cmd-mark source-str nil
 			      ignore-file-re 'realgud:jdb-find-file))
 

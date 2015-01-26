@@ -1,5 +1,5 @@
 ;;; Copyright (C) 2010-2011, 2013-2014 Rocky Bernstein <rocky@gnu.org>
-; Should realgud-file-loc-from-line be here or elsewhere?
+; Should realgud:file-loc-from-line be here or elsewhere?
 (require 'load-relative)
 (require 'compile) ;; for compilation-find-file
 (require-relative-list '("helper" "loc") "realgud-")
@@ -47,7 +47,7 @@ at LINE-NUMBER or nil if it is not there"
 
 
 ;; FIXME: should allow column number to be passed in.
-(defun realgud-file-loc-from-line(filename line-number
+(defun realgud:file-loc-from-line(filename line-number
 					   &optional cmd-marker source-text bp-num
 					   ;; FIXME: remove ignore-file-re and cover with
 					   ;; find-file-fn.

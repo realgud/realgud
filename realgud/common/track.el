@@ -43,7 +43,7 @@
 (declare-function realgud-cmdbuf-info-in-srcbuf?=     'realgud-buffer-command)
 (declare-function realgud:debugger-name-transform     'realgud-helper)
 (declare-function realgud:terminate                   'realgud-core)
-(declare-function realgud-file-loc-from-line          'realgud-file)
+(declare-function realgud:file-loc-from-line          'realgud-file)
 (declare-function realgud-fringe-history-set          'realgud-fringe)
 (declare-function realgud-get-cmdbuf                  'realgud-buffer-command)
 (declare-function realgud-get-srcbuf-from-cmdbuf      'realgud-buffer-helper)
@@ -373,7 +373,7 @@ Otherwise return nil."
 			 (unless line-str
 			   (message "line number not found -- using 1"))
 			 (if (and filename lineno)
-			     (realgud-file-loc-from-line filename lineno
+			     (realgud:file-loc-from-line filename lineno
 							 cmd-mark
 							 source-str nil
 							 ignore-file-re)
@@ -425,7 +425,7 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 			    (message "line number not found -- using 1"))
 			  (if (and filename lineno)
 			      (let ((loc-or-error
-				     (realgud-file-loc-from-line
+				     (realgud:file-loc-from-line
 				      filename lineno
 				      cmd-mark
 				      source-str

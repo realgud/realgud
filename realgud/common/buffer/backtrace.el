@@ -3,7 +3,7 @@
 (require 'load-relative)
 (eval-when-compile (require 'cl-lib))
 (require-relative-list
- '("../key" "helper" "follow") "realgud-")
+ '("../key" "helper" "follow" "loc") "realgud-")
 
 (require-relative-list
  '("command") "realgud-buffer-")
@@ -15,6 +15,7 @@
 (declare-function realgud-cmdbuf-pat(key))
 (declare-function realgud-cmdbuf-info-in-srcbuf?= (arg))
 (declare-function realgud-get-cmdbuf 'realgud-buffer-helper)
+(declare-function realgud:file-loc-from-line 'realgud-file)
 
 (defstruct realgud-backtrace-info
   "debugger object/structure specific to a (top-level) program to be debugged."
@@ -51,6 +52,29 @@
     string
     )
 )
+
+(defun realgud:backtrace-describe (&optional buffer)
+  (interactive "")
+  (unless buffer (setq buffer (current-buffer)))
+  (with-current-buffer buffer
+    (let ((frames (realgud-backtrace-info-frame-ring realgud-backtrace-info))
+	  (frame)
+	  (loc)
+	  (i 0))
+      (switch-to-buffer (get-buffer-create "*Describe*"))
+      (while (and (< i (ring-length frames)) (setq frame (ring-ref frames i)))
+	(insert (format "*** %d\n" i))
+	(insert (format "%s\n" frame))
+	(when (markerp frame)
+	  (with-current-buffer (marker-buffer frame)
+	    (goto-char frame)
+	    (setq loc (get-text-property (point) 'loc))
+	  )
+	  (when loc (realgud:loc-describe loc)))
+	(setq i (1+ i))
+      )
+    )
+    ))
 
 ;; FIXME: create this in a new frame.
 (defun realgud:backtrace-init ()
@@ -96,9 +120,8 @@
 	      (delete-region (point-min) (point-max))
 	      (if divert-string
 		  (let* ((triple
-			  (realgud:backtrace-add-text-properties frame-pat
-							      divert-string
-							      indicator-re))
+			  (realgud:backtrace-add-text-properties
+			   frame-pat cmdbuf divert-string indicator-re))
 			 (string-with-props
 			  (ansi-color-filter-apply (car triple)))
 			 (frame-num-pos-list (caddr triple))
@@ -341,9 +364,10 @@ non-digit will start entry number from the beginning again."
       (setq realgud-goto-entry-acc ""))
   (realgud-goto-frame-n-internal (this-command-keys)))
 
-(defun realgud:backtrace-add-text-properties(frame-pat &optional opt-string
+(defun realgud:backtrace-add-text-properties(frame-pat cmdbuf &optional opt-string
 						       frame-indicator-re)
-  "Parse STRING and add properties for that"
+  "Parse OPT-STRING or the current buffer and add frame properties: frame number,
+filename, line number, whether the frame is selected as text properties."
 
   (let* ((string (or opt-string
 		    (buffer-substring (point-min) (point-max))
@@ -352,16 +376,15 @@ non-digit will start entry number from the beginning again."
 	 (frame-regexp (realgud-loc-pat-regexp frame-pat))
 	 (frame-group-pat (realgud-loc-pat-num frame-pat))
 	 (file-group-pat (realgud-loc-pat-file-group frame-pat))
+	 (line-group-pat (realgud-loc-pat-line-group frame-pat))
 	 (alt-frame-num -1)
 	 (last-pos 0)
 	 (selected-frame-num nil)
 	 (frame-num-pos-list '())
 	 )
     (while (string-match frame-regexp stripped-string last-pos)
-      (let ((frame-num-str)
-	    (frame-num)
-
-	    ;; FIXME: Remove hack that 1 is always the frame indicator.
+      (let ((frame-num-str) (frame-num) (line-num) (filename)
+	    ;; FIXME: Remove hack that group 1 is always the frame indicator.
 	    (frame-indicator
 	     (substring stripped-string (match-beginning 1) (match-end 1)))
 	    (frame-num-pos)
@@ -399,16 +422,28 @@ non-digit will start entry number from the beginning again."
 	    )
 	  )
 	(when file-group-pat
-	  (let ((filename (substring stripped-string
-				     (match-beginning file-group-pat)
-				     (match-end file-group-pat))))
-	    (add-text-properties (match-beginning file-group-pat)
-				 (match-end file-group-pat)
-				 (list 'mouse-face 'highlight
-				       'help-echo "mouse-2: goto this file"
-				       'action 'realgud:follow-event
-				       'file filename)
-				 string)
+	  (setq filename (substring stripped-string
+				    (match-beginning file-group-pat)
+				    (match-end file-group-pat)))
+	  (add-text-properties (match-beginning file-group-pat)
+			       (match-end file-group-pat)
+			       (list 'mouse-face 'highlight
+				     'help-echo "mouse-2: goto this file"
+				     'action 'realgud:follow-event
+				     'file filename)
+			       string)
+	    )
+	(when line-group-pat
+	  (let ((line-num-str (substring stripped-string
+				    (match-beginning line-group-pat)
+				    (match-end line-group-pat))))
+	    (setq line-num (string-to-number (or line-num-str "1")))
+	  ))
+
+	(when (and (stringp filename) (numberp line-num))
+	  (let ((loc (realgud:file-loc-from-line filename line-num cmdbuf)))
+	    (put-text-property (match-beginning 0) (match-end 0)
+			       'loc loc string)
 	    ))
 	(put-text-property (match-beginning 0) (match-end 0)
 			   'frame-num  frame-num string)
