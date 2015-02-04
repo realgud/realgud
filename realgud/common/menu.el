@@ -64,9 +64,9 @@ menu. (The common map typically contains function key bindings.)"
 			 ))
 
     (define-key debugger-map [backtrace]
-      (realgud-menu-item debugger-map "Backtrace" 'realgud-window-bt
+      (realgud-menu-item debugger-map "Backtrace" 'realgud:window-bt
 			 :enable '(realgud-get-process)
-			 :help (documentation 'realgud-window-bt)
+			 :help (documentation 'realgud:window-bt)
 			 ))
 
     (define-key debugger-map [arrow3]

@@ -96,7 +96,7 @@ See also `realgud-window-src'"
     src-window)
   )
 
-(defun realgud-window-bt-undisturb-src ( &optional opt-buffer switch?)
+(defun realgud:window-bt-undisturb-src ( &optional opt-buffer switch?)
   "Make sure the backtrace buffer is displayed in windows without
 disturbing the source window if it is also displayed. Returns
 the source window
@@ -130,12 +130,12 @@ See also `realgud-window-src'"
     src-window)
   )
 
-(defun realgud-window-bt()
+(defun realgud:window-bt()
   "Refresh backtrace information and display that in a buffer"
   (interactive)
   (with-current-buffer-safe (realgud-get-cmdbuf)
     (realgud:backtrace-init)
-    (realgud-window-bt-undisturb-src)
+    (realgud:window-bt-undisturb-src)
     )
   )
 

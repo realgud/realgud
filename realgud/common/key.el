@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2011, 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2011, 2014-2015 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
 (require-relative "custom" nil "realgud-")
 
@@ -99,7 +99,7 @@ Nor does it touch prefix keys; for that see `realgud-populate-keys-standard'"
     (define-key map "d" 'realgud:cmd-newer-frame)
     (define-key map "u" 'realgud:cmd-older-frame)
     (define-key map "C" 'realgud-window-cmd-undisturb-src)
-    (define-key map "F" 'realgud-window-bt)
+    (define-key map "F" 'realgud:window-bt)
     (define-key map "Q" 'realgud:cmd-terminate)
     (define-key map "S" 'realgud-window-src-undisturb-cmd)
     (define-key map "U" 'realgud:cmd-until)
