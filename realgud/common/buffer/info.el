@@ -41,7 +41,7 @@
 ;; 	      (make-sparse-keymap "Debugger"))))
 
 ;; (define-key realgud:info-mode-map [menu-bar debugger backtrace]
-;;   '("Backtrace" . realgud-window-bt))
+;;   '("Backtrace" . realgud:window-bt))
 ;;(define-key realgud:info-mode-map  [menu-bar debugger command]
 ;;  '("Go to Command Buffer" . realgud-window-cmd-undisturb-src))
 ;;(define-key realgud:info-mode-map [menu-bar debugger source]
