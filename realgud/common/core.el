@@ -274,7 +274,7 @@ marginal icons is reset."
 		(cmdline-list (cons program args)))
 	    ;; is this right?
 	    (unless (realgud:binary script-filename)
-	      (setq src-buffer find-file-noselect script-filename)
+	      (setq src-buffer (find-file-noselect script-filename))
 	      (point-max)
 	      (realgud-srcbuf-init src-buffer cmdproc-buffer))
 	    )
