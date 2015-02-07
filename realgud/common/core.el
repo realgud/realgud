@@ -185,6 +185,14 @@ the buffer and data associated with it are already gone."
     (if cmdbuf (realgud:terminate cmdbuf)))
   (message "That's all folks.... %s" string))
 
+(defun realgud:binary (file-name)
+"Return a priority for wehther file-name is likely we can run gdb on"
+  (let ((output (shell-command-to-string (format "file %s" file-name))))
+    (cond
+     ((string-match "ELF" output) t)
+     ('t nil))))
+
+
 (defun realgud-exec-shell (debugger-name script-filename program
 				      &optional no-reset &rest args)
   "Run the specified SCRIPT-FILENAME in under debugger DEBUGGER-NAME a
@@ -262,11 +270,14 @@ marginal icons is reset."
 	(setq process (get-buffer-process cmdproc-buffer))
 
 	(if (and process (eq 'run (process-status process)))
-	  (let ((src-buffer (find-file-noselect script-filename))
+	  (let ((src-buffer)
 		(cmdline-list (cons program args)))
 	    ;; is this right?
-	    (point-max)
-	    (realgud-srcbuf-init src-buffer cmdproc-buffer))
+	    (unless (realgud:binary script-filename)
+	      (setq src-buffer find-file-noselect script-filename)
+	      (point-max)
+	      (realgud-srcbuf-init src-buffer cmdproc-buffer))
+	    )
 	  ;; else
 	  (insert
 	   (format

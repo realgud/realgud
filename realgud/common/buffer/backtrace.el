@@ -121,7 +121,7 @@
 	      (if divert-string
 		  (let* ((triple
 			  (realgud:backtrace-add-text-properties
-			   frame-pat cmdbuf divert-string indicator-re))
+			   frame-pat cmdbuf indicator-re))
 			 (string-with-props
 			  (ansi-color-filter-apply (car triple)))
 			 (frame-num-pos-list (caddr triple))
