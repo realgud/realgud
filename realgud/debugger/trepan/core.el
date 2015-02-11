@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2012, 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2012, 2014-2015 Rocky Bernstein <rocky@gnu.org>
 (eval-when-compile (require 'cl))
 
 (require 'compile) ;; for compilation-find-file
@@ -34,19 +34,19 @@
 
 ;; FIXME: this code could be generalized and put in a common place.
 (defun realgud:trepan-find-file(filename)
-  "A find-file specific for python/trepan. We strip off trailing
+  "A find-file specific for trepan. We strip off trailing
 blanks. Failing that we will prompt for a mapping and save that
-in variable `realgud:trepan-file-remap' when that works. In the future,
-we may also consult PYTHONPATH."
+in variable `realgud:trepan-file-remap' when that works. In the
+future, we may also consult RUBYPATH."
   (let* ((transformed-file)
 	 (stripped-filename (realgud:strip filename))
-	 (ignore-file-re)
+	 ;; (ignore-file-re)
 	)
     (cond
      ((file-exists-p filename) filename)
      ((file-exists-p stripped-filename) stripped-filename)
-     ((string-match ignore-file-re filename)
-	(message "tracking ignored for psuedo-file: %s" filename) nil)
+     ;; ((string-match ((ignore-file-re filename)
+     ;; 	(message "tracking ignored for psuedo-file: %s" filename) nil)
      ('t
       ;; FIXME search RUBYLIB if not absolute file?
       (if (gethash filename realgud-file-remap)

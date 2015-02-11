@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2014-2015 Rocky Bernstein <rocky@gnu.org>
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
@@ -28,7 +28,9 @@ realgud-loc-pat struct")
        :regexp ".. (\\(?:.+ \\(?:via\\|remapped\\) \\)?\\(.+\\):\\([0-9]+\\)\\(?: @[0-9]+\\)?)\\(?:\n\\(.*?\\)\n\\)?"
        :file-group 1
        :line-group 2
-       :text-group 3))
+       :text-group 3
+       :ignore-file-re  "(eval: .*)"
+       ))
 
 ;; Regular expression that describes a trepan command prompt
 ;; For example:
