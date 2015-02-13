@@ -117,6 +117,14 @@ in it with those from CMDPROC-BUFFER"
 	(realgud-srcbuf-info-cmdproc= cmdproc-buffer)
       (realgud-srcbuf-init src-buffer cmdproc-buffer))))
 
+(defun realgud:cmdbuf-associate(cmdbuf-name)
+"Associate a command buffer with for the current buffer which is
+assumed to be a source-code buffer"
+  (interactive "brealgud command buffer: ")
+  (realgud-srcbuf-init-or-update (current-buffer) (get-buffer cmdbuf-name))
+  (realgud-short-key-mode)
+  )
+
 (defun realgud-srcbuf-bp-list(&optional buffer)
   "Return a list of breakpoint loc structures that reside in
 BUFFER which should be an initialized source buffer."
