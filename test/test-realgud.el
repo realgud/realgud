@@ -14,11 +14,6 @@
 
 (note "realgud")
 
-(note "realgud-starts-with")
-(assert-equal 1 (realgud-string-starts-with "abcdef" "realgud-"))
-(assert-t (realgud-string-starts-with "realgud-foo" "realgud-"))
-(assert-equal -8 (realgud-string-starts-with "realgudfoo" "realgud-"))
-
 (note "realgud:loaded-features")
 (set (make-local-variable 'test-realgud:features) (realgud:loaded-features))
 (dolist (feature '(realgud-trepan realgud-pydbgr

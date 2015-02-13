@@ -1,18 +1,19 @@
-;;; Copyright (C) 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2014-2015 Rocky Bernstein <rocky@gnu.org>
 ;;  `jdb' Main interface to jdb via Emacs
 
 (require 'gud) ;; For class-path and source-path handling
 (require 'cl)
-(require 'list-utils)
 
 (require 'load-relative)
-(require-relative-list '("../../common/helper") "realgud-")
-(require-relative-list '("../../common/run")    "realgud:")
+(require-relative-list '("../../common/run") "realgud:")
+(require-relative-list '("../../common/helper" "../../common/utils")
+		       "realgud-")
 (require-relative-list '("core" "track-mode") "realgud:jdb-")
 
 (declare-function realgud:jdb-query-cmdline  'realgud:jdb-core)
 (declare-function realgud:jdb-parse-cmd-args 'realgud:jdb-core)
 (declare-function realgud:run-process        'realgud:core)
+(declare-function realgud:flatten            'realgud-utils)
 
 
 ;; This is needed, or at least the docstring part of it is needed to
@@ -81,7 +82,7 @@ fringe and marginal icons.
 	 (script-args (caddr parsed-args))
 	 (script-name (car script-args))
 	 (parsed-cmd-args
-	  (cl-remove-if 'nil (list-utils-flatten parsed-args)))
+	  (cl-remove-if 'nil (realgud:flatten parsed-args)))
 	 )
     (realgud:run-process "jdb" script-name parsed-cmd-args
 			 'jdb-track-mode-hook

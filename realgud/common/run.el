@@ -4,7 +4,7 @@
 (require 'shell)
 (require 'list-utils)
 (require 'load-relative)
-(require-relative-list '("core" "track") "realgud-")
+(require-relative-list '("core" "track" "utils") "realgud-")
 (require-relative-list '("buffer/command") "realgud-buffer-")
 
 (declare-function realgud-cmdbuf-info-in-debugger?=   'realgud-buffer-command)
@@ -160,7 +160,7 @@ Otherwise nil is returned.
 	 (script-args (caddr parsed-args))
 	 (script-name (car script-args))
 	 (parsed-cmd-args
-	  (remove-if 'nil (list-utils-flatten parsed-args)))
+	  (remove-if 'nil (realgud:flatten parsed-args)))
 	 )
     (realgud:run-process debugger-name script-name parsed-cmd-args
 			 minibuffer-history no-reset)

@@ -3,7 +3,8 @@
 (require 'cl)
 (require 'list-utils)
 (require 'load-relative)
-(require-relative-list '("../../common/helper") "realgud-")
+(require-relative-list '("../../common/helper" "../../common/utils")
+		       "realgud-")
 (require-relative-list '("core" "track-mode") "realgud:gdb-")
 
 ;; This is needed, or at least the docstring part of it is needed to
@@ -30,6 +31,7 @@ This should be an executable on your path, or an absolute file name."
 (declare-function realgud:gdb-parse-cmd-args 'realgud:gdb-core)
 (declare-function realgud:gdb-query-cmdline  'realgud:gdb-core)
 (declare-function realgud:run-process        'realgud-core)
+(declare-function realgud:flatten            'realgud-utils)
 
 ;; -------------------------------------------------------------------
 ;; The end.
@@ -58,7 +60,7 @@ fringe and marginal icons.
 	 (script-args (caddr parsed-args))
 	 (script-name (car script-args))
 	 (parsed-cmd-args
-	  (cl-remove-if 'nil (list-utils-flatten parsed-args)))
+	  (cl-remove-if 'nil (realgud:flatten parsed-args)))
 	 (cmd-buf (realgud:run-process realgud:gdb-command-name
 				       script-name parsed-cmd-args
 				       'realgud:gdb-minibuffer-history

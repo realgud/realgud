@@ -96,7 +96,6 @@
  el-get-sources
  '(el-get			; el-get is self-hosting
    loc-changes 		        ; loc marks in buffers
-   list-utils 		        ; list utilities like list-utils-flatten
    load-relative		; load emacs lisp relative to emacs source
    test-simple			; simple test framework
    ))

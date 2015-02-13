@@ -104,6 +104,7 @@
   (require-relative-list
    '(
      "./realgud/common/track-mode"
+     "./realgud/common/utils"
      "./realgud/debugger/bashdb/bashdb"
      "./realgud/debugger/gdb/gdb"
      "./realgud/debugger/gub/gub"
@@ -128,26 +129,12 @@
 
 (load-relative "./realgud/common/custom")
 
-;; Really should be part of GNU Emacs. But until then...
-(defmacro realgud-string-starts-with(string prefix)
-  "compare-strings on STRING anchored from the beginning and up
-  to length(PREFIX)"
-  (declare (indent 1) (debug t))
-  `(compare-strings ,prefix 0 (length ,prefix)
-		    ,string  0 (length ,prefix))
-  )
-
-(defun realgud:strip (str)
-      "Remove leading and tailing whitespace from STR."
-      (while (string-match "\\`\n+\\|^\\s-+\\|\\s-+$\\|\n+\\'"
-                           str)
-        (setq str (replace-match "" t t str)))
-      str)
+(declare-function realgud:string-starts-with 'realgud-utils)
 
 (defun realgud-feature-starts-with(feature prefix)
   "realgud-strings-starts-with on stringified FEATURE and PREFIX."
   (declare (indent 1))
-  (realgud-string-starts-with (symbol-name feature) prefix)
+  (realgud:string-starts-with (symbol-name feature) prefix)
   )
 
 (defun realgud:loaded-features()
