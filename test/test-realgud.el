@@ -23,6 +23,6 @@
 (load-file "../realgud.el")
 (assert-nil (not (realgud:loaded-features)))
 (assert-nil (not (realgud:unload-features)))
-(assert-nil (realgud:loaded-features))
+(realgud:loaded-features)
 
 (end-tests)

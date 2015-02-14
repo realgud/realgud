@@ -141,23 +141,24 @@ features that start with 'realgud-' and also include standalone debugger feature
 like 'pydbgr'."
   (let ((result nil))
     (dolist (feature features result)
+      (setq feature-str (symbol-name feature))
       (cond ((eq 't
-		 (realgud-feature-starts-with feature "realgud-"))
-	     (setq result (cons feature result)))
+		 (string-prefix-p feature-str "realgud-"))
+	     (setq result (cons feature-str result)))
 	    ((eq 't
-		 (realgud-feature-starts-with feature "nodejs"))
-	     (setq result (cons feature result)))
+		 (string-prefix-p feature-str "nodejs"))
+	     (setq result (cons feature-str result)))
 	    ((eq 't
-		 (realgud-feature-starts-with feature "pydbgr"))
-	     (setq result (cons feature result)))
+		 (string-prefix-p feature-str "pydbgr"))
+	     (setq result (cons feature-str result)))
 	    ((eq 't
 		 ;; No trailing '-' to get a plain "trepan".
-		 (realgud-feature-starts-with feature "trepan"))
-	     (setq result (cons feature result)))
+		 (string-prefix-p feature-str "trepan"))
+	     (setq result (cons feature-str result)))
 	    ((eq 't
 		 ;; No trailing '-' to get a plain "trepanx".
-		 (realgud-feature-starts-with feature "trepanx"))
-	     (setq result (cons feature result)))
+		 (string-prefix-p feature-str "trepanx"))
+	     (setq result (cons feature-str result)))
 	    ('t nil))
 	)
       )
@@ -169,8 +170,10 @@ like 'pydbgr'."
   (interactive "")
   (let ((result (realgud:loaded-features)))
     (dolist (feature result result)
-      (unload-feature feature 't)))
-  )
+      (unless (symbolp feature) (setq feature (make-symbol feature)))
+      (if (featurep feature)
+	(unload-feature feature) 't))
+  ))
 
 (defun realgud:reload-features()
   "Reload all features loaded from this package. Useful if have
