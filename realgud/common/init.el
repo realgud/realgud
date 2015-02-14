@@ -1,11 +1,11 @@
-;;; Copyright (C) 2010 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2015 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
 
 (defface realgud-line-number
   '((t :inherit font-lock-variable-name-face))
   "Face for displaying line numbers in."
   :group 'realgud
-  :version "23.1")
+  :version "23.4")
 
 (defvar realgud-line-number-face 'realgud-line-number
   "Face name to use for line numbers.")
@@ -14,7 +14,7 @@
   '((t :inherit font-lock-preprocessor-face))
   "Face for displaying file names."
   :group 'realgud
-  :version "23.1")
+  :version "23.4")
 
 (defface realgud-backtrace-number
   '((t

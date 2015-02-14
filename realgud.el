@@ -129,12 +129,10 @@
 
 (load-relative "./realgud/common/custom")
 
-(declare-function realgud:string-starts-with 'realgud-utils)
-
 (defun realgud-feature-starts-with(feature prefix)
   "realgud-strings-starts-with on stringified FEATURE and PREFIX."
   (declare (indent 1))
-  (realgud:string-starts-with (symbol-name feature) prefix)
+  (string-prefix-p (symbol-name feature) prefix)
   )
 
 (defun realgud:loaded-features()

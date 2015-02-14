@@ -10,15 +10,16 @@
 (require-relative-list '("../helper" "../key") "realgud-")
 
 (declare-function realgud-populate-common-keys 'realgud-menu)
-(declare-function buffer-killed? 'realgud-helper)
-(declare-function buffer-loc-line-number? 'realgud-loc)
-(declare-function realgud-cmdbuf-add-srcbuf 'realgud-cmdbuf)
-(declare-function realgud-cmdbuf-info-bp-list 'realgud-cmdbuf)
-(declare-function realgud-loc-marker          'realgud-loc)
-(declare-function realgud-loc-line-number     'realgud-loc)
-(declare-function realgud-loc-num             'realgud-loc)
-(declare-function make-realgud-loc-hist       'realgud-lochist)
-(declare-function realgud-get-srcbuf          'helper)
+(declare-function buffer-killed?               'realgud-helper)
+(declare-function buffer-loc-line-number?      'realgud-loc)
+(declare-function realgud-cmdbuf-add-srcbuf    'realgud-cmdbuf)
+(declare-function realgud-cmdbuf-info-bp-list  'realgud-cmdbuf)
+(declare-function realgud-loc-marker           'realgud-loc)
+(declare-function realgud-loc-line-number      'realgud-loc)
+(declare-function realgud-loc-num              'realgud-loc)
+(declare-function make-realgud-loc-hist        'realgud-lochist)
+(declare-function realgud-get-srcbuf           'helper)
+(declare-function realgud-short-key-mode-setup 'realgud-shortkey)
 
 (defstruct realgud-srcbuf-info
   "debugger object/structure specific to a (top-level) source program
@@ -122,7 +123,7 @@ in it with those from CMDPROC-BUFFER"
 assumed to be a source-code buffer"
   (interactive "brealgud command buffer: ")
   (realgud-srcbuf-init-or-update (current-buffer) (get-buffer cmdbuf-name))
-  (realgud-short-key-mode)
+  (realgud-short-key-mode-setup 't)
   )
 
 (defun realgud-srcbuf-bp-list(&optional buffer)

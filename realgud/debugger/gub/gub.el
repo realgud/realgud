@@ -1,4 +1,4 @@
-;;; Copyright (C) 2013-2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2013-2015 Rocky Bernstein <rocky@gnu.org>
 ;;  `gub' Main interface to Go gub via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
@@ -9,7 +9,7 @@
 (defgroup realgud:gub nil
   "The realgud interface to the Go SSA interpreter debugger, gub"
   :group 'realgud
-  :version "23.1")
+  :version "23.4")
 
 ;; -------------------------------------------------------------------
 ;; User definable variables

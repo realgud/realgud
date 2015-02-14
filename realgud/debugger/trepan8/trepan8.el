@@ -15,7 +15,7 @@
   "The reagud interface toe th Ruby \"trepanning\" debugger for Ruby 1.8"
   :group 'ruby
   :group 'realgud
-  :version "23.1")
+  :version "23.4")
 
 ;; -------------------------------------------------------------------
 ;; User-definable variables
