@@ -12,6 +12,7 @@
 (declare-function realgud:track-set-debugger          'realgud-track)
 (declare-function realgud-parse-command-arg           'realgud-core)
 (declare-function realgud:expand-file-name-if-exists  'realgud-core)
+(declare-function realgud:flatten                     'realgud-utils)
 
 (defun realgud:parse-cmd-args(args two-args opt-two-args interp-regexp debugger-regexp
 				   path-args-list annotate-args)
