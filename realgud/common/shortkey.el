@@ -1,6 +1,7 @@
 ;;; Copyright (C) 2010-2015 Rocky Bernstein <rocky@gnu.org>
 (require 'load-relative)
-(require-relative-list '("custom" "helper" "key" "lochist" "loc" "menu")
+(require-relative-list '("custom" "eval" "helper" "key" "lochist" "loc"
+			 "menu")
 		       "realgud-")
 (require-relative-list '("buffer/command" "buffer/helper" "buffer/source")
 		       "realgud-buffer-")
@@ -44,6 +45,7 @@
     (define-key map "c"        'realgud:cmd-continue)
     (define-key map "e"        'realgud:cmd-eval-region)
     (define-key map "U"        'realgud:cmd-until)
+    (define-key map [mouse-2]  'realgud:tooltip-eval)
 
     ;; FIXME: these can go to a common routine
     (define-key map "<"        'realgud:cmd-newer-frame)

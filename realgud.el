@@ -139,7 +139,8 @@
   "Return a list of loaded debugger features. These are the
 features that start with 'realgud-' and also include standalone debugger features
 like 'pydbgr'."
-  (let ((result nil))
+  (let ((result nil)
+	(feature-str))
     (dolist (feature features result)
       (setq feature-str (symbol-name feature))
       (cond ((eq 't
