@@ -34,14 +34,14 @@ test: check
 
 #: Run all tests without bloated output
 check-short:
-	$(MAKE) check 2>&1  | $(RUBY) make-check-filter.rb
+	$(MAKE) check 2>&1  | $(RUBY) test/make-check-filter.rb
 
 #: Run all tests without and show just the failure lines
 check-terse:
-	$(MAKE) check 2>&1  | $(RUBY) make-check-filter.rb | grep failure
+	$(MAKE) check 2>&1  | $(RUBY) tes/make-check-filter.rb | grep failure
 
 #: Run "make install"
 install-short:
-	$(MAKE) install 2>&1  | $(RUBY) make-check-filter.rb
+	$(MAKE) install 2>&1  | $(RUBY) test/make-check-filter.rb
 
 .PHONY: test check check-short rmChangeLog
