@@ -1,4 +1,4 @@
-;;; Copyright (C) 2012 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2012, 2015 Rocky Bernstein <rocky@gnu.org>
 ;;; Stock Python debugger pdb
 
 (eval-when-compile (require 'cl))
@@ -94,6 +94,7 @@ realgud-loc-pat struct")
   the pdb command to use, like 'python'")
 
 (setf (gethash "shell" realgud:pdb-command-hash) "python")
+(setf (gethash "eval"  realgud:pdb-command-hash) "p %s")
 (setf (gethash "pdb" realgud-command-hash) realgud:pdb-command-hash)
 
 (provide-me "realgud:pdb-")
