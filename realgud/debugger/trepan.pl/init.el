@@ -41,19 +41,31 @@ realgud-loc-pat struct")
        :ignore-file-re  realgud-perl-ignore-file-re)
       )
 
+(defconst realgud:trepanpl-frame-start-regexp
+  "\\(^\\|\n\\)\\(?:-->\\|   \\) #")
+
 ;; Regular expression that describes a trepanpl command prompt
 ;; For example:
 ;;   (trepanpl):
 ;;   ((trepanpl)):
 ;;   (trepanpl@main):
 ;;   (trepanpl@55):
+(defconst realgud:trepanpl-prompt-regexp
+  "^(+trepanpl\\(@[0-9]+\\|@main\\)?)+: ")
+
 (setf (gethash "prompt" realgud:trepanpl-pat-hash)
       (make-realgud-loc-pat
-       :regexp "^(+trepanpl\\(@[0-9]+\\|@main\\)?)+: "
+       :regexp realgud:trepanpl-prompt-regexp
        ))
 
-(defconst realgud:trepanpl-frame-start-regexp
-  "\\(^\\|\n\\)\\(?:-->\\|   \\) #")
+(defconst realgud:trepanpl-eval-result-prefix-regexp
+  "^\\$DB::D\\[[0-9]+\\] = ")
+
+(setf (gethash "prompt" realgud:trepanpl-pat-hash)
+      (make-realgud-loc-pat
+       :regexp realgud:trepanpl-prompt-regexp
+       ))
+
 
 (defconst realgud:trepanpl-frame-num-regexp
   "\\([0-9]+\\)")
@@ -203,6 +215,9 @@ backtrace listing.")
 ;; 	;; (trepanpl-frames-match-current-line
 ;; 	;;  (0 trepanpl-frames-current-frame-face append))
 ;; 	))
+
+(setf (gethash "callback-eval-filter" realgud:trepanpl-pat-hash)
+      'realgud:trepanpl-eval-filter-callback)
 
 (setf (gethash realgud:trepanpl-debugger-name realgud-pat-hash) realgud:trepanpl-pat-hash)
 

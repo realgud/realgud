@@ -30,13 +30,13 @@
     (t (:weight bold)))
   "Face used to highlight debugger run information."
   :group 'realgud
-  :version "24.1")
+  :version "24.3")
 
 (defface debugger-not-running
   '((t :inherit font-lock-warning-face))
   "Face used when debugger or process is not running."
   :group 'realgud
-  :version "24.1")
+  :version "24.3")
 
 
 (defstruct realgud-cmdbuf-info
@@ -69,6 +69,10 @@
                        ;; special handling to map output to a file
                        ;; location, this is set to that special
                        ;; function
+  callback-eval-filter ;; If set, this function strip extraneous output
+                       ;; when evaluating an expression. For example,
+                       ;; some trepan debuggers expression values prefaced with:
+                       ;; $DB::D[0] =
 
   ;; FIXME: REMOVE THIS and use regexp-hash
   loc-regexp   ;; Location regular expression string
@@ -98,6 +102,7 @@
 (realgud-struct-field-setter "realgud-cmdbuf-info" "src-shortkey?")
 (realgud-struct-field-setter "realgud-cmdbuf-info" "in-debugger?")
 (realgud-struct-field-setter "realgud-cmdbuf-info" "callback-loc-fn")
+(realgud-struct-field-setter "realgud-cmdbuf-info" "callback-eval-filter")
 
 (defun realgud:cmdbuf-follow-buffer(event)
   (interactive "e")
@@ -287,6 +292,8 @@ values set in the debugger's init.el."
 	     :src-shortkey? 't
 	     :in-debugger? nil
 	     :callback-loc-fn (gethash "loc-callback-fn" regexp-hash)
+	     :callback-eval-filter (gethash "callback-eval-filter"
+					    regexp-hash)
 	     ))
       (setq font-lock-keywords (realgud-cmdbuf-pat "font-lock-keywords"))
       (if font-lock-keywords

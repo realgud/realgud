@@ -9,13 +9,14 @@
 (require-relative-list '("../../common/track"
                          "../../common/core"
                          "../../common/file"
-                         "../../common/lang")
+                         "../../common/lang"
+                         "../../common/utils")
                        "realgud-")
 (require-relative-list '("init") "realgud:jdb-")
 
 (declare-function gud-find-source            'gud)
 
-(declare-function realgud:strip              'realgud)
+(declare-function realgud:strip              'realgud-utils)
 (declare-function realgud:expand-file-name-if-exists 'realgud-core)
 (declare-function realgud-parse-command-arg  'realgud-core)
 (declare-function realgud-query-cmdline      'realgud-core)

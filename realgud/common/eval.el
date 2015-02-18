@@ -17,13 +17,17 @@
 ;; along with this program.  If not, see
 ;; <http://www.gnu.org/licenses/>.
 
-(require 'load-relative)
 (require 'tooltip)
+(require 'ansi-color)
+(require 'load-relative)
 
-(require-relative-list  '("cmds" "helper")    "realgud-")
+(require-relative-list '("cmds" "helper" "utils")  "realgud-")
+(require-relative-list '("buffer/command")         "realgud-buffer-")
 
 (declare-function realgud:cmd-eval   'realgud-cmd)
 (declare-function realgud-get-cmdbuf 'realgud-helper)
+(declare-function realgud-cmdbuf-pat 'realgud-command)
+(declare-function realgud:strip      'realgud-utils)
 
 (defun realgud:tooltip-eval (event)
   "Show tip for identifier or selection under the mouse.
@@ -48,17 +52,38 @@ This function must return nil if it doesn't handle EVENT."
 	  ))
       )))
 
-(defun realgud:eval-process-output (process output)
+(defun realgud:eval-process-output (process output-str)
   "Process debugger output and show it in a tooltip window."
   (set-process-filter process 'comint-output-filter)
   (with-current-buffer (realgud-get-cmdbuf)
     (goto-char (process-mark process))
-    (insert output)
+    (insert output-str)
     (set-marker (process-mark process) (point)))
     (setq comint-last-output-start
 	  (setq realgud-last-output-start (process-mark process)))
 
-  (tooltip-show (tooltip-strip-prompt process output))
+  (tooltip-show (realgud:eval-strip process output-str))
   )
+
+(defun realgud:eval-strip-default(prompt-regexp output-str)
+  (realgud:strip
+   (ansi-color-filter-apply
+    (if (string-match prompt-regexp output-str)
+	(substring output-str 0 (match-beginning 0))
+      output-str))))
+
+
+(defun realgud:eval-strip(process output-str)
+  "Return OUTPUT-STR with any prompt of PROCESS stripped from its end."
+  (save-match-data
+    (with-current-buffer (process-buffer process)
+      (let* ((prompt-pat (realgud-cmdbuf-pat "prompt"))
+	     (prompt-regexp (realgud-loc-pat-regexp prompt-pat))
+	     (eval-filter (realgud-sget 'cmdbuf-info 'callback-eval-filter))
+	     )
+	(if eval-filter
+	    (funcall eval-filter output-str)
+	  (realgud:eval-strip-default prompt-regexp output-str))
+	))))
 
 (provide-me "realgud-")

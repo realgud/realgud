@@ -4,10 +4,12 @@
 (require 'load-relative)
 (require-relative-list '("../../common/track"
                          "../../common/core"
+                         "../../common/eval"
                          "../../common/lang")
                        "realgud-")
 (require-relative-list '("init") "realgud:trepanpl-")
 
+(declare-function realgud:eval-strip-default 'realgud-eval)
 (declare-function realgud:expand-file-name-if-exists 'realgud-core)
 (declare-function realgud-parse-command-arg  'realgud-core)
 (declare-function realgud-query-cmdline      'realgud-core)
@@ -22,6 +24,12 @@
   '(("\C-i" . comint-dynamic-complete-filename))
   "Keymap for minibuffer prompting of trepanpl startup command."
   :inherit minibuffer-local-map)
+
+(defun realgud:trepanpl-eval-filter-callback(output-str)
+  (realgud:eval-strip-default realgud:trepanpl-prompt-regexp
+   (if (string-match realgud:trepanpl-eval-result-prefix-regexp output-str)
+       (substring output-str (match-end 0))
+     output-str)))
 
 ;; FIXME: I think this code and the keymaps and history
 ;; variable chould be generalized, perhaps via a macro.

@@ -6,6 +6,7 @@
 
 ;; Shell process buffers that we can hook into:
 (require 'esh-mode)
+(require 'ansi-color)
 (require 'comint)
 
 (require 'load-relative)
