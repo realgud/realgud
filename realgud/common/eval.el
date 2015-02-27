@@ -34,6 +34,10 @@
 (declare-function realgud-cmdbuf-pat 'realgud-send)
 (declare-function realgud:strip      'realgud-utils)
 
+(make-variable-buffer-local
+ (defvar realgud:process-filter-save nil
+   "realgud saves/restores the previous process filter here"))
+
 (defun realgud:tooltip-eval (event)
   "Show tip for identifier or selection under the mouse.
 The mouse must either point at an identifier or inside a selected
@@ -49,19 +53,22 @@ This function must return nil if it doesn't handle EVENT."
 	       (setq process (get-buffer-process cmdbuf))
 	       (posn-point (event-end event))
 	       )
-      (let ((expr (tooltip-expr-to-print event))
-	    (original-filter (process-filter process)))
+      (let ((expr (tooltip-expr-to-print event)))
 	(when expr
-	  (set-process-filter process 'realgud:eval-process-output)
+	  (with-current-buffer cmdbuf
+	    (setq realgud:process-filter-save (process-filter process))
+	    (set-process-filter process 'realgud:eval-process-output))
 	  (realgud:cmd-eval expr)
 	  ))
       )))
 
 (defun realgud:eval-process-output (process output-str)
   "Process debugger output and show it in a tooltip window."
-  (set-process-filter process 'comint-output-filter)
+  (set-process-filter process
+		      (or realgud:process-filter-save 'comint-output-filter))
   (with-current-buffer (realgud-get-cmdbuf)
     (goto-char (process-mark process))
+    (setq comint-last-input-end (process-mark process))
     (insert output-str)
     (set-marker (process-mark process) (point)))
     (setq comint-last-output-start
