@@ -7,7 +7,7 @@
 (declare-function buffer-killed? 'helper)
 (declare-function realgud-cmdbuf-info-in-srcbuf?=   'realgud-buffer-command)
 (declare-function realgud-cmdbuf?      'realgud-buffer-command)
-(declare-function realgud-command      'realgud-cmd)
+(declare-function realgud-command      'realgud-send)
 (declare-function realgud-get-cmdbuf   'realgud-buffer-helper)
 (declare-function realgud-get-command  'realgud-buffer-command)
 (declare-function realgud-get-bpnum-from-line-num 'realgud-buffer-source)
@@ -170,15 +170,21 @@ With a numeric argument move that many levels back."
     (realgud:cmd-remap arg "up" "up %p" ">" t t)
 )
 
+(defun realgud:cmd-repeat-last(&optional arg)
+    "Repeat the last command (or generally what <enter> does."
+    (interactive "")
+    (realgud:cmd-remap arg "repeat-last" "\n" "." 't nil 't)
+)
+
 (defun realgud:cmd-restart(&optional arg)
     "Restart execution."
-    (interactive "MRestart args: ")
+    (interactive "")
     (realgud:cmd-remap arg "restart" "run" "R" 't nil 't)
 )
 
 (defun realgud:cmd-shell(&optional arg)
     "Restart execution."
-    (interactive "p")
+    (interactive "")
     (realgud:cmd-remap arg "shell" "shell" "S")
 )
 

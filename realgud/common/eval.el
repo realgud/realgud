@@ -1,7 +1,12 @@
 ;; show expressions using tooltip
 
-;; Copyright (C) 2015 Free Software Foundation, Inc
 ;; Author: Rocky Bernstein <rocky@gnu.org>
+;; Version: 1.1
+;; Keywords: internal
+;; URL: http://github.com/rocky/emacs-load-relative
+;; Compatibility: GNU Emacs 24.x
+
+;; Copyright (C) 2015 Free Software Foundation, Inc
 
 ;; This program is free software: you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -26,7 +31,7 @@
 
 (declare-function realgud:cmd-eval   'realgud-cmd)
 (declare-function realgud-get-cmdbuf 'realgud-helper)
-(declare-function realgud-cmdbuf-pat 'realgud-command)
+(declare-function realgud-cmdbuf-pat 'realgud-send)
 (declare-function realgud:strip      'realgud-utils)
 
 (defun realgud:tooltip-eval (event)

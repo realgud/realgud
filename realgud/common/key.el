@@ -1,4 +1,27 @@
-;;; Copyright (C) 2010-2011, 2014-2015 Rocky Bernstein <rocky@gnu.org>
+;; Author: Rocky Bernstein <rocky@gnu.org>
+;; Version: 1.1
+;; Keywords: internal
+;; URL: http://github.com/rocky/emacs-load-relative
+;; Compatibility: GNU Emacs 24.x
+
+;; Copyright (C) 2015 Free Software Foundation, Inc
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+(provide 'key)
+;;; key.el ends here
+
 (require 'load-relative)
 (require-relative "custom" nil "realgud-")
 
@@ -83,6 +106,8 @@ Nor does it touch prefix keys; for that see `realgud-populate-keys-standard'"
     (define-key map "b" 'realgud:cmd-break)
     (define-key map "D" 'realgud:cmd-delete)
     (define-key map [delete] 'realgud:cmd-delete)
+    (define-key map [enter] 'realgud:cmd-repeat-last)
+    (define-key map (kbd "RET") 'realgud:cmd-repeat-last)
     (define-key map " " 'realgud:cmd-step)
     (define-key map "f" 'realgud:cmd-finish)
     (define-key map "n" 'realgud:cmd-next)
