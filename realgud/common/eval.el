@@ -73,6 +73,7 @@ This function must return nil if it doesn't handle EVENT."
     (set-marker (process-mark process) (point)))
     (setq comint-last-output-start
 	  (setq realgud-last-output-start (process-mark process)))
+    (realgud-track-mode-setup 't)
 
   (tooltip-show (realgud:eval-strip process output-str))
   )
