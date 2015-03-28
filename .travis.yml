@@ -8,7 +8,7 @@ install:
       sudo add-apt-repository -y ppa:cassou/emacs &&
       sudo apt-get -qq update &&
       sudo apt-get -qq -f install &&
-      emacs24 emacs24-el;
+      sudo apt-get -qq install emacs24 emacs24-el;
     fi
 
 # run the tests
