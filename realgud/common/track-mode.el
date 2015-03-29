@@ -38,10 +38,10 @@
 (declare-function realgud-cmdbuf-info-set?
 		  'realgud-buffer-command)
 
-
 (defvar realgud-track-mode-map
   (let ((map  (copy-keymap shell-mode-map)))
     (realgud-populate-debugger-menu map)
+    (define-key map "\r"	'realgud:send-input)
     (define-key map [M-right]	'realgud-track-hist-newest)
     (define-key map [M-down]	'realgud-track-hist-newer)
     (define-key map [M-up]	'realgud-track-hist-older)
@@ -137,10 +137,15 @@ of this mode."
 	  (set-marker comint-last-output-start (point)))
 
 	(set (make-local-variable 'tool-bar-map) realgud:tool-bar-map)
-	(add-hook 'comint-output-filter-functions
-		  'realgud-track-comint-output-filter-hook)
-	(add-hook 'eshell-output-filter-functions
-		  'realgud-track-eshell-output-filter-hook)
+	;; FIXME DRY with code in send.el
+	(cond ((and (boundp 'eshell-mode) eshell-mode)
+	       (add-hook 'eshell-output-filter-functions
+			 'realgud-track-eshell-output-filter-hook))
+	      ((and (boundp 'comint-prompt-regexp)
+		    (comint-check-proc (current-buffer)))
+	       (add-hook 'comint-output-filter-functions
+			 'realgud-track-comint-output-filter-hook))
+	      ('t (error "We can only handle comint or eshell buffers")))
 	(run-mode-hooks 'realgud-track-mode-hook))
   ;; else
     (progn

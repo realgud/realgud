@@ -130,7 +130,7 @@ marks set in buffer-local variables to extract text"
       (lexical-let* ((cmd-buff (current-buffer))
 		     (cmd-mark (point-marker))
 		     (loc (realgud:track-from-region eshell-last-output-start
-						  eshell-last-output-end cmd-mark)))
+						     eshell-last-output-end cmd-mark)))
 	(realgud-track-loc-action loc cmd-buff 't)))
   )
 

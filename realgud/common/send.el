@@ -16,6 +16,7 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 (require 'comint)
+(require 'eshell)
 (require 'load-relative)
 (require-relative-list '("window") "realgud-")
 (require-relative-list '("buffer/helper") "realgud-buffer-")
@@ -24,16 +25,36 @@
 (declare-function comint-goto-process-mark  'comint)
 (declare-function comint-send-input         'comint)
 
-(defun realgud-send-command-comint (process command-str)
+(defun realgud:send-input ()
+  "Sends command buffer line either to comint or eshell"
+  (interactive)
+  ;; FIXME DRY with code in realgud:send-command-common() and track-mode.el
+  (cond ((and (boundp 'eshell-mode) eshell-mode)
+	 (eshell-send-input))
+	((and (boundp 'comint-prompt-regexp)
+	      (comint-check-proc (current-buffer)))
+	 (comint-send-input))
+	('t (error "We can only handle comint or eshell buffers")))
+	)
+
+(defun realgud:send-command-common (process command-str)
   "Assume we are in a comint buffer. Insert COMMAND-STR and
 send that input onto the process."
   (if (eq 'run (process-status process))
       (progn
-	(comint-goto-process-mark)
-	(setq comint-last-output-start
-	      (setq realgud-last-output-start (point-marker)))
+	;; FIXME DRY with code in realgud:send-input() and track-mode.el
+	(cond ((and (boundp 'eshell-mode) eshell-mode)
+	       (goto-char eshell-last-output-end)
+	       (setq eshell-last-output-start
+		     (setq realgud-last-output-start (point-marker))))
+	      ((and (boundp 'comint-prompt-regexp)
+		    (comint-check-proc (current-buffer)))
+	       (comint-goto-process-mark)
+	       (setq comint-last-output-start
+		     (setq realgud-last-output-start (point-marker))))
+	      ('t (error "We can only handle cmint or eshell buffers")))
 	(insert command-str)
-	(comint-send-input)
+	(realgud:send-input)
 	)
     ;; else
     (message "Process %s not in `run' state; not issuing %s"
@@ -77,7 +98,7 @@ results into the command buffer."
   "Invoke the debugger COMMAND adding that command and the
 results into the command buffer."
   (let* ((cmdbuf (realgud-get-cmdbuf opt-buffer))
-	 (send-command-fn (or opt-send-fn (function realgud-send-command-comint)))
+	 (send-command-fn (or opt-send-fn (function realgud:send-command-common)))
 	 )
     (if cmdbuf
 	(with-current-buffer cmdbuf
@@ -222,7 +243,7 @@ debugger prompt.
 	;; display of the command buffer.
 	(if realgud-prompts? (realgud-window-cmd-undisturb-src nil 't))
 
-	(realgud-send-command command-str (function realgud-send-command-comint))
+	(realgud-send-command command-str (function realgud:send-command-common))
 
 	;; Wait for the process-mark to change before changing variables
 	;; that effect the hook processing.
