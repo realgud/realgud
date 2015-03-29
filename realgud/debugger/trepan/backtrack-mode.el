@@ -1,4 +1,19 @@
-;;; Copyright (C) 2011, 2014 Rocky Bernstein <rocky@gnu.org>
+;; Copyright (C) 2015 Free Software Foundation, Inc
+
+;; Author: Rocky Bernstein <rocky@gnu.org>
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Mode for parsing various kinds of backtraces found in Ruby
 
@@ -33,7 +48,10 @@ described by PT."
   (kbd "C-c !c") 'realgud:trepan-goto-control-frame-line)
 
 (define-minor-mode trepan-backtrack-mode
-  "Minor mode for tracking ruby debugging inside a file which may not have process shell."
+  "Minor mode for tracking ruby debugging inside a file which may not have process shell.
+
+\\{trepan-backtrack-mode-map}
+"
   :init-value nil
   ;; :lighter " trepan"   ;; mode-line indicator from realgud-track is sufficient.
   ;; The minor mode bindings.

@@ -1,5 +1,20 @@
-;;; Copyright (C) 2010-2015 Rocky Bernstein <rocky@gnu.org>
-;;; tracks shell output
+;; Copyright (C) 2015 Free Software Foundation, Inc
+
+;; Author: Rocky Bernstein <rocky@gnu.org>
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+;; tracks shell output
 
 (eval-when-compile (require 'cl))
 (require 'shell)
@@ -35,7 +50,10 @@
     (define-key map [M-S-up]	'realgud-track-hist-oldest)
     (define-key map "\C-cS" 'realgud-window-src-undisturb-cmd)
     map)
-  "Keymap used in `realgud-track-minor-mode'.")
+  "Keymap used in `realgud-track-minor-mode'.
+
+\\{realgud-track-mode-map}")
+
 
 (defvar realgud:tool-bar-map
   (let ((map (make-sparse-keymap)))
