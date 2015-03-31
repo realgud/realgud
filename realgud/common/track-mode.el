@@ -139,7 +139,6 @@ of this mode."
 	  (set-marker comint-last-output-start (point)))
 
 	(set (make-local-variable 'tool-bar-map) realgud:tool-bar-map)
-	;; FIXME DRY with code in send.el
 	(let ((mode (realgud:canonic-major-mode)))
 	  (cond ((eq mode 'eshell)
 		 (add-hook 'eshell-output-filter-functions
