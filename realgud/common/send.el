@@ -18,41 +18,38 @@
 (require 'comint)
 (require 'eshell)
 (require 'load-relative)
-(require-relative-list '("window") "realgud-")
+(require-relative-list '("utils" "window") "realgud-")
 (require-relative-list '("buffer/helper") "realgud-buffer-")
 
 (declare-function realgud-get-cmdbuf        'realgud-buffer-helper)
 (declare-function comint-goto-process-mark  'comint)
 (declare-function comint-send-input         'comint)
+(declare-function realgud:canonic-major-mode 'realgud-utils)
 
 (defun realgud:send-input ()
   "Sends command buffer line either to comint or eshell"
   (interactive)
-  ;; FIXME DRY with code in realgud:send-command-common() and track-mode.el
-  (cond ((and (boundp 'eshell-mode) eshell-mode)
-	 (eshell-send-input))
-	((and (boundp 'comint-prompt-regexp)
-	      (comint-check-proc (current-buffer)))
-	 (comint-send-input))
-	('t (error "We can only handle comint or eshell buffers")))
-	)
+  (let ((mode (realgud:canonic-major-mode)))
+    (cond ((eq mode 'eshell)
+	   (eshell-send-input))
+	  ((eq mode 'comint)
+	   (comint-send-input))
+	)))
 
 (defun realgud:send-command-common (process command-str)
   "Assume we are in a comint buffer. Insert COMMAND-STR and
 send that input onto the process."
   (if (eq 'run (process-status process))
-      (progn
-	;; FIXME DRY with code in realgud:send-input() and track-mode.el
-	(cond ((and (boundp 'eshell-mode) eshell-mode)
+      (let ((mode (realgud:canonic-major-mode)))
+	(cond ((eq mode 'eshell)
 	       (goto-char eshell-last-output-end)
 	       (setq eshell-last-output-start
 		     (setq realgud-last-output-start (point-marker))))
-	      ((and (boundp 'comint-prompt-regexp)
-		    (comint-check-proc (current-buffer)))
+	      ((eq mode 'comint)
+	       (comint-check-proc (current-buffer))
 	       (comint-goto-process-mark)
 	       (setq comint-last-output-start
-		     (setq realgud-last-output-start (point-marker))))
-	      ('t (error "We can only handle cmint or eshell buffers")))
+		    (setq realgud-last-output-start (point-marker)))))
 	(insert command-str)
 	(realgud:send-input)
 	)

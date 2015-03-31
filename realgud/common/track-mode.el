@@ -23,7 +23,7 @@
 (require-relative-list
  '("core"   "helper" "track" "loc" "lochist" "file"
    "fringe" "window" "regexp" "menu" "backtrace-mode"
-   "send"   "shortkey") "realgud-")
+   "send"   "shortkey" "utils") "realgud-")
 
 (require-relative-list  '("buffer/command") "realgud-buffer-")
 
@@ -37,6 +37,8 @@
 		  'realgud-buffer-command)
 (declare-function realgud-cmdbuf-info-set?
 		  'realgud-buffer-command)
+(declare-function realgud:canonic-major-mode
+		  'realgud-utils)
 
 (defvar realgud-track-mode-map
   (let ((map  (copy-keymap shell-mode-map)))
@@ -138,14 +140,14 @@ of this mode."
 
 	(set (make-local-variable 'tool-bar-map) realgud:tool-bar-map)
 	;; FIXME DRY with code in send.el
-	(cond ((and (boundp 'eshell-mode) eshell-mode)
-	       (add-hook 'eshell-output-filter-functions
-			 'realgud-track-eshell-output-filter-hook))
-	      ((and (boundp 'comint-prompt-regexp)
-		    (comint-check-proc (current-buffer)))
-	       (add-hook 'comint-output-filter-functions
-			 'realgud-track-comint-output-filter-hook))
-	      ('t (error "We can only handle comint or eshell buffers")))
+	(let ((mode (realgud:canonic-major-mode)))
+	  (cond ((eq mode 'eshell)
+		 (add-hook 'eshell-output-filter-functions
+			   'realgud-track-eshell-output-filter-hook))
+		((eq mode 'comint)
+		 (add-hook 'comint-output-filter-functions
+			   'realgud-track-comint-output-filter-hook))
+		))
 	(run-mode-hooks 'realgud-track-mode-hook))
   ;; else
     (progn
@@ -155,10 +157,14 @@ of this mode."
 	)
       (kill-local-variable 'realgud:tool-bar-map)
       (realgud-fringe-erase-history-arrows)
-      (remove-hook 'comint-output-filter-functions
-      		   'realgud-track-comint-output-filter-hook)
-      (remove-hook 'eshell-output-filter-functions
-		    'realgud-track-eshell-output-filter-hook)
+      (let ((mode (realgud:canonic-major-mode)))
+	(cond ((eq mode 'eshell)
+	       (remove-hook 'eshell-output-filter-functions
+		    'realgud-track-eshell-output-filter-hook))
+	      ((eq mode 'comint)
+	       (remove-hook 'comint-output-filter-functions
+			    'realgud-track-comint-output-filter-hook))
+	      ))
       (let* ((cmd-process (get-buffer-process (current-buffer)))
 	     (status (if cmd-process
 			 (list (propertize (format ":%s"
