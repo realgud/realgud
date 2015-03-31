@@ -97,6 +97,9 @@ marks set in buffer-local variables to extract text"
   (if (and realgud-track-mode (realgud-cmdbuf? (current-buffer)))
       (let* ((cmd-buff (current-buffer))
 	     (cmd-mark (point-marker))
+	     (shortkey
+	      (realgud-cmdbuf-info-src-shortkey?
+	       realgud-cmdbuf-info))
 	     (curr-proc (get-buffer-process cmd-buff))
 	     (cmdbuf-last-output-end
 	      (realgud-cmdbuf-info-last-input-end realgud-cmdbuf-info))
@@ -115,7 +118,7 @@ marks set in buffer-local variables to extract text"
 	  (realgud-cmdbuf-info-last-input-end= last-output-start)
 	  (realgud:track-from-region last-output-start
 				     last-output-end cmd-mark cmd-buff
-				     't 't))
+				     shortkey 't))
 	)
     )
   )
@@ -129,10 +132,15 @@ marks set in buffer-local variables to extract text"
   (if realgud-track-mode
       (lexical-let* ((cmd-buff (current-buffer))
 		     (cmd-mark (point-marker))
-		     (loc (realgud:track-from-region eshell-last-output-start
-						     eshell-last-output-end cmd-mark)))
-	(realgud-track-loc-action loc cmd-buff 't)))
-  )
+		     (shortkey
+		      (realgud-cmdbuf-info-src-shortkey?
+		       realgud-cmdbuf-info))
+		     (loc (realgud:track-from-region
+			   eshell-last-output-start
+			   eshell-last-output-end cmd-mark cmd-buff
+			   shortkey)))
+	(realgud-track-loc-action loc cmd-buff 't shortkey))
+    ))
 
 (defun realgud-track-term-output-filter-hook(text)
   "An output-filter hook custom for ansi-term shells.  Find
