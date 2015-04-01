@@ -27,7 +27,7 @@ Or raise an error if neither."
 	'eshell)
 	((or (eq major-mode 'comint-mode) (eq major-mode 'shell-mode))
 	  'comint)
-	('t (error "We can only handle comint, shell or eshell buffers"))
+	('t (error "We can only handle comint, shell, or eshell buffers"))
 	))
 
 (provide-me "realgud-")
