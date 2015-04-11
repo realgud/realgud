@@ -1,4 +1,19 @@
-;;; Copyright (C) 2014 Rocky Bernstein <rocky@gnu.org>
+;; Copyright (C) 2015 Free Software Foundation, Inc
+
+;; Author: Rocky Bernstein <rocky@gnu.org>
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ;;; Regular expressions for nodejs Javascript debugger.
 
 (eval-when-compile (require 'cl))
@@ -18,8 +33,15 @@
 backtrace, prompt, etc.  The values of a hash entry is a
 realgud-loc-pat struct")
 
-(defvar realgud:nodejs-term-escape "[[0-9]+[GKJ]"
+(defconst realgud:nodejs-term-escape "[[0-9]+[GKJ]"
   "Escape sequence regular expression pattern nodejs often puts in around prompts")
+
+(defconst realgud:nodejs-frame-start-regexp  "\\(?:^\\|\n\\)\\(?:#\\)")
+(defconst realgud:nodejs-frame-num-regexp    "\\([0-9]+\\)")
+(defconst realgud:nodejs-frame-module-regexp "[^ \t\n]+")
+(defconst realgud:nodejs-frame-file-regexp   "[^ \t\n]+")
+(defconst realgud:nodejs-frame-line-regexp   realgud:nodejs-frame-num-regexp)
+(defconst realgud:nodejs-frame-column-regexp realgud:nodejs-frame-num-regexp)
 
 ;; Regular expression that describes a nodejs location generally shown
 ;; before a command prompt.
@@ -66,19 +88,21 @@ realgud-loc-pat struct")
 ;; #5 Module._load module.js:312:12
 ;; #6 Module.runMain module.js:497:10
 ; ;#7 timers.js:110:15
-
-;; (setf (gethash "debugger-backtrace" realgud:nodejs-pat-hash)
-;;       (make-realgud-loc-pat
-;;        :regexp 	(concat realgud-shell-frame-start-regexp
-;; 			realgud-shell-frame-num-regexp "[ ]?"
-;; 			"\\(.*\\)"
-;; 			realgud-shell-frame-file-regexp
-;; 			"\\(?:" realgud-shell-frame-line-regexp "\\)?"
-;; 			)
-;;        :num 2
-;;        :file-group 4
-;;        :line-group 5)
-;;       )
+(setf (gethash "debugger-backtrace" realgud:nodejs-pat-hash)
+      (make-realgud-loc-pat
+       :regexp 	(concat realgud:nodejs-frame-start-regexp
+			realgud:nodejs-frame-num-regexp " "
+			"\\(?:" realgud:nodejs-frame-module-regexp " \\)?"
+			"\\(" realgud:nodejs-frame-file-regexp "\\)"
+			":"
+			realgud:nodejs-frame-line-regexp
+			":"
+			realgud:nodejs-frame-column-regexp
+			)
+       :num 1
+       :file-group 2
+       :line-group 3
+       :char-offset-group 4))
 
 ;; ;; Regular expression that for a termination message.
 ;; (setf (gethash "termination" realgud:nodejs-pat-hash)

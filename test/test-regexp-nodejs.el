@@ -10,6 +10,9 @@
 (declare-function realgud-loc-pat-regexp         'realgud-regexp)
 (declare-function realgud-loc-pat-file-group     'realgud-regexp)
 (declare-function realgud-loc-pat-line-group     'realgud-regexp)
+(declare-function  make-realgud-cmdbuf-info      'realgud-regexp)
+(declare-function realgud-cmdbuf-info-file-group 'realgud-regexp)
+(declare-function realgud-cmdbuf-info-line-group 'realgud-regexp)
 (declare-function __FILE__                       'load-relative)
 
 (test-simple-start)
@@ -17,11 +20,13 @@
 (eval-when-compile
   (defvar dbg-name)
   (defvar loc-pat)
+  (defvar bt-pat)
   (defvar prompt-pat)
   (defvar realgud:nodejs-pat-hash)
   (defvar realgud-pat-hash)
   (defvar test-dbgr)
   (defvar test-text)
+  (defvar test-s1)
 )
 
 (note "nodejs prompt matching")
@@ -53,5 +58,14 @@
 	      (match-string
 	       (realgud-cmdbuf-info-line-group test-dbgr)
 	       test-text) "extract line number")
+
+(note "debugger-backtrace")
+(set (make-local-variable 'test-s1)
+    "#0 module.js:380:17
+")
+
+(set (make-local-variable
+      'bt-pat)
+      (gethash "debugger-backtrace" realgud:nodejs-pat-hash))
 
 (end-tests)

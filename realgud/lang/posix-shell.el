@@ -40,15 +40,6 @@ traceback) line."  )
   (define-key map (kbd "C-c !!") 'realgud:goto-lang-backtrace-line)
   )
 
-
-;; Patterns common to the my POSIX shell debuggers
-
-(defconst realgud:python-trepan-frame-start-regexp
-  "\\(?:^\\|\n\\)\\(->\\|##\\)")
-
-(defconst realgud:python-trepan-frame-num-regexp
-  "\\([0-9]+\\)")
-
 ;; Regular expression that describes a bashdb/zshdb location generally shown
 ;; before a command prompt.
 ;; For example:

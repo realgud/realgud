@@ -103,7 +103,10 @@ marks set in buffer-local variables to extract text"
 	     (curr-proc (get-buffer-process cmd-buff))
 	     (cmdbuf-last-output-end
 	      (realgud-cmdbuf-info-last-input-end realgud-cmdbuf-info))
-	     (last-output-end (process-mark curr-proc))
+	     (last-output-end
+	      (if curr-proc
+		  (process-mark curr-proc)
+		cmdbuf-last-output-end))
 	     (last-output-start (max comint-last-input-start
 				     (- last-output-end realgud-track-char-range))))
 	;; Sometimes we get called twice and the second time nothing

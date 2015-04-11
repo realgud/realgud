@@ -22,6 +22,8 @@
 ;; along with this program.  If not, see
 ;; <http://www.gnu.org/licenses/>.
 
+(require 'ansi-color)
+(require 'ring)
 (require 'load-relative)
 (eval-when-compile (require 'cl-lib))
 (require-relative-list
@@ -142,7 +144,7 @@
 	      (if divert-string
 		  (let* ((triple
 			  (realgud:backtrace-add-text-properties
-			   frame-pat cmdbuf indicator-re))
+			   frame-pat cmdbuf divert-string indicator-re))
 			 (string-with-props
 			  (ansi-color-filter-apply (car triple)))
 			 (frame-num-pos-list (caddr triple))
