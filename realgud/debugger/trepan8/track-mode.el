@@ -43,6 +43,7 @@
 
 (defun trepan8-track-mode-hook()
   (use-local-map trepan8-track-mode-map)
+  (realgud-track-mode-setup 't)
   (message "trepan8 track-mode-hook called")
 )
 (define-minor-mode trepan8-track-mode

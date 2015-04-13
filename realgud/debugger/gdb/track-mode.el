@@ -42,6 +42,7 @@
 
 (defun realgud:gdb-track-mode-hook()
   (use-local-map realgud:gdb-track-mode-map)
+  (realgud-track-mode-setup 't)
   (message "realgud:gdb track-mode-hook called")
 )
 
