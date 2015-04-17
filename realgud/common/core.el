@@ -230,9 +230,11 @@ marginal icons is reset."
       ;; For example: "bashdb /tmp/foo" does not match "bashdb
       ;; /etc/foo" even though they both canonicalize to the buffer
       ;; "*bashdb foo shell*"
-      (unless (and (realgud-cmdbuf?)
-		 (equal cmd-args
-			(realgud-cmdbuf-info-cmd-args realgud-cmdbuf-info)))
+      (when (and (realgud-cmdbuf?)
+		 (not
+		  (equal cmd-args
+			 (realgud-cmdbuf-info-cmd-args realgud-cmdbuf-info))
+		  ))
 	(rename-uniquely)
 	(setq cmdproc-buffer (get-buffer-create cmdproc-buffer-name))
 	(setq process nil)
