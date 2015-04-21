@@ -80,6 +80,7 @@ AC_CONFIG_FILES([Makefile \
 		 realgud/debugger/trepan2/Makefile \
 		 realgud/debugger/trepan3k/Makefile \
 		 realgud/debugger/trepan.pl/Makefile \
+		 realgud/debugger/trepanjs/Makefile \
 		 realgud/debugger/trepanx/Makefile \
 		 realgud/debugger/trepan8/Makefile \
 		 realgud/debugger/zshdb/Makefile \
