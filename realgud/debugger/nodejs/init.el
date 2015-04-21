@@ -64,11 +64,11 @@ realgud-loc-pat struct")
        ))
 
 ;;  Regular expression that describes a "breakpoint set" line
-;; * 4 var count = 0;
-(setf (gethash "brkpt-set" realgud:nodejs-pat-hash)
-      (make-realgud-loc-pat
-       :regexp "^[*] \\([0-9]+\\) "
-       :line-group 1))
+;;
+;; (setf (gethash "brkpt-set" realgud:nodejs-pat-hash)
+;;       (make-realgud-loc-pat
+;;        :regexp "^[*] \\([0-9]+\\) "
+;;        :line-group 1))
 
 ;; Regular expression that describes a debugger "delete" (breakpoint) response.
 ;; For example:
@@ -139,12 +139,16 @@ realgud-loc-pat struct")
 (setf (gethash "nodejs" realgud-command-hash realgud:nodejs-command-hash))
 
 (setf (gethash "backtrace"  realgud:nodejs-command-hash) "T")
-(setf (gethash "break"      realgud:trepanjs-command-hash)
+(setf (gethash "break"      realgud:nodejs-command-hash)
       "setBreakpoint(%l)")
 (setf (gethash "continue"   realgud:nodejs-command-hash) "cont")
 (setf (gethash "quit"       realgud:nodejs-command-hash) "quit")
 (setf (gethash "finish"     realgud:nodejs-command-hash) "out")
-(setf (gethash "shell"      realgud:nodejs-command-hash)  "repl")
+(setf (gethash "shell"      realgud:nodejs-command-hash) "repl")
+
+;; We need aliases for step and next because the default would
+;; do step 1 and nodejs doesn't handle this. And if it did,
+;; it would probably look like step(1).
 (setf (gethash "step"       realgud:nodejs-command-hash) "step")
 (setf (gethash "next"       realgud:nodejs-command-hash) "next")
 
