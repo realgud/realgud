@@ -1,5 +1,21 @@
-;;; Copyright (C) 2010, 2012-2015 Rocky Bernstein <rocky@gnu.org>
-;;; Ruby "trepanjs" Debugger tracking a comint or eshell buffer.
+;; Copyright (C) 2015 Free Software Foundation, Inc
+
+;; Author: Rocky Bernstein <rocky@gnu.org>
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+;;; "trepanjs" Debugger tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))
 (require 'load-relative)
@@ -11,7 +27,7 @@
 			 )
 		       "realgud-")
 (require-relative-list '("core" "init") "realgud:trepanjs-")
-(require-relative-list '("../../lang/ruby") "realgud-lang-")
+;; (require-relative-list '("../../lang/js") "realgud-lang-")
 
 (declare-function realgud-track-mode 'realgud-track-mode)
 (declare-function realgud-track-mode-hook 'realgud-track-mode)
@@ -28,22 +44,12 @@
 
 (declare-function realgud:ruby-populate-command-keys 'realgud-lang-ruby)
 
-(defun realgud:trepanjs-goto-control-frame-line (pt)
-  "Display the location mentioned by a control-frame line
-described by PT."
-  (interactive "d")
-  (realgud-goto-line-for-pt pt "control-frame"))
-
 (defun realgud:trepanjs-goto-syntax-error-line (pt)
   "Display the location mentioned in a Syntax error line
 described by PT."
   (interactive "d")
   (realgud-goto-line-for-pt pt "syntax-error"))
 
-(realgud:ruby-populate-command-keys trepanjs-track-mode-map)
-
-(define-key trepanjs-track-mode-map
-  (kbd "C-c !c") 'realgud:trepanjs-goto-control-frame-line)
 (define-key trepanjs-track-mode-map
   (kbd "C-c !s") 'realgud:trepanjs-goto-syntax-error-line)
 

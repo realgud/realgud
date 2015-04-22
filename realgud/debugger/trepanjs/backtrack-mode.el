@@ -15,7 +15,7 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-;;; Mode for parsing various kinds of backtraces found in Ruby
+;;; Mode for parsing various kinds of backtraces found in JavaScript
 
 (eval-when-compile (require 'cl))
 (require 'load-relative)

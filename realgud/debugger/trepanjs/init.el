@@ -23,7 +23,7 @@
 			 "../../common/loc"
 			 "../../common/init")
 		       "realgud-")
-(require-relative-list '("../../lang/posix-shell") "realgud-lang-")
+(require-relative-list '("../../lang/js") "realgud-lang-")
 
 (defvar realgud:trepanjs-pat-hash (make-hash-table :test 'equal)
   "Hash key is the what kind of pattern we want to match:
@@ -78,13 +78,10 @@ realgud-loc-pat struct")
 ;;    at Interface.controlEval (/src/external-vcs/github/trepanjs/lib/interface.js:352:18)
 ;;    at REPLServer.b [as eval] (domain.js:183:18)
 (setf (gethash "lang-backtrace" realgud:trepanjs-pat-hash)
-  (make-realgud-loc-pat
-   :regexp "^\\(?:[\t ]+at \\)?\\([^:]+\\) (.*:\\([0-9]+\\):\\([0-9]+\\))"
-   :file-group 2
-   :line-group 3
-   :char-offset-group 4))
+  realgud:js-backtrace-loc-pat)
 
-;; Regular expression that describes a debugger "delete" (breakpoint) response.
+;; Regular expression that describes a debugger "delete" (breakpoint)
+;; response.
 ;; For example:
 ;;   Deleted breakpoint 1.
 (setf (gethash "brkpt-del" realgud:trepanjs-pat-hash)

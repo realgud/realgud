@@ -23,7 +23,7 @@
 			 "../../common/loc"
 			 "../../common/init")
 		       "realgud-")
-(require-relative-list '("../../lang/posix-shell") "realgud-lang-")
+(require-relative-list '("../../lang/js") "realgud-lang-")
 
 (defvar realgud:nodejs-pat-hash)
 (declare-function make-realgud-loc-pat (realgud-loc))
@@ -70,7 +70,16 @@ realgud-loc-pat struct")
 ;;        :regexp "^[*] \\([0-9]+\\) "
 ;;        :line-group 1))
 
-;; Regular expression that describes a debugger "delete" (breakpoint) response.
+;; Regular expression that describes a V8 backtrace line.
+;; For example:
+;;    at repl:1:7
+;;    at Interface.controlEval (/src/external-vcs/github/trepanjs/lib/interface.js:352:18)
+;;    at REPLServer.b [as eval] (domain.js:183:18)
+(setf (gethash "lang-backtrace" realgud:nodejs-pat-hash)
+  realgud:js-backtrace-loc-pat)
+
+;; Regular expression that describes a debugger "delete" (breakpoint)
+;; response.
 ;; For example:
 ;;   Removed 1 breakpoint(s).
 (setf (gethash "brkpt-del" realgud:nodejs-pat-hash)
