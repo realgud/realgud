@@ -1,12 +1,31 @@
+;; Copyright (C) 2015 Free Software Foundation, Inc
+
+;; Author: Rocky Bernstein <rocky@gnu.org>
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+;;; Regular expressions for nodejs Javascript debugger.
 ;;; Copyright (C) 2014-2015 Rocky Bernstein <rocky@gnu.org>
+
 ;;  `nodejs' Main interface to nodejs debugger via Emacs
 (require 'list-utils)
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("../../common/run")    "realgud:")
 (require-relative-list '("core" "track-mode")   "realgud:nodejs-")
+(require-relative-list '("../../lang/js") "realgud-lang-")
 
-(declare-function realgud:nodejs-remove-ansi-shmutz 'realgud-core)
+(declare-function realgud:js-remove-ansi-schmutz 'realgud-lang-js)
 (declare-function realgud:run-debugger 'realgud:run)
 
 ;; This is needed, or at least the docstring part of it is needed to
@@ -65,7 +84,7 @@ fringe and marginal icons.
 	(with-current-buffer cmd-buf
 	  ;; FIXME should allow customization whether to do or not
 	  ;; and also only do if hook is not already there.
-	  (realgud:nodejs-remove-ansi-shmutz)
+	  (realgud:js-remove-ansi-schmutz)
 	  )
       )))
 

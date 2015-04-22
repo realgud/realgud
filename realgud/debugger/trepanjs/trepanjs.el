@@ -1,12 +1,31 @@
-;;; Copyright (C) 2010-2011, 2013-2015 Rocky Bernstein <rocky@gnu.org>
+;; Copyright (C) 2015 Free Software Foundation, Inc
+
+;; Author: Rocky Bernstein <rocky@gnu.org>
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+;;; Regular expressions for nodejs Javascript debugger.
+
 ;;  `trepanjs' Main interface to trepanjs via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("../../common/run")    "realgud:")
 (require-relative-list '("core" "track-mode") "realgud:trepanjs-")
+(require-relative-list '("../../lang/js") "realgud-lang-")
 
 (declare-function realgud:trepanjs-query-cmdline  'realgud:trepanjs-core)
 (declare-function realgud:trepanjs-parse-cmd-args 'realgud:trepanjs-core)
+(declare-function realgud:js-remove-ansi-schmutz 'realgud-lang-js)
 (declare-function realgud:run-debugger 'realgud:run)
 
 ;; This is needed, or at least the docstring part of it is needed to
@@ -47,11 +66,18 @@ marginal icons is reset. See `loc-changes-clear-buffer' to clear
 fringe and marginal icons.
 "
   (interactive)
-  (realgud:run-debugger "trepanjs" 'realgud:trepanjs-query-cmdline
-			'realgud:trepanjs-parse-cmd-args
-			'realgud:trepanjs-minibuffer-history
-			opt-cmd-line no-reset)
-  )
+  (let ((cmd-buf
+	 (realgud:run-debugger "trepanjs" 'realgud:trepanjs-query-cmdline
+			       'realgud:trepanjs-parse-cmd-args
+			       'realgud:trepanjs-minibuffer-history
+			       opt-cmd-line no-reset)))
+    (if cmd-buf
+	(with-current-buffer cmd-buf
+	  ;; FIXME should allow customization whether to do or not
+	  ;; and also only do if hook is not already there.
+	  (realgud:js-remove-ansi-schmutz)
+	  )
+      )))
 
 (defalias 'trepanjs 'realgud:trepanjs)
 (provide-me "realgud-")
