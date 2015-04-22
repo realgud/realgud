@@ -26,6 +26,7 @@
 			 )
 		       "realgud-")
 (require-relative-list '("core" "init") "realgud:nodejs-")
+;; (require-relative-list '("../../lang/js") "realgud-lang-")
 
 (declare-function realgud:cmd-remap          'realgud-cmds)
 (declare-function realgud:track-set-debugger 'realgud-track-mode)
