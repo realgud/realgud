@@ -20,7 +20,8 @@ realgud-loc-pat struct")
 ;;  -- (kernel/common/scope.rb:134 remapped /tmp/scope.rb:134)
 (setf (gethash "loc" realgud:trepan8-pat-hash)
       (make-realgud-loc-pat
-       :regexp ".. (\\(?:.+ \\(?:via\\|remapped\\) \\)?\\(.+\\):\\([0-9]+\\)\\(?: @[0-9]+\\)?)"
+       :regexp (format ".. (\\(?:.+ \\(?:via\\|remapped\\) \\)?\\(.+\\):%s\\(?: @[0-9]+\\)?)"
+		       realgud:regexp-captured-num)
        :file-group 1
        :line-group 2))
 
@@ -56,7 +57,8 @@ realgud-loc-pat struct")
 ;;   Deleted breakpoint 1.
 (setf (gethash "brkpt-del" realgud:trepan8-pat-hash)
       (make-realgud-loc-pat
-       :regexp "^Deleted breakpoint \\([0-9]+\\).\n"
+       :regexp (format "^Deleted breakpoint %s.\n"
+		       realgud:regexp-captured-num)
        :num 1))
 
 ;;  Regular expression that describes a Ruby $! string
@@ -66,7 +68,7 @@ realgud-loc-pat struct")
 (setf (gethash "trepan8" realgud-pat-hash) realgud:trepan8-pat-hash)
 
 (defconst realgud:trepan8-frame-file-line-regexp
-  " at \\(.*\\):\\([0-9]+\\)$")
+  (format " at \\(.*\\):%s$" realgud:regexp-captured-num))
 
 (defconst realgud:trepan8-frame-start-regexp realgud:trepan-frame-start-regexp)
 (defconst realgud:trepan8-frame-num-regexp   realgud:trepan-frame-start-regexp)

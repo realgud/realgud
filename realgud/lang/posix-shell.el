@@ -1,10 +1,27 @@
-;;; Copyright (C) 2010-2011, 2015 Rocky Bernstein <rocky@gnu.org>
-;;;
-;;; Common POSIX-Shell like constants and regular expressions.
-;;; Actually a lot of this is not about POSIX shell as it is about the
-;;; common-ness of bashdb, zshdb, and kshdb. But since those are the
-;;; *only* debuggers I know of for POSIX shells, it's not too much of
-;;; a stretch to think of this as for all "shell".
+;; Copyright (C) 2015 Free Software Foundation, Inc
+
+;; Author: Rocky Bernstein <rocky@gnu.org>
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+;;
+;; Common POSIX-Shell like constants and regular expressions.
+;; Actually a lot of this is not about POSIX shell as it is about the
+;; common-ness of bashdb, zshdb, and kshdb. But since those are the
+;; *only* debuggers I know of for POSIX shells, it's not too much of
+;; a stretch to think of this as for all "shell".
+
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
@@ -14,7 +31,8 @@
 
 (defconst realgud-shell-backtrace-loc-pat
   (make-realgud-loc-pat
-   :regexp "^[ \t]+from \\([^:]+\\):\\([0-9]+\\)\\(?: in `.*'\\)?"
+   :regexp (format "^[ \t]+from \\([^:]+\\):%s\\(?: in `.*'\\)?"
+		   realgud:regexp-captured-num)
    :file-group 1
    :line-group 2)
   "A realgud-loc-pat struct that describes a Shell backtrace (or
@@ -24,13 +42,13 @@ traceback) line."  )
   "\\(?:^\\|\n\\)\\(->\\|##\\)")
 
 (defconst realgud-shell-frame-num-regexp
-  "\\([0-9]+\\)")
+  realgud:regexp-captured-num)
 
 (defconst realgud-shell-frame-file-regexp
   "[ \t\n]+\\(?:in\\|from\\) file `\\(.+\\)'")
 
 (defconst realgud-shell-frame-line-regexp
-  "[ \t\n]+at line \\([0-9]+\\)\\(?:\n\\|$\\)")
+  (format "[ \t\n]+at line %s\\(?:\n\\|$\\)" realgud:regexp-captured-num))
 
 (defun realgud-posix-shell-populate-command-keys (&optional map)
   "Bind the debugger function key layout used by many debuggers.
@@ -46,7 +64,9 @@ traceback) line."  )
 ;;   (/etc/init.d/apparmor:35):
 (defconst realgud:POSIX-debugger-loc-pat
       (make-realgud-loc-pat
-       :regexp "\\(?:^\\|\n\\)(\\([^:]+\\):\\([0-9]*\\)):\\(?:\n\\(.+\\)\\)?"
+       :regexp (format
+		"\\(?:^\\|\n\\)(\\([^:]+\\):%s):\\(?:\n\\(.+\\)\\)?"
+		realgud:regexp-captured-num)
        :file-group 1
        :line-group 2
        :text-group 3)
@@ -75,7 +95,8 @@ traceback) line."  )
 ;;  Regular expression that describes a "breakpoint set" line
 (defconst realgud:POSIX-debugger-brkpt-set-pat
   (make-realgud-loc-pat
-   :regexp "^Breakpoint \\([0-9]+\\) set in file \\(.+\\), line \\([0-9]+\\).\n"
+   :regexp (format "^Breakpoint \\([0-9]+\\) set in file \\(.+\\), line %s.\n"
+		   realgud:regexp-captured-num)
    :num 1
    :file-group 2
    :line-group 3))
@@ -85,7 +106,8 @@ traceback) line."  )
 ;;   Removed 1 breakpoint(s).
 (defconst realgud:POSIX-debugger-brkpt-del-pat
   (make-realgud-loc-pat
-   :regexp "^Removed \\([0-9]+\\) breakpoint(s).\n"
+   :regexp (format "^Removed %s breakpoint(s).\n"
+		   realgud:regexp-captured-num)
    :num 1))
 
 (defconst realgud:POSIX-debugger-font-lock-keywords
@@ -93,7 +115,7 @@ traceback) line."  )
     ;; The frame number and first type name, if present.
     ;; E.g. ->0 in file `/etc/init.d/apparmor' at line 35
     ;;      --^-
-    ("^\\(->\\|##\\)\\([0-9]+\\) "
+    ((format "^\\(->\\|##\\)%s " realgud:regexp-captured-num)
      (2 realgud-backtrace-number-face))
 
     ;; File name.
@@ -106,7 +128,7 @@ traceback) line."  )
     ;; E.g. ->0 in file `/etc/init.d/apparmor' at line 35
     ;;                                         --------^^
     ;; Line number.
-    ("[ \t]+at line \\([0-9]+\\)$"
+    ((format "[ \t]+at line %s$" realgud:regexp-captured-num)
      (1 realgud-line-number-face))
     ;; (trepan-frames-match-current-line
     ;;  (0 trepan-frames-current-frame-face append))
