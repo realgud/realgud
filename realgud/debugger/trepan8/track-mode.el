@@ -14,7 +14,8 @@
 
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
-;;; Ruby "trepan8" Debugger tracking a comint buffer.
+
+;; Ruby "trepan8" Debugger tracking a comint buffer.
 
 (eval-when-compile (require 'cl))
 (require 'load-relative)

@@ -31,8 +31,7 @@
 
 (defconst realgud-shell-backtrace-loc-pat
   (make-realgud-loc-pat
-   :regexp (format "^[ \t]+from \\([^:]+\\):%s\\(?: in `.*'\\)?"
-		   realgud:regexp-captured-num)
+   :regexp "^[ \t]+from \\([^:]+\\):\\([0-9]+\\)\\(?: in `.*'\\)?"
    :file-group 1
    :line-group 2)
   "A realgud-loc-pat struct that describes a Shell backtrace (or
@@ -64,9 +63,7 @@ traceback) line."  )
 ;;   (/etc/init.d/apparmor:35):
 (defconst realgud:POSIX-debugger-loc-pat
       (make-realgud-loc-pat
-       :regexp (format
-		"\\(?:^\\|\n\\)(\\([^:]+\\):%s):\\(?:\n\\(.+\\)\\)?"
-		realgud:regexp-captured-num)
+       :regexp "\\(?:^\\|\n\\)(\\([^:]+\\):\\([0-9]*\\)):\\(?:\n\\(.+\\)\\)?"
        :file-group 1
        :line-group 2
        :text-group 3)
@@ -115,7 +112,7 @@ traceback) line."  )
     ;; The frame number and first type name, if present.
     ;; E.g. ->0 in file `/etc/init.d/apparmor' at line 35
     ;;      --^-
-    ((format "^\\(->\\|##\\)%s " realgud:regexp-captured-num)
+    ("^\\(->\\|##\\)\\([0-9]+\\) "
      (2 realgud-backtrace-number-face))
 
     ;; File name.
@@ -128,7 +125,7 @@ traceback) line."  )
     ;; E.g. ->0 in file `/etc/init.d/apparmor' at line 35
     ;;                                         --------^^
     ;; Line number.
-    ((format "[ \t]+at line %s$" realgud:regexp-captured-num)
+    ("[ \t]+at line \\([0-9]+\\)$"
      (1 realgud-line-number-face))
     ;; (trepan-frames-match-current-line
     ;;  (0 trepan-frames-current-frame-face append))
