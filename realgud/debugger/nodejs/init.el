@@ -33,25 +33,15 @@
 backtrace, prompt, etc.  The values of a hash entry is a
 realgud-loc-pat struct")
 
-(defconst realgud:nodejs-term-escape "[[0-9]+[GKJ]"
-  "Escape sequence regular expression pattern nodejs often puts in around prompts")
-
-(defconst realgud:nodejs-frame-start-regexp  "\\(?:^\\|\n\\)\\(?:#\\)")
-(defconst realgud:nodejs-frame-num-regexp    "\\([0-9]+\\)")
-(defconst realgud:nodejs-frame-module-regexp "[^ \t\n]+")
-(defconst realgud:nodejs-frame-file-regexp   "[^ \t\n]+")
-(defconst realgud:nodejs-frame-line-regexp   realgud:nodejs-frame-num-regexp)
-(defconst realgud:nodejs-frame-column-regexp realgud:nodejs-frame-num-regexp)
-
-;; Regular expression that describes a nodejs location generally shown
 ;; before a command prompt.
 ;; For example:
 ;;   break in /home/indutny/Code/git/indutny/myscript.js:1
 (setf (gethash "loc" realgud:nodejs-pat-hash)
       (make-realgud-loc-pat
        :regexp (format
-		"\\(?:%s\\)*break in \\([^:]+\\):\\([0-9]*\\)"
-		realgud:nodejs-term-escape)
+		"\\(?:%s\\)*\\(?:break\\|exception\\) in %s:%s"
+		realgud:js-term-escape "\\([^:]+\\)"
+		realgud:regexp-captured-num)
        :file-group 1
        :line-group 2))
 
@@ -60,7 +50,7 @@ realgud-loc-pat struct")
 ;;   debug>
 (setf (gethash "prompt" realgud:nodejs-pat-hash)
       (make-realgud-loc-pat
-       :regexp (format "^\\(?:%s\\)*debug> " realgud:nodejs-term-escape)
+       :regexp (format "^\\(?:%s\\)*debug> " realgud:js-term-escape)
        ))
 
 ;;  Regular expression that describes a "breakpoint set" line
@@ -84,9 +74,17 @@ realgud-loc-pat struct")
 ;;   Removed 1 breakpoint(s).
 (setf (gethash "brkpt-del" realgud:nodejs-pat-hash)
       (make-realgud-loc-pat
-       :regexp "^Removed \\([0-9]+\\) breakpoint(s).\n"
+       :regexp (format "^Removed %s breakpoint(s).\n"
+		       realgud:regexp-captured-num)
        :num 1))
 
+
+(defconst realgud:nodejs-frame-start-regexp  "\\(?:^\\|\n\\)\\(?:#\\)")
+(defconst realgud:nodejs-frame-num-regexp    realgud:regexp-captured-num)
+(defconst realgud:nodejs-frame-module-regexp "[^ \t\n]+")
+(defconst realgud:nodejs-frame-file-regexp   "[^ \t\n]+")
+
+;; Regular expression that describes a nodejs location generally shown
 ;; Regular expression that describes a debugger "backtrace" command line.
 ;; For example:
 ;; #0 module.js:380:17
@@ -104,9 +102,9 @@ realgud-loc-pat struct")
 			"\\(?:" realgud:nodejs-frame-module-regexp " \\)?"
 			"\\(" realgud:nodejs-frame-file-regexp "\\)"
 			":"
-			realgud:nodejs-frame-line-regexp
+			realgud:regexp-captured-num
 			":"
-			realgud:nodejs-frame-column-regexp
+			realgud:regexp-captured-num
 			)
        :num 1
        :file-group 2

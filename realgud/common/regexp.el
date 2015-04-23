@@ -35,6 +35,8 @@ output by a debugger inside a process shell"
 		       ;; call, return, exception, etc.
 )
 
+(defconst realgud:regexp-captured-num  "\\([0-9]+\\)")
+
 (defvar realgud-pat-hash (make-hash-table :test 'equal)
   "Hash key is the debugger name, a string. The values of a hash entry
   is a realgud-loc-pat struct")

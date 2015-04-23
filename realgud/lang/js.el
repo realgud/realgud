@@ -21,6 +21,10 @@
 (require-relative-list '("../common/regexp" "../common/loc" "../common/track")
 		       "realgud-")
 
+(defconst realgud:js-term-escape "[[0-9]+[GKJ]"
+  "Escape sequence regular expression pattern trepanjs often puts
+  in around prompts")
+
 (declare-function realgud-goto-line-for-pt 'realgud-track)
 
 ;;  Regular expression that describes a Perl Carp backtrace line.
