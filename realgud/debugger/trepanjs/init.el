@@ -32,7 +32,7 @@ realgud-loc-pat struct")
 
 (declare-function make-realgud-loc-pat (realgud-loc))
 
-(defconst realgud:trepanjs-file-regexp   "\\([^ \t\n]+\\)\\(?: \\[.*\\]\\)")
+(defconst realgud:trepanjs-file-regexp   "\\([^ \t\n]+\\)\\(?: \\[.*\\]\\)?")
 
 ;; Regular expression that describes a trepanjs location generally shown
 ;; before a command prompt.
