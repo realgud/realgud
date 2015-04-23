@@ -32,26 +32,19 @@ realgud-loc-pat struct")
 
 (declare-function make-realgud-loc-pat (realgud-loc))
 
-(defconst realgud:trepanjs-term-escape "[[0-9]+[GKJ]"
-  "Escape sequence regular expression pattern trepanjs often puts
-  in around prompts")
-
-(defconst realgud:nodejs-frame-start-regexp  "\\(?:^\\|\n\\)\\(?:#\\)")
-(defconst realgud:nodejs-frame-num-regexp    "\\([0-9]+\\)")
-(defconst realgud:nodejs-frame-module-regexp "[^ \t\n]+")
-(defconst realgud:nodejs-frame-file-regexp   "[^ \t\n]+")
-(defconst realgud:nodejs-frame-line-regexp   realgud:nodejs-frame-num-regexp)
-(defconst realgud:nodejs-frame-column-regexp realgud:nodejs-frame-num-regexp)
+(defconst realgud:trepanjs-file-regexp   "\\([^ \t\n]+\\)\\(?: \\[.*\\]\\)")
 
 ;; Regular expression that describes a trepanjs location generally shown
 ;; before a command prompt.
 ;; For example:
 ;;   break in /home/indutny/Code/git/indutny/myscript.js:1
+;;   exception in /usr/lib/nodejs/module.js [module.js]:362
 (setf (gethash "loc" realgud:trepanjs-pat-hash)
       (make-realgud-loc-pat
        :regexp (format
-		"\\(?:%s\\)*\\(?:break\\|exception\\) in \\([^:]+\\):\\([0-9]*\\)"
-		realgud:trepanjs-term-escape)
+		"\\(?:%s\\)*\\(?:break\\|exception\\) in %s:%s"
+		realgud:js-term-escape realgud:trepanjs-file-regexp
+		realgud:regexp-captured-num)
        :file-group 1
        :line-group 2))
 
@@ -67,7 +60,8 @@ realgud-loc-pat struct")
 ;; * 4 var count = 0;
 (setf (gethash "brkpt-set" realgud:trepanjs-pat-hash)
       (make-realgud-loc-pat
-       :regexp "^Breakpoint \\([0-9]+\\) set in file \\(.+\\), line \\([0-9]+\\).\n"
+       :regexp (format "^Breakpoint %s set in file \\(.+\\), line %s.\n"
+		       realgud:regexp-captured-num realgud:regexp-captured-num)
        :num 1
        :file-group 2
        :line-group 3))
@@ -86,8 +80,36 @@ realgud-loc-pat struct")
 ;;   Deleted breakpoint 1.
 (setf (gethash "brkpt-del" realgud:trepanjs-pat-hash)
       (make-realgud-loc-pat
-       :regexp "^Deleted breakpoint \\([0-9]+\\).\n"
+       :regexp (format "^Deleted breakpoint %s.\n"
+		       realgud:regexp-captured-num)
        :num 1))
+
+
+(defconst realgud:trepanjs-frame-start-regexp  "\\(?:^\\|\n\\)\\(?: #\\)")
+(defconst realgud:trepanjs-frame-num-regexp    realgud:regexp-captured-num)
+(defconst realgud:trepanjs-frame-module-regexp "[^ \t\n]+")
+
+;;  Regular expression that describes debugger "backtrace" command line.
+;;  e.g.
+;; ## require called from file /usr/lib/nodejs/module.js [module.js] at line 380:17
+;; ## in file /src/external-vcs/github/trepanjs/example/gcd.js [/src/external-vcs/github/trepanjs/example/gcd.js] at line 2:12
+(setf (gethash "debugger-backtrace" realgud:trepanjs-pat-hash)
+      (make-realgud-loc-pat
+       :regexp 	(concat realgud:trepanjs-frame-start-regexp " "
+			realgud:regexp-captured-num " "
+			"\\(?:" realgud:trepanjs-frame-module-regexp " called from file"
+			realgud:trepanjs-file-regexp
+			"\\)\\| in file "
+			realgud:regexp-captured-num
+			"\\)"
+			"at line \\(" realgud:regexp-captured-num "\\):"
+			realgud:regexp-captured-num
+			)
+       :num 1
+       :file-group 2
+       :line-group 3
+       :char-offset-group 4
+       ))
 
 (defconst realgud:trepanjs-debugger-name "trepanjs" "Name of debugger")
 
