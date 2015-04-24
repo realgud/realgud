@@ -37,11 +37,9 @@ function gcd(a, b) {
     return gcd(b-a, a);
 }
 
-var a=24;
+var a = parseInt(process.argv[0]) || 24,
+    b = parseInt(process.argv[0]) || 5;
 
-ask("GCD of 24 and", /^\d+$/, function(b_str) {
-    var b = parseInt(b_str, 10);
-    console.log(util.format("The GCD of %d and %d is %d", a, b,
-			    gcd(a, b)));
-    process.exit();
-});
+console.log(util.format("The GCD of %d and %d is %d", a, b,
+			gcd(a, b)));
+process.exit();

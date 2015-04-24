@@ -136,5 +136,6 @@ realgud-loc-pat struct")
 ;; it will probably look like step(1)
 (setf (gethash "step"       realgud:trepanjs-command-hash) "step")
 (setf (gethash "next"       realgud:trepanjs-command-hash) "next")
+(setf (gethash "eval"       realgud:trepanjs-command-hash) "eval('%s')")
 
 (provide-me "realgud:trepanjs-")
