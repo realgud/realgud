@@ -1,5 +1,21 @@
-;;; Copyright (C) 2011-2012, 2014-2015 Rocky Bernstein <rocky@gnu.org>
-;;; Trepanning Perl debugger
+;; Copyright (C) 2015 Free Software Foundation, Inc
+
+;; Author: Rocky Bernstein <rocky@gnu.org>
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+;; Trepanning Perl debugger
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
@@ -34,7 +50,8 @@ realgud-loc-pat struct")
 
 (setf (gethash "loc" realgud:trepanpl-pat-hash)
       (make-realgud-loc-pat
-       :regexp ".. \\(?:.+::\\)?(\\(?:.+ \\(?:via\\|remapped\\) \\)?\\(.+\\):\\([0-9]+\\)\\(?: @0x[0-9a-f]+\\)?)\\(?:\n\\(.*?\\)\n\\)?"
+       :regexp (format ".. \\(?:.+::\\)?(\\(?:.+ \\(?:via\\|remapped\\) \\)?\\(.+\\):%s\\(?: @0x[0-9a-f]+\\)?)\\(?:\n\\(.*?\\)\n\\)?"
+		       realgud:regexp-captured-num)
        :file-group 1
        :line-group 2
        :text-group 3
@@ -68,7 +85,7 @@ realgud-loc-pat struct")
 
 
 (defconst realgud:trepanpl-frame-num-regexp
-  "\\([0-9]+\\)")
+  realgud:regexp-captured-num)
 
 ;; Regular expression that describes a Perl backtrace line.
 ;; For example:
@@ -84,7 +101,8 @@ realgud-loc-pat struct")
 	    realgud:trepanpl-frame-num-regexp
 	    "\\(?: [$@] = .* in\\)?"
 	    "[\n\t ]+?file `"
-	    "\\(.*\\)' at line \\([0-9]+\\)")
+	    "\\(.*\\)' at line "
+	    realgud:regexp-captured-num)
    :num 2
    :file-group 3
    :line-group 4
@@ -108,7 +126,8 @@ realgud-loc-pat struct")
 ;;   Breakpoint 2 set in /tmp/File/Basename.pm at line 215
 (setf (gethash "brkpt-set" realgud:trepanpl-pat-hash)
       (make-realgud-loc-pat
-       :regexp "^Breakpoint \\([0-9]+\\) set in[\n\t ]+\\(.+\\)[ \t\n]+at line \\([0-9]+\\)"
+       :regexp (format "^Breakpoint %s set in[\n\t ]+\\(.+\\)[ \t\n]+at line \\([0-9]+\\)"
+		       realgud:regexp-captured-num)
        :num 1
        :file-group 2
        :line-group 3
@@ -120,7 +139,8 @@ realgud-loc-pat struct")
 ;;   Deleted breakpoint 1.
 (setf (gethash "brkpt-del" realgud:trepanpl-pat-hash)
       (make-realgud-loc-pat
-       :regexp "^Deleted breakpoint \\([0-9]+\\)\n"
+       :regexp (format "^Deleted breakpoint %s\n"
+		       realgud:regexp-captured-num)
        :num 1))
 
 (defconst realgud:trepanpl-selected-frame-indicator "-->"

@@ -65,6 +65,7 @@
 ;;   remake         remake         GNU Make
 ;;   ruby-debug     rdebug         Ruby
 ;;   trepanning     trepan         trepanning debugger for a patched Ruby 1.9
+;;   trepanjs       trepanjs       trepanning debugger for node.js and V8
 ;;   trepan2        trepan2        trepanning debugger for Python 2.x
 ;;   trepan3k       trepan3k       trepanning debugger for Python 3.x
 ;;   zshdb          zshdb          Zsh
@@ -119,6 +120,7 @@
      "./realgud/debugger/rdebug/rdebug"
      "./realgud/debugger/remake/remake"
      "./realgud/debugger/trepan/trepan"
+     "./realgud/debugger/trepanjs/trepanjs"
      "./realgud/debugger/trepan.pl/trepanpl"
      "./realgud/debugger/trepan2/trepan2"
      "./realgud/debugger/trepan3k/trepan3k"

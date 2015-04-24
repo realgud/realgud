@@ -1,4 +1,20 @@
-;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+;; Copyright (C) 2015 Free Software Foundation, Inc
+
+;; Author: Rocky Bernstein <rocky@gnu.org>
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
@@ -20,7 +36,8 @@ realgud-loc-pat struct")
 ;;  -- (kernel/common/scope.rb:134 remapped /tmp/scope.rb:134)
 (setf (gethash "loc" realgud:trepan8-pat-hash)
       (make-realgud-loc-pat
-       :regexp ".. (\\(?:.+ \\(?:via\\|remapped\\) \\)?\\(.+\\):\\([0-9]+\\)\\(?: @[0-9]+\\)?)"
+       :regexp (format ".. (\\(?:.+ \\(?:via\\|remapped\\) \\)?\\(.+\\):%s\\(?: @[0-9]+\\)?)"
+		       realgud:regexp-captured-num)
        :file-group 1
        :line-group 2))
 
@@ -46,7 +63,8 @@ realgud-loc-pat struct")
 ;; Set breakpoint 1: /tmp/fact.rb:1 (@0)
 (setf (gethash "brkpt-set" realgud:trepan8-pat-hash)
       (make-realgud-loc-pat
-       :regexp "^Set breakpoint \\([0-9]+\\): .+ at \\(.+\\):\\([0-9]+\\) (@[0-9]+)"
+       :regexp (format "^Set breakpoint %s: .+ at \\(.+\\):\\([0-9]+\\) (@[0-9]+)"
+		       realgud:regexp-captured-num)
        :num 1
        :file-group 2
        :line-group 3))
@@ -56,7 +74,8 @@ realgud-loc-pat struct")
 ;;   Deleted breakpoint 1.
 (setf (gethash "brkpt-del" realgud:trepan8-pat-hash)
       (make-realgud-loc-pat
-       :regexp "^Deleted breakpoint \\([0-9]+\\).\n"
+       :regexp (format "^Deleted breakpoint %s.\n"
+		       realgud:regexp-captured-num)
        :num 1))
 
 ;;  Regular expression that describes a Ruby $! string
@@ -66,7 +85,7 @@ realgud-loc-pat struct")
 (setf (gethash "trepan8" realgud-pat-hash) realgud:trepan8-pat-hash)
 
 (defconst realgud:trepan8-frame-file-line-regexp
-  " at \\(.*\\):\\([0-9]+\\)$")
+  (format " at \\(.*\\):%s$" realgud:regexp-captured-num))
 
 (defconst realgud:trepan8-frame-start-regexp realgud:trepan-frame-start-regexp)
 (defconst realgud:trepan8-frame-num-regexp   realgud:trepan-frame-start-regexp)

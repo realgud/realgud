@@ -15,23 +15,24 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ;;; Regular expressions for nodejs Javascript debugger.
-;;; Copyright (C) 2014-2015 Rocky Bernstein <rocky@gnu.org>
 
-;;  `nodejs' Main interface to nodejs debugger via Emacs
-(require 'list-utils)
+;;  `trepanjs' Main interface to trepanjs via Emacs
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("../../common/run")    "realgud:")
-(require-relative-list '("core" "track-mode")   "realgud:nodejs-")
+(require-relative-list '("core" "track-mode") "realgud:trepanjs-")
 (require-relative-list '("../../lang/js") "realgud-lang-")
 
+(declare-function realgud:trepanjs-query-cmdline  'realgud:trepanjs-core)
+(declare-function realgud:trepanjs-parse-cmd-args 'realgud:trepanjs-core)
 (declare-function realgud:js-remove-ansi-schmutz 'realgud-lang-js)
 (declare-function realgud:run-debugger 'realgud:run)
 
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 24.
-(defgroup realgud:nodejs nil
-  "The realgud interface to the nodejs debugger"
+(defgroup realgud:trepanjs nil
+  "The realgud interface to the Ruby 1.9.2 1.9.3 \"trepanjsning\" debugger"
+  :group 'ruby
   :group 'realgud
   :version "24.1")
 
@@ -39,32 +40,22 @@
 ;; User-definable variables
 ;;
 
-(defcustom realgud:nodejs-command-name
-  "node debug"
-  "File name for executing the Javascript debugger and command options.
+(defcustom realgud:trepanjs-command-name
+  ;;"trepanjs --emacs 3"
+  "trepanjs"
+  "File name for executing the Ruby debugger and command options.
 This should be an executable on your path, or an absolute file name."
   :type 'string
-  :group 'realgud:nodejs)
-
-;; -------------------------------------------------------------------
-;; The end.
-;;
-
-(declare-function nodejs-track-mode     'realgud-nodejs-track-mode)
-(declare-function nodejs-query-cmdline  'realgud:nodejs-core)
-(declare-function nodejs-parse-cmd-args 'realgud:nodejs-core)
-(declare-function realgud:run-process   'realgud:run)
+  :group 'realgud:trepanjs)
 
 ;;;###autoload
-(defun realgud:nodejs (&optional opt-cmd-line no-reset)
-  "Invoke the nodejs shell debugger and start the Emacs user interface.
+(defun realgud:trepanjs (&optional opt-cmd-line no-reset)
+  "Invoke the trepanjs Ruby debugger and start the Emacs user interface.
 
-String OPT-CMD-LINE specifies how to run nodejs.
-
-OPT-CMD-LINE is treated like a shell string; arguments are
+String OPT-CMD-LINE is treated like a shell string; arguments are
 tokenized by `split-string-and-unquote'. The tokenized string is
-parsed by `nodejs-parse-cmd-args' and path elements found by that
-are expanded using `realgud:expand-file-name-if-exists'.
+parsed by `trepanjs-parse-cmd-args' and path elements found by that
+are expanded using `expand-file-name'.
 
 Normally, command buffers are reused when the same debugger is
 reinvoked inside a command buffer with a similar command. If we
@@ -76,9 +67,9 @@ fringe and marginal icons.
 "
   (interactive)
   (let ((cmd-buf
-	 (realgud:run-debugger "nodejs"
-			       'nodejs-query-cmdline 'nodejs-parse-cmd-args
-			       'realgud:nodejs-minibuffer-history
+	 (realgud:run-debugger "trepanjs" 'realgud:trepanjs-query-cmdline
+			       'realgud:trepanjs-parse-cmd-args
+			       'realgud:trepanjs-minibuffer-history
 			       opt-cmd-line no-reset)))
     (if cmd-buf
 	(with-current-buffer cmd-buf
@@ -88,7 +79,6 @@ fringe and marginal icons.
 	  )
       )))
 
-;; There is already a nodejs command in `nodejs-repl'.
-;; (defalias 'nodejs 'realgud:nodejs)
-
+(defalias 'trepanjs 'realgud:trepanjs)
 (provide-me "realgud-")
+;;; trepanjs.el ends here

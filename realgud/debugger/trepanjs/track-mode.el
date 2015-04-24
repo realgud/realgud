@@ -15,7 +15,7 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-;; Ruby "trepan8" Debugger tracking a comint buffer.
+;;; "trepanjs" Debugger tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))
 (require 'load-relative)
@@ -26,49 +26,63 @@
 			 "../../common/track-mode"
 			 )
 		       "realgud-")
-(require-relative-list '("core" "init") "realgud:trepan8-")
-(require-relative-list '("../../lang/ruby") "realgud-lang-")
-
-(realgud-track-mode-vars "trepan8")
+(require-relative-list '("core" "init") "realgud:trepanjs-")
+;; (require-relative-list '("../../lang/js") "realgud-lang-")
 
 (declare-function realgud-track-mode 'realgud-track-mode)
 (declare-function realgud-track-mode-hook 'realgud-track-mode)
 (declare-function realgud-track-mode-setup 'realgud-track-mode)
 (declare-function realgud:track-set-debugger 'realgud-track-mode)
+(declare-function realgud-goto-line-for-pt 'realgud-track-mode)
+
+(realgud-track-mode-vars "trepanjs")
+
+(define-key realgud-track-mode-map
+  (kbd "C-c !!") 'realgud:goto-lang-backtrace-line)
+(define-key realgud-track-mode-map
+  (kbd "C-c !b") 'realgud:goto-debugger-backtrace-line)
+
 (declare-function realgud:ruby-populate-command-keys 'realgud-lang-ruby)
 
-(realgud:ruby-populate-command-keys trepan8-track-mode-map)
+(defun realgud:trepanjs-goto-syntax-error-line (pt)
+  "Display the location mentioned in a Syntax error line
+described by PT."
+  (interactive "d")
+  (realgud-goto-line-for-pt pt "syntax-error"))
 
-(define-key trepan8-track-mode-map
-  (kbd "C-c !!") 'realgud:ruby-goto-dollar-bang-line)
+(define-key trepanjs-track-mode-map
+  (kbd "C-c !s") 'realgud:trepanjs-goto-syntax-error-line)
 
-(defun trepan8-track-mode-hook()
-  (use-local-map trepan8-track-mode-map)
-  (realgud-track-mode-setup 't)
-  (message "trepan8 track-mode-hook called")
+(defun trepanjs-track-mode-hook()
+  (if trepanjs-track-mode
+      (progn
+	(use-local-map trepanjs-track-mode-map)
+	(message "using trepanjs mode map")
+	)
+    (message "trepanjs track-mode-hook disable called"))
 )
-(define-minor-mode trepan8-track-mode
-  "Minor mode for tracking trepan8 source locations inside a process shell via realgud. trepan8 is a Ruby debugger for version 1.8.
+
+(define-minor-mode trepanjs-track-mode
+  "Minor mode for tracking trepanjs source locations inside a process shell via realgud. trepanjs is a Ruby debugger.
 
 If called interactively with no prefix argument, the mode is toggled. A prefix argument, captured as ARG, enables the mode if the argument is positive, and disables it otherwise.
 
-\\{trepan8-track-mode-map}
+\\{trepanjs-track-mode-map}
 "
   :init-value nil
-  ;; :lighter " trepan8"   ;; mode-line indicator from realgud-track is sufficient.
+  ;; :lighter " trepanjs"   ;; mode-line indicator from realgud-track is sufficient.
   ;; The minor mode bindings.
   :global nil
-  :group 'realgud:trepan8
-  :keymap trepan8-track-mode-map
-
-  (realgud:track-set-debugger "trepan8")
-  (if trepan8-track-mode
+  :group 'realgud:trepanjs
+  :keymap trepanjs-track-mode-map
+  (realgud:track-set-debugger "trepanjs")
+  (if trepanjs-track-mode
       (progn
-	(realgud-track-mode 't)
-	(trepan8-track-mode-hook))
+	(realgud-track-mode-setup 't)
+        (trepanjs-track-mode-hook))
     (progn
-      (realgud-track-mode nil)
+      (setq realgud-track-mode nil)
       ))
 )
 
-(provide-me "realgud:trepan8-")
+(provide-me "realgud:trepanjs-")
