@@ -33,7 +33,8 @@
 ;; 	main::foo(3) called at /tmp/foo.pl line 8
 (defconst realgud:js-backtrace-loc-pat
   (make-realgud-loc-pat
-   :regexp "^\\(?:[\t ]+at \\)?\\([^:]+\\) (\\(.*\\):\\([0-9]+\\):\\([0-9]+\\))"
+   :regexp (format "^\\(?:[\t ]+at \\)?\\([^:]+\\) (\\(.*\\):%s:%s)"
+		   realgud:regexp-captured-num realgud:regexp-captured-num)
    :file-group 2
    :line-group 3
    :char-offset-group 4)
@@ -42,6 +43,7 @@
 (defun realgud:js-remove-ansi-schmutz()
   "Remove ASCII escape sequences that node.js 'decorates' in
 prompts and interactive output with"
+  (interactive "")
   (add-to-list
    'comint-preoutput-filter-functions
    (lambda (output)
