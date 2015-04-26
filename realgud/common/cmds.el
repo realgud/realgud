@@ -1,4 +1,20 @@
-;;; Copyright (C) 2010-2011, 2013-2015 Rocky Bernstein <rocky@gnu.org>
+;; Copyright (C) 2015 Free Software Foundation, Inc
+
+;; Author: Rocky Bernstein <rocky@gnu.org>
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 (require 'load-relative)
 (require-relative-list  '("send" "core") "realgud-")
 (require-relative-list  '("buffer/command") "realgud-buffer-")
@@ -32,24 +48,28 @@ a shortcut for that key."
       (unless (and cmd-hash (setq cmd (gethash cmd-name cmd-hash)))
 	(setq cmd default-cmd-template))
       )
-    (realgud-command cmd arg no-record? frame-switch? realgud-prompts?)
-    ;; FIXME: Figure out how to update the position if the source
-    ;; buffer is displayed.
-    ;; (if frame-switch?
-    ;; 	(let* ((src-buffer (realgud-get-srcbuf-from-cmdbuf cmdbuf))
-    ;; 	       (src-window (get-buffer-window src-buffer))
-    ;; 	       ))
-    ;; 	  (with-selected-window src-window
-    ;; 	    (message "recentering...")
-    ;; 	    (realgud-recenter-arrow)
-    ;; 	  ))
-    )
-  ;; FIXME: this is a one-time thing. Put in caller.
-  (if key
-      (local-set-key (format "\C-c%s" key)
-		     (intern (format "realgud:cmd-%s" cmd-name)))
-    )
-  )
+    (if (equal cmd "*not-implemented*")
+	(message "Command %s is not implemented for this debugger")
+      ;; else
+      (progn
+	(realgud-command cmd arg no-record? frame-switch? realgud-prompts?)
+	;; FIXME: Figure out how to update the position if the source
+	;; buffer is displayed.
+	;; (if frame-switch?
+	;; 	(let* ((src-buffer (realgud-get-srcbuf-from-cmdbuf cmdbuf))
+	;; 	       (src-window (get-buffer-window src-buffer))
+	;; 	       ))
+	;; 	  (with-selected-window src-window
+	;; 	    (message "recentering...")
+	;; 	    (realgud-recenter-arrow)
+	;; 	  ))
+	)
+      ;; FIXME: this is a one-time thing. Put in caller.
+      (if key
+	  (local-set-key (format "\C-c%s" key)
+			 (intern (format "realgud:cmd-%s" cmd-name))))
+      )
+    ))
 
 (defun realgud:cmd-backtrace(arg)
   "Show the current call stack"

@@ -48,14 +48,13 @@
 
 ;;; FIXME: DRY this with other *-parse-cmd-args routines
 (defun nodejs-parse-cmd-args (orig-args)
-  "Parse command line ORIG-ARGS for the annotate level and name of script to debug.
+  "Parse command line ORIG-ARGS for the name of script to debug.
 
 ORIG-ARGS should contain a tokenized list of the command line to run.
 
 We return the a list containing
 * the name of the debugger given (e.g. nodejs) and its arguments - a list of strings
 * the script name and its arguments - list of strings
-* whether the annotate or emacs option was given ('-A', '--annotate' or '--emacs) - a boolean
 
 For example for the following input:
   (map 'list 'symbol-name
@@ -96,7 +95,7 @@ Note that path elements have been expanded via `expand-file-name'.
 	;; nodejs --nodejs-options script --script-options
 	(setq debugger-name (file-name-sans-extension
 			     (file-name-nondirectory (car args))))
-	(unless (string-match "^node\\(?:js\\|mon\\)$" debugger-name)
+	(unless (string-match "^node\\(?:js\\|mon\\)?$" debugger-name)
 	  (message
 	   "Expecting debugger name `%s' to be `node', `nodemon', or `nodejs'"
 	   debugger-name))

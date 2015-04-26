@@ -111,6 +111,8 @@ realgud-loc-pat struct")
        :line-group 3
        :char-offset-group 4))
 
+(defconst realgud:nodejs-debugger-name "nodejs" "Name of debugger")
+
 ;; ;; Regular expression that for a termination message.
 ;; (setf (gethash "termination" realgud:nodejs-pat-hash)
 ;;        "^nodejs: That's all, folks...\n")
@@ -137,13 +139,12 @@ realgud-loc-pat struct")
 	 (1 realgud-line-number-face))
 	))
 
-(setf (gethash "nodejs" realgud-pat-hash) realgud:nodejs-pat-hash)
+(setf (gethash realgud:nodejs-debugger-name realgud-pat-hash)
+      realgud:nodejs-pat-hash)
 
 (defvar realgud:nodejs-command-hash (make-hash-table :test 'equal)
   "Hash key is command name like 'finish' and the value is
   the nodejs command to use, like 'out'")
-
-(setf (gethash "nodejs" realgud-command-hash realgud:nodejs-command-hash))
 
 (setf (gethash "backtrace"  realgud:nodejs-command-hash) "T")
 (setf (gethash "break"      realgud:nodejs-command-hash)
@@ -152,6 +153,7 @@ realgud-loc-pat struct")
 (setf (gethash "quit"       realgud:nodejs-command-hash) "quit")
 (setf (gethash "finish"     realgud:nodejs-command-hash) "out")
 (setf (gethash "shell"      realgud:nodejs-command-hash) "repl")
+(setf (gethash "eval"       realgud:nodejs-command-hash) "*not-implemented*")
 
 ;; We need aliases for step and next because the default would
 ;; do step 1 and nodejs doesn't handle this. And if it did,

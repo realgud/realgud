@@ -49,21 +49,20 @@
    opt-debugger))
 
 (defun realgud:trepanjs-parse-cmd-args (orig-args)
-  "Parse command line ARGS for the annotate level and name of script to debug.
+  "Parse command line ARGS for the name of script to debug.
 
 ORIG-ARGS should contain a tokenized list of the command line to run.
 
 We return the a list containing
 * the name of the debugger given (e.g. trepanjs) and its arguments - a list of strings
 * the script name and its arguments - list of strings
-* whether the annotate or emacs option was given ('-A', '--annotate' or '--emacs) - a boolean
 
 For example for the following input:
   (map 'list 'symbol-name
-   '(node --interactive --debugger-port 5858 /tmp trepanjs ./gcd.js a b))
+   '(trepanjs  --no-highlight --port 5858 /tmp trepanjs ./gcd.js a b))
 
 we might return:
-   ((\"node\" \"--interactive\" \"--debugger-port\" \"5858\") nil (\"/tmp/gcd.js\" \"a\" \"b\"))
+   ((\"trepanjs\" \"--no-highlight\" \"--port\" \"5858\") nil (\"/tmp/gcd.js\" \"a\" \"b\"))
 
 Note that path elements have been expanded via `expand-file-name'.
 "
@@ -73,7 +72,7 @@ Note that path elements have been expanded via `expand-file-name'.
   (let (
 	(args orig-args)
 	(pair)          ;; temp return from
-	(node-two-args '("-debugger_port" "C" "D" "i" "l" "m" "-module" "x"))
+	(node-two-args '("-port" "C" "D" "i" "l" "m" "-module" "x"))
 	;; node doesn't have any optional two-arg options
 	(node-opt-two-args '())
 
@@ -97,7 +96,7 @@ Note that path elements have been expanded via `expand-file-name'.
 	;; trepanjs --trepanjs-options script --script-options
 	(setq debugger-name (file-name-sans-extension
 			     (file-name-nondirectory (car args))))
-	(unless (string-match "^node\\(?:js\\|mon\\)$" debugger-name)
+	(unless (string-match "^node\\(?:js\\|mon\\)?$" debugger-name)
 	  (message
 	   "Expecting debugger name `%s' to be `node', `nodemon', or `trepanjs'"
 	   debugger-name))
