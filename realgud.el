@@ -1,7 +1,7 @@
 ;;; realgud.el --- A modular front-end for interacting with external debuggers
 
 ;; Author: Rocky Bernstein
-;; Version: 1.1
+;; Version: 1.2
 ;; Package-Requires: ((load-relative "1.0") (list-utils "0.4.2") (loc-changes "1.1") (test-simple  "1.0"))
 ;; URL: http://github.com/rocky/emacs-dbgr
 ;; Compatibility: GNU Emacs 24.x
@@ -65,7 +65,7 @@
 ;;   remake         remake         GNU Make
 ;;   ruby-debug     rdebug         Ruby
 ;;   trepanning     trepan         trepanning debugger for a patched Ruby 1.9
-;;   trepanjs       trepanjs       trepanning debugger for node.js and V8
+;;   trepanjs       trepanjs       trepanning debugger for nodejs and V8
 ;;   trepan2        trepan2        trepanning debugger for Python 2.x
 ;;   trepan3k       trepan3k       trepanning debugger for Python 3.x
 ;;   zshdb          zshdb          Zsh

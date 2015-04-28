@@ -33,14 +33,14 @@ realgud-loc-pat struct")
 (declare-function make-realgud-loc "realgud-loc" (a b c d e f))
 
 (defconst realgud:gdb-frame-file-regexp
- "\\(.+\\):\\([0-9]+\\)")
+  (format "\\(.+\\):%s" realgud:regexp-captured-num))
 
 ;; regular expression that describes a gdb location generally shown
 ;; before a command prompt. NOTE: we assume annotate 1!
 (setf (gethash "loc" realgud:gdb-pat-hash)
       (make-realgud-loc-pat
-       :regexp (format "^%s:\\([0-9]+\\):beg:0x\\([0-9a-f]+\\)"
-		       realgud:gdb-frame-file-regexp)
+       :regexp (format "^%s:%s:beg:0x\\([0-9a-f]+\\)"
+		       realgud:gdb-frame-file-regexp realgud:regexp-captured-num)
        :file-group 1
        :line-group 2
        :char-offset-group 3))
@@ -53,7 +53,8 @@ realgud-loc-pat struct")
 ;;  regular expression that describes a "breakpoint set" line
 (setf (gethash "brkpt-set" realgud:gdb-pat-hash)
       (make-realgud-loc-pat
-       :regexp "^Breakpoint \\([0-9]+\\) at 0x\\([0-9a-f]*\\): file \\(.+\\), line \\([0-9]+\\).\n"
+       :regexp (format "^Breakpoint %s at 0x\\([0-9a-f]*\\): file \\(.+\\), line %s.\n"
+		       realgud:regexp-captured-num realgud:regexp-captured-num)
        :num 1
        :file-group 3
        :line-group 4))
@@ -62,7 +63,7 @@ realgud-loc-pat struct")
   "\\(?:^\\|\n\\)")
 
 (defconst realgud:gdb-frame-num-regexp
-  "#\\([0-9]+\\) ")
+  (format "#%s " realgud:regexp-captured-num))
 
 ;; Regular expression that describes a gdb "backtrace" command line.
 ;; For example:
