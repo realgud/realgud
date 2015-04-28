@@ -72,13 +72,13 @@ Note that path elements have been expanded via `expand-file-name'.
   (let (
 	(args orig-args)
 	(pair)          ;; temp return from
-	(node-two-args '("-port" "C" "D" "i" "l" "m" "-module" "x"))
+	(node-two-args '("-max-stack-size"))
 	;; node doesn't have any optional two-arg options
 	(node-opt-two-args '())
 
 	;; One dash is added automatically to the below, so
-	;; h is really -h and -debugger_port is really --debugger_port.
-	(trepanjs-two-args '("-debugger_port"))
+	;; p is really -p and -port is really --port.
+	(trepanjs-two-args '("-port" "-host" "-pid" "p"))
 	(trepanjs-opt-two-args '())
 
 	;; Things returned

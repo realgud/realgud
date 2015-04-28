@@ -42,7 +42,7 @@ realgud-loc-pat struct")
 (setf (gethash "loc" realgud:trepanjs-pat-hash)
       (make-realgud-loc-pat
        :regexp (format
-		"\\(?:%s\\)*\\(?:break\\|exception\\) in %s:%s"
+		"\\(?:%s\\)*\\(?:break\\|exception\\|stop\\) in %s:%s"
 		realgud:js-term-escape realgud:trepanjs-file-regexp
 		realgud:regexp-captured-num)
        :file-group 1
