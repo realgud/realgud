@@ -1,5 +1,21 @@
-;;; Copyright (C) 2013-2014 Rocky Bernstein <rocky@gnu.org>
-;;; Regular expressions for Go SSA debugger: gub
+;; Copyright (C) 2015 Free Software Foundation, Inc
+;; Author: Rocky Bernstein <rocky@gnu.org>
+
+;; This program is free software: you can redistribute it and/or
+;; modify it under the terms of the GNU General Public License as
+;; published by the Free Software Foundation, either version 3 of the
+;; License, or (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful, but
+;; WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+;; General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see
+;; <http://www.gnu.org/licenses/>.
+
+;; Regular expressions for Go SSA debugger: gub
 
 (eval-when-compile (require 'cl))
 
@@ -49,24 +65,32 @@ realgud-loc-pat struct")
 ;;   gub[1@3]:
 (setf (gethash "prompt" realgud:gub-pat-hash)
       (make-realgud-loc-pat
-       :regexp   "^gub\\[\\([0-9]+\\)\\(?:@\\([0-9]+\\)\\)?\\]: "
+       :regexp  (format  "^gub\\[%s\\(?:@%s\\)?\\]: "
+			 realgud:regexp-captured-num
+			 realgud:regexp-captured-num)
        :num 1
        ))
 
 ;;  Regular expression that describes a "breakpoint set" line
 (setf (gethash "brkpt-set" realgud:gub-pat-hash)
       (make-realgud-loc-pat
-       :regexp "^ Breakpoint \\([0-9]+\\) set\\(?:in function \\) at \\([a-zA-Z0-9_/.\\\\][-a-zA-Z0-9_/.\\\\ ]*\\.go\\):\\([0-9]+\\)"
+       :regexp (format
+		"^Breakpoint %s set\\(?:in function \\) in file \\([a-zA-Z0-9_/.\\\\][-a-zA-Z0-9_/.\\\\ ]*\\.go\\) line %s, column %s"
+		realgud:regexp-captured-num realgud:regexp-captured-num
+		realgud:regexp-captured-num)
        :num 1
        :file-group 2
-       :line-group 3))
+       :line-group 3
+       :char-offset-group 4))
 
 ;; Regular expression that describes a debugger "delete" (breakpoint) response.
 ;; For example:
 ;;   Deleted breakpoint 1.
 (setf (gethash "brkpt-del" realgud:gub-pat-hash)
       (make-realgud-loc-pat
-       :regexp "^ Deleted breakpoint \\([0-9]+\\)\n"
+       :regexp (format
+		"^Deleted breakpoint %s\n"
+		realgud:regexp-captured-num)
        :num 1))
 
 ;; Regular expression describes general location. In contrast to loc
@@ -77,7 +101,8 @@ realgud-loc-pat struct")
 (setf (gethash "general-location" realgud:gub-pat-hash)
       (make-realgud-loc-pat
        :regexp
-       "\\(?:^\\|\n\\)[ \t]*\\(\\(?:[a-zA-Z]:\\)?[a-zA-Z0-9_/.\\\\][-a-zA-Z0-9_/.\\\\ ]*\\.go\\):\\([0-9]+\\)"
+       (format
+	"\\(?:^\\|\n\\)[ \t]*\\(\\(?:[a-zA-Z]:\\)?[a-zA-Z0-9_/.\\\\][-a-zA-Z0-9_/.\\\\ ]*\\.go\\):%s" realgud:regexp-captured-num)
        :file-group 1
        :line-group 2))
 
@@ -86,9 +111,11 @@ realgud-loc-pat struct")
 backtrace listing.")
 (defconst realgud:gub-frame-arrow (format "\\(%s\\|  \\)"
 					  realgud:gub-selected-frame-arrow))
-(defconst realgud:gub-frame-num-regexp " #\\([0-9]+\\) ")
+(defconst realgud:gub-frame-num-regexp
+  (format " #%s " realgud:regexp-captured-num))
 
-(defconst realgud:gub-frame-file-regexp " at \\(.*\\):\\([0-9]+\\)")
+(defconst realgud:gub-frame-file-regexp
+  (format " at \\(.*\\):%s" realgud:regexp-captured-num))
 
 
 ;; Regular expression that describes a debugger "backtrace" command line.
@@ -127,7 +154,8 @@ backtrace listing.")
 ;;^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^-^^------
 (setf (gethash "panic-backtrace" realgud:gub-pat-hash)
       (make-realgud-loc-pat
-       :regexp "^[ \t]*\\(/.+\\):\\([0-9]+\\) \\(+0x[0-9a-f]+\\)?$"
+       :regexp (format "^[ \t]*\\(/.+\\):%s \\(+0x[0-9a-f]+\\)?$"
+		       realgud:regexp-captured-num)
        :file-group 1
        :line-group 2))
 
