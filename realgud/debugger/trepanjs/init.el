@@ -42,11 +42,14 @@ realgud-loc-pat struct")
 (setf (gethash "loc" realgud:trepanjs-pat-hash)
       (make-realgud-loc-pat
        :regexp (format
-		"\\(?:%s\\)*\\(?:break\\|exception\\|call\\) in %s:%s"
+		"\\(?:%s\\)*\\(?:break\\|exception\\|call\\) in %s at line %s:%s"
 		realgud:js-term-escape realgud:trepanjs-file-regexp
+		realgud:regexp-captured-num
 		realgud:regexp-captured-num)
        :file-group 1
-       :line-group 2))
+       :line-group 2
+       :char-offset-group 3
+       ))
 
 ;; Regular expression that describes a trepanjs command prompt
 ;; For example:
