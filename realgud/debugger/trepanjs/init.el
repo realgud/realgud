@@ -56,15 +56,19 @@ realgud-loc-pat struct")
 ;;   (trepanjs):
 (setf (gethash "prompt" realgud:trepanjs-pat-hash)
       (make-realgud-loc-pat
-       :regexp "^(+trepanjs)+ "
+       :regexp (format "^\\(?:%s\\)*(+trepanjs)+ " realgud:js-term-escape)
        ))
 
 ;;  Regular expression that describes a "breakpoint set" line
-;; * 4 var count = 0;
+;; For example:
+;;  Breakpoint 2 set in file /tmp/gcd.js, line 2.
+;;  Breakpoint 3 set in file /usr/lib/nodejs/module.js [module.js], line 380.
 (setf (gethash "brkpt-set" realgud:trepanjs-pat-hash)
       (make-realgud-loc-pat
-       :regexp (format "^Breakpoint %s set in file \\(.+\\), line %s.\n"
-		       realgud:regexp-captured-num realgud:regexp-captured-num)
+       :regexp (format "^Breakpoint %s set in file %s, line %s.\n"
+		       realgud:regexp-captured-num
+		       realgud:trepanjs-file-regexp
+		       realgud:regexp-captured-num)
        :num 1
        :file-group 2
        :line-group 3))
@@ -137,8 +141,6 @@ realgud-loc-pat struct")
 ;; We need aliases for step and next because the default would
 ;; do step 1 and trepanjs doesn't handle this. Or when it does,
 ;; it will probably look like step(1)
-(setf (gethash "step"       realgud:trepanjs-command-hash) "step")
-(setf (gethash "next"       realgud:trepanjs-command-hash) "next")
 (setf (gethash "eval"       realgud:trepanjs-command-hash) "eval('%s')")
 
 (provide-me "realgud:trepanjs-")

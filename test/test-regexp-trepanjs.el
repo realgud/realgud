@@ -1,5 +1,5 @@
 (require 'test-simple)
-(load-file "../realgud/debugger/nodejs/init.el")
+(load-file "../realgud/debugger/trepanjs/init.el")
 (load-file "./regexp-helper.el")
 
 (declare-function realgud-cmdbuf-info-loc-regexp 'realgud-buffer-command)
@@ -14,6 +14,7 @@
 (declare-function realgud-cmdbuf-info-file-group 'realgud-regexp)
 (declare-function realgud-cmdbuf-info-line-group 'realgud-regexp)
 (declare-function __FILE__                       'load-relative)
+(declare-function setup-regexp-vars              'regexp-helper)
 
 (test-simple-start)
 
@@ -22,21 +23,24 @@
   (defvar loc-pat)
   (defvar bt-pat)
   (defvar prompt-pat)
-  (defvar realgud:nodejs-pat-hash)
+  (defvar realgud:trepanjs-pat-hash)
   (defvar realgud-pat-hash)
+  (defvar helper-bps)
   (defvar test-dbgr)
   (defvar test-text)
   (defvar test-s1)
 )
 
-(note "nodejs prompt matching")
-(set (make-local-variable 'prompt-pat)
-     (gethash "prompt" realgud:nodejs-pat-hash))
-(prompt-match "debug> ")
-(prompt-match "[1G[0Jdebug> [8G[1G[0Kconnecting... ok")
+(setup-regexp-vars realgud:trepanjs-pat-hash)
 
-(note "nodejs location matching")
-(setq dbg-name "nodejs")
+(note "trepanjs prompt matching")
+(set (make-local-variable 'prompt-pat)
+     (gethash "prompt" realgud:trepanjs-pat-hash))
+(prompt-match "(trepanjs) ")
+(prompt-match "[1G[0J(trepanjs) [8G[1G[0Kconnecting... ok")
+
+(note "trepanjs location matching")
+(setq dbg-name "trepanjs")
 (setq loc-pat (gethash "loc" (gethash dbg-name realgud-pat-hash)))
 
 (setq test-dbgr (make-realgud-cmdbuf-info
@@ -45,7 +49,7 @@
 		 :file-group (realgud-loc-pat-file-group loc-pat)
 		 :line-group (realgud-loc-pat-line-group loc-pat)))
 
-(setq test-text "break in test/fixtures/break-in-module/main.js:1\n")
+(setq test-text "break in test/fixtures/break-in-module/main.js at line 1:23\n")
 (assert-t (numberp (cmdbuf-loc-match test-text test-dbgr)) "basic location")
 
 (string-match (realgud-cmdbuf-info-loc-regexp test-dbgr) test-text)
@@ -59,13 +63,29 @@
 	       (realgud-cmdbuf-info-line-group test-dbgr)
 	       test-text) "extract line number")
 
+(note "breakpoint location matching")
+
+(setq test-text
+      "Breakpoint 2 set in file /tmp/gcd.js, line 2.
+")
+
+(assert-t (numberp (loc-match test-text helper-bps))
+	  "basic breakpoint location")
+(assert-equal "/tmp/gcd.js"
+	      (match-string (realgud-loc-pat-file-group helper-bps)
+			    test-text)   "extract breakpoint file name")
+(assert-equal "2"
+	      (match-string (realgud-loc-pat-line-group helper-bps)
+			    test-text)
+	      "extract breakpoint line number")
+
 (note "debugger-backtrace")
 (setq test-text
-    "#0 module.js:380:17
-")
+    "##1 in file /tmp/test/gcd.js at line 2:12"
+)
 
 (set (make-local-variable
       'bt-pat)
-      (gethash "debugger-backtrace" realgud:nodejs-pat-hash))
+      (gethash "debugger-backtrace" realgud:trepanjs-pat-hash))
 
 (end-tests)
