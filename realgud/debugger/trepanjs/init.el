@@ -104,7 +104,7 @@ realgud-loc-pat struct")
       (make-realgud-loc-pat
        :regexp 	(concat realgud:trepanjs-frame-start-regexp " "
 			realgud:regexp-captured-num " "
-			"\\(?:" realgud:trepanjs-frame-module-regexp " called from file"
+			"\\(?:" realgud:trepanjs-frame-module-regexp "[ \t\n]+called from file "
 			realgud:trepanjs-file-regexp
 			"\\)\\| in file "
 			realgud:regexp-captured-num
