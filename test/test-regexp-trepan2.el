@@ -126,7 +126,7 @@
 	      (match-string (realgud-loc-pat-line-group helper-loc)
 			    test-s1)   "extract line number")
 
-(setq test-s1 "(/usr/bin/ipython:24): <module>")
+(setq test-s1 "(/usr/bin/ipython:24 @31): <module>")
 (assert-t (numberp (loc-match test-s1 helper-loc))
 	  "position location")
 (assert-equal "/usr/bin/ipython"

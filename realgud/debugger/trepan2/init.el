@@ -26,7 +26,7 @@ realgud-loc-pat struct")
 ;; before a command prompt.
 ;;
 ;; For example:
-;;   (/usr/bin/zonetab2pot.py:15): <module>
+;;   (/usr/bin/zonetab2pot.py:15 @3): <module>
 ;;   (/usr/bin/zonetab2pot.py:15 remapped <string>): <module>
 ;; or MS Windows:
 ;;   (c:\\mydirectory\\gcd.py:10): <module>
