@@ -35,8 +35,10 @@ realgud-loc-pat struct")
 (defconst realgud:gdb-frame-file-regexp
   (format "\\(.+\\):%s" realgud:regexp-captured-num))
 
-;; regular expression that describes a gdb location generally shown
+;; Regular expression that describes a lldb location generally shown
 ;; before a command prompt. NOTE: we assume annotate 1!
+;; For example:
+;; /src/build/ruby-2.1.5/main.c:24:454:beg:0x55555557659f
 (setf (gethash "loc" realgud:gdb-pat-hash)
       (make-realgud-loc-pat
        :regexp (format "^%s:%s:beg:0x\\([0-9a-f]+\\)"
@@ -45,12 +47,17 @@ realgud-loc-pat struct")
        :line-group 2
        :char-offset-group 3))
 
+;; Regular expression that describes a gdb prompt
+;; For example:
+;;   (gdb)
 (setf (gethash "prompt" realgud:gdb-pat-hash)
       (make-realgud-loc-pat
        :regexp   "^(gdb) "
        ))
 
-;;  regular expression that describes a "breakpoint set" line
+;; Regular expression that describes a "breakpoint set" line
+;; For example:
+;;   Breakpoint 1, main (argc=1, argv=0x7fffffffdbd8) at main.c:24
 (setf (gethash "brkpt-set" realgud:gdb-pat-hash)
       (make-realgud-loc-pat
        :regexp (format "^Breakpoint %s at 0x\\([0-9a-f]*\\): file \\(.+\\), line %s.\n"
