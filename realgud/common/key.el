@@ -61,7 +61,7 @@ This variable can be bound to the following:
   "Bind the debugger function key layout used by many debuggers.
 
 \\{realgud-example-map-standard}"
-  (define-key map [f5]    'realgud-continue)
+  (define-key map [f5]    'realgud:continue)
   (define-key map [S-f5]  'realgud:cmd-quit)
   ;; (define-key map [f9]    'realgud-toggle-source-breakpoint)
   (define-key map [f9]    'realgud:cmd-break)
