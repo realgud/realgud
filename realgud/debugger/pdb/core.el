@@ -36,6 +36,9 @@
 (defvar realgud:pdb-minibuffer-history nil
   "minibuffer history list for the command `pdb'.")
 
+(defvar realgud:pdb-remote-minibuffer-history nil
+  "minibuffer history list for the command `pdb-remote'.")
+
 (easy-mmode-defmap pdb-minibuffer-local-map
   '(("\C-i" . comint-dynamic-complete-filename))
   "Keymap for minibuffer prompting of gud startup command."
@@ -142,7 +145,29 @@ Note that the script name path has been expanded via `expand-file-name'.
 	   )))
       (list interpreter-args debugger-args script-args annotate-p))))
 
-;; To silence Warning: reference to free variable
+(defun pdb-parse-remote-cmd-args (orig-args)
+    "Parse command line ORIG-ARGS
+ORIG-ARGS should contain a tokenized list of the command line to run.
+
+We return the a list containing:
+* the command processor (e.g. python) and it's arguments if any - a list of strings
+* the name of the debugger given (e.g. pdb) and its arguments - a list of strings
+* the script name and its arguments - list of strings
+* nil
+
+For example for the following input:
+  (map 'list 'symbol-name
+   '(telnet localhost 6900))
+
+we might return:
+   ((\"telnet\" \"localhost\" \"6900\") (\"pdb\") (\"\") nil)
+
+Note that the script name path has been expanded via `expand-file-name'.
+"
+    (list orig-args '("pdb") '("") nil)
+  )
+
+  ;; To silence Warning: reference to free variable
 (defvar realgud:pdb-command-name)
 
 (defun pdb-suggest-invocation (debugger-name)
