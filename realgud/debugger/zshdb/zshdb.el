@@ -1,6 +1,5 @@
 ;;; Copyright (C) 2011, 2014-2015 Rocky Bernstein <rocky@gnu.org>
 ;;  `zshdb' Main interface to zshdb via Emacs
-(require 'list-utils)
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("../../common/track")  "realgud-")

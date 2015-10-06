@@ -18,7 +18,6 @@
 ;;; Copyright (C) 2014-2015 Rocky Bernstein <rocky@gnu.org>
 
 ;;  `nodejs' Main interface to nodejs debugger via Emacs
-(require 'list-utils)
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("../../common/run")    "realgud:")
