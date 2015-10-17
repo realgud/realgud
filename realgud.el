@@ -27,14 +27,14 @@
 
 ;; Once upon a time in an Emacs far far away and a programming-style
 ;; deservedly banished, there was a monolithic Cathederal-like
-;; debugger front-end called gub. This interfaced with a number of
-;; debuggers, many now dead. Is there anyone still alive that
+;; debugger front-end called gub.  This interfaced with a number of
+;; debuggers, many now dead.  Is there anyone still alive that
 ;; remembers sdb from UNIX/32V circa 1980?
 ;;
-;; This isn't that. Here we make use of more modern programming
+;; This isn't that.  Here we make use of more modern programming
 ;; practices, more numerous and smaller files, unit tests, and better
-;; use of emacs primitives, e.g. buffer marks, buffer-local variables,
-;; structures, rings, hash tables. Although there is still much to be
+;; use of Emacs primitives, e.g. buffer marks, buffer-local variables,
+;; structures, rings, hash tables.  Although there is still much to be
 ;; desired, this code is more scalable and suitable as a common base for
 ;; an Emacs front-end to modern debuggers.
 ;;
@@ -72,10 +72,11 @@
 ;;
 ;;
 ;; **gdb, jdb, perldb, pdb invocations require the realgud: preface to
-;; disambiguate it from older, preexisting emacs commands in `gud'. The other
-;; invocations also accept realgud: prefaces, e.g. realgud:bashdb or
-;; realgud:rdebug.  Alas there are older obsolete (i.e. often written by me)
-;; Emacs packages out there for bashdb, kshdb, nodejs, pydb, rdebug, zshdb.
+;; disambiguate it from older, preexisting Emacs commands in `gud'.
+;; The other invocations also accept realgud: prefaces,
+;; e.g. realgud:bashdb or realgud:rdebug.  Alas there are older
+;; obsolete (i.e. often written by me) Emacs packages out there for
+;; bashdb, kshdb, nodejs, pydb, rdebug, zshdb.
 
 ;; If you don't see your favorite debugger above, see URL
 ;; `https://github.com/rocky/emacs-dbgr/wiki/How-to-add-a-new-debugger/'
@@ -85,8 +86,8 @@
 ;; a `realgud-track-mode' inside an existing shell.
 
 ;; To install you will need a couple of other Emacs packages
-;; installed. If you install via melpa (`package-install') or
-;; `el-get', these will be pulled in automatically. See the
+;; installed.  If you install via melpa (`package-install') or
+;; `el-get', these will be pulled in automatically.  See the
 ;; installation instructions URL
 ;; `https://github.com/rocky/emacs-dbgr/wiki/How-to-Install' for all
 ;; the ways to to install and more details on installation.
