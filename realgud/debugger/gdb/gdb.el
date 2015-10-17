@@ -18,7 +18,6 @@
 
 ;;  `realgud:gdb' Main interface to gdb via Emacs
 (require 'cl)
-(require 'list-utils)
 (require 'load-relative)
 (require-relative-list '("../../common/helper" "../../common/utils")
 		       "realgud-")

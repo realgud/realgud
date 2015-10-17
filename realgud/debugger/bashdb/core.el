@@ -17,7 +17,6 @@
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
-(require 'list-utils)
 (require-relative-list '("../../common/track" "../../common/core")
 		       "realgud-")
 (require-relative-list '("init") "realgud:bashdb-")
