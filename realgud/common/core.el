@@ -265,9 +265,13 @@ marginal icons is reset."
 	(make-local-variable 'realgud-overlay-arrow2)
 	(make-local-variable 'realgud-overlay-arrow3)
 
-	(condition-case nil
+	(condition-case failure
 	    (comint-exec cmdproc-buffer debugger-name program nil args)
-	  (error cmdproc-buffer))
+	  (error
+	   (let ((text (format "%S\n" failure)))
+	     (insert text)
+	     (message text)(sit-for 2)
+	     text)))
 
 	(setq process (get-buffer-process cmdproc-buffer))
 
