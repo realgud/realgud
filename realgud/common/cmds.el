@@ -49,7 +49,7 @@ a shortcut for that key."
 	(setq cmd default-cmd-template))
       )
     (if (equal cmd "*not-implemented*")
-	(message "Command %s is not implemented for this debugger" cmd)
+	(message "Command %s is not implemented for this debugger" cmd-name)
       ;; else
       (progn
 	(realgud-command cmd arg no-record? frame-switch? realgud-prompts?)

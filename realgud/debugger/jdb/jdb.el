@@ -85,8 +85,7 @@ fringe and marginal icons.
 	  (cl-remove-if 'nil (realgud:flatten parsed-args)))
 	 )
     (realgud:run-process "jdb" script-name parsed-cmd-args
-			 'jdb-track-mode-hook
-			 'realgud:jdb-minibuffer-history no-reset)
+			 'realgud:jdb-track-mode-hook no-reset)
     )
   )
 

@@ -52,7 +52,6 @@ This should be an executable on your path, or an absolute file name."
 (declare-function nodejs-track-mode     'realgud-nodejs-track-mode)
 (declare-function nodejs-query-cmdline  'realgud:nodejs-core)
 (declare-function nodejs-parse-cmd-args 'realgud:nodejs-core)
-(declare-function realgud:run-process   'realgud:run)
 
 ;;;###autoload
 (defun realgud:nodejs (&optional opt-cmd-line no-reset)

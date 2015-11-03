@@ -1,4 +1,4 @@
-;;; Copyright (C) 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2014-2015 Rocky Bernstein <rocky@gnu.org>
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
@@ -193,8 +193,15 @@ backtrace listing.")
 	       realgud-command-hash) realgud:jdb-command-hash)
 
 (setf (gethash "backtrace"   realgud:jdb-command-hash) "where")
-(setf (gethash "break"       realgud:jdb-command-hash) "stop at %c:%l")
-(setf (gethash "clear"       realgud:jdb-command-hash) "clear %c:%l")
+
+;; For these we need to deal with java classpaths.
+;; Also jdb is pretty sucky when it comes to giving an prompt that
+;; we can write a regex for. So we don't even know often when there
+;; is a prompt!
+(setf (gethash "break"       realgud:jdb-command-hash) "*not-implemented*")
+(setf (gethash "clear"       realgud:jdb-command-hash) "*not-implemented*")
+(setf (gethash "restart"     realgud:jdb-command-hash) "*not-implemented*")
+
 (setf (gethash "continue"    realgud:jdb-command-hash) "cont")
 (setf (gethash "finish"      realgud:jdb-command-hash) "step up")
 (setf (gethash "up"          realgud:jdb-command-hash) "up\C-Mwhere")
