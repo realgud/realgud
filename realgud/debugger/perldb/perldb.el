@@ -58,7 +58,6 @@ fringe and marginal icons.
 			'realgud:perldb-minibuffer-history
 			opt-cmd-line no-reset))
 
-(defalias 'perl5db 'realgud:perldb)
 ;; (defalias 'perldb 'realgud:perldb)
 
 (provide-me "realgud-")
