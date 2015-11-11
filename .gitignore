@@ -2,6 +2,7 @@
 *~
 /*-pkg.el
 /*.tar.gz
+/.cask/
 /.python-version
 /README
 /aclocal.m4
@@ -13,6 +14,7 @@
 /elpa
 /install-sh
 /missing
+/node_modules
 /test/npm-debug.log
 /tmp
 Makefile
