@@ -270,10 +270,10 @@ marginal icons is reset."
 	  (error
 	   (let ((text (format "%S\n" failure)))
 	     (insert text)
-	     (message text)(sit-for 2)
-	     text)))
+	     (message text)(sit-for 1)
+ 	     text)))
 
-	(setq process (get-buffer-process cmdproc-buffer))
+ 	(setq process (get-buffer-process cmdproc-buffer))
 
 	(if (and process (eq 'run (process-status process)))
 	  (let ((src-buffer)
@@ -283,16 +283,16 @@ marginal icons is reset."
 	      (setq src-buffer (find-file-noselect script-filename))
 	      (point-max)
 	      (realgud-srcbuf-init src-buffer cmdproc-buffer))
-	    )
+	    (process-put process 'buffer cmdproc-buffer))
 	  ;; else
-	  (insert
-	   (format
-	    "Failed to invoke debugger %s on program %s with args %s\n"
-	    debugger-name program (mapconcat 'identity args " ")))
-	  (error cmdproc-buffer)
-	  )
-	(process-put process 'buffer cmdproc-buffer)))
-    cmdproc-buffer))
+	  (let ((text
+		 (format
+		  "Failed to invoke debugger %s on program %s with args %s\n"
+		  debugger-name program (mapconcat 'identity args " "))))
+	    (with-current-buffer cmdproc-buffer (insert text))
+	    (message text)
+	  ))
+    cmdproc-buffer))))
 
 ;; Start of a term-output-filter for term.el
 (defun realgud-term-output-filter (process string)

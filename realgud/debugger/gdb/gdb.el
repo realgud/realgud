@@ -83,12 +83,13 @@ fringe and marginal icons.
 				       nil))
 	 )
     (if cmd-buf
-	(with-current-buffer cmd-buf
-	  (realgud-command "set annotate 1" nil nil nil)
-	  )
+	(let ((process (get-buffer-process cmd-buf)))
+	  (if (and process (eq 'run (process-status process)))
+	      (with-current-buffer cmd-buf
+		(realgud-command "set annotate 1" nil nil nil)
+		)))
       )
-    )
-  )
+    ))
 
 (provide-me "realgud-")
 

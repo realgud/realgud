@@ -118,11 +118,9 @@ the program, we will switch to the command buffer which shows
 details of the error. The command buffer or nil is returned."
 
   (let ((cmd-buf))
-    (condition-case nil
-	(setq cmd-buf
-	      (apply 'realgud-exec-shell debugger-name script-filename
-		     (car cmd-args) no-reset (cdr cmd-args)))
-      (error nil))
+    (setq cmd-buf
+	  (apply 'realgud-exec-shell debugger-name script-filename
+		 (car cmd-args) no-reset (cdr cmd-args)))
     ;; FIXME: Is there probably is a way to remove the
     ;; below test and combine in condition-case?
     (let ((process (get-buffer-process cmd-buf)))
