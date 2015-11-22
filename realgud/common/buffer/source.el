@@ -14,6 +14,7 @@
 (declare-function buffer-loc-line-number?      'realgud-loc)
 (declare-function realgud-cmdbuf-add-srcbuf    'realgud-cmdbuf)
 (declare-function realgud-cmdbuf-info-bp-list  'realgud-cmdbuf)
+(declare-function realgud-cmdbuf?              'realgud-cmdbuf)
 (declare-function realgud-loc-marker           'realgud-loc)
 (declare-function realgud-loc-line-number      'realgud-loc)
 (declare-function realgud-loc-num              'realgud-loc)
@@ -118,13 +119,18 @@ in it with those from CMDPROC-BUFFER"
 	(realgud-srcbuf-info-cmdproc= cmdproc-buffer)
       (realgud-srcbuf-init src-buffer cmdproc-buffer))))
 
+;; FIXME: rewrite to add prompt function that only suggests
+;; command buffers;
 (defun realgud:cmdbuf-associate(cmdbuf-name)
-"Associate a command buffer with for the current buffer which is
+  "Associate a command buffer with for the current buffer which is
 assumed to be a source-code buffer"
   (interactive "brealgud command buffer: ")
-  (realgud-srcbuf-init-or-update (current-buffer) (get-buffer cmdbuf-name))
-  (realgud-short-key-mode-setup 't)
-  )
+  (let ((cmdbuf (get-buffer cmdbuf-name)))
+    (unless (realgud-cmdbuf? cmdbuf)
+      (error "%s doesn't smell like a command buffer" cmdbuf-name))
+    (realgud-srcbuf-init-or-update (current-buffer) cmdbuf )
+    (realgud-short-key-mode-setup 't)
+  ))
 
 (defun realgud-srcbuf-bp-list(&optional buffer)
   "Return a list of breakpoint loc structures that reside in
