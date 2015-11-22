@@ -106,7 +106,7 @@ results into the command buffer."
 	      )
 	    (if (realgud-sget 'cmdbuf-info 'in-debugger?)
 		(funcall send-command-fn process command)
-	      (error "Command buffer doesn't think a debugger is running")
+	      (error "Command buffer doesn't think a debugger is running - Use `realgud-cmdbuf-toggle-in-debugger?' to toggle")
 	      )
 	    ))
       (error "Can't find command process buffer")
