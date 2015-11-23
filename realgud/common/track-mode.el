@@ -219,7 +219,13 @@ the name of the debugger which is used to preface variables."
   "Disable the debugger track-mode hook"
   (interactive "")
   (if realgud-track-mode
-      (setq realgud-track-mode nil)
+      (progn
+	(setq realgud-track-mode nil)
+	;; FIXME: for some reason, disabling trak mode also
+	;; disables shell mode. Reinitialize it?
+	(if (equal mode-name "Shell")
+	    (shell-mode))
+	)
     (message "Debugger is not in track mode")))
 
 (defun realgud:track-mode-enable()
