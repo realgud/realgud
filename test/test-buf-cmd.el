@@ -1,7 +1,15 @@
+;; Press C-x C-e at the end of the next line to run this file test non-interactively
+;; (test-simple-run "emacs -batch -L %s -l %s" (file-name-directory (locate-library "test-simple.elc")) buffer-file-name)
+
 (require 'test-simple)
 (load-file "../realgud/common/buffer/command.el")
 (load-file "../realgud/debugger/trepan/init.el")
 (declare-function realgud-cmdbuf-init 'realgud-buffer-command)
+(declare-function realgud-cmdbuf-command-string 'realgud-buffer-command)
+(declare-function realgud-cmdbuf-info-cmd-args= 'realgud-buffer-command)
+(declare-function realgud-cmdbuf-debugger-name  'realgud-buffer-command)
+(declare-function realgud-cmdbuf-info-srcbuf-list 'realgud-buffer-command)
+(declare-function realgud-cmdbuf-add-srcbuf 'realgud-buffer-command)
 
 (test-simple-start)
 

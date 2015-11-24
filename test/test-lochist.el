@@ -1,3 +1,6 @@
+;; Press C-x C-e at the end of the next line to run this file test non-interactively
+;; (test-simple-run "emacs -batch -L %s -l %s" (file-name-directory (locate-library "test-simple.elc")) buffer-file-name)
+
 (require 'test-simple)
 (load-file "../realgud/common/loc.el")
 (load-file "../realgud/common/lochist.el")
@@ -12,6 +15,10 @@
 (declare-function realgud-loc-hist-position   'realgud-lochist)
 (declare-function realgud-loc-hist-index      'realgud-lochist)
 (declare-function realgud-loc-hist-newest     'realgud-lochist)
+(declare-function realgud:buffer-line-no-props 'realgud-buffer-helper)
+(declare-function make-realgud-loc-hist      'realgud-lochist)
+(declare-fucntion ring-length 'ring)
+
 (declare-function realgud-get-cmdbuf-from-srcbuf 'realgud-buffer-helper)
 
 (test-simple-start)

@@ -1,3 +1,6 @@
+;; Press C-x C-e at the end of the next line to run this file test non-interactively
+;; (test-simple-run "emacs -batch -L %s -l %s" (file-name-directory (locate-library "test-simple.elc")) buffer-file-name)
+
 (require 'test-simple)
 (require 'load-relative)
 (load-file "../realgud/common/buffer/command.el")
@@ -10,8 +13,8 @@
 
 (eval-when-compile
   (defvar dbg-name)   (defvar realgud-pat-hash)   (defvar realgud-bt-hash)
-  (defvar loc-pat)    (defvar prompt-pat)         (defvar s1)
-  (defvar file-group) (defvar line-group)         (defvar pos)
+  (defvar loc-pat)    (defvar prompt-pat)         (defvar test-s1)
+  (defvar file-group) (defvar line-group)         (defvar test-pos)
   (defvar test-dbgr)  (defvar test-text)
 )
 
@@ -43,7 +46,7 @@
 (note "debugger-backtrace")
 (setq realgud-bt-pat  (gethash "debugger-backtrace"
 			    realgud:gdb-pat-hash))
-(setq s1
+(setq test-s1
       "#0  main (argc=2, argv=0xbffff564, envp=0xbffff570) at main.c:935
 #1  0xb7e9f4a5 in *__GI___strdup (s=0xbffff760 \"/tmp/remake/remake\") at strdup.c:42
 #2  0x080593ac in main (argc=2, argv=0xbffff5a4, envp=0xbffff5b0)
@@ -54,49 +57,49 @@
 (setq realgud-bt-re (realgud-loc-pat-regexp realgud-bt-pat))
 (setq file-group (realgud-loc-pat-file-group realgud-bt-pat))
 (setq line-group (realgud-loc-pat-line-group realgud-bt-pat))
-(assert-equal 0 (string-match realgud-bt-re s1))
+(assert-equal 0 (string-match realgud-bt-re test-s1))
 (assert-equal "main.c"
-	      (substring s1
+	      (substring test-s1
 			 (match-beginning file-group)
 			 (match-end file-group)))
 (assert-equal "935"
-	      (substring s1
+	      (substring test-s1
 			 (match-beginning line-group)
 			 (match-end line-group)))
 
-(setq pos (match-end 0))
-(assert-equal 65 pos)
-(assert-equal 65 (string-match realgud-bt-re s1 pos))
+(setq test-pos (match-end 0))
+(assert-equal 65 test-pos)
+(assert-equal 65 (string-match realgud-bt-re test-s1 test-pos))
 (assert-equal "strdup.c"
-	      (substring s1
+	      (substring test-s1
 			 (match-beginning file-group)
 			 (match-end file-group)))
 (assert-equal "42"
-	      (substring s1
+	      (substring test-s1
 			 (match-beginning line-group)
 			 (match-end line-group)))
 
-(setq pos (match-end 0))
-(assert-equal 149 pos)
-(assert-equal 149 (string-match realgud-bt-re s1 pos))
+(setq test-pos (match-end 0))
+(assert-equal 149 test-pos)
+(assert-equal 149 (string-match realgud-bt-re test-s1 test-pos))
 (assert-equal "main.c"
-	      (substring s1
+	      (substring test-s1
 			 (match-beginning file-group)
 			 (match-end file-group)))
 (assert-equal "952"
-	      (substring s1
+	      (substring test-s1
 			 (match-beginning line-group)
 			 (match-end line-group)))
 
-(setq pos (match-end 0))
-(assert-equal 233 pos)
-(assert-equal 233 (string-match realgud-bt-re s1 pos))
+(setq test-pos (match-end 0))
+(assert-equal 233 test-pos)
+(assert-equal 233 (string-match realgud-bt-re test-s1 test-pos))
 (assert-equal "vm_insnhelper.c"
-	      (substring s1
+	      (substring test-s1
 			 (match-beginning file-group)
 			 (match-end file-group)))
 (assert-equal "410"
-	      (substring s1
+	      (substring test-s1
 			 (match-beginning line-group)
 			 (match-end line-group)))
 

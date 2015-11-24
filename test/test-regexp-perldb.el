@@ -1,3 +1,9 @@
+;; Press C-x C-e at the end of the next line to run this file test non-interactively
+;; (test-simple-run "emacs -batch -L %s -l %s" (file-name-directory (locate-library "test-simple.elc")) buffer-file-name)
+
+;; Press C-x C-e at the end of the next line to run this file test non-interactively
+;; (test-simple-run "emacs -batch -L %s -l %s" (file-name-directory (locate-library "test-simple.elc")) buffer-file-name)
+
 (require 'test-simple)
 (load-file "../realgud/common/buffer/command.el")
 (load-file "../realgud/lang/perl.el")
@@ -86,11 +92,14 @@
 (setq test-text "main::((eval 6)[eval.pl:5]:2):	$x = 2;")
 
 (assert-t (numberp (cmdbuf-loc-match test-text test-dbgr)) "eval location")
+
+;; FIXME: we should pick out eval.pl
 (assert-equal "(eval 6)[eval.pl:5]"
 	      (match-string (realgud-cmdbuf-info-file-group test-dbgr)
 			    test-text)
 	      "extract file name")
 
+;; FIXME: we should pick out 5, the number in the eval
 (assert-equal "2"
 	      (match-string (realgud-cmdbuf-info-line-group test-dbgr)
 			    test-text) "extract line number")

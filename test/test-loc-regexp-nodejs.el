@@ -1,3 +1,6 @@
+;; Press C-x C-e at the end of the next line to run this file test non-interactively
+;; (test-simple-run "emacs -batch -L %s -l %s" (file-name-directory (locate-library "test-simple.elc")) buffer-file-name)
+
 (load-file "./regexp-helper.el")
 (load-file "../realgud/common/regexp.el")
 (load-file "../realgud/debugger/nodejs/init.el")
@@ -17,6 +20,7 @@
 (declare-function assert-equal 'test-simple)
 (declare-function note 'test-simple)
 (declare-function end-tests 'test-simple)
+(declare-function realgud-loc-pat-char-offset-group  'realgud:nodejs-init)
 
 (test-simple-start)
 
@@ -25,7 +29,9 @@
   (defvar frame-re)
   (defvar line-group)
   (defvar num-group)
+  (defvar col-group)
   (defvar test-pos)
+  (defvar bt-re)
   (defvar dbg-name)
   (defvar realgud-pat-hash)
   (defvar loc-pat)

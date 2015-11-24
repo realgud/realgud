@@ -17,20 +17,26 @@ realgud-loc-pat struct")
 
 (declare-function make-realgud-loc "realgud-loc" (a b c d e f))
 
+;; Program-location lines look like this:
+;;   File::Basename::dirname(/usr/share/perl/5.16.0/File/Basename.pm:284):
+;;   main::(/usr/bin/latex2html:102):
+;;   main::CODE(0x9407ac8)(l2hconf.pm:6):;;
+;;   main::((eval 8)[/tmp/eval.pl:2]:1):
+;; FIXME:
+;;   the capture for the filename is wrong in eval. I can't figure out
+;;   how to come up with a re that *preserves* file/line groups in the
+;;   capture.
+;;   And what are complications MS Windows adds?
+(defconst realgud:perldb-loc-regexp
+  (format "\\(?:CODE(0x[0-9a-h]+)\\)?(\\(.+\\):%s):\\(?:\n[0-9]+:\t\\(.*?\\)\n\\)?"
+	  realgud:regexp-captured-num))
+
 ;; Regular expression that describes a perldb location generally shown
 ;; before a command prompt. We include matching the source text so we
 ;; can save that.
-;;
-;; Program-location lines look like this:
-;;  File::Basename::dirname(/usr/share/perl/5.16.0/File/Basename.pm:284):
-;;  284:	    my $path = shift;
-;;
-;;   main::(/usr/bin/latex2html:102):
-;; or MS Windows:
-;;   ???
 (setf (gethash "loc" realgud:perldb-pat-hash)
       (make-realgud-loc-pat
-       :regexp "\\(?:CODE(0x[0-9a-h]+)\\)?(\\(.+\\):\\(\[0-9]+\\)):\\(?:\n[0-9]+:\t\\(.*?\\)\n\\)?"
+       :regexp realgud:perldb-loc-regexp
        :file-group 1
        :line-group 2
        :text-group 3))
