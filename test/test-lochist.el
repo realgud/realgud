@@ -17,7 +17,7 @@
 (declare-function realgud-loc-hist-newest     'realgud-lochist)
 (declare-function realgud:buffer-line-no-props 'realgud-buffer-helper)
 (declare-function make-realgud-loc-hist      'realgud-lochist)
-(declare-fucntion ring-length 'ring)
+(declare-function ring-length 'ring)
 
 (declare-function realgud-get-cmdbuf-from-srcbuf 'realgud-buffer-helper)
 
