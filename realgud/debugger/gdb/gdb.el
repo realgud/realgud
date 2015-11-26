@@ -21,7 +21,16 @@
 (require 'load-relative)
 (require-relative-list '("../../common/helper" "../../common/utils")
 		       "realgud-")
+
+(require-relative-list '("../../common/buffer/command"
+			 "../../common/buffer/source")
+		       "realgud-buffer-")
+
 (require-relative-list '("core" "track-mode") "realgud:gdb-")
+
+(declare-function realgud-cmdbuf? 'realgud-buffer-command)
+(declare-function realgud:cmdbuf-associate 'realgud-buffer-source)
+(declare-function realgud-parse-command-arg 'realgud-core)
 
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 24.
@@ -52,6 +61,42 @@ This should be an executable on your path, or an absolute file name."
 ;; -------------------------------------------------------------------
 ;; The end.
 ;;
+
+(defun realgud:gdb-pid-command-buffer (pid)
+  "Return the command buffer used when gdb -p PID is invoked"
+  (format "*gdb %d shell*" pid)
+  )
+
+(defun realgud:gdb-find-command-buffer (pid)
+  "Find the among current buffers a buffer that is a realgud command buffer
+running gdb on process number PID"
+  (let ((find-cmd-buf (realgud:gdb-pid-command-buffer pid)))
+    (dolist (buf (buffer-list))
+      (if (and (equal find-cmd-buf (buffer-name buf))
+		(realgud-cmdbuf? buf)
+		(get-buffer-process buf))
+	(return buf)))))
+
+(defun realgud:gdb-pid (pid)
+  "Start debugging gdb process with pid PID."
+  (interactive "nEnter the pid that gdb should attach to: ")
+  (realgud:gdb (format "%s -p %d" realgud:gdb-command-name pid))
+  ;; FIXME: should add code to test if attach worked.
+  )
+
+(defun realgud:gdb-pid-associate (pid)
+  "Start debugging gdb process with pid PID and associate the
+current buffer to that realgud command buffer."
+  (interactive "nEnter the pid that gdb should attach to and associate the current buffer to: ")
+  (let* ((command-buf)
+	 (source-buf (current-buffer))
+	 )
+    (realgud:gdb-pid pid)
+    (setq command-buf (realgud:gdb-find-command-buffer pid))
+    (if command-buf
+	(with-current-buffer source-buf
+	  (realgud:cmdbuf-associate (buffer-name command-buf)))
+      )))
 
 ;;;###autoload
 (defun realgud:gdb (&optional opt-cmd-line no-reset)

@@ -114,8 +114,8 @@ realgud-loc-pat struct")
   "Hash key is command name like 'continue' and the value is
   the gdb command to use, like 'continue'")
 
-(setf (gethash "break"    realgud:gdb-command-hash) "break %l")
-(setf (gethash "clear"    realgud:gdb-command-hash) "clear %l")
+(setf (gethash "break"    realgud:gdb-command-hash) "break %X:%l")
+(setf (gethash "clear"    realgud:gdb-command-hash) "clear %X:%l")
 (setf (gethash "continue" realgud:gdb-command-hash) "continue")
 (setf (gethash "eval"     realgud:gdb-command-hash) "print %s")
 (setf (gethash "quit"     realgud:gdb-command-hash) "quit")
