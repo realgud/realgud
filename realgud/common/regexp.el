@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010-2011, 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010-2011, 2014-2015 Rocky Bernstein <rocky@gnu.org>
 ;;; FIXME - think of a better name.
 ;;;
 ;;; Debugger regular expressions for many kinds of
@@ -19,11 +19,16 @@
 (defstruct realgud-loc-pat
   "Information to match and extract position and other related information typically
 output by a debugger inside a process shell"
-  (num)                ;; General number, could be for example breakpoint number,
-                       ;; a stack position, or thread number.
-  (regexp)
+  (num)                ;; General number, could be for example
+		       ;; breakpoint number,
+  (string)             ;; General number, could be for example a list of
+                       ;; breakpoint number. Or can be used if for example
+                       ;; if we need more than one in a complicated re
+                       ;; where we can't assign a single number to a
+                       ;; file position as in Perl locations.
+  (regexp)             ;; a stack position, or thread number.
   (file-group)         ;; Filename position in struct
-  (line-group)         ;; Line number poistion in struct
+  (line-group)         ;; Line number position in struct
   (char-offset-group)  ;; Character offset position in struct
   (instruction-address-group)
   (column-group)
