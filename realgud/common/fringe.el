@@ -16,26 +16,51 @@
 
 ;; FIXME: Figure out how to do this as a macro.
 
-(defface realgud-overlay-arrow1
-  '((t
-     :foreground "black"
-     :weight bold))
-  "Fringe face for current position."
-  :group 'realgud)
+(if (equal 'dark (frame-parameter nil 'background-mode))
+    (progn
+      (defface realgud-overlay-arrow1
+	'((t
+	   :foreground "green"
+	   :weight bold))
+	"Fringe face for current position."
+	:group 'realgud)
 
-(defface realgud-overlay-arrow2
-  '((t
-     :foreground "gray"
-     :weight bold))
-  "Fringe face for position one back in fringe."
-  :group 'realgud)
+      (defface realgud-overlay-arrow2
+	'((t
+	   :foreground "white"
+	   :weight bold))
+	"Fringe face for position one back in fringe."
+	:group 'realgud)
 
-(defface realgud-overlay-arrow3
-  '((t
-     :foreground "gainsboro"
-     :weight bold))
-  "Fringe face for position two back in fringe."
-  :group 'realgud)
+      (defface realgud-overlay-arrow3
+	'((t
+	   :foreground "gray"
+	   :weight bold))
+	"Fringe face for position two back in fringe."
+	:group 'realgud)
+      )
+  ;; else
+  (progn
+    (defface realgud-overlay-arrow1
+      '((t
+	 :foreground "black"
+	 :weight bold))
+      "Fringe face for current position."
+      :group 'realgud)
+
+    (defface realgud-overlay-arrow2
+      '((t
+	 :foreground "gray"
+	 :weight bold))
+      "Fringe face for position one back in fringe."
+      :group 'realgud)
+
+    (defface realgud-overlay-arrow3
+      '((t
+	 :foreground "gainsboro"
+	 :weight bold))
+      "Fringe face for position two back in fringe."
+      :group 'realgud)))
 
 
 (defvar realgud-overlay-arrow1 nil

@@ -23,7 +23,7 @@
 (require 'load-relative)
 (eval-when-compile (require 'cl-lib))
 (require-relative-list
- '("../key" "helper" "follow" "loc") "realgud-")
+ '("../key" "helper" "../follow" "../loc") "realgud-")
 
 (require-relative-list
  '("command") "realgud-buffer-")
