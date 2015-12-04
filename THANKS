@@ -5,3 +5,5 @@ Anders Lindgren - The inspiration behind in an earlier incarnation of this code,
 Nick Roberts - We used some of the code for the fringe icons from gdb-mi.
 
 NYC Emacs Meetup and Nicolas Dudebout - straightening me out on set-keymap-parent
+
+Kilian Kilger - gdb fixes
