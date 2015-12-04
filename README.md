@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/rocky/emacs-dbgr.png)](https://travis-ci.org/rocky/emacs-dbgr) [![MELPA Stable](http://stable.melpa.org/packages/realgud-badge.svg)](http://stable.melpa.org/#/realgud) [![Melpa Status](https://melpa.org/packages/realgud-badge.svg)](https://melpa.org/#/realgud)
+[![Build Status][travis-image]][travis-url]
+[![MELPA Stable][melpa-image]][melpa-stable]
 
 A modular GNU Emacs front-end for interacting with external debuggers.
 
@@ -15,3 +16,8 @@ To get started using, see the
 [notes on using realgud](http://wiki.github.com/rocky/emacs-dbgr/how-to-use).
 
 *Author:*  Rocky Bernstein <rocky@gnu.org>
+
+[travis-image]: https://img.shields.io/travis/rocky/emacs-dbgr.svg?style=flat-square
+[travis-url]: https://travis-ci.org/rocky/emacs-dbgr
+[melpa-image]: http://stable.melpa.org/packages/realgud-badge.svg
+[melpa-stable]: http://stable.melpa.org/#/realgud
