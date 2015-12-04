@@ -119,9 +119,9 @@ fringe and marginal icons.
 	 (cmd-args (split-string-and-unquote cmd-str))
 	 (parsed-args (realgud:gdb-parse-cmd-args cmd-args))
 	 (script-args (caddr parsed-args))
-	 (script-name (car script-args))
+	 (script-name (or (car script-args) ""))
 	 (parsed-cmd-args
-	  (cl-remove-if 'nil (realgud:flatten parsed-args)))
+           (cl-remove-if-not 'stringp (realgud:flatten parsed-args)))
 	 (cmd-buf (realgud:run-process realgud:gdb-command-name
 				       script-name parsed-cmd-args
 				       'realgud:gdb-minibuffer-history

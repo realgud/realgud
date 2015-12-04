@@ -186,7 +186,7 @@ the buffer and data associated with it are already gone."
   (message "That's all folks.... %s" string))
 
 (defun realgud:binary (file-name)
-"Return a priority for wehther file-name is likely we can run gdb on"
+"Return a priority for whether file-name is likely we can run gdb on"
   (let ((output (shell-command-to-string (format "file %s" file-name))))
     (cond
      ((string-match "ELF" output) t)
@@ -214,9 +214,10 @@ marginal icons is reset."
 	  (or (file-name-directory script-filename)
 	      default-directory "./"))
 	 (cmdproc-buffer-name
-	  (format "*%s %s shell*"
-		  (file-name-nondirectory debugger-name)
-		  (file-name-nondirectory script-filename)))
+       (replace-regexp-in-string "\s+" "\s"
+	         (format "*%s %s shell*"
+		           (file-name-nondirectory debugger-name)
+		           (file-name-nondirectory script-filename))))
 	 (cmdproc-buffer (get-buffer-create cmdproc-buffer-name))
 	 (realgud-buf (current-buffer))
 	 (cmd-args (cons program args))
@@ -240,7 +241,8 @@ marginal icons is reset."
 	(setq process nil)
 	))
 
-    (unless (and process (eq 'run (process-status process)))
+    (if (and process (eq 'run (process-status process)))
+        cmdproc-buffer
       (with-current-buffer cmdproc-buffer
 	(and (realgud-cmdbuf?) (not no-reset) (realgud:reset))
 	(setq default-directory default-directory)
