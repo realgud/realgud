@@ -59,6 +59,10 @@ realgud-loc-pat struct")
 (setf (gethash "brkpt-del" realgud:trepan3k-pat-hash)
       realgud:python-trepan-brkpt-del-pat)
 
+;; If your version of trepan3k doesn't support "quit!",
+;; get a more recent version of trepan2
+(setf (gethash "quit" realgud:trepan3k-pat-hash) "quit!")
+
 ;; Regular expression for a termination message.
 (setf (gethash "termination" realgud:trepan3k-pat-hash)
        "^trepan3k: That's all, folks...\n")
