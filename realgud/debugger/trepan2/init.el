@@ -61,15 +61,9 @@ realgud-loc-pat struct")
 (setf (gethash "brkpt-del" realgud:trepan2-pat-hash)
       realgud:python-trepan-brkpt-del-pat)
 
-;; If your version of trepan2 doesn't support "quit!",
-;; get a more recent version of trepan2
-(setf (gethash "quit" realgud:trepan2-pat-hash) "quit!")
-
 ;; Regular expression for a termination message.
 (setf (gethash "termination" realgud:trepan2-pat-hash)
       "^trepan2: That's all, folks...\n")
-
-
 
 (setf (gethash "font-lock-keywords" realgud:trepan2-pat-hash)
       realgud:python-debugger-font-lock-keywords)
@@ -82,6 +76,11 @@ realgud-loc-pat struct")
 
 (setf (gethash "shell" realgud:trepan2-command-hash) "python")
 (setf (gethash "until" realgud:trepan2-command-hash) "continue %l")
+
+;; If your version of trepan2 doesn't support "quit!",
+;; get a more recent version of trepan2
+(setf (gethash "quit" realgud:trepan2-command-hash) "quit!")
+
 (setf (gethash "trepan2" realgud-command-hash) realgud:trepan2-command-hash)
 
 (provide-me "realgud:trepan2-")
