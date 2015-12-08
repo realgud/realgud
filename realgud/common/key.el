@@ -25,11 +25,10 @@
 (require 'load-relative)
 (require-relative "custom" nil "realgud-")
 
-(defcustom realgud-populate-common-fn-keys-function
-  'realgud-populate-common-fn-keys-standard
+(defcustom realgud-populate-common-fn-keys-function 'nil
   "The function to call to populate key bindings common to all dbgr windows.
 This includes the secondary windows, the debugger shell, and all
-Ruby source buffers when the debugger is active.
+source buffers when the debugger is active.
 
 This variable can be bound to the following:
 
@@ -39,14 +38,6 @@ This variable can be bound to the following:
   keys according to a widely used debugger convention:
 
 \\{realgud-example-map-standard}
-
-* `realgud-populate-common-fn-keys-eclipse' -- Bind according to Eclipse.
-
-\\{realgud-example-map-eclipse}
-
-* `realgud-populate-common-fn-keys-netbeans' -- Bind according to NetBeans.
-
-\\{realgud-example-map-netbeans}
 
 * Any other value is expected to be a callable function that takes one
   argument, the keymap, and populates it with suitable keys."
@@ -90,10 +81,8 @@ This variable can be bound to the following:
 source-code buffers
 
 The variable `realgud-populate-common-fn-keys-function' controls the layout."
-  (define-key map "\C-x\C-a\C-q" 'realgud-short-key-mode)
   (if realgud-populate-common-fn-keys-function
       (funcall realgud-populate-common-fn-keys-function map))
-  (realgud-populate-common-fn-keys-standard map)
 )
 
 (defun realgud-populate-src-buffer-map-plain (map)
