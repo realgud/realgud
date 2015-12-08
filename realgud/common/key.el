@@ -93,7 +93,6 @@ The variable `realgud-populate-common-fn-keys-function' controls the layout."
   (define-key map "\C-x\C-a\C-q" 'realgud-short-key-mode)
   (if realgud-populate-common-fn-keys-function
       (funcall realgud-populate-common-fn-keys-function map))
-  (realgud-populate-common-fn-keys-standard map)
 )
 
 (defun realgud-populate-src-buffer-map-plain (map)
