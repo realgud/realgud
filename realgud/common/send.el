@@ -22,6 +22,7 @@
 (require-relative-list '("buffer/helper") "realgud-buffer-")
 
 (declare-function realgud-get-cmdbuf        'realgud-buffer-helper)
+(declare-function realgud-window-cmd-undisturb-src 'realgud-window)
 (declare-function comint-goto-process-mark  'comint)
 (declare-function comint-send-input         'comint)
 (declare-function realgud:canonic-major-mode 'realgud-utils)

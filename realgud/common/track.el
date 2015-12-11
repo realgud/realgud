@@ -366,9 +366,11 @@ Otherwise return nil."
 
   ;; NOTE: realgud-cmdbuf-info is a buffer variable local to the process running
   ;; the debugger. It contains a realgud-cmdbuf-info "struct". In that struct are
-  ;; the fields loc-regexp, file-group, and line-group. By setting the
-  ;; the fields of realgud-cmdbuf-info appropriately we can accomodate a family
-  ;; of debuggers -- one at a time -- for the buffer process.
+  ;; the fields loc-regexp, file-group, line-group, alt-file-group, and alt-line-group.
+  ;;
+  ;; By setting the the fields of realgud-cmdbuf-info appropriately, we
+  ;; can accomodate a family of debuggers -- one at a time -- for the
+  ;; buffer process.
 
   (if (realgud-cmdbuf?)
       (let
@@ -378,6 +380,8 @@ Otherwise return nil."
 			   (realgud-sget 'cmdbuf-info 'file-group)))
 	   (line-group (or opt-line-group
 			   (realgud-sget 'cmdbuf-info 'line-group)))
+	   (alt-file-group (realgud-sget 'cmdbuf-info 'alt-file-group))
+	   (alt-line-group (realgud-sget 'cmdbuf-info 'alt-line-group))
 	   (text-group (realgud-sget 'cmdbuf-info 'text-group))
 	   (ignore-file-re (or opt-ignore-file-re
 			       (realgud-sget 'cmdbuf-info 'ignore-file-re)))
@@ -385,8 +389,10 @@ Otherwise return nil."
 	   )
 	(if loc-regexp
 	    (if (string-match loc-regexp text)
-		(let* ((filename (match-string file-group text))
-		       (line-str (match-string line-group text))
+		(let* ((filename (or (match-string file-group text)
+				     (match-string alt-file-group text)))
+		       (line-str (or (match-string line-group text)
+				     (match-string alt-line-group text)))
 		       (source-str (and text-group
 					(match-string text-group text)))
 		       (lineno (string-to-number (or line-str "1"))))

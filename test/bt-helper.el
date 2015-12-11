@@ -37,7 +37,7 @@ for DEBUGGER-NAME and initializes it to STRING"
     (goto-char (point-min))
     (setq buffer-read-only nil)
     (insert string)
-    (font-lock-fontify-buffer)
+    (font-lock-ensure)
     (goto-char (point-min))
     )
   temp-bt

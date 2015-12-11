@@ -2,13 +2,14 @@
 (load-file "../realgud/common/helper.el")
 
 (declare-function realgud-struct-field-setter 'realgud-helper)
+(declare-function realgud:debugger-name-transform 'realgud-helper)
 (declare-function __FILE__                    'load-relative)
+
 
 (test-simple-start)
 
 (eval-when-compile
   (defvar realgud-test-info)
-  (defvar realgud:debugger-name-transform)
 )
 
 (defstruct realgud-test-info name)

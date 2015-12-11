@@ -1,9 +1,6 @@
 ;; Press C-x C-e at the end of the next line to run this file test non-interactively
 ;; (test-simple-run "emacs -batch -L %s -l %s" (file-name-directory (locate-library "test-simple.elc")) buffer-file-name)
 
-;; Press C-x C-e at the end of the next line to run this file test non-interactively
-;; (test-simple-run "emacs -batch -L %s -l %s" (file-name-directory (locate-library "test-simple.elc")) buffer-file-name)
-
 (require 'test-simple)
 (load-file "../realgud/common/buffer/command.el")
 (load-file "../realgud/lang/perl.el")
@@ -50,6 +47,8 @@
 		 :debugger-name dbg-name
 		 :loc-regexp (realgud-loc-pat-regexp loc-pat)
 		 :file-group (realgud-loc-pat-file-group loc-pat)
+		 :alt-line-group (realgud-loc-pat-alt-line-group loc-pat)
+		 :alt-file-group (realgud-loc-pat-alt-file-group loc-pat)
 		 :line-group (realgud-loc-pat-line-group loc-pat)
 		 :text-group (realgud-loc-pat-text-group loc-pat)
 		 ))
@@ -58,11 +57,25 @@
 (prompt-match "  DB<2> "  "2")
 (prompt-match "[pid=6489->6502]  DB<1> " "1")
 
+(setq test-text "((eval 1006)[../example/eval.pl:5])")
+(assert-equal 1 (string-match realgud:perldb-loc-eval-regexp
+			      test-text)
+	      "perldb eval loc matching")
+
+(assert-equal "../example/eval.pl"
+	      (match-string (realgud-cmdbuf-info-alt-file-group test-dbgr)
+			    test-text)
+	      "extract file name when we have source text")
+
+(assert-equal "5"
+	      (match-string (realgud-cmdbuf-info-alt-line-group test-dbgr)
+			    test-text))
+
 (assert-equal 0 (string-match realgud-perl-ignore-file-re
 			      "(eval 1006)[../example/eval.pl:5]")
 	      "perldb file ignore matching")
 
-(setq test-text "main::(/usr/bin/latex2html:102):")
+(setq test-text "main::(/usr/bin/latex2html:102):\n")
 
 (assert-t (numberp (cmdbuf-loc-match test-text test-dbgr)) "basic location")
 (assert-equal "/usr/bin/latex2html"
@@ -70,8 +83,7 @@
 			    test-text)
 	      "extract file name")
 
-(setq test-text "File::Basename::dirname(/usr/share/perl/5.16.0/File/Basename.pm:284):
-284:	    my $path = shift;
+(setq test-text "File::Basename::dirname(/usr/share/perl/5.16.0/File/Basename.pm:284):	my $path = shift;
 ")
 
 (assert-t (numberp (cmdbuf-loc-match test-text test-dbgr))
@@ -84,7 +96,7 @@
 	      (match-string (realgud-cmdbuf-info-line-group test-dbgr)
 			    test-text)
 	      "extract line number when we have source text")
-(assert-equal "    my $path = shift;"
+(assert-equal "my $path = shift;"
 	      (match-string (realgud-cmdbuf-info-text-group test-dbgr)
 			    test-text)
 	      "extract source text")
@@ -93,19 +105,17 @@
 
 (assert-t (numberp (cmdbuf-loc-match test-text test-dbgr)) "eval location")
 
-;; FIXME: we should pick out eval.pl
-(assert-equal "(eval 6)[eval.pl:5]"
-	      (match-string (realgud-cmdbuf-info-file-group test-dbgr)
+(assert-equal "eval.pl"
+	      (match-string (realgud-cmdbuf-info-alt-file-group test-dbgr)
 			    test-text)
-	      "extract file name")
+	      "extract eval file name")
 
-;; FIXME: we should pick out 5, the number in the eval
-(assert-equal "2"
-	      (match-string (realgud-cmdbuf-info-line-group test-dbgr)
+(assert-equal "5"
+	      (match-string (realgud-cmdbuf-info-alt-line-group test-dbgr)
 			    test-text) "extract line number")
 
 (note "location for with CODE in it")
-(setq test-text "main::CODE(0x9407ac8)(l2hconf.pm:6):")
+(setq test-text "main::CODE(0x9407ac8)(l2hconf.pm:6):\n")
 (assert-t (numberp (cmdbuf-loc-match test-text test-dbgr)))
 (assert-equal "l2hconf.pm"
 	      (match-string (realgud-cmdbuf-info-file-group test-dbgr)

@@ -17,19 +17,37 @@ realgud-loc-pat struct")
 
 (declare-function make-realgud-loc "realgud-loc" (a b c d e f))
 
-;; Program-location lines look like this:
+;; Program-location lines look like these:
 ;;   File::Basename::dirname(/usr/share/perl/5.16.0/File/Basename.pm:284):
+;;   File::Basename::dirname(/usr/share/perl/5.16.0/File/Basename.pm:284):	my $path;
 ;;   main::(/usr/bin/latex2html:102):
+;;   main::(/usr/bin/latex2html:102):	@ARGV=2;
 ;;   main::CODE(0x9407ac8)(l2hconf.pm:6):;;
 ;;   main::((eval 8)[/tmp/eval.pl:2]:1):
-;; FIXME:
-;;   the capture for the filename is wrong in eval. I can't figure out
-;;   how to come up with a re that *preserves* file/line groups in the
-;;   capture.
+;;
 ;;   And what are complications MS Windows adds?
-(defconst realgud:perldb-loc-regexp
-  (format "\\(?:CODE(0x[0-9a-h]+)\\)?(\\(.+\\):%s):\\(?:\n[0-9]+:\t\\(.*?\\)\n\\)?"
+
+;; Hnadle eval form first, e.g.:
+;;    main::((eval 8)[/tmp/eval.pl:2]:1):
+
+(defconst realgud:perldb-loc-eval-regexp
+  (format "(eval [0-9]+)\\[\\(.+\\):%s\\]"
 	  realgud:regexp-captured-num))
+
+;; Hnadle non eval form
+;;    main::CODE(0x9407ac8)(l2hconf.pm:6):;;
+
+(defconst realgud:perldb-loc-noeval-regexp
+  (format "\\(?:CODE(0x[0-9a-h]+)\\)?(\\(.+\\):%s):\\(?:\t\\(.*\\)\\)?\n"
+	  realgud:regexp-captured-num))
+
+;; Note that eval form has to come before non-eval form as the non-eval
+;; form encompases the eval form. The two clauses makes it hard
+;; to match file and line positions, so we ned to result to the
+;; "alt" forms of file and lines as well as the non-alt formes
+(defconst realgud:perldb-loc-regexp
+  (format "\\(?:%s\\)\\|\\(?:%s\\)"
+	  realgud:perldb-loc-eval-regexp realgud:perldb-loc-noeval-regexp))
 
 ;; Regular expression that describes a perldb location generally shown
 ;; before a command prompt. We include matching the source text so we
@@ -37,9 +55,11 @@ realgud-loc-pat struct")
 (setf (gethash "loc" realgud:perldb-pat-hash)
       (make-realgud-loc-pat
        :regexp realgud:perldb-loc-regexp
-       :file-group 1
-       :line-group 2
-       :text-group 3))
+       :alt-file-group 1
+       :alt-line-group 2
+       :file-group 3
+       :line-group 4
+       :text-group 5))
 
 ;; perldb debugger prompt.
 ;; Examples:

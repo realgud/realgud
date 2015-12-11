@@ -19,9 +19,9 @@
 (defstruct realgud-loc-pat
   "Information to match and extract position and other related information typically
 output by a debugger inside a process shell"
-  (num)                ;; General number, could be for example
+  (num)                ;; General number. Could be for example
 		       ;; breakpoint number,
-  (string)             ;; General number, could be for example a list of
+  (string)             ;; General string, Could be for example a list of
                        ;; breakpoint number. Or can be used if for example
                        ;; if we need more than one in a complicated re
                        ;; where we can't assign a single number to a
@@ -29,6 +29,9 @@ output by a debugger inside a process shell"
   (regexp)             ;; a stack position, or thread number.
   (file-group)         ;; Filename position in struct
   (line-group)         ;; Line number position in struct
+  (alt-file-group)     ;; Used when regexp is too complicated and use \|
+                       ;; e.g. perldb file loc regexps
+  (alt-line-group)     ;; ditto
   (char-offset-group)  ;; Character offset position in struct
   (instruction-address-group)
   (column-group)

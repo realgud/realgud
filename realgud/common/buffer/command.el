@@ -92,6 +92,8 @@
   loc-regexp   ;; Location regular expression string
   file-group
   line-group
+  alt-file-group
+  alt-line-group
   text-group
   ignore-file-re
 
@@ -296,6 +298,8 @@ values set in the debugger's init.el."
 	     :loc-regexp (realgud-sget 'loc-pat 'regexp)
 	     :file-group (realgud-sget 'loc-pat 'file-group)
 	     :line-group (realgud-sget 'loc-pat 'line-group)
+	     :alt-file-group (realgud-sget 'loc-pat 'alt-file-group)
+	     :alt-line-group (realgud-sget 'loc-pat 'alt-line-group)
 	     :text-group (realgud-sget 'loc-pat 'text-group)
 	     :ignore-file-re (realgud-sget 'loc-pat 'ignore-file-re)
 	     :loc-hist (make-realgud-loc-hist)

@@ -4,10 +4,12 @@
 (require 'test-simple)
 (load-file "../realgud/debugger/gdb/core.el")
 
+(declare-function realgud:gdb-parse-cmd-args 'realgud-gdb-core)
+
 (test-simple-start)
 
 (note "invoke gdb without command line arguments")
-(assert-equal '(("gdb") nil nil nil) 
+(assert-equal '(("gdb") nil nil nil)
 	      (realgud:gdb-parse-cmd-args
 	       '("gdb")))
 
@@ -27,7 +29,7 @@
 	       '("gdb" "--annotate" "1" "-p" "4812")))
 
 (note "invoke gdb with pid")
-(assert-equal '(("gdb" "-p") nil ("4511") nil) 
+(assert-equal '(("gdb" "-p") nil ("4511") nil)
 	      (realgud:gdb-parse-cmd-args
 	       '("gdb" "-p" "4511")))
 

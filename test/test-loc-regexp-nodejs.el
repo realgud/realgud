@@ -38,7 +38,7 @@
   (defvar test-dbgr)
   (defvar test-s1)
   (defvar realgud-pat-bt)
-  (defvar realgud:trepanpl-pat-hash)
+  (defvar realgud:nodejs-pat-hash)
 )
 
 ; Some setup usually done in setting up the buffer.
