@@ -51,6 +51,7 @@
     (define-key map [M-S-down]	'realgud-track-hist-newest)
     (define-key map [M-S-up]	'realgud-track-hist-oldest)
     (define-key map "\C-cS" 'realgud-window-src-undisturb-cmd)
+    (define-key map (kbd "C-c !d") 'realgud:goto-debugger-loc-line)
     map)
   "Keymap used in `realgud-track-minor-mode'.
 

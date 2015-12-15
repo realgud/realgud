@@ -677,13 +677,18 @@ debugger with that information"
 
 ;; FIXME: need better name for this and next fn.
 (defun realgud-goto-line-for-pt-and-type (pt type pat-hash)
-  "Display the location mentioned for PT given type PAT-HASH indexed TYPE."
+  "Position the source code at the location that is matched by
+PAT-HASH with key TYPE. The line at PT is used as the string
+to match against and has location info embedded in it"
   (realgud-goto-line-for-loc-pat pt (gethash type pat-hash)))
 
 
 (defun realgud-goto-line-for-pt (pt pattern-key)
-  "Display the location mentioned by a backtrace line (e.g. Ruby $!)
-described by PT."
+  "Position the source code at the location indicated by a
+pattern found in the command buffer with pattern-key
+PATTERN-KEY. (PATTERN-KEY is something like 'debugger-backtrace'
+or 'loc'.) The line at PT is used as the string to match against
+and has location info embedded in it"
   (interactive "d")
   (unless (realgud-cmdbuf?)
     (error "You need to be in a debugger command buffer to run this"))
@@ -694,19 +699,27 @@ described by PT."
   )
 
 (defun realgud:goto-debugger-backtrace-line (pt)
-  "Display the location mentioned by the debugger backtrace line
-described by PT."
+  "Position the source code at the location indicated by matching a
+command buffer's debugger backtrace pattern against the line at PT."
   (interactive "d")
   (unless (realgud-goto-line-for-pt pt "debugger-backtrace")
-    (message "Didn't match a debugger backtrace location.")
+    (message "Line didn't match a debugger backtrace location.")
     ))
 
 (defun realgud:goto-lang-backtrace-line (pt)
-  "Display the location mentioned by the programming-language backtrace line
-described by PT."
+  "Position the source code at the location indicated by matching a
+command buffer's programming-language backtrace pattern against the line at PT."
   (interactive "d")
   (unless (realgud-goto-line-for-pt pt "lang-backtrace")
-    (message "Didn't match a programming-language backtrace location.")
+    (message "Line didn't match a programming-language backtrace location.")
+    ))
+
+(defun realgud:goto-debugger-loc-line (pt)
+  "Position the source-code at the location indicated by matching a
+command buffer's debugger location pattern against the line at PT."
+  (interactive "d")
+  (unless (realgud-goto-line-for-pt pt "loc")
+    (message "Line didn't match a debugger location indicator line.")
     ))
 
 (provide-me "realgud-")
