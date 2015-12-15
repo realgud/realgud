@@ -6,6 +6,8 @@
 (require-relative-list '("../common/regexp" "../common/loc" "../common/track")
 		       "realgud-")
 
+(declare-function realgud-goto-line-for-pt 'realgud-track)
+
 (defconst realgud-python-backtrace-loc-pat
   (make-realgud-loc-pat
    :regexp "^[ \t]+File \"\\(.+\\)\", line \\([0-9]+\\)"
@@ -25,6 +27,7 @@ traceback) line."  )
 \\{realgud-example-map-standard}"
   (define-key map (kbd "C-c !b") 'realgud:goto-debugger-backtrace-line)
   (define-key map (kbd "C-c !!") 'realgud:goto-lang-backtrace-line)
+  (define-key map (kbd "C-c !e") 'realgud:pytest-goto-errmsg-line)
   )
 
 
@@ -121,6 +124,21 @@ traceback) line."  )
     ;;  (0 trepan2-frames-current-frame-face append))
     ))
 
+(defconst realgud-pytest-error-loc-pat
+  (make-realgud-loc-pat
+   :regexp "^\\(.*\\):\\([0-9]+\\): in "
+   :file-group 1
+   :line-group 2)
+  "A realgud-loc-pat struct that describes a Pytest error line"
+  )
+
+
+;; FIXME: there is probably a less redundant way to do the following
+;; FNS.
+(defun realgud:pytest-goto-errmsg-line (pt)
+  "Display the location mentioned by the pytest error at PT."
+  (interactive "d")
+  (realgud-goto-line-for-pt pt "pytest-error"))
 
 
 (provide-me "realgud-lang-")

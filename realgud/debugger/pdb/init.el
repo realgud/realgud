@@ -57,6 +57,10 @@ realgud-loc-pat struct")
 (setf (gethash "lang-backtrace" realgud:pdb-pat-hash)
       realgud-python-backtrace-loc-pat)
 
+;;  Regular expression that describes location in a pytest error
+(setf (gethash "pytest-error" realgud:pdb-pat-hash)
+      realgud-pytest-error-loc-pat)
+
 ;;  Regular expression that describes a "breakpoint set" line. For example:
 ;;     Breakpoint 1 at /usr/bin/pdb:7
 (setf (gethash "brkpt-set" realgud:pdb-pat-hash)
