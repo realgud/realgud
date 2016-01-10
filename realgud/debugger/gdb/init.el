@@ -1,4 +1,4 @@
-;; Copyright (C) 2015 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -131,6 +131,11 @@ realgud-loc-pat struct")
 	))
 
 (setf (gethash "gdb" realgud-pat-hash) realgud:gdb-pat-hash)
+
+;;  Prefix used in variable names (e.g. short-key-mode-map) for
+;; this debugger
+
+(setf (gethash "gdb" realgud:variable-basename-hash) "realgud:gdb")
 
 (defvar realgud:gdb-command-hash (make-hash-table :test 'equal)
   "Hash key is command name like 'continue' and the value is

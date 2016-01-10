@@ -56,6 +56,9 @@
 (defstruct realgud-cmdbuf-info
   "The debugger object/structure specific to a process buffer."
   debugger-name        ;; Name of debugger
+  base-variable-name   ;; prefix used in variables pertinent to this
+                       ;; debugger sometimes it is the same as the debugger
+                       ;; and sometimes it is different
   cmd-args             ;; Command-line invocation arguments
   frame-switch?        ;; Should the selected window be the source buffer or
 		       ;; command buffer?
@@ -283,7 +286,7 @@ Information is put in an internal buffer called *Describe*."
 ;; removed.
 
 (defun realgud-cmdbuf-init
-  (cmd-buf debugger-name regexp-hash &optional cmd-hash)
+  (cmd-buf debugger-name regexp-hash &optional cmd-hash base-variable-name)
   "Initialize CMD-BUF for a working with a debugger.
 DEBUGGER-NAME is the name of the debugger; REGEXP-HASH are debugger-specific
 values set in the debugger's init.el."
@@ -295,6 +298,7 @@ values set in the debugger's init.el."
 	    (make-realgud-cmdbuf-info
 	     :in-srcbuf? nil
 	     :debugger-name debugger-name
+             :base-variable-name (or base-variable-name debugger-name)
 	     :loc-regexp (realgud-sget 'loc-pat 'regexp)
 	     :file-group (realgud-sget 'loc-pat 'file-group)
 	     :line-group (realgud-sget 'loc-pat 'line-group)

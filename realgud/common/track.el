@@ -642,6 +642,7 @@ find a location. non-nil if we can find a location.
       ))
     )
 
+;; FIXME: remove opt-base-variable-name
 (defun realgud:track-set-debugger (debugger-name &optional opt-base-variable-name)
   "Set debugger name and information associated with that
 debugger for the buffer process. This info is returned or nil if
@@ -657,9 +658,11 @@ debugger-name`.
   ;; FIXME: turn into fn which can be used by realgud-backtrack-set-debugger
   (interactive
    (list (completing-read "Debugger name: " realgud-pat-hash)))
-  (let* ((base-variable-name (or opt-base-variable-name debugger-name))
-         (regexp-hash (gethash base-variable-name realgud-pat-hash))
-         (command-hash (gethash base-variable-name realgud-command-hash))
+  (let* ((base-variable-name (or opt-base-variable-name
+                                 (gethash debugger-name realgud:variable-basename-hash)
+                                 debugger-name))
+         (regexp-hash (gethash debugger-name realgud-pat-hash))
+         (command-hash (gethash debugger-name realgud-command-hash))
 	)
     (unless regexp-hash
       ;; FIXME: phase out realgud:debugger-name-transform
@@ -668,12 +671,13 @@ debugger-name`.
       (setq command-hash (gethash base-variable-name realgud-command-hash))
       )
     (if regexp-hash
-	(let* ((prefix (realgud:debugger-name-transform debugger-name))
-	       (mode-name (concat " " (capitalize prefix) "-Track"))
-	       (specific-track-mode (intern (concat prefix "-track-mode")))
+	(let* (
+	       (mode-name (concat " " (capitalize base-variable-name) "-Track"))
+	       (specific-track-mode (intern (concat base-variable-name "-track-mode")))
 	       )
-	  (realgud-cmdbuf-init (current-buffer) base-variable-name regexp-hash
-                               command-hash)
+	  (realgud-cmdbuf-init (current-buffer)
+                               debugger-name regexp-hash
+                               command-hash base-variable-name)
 	  (if (and (not (eval specific-track-mode))
 		   (functionp specific-track-mode))
 	      (funcall specific-track-mode 't))

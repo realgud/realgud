@@ -50,9 +50,14 @@ output by a debugger inside a process shell"
   is a realgud-loc-pat struct")
 
 (defvar realgud-command-hash (make-hash-table :test 'equal)
-  "Hash key is the debugger name, a string. The values of a hash
+  "Hash key is the debugger name, a string. The value of a hash
   entry is a hash table mapping cannonic command name
   debugger-specific command name. For example, for trepanning:
   'quit' -> 'quit!'")
+
+(defvar realgud:variable-basename-hash (make-hash-table :test 'equal)
+  "Hash key is the debugger name, a string. The value of a hash
+  entry is the base name to use that variables of that debugger use.
+  For example, for 'gdb' it is 'realgud:gdb'.")
 
 (provide 'realgud-regexp)

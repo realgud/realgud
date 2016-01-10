@@ -192,6 +192,12 @@ backtrace listing.")
 (setf (gethash realgud:jdb-debugger-name
 	       realgud-command-hash) realgud:jdb-command-hash)
 
+;;  Prefix used in variable names (e.g. short-key-mode-map) for
+;; this debugger
+
+(setf (gethash "jdb" realgud:variable-basename-hash) "realgud:jdb")
+      
+
 (setf (gethash "backtrace"   realgud:jdb-command-hash) "where")
 
 ;; For these we need to deal with java classpaths.
