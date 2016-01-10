@@ -1,4 +1,4 @@
-;;; Copyright (C) 2015 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2015-2016 Rocky Bernstein <rocky@gnu.org>
 ;;; Java "jdb" Debugger tracking a comint or eshell buffer.
 
 (eval-when-compile (require 'cl))
@@ -69,7 +69,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   :global nil
   :group 'realgud:jdb
   :keymap realgud:jdb-track-mode-map
-  (realgud:track-set-debugger "jdb")
+  (realgud:track-set-debugger "jdb" "realgud:jdb")
   (if realgud:jdb-track-mode
       (progn
 	(realgud-track-mode-setup 't)

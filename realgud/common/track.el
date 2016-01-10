@@ -1,4 +1,4 @@
-;; Copyright (C) 2015 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -642,30 +642,38 @@ find a location. non-nil if we can find a location.
       ))
     )
 
-(defun realgud:track-set-debugger (debugger-name)
-  "Set debugger name and information associated with that debugger for
-the buffer process. This info is returned or nil if we can't find a
-debugger with that information"
-  ;; FIXME: turn in to fn which can be used by realgud-backtrack-set-debugger
+(defun realgud:track-set-debugger (debugger-name &optional opt-base-variable-name)
+  "Set debugger name and information associated with that
+debugger for the buffer process. This info is returned or nil if
+we can't find a debugger with that information. OPT-BASE-VARIABLE-NAME
+is the the base name in realgud where info about debuggers is stored. Sometimes it is
+the same thing as the debugger as it is for. 
+For example for
+'pry' it might be 'realgud-pry'. If OPT-BASE-VARIABLE-NAME is not
+supplied, we'll use the debugger name if that works and some
+built-in transforms from `realgud:debugger-name-transform
+debugger-name`.
+"
+  ;; FIXME: turn into fn which can be used by realgud-backtrack-set-debugger
   (interactive
    (list (completing-read "Debugger name: " realgud-pat-hash)))
-
-  (let ((regexp-hash (gethash debugger-name realgud-pat-hash))
-	(command-hash (gethash debugger-name realgud-command-hash))
-	(transform-name debugger-name)
+  (let* ((base-variable-name (or opt-base-variable-name debugger-name))
+         (regexp-hash (gethash base-variable-name realgud-pat-hash))
+         (command-hash (gethash base-variable-name realgud-command-hash))
 	)
     (unless regexp-hash
-      (setq transform-name (realgud:debugger-name-transform debugger-name))
-      (setq regexp-hash (gethash transform-name realgud-pat-hash))
-      (setq command-hash (gethash transform-name realgud-command-hash))
+      ;; FIXME: phase out realgud:debugger-name-transform
+      (setq base-variable-name (realgud:debugger-name-transform debugger-name))
+      (setq regexp-hash (gethash base-variable-name realgud-pat-hash))
+      (setq command-hash (gethash base-variable-name realgud-command-hash))
       )
     (if regexp-hash
 	(let* ((prefix (realgud:debugger-name-transform debugger-name))
 	       (mode-name (concat " " (capitalize prefix) "-Track"))
 	       (specific-track-mode (intern (concat prefix "-track-mode")))
 	       )
-	  (realgud-cmdbuf-init (current-buffer) transform-name regexp-hash
-			    command-hash)
+	  (realgud-cmdbuf-init (current-buffer) base-variable-name regexp-hash
+                               command-hash)
 	  (if (and (not (eval specific-track-mode))
 		   (functionp specific-track-mode))
 	      (funcall specific-track-mode 't))

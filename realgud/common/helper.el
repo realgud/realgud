@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2014 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2014, 2016 Rocky Bernstein <rocky@gnu.org>
 ;;; Miscellaneous utility functions
 (require 'load-relative)
 
@@ -27,8 +27,8 @@ function FN-SYM."
   (let ((debugger-name-short
 	 (file-name-sans-extension (file-name-nondirectory debugger-name))))
     (cond
-     ((equal debugger-name-short "gdb") "realgud:gdb")
-     ((equal debugger-name-short "jdb") "realgud:jdb")
+     ;; ((equal debugger-name-short "gdb") "realgud:gdb")
+     ;; ((equal debugger-name-short "jdb") "realgud:jdb")
      ((equal debugger-name-short "tortoise") "gub")
      ((or (equal debugger-name "trepan.pl")
 	  (equal debugger-name-short "trepanpl"))

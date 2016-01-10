@@ -1,6 +1,6 @@
 ;;; track-mode.el ---
 
-;; Copyright (C) 2015 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -63,7 +63,7 @@ Key bindings:
   :keymap realgud:gdb-track-mode-map
   (if realgud:gdb-track-mode
       (progn
-	(realgud:track-set-debugger "gdb")
+	(realgud:track-set-debugger "gdb" "realgud:gdb")
         (realgud:gdb-track-mode-hook)
         (realgud:track-mode-enable))
     (progn
