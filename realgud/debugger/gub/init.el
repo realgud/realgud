@@ -181,6 +181,11 @@ backtrace listing.")
 
 (setf (gethash "gub" realgud-pat-hash) realgud:gub-pat-hash)
 
+;;  Prefix used in variable names (e.g. short-key-mode-map) for
+;; this debugger
+
+(setf (gethash "tortoise" realgud:variable-basename-hash) "realgud:gub")
+
 (defvar realgud:gub-command-hash (make-hash-table :test 'equal)
   "Hash key is command name like 'quit' and the value is
   the gub command to use, like 'q'")

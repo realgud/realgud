@@ -69,7 +69,7 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   :global nil
   :group 'realgud:jdb
   :keymap realgud:jdb-track-mode-map
-  (realgud:track-set-debugger "jdb" "realgud:jdb")
+  (realgud:track-set-debugger "jdb")
   (if realgud:jdb-track-mode
       (progn
 	(realgud-track-mode-setup 't)

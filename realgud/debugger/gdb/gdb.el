@@ -14,7 +14,6 @@
 
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
-;;; Copyright (C) 2014-2015 Rocky Bernstein <rocky@gnu.org>
 
 ;;  `realgud:gdb' Main interface to gdb via Emacs
 (require 'cl)
@@ -37,7 +36,7 @@
 (defgroup realgud:gdb nil
   "The realgud interface to gdb"
   :group 'realgud
-  :version "24.1")
+  :version "24.3")
 
 ;; -------------------------------------------------------------------
 ;; User definable variables

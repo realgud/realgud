@@ -642,25 +642,17 @@ find a location. non-nil if we can find a location.
       ))
     )
 
-;; FIXME: remove opt-base-variable-name
-(defun realgud:track-set-debugger (debugger-name &optional opt-base-variable-name)
+(defun realgud:track-set-debugger (debugger-name)
   "Set debugger name and information associated with that
 debugger for the buffer process. This info is returned or nil if
-we can't find a debugger with that information. OPT-BASE-VARIABLE-NAME
-is the the base name in realgud where info about debuggers is stored. Sometimes it is
-the same thing as the debugger as it is for. 
-For example for
-'pry' it might be 'realgud-pry'. If OPT-BASE-VARIABLE-NAME is not
-supplied, we'll use the debugger name if that works and some
-built-in transforms from `realgud:debugger-name-transform
-debugger-name`.
+we can't find a debugger with that information.`.
 "
   ;; FIXME: turn into fn which can be used by realgud-backtrack-set-debugger
   (interactive
    (list (completing-read "Debugger name: " realgud-pat-hash)))
-  (let* ((base-variable-name (or opt-base-variable-name
-                                 (gethash debugger-name realgud:variable-basename-hash)
-                                 debugger-name))
+  (let* ((base-variable-name
+	  (or (gethash debugger-name realgud:variable-basename-hash)
+	      debugger-name))
          (regexp-hash (gethash debugger-name realgud-pat-hash))
          (command-hash (gethash debugger-name realgud-command-hash))
 	)

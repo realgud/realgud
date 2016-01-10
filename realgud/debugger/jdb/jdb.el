@@ -22,7 +22,7 @@
   "The realgud interface to the Java's jdb debugger"
   :group 'java
   :group 'realgud
-  :version "24.1")
+  :version "24.3")
 
 ;; -------------------------------------------------------------------
 ;; User-definable variables

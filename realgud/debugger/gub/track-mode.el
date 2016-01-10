@@ -1,4 +1,4 @@
-;;; Copyright (C) 2013-2015 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2013-2016 Rocky Bernstein <rocky@gnu.org>
 ;;; Golang SSA gub tracking a comint buffer.
 
 (eval-when-compile (require 'cl))

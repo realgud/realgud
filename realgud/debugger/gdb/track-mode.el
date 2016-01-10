@@ -63,7 +63,7 @@ Key bindings:
   :keymap realgud:gdb-track-mode-map
   (if realgud:gdb-track-mode
       (progn
-	(realgud:track-set-debugger "gdb" "realgud:gdb")
+	(realgud:track-set-debugger "gdb")
         (realgud:gdb-track-mode-hook)
         (realgud:track-mode-enable))
     (progn

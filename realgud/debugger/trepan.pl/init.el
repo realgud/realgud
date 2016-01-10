@@ -1,4 +1,4 @@
-;; Copyright (C) 2015 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -240,6 +240,11 @@ backtrace listing.")
       'realgud:trepanpl-eval-filter-callback)
 
 (setf (gethash realgud:trepanpl-debugger-name realgud-pat-hash) realgud:trepanpl-pat-hash)
+
+;;  Prefix used in variable names (e.g. short-key-mode-map) for
+;; this debugger
+
+(setf (gethash "trepan.pl" realgud:variable-basename-hash) "realgud:trepanpl")
 
 (defvar realgud:trepanpl-command-hash (make-hash-table :test 'equal)
   "Hash key is command name like 'quit' and the value is

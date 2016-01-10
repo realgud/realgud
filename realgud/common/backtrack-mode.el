@@ -1,4 +1,4 @@
-;; Copyright (C) 2015 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -58,7 +58,9 @@ debugger with that information"
    (list (completing-read "Debugger name: " realgud-pat-hash)))
   (let ((regexp-hash (gethash debugger-name realgud-pat-hash)))
     (if regexp-hash
-	(let* ((prefix (realgud:debugger-name-transform debugger-name))
+	(let* ((base-variable-name
+		(or (gethash debugger-name realgud:variable-basename-hash)
+		    debugger-name))
 	       (specific-track-mode (intern (concat prefix "-backtrack-mode")))
 	       )
 	  (if (and (not (eval specific-track-mode))

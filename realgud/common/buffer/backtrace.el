@@ -2,7 +2,7 @@
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
-;; Copyright (C) 2015 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016 Free Software Foundation, Inc
 
 ;; This program is free software: you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -36,6 +36,7 @@
 (declare-function realgud-cmdbuf-info-in-srcbuf?= (arg))
 (declare-function realgud-get-cmdbuf 'realgud-buffer-helper)
 (declare-function realgud:file-loc-from-line 'realgud-file)
+(declare-function realgud:loc-describe 'realgud-loc)
 
 (defstruct realgud-backtrace-info
   "debugger object/structure specific to a (top-level) program to be debugged."
