@@ -83,14 +83,15 @@ The buffer is read-only when the minor mode is active.
   (when (realgud-cmdbuf? cmdbuf)
     (with-current-buffer cmdbuf
       (let* ((info realgud-cmdbuf-info)
-	     (debugger-name
-	      (realgud:debugger-name-transform
-	       (realgud-cmdbuf-info-debugger-name info)))
+	     (debugger-name (realgud-cmdbuf-info-debugger-name info))
+	     (base-variable-name
+	      (or (gethash debugger-name realgud:variable-basename-hash)
+	      debugger-name))
 	     (keymap-symbol
 	      (intern
 	       (replace-regexp-in-string
 		"\\." ""
-		(concat debugger-name "-short-key-mode-map"))))
+		(concat base-variable-name "-short-key-mode-map"))))
 	     (keymap (eval keymap-symbol))
 	     )
 	(cond ((keymapp keymap) keymap)
