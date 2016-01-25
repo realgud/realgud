@@ -70,10 +70,14 @@ marginal icons is reset. See `loc-changes-clear-buffer' to clear
 fringe and marginal icons.
 "
   (interactive)
-  (realgud:run-debugger "ipdb" 'ipdb-query-cmdline
-			'ipdb-parse-cmd-args
-			'realgud:ipdb-minibuffer-history
-			opt-cmd-line no-reset)
+  (let ((cmd-buf (realgud:run-debugger "ipdb" 'ipdb-query-cmdline
+                                       'ipdb-parse-cmd-args
+                                       'realgud:ipdb-minibuffer-history
+                                       opt-cmd-line no-reset))
+        )
+    (add-hook 'completion-at-point-functions
+              'realgud:ipdb-completion-at-point nil t)
+    cmd-buf)
   )
 
 
@@ -98,10 +102,14 @@ marginal icons is reset. See `loc-changes-clear-buffer' to clear
 fringe and marginal icons.
 "
   (interactive)
-  (realgud:run-debugger "ipdb" 'ipdb-remote-query-cmdline
-			'ipdb-parse-remote-cmd-args
-			'realgud:ipdb-remote-minibuffer-history
-			opt-cmd-line no-reset)
+  (let ((cmd-buf (realgud:run-debugger "ipdb" 'ipdb-remote-query-cmdline
+                                       'ipdb-parse-remote-cmd-args
+                                       'realgud:ipdb-remote-minibuffer-history
+                                       opt-cmd-line no-reset))
+        )
+    (add-hook 'completion-at-point-functions
+              'realgud:ipdb-completion-at-point nil t)
+    cmd-buf)
   )
 
 
