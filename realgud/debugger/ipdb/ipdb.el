@@ -46,6 +46,7 @@ This should be an executable on your path, or an absolute file name."
 (declare-function ipdb-track-mode       'realgud:ipdb-track)
 (declare-function ipdb-query-cmdline    'realgud:ipdb-core)
 (declare-function ipdb-parse-cmd-args   'realgud:ipdb-core)
+(declare-function realgud:ipdb-completion-at-point 'realgud:ipdb-core)
 (declare-function realgud:run-debugger 'realgud:run)
 
 ;;;###autoload
