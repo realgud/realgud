@@ -34,6 +34,7 @@
 (declare-function realgud-track-mode-setup 'realgud-track-mode)
 (declare-function realgud:track-set-debugger 'realgud-track-mode)
 (declare-function realgud-python-populate-command-keys 'realgud-lang-python)
+(declare-function realgud:ipdb-completion-at-point 'realgud:ipdb-core)
 
 (realgud-python-populate-command-keys ipdb-track-mode-map)
 
@@ -41,6 +42,8 @@
   (if ipdb-track-mode
       (progn
         (use-local-map ipdb-track-mode-map)
+        (add-hook 'completion-at-point-functions
+                  'realgud:ipdb-completion-at-point nil t)
         (message "using ipdb mode map")
         )
     (message "ipdb track-mode-hook disable called")
