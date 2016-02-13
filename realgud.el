@@ -57,6 +57,7 @@
 ;;   kshdb          kshdb          Korn Shell 93u+
 ;;   nodejs         nodejs         node.js javascript debugger
 ;;   pdb            realgud:pdb    stock C Python debugger
+;;   ipdb           realgud:ipdb   iPython debugger
 ;;   perldb         realgud:perldb stock Perl5 debugger
 ;;   pydb           pydb           slighly enhanced pdb for Python 2.x
 ;;   pydbgr         pydbgr         obsolete trepanning debugger for Python 2.x
@@ -111,6 +112,7 @@
      "./realgud/debugger/bashdb/bashdb"
      "./realgud/debugger/gdb/gdb"
      "./realgud/debugger/gub/gub"
+     "./realgud/debugger/ipdb/ipdb"
      "./realgud/debugger/jdb/jdb"
      "./realgud/debugger/kshdb/kshdb"
      "./realgud/debugger/nodejs/nodejs"
