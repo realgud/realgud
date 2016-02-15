@@ -47,18 +47,13 @@ realgud-loc-pat struct")
 (setf (gethash "syntax-error" realgud:trepan-pat-hash)
       realgud-ruby-YARV-syntax-error-pat)
 
-;; Regular expression that describes a Ruby YARV 1.9 backtrace line.
-;; For example:
-;; <internal:lib/rubygems/custom_require>:29:in `require'
-;; <internal:lib/rubygems/custom_require>:29:in `require'
-;; /tmp/Rakefile:50:in `<top /src/external-vcs/laser/Rakefile>'
-;;	from /usr/lib/ruby/gems/rspec/compatibility.rb:6:in `const_missing'
+;; Regular expression that describes a Ruby YARV backtrace line.
+;; For example: 
+;; 	from /ruby/gems/2.2.0/gems/fog-1.32.0/lib/fog/digitalocean.rb:1:in `<top (required)>'
+;; 	from /Users/fog-1.32.0/lib/fog.rb:28:in `require'
 (setf (gethash "lang-backtrace" realgud:trepan-pat-hash)
-  (make-realgud-loc-pat
-   :regexp "^\\(?:[\t]from \\)?\\([^:]+\\):\\([0-9]+\\)\\(?:in `.*'\\)?"
-   :file-group 1
-   :line-group 2))
-
+      realgud-ruby-backtrace-loc-pat)
+   
 ;;  Regular expression that describes a ruby $! backtrace
 (setf (gethash "dollar-bang-backtrace" realgud:trepan-pat-hash)
       realgud-ruby-dollar-bang-loc-pat)

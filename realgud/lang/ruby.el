@@ -16,6 +16,14 @@
   "A realgud-loc-pat struct that describes a Rails backtrace (or
 traceback) line."  )
 
+(defconst realgud-rspec-backtrace-loc-pat
+  (make-realgud-loc-pat
+   :regexp "^[ ]*# \\([^:]+\\):\\([0-9]+\\)\\(?:[:]in `.*'\\)?"
+   :file-group 1
+   :line-group 2)
+  "A realgud-loc-pat struct that describes an rspec backtrace (or
+traceback) line."  )
+
 ;; Regular expression that describes a Ruby YARV 1.9 syntax error line.
 ;; SyntaxError: /tmp/columnize.rb:270: syntax error, unexpected $end, ...
 (defconst realgud-ruby-YARV-syntax-error-pat
@@ -65,6 +73,14 @@ described by PT."
   (interactive "d")
   (realgud-goto-line-for-pt pt "rails-backtrace"))
 
+;; FIXME: there is probably a less redundant way to do the following
+;; FNS.
+(defun realgud:rspec-goto-backtrace-line (pt)
+  "Display the location mentioned by the Rails backtrace line
+described by PT."
+  (interactive "d")
+  (realgud-goto-line-for-pt pt "rspec-backtrace"))
+
 (defun realgud:rubinius-goto-Xagent-backtrace-line (pt)
   "Display the location mentioned by the Rubinius Xagent- backtrace line
 described by PT."
@@ -91,6 +107,7 @@ described by PT."
   (define-key map (kbd "C-c !!") 'realgud:ruby-goto-dollar-bang-line)
   (define-key map (kbd "C-c !b") 'realgud:goto-debugger-backtrace-line)
   (define-key map (kbd "C-c !r") 'realgud:rails-goto-backtrace-line)
+  (define-key map (kbd "C-c !s") 'realgud:rspec-goto-backtrace-line)
   )
 
 

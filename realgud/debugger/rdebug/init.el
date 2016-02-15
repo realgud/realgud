@@ -132,4 +132,4 @@ realgud-loc-pat struct")
 (setf (gethash "shell" realgud-rdebug-command-hash) "irb")
 (setf (gethash "rdebug" realgud-command-hash) realgud-rdebug-command-hash)
 
-(provide-me "realgud-rdebug-")
+2(provide-me "realgud-rdebug-")

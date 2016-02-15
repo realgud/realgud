@@ -61,7 +61,7 @@ debugger with that information"
 	(let* ((base-variable-name
 		(or (gethash debugger-name realgud:variable-basename-hash)
 		    debugger-name))
-	       (specific-track-mode (intern (concat prefix "-backtrack-mode")))
+	       (specific-track-mode (intern (concat base-variable-name "-backtrack-mode")))
 	       )
 	  (if (and (not (eval specific-track-mode))
 		   (functionp specific-track-mode))
