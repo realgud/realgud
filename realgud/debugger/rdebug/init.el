@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2011, 2016 Rocky Bernstein <rocky@gnu.org>
 ;;; Ruby 1.8 debugger: ruby-debug (rdebug)
 
 (eval-when-compile (require 'cl))
@@ -132,4 +132,4 @@ realgud-loc-pat struct")
 (setf (gethash "shell" realgud-rdebug-command-hash) "irb")
 (setf (gethash "rdebug" realgud-command-hash) realgud-rdebug-command-hash)
 
-2(provide-me "realgud-rdebug-")
+(provide-me "realgud-rdebug-")

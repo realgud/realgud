@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org> Regular
+;;; Copyright (C) 2010-2011, 2016 Rocky Bernstein <rocky@gnu.org> Regular
 ;;; expressions for Korn shell debugger: kshdb
 
 (eval-when-compile (require 'cl))
