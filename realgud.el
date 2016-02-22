@@ -116,8 +116,6 @@
      "./realgud/debugger/nodejs/nodejs"
      "./realgud/debugger/pdb/pdb"
      "./realgud/debugger/perldb/perldb"
-     "./realgud/debugger/pydb/pydb"
-     "./realgud/debugger/pydbgr/pydbgr"
      "./realgud/debugger/rdebug/rdebug"
      "./realgud/debugger/remake/remake"
      "./realgud/debugger/trepan/trepan"
@@ -125,8 +123,6 @@
      "./realgud/debugger/trepan.pl/trepanpl"
      "./realgud/debugger/trepan2/trepan2"
      "./realgud/debugger/trepan3k/trepan3k"
-     "./realgud/debugger/trepanx/trepanx"
-     "./realgud/debugger/trepan8/trepan8"
      "./realgud/debugger/zshdb/zshdb"
      ) "realgud-")
   )
@@ -152,9 +148,6 @@ like 'pydbgr'."
 	     (setq result (cons feature-str result)))
 	    ((eq 't
 		 (string-prefix-p feature-str "nodejs"))
-	     (setq result (cons feature-str result)))
-	    ((eq 't
-		 (string-prefix-p feature-str "pydbgr"))
 	     (setq result (cons feature-str result)))
 	    ((eq 't
 		 ;; No trailing '-' to get a plain "trepan".

@@ -1,7 +1,7 @@
 SUBDIRS = \
 	bashdb gdb gub jdb kshdb nodejs \
-	pdb perldb pydb pydbgr rdebug remake \
-	trepan trepan2 trepan3k trepan.pl trepanjs trepanx trepan8 \
+	pdb perldb rdebug remake \
+	trepan trepan2 trepan3k trepan.pl trepanjs \
 	zshdb
 EXTRA_DIST = common.mk
 
