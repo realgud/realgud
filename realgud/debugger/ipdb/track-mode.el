@@ -1,6 +1,7 @@
-;; Copyright (C) 2015 Free Software Foundation, Inc
+;; Copyright (C) 2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
+;; Author: Sean Farley <sean@farley.io>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -14,7 +15,7 @@
 
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
-;; Python "pydb" Debugger
+;; Python "ipdb" Debugger tracking a comint buffer.
 
 (eval-when-compile (require 'cl))
 (require 'load-relative)
@@ -25,48 +26,53 @@
                          "../../common/track-mode"
                          )
                        "realgud-")
-(require-relative-list '("core" "init") "realgud:pydb-")
+(require-relative-list '("core" "init") "realgud:ipdb-")
 
-(realgud-track-mode-vars "pydb")
+(realgud-track-mode-vars "ipdb")
 
 (declare-function realgud-track-mode 'realgud-track-mode)
 (declare-function realgud-track-mode-setup 'realgud-track-mode)
 (declare-function realgud:track-set-debugger 'realgud-track-mode)
 (declare-function realgud-python-populate-command-keys 'realgud-lang-python)
+(declare-function realgud:ipdb-completion-at-point 'realgud:ipdb-core)
 
-(realgud-python-populate-command-keys pydb-track-mode-map)
+(realgud-python-populate-command-keys ipdb-track-mode-map)
 
-(defun pydb-track-mode-hook()
-  (if pydb-track-mode
+(defun ipdb-track-mode-hook()
+  (if ipdb-track-mode
       (progn
-        (use-local-map pydb-track-mode-map)
-        (message "using pydb mode map")
+        (use-local-map ipdb-track-mode-map)
+        (add-hook 'completion-at-point-functions
+                  'realgud:ipdb-completion-at-point nil t)
+        (message "using ipdb mode map")
         )
-    (message "pydb track-mode-hook disable called")
+    (message "ipdb track-mode-hook disable called")
     )
 )
 
-(define-minor-mode pydb-track-mode
-  "Minor mode for tracking pydb source locations inside a process shell via realgud. pydb is a Python debugger.
+(define-minor-mode ipdb-track-mode
+  "Minor mode for tracking ipdb source locations inside a process shell via realgud. ipdb is a Python debugger based on ipython.
 
 If called interactively with no prefix argument, the mode is toggled. A prefix argument, captured as ARG, enables the mode if the argument is positive, and disables it otherwise.
 
-\\{pydb-track-mode-map}
+a process shell.
+
+\\{ipdb-track-mode-map}
 "
   :init-value nil
-  ;; :lighter " pydb"   ;; mode-line indicator from realgud-track is sufficient.
+  ;; :lighter " ipdb"   ;; mode-line indicator from realgud-track is sufficient.
   ;; The minor mode bindings.
   :global nil
-  :group 'realgud:pydb
-  :keymap pydb-track-mode-map
-  (realgud:track-set-debugger "pydb")
-  (if pydb-track-mode
+  :group 'realgud:ipdb
+  :keymap ipdb-track-mode-map
+  (realgud:track-set-debugger "ipdb")
+  (if ipdb-track-mode
       (progn
 	(realgud-track-mode-setup 't)
-        (pydb-track-mode-hook))
+        (ipdb-track-mode-hook))
     (progn
       (setq realgud-track-mode nil)
       ))
 )
 
-(provide-me "realgud:pydb-")
+(provide-me "realgud:ipdb-")

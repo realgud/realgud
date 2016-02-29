@@ -18,7 +18,7 @@
 
 (note "realgud:loaded-features")
 (set (make-local-variable 'test-realgud:features) (realgud:loaded-features))
-;; (dolist (feature '(realgud-trepan realgud-pydbgr
+;; (dolist (feature '(realgud-trepan
 ;; 			       realgud-core))
 ;;   (assert-t (not (not (member feature test-realgud:features)))) )
 

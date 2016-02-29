@@ -57,6 +57,7 @@
 ;;   kshdb          kshdb          Korn Shell 93u+
 ;;   nodejs         nodejs         node.js javascript debugger
 ;;   pdb            realgud:pdb    stock C Python debugger
+;;   ipdb           realgud:ipdb   iPython debugger
 ;;   perldb         realgud:perldb stock Perl5 debugger
 ;;   pydb           pydb           slighly enhanced pdb for Python 2.x
 ;;   pydbgr         pydbgr         obsolete trepanning debugger for Python 2.x
@@ -111,13 +112,12 @@
      "./realgud/debugger/bashdb/bashdb"
      "./realgud/debugger/gdb/gdb"
      "./realgud/debugger/gub/gub"
+     "./realgud/debugger/ipdb/ipdb"
      "./realgud/debugger/jdb/jdb"
      "./realgud/debugger/kshdb/kshdb"
      "./realgud/debugger/nodejs/nodejs"
      "./realgud/debugger/pdb/pdb"
      "./realgud/debugger/perldb/perldb"
-     "./realgud/debugger/pydb/pydb"
-     "./realgud/debugger/pydbgr/pydbgr"
      "./realgud/debugger/rdebug/rdebug"
      "./realgud/debugger/remake/remake"
      "./realgud/debugger/trepan/trepan"
@@ -125,8 +125,6 @@
      "./realgud/debugger/trepan.pl/trepanpl"
      "./realgud/debugger/trepan2/trepan2"
      "./realgud/debugger/trepan3k/trepan3k"
-     "./realgud/debugger/trepanx/trepanx"
-     "./realgud/debugger/trepan8/trepan8"
      "./realgud/debugger/zshdb/zshdb"
      ) "realgud-")
   )
@@ -152,9 +150,6 @@ like 'pydbgr'."
 	     (setq result (cons feature-str result)))
 	    ((eq 't
 		 (string-prefix-p feature-str "nodejs"))
-	     (setq result (cons feature-str result)))
-	    ((eq 't
-		 (string-prefix-p feature-str "pydbgr"))
 	     (setq result (cons feature-str result)))
 	    ((eq 't
 		 ;; No trailing '-' to get a plain "trepan".

@@ -67,13 +67,12 @@ AC_CONFIG_FILES([Makefile \
 		 realgud/debugger/bashdb/Makefile \
 		 realgud/debugger/gdb/Makefile \
 		 realgud/debugger/gub/Makefile \
+		 realgud/debugger/ipdb/Makefile \
 		 realgud/debugger/jdb/Makefile \
 		 realgud/debugger/kshdb/Makefile \
 		 realgud/debugger/nodejs/Makefile \
 		 realgud/debugger/perldb/Makefile \
 		 realgud/debugger/pdb/Makefile \
-		 realgud/debugger/pydb/Makefile \
-		 realgud/debugger/pydbgr/Makefile \
 		 realgud/debugger/rdebug/Makefile \
 		 realgud/debugger/remake/Makefile \
 		 realgud/debugger/trepan/Makefile \
@@ -81,8 +80,6 @@ AC_CONFIG_FILES([Makefile \
 		 realgud/debugger/trepan3k/Makefile \
 		 realgud/debugger/trepan.pl/Makefile \
 		 realgud/debugger/trepanjs/Makefile \
-		 realgud/debugger/trepanx/Makefile \
-		 realgud/debugger/trepan8/Makefile \
 		 realgud/debugger/zshdb/Makefile \
 		 realgud/lang/Makefile \
 		 test/Makefile \
