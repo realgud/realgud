@@ -9,7 +9,7 @@
 (defgroup realgud:rdebug nil
   "The realgud interface to the Ruby debugger, rdebug"
   :group 'realgud
-  :version "24.1")
+  :version "24.3")
 
 (declare-function rdebug-query-cmdline   'realgud-rdebug-core)
 (declare-function rdebug-parse-cmd-args  'realgud-rdebug-core)

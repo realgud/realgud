@@ -5,8 +5,11 @@
 (load-file "../realgud/debugger/ipdb/init.el")
 (load-file "./regexp-helper.el")
 
-(declare-function __FILE__              'load-relative)
-(declare-function prompt-match          'regexp-helper)
+(declare-function __FILE__                       'load-relative)
+(declare-function loc-match	                 'realgud-helper)
+(declare-function prompt-match                   'regexp-helper)
+(declare-function realgud-loc-pat-file-group     'realgud-regexp)
+(declare-function realgud-loc-pat-line-group     'realgud-regexp)
 
 (test-simple-start)
 

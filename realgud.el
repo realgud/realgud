@@ -59,10 +59,6 @@
 ;;   pdb            realgud:pdb    stock C Python debugger
 ;;   ipdb           realgud:ipdb   iPython debugger
 ;;   perldb         realgud:perldb stock Perl5 debugger
-;;   pydb           pydb           slighly enhanced pdb for Python 2.x
-;;   pydbgr         pydbgr         obsolete trepanning debugger for Python 2.x
-;;   rb8-trepanning trepan8        MRI Ruby 1.8 and an unpatched YARV 1.9
-;;   rbx-trepanning trepanx        trepanning debugger for Rubinius Ruby
 ;;   remake         remake         GNU Make
 ;;   ruby-debug     rdebug         Ruby
 ;;   trepanning     trepan         trepanning debugger for a patched Ruby 1.9
@@ -71,7 +67,22 @@
 ;;   trepan3k       trepan3k       trepanning debugger for Python 3.x
 ;;   zshdb          zshdb          Zsh
 ;;
+;; The following older packages can be found in the realgud-older-debuggers
+;; package:
+
+;;   pydb           pydb           slighly enhanced pdb for Python 2.x
+;;   pydbgr         pydbgr         obsolete trepanning debugger for Python 2.x
+;;   rb8-trepanning trepan8        MRI Ruby 1.8 and an unpatched YARV 1.9
+;;   rbx-trepanning trepanx        trepanning debugger for Rubinius Ruby
+
+;; The following debuggers are found in separate individual packages:
+
+;;   byebug         realgud:byebug Ruby debugger byebug
+;;   pry            realgud:pry    Ruby debugger pry
 ;;
+;;
+;;
+
 ;; **gdb, jdb, perldb, pdb invocations require the realgud: preface to
 ;; disambiguate it from older, preexisting Emacs commands in `gud'.
 ;; The other invocations also accept realgud: prefaces,
@@ -101,7 +112,7 @@
   "The Grand Cathedral Debugger rewrite"
   :group 'processes
   :group 'tools
-  :version "24.2")
+  :version "24.3")
 
 ;; FIXME: extend require-relative for "autoload".
 (defun realgud:load-features()
@@ -112,7 +123,8 @@
      "./realgud/debugger/bashdb/bashdb"
      "./realgud/debugger/gdb/gdb"
      "./realgud/debugger/gub/gub"
-     "./realgud/debugger/ipdb/ipdb"
+     ;; Temporarily remove ipdb until the Melpa recipie is in place
+     ;; "./realgud/debugger/ipdb/ipdb"
      "./realgud/debugger/jdb/jdb"
      "./realgud/debugger/kshdb/kshdb"
      "./realgud/debugger/nodejs/nodejs"
