@@ -123,8 +123,7 @@
      "./realgud/debugger/bashdb/bashdb"
      "./realgud/debugger/gdb/gdb"
      "./realgud/debugger/gub/gub"
-     ;; Temporarily remove ipdb until the Melpa recipie is in place
-     ;; "./realgud/debugger/ipdb/ipdb"
+     "./realgud/debugger/ipdb/ipdb"
      "./realgud/debugger/jdb/jdb"
      "./realgud/debugger/kshdb/kshdb"
      "./realgud/debugger/nodejs/nodejs"
