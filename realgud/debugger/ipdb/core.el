@@ -247,7 +247,7 @@ why we need the `bounds-of-thing-at-point')."
 
             ;; we need to change the start position to that of the current word
             ;; since python returns just the word (and not the whole line)
-            (setq start-position (car bounds))
+            (if (car bounds) (setq start-position (car bounds)))
 
             (list start-position
                   end-position
