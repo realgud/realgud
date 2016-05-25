@@ -47,13 +47,12 @@ Otherwise, just return FILENAME."
 )
 
 (defun realgud-suggest-invocation
-  (debugger-name minibuffer-history lang-str lang-ext-regexp
+  (debugger-name _minibuffer-history lang-str lang-ext-regexp
 		 &optional last-resort)
   "Suggest a debugger command invocation. If the current buffer
 is a source file or process buffer previously set, then use the
 value of that the command invocations found by buffer-local
-variables. Next, try to use the first value of MINIBUFFER-HISTORY
-if that exists.  Finally we try to find a suitable program file
+variables.  Otherwise, we try to find a suitable program file
 using LANG-STR and LANG-EXT-REGEXP."
   (let* ((buf (current-buffer))
 	 (filename)
@@ -62,12 +61,11 @@ using LANG-STR and LANG-EXT-REGEXP."
     (cond
      ((and cmd-str-cmdbuf (equal debugger-name (realgud-cmdbuf-debugger-name buf)))
       cmd-str-cmdbuf)
-     ((and minibuffer-history (listp minibuffer-history))
-      (car minibuffer-history))
      ((setq filename (realgud:suggest-file-from-buffer lang-str))
-      (concat debugger-name " " filename))
+      (concat debugger-name " " (shell-quote-argument filename)))
      (t (concat debugger-name " "
-		(realgud-suggest-lang-file lang-str lang-ext-regexp last-resort)))
+                (shell-quote-argument
+                 (realgud-suggest-lang-file lang-str lang-ext-regexp last-resort))))
      )))
 
 (defun realgud-query-cmdline
@@ -86,11 +84,9 @@ We also set filename completion and use a history of the prior
 dbgr invocations "
   (let ((debugger (or opt-debugger
 		   (realgud-sget 'srcbuf-info 'debugger-name))))
-    (read-from-minibuffer
+    (read-shell-command
      (format "Run %s (like this): " debugger)  ;; prompt string
      (funcall suggest-invocation-fn debugger)  ;; initial value
-     minibuffer-local-map                      ;; keymap
-     nil                                       ;; read - use default value
      minibuffer-history                        ;; history variable
      )))
 
