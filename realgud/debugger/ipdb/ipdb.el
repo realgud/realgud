@@ -77,6 +77,10 @@ fringe and marginal icons.
         )
     (add-hook 'completion-at-point-functions
               'realgud:ipdb-completion-at-point nil t)
+    (with-current-buffer cmd-buf
+      (add-hook 'completion-at-point-functions
+		'realgud:ipdb-completion-at-point nil t)
+      )
     cmd-buf)
   )
 

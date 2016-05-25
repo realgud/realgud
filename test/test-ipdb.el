@@ -23,6 +23,7 @@
   (assert-equal "ipdb" debugger-name "debugger name gets passed")
   (assert-equal (expand-file-name "./gcd.py") script-filename "file name check")
   (assert-equal '("3" "5") (cddr cmd-args) "command args listified")
+  (generate-new-buffer "*cmdbuf-test*")
   )
 
 (note "ipdb-parse-cmd-args")
