@@ -108,12 +108,25 @@ realgud-loc-pat struct")
 
 (setf (gethash "pdb" realgud-pat-hash) realgud:pdb-pat-hash)
 
-(defvar realgud:pdb-command-hash (make-hash-table :test 'equal)
-  "Hash key is command name like 'shell' and the value is
-  the pdb command to use, like 'python'")
 
-(setf (gethash "shell" realgud:pdb-command-hash) "python")
-(setf (gethash "eval"  realgud:pdb-command-hash) "p %s")
+(defvar realgud:pdb-command-hash (make-hash-table :test 'equal)
+  "Hash key is command name like 'finish' and the value is
+the pdb command to use, like 'return'")
+
 (setf (gethash "pdb" realgud-command-hash) realgud:pdb-command-hash)
+
+;; Mappings between PDB-specific names and GUD names
+(setf (gethash "finish" realgud:pdb-command-hash) "return")
+(setf (gethash "kill" realgud:pdb-command-hash) "quit")
+(setf (gethash "backtrace" realgud:pdb-command-hash) "where")
+;; Clear in Python does both the usual “delete” and “clear”
+(setf (gethash "delete" realgud:pdb-command-hash) "clear %p")
+(setf (gethash "clear" realgud:pdb-command-hash) "clear %X:%l")
+;; Use ‘!’ instead of ‘p’, since ‘p’ only works for expressions, not statements
+(setf (gethash "eval" realgud:pdb-command-hash) "!%s")
+
+;; Unsupported features:
+(setf (gethash "shell" realgud:pdb-command-hash) "*not-implemented*")
+(setf (gethash "frame" realgud:pdb-command-hash) "*not-implemented*")
 
 (provide-me "realgud:pdb-")
