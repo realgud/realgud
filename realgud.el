@@ -198,48 +198,6 @@ development version and you already have this package loaded."
 ;; Load everything.
 (realgud:load-features)
 
-
-;;; Autoloads-related code
-
-;; This section is needed because package.el doesn't recurse into subdirectories
-;; when looking for autoload-able forms.  As a workaround, we statically
-;; generate our own autoloads, and force Emacs to read them by adding an extra
-;; autoloded form.
-
-;;;###autoload
-(defconst realgud--recursive-autoloads-file-name "realgud-recursive-autoloads.el"
-  "Where to store autoloads for subdirectory contents.")
-
-;;;###autoload
-(defconst realgud--recursive-autoloads-base-directory
-  (file-name-directory
-   (if load-in-progress load-file-name
-     buffer-file-name)))
-
-;;;###autoload
-(with-demoted-errors "Error in RealGUD's autoloads: %s"
-  (load (expand-file-name realgud--recursive-autoloads-file-name
-                          realgud--recursive-autoloads-base-directory)
-        t t))
-
-(defun realgud--rebuild-recursive-autoloads ()
-  "Update RealGUD's recursive autoloads.
-This is needed because the package.el infrastructure doesn't
-process autoloads in subdirectories; instead we create an
-additional autoloads file of our own, and we load it from an
-autoloaded form.  Maintainers should run this after adding
-autoloaded functions, and commit the resulting changes."
-  (interactive)
-  (let ((generated-autoload-file
-         (expand-file-name realgud--recursive-autoloads-file-name
-                           realgud--recursive-autoloads-base-directory)))
-    (when (file-exists-p generated-autoload-file)
-      (delete-file generated-autoload-file))
-    (dolist (name (directory-files-recursively
-                   realgud--recursive-autoloads-base-directory "" t))
-      (when (file-directory-p name)
-        (update-directory-autoloads name)))))
-
 (provide-me)
 
 ;;; realgud.el ends here
