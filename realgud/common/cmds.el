@@ -31,6 +31,24 @@
 (declare-function realgud:terminate 'realgud-core)
 (declare-function realgud:terminate-srcbuf 'realdgud-core)
 
+(defcustom realgud-safe-mode t
+  "Confirm certain commands before running them.
+Similar to GDB's “set confirm”."
+  :type 'boolean
+  :group 'realgud)
+
+(defun realgud:prompt-if-prefix-or-safe-mode(message)
+  "Ask use to confirm current command if in safe mode.
+Use MESSAGE plus a space as the prompt string.  Do not confirm
+when command was run from a menu."
+  (if (and realgud-safe-mode last-nonmenu-event)
+      (when (y-or-n-p (concat message " "))
+        (run-with-timer
+         0 nil #'message
+         "Customize `realgud-safe-mode' to disable confirmation prompts.")
+        t)
+    t))
+
 (defun realgud:cmd-remap(arg cmd-name default-cmd-template key
 			     &optional no-record? frame-switch?
 			     realgud-prompts?)
@@ -89,11 +107,14 @@ a shortcut for that key."
 
 (defun realgud:cmd-continue(&optional arg)
     "Continue execution.
-With prefix argument, prompt for argument to \"continue\"
-command."
+With prefix argument ARG, prompt for argument to \"continue\"
+command.  In safe mode (or with prefix arg), confirm before
+running."
     (interactive (when (consp current-prefix-arg)
                    (list (read-string "Continue args: " nil nil nil t))))
-    (realgud:cmd-remap arg "continue" "continue" "c"))
+    (when (or arg (realgud:prompt-if-prefix-or-safe-mode
+                   "Continue to next breakpoint?"))
+      (realgud:cmd-remap arg "continue" "continue" "c")))
 
 (defun realgud:cmd-delete(&optional arg)
     "Delete breakpoint by number."
