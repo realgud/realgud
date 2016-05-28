@@ -88,10 +88,12 @@ a shortcut for that key."
   (realgud:cmd-remap line-num "clear" "clear %l" "X"))
 
 (defun realgud:cmd-continue(&optional arg)
-    "Continue execution."
-    (interactive "MContinue args: ")
-    (realgud:cmd-remap arg "continue" "continue" "c")
-)
+    "Continue execution.
+With prefix argument, prompt for argument to \"continue\"
+command."
+    (interactive (when (consp current-prefix-arg)
+                   (list (read-string "Continue args: " nil nil nil t))))
+    (realgud:cmd-remap arg "continue" "continue" "c"))
 
 (defun realgud:cmd-delete(&optional arg)
     "Delete breakpoint by number."
