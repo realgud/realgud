@@ -117,17 +117,25 @@ a shortcut for that key."
     )
 
 (defun realgud:cmd-eval(arg)
-    "Exaluate an expression."
+    "Evaluate an expression."
     (interactive "MEval expesssion: ")
     (realgud:cmd-remap arg "eval" "eval %s" "e")
 )
 
 (defun realgud:cmd-eval-region(start end)
+    "Evaluate current region."
     (interactive "r")
     (let ((text (buffer-substring-no-properties start end)))
       (realgud:cmd-remap text "eval" "eval %s" "e")
       )
     )
+
+(defun realgud:cmd-eval-dwim()
+  "Eval the current region if active; otherwise, prompt."
+  (interactive)
+  (call-interactively (if (region-active-p)
+                          #'realgud:cmd-eval-region
+                        #'realgud:cmd-eval)))
 
 (defun realgud:cmd-finish(&optional arg)
     "Run until the completion of the current stack frame.

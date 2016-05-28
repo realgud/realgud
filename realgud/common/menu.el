@@ -152,9 +152,9 @@ menu. (The common map typically contains function key bindings.)"
 			 ))
 
     (define-key debugger-map [eval]
-      (realgud-menu-item debugger-map "Evaluate Region" 'realgud:cmd-eval-region
+      (realgud-menu-item debugger-map "Evaluate region or string" 'realgud:cmd-eval-dwim
 			 :enable '(realgud-get-process)
-			 :help (documentation 'realgud:cmd-eval-region)
+			 :help (documentation 'realgud:cmd-eval-dwim)
 			 ))
 
     (define-key debugger-map [Recenter]
