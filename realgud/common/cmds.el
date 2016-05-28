@@ -116,28 +116,51 @@ running."
                    "Continue to next breakpoint?"))
       (realgud:cmd-remap arg "continue" "continue" "c")))
 
-(defun realgud:cmd-delete(&optional arg)
-    "Delete breakpoint by number."
-    (interactive "pBreakpoint number: ")
-    (let* ((line-num (line-number-at-pos))
-	   (arg (realgud-get-bpnum-from-line-num line-num)))
-      (if arg
-	  (realgud:cmd-remap arg "delete" "delete %p" "D")
-	(message "Can't find breakpoint at line %d" line-num))
-      )
-    )
+(defun realgud:bpnum-on-current-line()
+  "Return number of one breakpoint on current line, if any.
+If none is found, return nil."
+  (realgud-get-bpnum-from-line-num (line-number-at-pos)))
 
-(defun realgud:cmd-disable(&optional arg)
-    "Disable breakpoint."
-    (interactive "NBreakpoint number: ")
-    (realgud:cmd-remap arg "disable" "disable %p" "-")
-    )
+(defun realgud:bpnum-from-prefix-arg()
+  "Return number of one breakpoint on current line, if any.
+If none is found, or if `current-prefix-arg' is a cons (i.e. a
+C-u prefix arg), ask user for a breakpoint number.  If
+`current-prefix-arg' is a number (i.e. a numeric prefix arg),
+return it unmodified."
+  (let ((must-prompt (consp current-prefix-arg))
+        (current-bp (realgud:bpnum-on-current-line)))
+    (list
+     (if (numberp current-prefix-arg)
+         current-prefix-arg
+       (or (and (not must-prompt) current-bp)
+           (read-number "Breakpoint number: " current-bp))))))
 
-(defun realgud:cmd-enable(&optional arg)
-    "Enable breakpoint."
-    (interactive "NBreakpoint number: ")
-    (realgud:cmd-remap arg "enable" "enable %p" "+")
-    )
+(defun realgud:cmd-delete(bpnum)
+    "Delete breakpoint by number.
+Interactively, find breakpoint on current line, if any.  With
+numeric prefix argument, delete breakpoint with that number
+instead.  With prefix argument (C-u), or when no breakpoint can
+be found on the current line, prompt for a breakpoint number."
+    (interactive (realgud:bpnum-from-prefix-arg))
+    (realgud:cmd-remap bpnum "delete" "delete %p" "D"))
+
+(defun realgud:cmd-disable(bpnum)
+    "Disable breakpoint BPNUM.
+Interactively, find breakpoint on current line, if any.  With
+numeric prefix argument, disable breakpoint with that number
+instead.  With prefix argument (C-u), or when no breakpoint can
+be found on the current line, prompt for a breakpoint number."
+    (interactive (realgud:bpnum-from-prefix-arg))
+    (realgud:cmd-remap bpnum "disable" "disable %p" "-"))
+
+(defun realgud:cmd-enable(bpnum)
+    "Enable breakpoint BPNUM.
+Interactively, find breakpoint on current line, if any.  With
+numeric prefix argument, enable breakpoint with that number
+instead.  With prefix argument (C-u), or when no breakpoint can
+be found on the current line, prompt for a breakpoint number."
+    (interactive (realgud:bpnum-from-prefix-arg))
+    (realgud:cmd-remap bpnum "enable" "enable %p" "+"))
 
 (defun realgud:cmd-eval(arg)
     "Evaluate an expression."
