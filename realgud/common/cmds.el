@@ -257,7 +257,7 @@ With a numeric argument move that many levels back."
 )
 
 (defun realgud:cmd-shell(&optional arg)
-    "Restart execution."
+    "Drop to a shell."
     (interactive "")
     (realgud:cmd-remap arg "shell" "shell" "S")
 )
@@ -286,13 +286,13 @@ getting stepped."
     (realgud:cmd-remap nil "step" "step" "s")
 )
 
-(defun realgud:cmd-terminate (&optional arg)
+(defun realgud:cmd-terminate ()
   "Gently terminate source and command buffers without possibly
 issuing a command to the underlying debuger.  Use this if the
 underlying debugger has died or you want to get out of all
 shortkey modes in the source window and possibly restart
 debugging after editing source."
-  (interactive "p")
+  (interactive)
   (realgud:terminate (current-buffer))
 )
 
@@ -330,7 +330,5 @@ continuing execution."
       )
     )
   )
-
-(local-set-key "\C-cq" 'realgud:cmd-quit)
 
 (provide-me "realgud-")
