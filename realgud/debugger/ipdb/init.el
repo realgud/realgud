@@ -110,11 +110,23 @@ realgud-loc-pat struct")
 (setf (gethash "ipdb" realgud-pat-hash) realgud:ipdb-pat-hash)
 
 (defvar realgud:ipdb-command-hash (make-hash-table :test 'equal)
-  "Hash key is command name like 'shell' and the value is
-  the ipdb command to use, like 'python'")
+  "Hash key is command name like 'finish' and the value is
+the ipdb command to use, like 'return'")
 
-(setf (gethash "shell" realgud:ipdb-command-hash) "python")
-(setf (gethash "eval"  realgud:ipdb-command-hash) "p %s")
-(setf (gethash "ipdb" realgud-command-hash) realgud:ipdb-command-hash)
+(setf (gethash "pdb" realgud-command-hash) realgud:ipdb-command-hash)
+
+;; Mappings between PDB-specific names and GUD names
+(setf (gethash "finish" realgud:ipdb-command-hash) "return")
+(setf (gethash "kill" realgud:ipdb-command-hash) "quit")
+(setf (gethash "backtrace" realgud:ipdb-command-hash) "where")
+;; Clear in Python does both the usual “delete” and “clear”
+(setf (gethash "delete" realgud:ipdb-command-hash) "clear %p")
+(setf (gethash "clear" realgud:ipdb-command-hash) "clear %X:%l")
+;; Use ‘!’ instead of ‘p’, since ‘p’ only works for expressions, not statements
+(setf (gethash "eval" realgud:ipdb-command-hash) "!%s")
+
+;; Unsupported features:
+(setf (gethash "shell" realgud:ipdb-command-hash) "*not-implemented*")
+(setf (gethash "frame" realgud:ipdb-command-hash) "*not-implemented*")
 
 (provide-me "realgud:ipdb-")
