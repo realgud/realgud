@@ -30,7 +30,6 @@
 
 (realgud-track-mode-vars "perldb")
 
-(declare-function realgud:cmd-remap           'realgud-cmds)
 (declare-function realgud-perl-populate-command-keys
 		  'realgud:perldb)
 (declare-function realgud-track-mode 'realgud-track-mode)
@@ -72,16 +71,10 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
       ))
 )
 
-(defun realgud:perldb-backtrace(arg)
-  (interactive "p")
-  (realgud:cmd-remap arg "backtrace" "T" "T")
-)
-
 ;; Perldb doesn't have stack switching commands.
 (define-key perldb-short-key-mode-map
   [remap realgud:cmd-newer-frame] 'undefined)
 (define-key perldb-short-key-mode-map
   [remap realgud:cmd-older-frame] 'undefined)
-(define-key perldb-short-key-mode-map "T" 'realgud:perldb-backtrace)
 
 (provide-me "realgud:perldb-")

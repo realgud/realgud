@@ -28,7 +28,6 @@
 (require-relative-list '("core" "init") "realgud:nodejs-")
 ;; (require-relative-list '("../../lang/js") "realgud-lang-")
 
-(declare-function realgud:cmd-remap          'realgud-cmds)
 (declare-function realgud:track-set-debugger 'realgud-track-mode)
 (declare-function realgud-track-mode-setup   'realgud-track-mode)
 
@@ -74,12 +73,6 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
       ))
   )
 
-(defun realgud:nodejs-set-break(arg)
-  "Set a breakpoint at the current line"
-  (interactive "p")
-  (realgud:cmd-remap arg "break" "setBreakpoint('%X',%l)" "b")
-  )
-
 ;; ;; Debugger commands that nodejs doesn't have
 ;; (define-key nodejs-track-mode-map
 ;;   [remap realgud:cmd-newer-frame] 'undefined)
@@ -91,8 +84,5 @@ If called interactively with no prefix argument, the mode is toggled. A prefix a
   [remap realgud:cmd-step] 'realgud:cmd-step-no-arg)
 (define-key nodejs-short-key-mode-map
   [remap realgud:cmd-next] 'realgud:cmd-next-no-arg)
-(define-key nodejs-short-key-mode-map
-  [remap realgud:cmd-break] 'realgud:nodejs-set-break)
-(define-key nodejs-short-key-mode-map "T" 'realgud:cmd-backtrace)
 
 (provide-me "realgud:nodejs-")
