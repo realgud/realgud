@@ -41,7 +41,9 @@ Similar to GDB's “set confirm”."
   "Ask use to confirm current command if in safe mode.
 Use MESSAGE plus a space as the prompt string.  Do not confirm
 when command was run from a menu."
-  (if (and realgud-safe-mode last-nonmenu-event)
+  (if (and realgud-safe-mode
+           last-nonmenu-event
+           (not (equal last-nonmenu-event '(tool-bar))))
       (when (y-or-n-p (concat message " "))
         (run-with-timer
          0 nil #'message
