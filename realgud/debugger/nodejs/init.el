@@ -148,7 +148,7 @@ realgud-loc-pat struct")
 
 (setf (gethash "backtrace"  realgud:nodejs-command-hash) "T")
 (setf (gethash "break"      realgud:nodejs-command-hash)
-      "setBreakpoint(%l)")
+      "setBreakpoint('%X',%l)")
 (setf (gethash "continue"   realgud:nodejs-command-hash) "cont")
 (setf (gethash "quit"       realgud:nodejs-command-hash) "quit")
 (setf (gethash "finish"     realgud:nodejs-command-hash) "out")
