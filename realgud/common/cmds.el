@@ -173,6 +173,25 @@ be found on the current line, prompt for a breakpoint number."
     (interactive (realgud:bpnum-from-prefix-arg))
     (realgud:cmd-run-command bpnum "enable" "enable %p"))
 
+(defun realgud-cmds--add-remove-bp (pos)
+  "Add or delete breakpoint at POS."
+  (save-excursion
+    (goto-char pos)
+    (let ((existing-bp-num (realgud:bpnum-on-current-line)))
+      (if existing-bp-num
+          (realgud:cmd-delete existing-bp-num)
+        (realgud:cmd-break pos)))))
+
+(defun realgud-cmds--mouse-add-remove-bp (event)
+  "Add or delete breakpoint on line pointed to by EVENT.
+EVENT should be a mouse click on the left fringe or margin."
+  (interactive "e")
+  (let* ((posn (event-end event))
+         (pos (posn-point posn)))
+    (when (numberp pos)
+      (with-current-buffer (window-buffer (posn-window posn))
+        (realgud-cmds--add-remove-bp pos)))))
+
 (defun realgud:cmd-eval(arg)
     "Evaluate an expression."
     (interactive "MEval expesssion: ")
