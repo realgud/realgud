@@ -46,6 +46,8 @@
     (define-key map "e"        'realgud:cmd-eval-dwim)
     (define-key map "U"        'realgud:cmd-until)
     (define-key map [mouse-2]  'realgud:tooltip-eval)
+    (define-key map [left-fringe mouse-1] #'realgud-cmds--mouse-add-remove-bp)
+    (define-key map [left-margin mouse-1] #'realgud-cmds--mouse-add-remove-bp)
 
     ;; FIXME: these can go to a common routine
     (define-key map "<"        'realgud:cmd-newer-frame)

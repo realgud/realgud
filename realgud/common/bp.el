@@ -5,176 +5,186 @@
 (require 'load-relative)
 (require-relative-list '("loc" "bp-image-data") "realgud-")
 
+(defun realgud-bp-remove-icons (&optional begin-pos end-pos bpnum)
+  "Remove breakpoint icons (overlays) in BEGIN-POS .. END-POS.
+The default value for BEGIN-POS is `point'.  The default value
+for END-POS is BEGIN-POS.  When BPNUM is non-nil, only remove
+overlays with that breakpoint number.
+
+The way we determine if an overlay is ours is by inspecting the
+overlay for a realgud property."
+  (interactive "r")
+  (setq begin-pos (or begin-pos (point))
+        end-pos (or end-pos begin-pos))
+  (dolist (overlay (overlays-in begin-pos end-pos))
+    (when (overlay-get overlay 'realgud)
+      (when (or (null bpnum) (equal bpnum (overlay-get overlay 'realgud-bp-num)))
+        (delete-overlay overlay)))))
+
 (defvar realgud-bp-enabled-icon nil
   "Icon for an enabled breakpoint in display margin.")
 
 (defvar realgud-bp-disabled-icon nil
   "Icon for a disabled breakpoint in display margin.")
 
-(defun realgud-bp-remove-icons (&optional opt-begin-pos opt-end-pos)
-  "Remove dbgr breakpoint icons (overlays) in the region
-OPT-BEGIN-POS to OPT-END-POS. The default value for OPT-BEGIN-POS
-is `point'.  The default value for OPT-END-POS is OPT-BEGIN-POS.
-
-The way we determine if an overlay is ours is by inspecting the
-overlay for a before-string property containing one we normally set.
-"
-  (interactive "r")
-  (let* ((begin-pos (or opt-begin-pos (point)))
-         (end-pos (or opt-end-pos begin-pos))
-        )
-    (dolist (overlay (overlays-in begin-pos end-pos))
-      ;; We determine if this overlay is one we set by seeing if the
-      ;; string in its 'before-string property has a 'realgud-bptno property
-      (let ((before-string (overlay-get overlay 'before-string)))
-        (when (and before-string (get-text-property 0 'realgud-bptno before-string))
-          (delete-overlay overlay)
-          )
-        )
-      )
-    )
-  )
-
 (defun realgud-set-bp-icons()
-  (if (display-images-p)
-    ;; NOTE: if you don't see the icon, check the that the window margin
-    ;; is not nil.
-      (progn
-	(setq realgud-bp-enabled-icon
-	      (find-image `((:type xpm :data
-				   ,realgud-bp-xpm-data
-				   :ascent 100 :pointer hand)
-			    (:type svg :data
-				   ,realgud-bp-enabled-svg-data
-				   :ascent 100 :pointer hand)
-			    (:type tiff :data
-				   ,realgud-bp-enabled-tiff-data
-				   :ascent 100 :pointer hand)
-			    (:type pbm :data
-				   ,realgud-bp-enabled-pbm-data
-				   :ascent 100 :pointer hand)
-			    )))
+  "Load breakpoint icons, if needed."
+  (when (display-images-p)
+    (unless realgud-bp-enabled-icon
+      (setq realgud-bp-enabled-icon
+            (find-image `((:type xpm :data
+                                 ,realgud-bp-xpm-data
+                                 :ascent 100 :pointer hand)
+                          (:type svg :data
+                                 ,realgud-bp-enabled-svg-data
+                                 :ascent 100 :pointer hand)
+                          (:type tiff :data
+                                 ,realgud-bp-enabled-tiff-data
+                                 :ascent 100 :pointer hand)
+                          (:type pbm :data
+                                 ,realgud-bp-enabled-pbm-data
+                                 :ascent 100 :pointer hand)))))
+    (unless realgud-bp-disabled-icon
+      (setq realgud-bp-disabled-icon
+            (find-image `((:type xpm :data
+                                 ,realgud-bp-xpm-data
+                                 :conversion disabled ; different than 'enabled'
+                                 :ascent 100 :pointer hand)
+                          (:type svg :data
+                                 ,realgud-bp-disabled-svg-data
+                                 :ascent 100 :pointer hand)
+                          (:type tiff :data
+                                 ,realgud-bp-disabled-tiff-data
+                                 :ascent 100 :pointer hand)
+                          (:type pbm :data
+                                 ,realgud-bp-disabled-pbm-data
+                                 :ascent 100 :pointer hand)
+                          (:type svg :data
+                                 ,realgud-bp-disabled-svg-data
+                                 :ascent 100 :pointer hand)))))))
 
-	;; For seeing what realgud-bp-enabled-icon looks like:
-	;; (insert-image realgud-bp-enabled-icon)
+(declare-function define-fringe-bitmap "fringe.c"
+                  (bitmap bits &optional height width align))
 
-	(setq realgud-bp-disabled-icon
-	      (find-image `((:type xpm :data
-				   ,realgud-bp-xpm-data
-				   :conversion disabled ;; different than 'enabled'
-				   :ascent 100 :pointer hand)
-			    (:type svg :data
-				   ,realgud-bp-disabled-svg-data
-				   :ascent 100 :pointer hand)
-			    (:type tiff :data
-				   ,realgud-bp-disabled-tiff-data
-				   :ascent 100 :pointer hand)
-			    (:type pbm :data
-				   ,realgud-bp-disabled-pbm-data
-				   :ascent 100 :pointer hand)
-			    (:type svg :data
-				   ,realgud-bp-disabled-svg-data
-				   :ascent 100 :pointer hand)
-			    )))
-	;; For seeing what realgud-bp-enabled-icon looks like:
-	;; (insert-image realgud-bp-disabled-icon)
-	)
-    (message "Display doesn't support breakpoint images in fringe")
-    )
-  )
+(when (display-images-p)
+  ;; Taken from gdb-mi
+  (define-fringe-bitmap 'realgud-bp-filled
+    "\x3c\x7e\xff\xff\xff\xff\x7e\x3c")
+  (define-fringe-bitmap 'realgud-bp-hollow
+    "\x3c\x42\x81\x81\x81\x81\x42\x3c"))
 
+(defgroup realgud-bp nil
+  "RealGUD breakpoints UI"
+  :group 'realgud
+  :prefix 'realgud-bp-)
 
-(defun realgud-bp-put-icon (pos enabled bp-num &optional opt-buf)
-  "Add a breakpoint icon in the left margin at POS via a `put-image' overlay.
-The alternate string name for the image is created from the value
-of ENABLED and BP-NUM.  In particular, if ENABLED is 't and
-BP-NUM is 5 the overlay string is be 'B5:' If ENABLED is false
-then the overlay string is 'b5:'. Breakpoint text properties are
-also attached to the icon via its display string."
-  (let ((enabled-str)
-        (buf (or opt-buf (current-buffer)))
-        (bp-num-str
-         (cond
-          ((or (not bp-num) (not (numberp bp-num))) ":")
-          ('t (format "%d:" bp-num))))
-        (brkpt-icon)
-        (bp-str)
-        (help-string "mouse-1: enable/disable bkpt")
-        )
-    (with-current-buffer buf
-      (unless realgud-bp-enabled-icon (realgud-set-bp-icons))
-      (if enabled
-          (progn
-            (setq enabled-str "B")
-            (setq brkpt-icon realgud-bp-enabled-icon)
-            )
-        (progn
-          (setq enabled-str "b")
-          (setq brkpt-icon realgud-bp-disabled-icon)
-          ))
-      ;; Create alternate display string and attach
-      ;; properties it.
-      (setq bp-str (concat enabled-str bp-num-str))
-      (add-text-properties
-       0 1 `(realgud-bptno ,bp-num enabled ,enabled) bp-str)
-      (add-text-properties
-       0 1 (list 'help-echo (format "%s %s" bp-str help-string))
-       bp-str)
+(defface realgud-bp-enabled-face
+  '((t :foreground "red" :weight bold))
+  "Face for enabled breakpoints."
+  :group 'realgud-bp)
 
-      ;; Display breakpoint icon or display string.  If the window is
-      ;; nil, the image doesn't get displayed, so make sure it is large
-      ;; enough.
+(defface realgud-bp-disabled-face
+  '((t :foreground "grey" :weight bold))
+  "Face for disabled breakpoints."
+  :group 'realgud-bp)
+
+(defcustom realgud-bp-fringe-indicator-style '(realgud-bp-filled . realgud-bp-hollow)
+  "Which fringe icon to use for breakpoints."
+  :type '(choice (const :tag "Disc" (realgud-bp-filled . realgud-bp-hollow))
+                 (const :tag "Square" (filled-square . hollow-square))
+                 (const :tag "Rectangle" (filled-rectangle . hollow-rectangle)))
+  :group 'realgud-bp)
+
+(defcustom realgud-bp-use-fringe t
+  "Whether to use the fringe to display breakpoints.
+If nil, use margins instead."
+  :type '(boolean)
+  :group 'realgud-bp)
+
+(defun realgud-bp--fringe-width ()
+  "Compute width of left fringe."
+  (let ((window (get-buffer-window (current-buffer))))
+    (or left-fringe-width
+        (and window (car (window-fringes window)))
+        0)))
+
+(defun realgud-bp-add-fringe-icon (overlay icon face)
+  "Add a fringe icon to OVERLAY.
+ICON is a fringe icon symbol; the corresponding icon gets
+highlighted with FACE."
+  ;; Ensure that the fringe is wide enough
+  (unless (>= (realgud-bp--fringe-width) 8)
+    (set-fringe-mode `(8 . ,right-fringe-width)))
+  ;; Add the fringe icon
+  (let* ((fringe-spec `(left-fringe ,icon ,face)))
+    (overlay-put overlay 'before-string (propertize "x" 'display fringe-spec))))
+
+(defun realgud-bp-add-margin-indicator (overlay text image face)
+  "Add a margin breakpoint indicator to OVERLAY.
+TEXT is a string, IMAGE an IMAGE spec or nil; TEXT gets
+highlighted with FACE."
+  ;; Ensure that the margin is large enough (Taken from gdb-mi)
+  (when (< left-margin-width 2)
+    (save-current-buffer
+      (setq left-margin-width 2)
       (let ((window (get-buffer-window (current-buffer) 0)))
         (if window
-            (set-window-margins window 2)
-          ;; FIXME: This is all crap, but I don't know how to fix.
-          (let ((buffer-save (window-buffer (selected-window))))
-            (set-window-buffer (selected-window) (current-buffer))
-            (set-window-margins (selected-window) 2)
-            (set-window-buffer (selected-window) buffer-save))
-          ))
-      (realgud-bp-remove-icons pos)
-      (if brkpt-icon
-          (put-image brkpt-icon pos bp-str 'left-margin))
-      )
-    )
-  )
+            (set-window-margins
+             window left-margin-width right-margin-width)))))
+  ;; Add the margin string
+  (let* ((indicator (or image (propertize text 'face face)))
+         (spec `((margin left-margin) ,indicator)))
+    (overlay-put overlay 'before-string (propertize text 'display spec))))
 
-(defun realgud-bp-del-icon (pos &optional opt-buf)
-  "Delete breakpoint icon in the left margin at POS via a `put-image' overlay.
-The alternate string name for the image is created from the value
-of ENABLED and BP-NUM.  In particular, if ENABLED is 't and
-BP-NUM is 5 the overlay string is be 'B5:' If ENABLED is false
-then the overlay string is 'b5:'. Breakpoint text properties are
-also attached to the icon via its display string."
-  (let ((buf (or opt-buf (current-buffer))))
-    (with-current-buffer buf
-      (realgud-bp-remove-icons pos)
-    )
-  )
-)
+(defun realgud-bp-put-icon (pos enabled bp-num &optional buf)
+  "Add a breakpoint icon at POS according to breakpoint-display-style.
+Use the fringe if available, and the margin otherwise.  Record
+breakpoint status ENABLED and breakpoint number BP-NUM in
+overlay.  BUF is the buffer that POS refers to; it detaults to
+the current buffer."
+  (let* ((margin-text) (face) (margin-icon) (fringe-icon))
+    (realgud-set-bp-icons)
+    (if enabled
+        (setq margin-text "B"
+              face 'realgud-bp-enabled-face
+              margin-icon realgud-bp-enabled-icon
+              fringe-icon (car realgud-bp-fringe-indicator-style))
+      (setq margin-text "b"
+            face 'realgud-bp-disabled-face
+            margin-icon realgud-bp-disabled-icon
+            fringe-icon (cdr realgud-bp-fringe-indicator-style)))
+    (let ((help-echo (format "%s%s: mouse-1 to clear" margin-text bp-num)))
+      (setq margin-text (propertize margin-text 'help-echo help-echo)))
+    (with-current-buffer (or buf (current-buffer))
+      (realgud-bp-remove-icons pos pos bp-num)
+      (let ((ov (make-overlay pos pos (current-buffer) t nil)))
+        (if (and realgud-bp-use-fringe (display-images-p))
+            (realgud-bp-add-fringe-icon ov fringe-icon face)
+          (realgud-bp-add-margin-indicator ov margin-text margin-icon face))
+        (overlay-put ov 'realgud t)
+        (overlay-put ov 'realgud-bp-num bp-num)
+        (overlay-put ov 'realgud-bp-enabled enabled)))))
+
+(defun realgud-bp-del-icon (pos &optional buf bpnum)
+  "Delete breakpoint icon at POS.
+BUF is the buffer which pos refers to (default: current buffer).
+If BPNUM is non-nil, only remove overlays maching that breakpoint
+number."
+  (with-current-buffer (or buf (current-buffer))
+    (realgud-bp-remove-icons pos pos bpnum)))
 
 (defun realgud-bp-add-info (loc)
   "Record bp information for location LOC."
   (if (realgud-loc? loc)
       (let* ((marker (realgud-loc-marker loc))
-             (bp-num (realgud-loc-num loc))
-             )
-        (realgud-bp-put-icon marker 't bp-num)
-        )
-    )
-)
+             (bp-num (realgud-loc-num loc)))
+        (realgud-bp-put-icon marker t bp-num))))
 
 (defun realgud-bp-del-info (loc)
   "Remove bp information for location LOC."
   (if (realgud-loc? loc)
       (let* ((marker (realgud-loc-marker loc))
-             (bp-num (realgud-loc-num loc))
-             )
-        (realgud-bp-del-icon marker)
-        )
-    )
-)
-
+             (bp-num (realgud-loc-num loc)))
+        (realgud-bp-del-icon marker (current-buffer) bp-num))))
 
 (provide-me "realgud-")
