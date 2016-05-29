@@ -37,7 +37,7 @@ Similar to GDB's “set confirm”."
   :type 'boolean
   :group 'realgud)
 
-(defun realgud:prompt-if-prefix-or-safe-mode(message)
+(defun realgud:prompt-if-safe-mode(message)
   "Ask use to confirm current command if in safe mode.
 Use MESSAGE plus a space as the prompt string.  Do not confirm
 when command was run from a menu."
@@ -112,7 +112,7 @@ command.  In safe mode (or with prefix arg), confirm before
 running."
     (interactive (when (consp current-prefix-arg)
                    (list (read-string "Continue args: " nil nil nil t))))
-    (when (or arg (realgud:prompt-if-prefix-or-safe-mode
+    (when (or arg (realgud:prompt-if-safe-mode
                    "Continue to next breakpoint?"))
       (realgud:cmd-remap arg "continue" "continue" "c")))
 
