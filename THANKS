@@ -9,3 +9,9 @@ NYC Emacs Meetup and Nicolas Dudebout - straightening me out on set-keymap-paren
 Kilian Kilger - gdb fixes
 
 Sean Farley - ipdb support
+
+Clément Pit-Claudel - improvements, bug fixes, and emacs compliance too varied to categorize.
+                      See git commits for details
+
+
+amelio-vazquez-reina - documentation
