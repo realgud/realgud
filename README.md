@@ -12,7 +12,7 @@
 
 ### Installation
 
-You can install RealGUD from [MELPA](http://melpa.org/#/getting-started), a repository of Emacs packages. If you don't have MELPA setup, you can add the following to your `.emacs` and restart Emacs:
+You can install RealGUD using [the package manager in Emacs](https://www.gnu.org/software/emacs/manual/html_node/emacs/Packages.html) from [MELPA](http://melpa.org/#/getting-started), a repository of Emacs packages. If you don't have MELPA configured as a source of packages, you can add the following to your `.emacs` and restart Emacs:
 
 ```elisp
 (require 'package)
@@ -20,7 +20,7 @@ You can install RealGUD from [MELPA](http://melpa.org/#/getting-started), a repo
 (package-initialize)
 ```
 
-and then run the following commands to install RealGUD:
+Once you have added MELPA, you can run the following commands to install RealGUD:
 
 ```
 M-x package-refresh-contents RET      (to refresh your package database)
