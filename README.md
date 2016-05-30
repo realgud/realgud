@@ -10,9 +10,9 @@
 
 ## Setup
 
-### MELPA
+### Installation
 
-[MELPA](http://melpa.org/#/getting-started) is a repository of Emacs packages. Skip this step if you already use it. Otherwise, add the following to your `.emacs` and restart Emacs:
+You can install RealGUD using [the package manager in Emacs](https://www.gnu.org/software/emacs/manual/html_node/emacs/Packages.html) from [MELPA](http://melpa.org/#/getting-started), a repository of Emacs packages. If you don't have MELPA configured as a source of packages, you can add the following to your `.emacs` and restart Emacs:
 
 ```elisp
 (require 'package)
@@ -20,14 +20,14 @@
 (package-initialize)
 ```
 
-### RealGUD
-
-Run the following commands to install RealGUD:
+Once you have added MELPA, you can run the following commands to install RealGUD:
 
 ```
 M-x package-refresh-contents RET      (to refresh your package database)
 M-x package-install RET realgud RET   (to install and compile `realgud` and its dependencies)
 ```
+
+Alternatively, you can install RealGUD using [el-get](http://www.emacswiki.org/emacs/el-get) or from source directly. See [this article](https://github.com/rocky/emacs-dbgr/wiki/How-to-Install) in our wiki for more info.
 
 ## Quick start
 
