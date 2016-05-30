@@ -188,6 +188,12 @@ evaluating (realgud-cmdbuf-info-loc-regexp realgud-cmdbuf-info)"
 	      ;; put into a list and iterate over that.
 	      (realgud-track-termination? text)
 	      (setq text-sans-loc (or (realgud-track-loc-remaining text) text))
+	      (realgud-track-bp-enable-disable text-sans-loc
+					       (realgud-cmdbuf-pat "brkpt-enable")
+					       't)
+	      (realgud-track-bp-enable-disable text-sans-loc
+					       (realgud-cmdbuf-pat "brkpt-disable")
+					       nil)
 	      (setq frame-num (realgud-track-selected-frame text))
 	      (setq bp-loc (realgud-track-bp-loc text-sans-loc cmd-mark cmdbuf))
 	      (if bp-loc
@@ -488,8 +494,8 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 )
 
 (defun realgud-track-bp-delete(text &optional cmd-mark cmdbuf ignore-file-re)
-  "Do regular-expression matching see if a breakpoint has been delete inside
-string TEXT. If we match, we will return the location of the breakpoint found
+  "Do regular-expression matching see if a breakpoint has been deleted inside
+string TEXT. If we match, we will return the breakpointlocation of the breakpoint found
 from in command buffer. Otherwise nil is returned."
 
   ; NOTE: realgud-cmdbuf-info is a buffer variable local to the process
@@ -522,6 +528,44 @@ from in command buffer. Otherwise nil is returned."
 			      (realgud-cmdbuf-info-bp-list=
 			       (remove loc (realgud-cmdbuf-info-bp-list info))))
 			))
+		      ;; return the location:
+		      found-loc)
+		  nil))
+	    nil))
+      (and (message "Current buffer %s is not a debugger command buffer"
+		    (current-buffer)) nil)
+      )
+    )
+)
+
+(defun realgud-track-bp-enable-disable(text loc-pat enable? &optional cmdbuf)
+  "Do regular-expression matching see if a breakpoint has been enabled or disabled inside
+string TEXT. If we match, we will do the action to the breakpoint found and return the
+breakpoint location. Otherwise return nil.
+"
+  (setq cmdbuf (or cmdbuf (current-buffer)))
+  (with-current-buffer cmdbuf
+    (if (realgud-cmdbuf?)
+	(let* ((found-loc nil))
+	  (if loc-pat
+	      (let ((bp-num-group (realgud-loc-pat-num loc-pat))
+		    (loc-regexp   (realgud-loc-pat-regexp loc-pat)))
+		(if (and loc-regexp (string-match loc-regexp text))
+		    (let* ((bp-num (string-to-number (match-string bp-num-group text)))
+			   (info realgud-cmdbuf-info)
+			   (bp-list (realgud-cmdbuf-info-bp-list info))
+			   (loc)
+			   )
+		      (while (and (not found-loc) (setq loc (car-safe bp-list)))
+			(setq bp-list (cdr bp-list))
+			(when (eq (realgud-loc-num loc) bp-num)
+			  (setq found-loc loc)
+			  (let ((src-buffer (realgud-loc-goto loc)))
+			    (realgud-cmdbuf-add-srcbuf src-buffer cmdbuf)
+			    (with-current-buffer src-buffer
+			      (realgud-bp-enable-disable-info bp-num enable? loc src-buffer)
+			      )))
+			)
 		      ;; return the location:
 		      found-loc)
 		  nil))

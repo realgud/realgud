@@ -29,10 +29,18 @@
   (defvar test-text)
   (defvar brkpt-del)
   (defvar bp-del-pat)
+  (defvar bp-enable-pat)
+  (defvar bp-disable-pat)
 )
 
 (set (make-local-variable 'bp-del-pat)
       (gethash "brkpt-del" realgud:bashdb-pat-hash))
+
+(set (make-local-variable 'bp-enable-pat)
+      (gethash "brkpt-enable" realgud:bashdb-pat-hash))
+
+(set (make-local-variable 'bp-disable-pat)
+      (gethash "brkpt-disable" realgud:bashdb-pat-hash))
 
 (note "bashdb prompt matching")
 (set (make-local-variable 'prompt-pat)
@@ -106,6 +114,15 @@
 (note "breakpoint delete matching")
 (setq test-text "Removed 1 breakpoint(s).\n")
 (assert-t (numberp (loc-match test-text bp-del-pat)) "breakpoint delete matching")
+
+(note "breakpoint enable matching")
+(setq test-text "Breakpoint entry 4 enabled.\n")
+(assert-t (numberp (loc-match test-text bp-enable-pat)) "breakpoint enable matching")
+
+
+(note "breakpoint disable matching")
+(setq test-text "Breakpoint entry 2 disabled.\n")
+(assert-t (numberp (loc-match test-text bp-disable-pat)) "breakpoint disable matching")
 
 
 (end-tests)

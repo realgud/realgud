@@ -136,15 +136,15 @@ highlighted with FACE."
          (spec `((margin left-margin) ,indicator)))
     (overlay-put overlay 'before-string (propertize text 'display spec))))
 
-(defun realgud-bp-put-icon (pos enabled bp-num &optional buf)
+(defun realgud-bp-put-icon (pos enable? bp-num &optional buf)
   "Add a breakpoint icon at POS according to breakpoint-display-style.
 Use the fringe if available, and the margin otherwise.  Record
-breakpoint status ENABLED and breakpoint number BP-NUM in
+breakpoint status ENABLE? and breakpoint number BP-NUM in
 overlay.  BUF is the buffer that POS refers to; it detaults to
 the current buffer."
   (let* ((margin-text) (face) (margin-icon) (fringe-icon))
     (realgud-set-bp-icons)
-    (if enabled
+    (if enable?
         (setq margin-text "B"
               face 'realgud-bp-enabled-face
               margin-icon realgud-bp-enabled-icon
@@ -163,7 +163,7 @@ the current buffer."
           (realgud-bp-add-margin-indicator ov margin-text margin-icon face))
         (overlay-put ov 'realgud t)
         (overlay-put ov 'realgud-bp-num bp-num)
-        (overlay-put ov 'realgud-bp-enabled enabled)))))
+        (overlay-put ov 'realgud-bp-enabled enable?)))))
 
 (defun realgud-bp-del-icon (pos &optional buf bpnum)
   "Delete breakpoint icon at POS.
@@ -186,5 +186,16 @@ number."
       (let* ((marker (realgud-loc-marker loc))
              (bp-num (realgud-loc-num loc)))
         (realgud-bp-del-icon marker (current-buffer) bp-num))))
+
+(defun realgud-bp-enable-disable-info (bp-num enable? loc buf)
+  "Enable or disable bp with BP-NUM at location LOC in BUF."
+  (if (realgud-loc? loc)
+      (let* ((marker (realgud-loc-marker loc))
+             (bp-num-check (realgud-loc-num loc)))
+	(if (eq bp-num bp-num-check)
+	    (realgud-bp-put-icon marker enable? bp-num buf)
+	  (message "Internal error - bp number found %s doesn't match requested %s"
+		   bp-num-check bp-num)
+	  ))))
 
 (provide-me "realgud-")

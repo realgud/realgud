@@ -1,4 +1,4 @@
-;; Copyright (C) 2015 Free Software Foundation, Inc
+;; Copyright (C) 2015, 2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -61,6 +61,18 @@ realgud-loc-pat struct")
 ;;   Removed 1 breakpoint(s).
 (setf (gethash "brkpt-del" realgud:bashdb-pat-hash)
       realgud:POSIX-debugger-brkpt-del-pat)
+
+;; Regular expression that describes a debugger "disable" (breakpoint) response.
+;; For example:
+;;   Breakpoint entry 4 disabled.
+(setf (gethash "brkpt-disable" realgud:bashdb-pat-hash)
+      realgud:POSIX-debugger-brkpt-disable-pat)
+
+;; Regular expression that describes a debugger "enable" (breakpoint) response.
+;; For example:
+;;   Breakpoint entry 4 enabled.
+(setf (gethash "brkpt-enable" realgud:bashdb-pat-hash)
+      realgud:POSIX-debugger-brkpt-enable-pat)
 
 ;; Regular expression that describes a debugger "backtrace" command line.
 ;; For example:
