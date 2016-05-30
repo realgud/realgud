@@ -500,7 +500,6 @@ of the breakpoints found in command buffer."
   ; family of debuggers -- one at a time -- for the buffer process.
 
   (setq cmdbuf (or cmdbuf (current-buffer)))
-  (message "%s" text)
   (with-current-buffer cmdbuf
     (unless (realgud:track-complain-if-not-in-cmd-buffer cmdbuf t)
       (let* ((loc-pat (realgud-cmdbuf-pat "brkpt-del")))
