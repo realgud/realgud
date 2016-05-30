@@ -37,7 +37,7 @@ function FN-SYM."
 
 (defun buffer-killed? (buffer)
   "Return t if BUFFER is killed."
-  (not (buffer-name buffer)))
+  (not (buffer-live-p buffer)))
 
 (defmacro with-current-buffer-safe (buffer &rest body)
   "Check that BUFFER has not been deleted before calling

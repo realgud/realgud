@@ -56,13 +56,12 @@ to be debugged."
 (realgud-struct-field-setter "realgud-srcbuf-info" "was-read-only?")
 
 (defun realgud-srcbuf-info-set? ()
-  "Return true if `realgud-srcbuf-info' is set."
-  (and (boundp 'realgud-srcbuf-info)
-       realgud-srcbuf-info
+  "Return non-nil if `realgud-srcbuf-info' is set."
+  (and (bound-and-true-p realgud-srcbuf-info)
        (realgud-srcbuf-info? realgud-srcbuf-info)))
 
 (defun realgud-srcbuf? (&optional buffer)
-  "Return true if BUFFER is a debugger source buffer."
+  "Return non-nil if BUFFER is a debugger source buffer."
   (with-current-buffer-safe (or buffer (current-buffer))
     (and (realgud-srcbuf-info-set?)
 	 (not (buffer-killed? (realgud-sget 'srcbuf-info 'cmdproc)))
@@ -94,8 +93,7 @@ to be debugged."
   (src-buffer cmdproc-buffer)
   "Initialize SRC-BUFFER as a source-code buffer for a debugger.
 CMDPROC-BUFFER is the process-command buffer containing the
-debugger.  DEBUGGER-NAME is the name of the debugger as a main
-program name."
+debugger."
   (with-current-buffer cmdproc-buffer
     (set-buffer src-buffer)
     (set (make-local-variable 'realgud-srcbuf-info)
