@@ -22,6 +22,7 @@
 (declare-function realgud-populate-src-buffer-map-plain 'realgud-key)
 (declare-function realgud-srcbuf-info-short-key?=,      'realgud-source)
 (declare-function realgud-srcbuf-info-was-read-only?=   'realgud-source)
+(declare-function realgud-srcbuf-info-prev-local-map=   'realgud-source)
 (declare-function realgud-srcbuf?                       'realgud-buffer-source)
 
 ;; (defvar realgud::tool-bar-map) ;; fully defined in track-mode.el
@@ -103,58 +104,39 @@ minor mode is active.
     ))
 
 (defun realgud-short-key-mode-setup (mode-on?)
-  "Called when entering or leaving `realgud-short-key-mode'. Variable
-MODE-ON? a boolean which specifies if we are going into or out of this mode."
-  (if (realgud-srcbuf?)
-    (let* ((cmdbuf (realgud-get-cmdbuf))
-	   (shortkey-keymap (realgud-get-short-key-mode-map cmdbuf))
-	   )
-
-      ;; If there's a shortkey keymap that is custom
-      ;; for this debugger mode, use it.
-      (when shortkey-keymap
-	(cond
-	 (mode-on?
-	  (set (make-local-variable 'tool-bar-map) realgud:tool-bar-map)
-	  (use-local-map shortkey-keymap))
-	 ('t
-	  (kill-local-variable 'realgud:tool-bar-map)
-	  (use-local-map nil))
-	  ))
-
-      ;; Ensure action only is performed when the state actually is toggled.
-      ;; or when not read-only
-      (when (or (not buffer-read-only)
-		(not (eq (realgud-sget 'srcbuf-info 'short-key?) mode-on?)))
-	;; Save the current state, so we can determine when the
-	;; state is toggled in the future.
-	(when (not (eq (realgud-sget 'srcbuf-info 'short-key?) mode-on?))
-	  (realgud-srcbuf-info-short-key?= mode-on?)
-	  (setq realgud-short-key-mode mode-on?)
-	  (if mode-on?
-	      ;; mode is being turned on.
-	      (progn
-		(realgud-srcbuf-info-was-read-only?= buffer-read-only)
-
-		;; If there's a shortkey keymap that is custom
-		;; for this debugger mode, use it.
-		(if shortkey-keymap (use-local-map shortkey-keymap))
-
-		(local-set-key [m-insert] 'realgud-short-key-mode)
-		(when realgud-srcbuf-lock (setq buffer-read-only t))
-		(run-mode-hooks 'realgud-short-key-mode-hook))
-	    ;; mode is being turned off: restore read-only state.
-	    (setq buffer-read-only
-		  (realgud-sget 'srcbuf-info 'was-read-only?))))
-    ;; (with-current-buffer-safe cmdbuf
-    ;;   (realgud-cmdbuf-info-src-shortkey?= mode-on?)
-    ;;   (realgud-cmdbuf-info-in-srcbuf?= mode-on?)
-    ;;   )
-    ))
-    (progn
-      (setq realgud-short-key-mode nil)
-      (error "buffer %s does not seem to be attached to a debugger"
-	   (buffer-name)))))
+  "Set up or tear down `realgud-short-key-mode'.
+MODE-ON? is a boolean indicating whether the mode should be
+turned on or off."
+  (setq realgud-short-key-mode mode-on?)
+  ;; When enabling, try to find a command buffer to attach to.
+  (when (and realgud-short-key-mode (not (realgud--ensure-attached)))
+    (setq realgud-short-key-mode nil))
+  ;; Now apply mode change
+  (cond
+   ;; Mode was just enabled
+   (realgud-short-key-mode
+    ;; Record info to restore it when disabling
+    (unless (equal (realgud-sget 'srcbuf-info 'short-key?) realgud-short-key-mode)
+      (realgud-srcbuf-info-prev-local-map= (current-local-map))
+      (realgud-srcbuf-info-was-read-only?= buffer-read-only))
+    ;; Apply local map
+    (let ((keymap (realgud-get-short-key-mode-map (realgud-get-cmdbuf))))
+      (when keymap (use-local-map keymap)))
+    ;; Finish setting up
+    (set (make-local-variable 'tool-bar-map) realgud:tool-bar-map)
+    (local-set-key [m-insert] #'realgud-short-key-mode)
+    (setq buffer-read-only realgud-srcbuf-lock)
+    (run-mode-hooks 'realgud-short-key-mode-hook))
+   ;; Mode was just disabled
+   (t
+    (kill-local-variable 'tool-bar-map)
+    (when (realgud-srcbuf-info-set?)
+      ;; Restore previous state
+      (use-local-map (realgud-sget 'srcbuf-info 'prev-local-map))
+      (setq buffer-read-only (realgud-sget 'srcbuf-info 'was-read-only?)))))
+  ;; Record state
+  (when (realgud-srcbuf-info-set?)
+    (realgud-srcbuf-info-short-key?= realgud-short-key-mode)))
 
 (defun realgud-short-key-mode-off ()
   "Turn off `realgud-short-key-mode' in all buffers."
