@@ -494,9 +494,10 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 )
 
 (defun realgud-track-bp-delete(text &optional cmd-mark cmdbuf ignore-file-re)
-  "Do regular-expression matching see if a breakpoint has been deleted inside
-string TEXT. If we match, we will return the breakpointlocation of the breakpoint found
-from in command buffer. Otherwise nil is returned."
+  "Do regular-expression matching see if a breakpoint has been
+deleted inside string TEXT. If we match, we will return the
+breakpoint location of the breakpoint found from in command
+buffer. Otherwise nil is returned."
 
   ; NOTE: realgud-cmdbuf-info is a buffer variable local to the process
   ; running the debugger. It contains a realgud-cmdbuf-info "struct". In
