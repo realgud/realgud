@@ -17,6 +17,10 @@
   (defvar dbg-bt-pat)
   (defvar bps-pat)
   (defvar realgud-bt-pat)
+  (defvar brkpt-del)
+  (defvar bp-del-pat)
+  (defvar bp-enable-pat)
+  (defvar bp-disable-pat)
   (defvar realgud-perl-ignnore-file-re)
 )
 (declare-function __FILE__   'load-relative)
@@ -30,6 +34,15 @@
 (set (make-local-variable 'helper-tb)
      (gethash "lang-backtrace"  realgud:trepanpl-pat-hash))
 
+
+(set (make-local-variable 'bp-del-pat)
+      (gethash "brkpt-del" realgud:trepanpl-pat-hash))
+
+(set (make-local-variable 'bp-enable-pat)
+      (gethash "brkpt-enable" realgud:trepanpl-pat-hash))
+
+(set (make-local-variable 'bp-disable-pat)
+      (gethash "brkpt-disable" realgud:trepanpl-pat-hash))
 
 (note "prompt matching")
 (set (make-local-variable 'prompt-pat)
@@ -85,5 +98,18 @@
 	      (match-string (realgud-loc-pat-line-group
 			     bps-pat) test-text)
 	      "extract breakpoint line number")
+
+;; (note "breakpoint delete matching")
+;; (setq test-text "Deleted breakpoint 1.\n")
+;; (assert-t (numberp (loc-match test-text bp-del-pat)) "breakpoint delete matching")
+
+(note "breakpoint enable matching")
+(setq test-text "Breakpoint entry 4 enabled.\n")
+(assert-t (numberp (loc-match test-text bp-enable-pat)) "breakpoint enable matching")
+
+
+(note "breakpoint disable matching")
+(setq test-text "Breakpoint entry 2 disabled.\n")
+(assert-t (numberp (loc-match test-text bp-disable-pat)) "breakpoint disable matching")
 
 (end-tests)

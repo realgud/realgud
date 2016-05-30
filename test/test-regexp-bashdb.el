@@ -112,17 +112,15 @@
 			 (match-end file-group)))
 
 (note "breakpoint delete matching")
-(setq test-text "Removed 1 breakpoint(s).\n")
+(setq test-text "Deleted breakpoint 1.\n")
 (assert-t (numberp (loc-match test-text bp-del-pat)) "breakpoint delete matching")
 
 (note "breakpoint enable matching")
 (setq test-text "Breakpoint entry 4 enabled.\n")
 (assert-t (numberp (loc-match test-text bp-enable-pat)) "breakpoint enable matching")
 
-
 (note "breakpoint disable matching")
 (setq test-text "Breakpoint entry 2 disabled.\n")
 (assert-t (numberp (loc-match test-text bp-disable-pat)) "breakpoint disable matching")
-
 
 (end-tests)

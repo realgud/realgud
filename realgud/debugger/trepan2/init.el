@@ -65,6 +65,24 @@ realgud-loc-pat struct")
 (setf (gethash "brkpt-del" realgud:trepan2-pat-hash)
       realgud:python-trepan-brkpt-del-pat)
 
+;; Regular expression that describes a debugger "disable" (breakpoint) response.
+;; For example:
+;;   Breakpoint entry 4 disabled.
+(setf (gethash "brkpt-disable" realgud:trepan2-pat-hash)
+      (make-realgud-loc-pat
+       :regexp (format "^Breakpoint entry %s disabled"
+		       realgud:regexp-captured-num)
+       :num 1))
+
+;; Regular expression that describes a debugger "enable" (breakpoint) response.
+;; For example:
+;;   Breakpoint entry 4 enabled.
+(setf (gethash "brkpt-enable" realgud:trepan2-pat-hash)
+      (make-realgud-loc-pat
+       :regexp (format "^Breakpoint entry %s enabled"
+		       realgud:regexp-captured-num)
+       :num 1))
+
 ;; Regular expression for a termination message.
 (setf (gethash "termination" realgud:trepan2-pat-hash)
       "^trepan2: That's all, folks...\n")

@@ -58,7 +58,7 @@ realgud-loc-pat struct")
 
 ;; Regular expression that describes a debugger "delete" (breakpoint) response.
 ;; For example:
-;;   Removed 1 breakpoint(s).
+;;   Deleted breakpoint 1.
 (setf (gethash "brkpt-del" realgud:bashdb-pat-hash)
       realgud:POSIX-debugger-brkpt-del-pat)
 
@@ -98,7 +98,7 @@ realgud-loc-pat struct")
 (setf (gethash "bashdb" realgud-command-hash) realgud:bashdb-command-hash)
 
 (setf (gethash "clear"  realgud:bashdb-command-hash) "clear %l")
-(setf (gethash "quit"   realgud:bashdb-command-hash) "quit!")
+(setf (gethash "quit"   realgud:bashdb-command-hash) "quit")
 (setf (gethash "until"  realgud:bashdb-command-hash) "continue %l")
 
 (provide-me "realgud:bashdb-")
