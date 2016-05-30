@@ -144,18 +144,10 @@ in it with those from CMDPROC-BUFFER"
 	(realgud-srcbuf-info-cmdproc= cmdproc-buffer)
       (realgud-srcbuf-init src-buffer cmdproc-buffer))))
 
-;; FIXME: rewrite to add prompt function that only suggests
-;; command buffers;
-(defun realgud:cmdbuf-associate(cmdbuf-name)
-  "Associate a command buffer with for the current buffer which is
-assumed to be a source-code buffer"
-  (interactive "brealgud command buffer: ")
-  (let ((cmdbuf (get-buffer cmdbuf-name)))
-    (unless (realgud-cmdbuf? cmdbuf)
-      (error "%s doesn't smell like a command buffer" cmdbuf-name))
-    (realgud-srcbuf-init-or-update (current-buffer) cmdbuf )
-    (realgud-short-key-mode-setup 't)
-  ))
+(defun realgud:cmdbuf-associate ()
+  "Associate a command buffer with the current (source-code) buffer."
+  ;; realgud-short-key-mode-setup will attempt to associate if needed.
+  (realgud-short-key-mode-setup t))
 
 (defun realgud-srcbuf-bp-list(&optional buffer)
   "Return a list of breakpoint loc structures that reside in
