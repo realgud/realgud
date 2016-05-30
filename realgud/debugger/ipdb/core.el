@@ -195,63 +195,42 @@ breakpoints, etc.)."
 ;;   (setcdr (assq 'ipdb-debugger-support-minor-mode minor-mode-map-alist)
 ;; 	  ipdb-debugger-support-minor-mode-map-when-deactive))
 
+(defconst realgud:ipdb-complete-script
+  (concat
+   "from IPython import get_ipython;"
+   "comp = '''%s''';"
+   "prefix, candidates = get_ipython().Completer.complete(line_buffer = comp);"
+   "print(';'.join([prefix] + candidates))"))
+
 (defun realgud:ipdb-backend-complete ()
   "Send a command to the ipdb buffer and parse the output.
 
 The idea here is to rely on the
 `comint-redirect-send-command-to-process' function to send a
-python command that will return the completions for the given
-input. Specifically, here is the python code:
-
->>> from IPython import get_ipython
->>> comp = '''%s'''
->>> ';'.join(get_ipython().complete(comp.split()[-1] if len(comp)else '', comp)[1])
-
-This returns a list of strings that match the current word (hence
-why we need the `bounds-of-thing-at-point')."
+python command `realgud:ipdb-complete-script' that will return
+the completions for the given input."
   (interactive)
   (let ((buffer (current-buffer))
         (cmdbuf (realgud-get-cmdbuf))
         (process (get-buffer-process (current-buffer)))
-        (end-position (point))
-        (bounds (bounds-of-thing-at-point 'word))
-        )
+        (start-pos (save-excursion (comint-goto-process-mark) (point)))
+        (end-pos (point)))
 
     ;; get the input string
-    (save-excursion
-      (comint-goto-process-mark)
-      (let* ((start-position (point))
-             (input-str (buffer-substring-no-properties start-position
-                                                        end-position))
-             )
-        (when (not (= (length input-str) 0))
-          (let* ((python-str (concat
-                              "from IPython import get_ipython; "
-                              "comp = '''%s''';"
-                              "';'.join(get_ipython()"
-                              ".complete(comp.split()[-1] if len(comp)"
-                              "else '', comp)[1])"))
-                 (command-str (format python-str input-str))
-                 (output-str (with-temp-buffer
-                               (let ((tmpbuf (current-buffer)))
-                                 (comint-redirect-send-command-to-process
-                                  command-str tmpbuf process nil t)
-                                 ;; Wait for the process to complete
-                                 (set-buffer (process-buffer process))
-                                 (while (null comint-redirect-completed)
-                                   (accept-process-output nil 0 5)) ;; wait 5ms
-                                 (set-buffer tmpbuf)
-                                 (buffer-substring (1+ (point-min))
-                                                   (1- (1- (point-max)))))))
-                 )
-
-            ;; we need to change the start position to that of the current word
-            ;; since python returns just the word (and not the whole line)
-            (if (car bounds) (setq start-position (car bounds)))
-
-            (list start-position
-                  end-position
-                  (split-string output-str ";"))))))))
+    (when (> end-pos start-pos)
+      (let* ((input-str (buffer-substring-no-properties start-pos end-pos))
+             (command-str (format realgud:ipdb-complete-script input-str))
+             (output-str (with-temp-buffer
+                           (comint-redirect-send-command-to-process
+                            command-str (current-buffer) process nil t)
+                           ;; Wait for the process to complete
+                           (with-current-buffer (process-buffer process)
+                             (while (null comint-redirect-completed)
+                               (accept-process-output nil 0 5))) ;; wait 5ms
+                           (buffer-substring (point-min) (1- (point-max)))))
+             (output-values (split-string output-str ";"))
+             (prefix (car output-values)))
+        (list (- end-pos (length prefix)) end-pos (cdr output-values))))))
 
 (defun realgud:ipdb-completion-at-point ()
   (let ((ipdb (realgud:ipdb-backend-complete)))
