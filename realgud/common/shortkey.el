@@ -69,8 +69,9 @@
 ;; Implementation note: This is the mode that does all the work, it's
 ;; local to the buffer that is affected.
 (define-minor-mode realgud-short-key-mode
-  "Minor mode with short keys for source buffers for the `dbgr' debugger.
-The buffer is read-only when the minor mode is active.
+  "Minor mode with short keys for source buffers for the `realgud' debugger.
+If `realgud-srcbuf-lock' is set, the buffer is read-only when the
+minor mode is active.
 
 \\{realgud:shortkey-mode-map}"
   :group 'realgud
@@ -162,7 +163,7 @@ MODE-ON? a boolean which specifies if we are going into or out of this mode."
       (dolist (buf (buffer-list))
         (set-buffer buf)
         (when realgud-short-key-mode
-	  (realgud-short-key-mode-setup 0)))))
+	  (realgud-short-key-mode -1)))))
 
 (defun realgud-populate-src-buffer-map (map)
   "Bind all common keys and menu used in the dbgr src buffers.
