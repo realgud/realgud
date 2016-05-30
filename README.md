@@ -27,7 +27,7 @@ M-x package-refresh-contents RET      (to refresh your package database)
 M-x package-install RET realgud RET   (to install and compile `realgud` and its dependencies)
 ```
 
-Alternatively, you can also install RealGUD using [el-get](http://www.emacswiki.org/emacs/el-get) or from source directly. See [this article](https://github.com/rocky/emacs-dbgr/wiki/How-to-Install) on our wiki for more info.
+Alternatively, you can install RealGUD using [el-get](http://www.emacswiki.org/emacs/el-get) or from source directly. See [this article](https://github.com/rocky/emacs-dbgr/wiki/How-to-Install) in our wiki for more info.
 
 ## Quick start
 
