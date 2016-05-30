@@ -72,12 +72,13 @@ to be debugged."
 (defun realgud--read-cmd-buf (prompt)
   "Read a command buffer, prompting with PROMPT."
   (let* ((cmd-bufs (cl-remove-if-not #'realgud-cmdbuf? (buffer-list)))
-         (cmd-buf-names (mapcar #'buffer-name cmd-bufs)))
-    (when cmd-buf-names
+         (buf-names (mapcar #'buffer-name cmd-bufs))
+         (default (car buf-names)))
+    (when buf-names
       ;; Use completing-read instead of read-buffer: annoyingly, ido's
       ;; read-buffer ignores predicates.
-      (get-buffer (completing-read prompt cmd-buf-names nil t
-                                   nil nil (car cmd-buf-names))))))
+      (setq prompt (format "%s (default: %s): " prompt default))
+      (get-buffer (completing-read prompt buf-names nil t nil nil default)))))
 
 (defun realgud--ensure-attached (&optional src-buf)
   "Try to attach SRC-BUF to a command buffer.
@@ -87,7 +88,7 @@ non-nil if association was successful.  SRC-BUF defaults to
 current buffer."
   (setq src-buf (or src-buf (current-buffer)))
   (unless (realgud-srcbuf? src-buf)
-    (let ((cmd-buf (realgud--read-cmd-buf "Command buffer to associate to: ")))
+    (let ((cmd-buf (realgud--read-cmd-buf "Command buffer to attach to")))
       (if cmd-buf
           (realgud-srcbuf-init src-buf cmd-buf)
         (message "No debugger process found to attach %s to" (buffer-name)))))
