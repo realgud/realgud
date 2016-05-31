@@ -37,7 +37,9 @@
 (defun my/load-RealGUD ()
   "Load RealGUD."
   (package-initialize)
-  (load-library "realgud"))
+  (load-library "realgud")
+  (setq realgud-bp-fringe-indicator-style
+        '(realgud-bp-filled . realgud-bp-hollow)))
 
 (defvar my/source-buffer nil)
 (defvar my/command-buffer nil)
