@@ -237,7 +237,7 @@ If no argument specified use 0 or the most recent frame."
     "Move the current frame to a newer (more recent) frame.
 With a numeric argument move that many levels forward."
     (interactive "p")
-    (realgud:cmd-run-command arg "down" "down %p" "<" t t)
+    (realgud:cmd-run-command arg "down" "down %p" t t)
 )
 
 (defun realgud:cmd-next(&optional arg)
