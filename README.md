@@ -12,7 +12,7 @@
 
 ### Installation
 
-You can install RealGUD using [the package manager in Emacs](https://www.gnu.org/software/emacs/manual/html_node/emacs/Packages.html) from [MELPA](http://melpa.org/#/getting-started), a repository of Emacs packages. If you don't have MELPA configured as a source of packages, you can add the following to your `.emacs` and restart Emacs:
+You can install RealGUD from [MELPA](http://melpa.org/#/getting-started), a repository of Emacs packages. If you don't have MELPA set up, add the following to your `.emacs` and restart Emacs:
 
 ```elisp
 (require 'package)
@@ -20,7 +20,7 @@ You can install RealGUD using [the package manager in Emacs](https://www.gnu.org
 (package-initialize)
 ```
 
-Once you have added MELPA, you can run the following commands to install RealGUD:
+You can then run the following commands to install RealGUD:
 
 ```
 M-x package-refresh-contents RET      (to refresh your package database)
@@ -35,7 +35,7 @@ Use `M-x load-library RET realgud RET` to load RealGUD.
 
 ### Launching the debugger
 
-Open a source file, then use `M-x realgud:<debugger-name>` to start your favorite debugger (for example, you can use `M-x realgud:pdb` to launch PDB, a Python debugger).  RealGUD opens two windows: the *command window* (showing the debugger's REPL), and the *source window*, showing your code.  An solid arrow `▶` indicates the current line in the source window.  Grayed out arrows indicate previous positions.
+Open a source file, then use `M-x realgud:<debugger-name>` to start your favorite debugger (for example, you can use `M-x realgud:pdb` to launch PDB, a Python debugger).  RealGUD opens two windows: the *command window* (showing the debugger's REPL), and the *source window*, showing your code (with some debuggers, such as `realgud:gdb`, this window does not appear until you type `start` in the *command window*).  An solid arrow `▶` indicates the current line in the source window.  Grayed out arrows indicate previous positions.
 
 ### Using the debugger
 
@@ -97,7 +97,7 @@ RealGUD supports [many external debuggers](https://github.com/rocky/emacs-dbgr/w
 
 ### Tracking an existing debugger process
 
-Use a `M-x realgud-track-mode` inside an existing [shell](http://www.gnu.org/software/emacs/manual/html_node/emacs/Shell.html), or [eshell](https://www.gnu.org/software/emacs/manual/html_mono/eshell.html) buffer to track an already-running debugger process.
+Use `M-x realgud-track-mode` inside an existing [shell](http://www.gnu.org/software/emacs/manual/html_node/emacs/Shell.html), or [eshell](https://www.gnu.org/software/emacs/manual/html_mono/eshell.html) buffer to track an already-running debugger process.
 
 ### RealGUD's wiki
 
