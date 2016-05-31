@@ -29,22 +29,18 @@ found"
   "Return the column of the first column position of SOURCE-TEXT
 at LINE-NUMBER or nil if it is not there"
   (condition-case nil
-      (if (file-exists-p filename)
-	  (let ((file-buffer (find-file-noselect filename)))
-	    (with-current-buffer-safe file-buffer
-	      (save-excursion
-		(goto-char (point-min))
-		(forward-line (1- line-number))
-		(unless no-strip-blanks
-		  (setq source-text (realgud:strip source-text)))
-		(if (search-forward source-text (point-at-eol))
-		    (- (current-column)
-		       (length source-text))))))
-	;; else
-	nil)
-    (error nil))
-)
-
+      (when (and source-text (file-exists-p filename))
+        (let ((file-buffer (find-file-noselect filename)))
+          (with-current-buffer-safe file-buffer
+            (save-excursion
+              (goto-char (point-min))
+              (forward-line (1- line-number))
+              (unless no-strip-blanks
+                (setq source-text (realgud:strip source-text)))
+              (when (search-forward source-text (point-at-eol))
+                (goto-char (match-beginning 0))
+                (current-column))))))
+    (error nil)))
 
 ;; FIXME: should allow column number to be passed in.
 (defun realgud:file-loc-from-line(filename line-number
