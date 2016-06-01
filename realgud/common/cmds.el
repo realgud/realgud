@@ -97,6 +97,7 @@ with other motion initiated by debugger messages."
     (puthash "eval" "eval %s" hash)
     (puthash "finish" "finish" hash)
     (puthash "frame" "frame %p" hash)
+    (puthash "jump" "jump %l" hash)
     (puthash "kill" "kill" hash)
     (puthash "next" "next %p" hash)
     (puthash "repeat-last" "\n" hash)
@@ -180,6 +181,12 @@ With prefix argument LINE-NUMBER, prompt for line number."
   (realgud:cmd--with-line-override line-number
                                    (realgud:cmd-run-command line-number "clear")))
 
+(defun realgud:cmd-jump(&optional line-number)
+  "Jump to current line.
+With prefix argument LINE-NUMBER, prompt for line number."
+  (interactive (realgud:cmd--line-number-from-prefix-arg))
+  (realgud:cmd--with-line-override line-number
+    (realgud:cmd-run-command (line-number-at-pos) "jump")))
 
 (defun realgud:cmd-continue(&optional arg)
     "Continue execution.
