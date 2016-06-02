@@ -51,6 +51,39 @@ when command was run from a menu."
         t)
     t))
 
+(defun realgud:cmd--line-number-from-prefix-arg ()
+  "Guess or read a line number based on prefix arg.
+Returns (nil) for current line, and a list whose car is the line
+number otherwise."
+  (cond
+   ((numberp current-prefix-arg)
+    current-prefix-arg)
+   ((consp current-prefix-arg)
+    (let* ((min-line (save-excursion
+                       (goto-char (point-min))
+                       (line-number-at-pos)))
+           (max-line (save-excursion
+                       (goto-char (point-max))
+                       (line-number-at-pos)))
+           (prompt (format "Line number (%d..%d)? " min-line max-line))
+           (picked-line 0))
+      (while (not (<= min-line picked-line max-line))
+        (setq picked-line (read-number prompt)))
+      (list picked-line)))))
+
+(defmacro realgud:cmd--with-line-override (line &rest body)
+  "Run BODY with %l format specifier bound to LINE.
+This is needed because going to LINE explicitly would interfere
+with other motion initiated by debugger messages."
+  (declare (indent 1)
+           (debug t))
+  (let ((line-var (make-symbol "--line--")))
+    `(let* ((,line-var ,line)
+            (realgud-expand-format-overrides
+             (cons (cons ?l (and ,line-var (number-to-string ,line-var)))
+                   realgud-expand-format-overrides)))
+       ,@body)))
+
 (defconst realgud-cmd:default-hash
   (let ((hash (make-hash-table :test 'equal)))
     (puthash "backtrace" "backtrace" hash)
@@ -122,8 +155,8 @@ ARG, CMD-NAME, DEFAULT-CMD-TEMPLATE are as in `realgud:cmd-run-command'.
 KEY is ignored.  NO-RECORD?, FRAME-SWITCH?, REALGUD-PROMPTS? are
 as in `realgud:cmd-run-command'."
   (realgud:cmd-run-command arg cmd-name default-cmd-template
-                   no-record? frame-switch?
-                   realgud-prompts?))
+                           no-record? frame-switch?
+                           realgud-prompts?))
 
 (make-obsolete 'realgud:cmd-remap 'realgud:cmd-run-command "1.3.1")
 
@@ -133,15 +166,20 @@ as in `realgud:cmd-run-command'."
   (realgud:cmd-run-command arg "backtrace")
   )
 
-(defun realgud:cmd-break(arg)
-  "Set a breakpoint at the current line"
-  (interactive "p")
-  (realgud:cmd-run-command arg "break"))
+(defun realgud:cmd-break (&optional line-number)
+  "Set a breakpoint at the current line.
+With prefix argument LINE-NUMBER, prompt for line number."
+  (interactive (realgud:cmd--line-number-from-prefix-arg))
+  (realgud:cmd--with-line-override line-number
+                                   (realgud:cmd-run-command line-number "break")))
 
-(defun realgud:cmd-clear(line-num)
-  "Delete breakpoint at the current line"
-  (interactive "p")
-  (realgud:cmd-run-command line-num "clear"))
+(defun realgud:cmd-clear(&optional line-number)
+  "Delete breakpoint at the current line.
+With prefix argument LINE-NUMBER, prompt for line number."
+  (interactive (realgud:cmd--line-number-from-prefix-arg))
+  (realgud:cmd--with-line-override line-number
+                                   (realgud:cmd-run-command line-number "clear")))
+
 
 (defun realgud:cmd-continue(&optional arg)
     "Continue execution.
@@ -207,7 +245,7 @@ be found on the current line, prompt for a breakpoint number."
     (let ((existing-bp-num (realgud:bpnum-on-current-line)))
       (if existing-bp-num
           (realgud:cmd-delete existing-bp-num)
-        (realgud:cmd-break pos)))))
+        (realgud:cmd-break)))))
 
 (defun realgud-cmds--mouse-add-remove-bp (event)
   "Add or delete breakpoint on line pointed to by EVENT.
