@@ -116,6 +116,13 @@ results into the command buffer."
 (defun realgud-send-command-invisible (command-str)
   (realgud-send-command command-str (function realgud-send-command-process)))
 
+(defvar realgud-expand-format-overrides nil
+  "An alist of overrides for `realgud-expand-format'.
+Each element should have the form (KEY . VALUE).  Key should be a
+single-character escape accepted by `realgud-expand-format';
+value should be a string.  Every time %KEY is encountered in te
+string, it will be replaced by VALUE instead of being processed
+as usual.  If VALUE is nil, the override is ignored.")
 
 (defun realgud-expand-format (fmt-str &optional opt-str opt-buffer)
   "Expands commands format characters inside FMT-STR.
@@ -148,6 +155,7 @@ taken from current buffer, or OPT-BUFFER if non-nil.  Some
 	      (concat
 	       result (match-string 1 fmt-str)
 	       (cond
+		((cdr (assq key realgud-expand-format-overrides)))
 		((eq key ?d)
 		 (or (and src-file-name
 			  (file-name-directory src-file-name))
