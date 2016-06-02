@@ -128,7 +128,7 @@ as in `realgud:cmd-run-command'."
 (make-obsolete 'realgud:cmd-remap 'realgud:cmd-run-command "1.3.1")
 
 (defun realgud:cmd-backtrace(arg)
-  "Show the current call stack"
+  "Show the current call stack."
   (interactive "p")
   (realgud:cmd-run-command arg "backtrace")
   )
@@ -254,11 +254,10 @@ If no argument specified use 0 or the most recent frame."
     (realgud:cmd-run-command arg "frame" nil t t)
 )
 
-(defun realgud:cmd-kill(arg)
-  "kill debugger process"
-  (interactive "p")
-  (realgud:cmd-run-command arg "kill" nil nil nil t)
-  )
+(defun realgud:cmd-kill()
+  "Kill debugger process."
+  (interactive)
+  (realgud:cmd-run-command nil "kill" nil nil nil t))
 
 (defun realgud:cmd-newer-frame(&optional arg)
     "Move the current frame to a newer (more recent) frame.
@@ -280,8 +279,8 @@ what is getting stepped."
     (interactive "p")
     (realgud:cmd-run-command count "next"))
 
-(defun realgud:cmd-next-no-arg(&optional arg)
-    "Step one source line at current call level.
+(defun realgud:cmd-next-no-arg()
+  "Step one source line at current call level.
 
 The definition of 'next' is debugger specific so, see the
 debugger documentation for a more complete definition of what is
@@ -296,23 +295,20 @@ With a numeric argument move that many levels back."
     (realgud:cmd-run-command arg "up" nil t t)
 )
 
-(defun realgud:cmd-repeat-last(&optional arg)
-    "Repeat the last command (or generally what <enter> does."
-    (interactive "")
-    (realgud:cmd-run-command arg "repeat-last" nil t nil t)
-)
+(defun realgud:cmd-repeat-last()
+  "Repeat the last command (or generally what <enter> does."
+  (interactive)
+  (realgud:cmd-run-command nil "repeat-last" nil t nil t))
 
-(defun realgud:cmd-restart(&optional arg)
-    "Restart execution."
-    (interactive "")
-    (realgud:cmd-run-command arg "restart" nil t nil t)
-)
+(defun realgud:cmd-restart()
+  "Restart execution."
+  (interactive)
+  (realgud:cmd-run-command nil "restart" nil t nil t))
 
-(defun realgud:cmd-shell(&optional arg)
-    "Drop to a shell."
-    (interactive "")
-    (realgud:cmd-run-command arg "shell")
-)
+(defun realgud:cmd-shell()
+  "Drop to a shell."
+  (interactive)
+  (realgud:cmd-run-command nil "shell"))
 
 (defun realgud:cmd-step(&optional count)
     "Step one source line.
@@ -372,10 +368,10 @@ continuing execution."
 	    (unless (and cmd-hash (setq cmd (gethash "quit" cmd-hash)))
 	      (setq cmd "quit"))
 	    )
-	  (realgud-command cmd arg 't)
+          (realgud-command cmd arg t)
 	  (if cmdbuf (realgud:terminate cmdbuf))
 	  )
-      ; else
+      ;; else
       (realgud:terminate-srcbuf buffer)
       )
     )
