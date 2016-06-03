@@ -14,7 +14,7 @@
 (declare-function realgud-cmdbuf?                       'realgud-buffer-command)
 (declare-function realgud:debugger-name-transform       'realgud-helper)
 (declare-function realgud-get-cmdbuf                    'realgud-buffer-helper)
-(declare-function realgud:loc-follow                    'realgud-loc)
+(declare-function realgud:follow-mark                   'realgud-follow)
 (declare-function realgud-loc-hist-item-at              'realgud-lochist)
 (declare-function realgud-cmdbuf-loc-hist               'realgud-command)
 (declare-function realgud-populate-debugger-menu        'realgud-menu)
@@ -148,7 +148,7 @@ turned on or off."
 	  (realgud-short-key-mode -1)))))
 
 (defun realgud-populate-src-buffer-map (map)
-  "Bind all common keys and menu used in the dbgr src buffers.
+  "Bind all common keys and menu used in src buffers.
 This includes the keys bound to `realgud-key-prefix' (typically C-x
 C-a)."
   (realgud-populate-src-buffer-map-plain map)
@@ -165,7 +165,7 @@ C-a)."
       (let* ((loc-hist (realgud-cmdbuf-loc-hist cmdbuf))
 	    (loc (realgud-loc-hist-item-at loc-hist (- num)))
 	    (loc-marker (realgud-loc-marker loc)))
-	(realgud:loc-follow loc-marker))
+	(realgud:follow-mark loc-marker))
       ;; else
 	(message "No command buffer associated with this buffer")
     )))
@@ -173,34 +173,32 @@ C-a)."
 
 (defun realgud:goto-loc-hist-4 ()
   "Go to position 4th from the newest position."
-  (interactive "")
+  (interactive)
   (realgud:goto-loc-hist 4))
 
 (defun realgud:goto-loc-hist-5 ()
   "Go to position 5th from the newest position."
-  (interactive "")
+  (interactive)
   (realgud:goto-loc-hist 5))
 
 (defun realgud:goto-loc-hist-6 ()
-  (interactive "")
+  "Go to position 6th from the newest position."
+  (interactive)
   (realgud:goto-loc-hist 6))
 
 (defun realgud:goto-loc-hist-7 ()
   "Go to position 7th from the newest position."
-  (interactive "")
+  (interactive)
   (realgud:goto-loc-hist 7))
 
 (defun realgud:goto-loc-hist-8 ()
   "Go to position 8th from the newest position."
-  (interactive "")
+  (interactive)
   (realgud:goto-loc-hist 8))
 
 (defun realgud:goto-loc-hist-9 ()
   "Go to position 9th from the newest position."
-  (interactive "")
+  (interactive)
   (realgud:goto-loc-hist 9))
 
 (provide-me "realgud-")
-
-;;; Local variables:
-;;; End:
