@@ -41,14 +41,14 @@
 ;; Oh, and because global variables are largely banned, we can support
 ;; several simultaneous debug sessions.
 ;;
-;; See URL `https://github.com/rocky/emacs-dbgr/wiki/Features' for
+;; See URL `https://github.com/realgud/realgud/wiki/Features' for
 ;; features.
 
-;; See URL `https://github.com/rocky/emacs-dbgr/wiki/Debuggers-Supported' for
+;; See URL `https://github.com/realgud/realgud/wiki/Debuggers-Supported' for
 ;; debuggers we can handle.
 
 ;; If you don't see your favorite debugger, see URL
-;; `https://github.com/rocky/emacs-dbgr/wiki/How-to-add-a-new-debugger/'
+;; `https://github.com/realgud/realgud/wiki/How-to-add-a-new-debugger/'
 ;; for how you can add your own.
 
 ;; The debugger is run out of a comint process buffer, or you can use
@@ -59,7 +59,7 @@
 ;; installed.  If you install via melpa (`package-install') or
 ;; `el-get', these will be pulled in automatically.  See the
 ;; installation instructions URL
-;; `https://github.com/rocky/emacs-dbgr/wiki/How-to-Install' for all
+;; `https://github.com/realgud/realgud/wiki/How-to-Install' for all
 ;; the ways to to install and more details on installation.
 
 ;;; Code:
