@@ -3,7 +3,7 @@
 ;; Author: Rocky Bernstein
 ;; Version: 1.3.1
 ;; Package-Requires: ((load-relative "1.0") (list-utils "0.4.2") (loc-changes "1.1") (test-simple  "1.0"))
-;; URL: http://github.com/rocky/emacs-dbgr
+;; URL: http://github.com/realgud/realgud/
 ;; Compatibility: GNU Emacs 24.x
 
 ;; Copyright (C) 2015, 2016 Free Software Foundation, Inc
@@ -25,6 +25,14 @@
 
 ;;; Commentary:
 
+;; A modular GNU Emacs front-end for interacting with external debuggers.
+;;
+;; Quick start: https://github.com/realgud/realgud/
+;;
+;; See URL `https://github.com/realgud/realgud/wiki/Features' for features, and
+;; URL `https://github.com/realgud/realgud/wiki/Debuggers-Supported' for
+;; debuggers we can handle.
+;;
 ;; Once upon a time in an Emacs far far away and a programming-style
 ;; deservedly banished, there was a monolithic Cathederal-like
 ;; debugger front-end called gub.  This interfaced with a number of
@@ -40,12 +48,6 @@
 ;;
 ;; Oh, and because global variables are largely banned, we can support
 ;; several simultaneous debug sessions.
-;;
-;; See URL `https://github.com/realgud/realgud/wiki/Features' for
-;; features.
-
-;; See URL `https://github.com/realgud/realgud/wiki/Debuggers-Supported' for
-;; debuggers we can handle.
 
 ;; If you don't see your favorite debugger, see URL
 ;; `https://github.com/realgud/realgud/wiki/How-to-add-a-new-debugger/'
