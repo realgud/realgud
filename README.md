@@ -101,8 +101,8 @@ Use `M-x realgud-track-mode` inside an existing [shell](http://www.gnu.org/softw
 
 Browse the [wiki](http://wiki.github.com/realgud/realgud/) for more information about [setting up](http://wiki.github.com/realgud/realgud/how-to-install), [using realgud](http://wiki.github.com/realgud/realgud/how-to-use), [exploring features](https://github.com/realgud/realgud/wiki/Features), and lots more.
 
-[travis-image]: https://img.shields.io/travis/rocky/emacs-dbgr.svg
-[travis-url]: https://travis-ci.org/rocky/emacs-dbgr
+[travis-image]: https://api.travis-ci.org/realgud/realgud.svg?branch=master
+[travis-url]: https://travis-ci.org/realgud/realgud
 [melpa-stable-image]: http://stable.melpa.org/packages/realgud-badge.svg
 [melpa-stable]: http://stable.melpa.org/#/realgud
 [melpa-image]: http://melpa.org/packages/realgud-badge.svg
