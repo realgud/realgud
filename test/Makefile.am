@@ -50,11 +50,11 @@ check-elget: $(EL_GET_CHECK_FILES)
 
 #: Run all tests with minimum verbosity
 check-short:
-	$(MAKE) check 2>&1  | ruby ../make-check-filter.rb
+	$(MAKE) check 2>&1  | ruby make-check-filter.rb
 
 #: Run all tests with minimum verbosity via el-get
 check-short-elget:
-	$(MAKE) check-elget 2>&1  | ruby ../make-check-filter.rb
+	$(MAKE) check-elget 2>&1  | ruby make-check-filter.rb
 
 test-%.run:
 	(cd $(top_srcdir)/test && $(EMACS) --batch --no-site-file --no-splash --load $(@:.run=.el))

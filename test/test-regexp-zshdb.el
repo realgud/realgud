@@ -7,6 +7,24 @@
 
 (test-simple-start)
 
+(eval-when-compile
+  (defvar file-group)
+  (defvar frame-re)
+  (defvar line-group)
+  (defvar num-group)
+  (defvar test-pos)
+  (defvar prompt-pat)
+  (defvar realgud:zshdb-pat-hash)
+  (defvar realgud-pat-bt)
+  (defvar test-s1)
+  (defvar test-text)
+  (defvar brkpt-del)
+  (defvar bp-del-pat)
+)
+
+(set (make-local-variable 'bp-del-pat)
+      (gethash "brkpt-del" realgud:zshdb-pat-hash))
+
 (setq prompt-pat (gethash "prompt"             realgud:zshdb-pat-hash))
 (setq frame-pat  (gethash "debugger-backtrace" realgud:zshdb-pat-hash))
 
@@ -18,7 +36,7 @@
 (note "zshdb frame matching")
 
 (note "debugger-backtrace")
-(setq s1
+(setq test-s1
       "->0 in file `/etc/apparmor/functions' at line 24
 ##1 /etc/apparmor/functions called from file `/etc/init.d/apparmor' at line 35
 ##2 /etc/init.d/apparmor called from file `/usr/local/bin/zshdb' at line 129
@@ -27,44 +45,48 @@
 (setq num-group (realgud-loc-pat-num frame-pat))
 (setq file-group (realgud-loc-pat-file-group frame-pat))
 (setq line-group (realgud-loc-pat-line-group frame-pat))
-(assert-equal 0 (string-match frame-re s1))
-(assert-equal "0" (substring s1
+(assert-equal 0 (string-match frame-re test-s1))
+(assert-equal "0" (substring test-s1
 			     (match-beginning num-group)
 			     (match-end num-group)))
 (assert-equal "/etc/apparmor/functions"
-	      (substring s1
+	      (substring test-s1
 			 (match-beginning file-group)
 			 (match-end file-group)))
 (assert-equal "24"
-	      (substring s1
+	      (substring test-s1
 			 (match-beginning line-group)
 			 (match-end line-group)))
 (setq pos (match-end 0))
 
-(assert-equal 49 (string-match frame-re s1 pos))
-(assert-equal "1" (substring s1
+(assert-equal 49 (string-match frame-re test-s1 pos))
+(assert-equal "1" (substring test-s1
 			     (match-beginning num-group)
 			     (match-end num-group)))
 (assert-equal "/etc/init.d/apparmor"
-	      (substring s1
+	      (substring test-s1
 			 (match-beginning file-group)
 			 (match-end file-group)))
 (assert-equal "35"
-	      (substring s1
+	      (substring test-s1
 			 (match-beginning line-group)
 			 (match-end line-group)))
 (setq pos (match-end 0))
-(assert-equal 128 (string-match frame-re s1 pos))
-(assert-equal "2" (substring s1
+(assert-equal 128 (string-match frame-re test-s1 pos))
+(assert-equal "2" (substring test-s1
 			     (match-beginning num-group)
 			     (match-end num-group)))
 (assert-equal "/usr/local/bin/zshdb"
-	      (substring s1
+	      (substring test-s1
 			 (match-beginning file-group)
 			 (match-end file-group)))
 (assert-equal "129"
-	      (substring s1
+	      (substring test-s1
 			 (match-beginning line-group)
 			 (match-end line-group)))
+
+(note "breakpoint delete matching")
+(setq test-text "Deleted breakpoint 1\n")
+(assert-t (numberp (loc-match test-text bp-del-pat)) "breakpoint delete matching")
 
 (end-tests)
