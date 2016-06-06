@@ -6,7 +6,7 @@
 (declare-function realgud-loc-hist-item-at       'realgud-lochist)
 (declare-function buffer-killed?                 'helper)
 (declare-function realgud-loc-cmd-marker         'realgud-loc)
-(declare-function realgud:loc-follow             'realgud-loc)
+(declare-function realgud:follow-mark            'realgud-follow)
 (declare-function realgud-loc-marker             'realgud-loc)
 
 ;; Bitmap for hollow overlay-arrow in fringe
@@ -168,14 +168,14 @@ session which should also erase those fringe arrows."
   "Goto the position stored in realgud-overlay-arrow1"
   (interactive "")
   (if realgud-overlay-arrow1
-      (realgud:loc-follow realgud-overlay-arrow1))
+      (realgud:follow-mark realgud-overlay-arrow1))
   )
 
 (defun realgud-goto-arrow2()
   "Goto the position stored in realgud-overlay-arrow2"
   (interactive "")
   (if realgud-overlay-arrow2
-      (realgud:loc-follow realgud-overlay-arrow2))
+      (realgud:follow-mark realgud-overlay-arrow2))
   )
 
 
@@ -183,7 +183,7 @@ session which should also erase those fringe arrows."
   "Goto the position stored in realgud-overlay-arrow3"
   (interactive "")
   (if realgud-overlay-arrow3
-      (realgud:loc-follow realgud-overlay-arrow3))
+      (realgud:follow-mark realgud-overlay-arrow3))
   )
 
 (defun realgud-recenter-arrow1()
@@ -205,15 +205,15 @@ session which should also erase those fringe arrows."
     (with-current-buffer-safe buffer
       (if (and realgud-overlay-arrow3
 	       (eq (marker-buffer realgud-overlay-arrow3) buffer))
-	  (realgud:loc-follow realgud-overlay-arrow3)
+	  (realgud:follow-mark realgud-overlay-arrow3)
 	)
       (if (and realgud-overlay-arrow2
 	       (eq (marker-buffer realgud-overlay-arrow2) buffer))
-	  (realgud:loc-follow realgud-overlay-arrow2)
+	  (realgud:follow-mark realgud-overlay-arrow2)
       )
       (if (and realgud-overlay-arrow1
 	       (eq (marker-buffer realgud-overlay-arrow1) buffer))
-	  (realgud:loc-follow realgud-overlay-arrow1)
+	  (realgud:follow-mark realgud-overlay-arrow1)
 	)
       (redisplay)
       )

@@ -25,7 +25,7 @@ M-x package-refresh-contents RET      (to refresh your package database)
 M-x package-install RET realgud RET   (to install and compile `realgud` and its dependencies)
 ```
 
-Alternatively, you can install RealGUD using [el-get](http://www.emacswiki.org/emacs/el-get) or from source directly. See [this article](https://github.com/rocky/emacs-dbgr/wiki/How-to-Install) in our wiki for more info.
+Alternatively, you can install RealGUD using [el-get](http://www.emacswiki.org/emacs/el-get) or from source directly. See [this article](https://github.com/realgud/realgud/wiki/How-to-Install) in our wiki for more info.
 
 # Quick start
 
@@ -76,7 +76,7 @@ Here is a quick rundown of the most useful commands. “🐁” indicates mouse 
 
 # Supported debuggers
 
-RealGUD supports [many external debuggers](https://github.com/rocky/emacs-dbgr/wiki/Debuggers-Supported).  Help us [support even more](https://github.com/rocky/emacs-dbgr/wiki/How-to-add-a-new-debugger)!
+RealGUD supports [many external debuggers](https://github.com/realgud/realgud/wiki/Debuggers-Supported).  Help us [support even more](https://github.com/realgud/realgud/wiki/How-to-add-a-new-debugger)!
 
 # Advanced topics
 
@@ -100,10 +100,10 @@ Use `M-x realgud-track-mode` inside an existing [shell](http://www.gnu.org/softw
 
 ### RealGUD's wiki
 
-Browse the [wiki](http://wiki.github.com/rocky/emacs-dbgr/) for more information about [setting up](http://wiki.github.com/rocky/emacs-dbgr/how-to-install), [using realgud](http://wiki.github.com/rocky/emacs-dbgr/how-to-use), [exploring features](https://github.com/rocky/emacs-dbgr/wiki/Features), and lots more.
+Browse the [wiki](http://wiki.github.com/realgud/realgud/) for more information about [setting up](http://wiki.github.com/realgud/realgud/how-to-install), [using realgud](http://wiki.github.com/realgud/realgud/how-to-use), [exploring features](https://github.com/realgud/realgud/wiki/Features), and lots more.
 
-[travis-image]: https://img.shields.io/travis/rocky/emacs-dbgr.svg
-[travis-url]: https://travis-ci.org/rocky/emacs-dbgr
+[travis-image]: https://api.travis-ci.org/realgud/realgud.svg?branch=master
+[travis-url]: https://travis-ci.org/realgud/realgud
 [melpa-stable-image]: http://stable.melpa.org/packages/realgud-badge.svg
 [melpa-stable]: http://stable.melpa.org/#/realgud
 [melpa-image]: http://melpa.org/packages/realgud-badge.svg

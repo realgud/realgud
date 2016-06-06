@@ -27,7 +27,7 @@
     ))
 
 (defun realgud:follow-point()
-  (interactive "")
+  (interactive)
   (realgud:follow (point)))
 
 (defun realgud:follow-event(event)
