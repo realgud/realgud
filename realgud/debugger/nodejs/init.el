@@ -1,4 +1,4 @@
-;; Copyright (C) 2015 Free Software Foundation, Inc
+;; Copyright (C) 2015, 2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -160,5 +160,8 @@ realgud-loc-pat struct")
 ;; it would probably look like step(1).
 (setf (gethash "step"       realgud:nodejs-command-hash) "step")
 (setf (gethash "next"       realgud:nodejs-command-hash) "next")
+
+;; Unsupported features:
+(setf (gethash "jump"  realgud:nodejs-command-hash) "*not-implemented*")
 
 (provide-me "realgud:nodejs-")

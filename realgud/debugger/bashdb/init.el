@@ -1,4 +1,4 @@
-;; Copyright (C) 2015 Free Software Foundation, Inc
+;; Copyright (C) 2015, 2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -88,5 +88,8 @@ realgud-loc-pat struct")
 (setf (gethash "clear"  realgud:bashdb-command-hash) "clear %l")
 (setf (gethash "quit"   realgud:bashdb-command-hash) "quit!")
 (setf (gethash "until"  realgud:bashdb-command-hash) "continue %l")
+
+;; Unsupported features:
+(setf (gethash "jump"  realgud:bashdb-command-hash) "*not-implemented*")
 
 (provide-me "realgud:bashdb-")
