@@ -393,26 +393,28 @@ continuing execution."
 (defun realgud:cmd-quit (&optional arg)
   "Gently terminate execution of the debugged program."
   (interactive "p")
-  (let ((buffer (current-buffer))
-	(cmdbuf (realgud-get-cmdbuf))
-	(cmd-hash)
-	(cmd)
-	)
-    (if cmdbuf
-	(progn
-	  (with-current-buffer cmdbuf
-	    (realgud-cmdbuf-info-in-srcbuf?= (not (realgud-cmdbuf? buffer)))
-	    (setq cmd-hash (realgud-cmdbuf-info-cmd-hash realgud-cmdbuf-info))
-	    (unless (and cmd-hash (setq cmd (gethash "quit" cmd-hash)))
-	      (setq cmd "quit"))
+  (if (realgud:prompt-if-safe-mode
+		 "Quit debugger?")
+      (let ((buffer (current-buffer))
+	    (cmdbuf (realgud-get-cmdbuf))
+	    (cmd-hash)
+	    (cmd)
 	    )
+	(if cmdbuf
+	    (progn
+	      (with-current-buffer cmdbuf
+		(realgud-cmdbuf-info-in-srcbuf?= (not (realgud-cmdbuf? buffer)))
+		(setq cmd-hash (realgud-cmdbuf-info-cmd-hash realgud-cmdbuf-info))
+		(unless (and cmd-hash (setq cmd (gethash "quit" cmd-hash)))
+		  (setq cmd "quit"))
+		)
           (realgud-command cmd arg t)
 	  (if cmdbuf (realgud:terminate cmdbuf))
 	  )
-      ;; else
-      (realgud:terminate-srcbuf buffer)
-      )
-    )
-  )
+	  ;; else
+	  (realgud:terminate-srcbuf buffer)
+	  )
+	)
+    ))
 
 (provide-me "realgud-")
