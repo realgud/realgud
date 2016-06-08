@@ -43,6 +43,7 @@
     (define-key map "8"        'realgud:goto-loc-hist-8)
     (define-key map "9"        'realgud:goto-loc-hist-9)
     (define-key map "b"        'realgud:cmd-break)
+    (define-key map "j"        'realgud:cmd-jump)
     (define-key map "c"        'realgud:cmd-continue)
     (define-key map "e"        'realgud:cmd-eval-dwim)
     (define-key map "U"        'realgud:cmd-until)

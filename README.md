@@ -48,7 +48,7 @@ Here is a quick rundown of the most useful commands. “🐁” indicates mouse 
     | Command                                       | Action                                        |
     | --------------------------------------------- | --------------------------------------------- |
     | <kbd>n</kbd>, <kbd>F10</kbd>                  | Next (aka “step over”, “step through”)        |
-    | <kbd>s</kbd>, <kbd>SPC</kbd>, <kbd>F11</kbd>  | Step (aka “step into”; `C-u`: repeat)         |
+    | <kbd>s</kbd>, <kbd>SPC</kbd>, <kbd>F11</kbd>  | Step (aka “step into”)                        |
     | <kbd>f</kbd>, <kbd>S-F11</kbd>                | Finish (aka “step out”, “return”)             |
     | <kbd>c</kbd>, <kbd>F5</kbd>                   | Continue (run to next break point)            |
 
@@ -90,6 +90,7 @@ RealGUD supports [many external debuggers](https://github.com/realgud/realgud/wi
 | <kbd>u</kbd>, <kbd>&gt;</kbd>                | Up stack (move to older stack frame)           |
 | <kbd>d</kbd>, <kbd>&lt;</kbd>                | Down stack (move to younger stack frame)       |
 | <kbd>X</kbd>                                 | Clear breakpoint (by line)                     |
+| <kbd>j</kbd>                                 | Jump to current line ⚙                         |
 | <kbd>-</kbd>                                 | Disable breakpoint ⚙                           |
 | <kbd>+</kbd>                                 | Enable breakpoint ⚙                            |
 

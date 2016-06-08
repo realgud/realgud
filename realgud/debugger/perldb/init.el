@@ -139,6 +139,7 @@ realgud-loc-pat struct")
 (setf (gethash "shell" realgud:perldb-command-hash) "*not-implemented*")
 (setf (gethash "up"    realgud:perldb-command-hash) "*not-implemented*")
 (setf (gethash "down"  realgud:perldb-command-hash) "*not-implemented*")
+(setf (gethash "jump"  realgud:perldb-command-hash) "*not-implemented*")
 (setf (gethash "kill"  realgud:perldb-command-hash) "*not-implemented*")
 
 (provide-me "realgud:perldb-")
