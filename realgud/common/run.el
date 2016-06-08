@@ -1,4 +1,4 @@
-;; Copyright (C) 2015 Free Software Foundation, Inc
+;; Copyright (C) 2015, 2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -155,7 +155,7 @@ details of the error. The command buffer or nil is returned."
 (defun realgud:run-debugger (debugger-name query-cmdline-fn parse-cmd-args-fn
 					   minibuffer-history
 					   &optional opt-command-line
-					   no-reset)
+					   no-reset opt-script-name)
   "Invoke the a debugger and start the Emacs user interface.
 
 String OPT-COMMAND-LINE specifies how to run DEBUGGER-NAME. You
@@ -174,7 +174,7 @@ Otherwise nil is returned.
 	 (cmd-args (split-string-and-unquote cmd-str))
 	 (parsed-args (funcall parse-cmd-args-fn cmd-args))
 	 (script-args (caddr parsed-args))
-	 (script-name (car script-args))
+	 (script-name (or opt-script-name (car script-args)))
 	 (parsed-cmd-args
 	  (remove-if 'nil (realgud:flatten parsed-args)))
 	 )

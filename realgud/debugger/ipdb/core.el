@@ -19,6 +19,7 @@
 
 (eval-when-compile (require 'cl))
 
+(require 'comint)
 (require 'load-relative)
 (require-relative-list '("../../common/track"
 			 "../../common/core"
@@ -31,6 +32,7 @@
 (declare-function realgud-parse-command-arg 'realgud-core)
 (declare-function realgud-query-cmdline 'realgud-core)
 (declare-function realgud-suggest-invocation 'realgud-core)
+(declare-function realgud-get-cmdbuf   'realgud-buffer-helper)
 
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
@@ -42,7 +44,7 @@
 
 (easy-mmode-defmap ipdb-minibuffer-local-map
   '(("\C-i" . comint-dynamic-complete-filename))
-  "Keymap for minibuffer prompting of gud startup command."
+  "Keymap for minibuffer prompting of debugger startup command."
   :inherit minibuffer-local-map)
 
 ;; FIXME: I think this code and the keymaps and history
@@ -53,6 +55,15 @@
    ipdb-minibuffer-local-map
    'realgud:ipdb-minibuffer-history
    opt-debugger))
+
+;; FIXME: I think this code and the keymaps and history
+;; variable chould be generalized, perhaps via a macro.
+(defun ipdb-remote-query-cmdline ()
+  (realgud-query-cmdline
+   'ipdb-suggest-invocation
+   ipdb-minibuffer-local-map
+   'realgud:ipdb-remote-minibuffer-history
+   "telnet"))
 
 (defun ipdb-parse-cmd-args (orig-args)
   "Parse command line ORIG-ARGS for the annotate level and name of script to debug.
@@ -161,15 +172,19 @@ For example for the following input:
    '(telnet localhost 6900))
 
 we might return:
-   ((\"telnet\" \"localhost\" \"6900\") (\"ipdb\") (\"\") nil)
+   ((\"telnet\" \"localhost\" \"6900\") nil nil nil)
 
 Note that the script name path has been expanded via `expand-file-name'.
 "
-    (list orig-args '("ipdb") '("") nil)
+    (list orig-args '("ipdb") nil nil nil)
   )
 
   ;; To silence Warning: reference to free variable
 (defvar realgud:ipdb-command-name)
+
+(defun ipdb-remote-suggest-invocation (debugger-name)
+  "Suggest an ipdb command invocation via `realgud-suggest-invocaton'"
+  "telnet 127.0.0.1 4000")
 
 (defun ipdb-suggest-invocation (debugger-name)
   "Suggest a ipdb command invocation via `realgud-suggest-invocaton'"

@@ -1,4 +1,4 @@
-;; Copyright (C) 2015 Free Software Foundation, Inc
+;; Copyright (C) 2015, 2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -41,7 +41,7 @@
 
 (easy-mmode-defmap pdb-minibuffer-local-map
   '(("\C-i" . comint-dynamic-complete-filename))
-  "Keymap for minibuffer prompting of gud startup command."
+  "Keymap for minibuffer prompting of debugger startup command."
   :inherit minibuffer-local-map)
 
 ;; FIXME: I think this code and the keymaps and history
@@ -52,6 +52,15 @@
    pdb-minibuffer-local-map
    'realgud:pdb-minibuffer-history
    opt-debugger))
+
+;; FIXME: I think this code and the keymaps and history
+;; variable chould be generalized, perhaps via a macro.
+(defun pdb-remote-query-cmdline (not-used)
+  (realgud-query-cmdline
+   'pdb-remote-suggest-invocation
+   pdb-minibuffer-local-map
+   'realgud:pdb-remote-minibuffer-history
+   "telnet"))
 
 (defun pdb-parse-cmd-args (orig-args)
   "Parse command line ORIG-ARGS for the annotate level and name of script to debug.
@@ -160,15 +169,21 @@ For example for the following input:
    '(telnet localhost 6900))
 
 we might return:
-   ((\"telnet\" \"localhost\" \"6900\") (\"pdb\") (\"\") nil)
+   ((\"telnet\" \"localhost\" \"6900\") nil nil nil)
 
 Note that the script name path has been expanded via `expand-file-name'.
 "
-    (list orig-args '("pdb") '("") nil)
+    (list orig-args nil nil nil)
   )
 
   ;; To silence Warning: reference to free variable
 (defvar realgud:pdb-command-name)
+
+(defun pdb-remote-suggest-invocation (debugger-name)
+  "Suggest a pdb command invocation via `realgud-suggest-invocaton'"
+  "telnet 127.0.0.1 4000"
+  )
+
 
 (defun pdb-suggest-invocation (debugger-name)
   "Suggest a pdb command invocation via `realgud-suggest-invocaton'"
