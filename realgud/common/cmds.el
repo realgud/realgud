@@ -1,4 +1,4 @@
-;; Copyright (C) 2015 Free Software Foundation, Inc
+;; Copyright (C) 2015, 2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -348,7 +348,9 @@ With a numeric argument move that many levels back."
 (defun realgud:cmd-restart()
   "Restart execution."
   (interactive)
-  (realgud:cmd-run-command nil "restart" nil t nil t))
+  (if (realgud:prompt-if-safe-mode
+		 "Restart program?")
+      (realgud:cmd-run-command nil "restart" nil t nil t)))
 
 (defun realgud:cmd-shell()
   "Drop to a shell."
