@@ -116,11 +116,19 @@ results into the command buffer."
 (defun realgud-send-command-invisible (command-str)
   (realgud-send-command command-str (function realgud-send-command-process)))
 
+(defvar realgud-expand-format-overrides nil
+  "An alist of overrides for `realgud-expand-format'.
+Each element should have the form (KEY . VALUE).  Key should be a
+single-character escape accepted by `realgud-expand-format';
+value should be a string.  Every time %KEY is encountered in te
+string, it will be replaced by VALUE instead of being processed
+as usual.  If VALUE is nil, the override is ignored.")
 
 (defun realgud-expand-format (fmt-str &optional opt-str opt-buffer)
-  "Expands commands format characters inside FMT-STRING using values
-from the debugging session. OPT-STR is an optional string.
-Some %-escapes in the string arguments are expanded. These are:
+  "Expands commands format characters inside FMT-STR.
+OPT-STR is an optional string (used with %p and %s).  Values are
+taken from current buffer, or OPT-BUFFER if non-nil.  Some
+%-escapes in the string arguments are expanded.  These are:
 
   %f -- Name without directory of current source file.
   %F -- Name without directory or extension of current source file.
@@ -128,13 +136,12 @@ Some %-escapes in the string arguments are expanded. These are:
   %X -- Expanded name of current source file.
   %d -- Directory of current source file.
   %l -- Number of current source line.
-  %p -- Numeric prefix argument converted to a string
-        If no prefix argument %p is the null string.
   %c -- Fully qualified class name derived from the expression
         surrounding point.
-  %s -- value of opt-str.
+  %p -- Value of OPT-STR, converted to string using `int-to-string'
+  %s -- Value of OPT-STR.
 
-"
+%p and %s are replaced by an empty string if OPT-STR is nil."
   (let* ((buffer (or opt-buffer (current-buffer)))
 	 (srcbuf (realgud-get-srcbuf buffer))
 	 (src-file-name (and srcbuf (buffer-file-name srcbuf)))
@@ -148,6 +155,7 @@ Some %-escapes in the string arguments are expanded. These are:
 	      (concat
 	       result (match-string 1 fmt-str)
 	       (cond
+		((cdr (assq key realgud-expand-format-overrides)))
 		((eq key ?d)
 		 (or (and src-file-name
 			  (file-name-directory src-file-name))
@@ -182,9 +190,9 @@ Some %-escapes in the string arguments are expanded. These are:
 		;;  (gud-read-address))
 		;; ((eq key ?c)
 		;;   (gud-find-class srcbuf))
-		((eq key ?p) (if opt-str (int-to-string opt-str) ""))
-		((eq key ?s) opt-str)
-		(t key)))))
+                ((eq key ?p) (if opt-str (int-to-string opt-str) ""))
+                ((eq key ?s) (or opt-str ""))
+                (t key)))))
       (setq fmt-str (substring fmt-str (match-end 2))))
     ;; There might be text left in FMT-STR when the loop ends.
     (concat result fmt-str)))

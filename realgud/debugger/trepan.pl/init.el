@@ -274,4 +274,7 @@ backtrace listing.")
 (setf (gethash realgud:trepanpl-debugger-name
 	       realgud-command-hash) realgud:trepanpl-command-hash)
 
+;; Unsupported features:
+(setf (gethash "jump"  realgud:trepanpl-command-hash) "*not-implemented*")
+
 (provide-me "realgud:trepanpl-")

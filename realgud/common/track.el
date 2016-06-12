@@ -155,6 +155,16 @@ marks set in buffer-local variables to extract text"
       (realgud-track-loc text (point-marker))
     ))
 
+(defun realgud:track-complain-if-not-in-cmd-buffer (&optional buf errorp)
+  "Complain if BUF (default: current buffer) is not a command buffer.
+With non-nil ERRORP, raise an exception.  Otherwise, print a
+message."
+  (setq buf (or buf (current-buffer)))
+  (unless (realgud-cmdbuf? buf)
+    (funcall (if errorp #'error #'message)
+             "Buffer %s is not a debugger command buffer" buf)
+    t))
+
 (defun realgud:track-from-region(from to &optional cmd-mark opt-cmdbuf
 				      shortkey-on-tracing? no-warn-if-no-match?)
   "Find and position a buffer at the location found in the marked region.
@@ -179,7 +189,7 @@ evaluating (realgud-cmdbuf-info-loc-regexp realgud-cmdbuf-info)"
 	 (bp-loc)
 	 (cmdbuf (or opt-cmdbuf (current-buffer)))
 	 )
-    (if (realgud-cmdbuf? cmdbuf)
+    (unless (realgud:track-complain-if-not-in-cmd-buffer cmdbuf t)
 	(if (not (equal "" text))
 	    (with-current-buffer cmdbuf
 	      (if (realgud-sget 'cmdbuf-info 'divert-output?)
@@ -207,23 +217,18 @@ evaluating (realgud-cmdbuf-info-loc-regexp realgud-cmdbuf-info)"
 			 (or (not frame-num)
 			     (eq frame-num (realgud-cmdbuf-pat "top-frame-num")))))
 		    (realgud-track-loc-action loc cmdbuf (not selected-frame)
-					   shortkey-on-tracing?)
+                                              shortkey-on-tracing?)
 		    (realgud-cmdbuf-info-in-debugger?= 't)
-		    (realgud-cmdbuf-mode-line-update)
-		    )
-		(progn
-		  (setq bp-loc (realgud-track-bp-delete text-sans-loc cmd-mark cmdbuf))
-		  (if bp-loc
-		      (let ((src-buffer (realgud-loc-goto bp-loc)))
-			(realgud-cmdbuf-add-srcbuf src-buffer cmdbuf)
-			(with-current-buffer src-buffer
-			  (realgud-bp-del-info bp-loc)
-			  ))))
-		)
-	      )
-	  )
-      ;; else
-      (error "Buffer %s is not a debugger command buffer" cmdbuf))
+                    (realgud-cmdbuf-mode-line-update))
+                (dolist (bp-loc (realgud-track-bp-delete text-sans-loc cmd-mark cmdbuf))
+                  (let ((src-buffer (realgud-loc-goto bp-loc)))
+                    (realgud-cmdbuf-add-srcbuf src-buffer cmdbuf)
+                    (with-current-buffer src-buffer
+                      (realgud-bp-del-info bp-loc)
+                      ))))
+              )
+          )
+        )
     )
   )
 
@@ -378,7 +383,7 @@ Otherwise return nil."
   ;; can accomodate a family of debuggers -- one at a time -- for the
   ;; buffer process.
 
-  (if (realgud-cmdbuf?)
+  (unless (realgud:track-complain-if-not-in-cmd-buffer)
       (let
 	  ((loc-regexp (or opt-regexp
 			   (realgud-sget 'cmdbuf-info 'loc-regexp)))
@@ -422,10 +427,8 @@ Otherwise return nil."
 	  ;; else
 	  (and (message
 		(concat "Buffer variable for regular expression pattern not"
-			" given and not passed as a parameter")) nil)))
-    ;; else
-    (and (message "Current buffer %s is not a debugger command buffer"
-		  (current-buffer)) nil)
+                        " given and not passed as a parameter"))
+               nil)))
     )
   )
 
@@ -443,8 +446,8 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 
   (setq cmdbuf (or cmdbuf (current-buffer)))
   (with-current-buffer cmdbuf
-    (if (realgud-cmdbuf?)
-	(let* ((loc-pat (realgud-cmdbuf-pat "brkpt-set")))
+    (unless (realgud:track-complain-if-not-in-cmd-buffer cmdbuf t)
+        (let* ((loc-pat (realgud-cmdbuf-pat "brkpt-set")))
 	  (if loc-pat
 	      (let ((bp-num-group   (realgud-loc-pat-num loc-pat))
 		    (loc-regexp     (realgud-loc-pat-regexp loc-pat))
@@ -486,18 +489,15 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 				    loc-or-error)))
 			    nil)))
 		  nil))
-	    nil))
-      (and (message "Current buffer %s is not a debugger command buffer"
-		    (current-buffer)) nil)
+            nil))
       )
     )
 )
 
 (defun realgud-track-bp-delete(text &optional cmd-mark cmdbuf ignore-file-re)
-  "Do regular-expression matching see if a breakpoint has been
-deleted inside string TEXT. If we match, we will return the
-breakpoint location of the breakpoint found from in command
-buffer. Otherwise nil is returned."
+  "Do regular-expression matching to see if a breakpoint has been
+deleted inside string TEXT. Return a list of breakpoint locations
+of the breakpoints found in command buffer."
 
   ; NOTE: realgud-cmdbuf-info is a buffer variable local to the process
   ; running the debugger. It contains a realgud-cmdbuf-info "struct". In
@@ -507,37 +507,26 @@ buffer. Otherwise nil is returned."
 
   (setq cmdbuf (or cmdbuf (current-buffer)))
   (with-current-buffer cmdbuf
-    (if (realgud-cmdbuf?)
-	(let* ((loc-pat (realgud-cmdbuf-pat "brkpt-del"))
-	       (found-loc nil)
-	       )
-	  (if loc-pat
-	      (let ((bp-num-group   (realgud-loc-pat-num loc-pat))
-		    (loc-regexp     (realgud-loc-pat-regexp loc-pat))
-		    (loc))
-		(if (and loc-regexp (string-match loc-regexp text))
-		    (let* ((bp-num (string-to-number (match-string bp-num-group text)))
-			   (info realgud-cmdbuf-info)
-			   (bp-list (realgud-cmdbuf-info-bp-list info))
-			   )
-		      (while (and (not found-loc) (setq loc (car-safe bp-list)))
-			(setq bp-list (cdr bp-list))
-			(if (eq (realgud-loc-num loc) bp-num)
-			    (progn
-			      (setq found-loc loc)
-			      ;; Remove loc from breakpoint list
-			      (realgud-cmdbuf-info-bp-list=
-			       (remove loc (realgud-cmdbuf-info-bp-list info))))
-			))
-		      ;; return the location:
-		      found-loc)
-		  nil))
-	    nil))
-      (and (message "Current buffer %s is not a debugger command buffer"
-		    (current-buffer)) nil)
-      )
-    )
-)
+    (unless (realgud:track-complain-if-not-in-cmd-buffer cmdbuf t)
+      (let* ((loc-pat (realgud-cmdbuf-pat "brkpt-del")))
+        (when loc-pat
+          (let ((bp-num-group (realgud-loc-pat-num loc-pat))
+                (loc-regexp   (realgud-loc-pat-regexp loc-pat)))
+            (when (and loc-regexp (string-match loc-regexp text))
+              (let* ((bp-nums-str (match-string bp-num-group text))
+                     (bp-num-strs (split-string bp-nums-str "[^0-9]+" t))
+                     (bp-nums (mapcar #'string-to-number bp-num-strs))
+                     (info realgud-cmdbuf-info)
+                     (all-bps (realgud-cmdbuf-info-bp-list info))
+                     (found-locs nil))
+                (dolist (loc all-bps)
+                  (when (memq (realgud-loc-num loc) bp-nums)
+                    (push loc found-locs)
+                    ;; Remove loc from breakpoint list
+                    (realgud-cmdbuf-info-bp-list=
+                     (remove loc (realgud-cmdbuf-info-bp-list info)))))
+                ;; return the locations
+                found-locs))))))))
 
 (defun realgud-track-bp-enable-disable(text loc-pat enable? &optional cmdbuf)
   "Do regular-expression matching see if a breakpoint has been enabled or disabled inside

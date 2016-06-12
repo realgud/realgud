@@ -109,7 +109,7 @@ fringe and marginal icons.
   (let ((cmd-buf (realgud:run-debugger "ipdb" 'ipdb-remote-query-cmdline
                                        'ipdb-parse-remote-cmd-args
                                        'realgud:ipdb-remote-minibuffer-history
-                                       opt-cmd-line no-reset))
+                                       opt-cmd-line no-reset "remote-ipdb"))
         )
     (add-hook 'completion-at-point-functions
               'realgud:ipdb-completion-at-point nil t)

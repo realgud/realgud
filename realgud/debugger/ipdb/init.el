@@ -71,10 +71,11 @@ realgud-loc-pat struct")
        :file-group 2
        :line-group 3))
 
-;;  Regular expression that describes a "delete breakpoint" line
+;; Regular expression that describes a "delete breakpoint" line
+;; Python 3 includes a file name and line number; Python 2 doesn't
 (setf (gethash "brkpt-del" realgud:ipdb-pat-hash)
       (make-realgud-loc-pat
-       :regexp "^Deleted breakpoint \\([0-9]+\\)\n"
+       :regexp "^Deleted breakpoint \\([0-9]+\\)"
        :num 1))
 
 (setf (gethash "font-lock-keywords" realgud:ipdb-pat-hash)

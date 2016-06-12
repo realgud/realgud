@@ -1,11 +1,11 @@
 ;;; Copyright (C) 2010, 2012-2015 Rocky Bernstein <rocky@gnu.org>
 ;;; source-code buffer code
 (eval-when-compile
-  (require 'cl-lib)
   (defvar realgud-srcbuf-info) ;; is buffer local
   (defvar realgud-cmdbuf-info) ;; in the cmdbuf, this is buffer local
   )
 
+(require 'cl-lib)
 (require 'load-relative)
 (require-relative-list '("../helper" "../key") "realgud-")
 
@@ -38,6 +38,7 @@ to be debugged."
 		 ;; variable. Short-key-mode may change the read-only
 		 ;; state, so we need restore this value when leaving
 		 ;; short-key mode
+  prev-local-map ;; Local map before enabling short-key-mode
 
   loc-hist       ;; ring of locations seen
 
@@ -54,6 +55,7 @@ to be debugged."
 (realgud-struct-field-setter "realgud-srcbuf-info" "cmdproc")
 (realgud-struct-field-setter "realgud-srcbuf-info" "short-key?")
 (realgud-struct-field-setter "realgud-srcbuf-info" "was-read-only?")
+(realgud-struct-field-setter "realgud-srcbuf-info" "prev-local-map")
 
 (defun realgud-srcbuf-info-set? ()
   "Return non-nil if `realgud-srcbuf-info' is set."
@@ -66,6 +68,31 @@ to be debugged."
     (and (realgud-srcbuf-info-set?)
 	 (not (buffer-killed? (realgud-sget 'srcbuf-info 'cmdproc)))
    )))
+
+(defun realgud--read-cmd-buf (prompt)
+  "Read a command buffer, prompting with PROMPT."
+  (let* ((cmd-bufs (cl-remove-if-not #'realgud-cmdbuf? (buffer-list)))
+         (buf-names (mapcar #'buffer-name cmd-bufs))
+         (default (car buf-names)))
+    (when buf-names
+      ;; Use completing-read instead of read-buffer: annoyingly, ido's
+      ;; read-buffer ignores predicates.
+      (setq prompt (format "%s (default: %s): " prompt default))
+      (get-buffer (completing-read prompt buf-names nil t nil nil default)))))
+
+(defun realgud--ensure-attached (&optional src-buf)
+  "Try to attach SRC-BUF to a command buffer.
+If SRC-BUF is already attached, do nothing.  Otherwise, prompt
+the user for a command buffer to associate SRC-BUF to.  Returns
+non-nil if association was successful.  SRC-BUF defaults to
+current buffer."
+  (setq src-buf (or src-buf (current-buffer)))
+  (unless (realgud-srcbuf? src-buf)
+    (let ((cmd-buf (realgud--read-cmd-buf "Command buffer to attach to")))
+      (if cmd-buf
+          (realgud-srcbuf-init src-buf cmd-buf)
+        (message "No debugger process found to attach %s to" (buffer-name)))))
+  (realgud-srcbuf? src-buf))
 
 (defun realgud-srcbuf-debugger-name (&optional src-buf)
   "Return the debugger name recorded in the debugger command-process buffer."
@@ -117,18 +144,10 @@ in it with those from CMDPROC-BUFFER"
 	(realgud-srcbuf-info-cmdproc= cmdproc-buffer)
       (realgud-srcbuf-init src-buffer cmdproc-buffer))))
 
-;; FIXME: rewrite to add prompt function that only suggests
-;; command buffers;
-(defun realgud:cmdbuf-associate(cmdbuf-name)
-  "Associate a command buffer with for the current buffer which is
-assumed to be a source-code buffer"
-  (interactive "brealgud command buffer: ")
-  (let ((cmdbuf (get-buffer cmdbuf-name)))
-    (unless (realgud-cmdbuf? cmdbuf)
-      (error "%s doesn't smell like a command buffer" cmdbuf-name))
-    (realgud-srcbuf-init-or-update (current-buffer) cmdbuf )
-    (realgud-short-key-mode-setup 't)
-  ))
+(defun realgud:cmdbuf-associate ()
+  "Associate a command buffer with the current (source-code) buffer."
+  ;; realgud-short-key-mode-setup will attempt to associate if needed.
+  (realgud-short-key-mode-setup t))
 
 (defun realgud-srcbuf-bp-list(&optional buffer)
   "Return a list of breakpoint loc structures that reside in

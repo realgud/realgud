@@ -103,7 +103,7 @@ traceback) line."  )
 ;;   Removed 1 breakpoint(s).
 (defconst realgud:POSIX-debugger-brkpt-del-pat
   (make-realgud-loc-pat
-   :regexp (format "^Deleted breakpoint %s.\n"
+   :regexp (format "^Deleted breakpoint %s\n"
 		   realgud:regexp-captured-num)
    :num 1))
 

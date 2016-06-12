@@ -80,15 +80,27 @@ overlay for a realgud property."
 
 (defface realgud-bp-enabled-face
   '((t :foreground "red" :weight bold))
-  "Face for enabled breakpoints."
+  "Face for enabled breakpoints (in the fringe or margin)."
   :group 'realgud-bp)
 
 (defface realgud-bp-disabled-face
   '((t :foreground "grey" :weight bold))
-  "Face for disabled breakpoints."
+  "Face for disabled breakpoints (in the fringe or margin).
+Only used in text terminals: fringe icons always use
+`realgud-bp-enabled-face'."
   :group 'realgud-bp)
 
-(defcustom realgud-bp-fringe-indicator-style '(realgud-bp-filled . realgud-bp-hollow)
+(defface realgud-bp-line-enabled-face
+  '((t :inherit diff-removed))
+  "Face for lines with enabled breakpoints."
+  :group 'realgud-bp)
+
+(defface realgud-bp-line-disabled-face
+  '((t))
+  "Face for lines with disabled breakpoints."
+  :group 'realgud-bp)
+
+(defcustom realgud-bp-fringe-indicator-style '(filled-rectangle . hollow-rectangle)
   "Which fringe icon to use for breakpoints."
   :type '(choice (const :tag "Disc" (realgud-bp-filled . realgud-bp-hollow))
                  (const :tag "Square" (filled-square . hollow-square))
@@ -108,15 +120,14 @@ If nil, use margins instead."
         (and window (car (window-fringes window)))
         0)))
 
-(defun realgud-bp-add-fringe-icon (overlay icon face)
+(defun realgud-bp-add-fringe-icon (overlay icon)
   "Add a fringe icon to OVERLAY.
-ICON is a fringe icon symbol; the corresponding icon gets
-highlighted with FACE."
+ICON is a symbol registered with `define-fringe-bitmap'."
   ;; Ensure that the fringe is wide enough
   (unless (>= (realgud-bp--fringe-width) 8)
     (set-fringe-mode `(8 . ,right-fringe-width)))
   ;; Add the fringe icon
-  (let* ((fringe-spec `(left-fringe ,icon ,face)))
+  (let* ((fringe-spec `(left-fringe ,icon realgud-bp-enabled-face)))
     (overlay-put overlay 'before-string (propertize "x" 'display fringe-spec))))
 
 (defun realgud-bp-add-margin-indicator (overlay text image face)
@@ -142,25 +153,29 @@ Use the fringe if available, and the margin otherwise.  Record
 breakpoint status ENABLE? and breakpoint number BP-NUM in
 overlay.  BUF is the buffer that POS refers to; it detaults to
 the current buffer."
-  (let* ((margin-text) (face) (margin-icon) (fringe-icon))
+  (let* ((bp-text) (bp-face) (line-face) (margin-icon) (fringe-icon))
     (realgud-set-bp-icons)
     (if enable?
-        (setq margin-text "B"
-              face 'realgud-bp-enabled-face
+        (setq bp-text "B"
+              bp-face 'realgud-bp-enabled-face
+              line-face 'realgud-bp-line-enabled-face
               margin-icon realgud-bp-enabled-icon
               fringe-icon (car realgud-bp-fringe-indicator-style))
-      (setq margin-text "b"
-            face 'realgud-bp-disabled-face
+      (setq bp-text "b"
+            bp-face 'realgud-bp-disabled-face
+            line-face 'realgud-bp-line-disabled-face
             margin-icon realgud-bp-disabled-icon
             fringe-icon (cdr realgud-bp-fringe-indicator-style)))
-    (let ((help-echo (format "%s%s: mouse-1 to clear" margin-text bp-num)))
-      (setq margin-text (propertize margin-text 'help-echo help-echo)))
+    (let ((help-echo (format "%s%s: mouse-1 to clear" bp-text bp-num)))
+      (setq bp-text (propertize bp-text 'help-echo help-echo)))
     (with-current-buffer (or buf (current-buffer))
-      (realgud-bp-remove-icons pos pos bp-num)
-      (let ((ov (make-overlay pos pos (current-buffer) t nil)))
+      (realgud-bp-remove-icons pos (1+ pos) bp-num)
+      (let* ((eol (save-excursion (goto-char pos) (point-at-eol)))
+             (ov (make-overlay pos (1+ eol) (current-buffer) t nil)))
         (if (and realgud-bp-use-fringe (display-images-p))
-            (realgud-bp-add-fringe-icon ov fringe-icon face)
-          (realgud-bp-add-margin-indicator ov margin-text margin-icon face))
+            (realgud-bp-add-fringe-icon ov fringe-icon)
+          (realgud-bp-add-margin-indicator ov bp-text margin-icon bp-face))
+        (overlay-put ov 'face line-face)
         (overlay-put ov 'realgud t)
         (overlay-put ov 'realgud-bp-num bp-num)
         (overlay-put ov 'realgud-bp-enabled enable?)))))
@@ -171,7 +186,7 @@ BUF is the buffer which pos refers to (default: current buffer).
 If BPNUM is non-nil, only remove overlays maching that breakpoint
 number."
   (with-current-buffer (or buf (current-buffer))
-    (realgud-bp-remove-icons pos pos bpnum)))
+    (realgud-bp-remove-icons pos (1+ pos) bpnum)))
 
 (defun realgud-bp-add-info (loc)
   "Record bp information for location LOC."

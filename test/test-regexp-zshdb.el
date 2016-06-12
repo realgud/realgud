@@ -18,7 +18,6 @@
 (eval-when-compile
   (defvar file-group)
   (defvar frame-re)
-  (defvar frame-pat)
   (defvar line-group)
   (defvar num-group)
   (defvar test-pos)
@@ -29,9 +28,10 @@
   (defvar test-text)
   (defvar brkpt-del)
   (defvar bp-del-pat)
-  (defvar bp-enable-pat)
-  (defvar bp-disable-pat)
 )
+
+(set (make-local-variable 'bp-del-pat)
+      (gethash "brkpt-del" realgud:zshdb-pat-hash))
 
 (setq prompt-pat (gethash "prompt"             realgud:zshdb-pat-hash))
 (setq frame-pat  (gethash "debugger-backtrace" realgud:zshdb-pat-hash))
@@ -103,7 +103,7 @@
 			 (match-end line-group)))
 
 (note "breakpoint delete matching")
-(setq test-text "Deleted breakpoint 1.\n")
+(setq test-text "Deleted breakpoint 1\n")
 (assert-t (numberp (loc-match test-text bp-del-pat)) "breakpoint delete matching")
 
 (note "breakpoint enable matching")

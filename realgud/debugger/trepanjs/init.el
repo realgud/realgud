@@ -1,4 +1,4 @@
-;; Copyright (C) 2015 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -142,5 +142,9 @@ realgud-loc-pat struct")
 ;; do step 1 and trepanjs doesn't handle this. Or when it does,
 ;; it will probably look like step(1)
 (setf (gethash "eval"       realgud:trepanjs-command-hash) "eval('%s')")
+(setf (gethash "quit"       realgud:trepanjs-command-hash) "quit()")
+
+;; Unsupported features:
+(setf (gethash "kill"  realgud:trepanjs-command-hash) "*not-implemented*")
 
 (provide-me "realgud:trepanjs-")

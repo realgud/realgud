@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 def bit2char(byte, offset):
     return "X" if byte & (1 << offset) else " "
 
@@ -14,7 +16,6 @@ def compile_bitmap(bmp_lines):
     bmp_bytes = []
     for line in bmp_lines:
         s = sum(char2bit(c, offset) for (offset, c) in enumerate(line))
-        print(s)
         bmp_bytes.append(s.to_bytes(1, byteorder="big"))
     return b"".join(bmp_bytes)
 

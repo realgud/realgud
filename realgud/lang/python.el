@@ -83,7 +83,7 @@ traceback) line."  )
 ;;  Regular expression that describes a "breakpoint set" line
 (defconst realgud:python-trepan-brkpt-set-pat
   (make-realgud-loc-pat
-   :regexp "^Breakpoint \\([0-9]+\\) set at line \\([0-9]+\\)[ \t\n]+of file \\(.+\\)\\(\n\\|$\\)"
+   :regexp "^Breakpoint \\([0-9]+\\) set at line \\([0-9]+\\)[ \t\n]+of file[ \t\n]+\\(.+\\)\\(\n\\|$\\)"
    :num 1
    :file-group 3
    :line-group 2))

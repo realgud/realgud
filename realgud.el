@@ -3,7 +3,7 @@
 ;; Author: Rocky Bernstein
 ;; Version: 1.3.1
 ;; Package-Requires: ((load-relative "1.0") (list-utils "0.4.2") (loc-changes "1.1") (test-simple  "1.0"))
-;; URL: http://github.com/rocky/emacs-dbgr
+;; URL: http://github.com/realgud/realgud/
 ;; Compatibility: GNU Emacs 24.x
 
 ;; Copyright (C) 2015, 2016 Free Software Foundation, Inc
@@ -25,6 +25,14 @@
 
 ;;; Commentary:
 
+;; A modular GNU Emacs front-end for interacting with external debuggers.
+;;
+;; Quick start: https://github.com/realgud/realgud/
+;;
+;; See URL `https://github.com/realgud/realgud/wiki/Features' for features, and
+;; URL `https://github.com/realgud/realgud/wiki/Debuggers-Supported' for
+;; debuggers we can handle.
+;;
 ;; Once upon a time in an Emacs far far away and a programming-style
 ;; deservedly banished, there was a monolithic Cathederal-like
 ;; debugger front-end called gub.  This interfaced with a number of
@@ -40,15 +48,9 @@
 ;;
 ;; Oh, and because global variables are largely banned, we can support
 ;; several simultaneous debug sessions.
-;;
-;; See URL `https://github.com/rocky/emacs-dbgr/wiki/Features' for
-;; features.
-
-;; See URL `https://github.com/rocky/emacs-dbgr/wiki/Debuggers-Supported' for
-;; debuggers we can handle.
 
 ;; If you don't see your favorite debugger, see URL
-;; `https://github.com/rocky/emacs-dbgr/wiki/How-to-add-a-new-debugger/'
+;; `https://github.com/realgud/realgud/wiki/How-to-add-a-new-debugger/'
 ;; for how you can add your own.
 
 ;; The debugger is run out of a comint process buffer, or you can use
@@ -59,7 +61,7 @@
 ;; installed.  If you install via melpa (`package-install') or
 ;; `el-get', these will be pulled in automatically.  See the
 ;; installation instructions URL
-;; `https://github.com/rocky/emacs-dbgr/wiki/How-to-Install' for all
+;; `https://github.com/realgud/realgud/wiki/How-to-Install' for all
 ;; the ways to to install and more details on installation.
 
 ;;; Code:
@@ -155,6 +157,48 @@ development version and you already have this package loaded."
 
 ;; Load everything.
 (realgud:load-features)
+
+
+;;; Autoloads-related code
+
+;; This section is needed because package.el doesn't recurse into subdirectories
+;; when looking for autoload-able forms.  As a workaround, we statically
+;; generate our own autoloads, and force Emacs to read them by adding an extra
+;; autoloded form.
+
+;;;###autoload
+(defconst realgud--recursive-autoloads-file-name "realgud-recursive-autoloads.el"
+  "Where to store autoloads for subdirectory contents.")
+
+;;;###autoload
+(defconst realgud--recursive-autoloads-base-directory
+  (file-name-directory
+   (if load-in-progress load-file-name
+     buffer-file-name)))
+
+;;;###autoload
+(with-demoted-errors "Error in RealGUD's autoloads: %s"
+  (load (expand-file-name realgud--recursive-autoloads-file-name
+                          realgud--recursive-autoloads-base-directory)
+        t t))
+
+(defun realgud--rebuild-recursive-autoloads ()
+  "Update RealGUD's recursive autoloads.
+This is needed because the package.el infrastructure doesn't
+process autoloads in subdirectories; instead we create an
+additional autoloads file of our own, and we load it from an
+autoloaded form.  Maintainers should run this after adding
+autoloaded functions, and commit the resulting changes."
+  (interactive)
+  (let ((generated-autoload-file
+         (expand-file-name realgud--recursive-autoloads-file-name
+                           realgud--recursive-autoloads-base-directory)))
+    (when (file-exists-p generated-autoload-file)
+      (delete-file generated-autoload-file))
+    (dolist (name (directory-files-recursively
+                   realgud--recursive-autoloads-base-directory "" t))
+      (when (file-directory-p name)
+        (update-directory-autoloads name)))))
 
 (provide-me)
 

@@ -112,7 +112,7 @@
 			 (match-end file-group)))
 
 (note "breakpoint delete matching")
-(setq test-text "Deleted breakpoint 1.\n")
+(setq test-text "Deleted breakpoint 1\n")
 (assert-t (numberp (loc-match test-text bp-del-pat)) "breakpoint delete matching")
 
 (note "breakpoint enable matching")

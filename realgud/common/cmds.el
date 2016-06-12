@@ -1,4 +1,4 @@
-;; Copyright (C) 2015 Free Software Foundation, Inc
+;; Copyright (C) 2015, 2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -51,27 +51,88 @@ when command was run from a menu."
         t)
     t))
 
-(defun realgud:cmd-run-command(arg cmd-name default-cmd-template
-                                   &optional no-record? frame-switch?
-                                   realgud-prompts?)
-  "Run debugger command CMD-NAME using DEFAULT-CMD-TEMPLATE
-if none has been set in the command hash. If key is given we'll set
-a shortcut for that key."
-  (let ((buffer (current-buffer))
-	(cmdbuf (realgud-get-cmdbuf))
-	(cmd-hash)
-	(cmd)
-	)
-    (with-current-buffer-safe cmdbuf
-      (realgud-cmdbuf-info-in-srcbuf?= (not (realgud-cmdbuf? buffer)))
-      (setq cmd-hash (realgud-cmdbuf-info-cmd-hash realgud-cmdbuf-info))
-      (unless (and cmd-hash (setq cmd (gethash cmd-name cmd-hash)))
-	(setq cmd default-cmd-template))
-      )
-    (if (equal cmd "*not-implemented*")
+(defun realgud:cmd--line-number-from-prefix-arg ()
+  "Guess or read a line number based on prefix arg.
+Returns (nil) for current line, and a list whose car is the line
+number otherwise."
+  (cond
+   ((numberp current-prefix-arg)
+    current-prefix-arg)
+   ((consp current-prefix-arg)
+    (let* ((min-line (save-excursion
+                       (goto-char (point-min))
+                       (line-number-at-pos)))
+           (max-line (save-excursion
+                       (goto-char (point-max))
+                       (line-number-at-pos)))
+           (prompt (format "Line number (%d..%d)? " min-line max-line))
+           (picked-line 0))
+      (while (not (<= min-line picked-line max-line))
+        (setq picked-line (read-number prompt)))
+      (list picked-line)))))
+
+(defmacro realgud:cmd--with-line-override (line &rest body)
+  "Run BODY with %l format specifier bound to LINE.
+This is needed because going to LINE explicitly would interfere
+with other motion initiated by debugger messages."
+  (declare (indent 1)
+           (debug t))
+  (let ((line-var (make-symbol "--line--")))
+    `(let* ((,line-var ,line)
+            (realgud-expand-format-overrides
+             (cons (cons ?l (and ,line-var (number-to-string ,line-var)))
+                   realgud-expand-format-overrides)))
+       ,@body)))
+
+(defconst realgud-cmd:default-hash
+  (let ((hash (make-hash-table :test 'equal)))
+    (puthash "backtrace" "backtrace" hash)
+    (puthash "break" "break %X:%l" hash)
+    (puthash "clear" "clear %l" hash)
+    (puthash "continue" "continue" hash)
+    (puthash "delete" "delete %p" hash)
+    (puthash "disable" "disable %p" hash)
+    (puthash "down" "down %p" hash)
+    (puthash "enable" "enable %p" hash)
+    (puthash "eval" "eval %s" hash)
+    (puthash "finish" "finish" hash)
+    (puthash "frame" "frame %p" hash)
+    (puthash "jump" "jump %l" hash)
+    (puthash "kill" "kill" hash)
+    (puthash "next" "next %p" hash)
+    (puthash "repeat-last" "\n" hash)
+    (puthash "restart" "run" hash)
+    (puthash "shell" "shell" hash)
+    (puthash "step" "step %p" hash)
+    (puthash "until" "until" hash)
+    (puthash "up" "up %p" hash)
+    hash)
+  "Default hash of command name → debugger command.
+This is used as a fallback when the debugger-specific command
+hash does not specify a custom debugger command.")
+
+(defun realgud:cmd-run-command(arg cmd-name &optional
+                                   default-cmd-template no-record?
+                                   frame-switch? realgud-prompts?)
+  "Run debugger command CMD-NAME.
+If CMD-NAME isn't set in the command buffer's command hash, use
+DEFAULT-CMD-TEMPLATE and fall back to looking CMD-NAME up in
+`realgud:cmd-get-cmd-hash'."
+  (let* ((buffer (current-buffer))
+         (cmdbuf (realgud-get-cmdbuf))
+         (cmd-hash (with-current-buffer-safe cmdbuf
+                     (realgud-cmdbuf-info-cmd-hash realgud-cmdbuf-info)))
+         (cmd (or (and (hash-table-p cmd-hash)
+                       (gethash cmd-name cmd-hash))
+                  default-cmd-template
+                  (gethash cmd-name realgud-cmd:default-hash))))
+    (if (or (null cmd) (equal cmd "*not-implemented*"))
 	(message "Command %s is not implemented for this debugger" cmd-name)
-      ;; else
       (progn
+        ;; Set flag to know which buffer to jump back to
+        (with-current-buffer-safe cmdbuf
+          (realgud-cmdbuf-info-in-srcbuf?= (not (realgud-cmdbuf? buffer))))
+        ;; Run actual command
 	(realgud-command cmd arg no-record? frame-switch? realgud-prompts?)
 	;; FIXME: Figure out how to update the position if the source
 	;; buffer is displayed.
@@ -95,26 +156,37 @@ ARG, CMD-NAME, DEFAULT-CMD-TEMPLATE are as in `realgud:cmd-run-command'.
 KEY is ignored.  NO-RECORD?, FRAME-SWITCH?, REALGUD-PROMPTS? are
 as in `realgud:cmd-run-command'."
   (realgud:cmd-run-command arg cmd-name default-cmd-template
-                   no-record? frame-switch?
-                   realgud-prompts?))
+                           no-record? frame-switch?
+                           realgud-prompts?))
 
 (make-obsolete 'realgud:cmd-remap 'realgud:cmd-run-command "1.3.1")
 
 (defun realgud:cmd-backtrace(arg)
-  "Show the current call stack"
+  "Show the current call stack."
   (interactive "p")
-  (realgud:cmd-run-command arg "backtrace" "backtrace")
+  (realgud:cmd-run-command arg "backtrace")
   )
 
-(defun realgud:cmd-break(arg)
-  "Set a breakpoint at the current line"
-  (interactive "p")
-  (realgud:cmd-run-command arg "break" "break %X:%l"))
+(defun realgud:cmd-break (&optional line-number)
+  "Set a breakpoint at the current line.
+With prefix argument LINE-NUMBER, prompt for line number."
+  (interactive (realgud:cmd--line-number-from-prefix-arg))
+  (realgud:cmd--with-line-override line-number
+                                   (realgud:cmd-run-command line-number "break")))
 
-(defun realgud:cmd-clear(line-num)
-  "Delete breakpoint at the current line"
-  (interactive "p")
-  (realgud:cmd-run-command line-num "clear" "clear %l"))
+(defun realgud:cmd-clear(&optional line-number)
+  "Delete breakpoint at the current line.
+With prefix argument LINE-NUMBER, prompt for line number."
+  (interactive (realgud:cmd--line-number-from-prefix-arg))
+  (realgud:cmd--with-line-override line-number
+                                   (realgud:cmd-run-command line-number "clear")))
+
+(defun realgud:cmd-jump(&optional line-number)
+  "Jump to current line.
+With prefix argument LINE-NUMBER, prompt for line number."
+  (interactive (realgud:cmd--line-number-from-prefix-arg))
+  (realgud:cmd--with-line-override line-number
+    (realgud:cmd-run-command (line-number-at-pos) "jump")))
 
 (defun realgud:cmd-continue(&optional arg)
     "Continue execution.
@@ -125,7 +197,7 @@ running."
                    (list (read-string "Continue args: " nil nil nil t))))
     (when (or arg (realgud:prompt-if-safe-mode
                    "Continue to next breakpoint?"))
-      (realgud:cmd-run-command arg "continue" "continue")))
+      (realgud:cmd-run-command arg "continue")))
 
 (defun realgud:bpnum-on-current-line()
   "Return number of one breakpoint on current line, if any.
@@ -153,7 +225,7 @@ numeric prefix argument, delete breakpoint with that number
 instead.  With prefix argument (C-u), or when no breakpoint can
 be found on the current line, prompt for a breakpoint number."
     (interactive (realgud:bpnum-from-prefix-arg))
-    (realgud:cmd-run-command bpnum "delete" "delete %p"))
+    (realgud:cmd-run-command bpnum "delete"))
 
 (defun realgud:cmd-disable(bpnum)
     "Disable breakpoint BPNUM.
@@ -162,7 +234,7 @@ numeric prefix argument, disable breakpoint with that number
 instead.  With prefix argument (C-u), or when no breakpoint can
 be found on the current line, prompt for a breakpoint number."
     (interactive (realgud:bpnum-from-prefix-arg))
-    (realgud:cmd-run-command bpnum "disable" "disable %p"))
+    (realgud:cmd-run-command bpnum "disable"))
 
 (defun realgud:cmd-enable(bpnum)
     "Enable breakpoint BPNUM.
@@ -171,7 +243,7 @@ numeric prefix argument, enable breakpoint with that number
 instead.  With prefix argument (C-u), or when no breakpoint can
 be found on the current line, prompt for a breakpoint number."
     (interactive (realgud:bpnum-from-prefix-arg))
-    (realgud:cmd-run-command bpnum "enable" "enable %p"))
+    (realgud:cmd-run-command bpnum "enable"))
 
 (defun realgud-cmds--add-remove-bp (pos)
   "Add or delete breakpoint at POS."
@@ -180,7 +252,7 @@ be found on the current line, prompt for a breakpoint number."
     (let ((existing-bp-num (realgud:bpnum-on-current-line)))
       (if existing-bp-num
           (realgud:cmd-delete existing-bp-num)
-        (realgud:cmd-break pos)))))
+        (realgud:cmd-break)))))
 
 (defun realgud-cmds--mouse-add-remove-bp (event)
   "Add or delete breakpoint on line pointed to by EVENT.
@@ -195,14 +267,14 @@ EVENT should be a mouse click on the left fringe or margin."
 (defun realgud:cmd-eval(arg)
     "Evaluate an expression."
     (interactive "MEval expesssion: ")
-    (realgud:cmd-run-command arg "eval" "eval %s")
+    (realgud:cmd-run-command arg "eval")
 )
 
 (defun realgud:cmd-eval-region(start end)
     "Evaluate current region."
     (interactive "r")
     (let ((text (buffer-substring-no-properties start end)))
-      (realgud:cmd-run-command text "eval" "eval %s")))
+      (realgud:cmd-run-command text "eval")))
 
 (defun realgud:cmd-eval-dwim()
   "Eval the current region if active; otherwise, prompt."
@@ -217,101 +289,95 @@ EVENT should be a mouse click on the left fringe or margin."
 This command is often referred to as 'step out' as opposed to
 'step over' or 'step into'."
     (interactive "p")
-    (realgud:cmd-run-command arg "finish" "finish")
+    (realgud:cmd-run-command arg "finish")
 )
 
 (defun realgud:cmd-frame(arg)
     "Change the current frame number to the value of the numeric argument.
 If no argument specified use 0 or the most recent frame."
     (interactive "p")
-    (realgud:cmd-run-command arg "frame" "frame %p" t t)
+    (realgud:cmd-run-command arg "frame" nil t t)
 )
 
-(defun realgud:cmd-kill(arg)
-  "kill debugger process"
-  (interactive "p")
-  (realgud:cmd-run-command arg "kill" "kill" nil nil t)
-  )
+(defun realgud:cmd-kill()
+  "Kill debugger process."
+  (interactive)
+  (realgud:cmd-run-command nil "kill" nil nil nil t))
 
 (defun realgud:cmd-newer-frame(&optional arg)
     "Move the current frame to a newer (more recent) frame.
 With a numeric argument move that many levels forward."
     (interactive "p")
-    (realgud:cmd-run-command arg "down" "down %p" "<" t t)
+    (realgud:cmd-run-command arg "down" nil t t)
 )
 
-(defun realgud:cmd-next(&optional arg)
+(defun realgud:cmd-next(&optional count)
     "Step one source line at current call level.
 
-With a numeric argument, step that many times. This command is
-often referred to as 'step through' as opposed to 'step into' or
-'step out'.
+With numeric argument COUNT, step that many times. This command is
+often referred to as `step through' as opposed to `step into' or
+`step out'.
 
-The definition of 'next' is debugger specific so, see the
-debugger documentation for a more complete definition of what is
-getting stepped."
+The definition of `next' is debugger specific, so see the
+documentation of your debugger for a more complete definition of
+what is getting stepped."
     (interactive "p")
-    (realgud:cmd-run-command arg "next" "next %p")
-)
+    (realgud:cmd-run-command count "next"))
 
-(defun realgud:cmd-next-no-arg(&optional arg)
-    "Step one source line at current call level.
+(defun realgud:cmd-next-no-arg()
+  "Step one source line at current call level.
 
 The definition of 'next' is debugger specific so, see the
 debugger documentation for a more complete definition of what is
 getting stepped."
     (interactive)
-    (realgud:cmd-run-command nil "next" "next")
-)
+    (realgud:cmd-next))
 
 (defun realgud:cmd-older-frame(&optional arg)
   "Move the current frame to an older (less recent) frame.
 With a numeric argument move that many levels back."
     (interactive "p")
-    (realgud:cmd-run-command arg "up" "up %p" t t)
+    (realgud:cmd-run-command arg "up" nil t t)
 )
 
-(defun realgud:cmd-repeat-last(&optional arg)
-    "Repeat the last command (or generally what <enter> does."
-    (interactive "")
-    (realgud:cmd-run-command arg "repeat-last" "\n" t nil t)
-)
+(defun realgud:cmd-repeat-last()
+  "Repeat the last command (or generally what <enter> does."
+  (interactive)
+  (realgud:cmd-run-command nil "repeat-last" nil t nil t))
 
-(defun realgud:cmd-restart(&optional arg)
-    "Restart execution."
-    (interactive "")
-    (realgud:cmd-run-command arg "restart" "run" t nil t)
-)
+(defun realgud:cmd-restart()
+  "Restart execution."
+  (interactive)
+  (if (realgud:prompt-if-safe-mode
+		 "Restart program?")
+      (realgud:cmd-run-command nil "restart" nil t nil t)))
 
-(defun realgud:cmd-shell(&optional arg)
-    "Drop to a shell."
-    (interactive "")
-    (realgud:cmd-run-command arg "shell" "shell")
-)
+(defun realgud:cmd-shell()
+  "Drop to a shell."
+  (interactive)
+  (realgud:cmd-run-command nil "shell"))
 
-(defun realgud:cmd-step(&optional arg)
+(defun realgud:cmd-step(&optional count)
     "Step one source line.
 
-With a numeric argument, step that many times.
-This command is often referred to as 'step into' as opposed to
-'step over' or 'step out'.
+With a numeric prefix argument COUNT, step that many times.
+This command is often referred to as `step into' as opposed to
+`step over' or `step out'.
 
-The definition of 'step' is debugger specific so, see the
-debugger documentation for a more complete definition of what is
-getting stepped."
+The definition of `step' is debugger specific, so see the
+documentation of your debugger for a more complete definition of
+what is getting stepped."
     (interactive "p")
-    (realgud:cmd-run-command arg "step" "step %p")
-)
+    (realgud:cmd-run-command count "step"))
 
 (defun realgud:cmd-step-no-arg()
     "Step one source line.
 
-The definition of 'step' is debugger specific so, see the
-debugger documentation for a more complete definition of what is
-getting stepped."
+The definition of `step' is debugger specific, so see the
+documentation of your debugger for a more complete definition of
+what is getting stepped."
     (interactive)
-    (realgud:cmd-run-command nil "step" "step")
-)
+    (realgud:cmd-step))
 
 (defun realgud:cmd-terminate ()
   "Gently terminate source and command buffers without possibly
@@ -330,32 +396,34 @@ Continue until the current line. In some cases this is really
 two commands - setting a temporary breakpoint on the line and
 continuing execution."
     (interactive "p")
-    (realgud:cmd-run-command arg "until" "until")
+    (realgud:cmd-run-command arg "until")
 )
 
 (defun realgud:cmd-quit (&optional arg)
   "Gently terminate execution of the debugged program."
   (interactive "p")
-  (let ((buffer (current-buffer))
-	(cmdbuf (realgud-get-cmdbuf))
-	(cmd-hash)
-	(cmd)
-	)
-    (if cmdbuf
-	(progn
-	  (with-current-buffer cmdbuf
-	    (realgud-cmdbuf-info-in-srcbuf?= (not (realgud-cmdbuf? buffer)))
-	    (setq cmd-hash (realgud-cmdbuf-info-cmd-hash realgud-cmdbuf-info))
-	    (unless (and cmd-hash (setq cmd (gethash "quit" cmd-hash)))
-	      (setq cmd "quit"))
+  (if (realgud:prompt-if-safe-mode
+		 "Quit debugger?")
+      (let ((buffer (current-buffer))
+	    (cmdbuf (realgud-get-cmdbuf))
+	    (cmd-hash)
+	    (cmd)
 	    )
-	  (realgud-command cmd arg 't)
+	(if cmdbuf
+	    (progn
+	      (with-current-buffer cmdbuf
+		(realgud-cmdbuf-info-in-srcbuf?= (not (realgud-cmdbuf? buffer)))
+		(setq cmd-hash (realgud-cmdbuf-info-cmd-hash realgud-cmdbuf-info))
+		(unless (and cmd-hash (setq cmd (gethash "quit" cmd-hash)))
+		  (setq cmd "quit"))
+		)
+          (realgud-command cmd arg t)
 	  (if cmdbuf (realgud:terminate cmdbuf))
 	  )
-      ; else
-      (realgud:terminate-srcbuf buffer)
-      )
-    )
-  )
+	  ;; else
+	  (realgud:terminate-srcbuf buffer)
+	  )
+	)
+    ))
 
 (provide-me "realgud-")
