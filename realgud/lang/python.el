@@ -1,4 +1,20 @@
-;;; Copyright (C) 2011, 2014-2015 Rocky Bernstein <rocky@gnu.org>
+;; Copyright (C) 2011, 2014, 2015 Free Software Foundation, Inc
+
+;; Author: Rocky Bernstein <rocky@gnu.org>
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 ;;; Common Python constants and regular expressions.
 (eval-when-compile (require 'cl))
 
@@ -93,6 +109,24 @@ traceback) line."  )
       (make-realgud-loc-pat
        :regexp "^Deleted breakpoint \\([0-9]+\\)\n"
        :num 1))
+
+;; Regular expression that describes a debugger "disable" (breakpoint) response.
+;; For example:
+;;   Breakpoint entry 4 disabled.
+(defconst realgud:python-trepan-brkpt-disable-pat
+  (make-realgud-loc-pat
+   :regexp (format "^Breakpoint %s disabled"
+		   realgud:regexp-captured-num)
+   :num 1))
+
+;; Regular expression that describes a debugger "enable" (breakpoint) response.
+;; For example:
+;;   Breakpoint entry 4 enabled.
+(defconst realgud:python-trepan-brkpt-enable-pat
+  (make-realgud-loc-pat
+   :regexp (format "^Breakpoint %s enabled"
+		   realgud:regexp-captured-num)
+   :num 1))
 
 (defconst realgud:python-debugger-font-lock-keywords
   '(
