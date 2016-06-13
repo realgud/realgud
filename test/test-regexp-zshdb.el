@@ -5,6 +5,14 @@
 (load-file "../realgud/debugger/zshdb/init.el")
 (load-file "./regexp-helper.el")
 
+(declare-function loc-match	                 'realgud-helper)
+(declare-function prompt-match                   'regexp-helper)
+(declare-function realgud-loc-pat-num            'realgud-regexp)
+(declare-function realgud-loc-pat-regexp         'realgud-regexp)
+(declare-function realgud-loc-pat-file-group     'realgud-regexp)
+(declare-function realgud-loc-pat-line-group     'realgud-regexp)
+(declare-function __FILE__                       'load-relative)
+
 (test-simple-start)
 
 (eval-when-compile
@@ -27,6 +35,15 @@
 
 (setq prompt-pat (gethash "prompt"             realgud:zshdb-pat-hash))
 (setq frame-pat  (gethash "debugger-backtrace" realgud:zshdb-pat-hash))
+
+(set (make-local-variable 'bp-del-pat)
+      (gethash "brkpt-del" realgud:zshdb-pat-hash))
+
+(set (make-local-variable 'bp-enable-pat)
+      (gethash "brkpt-enable" realgud:zshdb-pat-hash))
+
+(set (make-local-variable 'bp-disable-pat)
+      (gethash "brkpt-disable" realgud:zshdb-pat-hash))
 
 (note "zshdb prompt matching")
 (prompt-match "zshdb<10> "  "10")
@@ -57,9 +74,9 @@
 	      (substring test-s1
 			 (match-beginning line-group)
 			 (match-end line-group)))
-(setq pos (match-end 0))
+(setq test-pos (match-end 0))
 
-(assert-equal 49 (string-match frame-re test-s1 pos))
+(assert-equal 49 (string-match frame-re test-s1 test-pos))
 (assert-equal "1" (substring test-s1
 			     (match-beginning num-group)
 			     (match-end num-group)))
@@ -71,8 +88,8 @@
 	      (substring test-s1
 			 (match-beginning line-group)
 			 (match-end line-group)))
-(setq pos (match-end 0))
-(assert-equal 128 (string-match frame-re test-s1 pos))
+(setq test-pos (match-end 0))
+(assert-equal 128 (string-match frame-re test-s1 test-pos))
 (assert-equal "2" (substring test-s1
 			     (match-beginning num-group)
 			     (match-end num-group)))
@@ -88,5 +105,14 @@
 (note "breakpoint delete matching")
 (setq test-text "Deleted breakpoint 1\n")
 (assert-t (numberp (loc-match test-text bp-del-pat)) "breakpoint delete matching")
+
+(note "breakpoint enable matching")
+(setq test-text "Breakpoint entry 4 enabled.\n")
+(assert-t (numberp (loc-match test-text bp-enable-pat)) "breakpoint enable matching")
+
+
+(note "breakpoint disable matching")
+(setq test-text "Breakpoint entry 2 disabled.\n")
+(assert-t (numberp (loc-match test-text bp-disable-pat)) "breakpoint disable matching")
 
 (end-tests)

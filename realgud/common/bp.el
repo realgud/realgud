@@ -202,4 +202,15 @@ number."
              (bp-num (realgud-loc-num loc)))
         (realgud-bp-del-icon marker (current-buffer) bp-num))))
 
+(defun realgud-bp-enable-disable-info (bp-num enable? loc buf)
+  "Enable or disable bp with BP-NUM at location LOC in BUF."
+  (if (realgud-loc? loc)
+      (let* ((marker (realgud-loc-marker loc))
+             (bp-num-check (realgud-loc-num loc)))
+	(if (eq bp-num bp-num-check)
+	    (realgud-bp-put-icon marker enable? bp-num buf)
+	  (message "Internal error - bp number found %s doesn't match requested %s"
+		   bp-num-check bp-num)
+	  ))))
+
 (provide-me "realgud-")

@@ -56,9 +56,21 @@ realgud-loc-pat struct")
 
 ;; Regular expression that describes a debugger "delete" (breakpoint) response.
 ;; For example:
-;;   Removed 1 breakpoint(s).
+;;   Deleted breakpoint 1.
 (setf (gethash "brkpt-del" realgud:zshdb-pat-hash)
       realgud:POSIX-debugger-brkpt-del-pat)
+
+;; Regular expression that describes a debugger "disable" (breakpoint) response.
+;; For example:
+;;   Breakpoint entry 4 disabled.
+(setf (gethash "brkpt-disable" realgud:zshdb-pat-hash)
+      realgud:POSIX-debugger-brkpt-disable-pat)
+
+;; Regular expression that describes a debugger "enable" (breakpoint) response.
+;; For example:
+;;   Breakpoint entry 4 enabled.
+(setf (gethash "brkpt-enable" realgud:zshdb-pat-hash)
+      realgud:POSIX-debugger-brkpt-enable-pat)
 
 ;; Regular expression that describes a debugger "backtrace" command line.
 ;; For example:

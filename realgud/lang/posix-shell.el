@@ -1,4 +1,4 @@
-;; Copyright (C) 2015 Free Software Foundation, Inc
+;; Copyright (C) 2015, 2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -103,7 +103,25 @@ traceback) line."  )
 ;;   Removed 1 breakpoint(s).
 (defconst realgud:POSIX-debugger-brkpt-del-pat
   (make-realgud-loc-pat
-   :regexp (format "^Deleted breakpoint %s.?\n"
+   :regexp (format "^Deleted breakpoint %s\n"
+		   realgud:regexp-captured-num)
+   :num 1))
+
+;; Regular expression that describes a debugger "disable" (breakpoint) response.
+;; For example:
+;;   Breakpoint entry 4 disabled.
+(defconst realgud:POSIX-debugger-brkpt-disable-pat
+  (make-realgud-loc-pat
+   :regexp (format "^Breakpoint entry %s disabled."
+		   realgud:regexp-captured-num)
+   :num 1))
+
+;; Regular expression that describes a debugger "enable" (breakpoint) response.
+;; For example:
+;;   Breakpoint entry 4 enabled.
+(defconst realgud:POSIX-debugger-brkpt-enable-pat
+  (make-realgud-loc-pat
+   :regexp (format "^Breakpoint entry %s enabled."
 		   realgud:regexp-captured-num)
    :num 1))
 
