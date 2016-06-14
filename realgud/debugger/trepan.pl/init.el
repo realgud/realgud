@@ -148,16 +148,16 @@ realgud-loc-pat struct")
 ;;   Breakpoint entry 4 disabled.
 (setf (gethash "brkpt-disable" realgud:trepanpl-pat-hash)
       (make-realgud-loc-pat
-       :regexp (format "^Breakpoint entry %s disabled"
+       :regexp (format "^Breakpoint %s disabled"
 		       realgud:regexp-captured-num)
        :num 1))
 
 ;; Regular expression that describes a debugger "enable" (breakpoint) response.
 ;; For example:
-;;   Breakpoint entry 4 enabled.
+;;   Breakpoint 4 enabled.
 (setf (gethash "brkpt-enable" realgud:trepanpl-pat-hash)
       (make-realgud-loc-pat
-       :regexp (format "^Breakpoint entry %s enabled"
+       :regexp (format "^Breakpoint %s enabled"
 		       realgud:regexp-captured-num)
        :num 1))
 

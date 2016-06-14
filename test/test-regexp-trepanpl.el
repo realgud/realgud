@@ -104,12 +104,12 @@
 ;; (assert-t (numberp (loc-match test-text bp-del-pat)) "breakpoint delete matching")
 
 (note "breakpoint enable matching")
-(setq test-text "Breakpoint entry 4 enabled.\n")
+(setq test-text "Breakpoint 4 enabled.\n")
 (assert-t (numberp (loc-match test-text bp-enable-pat)) "breakpoint enable matching")
 
 
 (note "breakpoint disable matching")
-(setq test-text "Breakpoint entry 2 disabled.\n")
+(setq test-text "Breakpoint 2 disabled.\n")
 (assert-t (numberp (loc-match test-text bp-disable-pat)) "breakpoint disable matching")
 
 (end-tests)
