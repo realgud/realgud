@@ -94,7 +94,7 @@ current buffer to that realgud command buffer."
     (setq command-buf (realgud:gdb-find-command-buffer pid))
     (if command-buf
 	(with-current-buffer source-buf
-	  (realgud:cmdbuf-associate (buffer-name command-buf)))
+	  (realgud:cmdbuf-associate-name (buffer-name command-buf)))
       )))
 
 ;;;###autoload

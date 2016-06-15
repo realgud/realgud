@@ -311,7 +311,7 @@ values set in the debugger's init.el."
 	     :bt-buf nil
 	     :last-input-end (point-max)
 	     :cmd-hash cmd-hash
-	     :src-shortkey? 't
+	     :src-shortkey? t
 	     :in-debugger? nil
 	     :callback-loc-fn (gethash "loc-callback-fn" regexp-hash)
 	     :callback-eval-filter (gethash "callback-eval-filter"

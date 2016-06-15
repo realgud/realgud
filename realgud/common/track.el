@@ -44,6 +44,7 @@
 (declare-function fn-p-to-fn?-alias                   'realgud-helper)
 (declare-function realgud-bp-add-info                 'realgud-bp)
 (declare-function realgud-bp-del-info                 'realgud-bp)
+(declare-function realgud-bp-enable-disable-info      'realgud-bp)
 (declare-function realgud-cmdbuf-add-srcbuf           'realgud-buffer-command)
 (declare-function realgud-cmdbuf-debugger-name        'realgud-buffer-command)
 (declare-function realgud-cmdbuf-info-bp-list=        'realgud-buffer-command)

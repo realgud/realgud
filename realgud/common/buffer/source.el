@@ -1,4 +1,20 @@
-;;; Copyright (C) 2010, 2012-2015 Rocky Bernstein <rocky@gnu.org>
+;;; Copyright (C) 2010, 2012-2015 Free Software Foundation, Inc
+
+;; Author: Rocky Bernstein <rocky@gnu.org>
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 ;;; source-code buffer code
 (eval-when-compile
   (defvar realgud-srcbuf-info) ;; is buffer local
@@ -143,6 +159,19 @@ in it with those from CMDPROC-BUFFER"
     (if (realgud-srcbuf-info? realgud-srcbuf-info)
 	(realgud-srcbuf-info-cmdproc= cmdproc-buffer)
       (realgud-srcbuf-init src-buffer cmdproc-buffer))))
+
+;; FIXME: rewrite to add prompt function that only suggests
+;; command buffers;
+(defun realgud:cmdbuf-associate-buffer-name(cmdbuf-name)
+  "Associate a command buffer with for the current buffer which is
+assumed to be a source-code buffer"
+  (interactive "brealgud command buffer: ")
+  (let ((cmdbuf (get-buffer cmdbuf-name)))
+    (unless (realgud-cmdbuf? cmdbuf)
+      (error "%s doesn't smell like a command buffer" cmdbuf-name))
+    (realgud-srcbuf-init-or-update (current-buffer) cmdbuf )
+    (realgud-short-key-mode-setup t)
+  ))
 
 (defun realgud:cmdbuf-associate ()
   "Associate a command buffer with the current (source-code) buffer."

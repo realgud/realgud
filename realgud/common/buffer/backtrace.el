@@ -116,7 +116,7 @@
 		 (realgud-cmdbuf-debugger-name)))
 	(setq process (get-buffer-process (current-buffer)))
 	(realgud-cmdbuf-info-in-srcbuf?= (not (realgud-cmdbuf? buffer)))
-	(realgud-cmdbuf-info-divert-output?= 't)
+	(realgud-cmdbuf-info-divert-output?= t)
 	(setq realgud-track-divert-string nil)
 	(realgud:cmd-backtrace 0)
 	(while (and (eq 'run (process-status process))
@@ -418,7 +418,7 @@ filename, line number, whether the frame is selected as text properties."
 			       (match-end frame-group-pat)))
 	      (setq frame-num (string-to-number frame-num-str))
 	      (setq frame-num-pos (match-beginning frame-group-pat))
-	      (add-to-list 'frame-num-pos-list frame-num-pos 't)
+	      (add-to-list 'frame-num-pos-list frame-num-pos t)
 	      (add-text-properties (match-beginning frame-group-pat)
 				   (match-end frame-group-pat)
 				   (list 'mouse-face 'highlight
@@ -433,7 +433,7 @@ filename, line number, whether the frame is selected as text properties."
 			       (match-end 0)))
 	    (setq frame-num (incf alt-frame-num))
 	    (setq frame-num-pos (match-beginning 0))
-	    (add-to-list 'frame-num-pos-list frame-num-pos 't)
+	    (add-to-list 'frame-num-pos-list frame-num-pos t)
 	    (add-text-properties (match-beginning 0) (match-end 0)
 				 (list 'mouse-face 'highlight
 				       'help-echo "mouse-2: goto this frame"
