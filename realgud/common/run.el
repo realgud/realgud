@@ -116,6 +116,10 @@ for use if we want to restart.  If we don't succeed in running
 the program, we will switch to the command buffer which shows
 details of the error. The command buffer or nil is returned.
 
+DEBUGGER-NAME is used in selecting the tracking mode inside the
+command buffer. The debugger name and SCRIPT-FILENAME are used in
+selecting a buffer name for the command buffer.
+
 Normally command buffers are reused when the same debugger is
 reinvoked inside a command buffer with a similar command. If we
 discover that the buffer has prior command-buffer information and
