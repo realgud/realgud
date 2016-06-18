@@ -111,10 +111,17 @@ Note that path elements have been expanded via `expand-file-name'.
 					 minibuffer-history
 					 &optional no-reset)
   "Runs `realgud-exec-shell' with DEBUGGER-NAME SCRIPT-FILENAME
-and CMD-ARGS If this succeeds, we save CMD-ARGS in command-buffer
+and CMD-ARGS. If this succeeds, we save CMD-ARGS in command-buffer
 for use if we want to restart.  If we don't succeed in running
 the program, we will switch to the command buffer which shows
-details of the error. The command buffer or nil is returned."
+details of the error. The command buffer or nil is returned.
+
+Normally command buffers are reused when the same debugger is
+reinvoked inside a command buffer with a similar command. If we
+discover that the buffer has prior command-buffer information and
+NO-RESET is nil, then that information which may point into other
+buffers and source buffers which may contain marks and fringe or
+marginal icons is reset."
 
   (let ((cmd-buf))
     (setq cmd-buf
