@@ -49,9 +49,18 @@ realgud-loc-pat struct")
        :file-group 1
        :line-group 2))
 
+;; Regular expression that describes an ipdb prompt
+;;
+;; The comint-redirect-* commands (used e.g. for completion in the
+;; ipdb shell) do not allow applying filters when checking for the
+;; prompt signifying an end of the process output. Therefore we need
+;; to construct the regexp allowing for ansi color control sequences.
 (setf (gethash "prompt" realgud:ipdb-pat-hash)
       (make-realgud-loc-pat
-       :regexp   "^ipdb[>] "
+       :regexp (concat
+		"^\\(" ansi-color-regexp "\\)?"
+		"ipdb[>] "
+		"\\(" ansi-color-regexp "\\)?")
        ))
 
 ;;  Regular expression that describes a Python backtrace line.
