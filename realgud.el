@@ -195,8 +195,9 @@ autoloaded functions, and commit the resulting changes."
                            realgud--recursive-autoloads-base-directory)))
     (when (file-exists-p generated-autoload-file)
       (delete-file generated-autoload-file))
-    (dolist (name (directory-files-recursively
-                   realgud--recursive-autoloads-base-directory "" t))
+    (dolist (name (with-no-warnings
+                    (directory-files-recursively
+                     realgud--recursive-autoloads-base-directory "" t)))
       (when (file-directory-p name)
         (update-directory-autoloads name)))))
 
