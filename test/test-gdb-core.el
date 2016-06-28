@@ -33,4 +33,34 @@
 	      (realgud:gdb-parse-cmd-args
 	       '("gdb" "-p" "4511")))
 
+(eval-when-compile
+  (defvar test:warn-save)
+  (defvar last-mess)
+)
+
+(setq test:warn-save (symbol-function 'warn))
+
+(note "Stripping --interpreter=mi option")
+(defun warn (mess &optional args)
+  "Fake realgud:run-process used in testing"
+  (setq last-mess mess)
+  )
+
+(setq last-mess nil)
+(assert-equal '(("gdb" "-p") nil ("1955") nil)
+	      (realgud:gdb-parse-cmd-args
+	       '("gdb" "--interpreter=mi" "-p" "1955")))
+
+(assert-nil (null last-mess))
+(setq last-mess nil)
+
+(assert-equal '(("gdb" "-p") nil ("1954") nil)
+	      (realgud:gdb-parse-cmd-args
+	       '("gdb" "-i" "mi" "-p" "1954")))
+
+;; Restore the old value of realgud:run-process
+(assert-nil (null last-mess))
+(fset 'warn test:warn-save)
+
+
 (end-tests)

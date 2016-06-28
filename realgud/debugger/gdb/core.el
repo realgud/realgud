@@ -1,4 +1,4 @@
-;; Copyright (C) 2015 Free Software Foundation, Inc
+;; Copyright (C) 2015, 2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -54,7 +54,7 @@ ORIG_ARGS should contain a tokenized list of the command line to run.
 
 We return the a list containing
 * the name of the debugger given (e.g. gdb) and its arguments - a list of strings
-* nil (a placehoder in other routines of this ilk for a debugger
+* nil (a placeholder in other routines of this ilk for a debugger
 * the script name and its arguments - list of strings
 * whether the annotate or emacs option was given ('-A', '--annotate' or '--emacs) - a boolean
 
@@ -79,6 +79,7 @@ Note that path elements have been expanded via `expand-file-name'.
 	(gdb-two-args '("x" "-command" "b" "-exec"
 			"cd" "-pid"  "-core" "-directory"
 			"-annotate"
+			"i" "-interpreter"
 			"se" "-symbols" "-tty"))
 	;; gdb doesn't optionsl 2-arg options.
 	(gdb-opt-two-args '())
@@ -119,6 +120,12 @@ Note that path elements have been expanded via `expand-file-name'.
 	     ((string-match "^--annotate=[0-9]" arg)
 	      (nconc debugger-args (list (pop args) (pop args)) )
 	      (setq annotate-p t))
+	     ((string-match "^--interpreter=" arg)
+	      (warn "realgud doesn't support the --interpreter option; option ignored")
+	      (setq args (cdr args)))
+	     ((equal "-i" arg)
+	      (warn "realgud doesn't support the -i option; option ignored")
+	      (setq args (cddr args)))
 	     ;; path-argument ooptions
 	     ((member arg '("-cd" ))
 	      (setq arg (pop args))
