@@ -1,4 +1,12 @@
-;;; Copyright (C) 2013-2016 Rocky Bernstein <rocky@gnu.org>
+;; Copyright (C) 2013-2016 Free Software Foundation, Inc
+
+;; Author: Rocky Bernstein <rocky@gnu.org>
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
 ;;; Golang SSA gub tracking a comint buffer.
 
 (eval-when-compile (require 'cl))

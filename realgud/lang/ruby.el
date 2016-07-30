@@ -1,5 +1,13 @@
-;;; Copyright (C) 2010, 2014 Rocky Bernstein <rocky@gnu.org>
-;;; Common Ruby constants and regular expressions.
+;; Copyright (C) 2010, 2014 Free Software Foundation, Inc
+
+;; Author: Rocky Bernstein <rocky@gnu.org>
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; Common Ruby constants and regular expressions.
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)

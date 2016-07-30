@@ -47,6 +47,7 @@ install-short:
 .PHONY: test check check-short rmChangeLog check_copyrights
 
 CR_EXCEPTIONS=cr_exceptions.txt
+#: Check that copyrights are assigned to FSF
 check_copyrights:
 	@echo "Compute exceptions >$(CR_EXCEPTIONS)~"
 	@export LC_ALL=C;					    \

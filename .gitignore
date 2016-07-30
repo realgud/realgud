@@ -12,9 +12,11 @@
 /configure
 /configure.lineno
 /elpa
+/how-to-make-a-release.txt
 /install-sh
 /missing
 /node_modules
+/realgud-autoloads.el
 /test/npm-debug.log
 /tmp
 Makefile
@@ -22,4 +24,3 @@ Makefile.in
 elc-stamp
 elc-temp
 script
-/realgud-autoloads.el
