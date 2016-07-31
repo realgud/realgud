@@ -101,4 +101,4 @@
    ))
 
 ;; install new packages and init already installed packages
-(el-get 'sync '(loc-changes list-utils load-relative test-simple))
+(el-get 'sync '(loc-changes load-relative test-simple))
