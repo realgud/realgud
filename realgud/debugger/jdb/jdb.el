@@ -1,4 +1,4 @@
-;; Copyright (C) 2014-2015 Free Software Foundation, Inc
+;; Copyright (C) 2014-2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -30,7 +30,7 @@
   "The realgud interface to the Java's jdb debugger"
   :group 'java
   :group 'realgud
-  :version "24.3")
+  :version "24.4")
 
 ;; -------------------------------------------------------------------
 ;; User-definable variables

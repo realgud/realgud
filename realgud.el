@@ -2,7 +2,7 @@
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 ;; Version: 1.4.0
-;; Package-Requires: ((load-relative "1.0") (loc-changes "1.1") (test-simple  "1.0"))
+;; Package-Requires: ((load-relative "1.2") (loc-changes "1.2") (test-simple  "1.2.0"))
 ;; URL: http://github.com/realgud/realgud/
 ;; Compatibility: GNU Emacs 24.x
 

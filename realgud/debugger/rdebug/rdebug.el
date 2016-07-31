@@ -1,4 +1,4 @@
-;; Copyright (C) 2010-2011, 2014-2015 Free Software Foundation, Inc
+;; Copyright (C) 2010-2011, 2014-2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -17,7 +17,7 @@
 (defgroup realgud:rdebug nil
   "The realgud interface to the Ruby debugger, rdebug"
   :group 'realgud
-  :version "24.3")
+  :version "24.4")
 
 (declare-function rdebug-query-cmdline   'realgud-rdebug-core)
 (declare-function rdebug-parse-cmd-args  'realgud-rdebug-core)

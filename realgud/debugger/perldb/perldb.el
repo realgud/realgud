@@ -20,7 +20,7 @@
 (defgroup realgud:perldb nil
   "The realgud interface to the Perl debugger, perldb"
   :group 'realgud
-  :version "24.3")
+  :version "24.4")
 
 ;; -------------------------------------------------------------------
 ;; User-definable variables

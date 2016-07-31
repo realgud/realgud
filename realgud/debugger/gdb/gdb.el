@@ -36,7 +36,7 @@
 (defgroup realgud:gdb nil
   "The realgud interface to gdb"
   :group 'realgud
-  :version "24.3")
+  :version "24.4")
 
 ;; -------------------------------------------------------------------
 ;; User definable variables

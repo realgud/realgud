@@ -1,4 +1,4 @@
-;; Copyright (C) 2011, 2014-2015 Free Software Foundation, Inc
+;; Copyright (C) 2011, 2014-2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -23,7 +23,7 @@
 (defgroup realgud:zshdb nil
   "The realgud interface to the Zsh debugger, zshdb"
   :group 'realgud
-  :version "24.3")
+  :version "24.4")
 
 ;; -------------------------------------------------------------------
 ;; User definable variables
