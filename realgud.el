@@ -1,14 +1,12 @@
 ;;; realgud.el --- A modular front-end for interacting with external debuggers
 
-;; Author: Rocky Bernstein
+;; Author: Rocky Bernstein <rocky@gnu.org>
 ;; Version: 1.4.0
 ;; Package-Requires: ((load-relative "1.0") (loc-changes "1.1") (test-simple  "1.0"))
 ;; URL: http://github.com/realgud/realgud/
 ;; Compatibility: GNU Emacs 24.x
 
 ;; Copyright (C) 2015, 2016 Free Software Foundation, Inc
-
-;; Author: Rocky Bernstein <rocky@gnu.org>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
