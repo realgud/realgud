@@ -17,8 +17,8 @@
 
 ; (require 'term)
 
+(require 'cl)
 (require 'shell)
-(require 'list-utils)
 (require 'load-relative)
 (require-relative-list '("core" "track" "utils") "realgud-")
 (require-relative-list '("buffer/command") "realgud-buffer-")
@@ -147,8 +147,8 @@ marginal icons is reset."
 		       (cmd-args (realgud-cmdbuf-info-cmd-args info))
 		       (cmd-str  (mapconcat 'identity  cmd-args " ")))
 		  (set minibuffer-history
-		       (list-utils-uniq (cons cmd-str
-					      (eval minibuffer-history)))
+		       (remove-duplicates
+			(cons cmd-str (eval minibuffer-history)) :from-end)
 		       ))
 		)))
 	;; else

@@ -24,7 +24,7 @@ if test "$NO_CHECK_EMACS_PACKAGES" = "" ; then
 AC_MSG_NOTICE("Checking prerequiste packages")
 $EMACS -batch -q --no-site-file -eval \
   '(dolist (package
-         (quote (cl-lib list-utils loc-changes load-relative test-simple)))
+         (quote (cl-lib loc-changes load-relative test-simple)))
         (require package))
    )'
 fi
