@@ -22,7 +22,7 @@
 (defgroup realgud:nodejs nil
   "The realgud interface to the nodejs debugger"
   :group 'realgud
-  :version "24.4")
+  :version "24.3")
 
 ;; -------------------------------------------------------------------
 ;; User-definable variables

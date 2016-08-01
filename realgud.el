@@ -70,7 +70,7 @@
   "The Grand Cathedral Debugger rewrite"
   :group 'processes
   :group 'tools
-  :version "24.4")
+  :version "24.3")
 
 ;; FIXME: extend require-relative for "autoload".
 (defun realgud:load-features()

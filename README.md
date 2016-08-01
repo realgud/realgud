@@ -4,7 +4,7 @@
 
 ![RealGUD logo](etc/realgud-logo.png)
 
-**A modular GNU Emacs front-end for interacting with external debuggers**, brought to you by **Rocky Bernstein** ([@rocky](https://github.com/rocky)) and **Clément Pit-Claudel** ([@cpitclaudel](https://github.com/cpitclaudel)).
+**A extensible, modular GNU Emacs front-end for interacting with external debuggers**, brought to you by **Rocky Bernstein** ([@rocky](https://github.com/rocky)) and **Clément Pit-Claudel** ([@cpitclaudel](https://github.com/cpitclaudel)).
 
 ![RealGUD screenshot](etc/realgud.png)
 

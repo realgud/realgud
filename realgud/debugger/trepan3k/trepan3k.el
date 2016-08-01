@@ -18,7 +18,7 @@
   "The realgud interface to the Python debugger, trepan3k"
   :group 'realgud
   :group 'python
-  :version "24.1")
+  :version "24.3")
 
 (declare-function trepan3k-query-cmdline  'realgud:trepan3k-core)
 (declare-function trepan3k-parse-cmd-args 'realgud:trepan3k-core)

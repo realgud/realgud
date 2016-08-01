@@ -28,7 +28,7 @@
   "The realgud interface to the Ruby 1.9.2 1.9.3 \"trepanning\" debugger"
   :group 'ruby
   :group 'realgud
-  :version "24.1")
+  :version "24.3")
 
 ;; -------------------------------------------------------------------
 ;; User-definable variables

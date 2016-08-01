@@ -1,4 +1,4 @@
-;; Copyright (C) 2015 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -27,7 +27,7 @@
   "The realgud interface to the GNU Make debugger"
   :group 'realgud
   :group 'make
-  :version "24.1")
+  :version "24.3")
 
 (eval-when-compile (require 'cl-lib))
 

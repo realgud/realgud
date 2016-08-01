@@ -26,7 +26,7 @@
 (defgroup realgud:bashdb nil
   "The realgud interface to bashdb"
   :group 'realgud
-  :version "24.4")
+  :version "24.3")
 
 ;; -------------------------------------------------------------------
 ;; User-definable variables

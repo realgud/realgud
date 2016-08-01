@@ -27,7 +27,7 @@
 (defgroup realgud:ipdb nil
   "The realgud interface to the Python ipdb debugger"
   :group 'realgud
-  :version "24.1")
+  :version "24.3")
 
 ;; -------------------------------------------------------------------
 ;; User-definable variables
