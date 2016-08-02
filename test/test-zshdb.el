@@ -35,7 +35,9 @@
     (assert-equal  expanded-name script-filename "file name check")
     (assert-equal (list expanded-name "3" "5")
 		  (cdr cmd-args) "command args listified")
-    ))
+    )
+  (current-buffer)
+  )
 
 (note "zshdb-parse-cmd-args")
 (assert-equal (list nil '("zshdb")
