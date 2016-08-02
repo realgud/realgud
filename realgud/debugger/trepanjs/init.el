@@ -73,6 +73,14 @@ realgud-loc-pat struct")
        :file-group 2
        :line-group 3))
 
+;; Regular expression that describes a debugger "delete" (breakpoint) response.
+;; For example:
+;;   Deleted breakpoint 1
+(setf (gethash "brkpt-del" realgud:trepanjs-pat-hash)
+      (make-realgud-loc-pat
+       :regexp "^Deleted breakpoint \\(\\([0-9]+ *\\)+\\)\n"
+       :num 1))
+
 ;; Regular expression that describes a V8 backtrace line.
 ;; For example:
 ;;    at repl:1:7
@@ -138,6 +146,10 @@ realgud-loc-pat struct")
 
 (setf (gethash "break"      realgud:trepanjs-command-hash)
       "setBreakpoint(%l)")
+(setf (gethash "clear"      realgud:trepanjs-command-hash)
+      "clearBreakpoint('%X', %l)")
+(setf (gethash "delete"      realgud:trepanjs-command-hash)
+      "clearBreakpoint('%X', %l)")
 ;; We need aliases for step and next because the default would
 ;; do step 1 and trepanjs doesn't handle this. Or when it does,
 ;; it will probably look like step(1)
