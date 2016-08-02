@@ -157,6 +157,15 @@ Note that path elements have been expanded via `realgud:expand-file-name-if-exis
 			      realgud:zshdb-minibuffer-history
 			      "sh" "\\.\\(?:z\\)?sh$"))
 
+(defun realgud:zshdb-remove-ansi-schmutz()
+  "Remove ASCII escape sequences that node.js 'decorates' in
+prompts and interactive output with"
+  (add-to-list
+   'comint-preoutput-filter-functions
+   (lambda (output)
+     (replace-regexp-in-string "\033\\[\\?[0-9]+[GKJhl]" "" output)))
+  )
+
 (defun zshdb-reset ()
   "Zshdb cleanup - remove debugger's internal buffers (frame,
 breakpoints, etc.)."

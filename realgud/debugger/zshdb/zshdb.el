@@ -1,4 +1,4 @@
-;; Copyright (C) 2011, 2014-2015 Free Software Foundation, Inc
+;; Copyright (C) 2011, 2014-2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -14,6 +14,7 @@
 (require-relative-list '("../../common/run")    "realgud:")
 (require-relative-list '("core" "track-mode")   "realgud:zshdb-")
 
+(declare-function realgud:zshdb-remove-ansi-schmutz 'realgud:zshdb-core)
 (declare-function zshdb-track-mode (bool))
 (declare-function zshdb-query-cmdline  'realgud:zshdb-core)
 (declare-function zshdb-parse-cmd-args 'realgud:zshdb-core)
@@ -69,11 +70,18 @@ marginal icons is reset. See `loc-changes-clear-buffer' to clear
 fringe and marginal icons.
 "
   (interactive)
-  (realgud:run-debugger realgud:zshdb-command-name 'zshdb-query-cmdline
-			'zshdb-parse-cmd-args
-			'realgud:zshdb-minibuffer-history
-			opt-cmd-line no-reset)
-  )
+  (let ((cmd-buf
+	 (realgud:run-debugger realgud:zshdb-command-name 'zshdb-query-cmdline
+			       'zshdb-parse-cmd-args
+			       'realgud:zshdb-minibuffer-history
+			       opt-cmd-line no-reset)))
+    (if cmd-buf
+	(with-current-buffer cmd-buf
+	  ;; FIXME should allow customization whether to do or not
+	  ;; and also only do if hook is not already there.
+	  (realgud:zshdb-remove-ansi-schmutz)
+	  )
+      )))
 
 (defalias 'zshdb 'realgud:zshdb)
 
