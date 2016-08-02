@@ -17,6 +17,7 @@
 
 (eval-when-compile (require 'cl))
 
+(require 'files)
 (require 'load-relative)
 (require-relative-list '("../../common/track"
 			 "../../common/core"
@@ -147,14 +148,14 @@ Note that path elements have been expanded via `expand-file-name'.
 (defvar realgud:gdb-command-name)
 
 (defun realgud:gdb-executable (file-name)
-"Return a priority for whether file-name is likely we can run gdb on"
-  (let ((output (shell-command-to-string (format "file %s" file-name))))
+  "Return a priority for whether FILE-NAME is likely we can run gdb on"
+  (let ((output (shell-command-to-string
+		 (format "file %s" (file-chase-links file-name)))))
     (cond
      ((string-match "ASCII" output) 2)
      ((string-match "ELF" output) 7)
      ((string-match "executable" output) 6)
      ('t 5))))
-
 
 (defun realgud:gdb-suggest-invocation (&optional debugger-name)
   "Suggest a gdb command invocation. Here is the priority we use:

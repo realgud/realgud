@@ -1,4 +1,4 @@
-;; Copyright (C) 2010-2015 Free Software Foundation, Inc
+;; Copyright (C) 2010-2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -12,7 +12,9 @@
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
 
-; (require 'term)
+;; (require 'term)
+(require 'files)
+
 (if (< emacs-major-version 24)
     (error
      "You need at least Emacs 24 or greater to run this - you have version %d"
@@ -195,10 +197,16 @@ the buffer and data associated with it are already gone."
   (message "That's all folks.... %s" string))
 
 (defun realgud:binary (file-name)
-"Return a priority for whether file-name is likely we can run gdb on"
-  (let ((output (shell-command-to-string (format "file %s" file-name))))
+  "Return a whether FILE-NAME is executable or not or very large"
+  (let* ((truename (file-chase-links file-name))
+	 (output (shell-command-to-string
+		  (format "file %s" truename)))
+	 (filesize (nth 7 (file-attributes truename)))
+	 )
     (cond
      ((string-match "ELF" output) t)
+     ((and large-file-warning-threshold filesize
+	   (> filesize large-file-warning-threshold)) t)
      ('t nil))))
 
 
