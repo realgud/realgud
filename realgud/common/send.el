@@ -1,4 +1,4 @@
-;; Copyright (C) 2015 Free Software Foundation, Inc
+;; Copyright (C) 2015, 2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -31,11 +31,12 @@
   "Sends command buffer line either to comint or eshell"
   (interactive)
   (let ((mode (realgud:canonic-major-mode)))
-    (cond ((eq mode 'eshell)
-	   (eshell-send-input))
-	  ((eq mode 'comint)
-	   (comint-send-input))
-	)))
+    (ignore-errors
+      (cond ((eq mode 'eshell)
+	     (eshell-send-input))
+	    ((eq mode 'comint)
+	     (comint-send-input))
+	    ))))
 
 (defun realgud:send-command-common (process command-str)
   "Assume we are in a comint buffer. Insert COMMAND-STR and
