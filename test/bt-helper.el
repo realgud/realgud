@@ -37,9 +37,7 @@ for DEBUGGER-NAME and initializes it to STRING"
     (goto-char (point-min))
     (setq buffer-read-only nil)
     (insert string)
-    (font-lock-fontify-buffer)
-    ;; Newer emacs's use:
-    ;; (font-lock-ensure)
+    (font-lock-ensure)
     (goto-char (point-min))
     )
   temp-bt

@@ -9,6 +9,10 @@
 
 (test-simple-start)
 
+(eval-when-compile
+  (defvar realgud-rdebug-pat-hash)
+)
+
 (setup-regexp-vars realgud-rdebug-pat-hash)
 (setq rails-bt (gethash "rails-backtrace" realgud-rdebug-pat-hash))
 

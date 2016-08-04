@@ -16,6 +16,7 @@
   (defvar loc-pat)    (defvar prompt-pat)         (defvar test-s1)
   (defvar file-group) (defvar line-group)         (defvar test-pos)
   (defvar test-dbgr)  (defvar test-text)          (defvar realgud-bt-re)
+  (defvar realgud:gdb-pat-hash)
 )
 
 ; Some setup usually done in setting up the buffer.

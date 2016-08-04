@@ -10,6 +10,7 @@
 (declare-function realgud-cmdbuf-debugger-name  'realgud-buffer-command)
 (declare-function realgud-cmdbuf-info-srcbuf-list 'realgud-buffer-command)
 (declare-function realgud-cmdbuf-add-srcbuf 'realgud-buffer-command)
+(declare-function realgud-cmdbuf? 'realgud-buffer-command)
 
 (test-simple-start)
 
