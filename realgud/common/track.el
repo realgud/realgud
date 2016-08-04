@@ -206,6 +206,10 @@ evaluating (realgud-cmdbuf-info-loc-regexp realgud-cmdbuf-info)"
 					       (realgud-cmdbuf-pat "brkpt-disable")
 					       nil)
 	      (setq frame-num (realgud-track-selected-frame text))
+	      (if (and frame-num (not loc))
+		  (setq loc (realgud-track-loc-from-selected-frame
+			     text cmd-mark)))
+
 	      (setq bp-loc (realgud-track-bp-loc text-sans-loc cmd-mark cmdbuf))
 	      (if bp-loc
 		  (let ((src-buffer (realgud-loc-goto bp-loc)))
@@ -600,6 +604,30 @@ loc-regexp pattern"
   )
 
 
+(defun realgud-track-loc-from-selected-frame(text cmd-mark &optional
+						  opt-regexp opt-ignore-file-re)
+  "Return a selected frame number found in TEXT or nil if none found."
+  (if (realgud-cmdbuf?)
+      (let ((selected-frame-pat (realgud-cmdbuf-pat "selected-frame"))
+	    (frame-num-regexp)
+	    (ignore-file-re (or opt-ignore-file-re
+				(realgud-sget 'cmdbuf-info 'ignore-file-re))))
+	(if (and selected-frame-pat
+		 (setq frame-num-regexp (realgud-loc-pat-regexp
+					 selected-frame-pat)))
+	    (if (string-match frame-num-regexp text)
+		(let* ((file-group (realgud-loc-pat-file-group selected-frame-pat))
+		       (line-group (realgud-loc-pat-line-group selected-frame-pat))
+		       (filename (match-string file-group text))
+		       (lineno (string-to-number (match-string line-group text))))
+		  (if (and filename lineno)
+		      (realgud:file-loc-from-line filename lineno
+						  cmd-mark nil nil ignore-file-re)
+		    nil))
+	      nil)
+	  nil))
+    nil))
+
 (defun realgud-track-termination?(text)
   "Return 't and call `realgud:terminate' we we have a termination message"
   (if (realgud-cmdbuf?)
@@ -762,3 +790,7 @@ command buffer's debugger location pattern against the line at PT."
     ))
 
 (provide-me "realgud-")
+
+;; Local Variables:
+;; byte-compile-warnings: (not cl-functions)
+;; End:

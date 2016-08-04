@@ -13,6 +13,7 @@
 ;; GNU General Public License for more details.
 
 (require 'cl-lib)
+(require 'cl)
 
 ;;; Miscellaneous utility functions
 (require 'load-relative)
@@ -102,3 +103,7 @@ gives:
 ;; 	   (eval (intern var-str))))
 
 (provide-me "realgud-")
+
+;; Local Variables:
+;; byte-compile-warnings: (not cl-functions)
+;; End:
