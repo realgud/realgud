@@ -1,3 +1,26 @@
+2016-08-04  Stefan Monnier  <monnier@iro.umontreal.ca>
+
+	* realgud.el: Add missing cl-lib dependency.
+	* <most-other-files>: Remove unneeded (require 'cl) and replace the
+	other ones with (require 'cl-lib)
+
+	* test/test-common-helper.el (realgud-test-info):
+	* realgud/common/regexp.el (realgud-loc-pat):
+	* realgud/common/lochist.el (realgud-loc-hist):
+	* realgud/common/buffer/info.el (realgud-backtrace-info):
+	* realgud/common/loc.el (realgud-loc): Use `cl-defstruct'.
+
+	* realgud/common/run.el (realgud:run-process, realgud:run-debugger):
+	Use cl-remove-if and cl-remove-duplicates.
+
+	* realgud/common/track.el (realgud-track-bp-loc): Fix typo.
+
+	* test/test-track.el:
+	* test/test-regexp.el:
+	* test/test-regexp-ruby.el:
+	* test/test-regexp-rdebug.el:
+	* test/test-core.el: Use lexical-binding rather than lexical-let.
+
 2010-11-27  rocky <rocky@gnu.org>
 
 	* dbgr/debugger/trepan/init.el, dbgr/lang/ruby.el,

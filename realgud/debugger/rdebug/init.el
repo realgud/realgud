@@ -9,7 +9,7 @@
 
 ;; Ruby 1.8 debugger: ruby-debug (rdebug)
 
-(eval-when-compile (require 'cl))
+(eval-when-compile (require 'cl-lib))   ;For stef.
 
 (require 'load-relative)
 (require-relative-list '("../../common/regexp" "../../common/loc") "realgud-")

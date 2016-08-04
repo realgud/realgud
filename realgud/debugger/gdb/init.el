@@ -17,7 +17,7 @@
 
 ;;; gdb debugger
 
-(eval-when-compile (require 'cl))
+(eval-when-compile (require 'cl-lib))
 
 (require 'load-relative)
 (require-relative-list '("../../common/regexp" "../../common/loc") "realgud-")

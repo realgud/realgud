@@ -1,4 +1,4 @@
-;; Copyright (C) 2015, 2016 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -21,8 +21,6 @@
 ;; common-ness of bashdb, zshdb, and kshdb. But since those are the
 ;; *only* debuggers I know of for POSIX shells, it's not too much of
 ;; a stretch to think of this as for all "shell".
-
-(eval-when-compile (require 'cl))
 
 (require 'load-relative)
 (require-relative-list '("../common/regexp" "../common/loc"

@@ -1,4 +1,4 @@
-;; Copyright (C) 2015, 2016 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016 Free Software Foundation, Inc
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -16,12 +16,12 @@
 
 ;;; A mode based off of org mode to show debugger information
 
-(eval-when-compile (require 'cl))
+(eval-when-compile (require 'cl-lib))
 (require 'org)
 
 (require 'load-relative)
 
-(defstruct realgud-backtrace-info
+(cl-defstruct realgud-backtrace-info
   "debugger object/structure specific to debugger info."
   (cmdbuf    nil)  ;; buffer of the associated debugger process
 )

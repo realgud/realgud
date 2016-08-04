@@ -3,11 +3,10 @@
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 ;; Version: 1.4.3
 ;; Package-Type: multi
-;; Package-Requires: ((load-relative "1.2") (loc-changes "1.2") (test-simple  "1.2.0"))
+;; Package-Requires: ((load-relative "1.2") (loc-changes "1.2") (test-simple  "1.2.0") (cl-lib "0.5") (emacs "24"))
 ;; URL: http://github.com/realgud/realgud/
-;; Compatibility: GNU Emacs 24.x
 
-;; Copyright (C) 2015, 2016 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016 Free Software Foundation, Inc
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by

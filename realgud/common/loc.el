@@ -1,4 +1,4 @@
-;; Copyright (C) 2015 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -18,6 +18,8 @@
 ;; This describes a debugger location structure and has code for
 ;; working with them.
 
+(eval-when-compile (require 'cl-lib))
+
 (require 'load-relative)
 (require 'loc-changes)
 (require-relative-list '("fringe" "follow") "realgud-")
@@ -30,7 +32,7 @@
 (declare-function realgud-get-cmdbuf-from-srcbuf 'realgud-buffer-helper)
 (declare-function realgud-srcbuf?                'realgud-buffer-source)
 
-(defstruct realgud-loc
+(cl-defstruct realgud-loc
 "Our own location type. Even though a mark contains a
 file-name (via a buffer) and a line number (via an offset), we
 want to save the values that were seen/requested originally."

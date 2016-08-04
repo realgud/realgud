@@ -1,3 +1,5 @@
+;; -*- lexical-binding:t -*-
+
 ;; Press C-x C-e at the end of the next line to run this file test non-interactively
 ;; (test-simple-run "emacs -batch -L %s -l %s" (file-name-directory (locate-library "test-simple.elc")) buffer-file-name)
 
@@ -41,7 +43,7 @@
 (setq line-number 7)
 (setq debugger-output (format "-> (%s:%d)\nrequire 'foo'\n(trepan):\n"
 			      test-filename line-number))
-(lexical-let ((loc (realgud-track-loc debugger-output nil)))
+(let ((loc (realgud-track-loc debugger-output nil)))
   (assert-t (realgud-loc-p loc)   "loc extracted")
   (assert-equal "(trepan):\n"
 		(realgud-track-loc-remaining debugger-output)

@@ -16,7 +16,6 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;  `realgud:gdb' Main interface to gdb via Emacs
-(require 'cl)
 (require 'load-relative)
 (require-relative-list '("../../common/helper" "../../common/utils")
 		       "realgud-")

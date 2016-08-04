@@ -1,4 +1,4 @@
-;; Copyright (C) 2015, 2016 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -17,8 +17,7 @@
 
 ;; Regular expressions for Bash shell debugger: bashdb
 
-(eval-when-compile (require 'cl))
-
+(eval-when-compile (require 'cl-lib))   ;For setf.
 (require 'load-relative)
 (require-relative-list '("../../common/regexp"
 			 "../../common/loc"

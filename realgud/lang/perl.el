@@ -8,8 +8,6 @@
 ;; (at your option) any later version.
 
 ;;; Common Perl constants and regular expressions.
-(eval-when-compile (require 'cl))
-
 (require 'load-relative)
 (require-relative-list '("../common/regexp" "../common/loc" "../common/track")
 		       "realgud-")

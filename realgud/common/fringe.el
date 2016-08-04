@@ -1,4 +1,4 @@
-;; Copyright (C) 2010, 2012, 2014-2015 Free Software Foundation, Inc
+;; Copyright (C) 2010, 2012, 2014-2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -85,9 +85,6 @@ position.")
 (defvar realgud-overlay-arrow3 nil
   "Overlay arrow variable which contains the 3rd most recent debugger
 position.")
-
-(eval-when-compile (require 'cl))
-
 
 ;; FIXME: since overlay overlay-arrow-list can be global, and perhaps
 ;; has to stay that way since some Emacs code may expect that, we

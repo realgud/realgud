@@ -1,4 +1,4 @@
-;; Copyright (C) 2011, 2014 Free Software Foundation, Inc
+;; Copyright (C) 2011, 2014, 2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -9,7 +9,6 @@
 
 ;;; Mode for parsing various kinds of backtraces found in Perl
 
-(eval-when-compile (require 'cl))
 (require 'load-relative)
 (require-relative-list '(
 			 "../../common/cmds"

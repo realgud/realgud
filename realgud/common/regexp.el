@@ -27,9 +27,9 @@
 ;; Variables defining regular expressions (regexp:s).
 ;;
 
-(eval-when-compile (require 'cl))
+(eval-when-compile (require 'cl-lib))
 
-(defstruct realgud-loc-pat
+(cl-defstruct realgud-loc-pat
   "Information to match and extract position and other related information typically
 output by a debugger inside a process shell"
   (num)                ;; General number. Could be for example

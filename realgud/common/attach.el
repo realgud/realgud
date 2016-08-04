@@ -1,4 +1,4 @@
-;; Copyright (C) 2015 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -17,7 +17,6 @@
 ;;; Emacs Commands to associate or attach a source buffer to a command
 ;;; buffer and vice versa.
 
-(eval-when-compile (require 'cl))
 (require 'load-relative)
 (require-relative-list  '("buffer/command" "buffer/source")
 			"realgud-buffer-")

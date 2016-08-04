@@ -7,7 +7,7 @@
 ;; the Free Software Foundation, either version 3 of the License, or
 ;; (at your option) any later version.
 
-(eval-when-compile (require 'cl))
+(eval-when-compile (require 'cl-lib))   ;For setf.
 
 (require 'load-relative)
 (require-relative-list '("../../common/regexp"

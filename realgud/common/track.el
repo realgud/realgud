@@ -481,7 +481,7 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 			    (message "line number not found -- using 1"))
 			  (if (and filename lineno)
 			      (let* ((directory
-				      (cond ((boundp 'starting-directory) staring-directory)
+				      (cond ((boundp 'starting-directory) starting-directory)
 					    (t nil)))
 				     (loc-or-error
 				     (realgud:file-loc-from-line

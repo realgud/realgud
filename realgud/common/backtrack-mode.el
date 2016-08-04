@@ -20,7 +20,6 @@
 ;;  process shell arround Compare with backtrace-mode.el which
 ;;  handles backtraces inside the debugger
 
-(eval-when-compile (require 'cl))
 (require 'shell)
 
 (require 'load-relative)

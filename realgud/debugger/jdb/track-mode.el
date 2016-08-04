@@ -9,7 +9,6 @@
 
 ;; Java "jdb" Debugger tracking a comint or eshell buffer.
 
-(eval-when-compile (require 'cl))
 (require 'load-relative)
 (require-relative-list '(
 			 "../../common/cmds"

@@ -1,4 +1,4 @@
-;; Copyright (C) 2010, 2012, 2014-2015 Free Software Foundation, Inc
+;; Copyright (C) 2010, 2012, 2014-2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -20,6 +20,7 @@
 
 ;;; Code:
 
+(eval-when-compile (require 'cl-lib))
 (require 'ring)
 (require 'org)
 (require 'load-relative)
@@ -32,7 +33,7 @@
   :type 'integer
   :group 'realgud)
 
-(defstruct realgud-loc-hist
+(cl-defstruct realgud-loc-hist
   "A list of source-code positions recently encountered"
   (position -1)
   (ring (make-ring realgud-loc-hist-size)))

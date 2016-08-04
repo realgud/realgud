@@ -1,4 +1,4 @@
-;; Copyright (C) 2010, 2012-2015 Free Software Foundation, Inc
+;; Copyright (C) 2010, 2012-2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -15,8 +15,6 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ;;
-(eval-when-compile (require 'cl))
-
 (require 'load-relative)
 (require-relative-list '("../../common/track"
 			 "../../common/core"

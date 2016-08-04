@@ -9,7 +9,7 @@
 
 ;;Regular expressions for Korn shell debugger: kshdb
 
-(eval-when-compile (require 'cl))
+(eval-when-compile (require 'cl-lib))   ;For setf.
 
 (require 'load-relative)
 (require-relative-list '("../../common/regexp"

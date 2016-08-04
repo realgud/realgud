@@ -17,7 +17,7 @@
 
 ;; trepan3k: Python 3.2 and beyond
 
-(eval-when-compile (require 'cl))
+(eval-when-compile (require 'cl-lib))   ;For setf.
 
 (require 'load-relative)
 (require-relative-list '("../../common/regexp"

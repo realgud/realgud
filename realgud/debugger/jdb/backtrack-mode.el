@@ -1,4 +1,4 @@
-;; Copyright (C) 2015 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -16,7 +16,6 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ;; Mode for parsing various kinds of backtraces found in Java
 
-(eval-when-compile (require 'cl))
 (require 'load-relative)
 (require-relative-list '(
 			 "../../common/cmds"

@@ -11,8 +11,6 @@
 ;; along with this program.  If not, see <http://www.gnu.or/licenses/>.
 
 
-(eval-when-compile (require 'cl))
-
 (require 'comint)
 (require 'load-relative)
 (require-relative-list '("../../common/track"

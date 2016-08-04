@@ -9,7 +9,6 @@
 
 ;;; GNU Make Debugger tracking a comint buffer.
 
-(eval-when-compile (require 'cl))
 (require 'load-relative)
 (require-relative-list '(
 			 "../../common/cmds"

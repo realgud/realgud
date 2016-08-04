@@ -1,4 +1,4 @@
-;; Copyright (C) 2015, 2016 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -17,7 +17,7 @@
 
 ; (require 'term)
 
-(require 'cl)
+(require 'cl-lib)
 (require 'shell)
 (require 'load-relative)
 (require-relative-list '("core" "track" "utils") "realgud-")
@@ -152,7 +152,7 @@ marginal icons is reset."
 		  (if (boundp 'starting-directory)
 		      (realgud-cmdbuf-info-starting-directory= starting-directory))
 		  (set minibuffer-history
-		       (remove-duplicates
+		       (cl-remove-duplicates
 			(cons cmd-str (eval minibuffer-history)) :from-end)
 		       ))
 		)))
@@ -191,7 +191,7 @@ Otherwise nil is returned.
 	 (script-args (caddr parsed-args))
 	 (script-name (or opt-script-name (car script-args)))
 	 (parsed-cmd-args
-	  (remove-if 'nil (realgud:flatten parsed-args)))
+	  (cl-remove-if 'nil (realgud:flatten parsed-args)))
 	 )
     (realgud:run-process debugger-name script-name parsed-cmd-args
 			 minibuffer-history no-reset)

@@ -17,7 +17,6 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ;; Python "ipdb" Debugger tracking a comint buffer.
 
-(eval-when-compile (require 'cl))
 (require 'load-relative)
 (require-relative-list '(
                          "../../common/cmds"

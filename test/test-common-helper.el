@@ -1,3 +1,4 @@
+(eval-when-compile (require 'cl-lib))
 (require 'test-simple)
 (load-file "../realgud/common/helper.el")
 
@@ -12,7 +13,7 @@
   (defvar realgud-test-info)
 )
 
-(defstruct realgud-test-info name)
+(cl-defstruct realgud-test-info name)
 (realgud-struct-field-setter "realgud-test-info" "name")
 
 (set (make-local-variable 'realgud-test-info)

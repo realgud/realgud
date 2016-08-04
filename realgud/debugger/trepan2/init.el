@@ -9,7 +9,7 @@
 
 ;; trepan2: Python 2.5 - 2.7; for 3.0+ see trepan3k
 
-(eval-when-compile (require 'cl))
+(eval-when-compile (require 'cl-lib))   ;For setf.
 
 (require 'load-relative)
 (require-relative-list '("../../common/regexp"

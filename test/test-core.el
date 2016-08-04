@@ -1,3 +1,5 @@
+;; -*- lexical-binding:t -*-
+
 ;; Press C-x C-e at the end of the next line to run this file test non-interactively
 ;; (test-simple-run "emacs -batch -L %s -l %s" (file-name-directory (locate-library "test-simple.elc")) buffer-file-name)
 
@@ -33,7 +35,7 @@
 
 (note "realgud-parse-...")
 
-(lexical-let ((opt-two-args '("0" "C" "e" "E" "F" "i")))
+(let ((opt-two-args '("0" "C" "e" "E" "F" "i")))
   (assert-equal '(("-0" "a") nil)
 		(realgud-parse-command-arg '("-0" "a") '() opt-two-args)
 		  "Two args found, none remain afterwards though.")

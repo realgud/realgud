@@ -1,3 +1,5 @@
+;; -*- lexical-binding:t -*-
+
 ;; Press C-x C-e at the end of the next line to run this file test non-interactively
 ;; (test-simple-run "emacs -batch -L %s -l %s" (file-name-directory (locate-library "test-simple.elc")) buffer-file-name)
 
@@ -15,7 +17,7 @@
 ;;        setq however will workaround this.
 (setq text "/tmp/rails-2.3.5/lib/tasks/databases.rake:360")
 
-(lexical-let ((text "/tmp/rails-2.3.5/lib/tasks/databases.rake:360"))
+(let ((text "/tmp/rails-2.3.5/lib/tasks/databases.rake:360"))
 
   (assert-t (numberp (loc-match text bt)) "basic traceback location")
   (assert-equal "/tmp/rails-2.3.5/lib/tasks/databases.rake"

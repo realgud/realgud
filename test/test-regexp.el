@@ -1,3 +1,5 @@
+;; -*- lexical-binding:t -*-
+
 ;; Press C-x C-e at the end of the next line to run this file test non-interactively
 ;; (test-simple-run "emacs -batch -L %s -l %s" (file-name-directory (locate-library "test-simple.elc")) buffer-file-name)
 
@@ -39,7 +41,7 @@
 		  :line-group (realgud-loc-pat-line-group  loc-pat)))
 
 
-(lexical-let ((text ".. (./dbgr.rb:73)")
+(let ((text ".. (./dbgr.rb:73)")
 	      (text2 "C> ((eval):1 via /tmp/eval2.rb:2)")
 	      (text3 "-- (<internal:prelude>:28 remapped prelude.rb:28)")
 	      (text4 "-- (/src/external-vcs/dbgrr/processor/command/info_subcmd/registers_subcmd/dfp.rb:2)\nrequire_relative %w(.. .. base subsubcmd)\n")

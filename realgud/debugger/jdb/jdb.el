@@ -1,4 +1,4 @@
-;; Copyright (C) 2014-2015 Free Software Foundation, Inc
+;; Copyright (C) 2014-2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -10,7 +10,6 @@
 ;;  `jdb' Main interface to jdb via Emacs
 
 (require 'gud) ;; For class-path and source-path handling
-(require 'cl)
 
 (require 'load-relative)
 (require-relative-list '("../../common/run") "realgud:")

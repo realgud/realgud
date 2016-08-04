@@ -1,3 +1,5 @@
+;; -*- lexical-binding:t -*-
+
 ;; Press C-x C-e at the end of the next line to run this file test non-interactively
 ;; (test-simple-run "emacs -batch -L %s -l %s" (file-name-directory (locate-library "test-simple.elc")) buffer-file-name)
 
@@ -15,7 +17,7 @@
 ;;        setq however will workaround this.
 (setq text "	from /usr/local/bin/irb:12:in `<main>'")
 (note "traceback location matching")
-(lexical-let ((text "	from /usr/local/bin/irb:12:in `<main>'"))
+(let ((text "	from /usr/local/bin/irb:12:in `<main>'"))
   (assert-t (numberp (loc-match text helper-tb)) "basic traceback location")
   (assert-equal "/usr/local/bin/irb"
 		(match-string (realgud-loc-pat-file-group helper-tb)
@@ -26,7 +28,7 @@
 			      text) "extract traceback line number")
   )
 
-(lexical-let ((text "Breakpoint 1 file /usr/bin/irb, line 10\n"))
+(let ((text "Breakpoint 1 file /usr/bin/irb, line 10\n"))
   (assert-t (numberp (loc-match text helper-bps)) "basic breakpoint location")
   (assert-equal "/usr/bin/irb"
 		(match-string (realgud-loc-pat-file-group helper-bps)

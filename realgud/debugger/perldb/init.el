@@ -16,7 +16,7 @@
 ;;; Regular expressions for nodejs Javascript debugger.
 ;;; Stock Perl debugger perldb
 
-(eval-when-compile (require 'cl))
+(eval-when-compile (require 'cl-lib))   ;For setf.
 
 (require 'load-relative)
 (require-relative-list '("../../common/regexp" "../../common/loc") "realgud-")
