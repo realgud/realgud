@@ -13,7 +13,6 @@
 ;; GNU General Public License for more details.
 
 ;; (require 'term)
-(require 'files)
 
 (if (< emacs-major-version 24)
     (error
