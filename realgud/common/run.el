@@ -26,9 +26,12 @@
 (declare-function realgud-cmdbuf-info-in-debugger?=   'realgud-buffer-command)
 (declare-function realgud-cmdbuf-info-cmd-args=       'realgud-buffer-command)
 (declare-function realgud:track-set-debugger          'realgud-track)
+(declare-function realgud-cmdbuf-info-starting-directory= 'realgud-buffer-command)
 (declare-function realgud-parse-command-arg           'realgud-core)
 (declare-function realgud:expand-file-name-if-exists  'realgud-core)
 (declare-function realgud:flatten                     'realgud-utils)
+
+(defvar starting-directory)
 
 (defun realgud:parse-cmd-args(args two-args opt-two-args interp-regexp debugger-regexp
 				   path-args-list annotate-args)
@@ -146,6 +149,8 @@ marginal icons is reset."
 		(let* ((info realgud-cmdbuf-info)
 		       (cmd-args (realgud-cmdbuf-info-cmd-args info))
 		       (cmd-str  (mapconcat 'identity  cmd-args " ")))
+		  (if (boundp 'starting-directory)
+		      (realgud-cmdbuf-info-starting-directory= starting-directory))
 		  (set minibuffer-history
 		       (remove-duplicates
 			(cons cmd-str (eval minibuffer-history)) :from-end)

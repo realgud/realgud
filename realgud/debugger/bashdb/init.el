@@ -40,6 +40,9 @@ realgud-loc-pat struct")
 ;;   (/etc/init.d/apparmor:35):
 (setf (gethash "loc" realgud:bashdb-pat-hash) realgud:POSIX-debugger-loc-pat)
 
+;; Top frame number
+(setf (gethash "top-frame-num" realgud:bashdb-pat-hash) 0)
+
 ;; Regular expression that describes a bashdb command prompt
 ;; For example:
 ;;   bashdb<10>

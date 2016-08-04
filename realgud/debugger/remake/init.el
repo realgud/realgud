@@ -31,7 +31,10 @@
 backtrace, prompt, etc.  The values of a hash entry is a
 realgud-loc-pat struct")
 
-;; Regular expression that describes a remake location generally shown
+;; Top frame number
+(setf (gethash "top-frame-num" realgud:remake-pat-hash) 0)
+
+;; realgud-loc-pat that describes a remake location generally shown
 ;; before a command prompt.
 ;; For example:
 ;; -- (emacs-dbgr/realgud/debugger/Makefile:168)
@@ -51,7 +54,7 @@ realgud-loc-pat struct")
        :num 1
        ))
 
-;;  Regular expression that describes a "breakpoint set" line
+;;  realgud-loc-pat that describes a "breakpoint set" line
 (setf (gethash "brkpt-set" realgud:remake-pat-hash)
       (make-realgud-loc-pat
        :regexp "^Breakpoint \\([0-9]+\\) on target \\([^:]*\\): file \\(.+\\), line \\([0-9]+\\).\n"
@@ -59,7 +62,7 @@ realgud-loc-pat struct")
        :file-group 3
        :line-group 4))
 
-;; Regular expression that describes a debugger "delete" (breakpoint) response.
+;; realgud-loc-pat that describes a debugger "delete" (breakpoint) response.
 ;; For example:
 ;;   Removed 1 breakpoint(s).
 (setf (gethash "brkpt-del" realgud:remake-pat-hash)
@@ -77,7 +80,7 @@ backtrace listing.")
 
 (defconst realgud:remake-frame-file-regexp " at \\(.*\\):\\([0-9]+\\)")
 
-;; Regular expression that describes a remake "backtrace" command line.
+;; realgud-loc-pat that describes a remake "backtrace" command line.
 ;; For example:
 ;; #0  Makefile.in at /tmp/Makefile:216
 ;; #1  Makefile at /tmp/Makefile:230
@@ -93,7 +96,7 @@ backtrace listing.")
        :line-group 4)
       )
 
-;; Regular expression that describes a debugger "backtrace" command line.
+;; realgud-loc-pat that describes a debugger "backtrace" command line.
 ;; For example:
 ;; =>#0  Makefile.in at /tmp/Makefile:216
 ;;   #1  Makefile at /tmp/Makefile:230
@@ -110,7 +113,7 @@ backtrace listing.")
        :line-group 5)
       )
 
-;; Regular expression that describes which frame is selected in
+;; realgud-loc-pat that describes which frame is selected in
 ;; a debugger backtrace listing.
 (setf (gethash "selected-frame-indicator" realgud:remake-pat-hash)
       realgud:remake-selected-frame-arrow)

@@ -36,6 +36,7 @@
 (declare-function realgud-cmdbuf-debugger-name        'realgud-buffer-command)
 (declare-function realgud-cmdbuf-info-bp-list=        'realgud-buffer-command)
 (declare-function realgud-cmdbuf-info-in-debugger?=   'realgud-buffer-command)
+(declare-function realgud-cmdbuf-info-starting-directory= 'realgud-buffer-command)
 (declare-function realgud-cmdbuf-mode-line-update     'realgud-buffer-command)
 (declare-function realgud-cmdbuf?                     'realgud-helper)
 (declare-function realgud-command-string              'realgud-buffer-command)
@@ -50,6 +51,7 @@
 (declare-function realgud-suggest-lang-file           'realgud-lang)
 
 (defvar realgud-srcbuf-info)
+(defvar starting-directory)
 
 (defun realgud:expand-file-name-if-exists (filename)
   "Return FILENAME expanded using `expand-file-name' if that name exists.
@@ -227,19 +229,19 @@ NO-RESET is nil, then that information which may point into other
 buffers and source buffers which may contain marks and fringe or
 marginal icons is reset."
 
-  (let* ((starting-directory
+  (let* ((current-directory
 	  (or (file-name-directory script-filename)
 	      default-directory "./"))
 	 (cmdproc-buffer-name
-       (replace-regexp-in-string "\s+" "\s"
-	         (format "*%s %s shell*"
-		           (file-name-nondirectory debugger-name)
-		           (file-name-nondirectory script-filename))))
+	  (replace-regexp-in-string
+	   "\s+" "\s"
+	   (format "*%s %s shell*"
+		   (file-name-nondirectory debugger-name)
+		   (file-name-nondirectory script-filename))))
 	 (cmdproc-buffer (get-buffer-create cmdproc-buffer-name))
 	 (realgud-buf (current-buffer))
 	 (cmd-args (cons program args))
 	 (process (get-buffer-process cmdproc-buffer)))
-
 
     (with-current-buffer cmdproc-buffer
       ;; If the found command buffer isn't for the same debugger
@@ -262,9 +264,12 @@ marginal icons is reset."
         cmdproc-buffer
       (with-current-buffer cmdproc-buffer
 	(and (realgud-cmdbuf?) (not no-reset) (realgud:reset))
-	(setq default-directory default-directory)
-	(insert "Current directory: " default-directory "\n")
+	(make-local-variable 'starting-directory)
+	(setq starting-directory current-directory)
+
+	(insert "Current directory: " current-directory "\n")
  	(insert "Command: " (mapconcat 'identity cmd-args " ") "\n")
+
 
 	;; For term.el
 	;; (term-mode)

@@ -102,7 +102,9 @@
 
   loc-hist     ;; ring of locations seen in the course of execution
                ;; see realgud-lochist
-)
+  starting-directory    ;; directory where initial debug command was issued.
+                        ;; this can be used to resolve relative file names
+  )
 (make-variable-buffer-local 'realgud-cmdbuf-info)
 (make-variable-buffer-local 'realgud-last-output-start)
 
@@ -122,6 +124,7 @@
 (realgud-struct-field-setter "realgud-cmdbuf-info" "in-debugger?")
 (realgud-struct-field-setter "realgud-cmdbuf-info" "callback-loc-fn")
 (realgud-struct-field-setter "realgud-cmdbuf-info" "callback-eval-filter")
+(realgud-struct-field-setter "realgud-cmdbuf-info" "starting-directory")
 
 (defun realgud:cmdbuf-follow-buffer(event)
   (interactive "e")
@@ -167,6 +170,8 @@ Information is put in an internal buffer called *Describe*."
 			 (json-encode (realgud-cmdbuf-info-debugger-name info)))
 		 (format "  - Command-line args ::\t%s\n"
 			 (json-encode (realgud-cmdbuf-info-cmd-args info)))
+		 (format "  - Starting directory ::\t%s\n"
+			 (realgud-cmdbuf-info-starting-directory info))
 		 (format "  - Selected window should contain source? :: %s\n"
 			 (realgud-cmdbuf-info-in-srcbuf? info))
 		 (format "  - Last input end    ::\t%s\n"
@@ -286,7 +291,8 @@ Information is put in an internal buffer called *Describe*."
 ;; removed.
 
 (defun realgud-cmdbuf-init
-  (cmd-buf debugger-name regexp-hash &optional cmd-hash base-variable-name)
+    (cmd-buf debugger-name regexp-hash &optional cmd-hash base-variable-name
+	     starting-directory)
   "Initialize CMD-BUF for a working with a debugger.
 DEBUGGER-NAME is the name of the debugger; REGEXP-HASH are debugger-specific
 values set in the debugger's init.el."

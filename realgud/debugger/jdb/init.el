@@ -1,4 +1,4 @@
-;; Copyright (C) 2014-2015 Free Software Foundation, Inc
+;; Copyright (C) 2014-2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -31,7 +31,7 @@ realgud-loc-pat struct")
 
 (setf (gethash "loc-callback-fn" realgud:jdb-pat-hash) 'realgud:jdb-loc-fn-callback)
 
-;; Regular expression that describes a jdb location generally shown
+;; realgud-loc-pat that describes a jdb location generally shown
 ;; before a command prompt. For example:
 ;;   Breakpoint hit: "thread=main", TestMe.main(), line=7 bci=0
 ;;   Step completed: "thread=main", TestMe.<init>(), line=15 bci=0
@@ -43,7 +43,7 @@ realgud-loc-pat struct")
        :line-group 3
        :text-group 6))
 
-;; Regular expression that describes a jdb command prompt
+;; realgud-loc-pat that describes a jdb command prompt
 ;; For example:
 ;;   main[1]
 ;;   main[2]
@@ -56,11 +56,11 @@ realgud-loc-pat struct")
        :num 1
        ))
 
-;; Regular expression that describes a Java syntax error line.
+;; realgud-loc-pat that describes a Java syntax error line.
 ;; (setf (gethash "syntax-error" realgud:jdb-pat-hash)
 ;;       realgud-java-syntax-error-pat)
 
-;; Regular expression that describes a Java backtrace line.
+;; realgud-loc-pat that describes a Java backtrace line.
 ;; For example:
 ;;  [1] ca.snpEffect.commandLine.SnpEff.run (SnpEff.java:7)
 (setf (gethash "lang-backtrace" realgud:jdb-pat-hash)
@@ -70,7 +70,7 @@ realgud-loc-pat struct")
    :file-group 1
    :line-group 2))
 
-;; Regular expression that describes a "breakpoint set" line.
+;; realgud-loc-pat that describes a "breakpoint set" line.
 ;; For example:
 ;;   Set breakpoint TestMe:7
 (setf (gethash "brkpt-set" realgud:jdb-pat-hash)
@@ -79,7 +79,7 @@ realgud-loc-pat struct")
        :num 1
        :line-group 2))
 
-;; Regular expression that describes a debugger "delete" (breakpoint) response.
+;; realgud-loc-pat that describes a debugger "delete" (breakpoint) response.
 ;; For example:
 ;;   Removed: breakpoint TestMe:7
 (setf (gethash "brkpt-del" realgud:jdb-pat-hash)
@@ -99,10 +99,11 @@ backtrace listing.")
 ;; Top frame number
 (setf (gethash "top-frame-num" realgud:jdb-pat-hash) 0)
 
-;; Regular expression that describes a debugger "selected" frame in in
+;; realgud-loc-pat that describes a debugger "selected" frame in
 ;; a frame-motion command.
 ;; For example:
-;; --> #1 TOP Object#<top /usr/local/bin/irb> in file /usr/local/bin/irb at line 9
+;; --> #1 [1] TestMe.main (TestMe.java:7)
+;; Rocky: sometimes I am not getting the frame indicator.
 (setf (gethash "selected-frame" realgud:jdb-pat-hash)
       (make-realgud-loc-pat
        :regexp
@@ -111,7 +112,7 @@ backtrace listing.")
 	       realgud:jdb-frame-file-regexp)
        :num 1))
 
-;; Regular expression that describes a jdb backtrace line.
+;; realgud-loc-pat that describes a jdb backtrace line.
 ;; For example:
 ;;  [1] TestMe.main (TestMe.java:7)
 ;;  [2] java.lang.Class.privateGetDeclaredMethods (Class.java:2,570)

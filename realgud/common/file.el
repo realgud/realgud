@@ -60,7 +60,7 @@ at LINE-NUMBER or nil if it is not there"
 					   &optional cmd-marker source-text bp-num
 					   ;; FIXME: remove ignore-file-re and cover with
 					   ;; find-file-fn.
-					   ignore-file-re find-file-fn)
+					   ignore-file-re find-file-fn directory)
   "Return a realgud-loc for FILENAME and LINE-NUMBER and the
 other optional position information.
 
@@ -93,7 +93,7 @@ problem as best as we can determine."
 	    (progn
 	      (setq remapped-filename
 		    (buffer-file-name
-		     (compilation-find-file (point-marker) filename nil)))
+		     (compilation-find-file (point-marker) filename directory)))
 	      (when (and remapped-filename (file-exists-p remapped-filename))
 		(puthash filename remapped-filename realgud-file-remap)
 		(setq filename remapped-filename)

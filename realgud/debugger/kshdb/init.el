@@ -26,6 +26,9 @@
 backtrace, prompt, etc.  The values of a hash entry is a
 realgud-loc-pat struct")
 
+;; Top frame number
+(setf (gethash "top-frame-num" realgud:kshdb-pat-hash) 0)
+
 ;; Regular expression that describes a kshdb location generally shown
 ;; before a command prompt.
 ;; For example:

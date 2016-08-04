@@ -81,6 +81,7 @@
 (fn-p-to-fn?-alias 'realgud-loc-p)
 
 (defvar realgud-track-divert-string)
+(defvar starting-directory)
 
 (defun realgud-track-comint-output-filter-hook(text)
   "An output-filter hook custom for comint shells.  Find
@@ -411,7 +412,11 @@ Otherwise return nil."
 				     (match-string alt-line-group text)))
 		       (source-str (and text-group
 					(match-string text-group text)))
-		       (lineno (string-to-number (or line-str "1"))))
+		       (lineno (string-to-number (or line-str "1")))
+		       (directory
+			(cond ((boundp 'starting-directory) starting-directory)
+				     (t nil)))
+		       )
 		  (when source-str
 		    (setq source-str (ansi-color-filter-apply
 				      source-str)))
@@ -426,7 +431,10 @@ Otherwise return nil."
 			     (realgud:file-loc-from-line filename lineno
 							 cmd-mark
 							 source-str nil
-							 ignore-file-re)
+							 ignore-file-re
+							 nil
+							 directory
+							 )
 			   ;; else
 			   nil)))))
 	  ;; else
@@ -472,13 +480,16 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 			  (unless line-str
 			    (message "line number not found -- using 1"))
 			  (if (and filename lineno)
-			      (let ((loc-or-error
+			      (let* ((directory
+				      (cond ((boundp 'starting-directory) staring-directory)
+					    (t nil)))
+				     (loc-or-error
 				     (realgud:file-loc-from-line
 				      filename lineno
 				      cmd-mark
 				      source-str
 				      (string-to-number bp-num)
-				      ignore-file-re
+				      ignore-file-re nil directory
 				      )))
 				(if (stringp loc-or-error)
 				    (progn

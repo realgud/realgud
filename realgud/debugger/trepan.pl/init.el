@@ -173,7 +173,7 @@ backtrace listing.")
 ;; Top frame number
 (setf (gethash "top-frame-num" realgud:trepanpl-pat-hash) 0)
 
-;; Regular expression that describes a debugger "selected" frame in in
+;; realgud-loc-pat that describes a debugger "selected" frame in in
 ;; a frame-motion command.
 ;; For example:
 ;; --> #1 TOP Object#<top /usr/local/bin/irb> in file /usr/local/bin/ipl at line 9
