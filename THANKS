@@ -13,5 +13,5 @@ Sean Farley - ipdb support
 Clément Pit-Claudel - improvements, bug fixes, and emacs compliance too varied to categorize.
                       See git commits for details
 
-
+Stefan Monnier <monnier@iro.umontreal.ca> - Elisp and ELPA guidance
 amelio-vazquez-reina - documentation
