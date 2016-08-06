@@ -38,15 +38,4 @@
    :char-offset-group 4)
   "A realgud-loc-pat struct that describes a V8 backtrace location")
 
-(defun realgud:js-remove-ansi-schmutz()
-  "Remove ASCII escape sequences that node.js 'decorates' in
-prompts and interactive output with"
-  (interactive "")
-  (add-to-list
-   'comint-preoutput-filter-functions
-   (lambda (output)
-     (replace-regexp-in-string "\033\\[[0-9]+[GKJ]" "" output)))
-  )
-
-
 (provide-me "realgud-lang-")

@@ -43,4 +43,15 @@ Or raise an error if neither."
 	('t (error "We can only handle comint, shell, or eshell buffers"))
 	))
 
+(defun realgud:remove-ansi-schmutz()
+  "Remove ASCII escape sequences that node.js 'decorates' in
+prompts and interactive output with"
+  (interactive "")
+  (add-to-list
+   'comint-preoutput-filter-functions
+   (lambda (output)
+     (replace-regexp-in-string "\033\\[[0-9]+[GKJhl]" "" output)))
+  )
+
+
 (provide-me "realgud-")

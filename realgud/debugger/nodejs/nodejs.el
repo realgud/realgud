@@ -12,10 +12,11 @@
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("../../common/run")    "realgud:")
 (require-relative-list '("core" "track-mode")   "realgud:nodejs-")
+(require-relative-list '("../../common/utils")    "realgud-")
 (require-relative-list '("../../lang/js") "realgud-lang-")
 
-(declare-function realgud:js-remove-ansi-schmutz 'realgud-lang-js)
 (declare-function realgud:run-debugger 'realgud:run)
+(declare-function realgud:-remove-ansi-schmutz 'realgud-utils)
 
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 24.
@@ -72,7 +73,7 @@ fringe and marginal icons.
 	(with-current-buffer cmd-buf
 	  ;; FIXME should allow customization whether to do or not
 	  ;; and also only do if hook is not already there.
-	  (realgud:js-remove-ansi-schmutz)
+	  (realgud:remove-ansi-schmutz)
 	  )
       )))
 
