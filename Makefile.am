@@ -9,11 +9,13 @@ RUBY   ?= ruby
 
 lispdir = @lispdir@
 
-include common.mk
-
 PHONY=check clean dist distclean test check-short check-terse install-short
 
-EXTRA_DIST=common.mk README.md INSTALL.md THANKS  $(lisp_files) test/gcd.py test/gcd.rb test/gdb etc/.nosearch realgud/.nosearch test/.nosearch
+lisp_files = $(wildcard *.el)
+lisp_LISP = $(lisp_files)
+EXTRA_DIST=common.mk README.md INSTALL.md THANKS etc/.nosearch realgud/.nosearch $(lisp_files)
+
+include common.mk
 
 if MAINTAINER_MODE
 

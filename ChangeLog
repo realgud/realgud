@@ -1,3 +1,8 @@
+2016-08-04  rocky <rocky@gnu.org>
+
+	* ChangeLog, Makefile.am, configure.ac: make install packaging Fixes
+	#146. version 1.4.3
+
 2016-08-04  R. Bernstein <rocky@users.noreply.github.com>
 
 	* : Merge pull request #145 from dunn/make_install configure.ac: default lispdir relative to prefix
