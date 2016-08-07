@@ -26,7 +26,7 @@
 
 (declare-function realgud:trepanjs-query-cmdline  'realgud:trepanjs-core)
 (declare-function realgud:trepanjs-parse-cmd-args 'realgud:trepanjs-core)
-(declare-function realgud:-remove-ansi-schmutz 'realgud-utils)
+(declare-function realgud:remove-ansi-schmutz 'realgud-utils)
 (declare-function realgud:run-debugger 'realgud:run)
 
 ;; This is needed, or at least the docstring part of it is needed to

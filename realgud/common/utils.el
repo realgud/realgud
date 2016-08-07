@@ -50,7 +50,7 @@ prompts and interactive output with"
   (add-to-list
    'comint-preoutput-filter-functions
    (lambda (output)
-     (replace-regexp-in-string "\033\\[[0-9]+[GKJhl]" "" output)))
+     (replace-regexp-in-string "\033\\[[0-9]*[GKJhl]" "" output)))
   )
 
 

@@ -468,6 +468,7 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 		    (line-group     (realgud-loc-pat-line-group loc-pat))
 		    (text-group     (realgud-loc-pat-text-group loc-pat))
 		    (ignore-file-re (realgud-loc-pat-ignore-file-re loc-pat))
+		    (callback-loc-fn (realgud-sget 'cmdbuf-info 'callback-loc-fn))
 		    )
 		(if loc-regexp
 		    (if (string-match loc-regexp text)
@@ -477,33 +478,39 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 			       (source-str (and text-group (match-string text-group text)))
 			       (lineno (string-to-number (or line-str "1")))
 			       )
-			  (unless line-str
-			    (message "line number not found -- using 1"))
-			  (if (and filename lineno)
-			      (let* ((directory
-				      (cond ((boundp 'starting-directory) starting-directory)
-					    (t nil)))
-				     (loc-or-error
-				     (realgud:file-loc-from-line
-				      filename lineno
-				      cmd-mark
-				      source-str
-				      (string-to-number bp-num)
-				      ignore-file-re nil directory
-				      )))
-				(if (stringp loc-or-error)
-				    (progn
-				      (message loc-or-error)
-				      ;; set to return nil
-				      nil)
-				  ;; else
-				  (progn
-				    ;; Add breakpoint to list of breakpoints
-				    (realgud-cmdbuf-info-bp-list=
-				     (cons loc-or-error (realgud-sget 'cmdbuf-info 'bp-list)))
-				    ;; Set to return location
-				    loc-or-error)))
-			    nil)))
+			  (cond (callback-loc-fn
+				 (funcall callback-loc-fn text
+					  filename lineno source-str
+					  ignore-file-re cmd-mark))
+
+				('t
+				 (unless line-str
+				   (message "line number not found -- using 1"))
+				 (if (and filename lineno)
+				     (let* ((directory
+					     (cond ((boundp 'starting-directory) starting-directory)
+						   (t nil)))
+					    (loc-or-error
+					     (realgud:file-loc-from-line
+					      filename lineno
+					      cmd-mark
+					      source-str
+					      (string-to-number bp-num)
+					      ignore-file-re nil directory
+					      )))
+				       (if (stringp loc-or-error)
+					   (progn
+					     (message loc-or-error)
+					     ;; set to return nil
+					     nil)
+					 ;; else
+					 (progn
+					   ;; Add breakpoint to list of breakpoints
+					   (realgud-cmdbuf-info-bp-list=
+					    (cons loc-or-error (realgud-sget 'cmdbuf-info 'bp-list)))
+					   ;; Set to return location
+					   loc-or-error))))
+				 nil))))
 		  nil))
             nil))
       )

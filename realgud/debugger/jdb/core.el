@@ -20,8 +20,6 @@
                        "realgud-")
 (require-relative-list '("init") "realgud:jdb-")
 
-(declare-function gud-find-source            'gud)
-
 (declare-function realgud:strip              'realgud-utils)
 (declare-function realgud:expand-file-name-if-exists 'realgud-core)
 (declare-function realgud-parse-command-arg  'realgud-core)
