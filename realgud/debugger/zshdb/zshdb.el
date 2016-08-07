@@ -14,7 +14,6 @@
 (require-relative-list '("../../common/run")    "realgud:")
 (require-relative-list '("core" "track-mode")   "realgud:zshdb-")
 
-(declare-function realgud:zshdb-remove-ansi-schmutz 'realgud:zshdb-core)
 (declare-function zshdb-track-mode (bool))
 (declare-function zshdb-query-cmdline  'realgud:zshdb-core)
 (declare-function zshdb-parse-cmd-args 'realgud:zshdb-core)
@@ -75,13 +74,14 @@ fringe and marginal icons.
 			       'zshdb-parse-cmd-args
 			       'realgud:zshdb-minibuffer-history
 			       opt-cmd-line no-reset)))
-    (if cmd-buf
-	(with-current-buffer cmd-buf
-	  ;; FIXME should allow customization whether to do or not
-	  ;; and also only do if hook is not already there.
-	  (realgud:zshdb-remove-ansi-schmutz)
-	  )
-      )))
+    ;; (if cmd-buf
+    ;; 	(with-current-buffer cmd-buf
+    ;; 	  ;; FIXME should allow customization whether to do or not
+    ;; 	  ;; and also only do if hook is not already there.
+    ;; 	  (realgud:zshdb-remove-ansi-schmutz)
+    ;; 	  )
+    ;;   )
+    ))
 
 (defalias 'zshdb 'realgud:zshdb)
 

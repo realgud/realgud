@@ -24,6 +24,7 @@
 (declare-function realgud-track-mode-setup   'realgud-track-mode)
 (declare-function realgud-posix-shell-populate-command-keys
 		  'realgud-lang-posix-shell)
+(declare-function realgud:zshdb-remove-ansi-schmutz 'realgud:zshdb-core)
 
 (realgud-track-mode-vars "zshdb")
 (realgud-posix-shell-populate-command-keys zshdb-track-mode-map)
@@ -35,6 +36,7 @@
   (if zshdb-track-mode
       (progn
 	(use-local-map zshdb-track-mode-map)
+	(realgud:zshdb-remove-ansi-schmutz)
 	(message "using zshdb mode map")
 	)
     (message "zshdb track-mode-hook disable called"))

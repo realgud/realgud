@@ -23,6 +23,7 @@
 			 "../../common/menu"
 			 "../../common/track"
 			 "../../common/track-mode"
+			 "../../common/utils"
 			 )
 		       "realgud-")
 (require-relative-list '("core" "init") "realgud:trepanjs-")
@@ -33,6 +34,7 @@
 (declare-function realgud-track-mode-setup 'realgud-track-mode)
 (declare-function realgud:track-set-debugger 'realgud-track-mode)
 (declare-function realgud-goto-line-for-pt 'realgud-track-mode)
+(declare-function realgud:remove-ansi-schmutz 'realgud:utils)
 
 (realgud-track-mode-vars "trepanjs")
 
@@ -56,6 +58,7 @@ described by PT."
   (if trepanjs-track-mode
       (progn
 	(use-local-map trepanjs-track-mode-map)
+	(realgud:remove-ansi-schmutz)
 	(message "using trepanjs mode map")
 	)
     (message "trepanjs track-mode-hook disable called"))

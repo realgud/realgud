@@ -22,6 +22,7 @@
 			 "../../common/menu"
 			 "../../common/track"
 			 "../../common/track-mode"
+			 "../../common/utils"
 			 )
 		       "realgud-")
 (require-relative-list '("core" "init") "realgud:nodejs-")
@@ -29,6 +30,7 @@
 
 (declare-function realgud:track-set-debugger 'realgud-track-mode)
 (declare-function realgud-track-mode-setup   'realgud-track-mode)
+(declare-function realgud:remove-ansi-schmutz 'realgud:utils)
 
 (realgud-track-mode-vars "nodejs")
 
@@ -38,6 +40,7 @@
   (if nodejs-track-mode
       (progn
 	(use-local-map nodejs-track-mode-map)
+	(realgud:remove-ansi-schmutz)
 	(message "using nodejs mode map")
 	)
     (message "nodejs track-mode-hook disable called"))
