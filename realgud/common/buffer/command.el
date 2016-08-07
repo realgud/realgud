@@ -1,4 +1,4 @@
-;; Copyright (C) 2015 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016 Free Software Foundation, Inc
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -132,19 +132,28 @@
 	 (buffer (get-text-property pos 'buffer)))
     (find-file-other-window (buffer-file-name buffer))))
 
-(defun realgud:cmdbuf-buffers-describe (buffer-list)
-  (insert "** Source Buffers Seen\n")
-  (dolist (buffer buffer-list)
-    (insert "  - ")
-    (put-text-property
-     (insert-text-button
-      (buffer-name buffer)
-      'action 'realgud:cmdbuf-follow-buffer
-      'help-echo "mouse-2: visit this file")
-     (point)
-     'buffer buffer)
-    (insert "\n")
-    ))
+(defun realgud:cmdbuf-buffers-describe (info)
+  (let* ((buffer-list (realgud-cmdbuf-info-srcbuf-list info))
+	 (debugger-name (realgud-cmdbuf-info-debugger-name info))
+	 (file-remap-name  (intern (format "realgud:%s-file-remap" debugger-name)))
+	 (file-remap (and (boundp file-remap-name) (eval file-remap-name)))
+	 (filename)
+	 (remapped-filename)
+	 )
+    (insert "** Source Buffers Seen\n")
+    (dolist (buffer buffer-list)
+      (insert "  - ")
+      (put-text-property
+       (insert-text-button
+	(setq filename (buffer-name buffer))
+	'action 'realgud:cmdbuf-follow-buffer
+	'help-echo "mouse-2: visit this file")
+       (point)
+       'buffer buffer)
+      (when (setq remapped-filename (and file-remap (gethash filename file-remap)))
+	(insert (format "\tremapped to: %s" remapped-filename)))
+      (insert "\n")
+      )))
 
 (defun realgud:cmdbuf-info-describe (&optional buffer)
   "Display realgud-cmdcbuf-info fields of BUFFER.
@@ -157,44 +166,48 @@ Information is put in an internal buffer called *Describe*."
       (with-current-buffer buffer
 	(let ((info realgud-cmdbuf-info)
 	      (cmdbuf-name (buffer-name)))
-	  (switch-to-buffer (get-buffer-create "*Describe*"))
-	  (setq buffer-read-only 'nil)
-	  (delete-region (point-min) (point-max))
-	  (insert "#+STARTUP: showall\n")
-	  ;;(insert "#+OPTIONS:    H:2 num:nil toc:t \\n:nil ::t |:t ^:nil -:t f:t *:t tex:t d:(HIDE) tags:not-in-toc\n")
-	  (insert (format "#+TITLE: Debugger info for %s\n" cmdbuf-name))
-	  (insert "** General Information\n")
-	  (mapc 'insert
-		(list
-		 (format "  - Debugger name     ::\t%s\n"
-			 (json-encode (realgud-cmdbuf-info-debugger-name info)))
-		 (format "  - Command-line args ::\t%s\n"
-			 (json-encode (realgud-cmdbuf-info-cmd-args info)))
-		 (format "  - Starting directory ::\t%s\n"
-			 (realgud-cmdbuf-info-starting-directory info))
-		 (format "  - Selected window should contain source? :: %s\n"
-			 (realgud-cmdbuf-info-in-srcbuf? info))
-		 (format "  - Last input end    ::\t%s\n"
-			 (realgud-cmdbuf-info-last-input-end info))
-		 (format "  - Source should go into short-key mode? :: %s\n"
-			 (realgud-cmdbuf-info-src-shortkey? info))
-		 (format "  - Breakpoint list   ::\t %s\n"
-			 (realgud-cmdbuf-info-bp-list info))
-		 (format "  - Remap table for debugger commands ::\n\t%s\n"
-			 (json-encode (realgud-cmdbuf-info-cmd-hash info)))
-		 (format "  - Backtrace buffer  ::\t%s\n"
-			 (realgud-cmdbuf-info-bt-buf info))
-		 (format "  - In debugger?      ::\t%s\n"
-			 (realgud-cmdbuf-info-in-debugger? info))
-		 ))
-	  (insert "\n")
-	  (realgud:cmdbuf-buffers-describe (realgud-cmdbuf-info-srcbuf-list info))
-	  (insert "\n")
-	  (realgud:loc-hist-describe (realgud-cmdbuf-info-loc-hist info))
-	  (goto-char (point-min))
-	  (realgud:info-mode)
+	  (if info
+	      (progn
+		(switch-to-buffer (get-buffer-create "*Describe*"))
+		(setq buffer-read-only 'nil)
+		(delete-region (point-min) (point-max))
+		(insert "#+STARTUP: showall\n")
+		;;(insert "#+OPTIONS:    H:2 num:nil toc:t \\n:nil ::t |:t ^:nil -:t f:t *:t tex:t d:(HIDE) tags:not-in-toc\n")
+		(insert (format "#+TITLE: Debugger info for %s\n" cmdbuf-name))
+		(insert "** General Information\n")
+		(mapc 'insert
+		      (list
+		       (format "  - Debugger name     ::\t%s\n"
+			       (json-encode (realgud-cmdbuf-info-debugger-name info)))
+		       (format "  - Command-line args ::\t%s\n"
+			       (json-encode (realgud-cmdbuf-info-cmd-args info)))
+		       (format "  - Starting directory ::\t%s\n"
+			       (realgud-cmdbuf-info-starting-directory info))
+		       (format "  - Selected window should contain source? :: %s\n"
+			       (realgud-cmdbuf-info-in-srcbuf? info))
+		       (format "  - Last input end    ::\t%s\n"
+			       (realgud-cmdbuf-info-last-input-end info))
+		       (format "  - Source should go into short-key mode? :: %s\n"
+			       (realgud-cmdbuf-info-src-shortkey? info))
+		       (format "  - Breakpoint list   ::\t %s\n"
+			       (realgud-cmdbuf-info-bp-list info))
+		       (format "  - Remap table for debugger commands ::\n\t%s\n"
+			       (json-encode (realgud-cmdbuf-info-cmd-hash info)))
+		       (format "  - Backtrace buffer  ::\t%s\n"
+			       (realgud-cmdbuf-info-bt-buf info))
+		       (format "  - In debugger?      ::\t%s\n"
+			       (realgud-cmdbuf-info-in-debugger? info))
+		       ))
+		(insert "\n")
+		(realgud:cmdbuf-buffers-describe info)
+		(insert "\n")
+		(realgud:loc-hist-describe (realgud-cmdbuf-info-loc-hist info))
+		(goto-char (point-min))
+		(realgud:info-mode)
+		)
+	    (message "realgud-cmdbuf-info is nil")
 	  )
-	)
+	))
     (message "Buffer %s is not a debugger source or command buffer; nothing done."
 	     (or buffer (current-buffer)))
     )
@@ -332,6 +345,12 @@ values set in the debugger's init.el."
     (put 'realgud-cmdbuf-info 'variable-documentation
 	 "Debugger object for a process buffer."))
   )
+
+(defun realgud-cmdbuf-reset (cmd-buf)
+  "nil out variable realgud-cmdbuf-info in CMD-BUF"
+  (with-current-buffer-safe cmd-buf
+    (setq realgud-cmdbuf-info nil)
+  ))
 
 (defun realgud-cmdbuf-debugger-name (&optional cmd-buf)
   "Return the debugger name recorded in the debugger command-process buffer."
