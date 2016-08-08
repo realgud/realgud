@@ -42,7 +42,7 @@
   "Format LOC-HIST values inside buffer *Describe*"
   (switch-to-buffer (get-buffer-create "*Describe*"))
   (org-mode)
-  (insert "** Source Positions Stopped At\n")
+  (insert "** Source Positions Stopped at (loc-hist)\n")
   (mapc 'insert
 	(list
 	 (format "  -  buffer size  :: %d\n" realgud-loc-hist-size)

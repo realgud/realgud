@@ -140,7 +140,8 @@
 	 (filename)
 	 (remapped-filename)
 	 )
-    (insert "** Source Buffers Seen\n")
+    (insert "** Source Buffers Seen (srcbuf-list)\n")
+
     (dolist (buffer buffer-list)
       (insert "  - ")
       (put-text-property
@@ -174,7 +175,14 @@ Information is put in an internal buffer called *Describe*."
 		(insert "#+STARTUP: showall\n")
 		;;(insert "#+OPTIONS:    H:2 num:nil toc:t \\n:nil ::t |:t ^:nil -:t f:t *:t tex:t d:(HIDE) tags:not-in-toc\n")
 		(insert (format "#+TITLE: Debugger info for %s\n" cmdbuf-name))
-		(insert "** General Information\n")
+		(insert "** General Information (")
+		(insert-text-button
+		 "realgud-cmdbuf-info"
+		 ;; FIXME figure out how to set buffer to cmdbuf so we get cmdbuf value
+		 'action '(lambda(button) (describe-variable 'realgud-cmdbuf-info))
+		 'help-echo "mouse-2: help-on-variable")
+		(insert ")\n")
+
 		(mapc 'insert
 		      (list
 		       (format "  - Debugger name     ::\t%s\n"
