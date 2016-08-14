@@ -167,7 +167,7 @@ in it with those from CMDPROC-BUFFER"
 
 (defun realgud-srcbuf-bp-list(&optional buffer)
   "Return a list of breakpoint loc structures that reside in
-BUFFER which should be an initialized source buffer."
+BUFFER. BUFFER should be an initialized source buffer."
   (let ((src-buffer (realgud-get-srcbuf buffer)))
     (if src-buffer
 	(with-current-buffer src-buffer
