@@ -32,13 +32,13 @@
 backtrace, prompt, etc.  The values of a hash entry is a
 realgud-loc-pat struct")
 
-;; Regular expression that describes a zshdb location generally shown
+;; realgud-loc-pat that describes a zshdb location generally shown
 ;; before a command prompt.
 ;; For example:
 ;;   (/etc/init.d/apparmor:35):
 (setf (gethash "loc" realgud:zshdb-pat-hash) realgud:POSIX-debugger-loc-pat)
 
-;; Regular expression that describes a zshdb command prompt
+;; realgud-loc-pat that describes a zshdb command prompt
 ;; For example:
 ;;   zshdb<10>
 ;;   zshdb<(5)>
@@ -50,29 +50,29 @@ realgud-loc-pat struct")
        :num 1
        ))
 
-;;  Regular expression that describes a "breakpoint set" line.
+;;  realgud-loc-pat that describes a "breakpoint set" line.
 (setf (gethash "brkpt-set" realgud:zshdb-pat-hash)
       realgud:POSIX-debugger-brkpt-set-pat)
 
-;; Regular expression that describes a debugger "delete" (breakpoint) response.
+;; realgud-loc-pat that describes a debugger "delete" (breakpoint) response.
 ;; For example:
 ;;   Deleted breakpoint 1.
 (setf (gethash "brkpt-del" realgud:zshdb-pat-hash)
       realgud:POSIX-debugger-brkpt-del-pat)
 
-;; Regular expression that describes a debugger "disable" (breakpoint) response.
+;; realgud-loc-pat that describes a debugger "disable" (breakpoint) response.
 ;; For example:
 ;;   Breakpoint entry 4 disabled.
 (setf (gethash "brkpt-disable" realgud:zshdb-pat-hash)
       realgud:POSIX-debugger-brkpt-disable-pat)
 
-;; Regular expression that describes a debugger "enable" (breakpoint) response.
+;; realgud-loc-pat that describes a debugger "enable" (breakpoint) response.
 ;; For example:
 ;;   Breakpoint entry 4 enabled.
 (setf (gethash "brkpt-enable" realgud:zshdb-pat-hash)
       realgud:POSIX-debugger-brkpt-enable-pat)
 
-;; Regular expression that describes a debugger "backtrace" command line.
+;; realgud-loc-pat that describes a debugger "backtrace" command line.
 ;; For example:
 ;;   ->0 in file `/etc/apparmor/fns' at line 24
 ;;   ##1 /etc/apparmor/fns called from file `/etc/init.d/apparmor' at line 35
@@ -80,7 +80,7 @@ realgud-loc-pat struct")
 (setf (gethash "debugger-backtrace" realgud:zshdb-pat-hash)
       realgud:POSIX-debugger-backtrace-pat)
 
-;; Regular expression that for a termination message.
+;; realgud-loc-pat that for a termination message.
 (setf (gethash "termination" realgud:zshdb-pat-hash)
        "^zshdb: That's all, folks...\n")
 

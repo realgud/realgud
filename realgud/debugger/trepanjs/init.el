@@ -34,7 +34,7 @@ realgud-loc-pat struct")
 
 (defconst realgud:trepanjs-file-regexp   "\\([^ \t\n]+\\)\\(?: \\[.*\\]\\)?")
 
-;; Regular expression that describes a trepanjs location generally shown
+;; realgud-loc-pat that describes a trepanjs location generally shown
 ;; before a command prompt.
 ;; For example:
 ;;   break in /home/indutny/Code/git/indutny/myscript.js:1
@@ -51,7 +51,7 @@ realgud-loc-pat struct")
        :char-offset-group 3
        ))
 
-;; Regular expression that describes a trepanjs command prompt
+;; realgud-loc-pat that describes a trepanjs command prompt
 ;; For example:
 ;;   (trepanjs):
 (setf (gethash "prompt" realgud:trepanjs-pat-hash)
@@ -59,7 +59,7 @@ realgud-loc-pat struct")
        :regexp (format "^\\(?:%s\\)*(+trepanjs)+ " realgud:js-term-escape)
        ))
 
-;;  Regular expression that describes a "breakpoint set" line
+;;  realgud-loc-pat that describes a "breakpoint set" line
 ;; For example:
 ;;  Breakpoint 2 set in file /tmp/gcd.js, line 2.
 ;;  Breakpoint 3 set in file /usr/lib/nodejs/module.js [module.js], line 380.
@@ -73,7 +73,7 @@ realgud-loc-pat struct")
        :file-group 2
        :line-group 3))
 
-;; Regular expression that describes a debugger "delete" (breakpoint) response.
+;; realgud-loc-pat that describes a debugger "delete" (breakpoint) response.
 ;; For example:
 ;;   Deleted breakpoint 1
 (setf (gethash "brkpt-del" realgud:trepanjs-pat-hash)
@@ -81,7 +81,7 @@ realgud-loc-pat struct")
        :regexp "^Deleted breakpoint \\(\\([0-9]+ *\\)+\\)\n"
        :num 1))
 
-;; Regular expression that describes a V8 backtrace line.
+;; realgud-loc-pat that describes a V8 backtrace line.
 ;; For example:
 ;;    at repl:1:7
 ;;    at Interface.controlEval (/src/external-vcs/github/trepanjs/lib/interface.js:352:18)
@@ -89,7 +89,7 @@ realgud-loc-pat struct")
 (setf (gethash "lang-backtrace" realgud:trepanjs-pat-hash)
   realgud:js-backtrace-loc-pat)
 
-;; Regular expression that describes a debugger "delete" (breakpoint)
+;; realgud-loc-pat that describes a debugger "delete" (breakpoint)
 ;; response.
 ;; For example:
 ;;   Deleted breakpoint 1.
@@ -104,7 +104,7 @@ realgud-loc-pat struct")
 (defconst realgud:trepanjs-frame-num-regexp    realgud:regexp-captured-num)
 (defconst realgud:trepanjs-frame-module-regexp "[^ \t\n]+")
 
-;;  Regular expression that describes debugger "backtrace" command line.
+;;  realgud-loc-pat that describes debugger "backtrace" command line.
 ;;  e.g.
 ;; ## require called from file /usr/lib/nodejs/module.js [module.js] at line 380:17
 ;; ## in file /src/external-vcs/github/trepanjs/example/gcd.js [/src/external-vcs/github/trepanjs/example/gcd.js] at line 2:12
@@ -131,7 +131,7 @@ realgud-loc-pat struct")
 ;; Top frame number
 (setf (gethash "top-frame-num" realgud:trepanjs-pat-hash) 0)
 
-;; Regular expression that for a termination message.
+;; realgud-loc-pat that for a termination message.
 (setf (gethash "termination" realgud:trepanjs-pat-hash)
        "^trepanjs: That's all, folks...\n")
 

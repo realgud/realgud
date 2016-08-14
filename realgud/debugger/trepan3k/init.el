@@ -36,7 +36,7 @@ realgud-loc-pat struct")
 
 (declare-function make-realgud-loc 'realgud-loc)
 
-;; Regular expression that describes a trepan3k location generally shown
+;; realgud-loc-pat that describes a trepan3k location generally shown
 ;; before a command prompt.
 ;;
 ;; For example:
@@ -52,7 +52,7 @@ realgud-loc-pat struct")
        :regexp   "^(trepan3k) "
        ))
 
-;; Regular expression that describes a trepan3k backtrace line.
+;; realgud-loc-pat that describes a trepan3k backtrace line.
 ;; For example:
 ;; ->0 get_distribution(dist='trepan==0.3.9')
 ;;     called from file '/python2.7/dist-packages/pkg_res.py' at line 341
@@ -63,35 +63,35 @@ realgud-loc-pat struct")
 (setf (gethash "debugger-backtrace" realgud:trepan3k-pat-hash)
       realgud:python-trepan-backtrace-pat)
 
-;;  Regular expression that describes a Python backtrace line.
+;;  realgud-loc-pat that describes a Python backtrace line.
 (setf (gethash "lang-backtrace" realgud:trepan3k-pat-hash)
       realgud-python-backtrace-loc-pat)
 
-;;  Regular expression that describes location in a pytest error
+;;  realgud-loc-pat that describes location in a pytest error
 (setf (gethash "pytest-error" realgud:trepan3k-pat-hash)
       realgud-pytest-error-loc-pat)
 
-;;  Regular expression that describes a "breakpoint set" line
+;;  realgud-loc-pat that describes a "breakpoint set" line
 (setf (gethash "brkpt-set" realgud:trepan3k-pat-hash)
       realgud:python-trepan-brkpt-set-pat)
 
-;;  Regular expression that describes a "delete breakpoint" line
+;;  realgud-loc-pat that describes a "delete breakpoint" line
 (setf (gethash "brkpt-del" realgud:trepan3k-pat-hash)
       realgud:python-trepan-brkpt-del-pat)
 
-;; Regular expression that describes a debugger "disable" (breakpoint) response.
+;; realgud-loc-pat that describes a debugger "disable" (breakpoint) response.
 ;; For example:
 ;;   Breakpoint 4 disabled.
 (setf (gethash "brkpt-disable" realgud:trepan3k-pat-hash)
       realgud:python-trepan-brkpt-disable-pat)
 
-;; Regular expression that describes a debugger "enable" (breakpoint) response.
+;; realgud-loc-pat that describes a debugger "enable" (breakpoint) response.
 ;; For example:
 ;;   Breakpoint 4 enabled.
 (setf (gethash "brkpt-enable" realgud:trepan3k-pat-hash)
       realgud:python-trepan-brkpt-enable-pat)
 
-;; Regular expression for a termination message.
+;; realgud-loc-pat for a termination message.
 (setf (gethash "termination" realgud:trepan3k-pat-hash)
        "^trepan3k: That's all, folks...\n")
 

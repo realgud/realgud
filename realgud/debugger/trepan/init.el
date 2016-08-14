@@ -65,17 +65,17 @@ realgud-loc-pat struct")
       realgud-ruby-YARV-syntax-error-pat)
 
 ;; Regular expression that describes a Ruby YARV backtrace line.
-;; For example: 
+;; For example:
 ;; 	from /ruby/gems/2.2.0/gems/fog-1.32.0/lib/fog/digitalocean.rb:1:in `<top (required)>'
 ;; 	from /Users/fog-1.32.0/lib/fog.rb:28:in `require'
 (setf (gethash "lang-backtrace" realgud:trepan-pat-hash)
       realgud-ruby-backtrace-loc-pat)
-   
-;;  Regular expression that describes a ruby $! backtrace
+
+;;  realgud-loc-pat that describes a ruby $! backtrace
 (setf (gethash "dollar-bang-backtrace" realgud:trepan-pat-hash)
       realgud-ruby-dollar-bang-loc-pat)
 
-;; Regular expression that describes a "breakpoint set" line.
+;; realgud-loc-pat that describes a "breakpoint set" line.
 ;; For example:
 ;;   Breakpoint 1 set at VM offset 2 of instruction sequence "require",
 ;;	line 29 in file <internal:lib/rubygems/custom_require>.
@@ -88,7 +88,7 @@ realgud-loc-pat struct")
        :file-group 3
        :line-group 2))
 
-;; Regular expression that describes a debugger "delete" (breakpoint) response.
+;; realgud-loc-pat that describes a debugger "delete" (breakpoint) response.
 ;; For example:
 ;;   Deleted breakpoint 1.
 (setf (gethash "brkpt-del" realgud:trepan-pat-hash)
@@ -108,7 +108,7 @@ backtrace listing.")
 ;; Top frame number
 (setf (gethash "top-frame-num" realgud:trepan-pat-hash) 0)
 
-;; Regular expression that describes a debugger "selected" frame in in
+;; realgud-loc-pat that describes a debugger "selected" frame in in
 ;; a frame-motion command.
 ;; For example:
 ;; --> #1 TOP Object#<top /usr/local/bin/irb> in file /usr/local/bin/irb at line 9
@@ -126,11 +126,11 @@ backtrace listing.")
        :file-group 8
        :line-group 9))
 
-;;  Regular expression that describes a Ruby $! string
+;;  realgud-loc-pat that describes a Ruby $! string
 (setf (gethash "dollar-bang" realgud:trepan-pat-hash)
       realgud-ruby-dollar-bang-loc-pat)
 
-;;  Regular expression that describes debugger "backtrace" command line.
+;;  realgud-loc-pat that describes debugger "backtrace" command line.
 ;;  e.g.
 ;; --> #0 METHOD Object#require(path) in file <internal:lib/require> at line 28
 ;;     #1 TOP Object#<top /tmp/linecache.rb> in file /tmp/linecache.rb
@@ -147,7 +147,7 @@ backtrace listing.")
        :line-group 7)
       )
 
-;; Regular expression that for a termination message.
+;; realgud-loc-pat that for a termination message.
 (setf (gethash "termination" realgud:trepan-pat-hash)
        "^trepan: That's all, folks...\n")
 

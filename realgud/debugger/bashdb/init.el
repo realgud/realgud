@@ -54,29 +54,29 @@ realgud-loc-pat struct")
        :num 1
        ))
 
-;;  Regular expression that describes a "breakpoint set" line
+;;  realgud-loc-pat that describes a "breakpoint set" line
 (setf (gethash "brkpt-set" realgud:bashdb-pat-hash)
       realgud:POSIX-debugger-brkpt-set-pat)
 
-;; Regular expression that describes a debugger "delete" (breakpoint) response.
+;; realgud-loc-pat that describes a debugger "delete" (breakpoint) response.
 ;; For example:
 ;;   Deleted breakpoint 1.
 (setf (gethash "brkpt-del" realgud:bashdb-pat-hash)
       realgud:POSIX-debugger-brkpt-del-pat)
 
-;; Regular expression that describes a debugger "disable" (breakpoint) response.
+;; realgud-loc-pat that describes a debugger "disable" (breakpoint) response.
 ;; For example:
 ;;   Breakpoint entry 4 disabled.
 (setf (gethash "brkpt-disable" realgud:bashdb-pat-hash)
       realgud:POSIX-debugger-brkpt-disable-pat)
 
-;; Regular expression that describes a debugger "enable" (breakpoint) response.
+;; realgud-loc-pat that describes a debugger "enable" (breakpoint) response.
 ;; For example:
 ;;   Breakpoint entry 4 enabled.
 (setf (gethash "brkpt-enable" realgud:bashdb-pat-hash)
       realgud:POSIX-debugger-brkpt-enable-pat)
 
-;; Regular expression that describes a debugger "backtrace" command line.
+;; realgud-loc-pat that describes a debugger "backtrace" command line.
 ;; For example:
 ;;   ->0 in file `../bashdb/test/example/subshell.sh' at line 6
 ;;   ##1 source("../bashdb/shell.sh") called from file `/bin/bashdb' at line 140
@@ -84,7 +84,7 @@ realgud-loc-pat struct")
 (setf (gethash "debugger-backtrace" realgud:bashdb-pat-hash)
       realgud:POSIX-debugger-backtrace-pat)
 
-;; Regular expression for a termination message.
+;; realgud-loc-pat for a termination message.
 (setf (gethash "termination" realgud:bashdb-pat-hash)
        "^bashdb: That's all, folks...\n")
 

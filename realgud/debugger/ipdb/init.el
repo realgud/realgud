@@ -36,7 +36,7 @@ realgud-loc-pat struct")
 
 (declare-function make-realgud-loc "realgud-loc" (a b c d e f))
 
-;; Regular expression that describes a ipdb location generally shown
+;; realgud-loc-pat that describes a ipdb location generally shown
 ;; before a command prompt.
 ;;
 ;; Program-location lines look like this:
@@ -54,15 +54,15 @@ realgud-loc-pat struct")
        :regexp   "^ipdb[>] "
        ))
 
-;;  Regular expression that describes a Python backtrace line.
+;;  realgud-loc-pat that describes a Python backtrace line.
 (setf (gethash "lang-backtrace" realgud:ipdb-pat-hash)
       realgud-python-backtrace-loc-pat)
 
-;;  Regular expression that describes location in a pytest error
+;;  realgud-loc-pat that describes location in a pytest error
 (setf (gethash "pytest-error" realgud:ipdb-pat-hash)
       realgud-pytest-error-loc-pat)
 
-;;  Regular expression that describes a "breakpoint set" line. For example:
+;;  realgud-loc-pat that describes a "breakpoint set" line. For example:
 ;;     Breakpoint 1 at /usr/bin/ipdb:7
 (setf (gethash "brkpt-set" realgud:ipdb-pat-hash)
       (make-realgud-loc-pat
@@ -71,7 +71,7 @@ realgud-loc-pat struct")
        :file-group 2
        :line-group 3))
 
-;; Regular expression that describes a "delete breakpoint" line
+;; realgud-loc-pat that describes a "delete breakpoint" line
 ;; Python 3 includes a file name and line number; Python 2 doesn't
 (setf (gethash "brkpt-del" realgud:ipdb-pat-hash)
       (make-realgud-loc-pat
