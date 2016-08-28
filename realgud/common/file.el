@@ -114,7 +114,6 @@ problem as best as we can determine."
 								    line-number
 								    source-text))
 				   (source-buffer (find-file-noselect filename))
-				   (loc)
 				   (source-mark))
 
 			      ;; And you thought we'd never get around to
@@ -123,14 +122,13 @@ problem as best as we can determine."
 				(goto-char (point-min))
 				;; FIXME also allow column number and byte offset
 				(forward-line (1- line-number))
-				(setq source-mark (point-marker))
 				(make-realgud-loc
 				      :num           bp-num
 				      :cmd-marker    cmd-marker
 				      :filename      filename
 				      :line-number   line-number
 				      :column-number column-number
-				      :source-text   source-text
+				      :source-text   (point-marker)
 				      :marker        source-mark)
 				     ))
 			  ;; else
