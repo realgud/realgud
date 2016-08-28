@@ -106,7 +106,7 @@ problem as best as we can determine."
       (if (file-readable-p filename)
 	  (if (integerp line-number)
 	      (if (> line-number 0)
-		  (lexical-let ((line-count))
+		  (let ((line-count))
 		    (if (setq line-count (realgud:file-line-count filename))
 			(if (> line-count line-number)
 			    (let* ((column-number
@@ -128,9 +128,10 @@ problem as best as we can determine."
 				      :filename      filename
 				      :line-number   line-number
 				      :column-number column-number
-				      :source-text   (point-marker)
-				      :marker        source-mark)
-				     ))
+				      :source-text   source-text
+				      :marker        (point-marker)
+				      )
+				))
 			  ;; else
 			  (format "File %s has only %d lines. (Line %d requested.)"
 				  filename line-count line-number))
