@@ -106,7 +106,7 @@ problem as best as we can determine."
       (if (file-readable-p filename)
 	  (if (integerp line-number)
 	      (if (> line-number 0)
-		  (lexical-let ((line-count))
+		  (let ((line-count))
 		    (if (setq line-count (realgud:file-line-count filename))
 			(if (> line-count line-number)
 			    (let* ((column-number
@@ -114,7 +114,6 @@ problem as best as we can determine."
 								    line-number
 								    source-text))
 				   (source-buffer (find-file-noselect filename))
-				   (loc)
 				   (source-mark))
 
 			      ;; And you thought we'd never get around to
@@ -123,7 +122,6 @@ problem as best as we can determine."
 				(goto-char (point-min))
 				;; FIXME also allow column number and byte offset
 				(forward-line (1- line-number))
-				(setq source-mark (point-marker))
 				(make-realgud-loc
 				      :num           bp-num
 				      :cmd-marker    cmd-marker
@@ -131,8 +129,9 @@ problem as best as we can determine."
 				      :line-number   line-number
 				      :column-number column-number
 				      :source-text   source-text
-				      :marker        source-mark)
-				     ))
+				      :marker        (point-marker)
+				      )
+				))
 			  ;; else
 			  (format "File %s has only %d lines. (Line %d requested.)"
 				  filename line-count line-number))
