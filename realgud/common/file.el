@@ -1,4 +1,4 @@
-;; Copyright (C) 2010-2011, 2013-2014 Free Software Foundation, Inc
+;; Copyright (C) 2010-2011, 2013-2014, 2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -113,18 +113,26 @@ problem as best as we can determine."
 				    (realgud:file-column-from-string filename
 								    line-number
 								    source-text))
-				   ;; And you thought we'd never get around to
-				   ;; doing something other than validation?
-				   (loc (make-realgud-loc
-					 :num           bp-num
-					 :cmd-marker    cmd-marker
-					 :filename      filename
-					 :line-number   line-number
-					 :column-number column-number
-					 :source-text   source-text
-					 :marker        (make-marker)
-					 )))
-			      loc)
+				   (source-buffer (find-file-noselect filename))
+				   (loc)
+				   (source-mark))
+
+			      ;; And you thought we'd never get around to
+			      ;; doing something other than validation?
+			      (with-current-buffer source-buffer
+				(goto-char (point-min))
+				;; FIXME also allow column number and byte offset
+				(forward-line (1- line-number))
+				(setq source-mark (point-marker))
+				(make-realgud-loc
+				      :num           bp-num
+				      :cmd-marker    cmd-marker
+				      :filename      filename
+				      :line-number   line-number
+				      :column-number column-number
+				      :source-text   source-text
+				      :marker        source-mark)
+				     ))
 			  ;; else
 			  (format "File %s has only %d lines. (Line %d requested.)"
 				  filename line-count line-number))

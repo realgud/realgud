@@ -504,10 +504,13 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 					     ;; set to return nil
 					     nil)
 					 ;; else
-					 (progn
+					 (let ((loc loc-or-error))
 					   ;; Add breakpoint to list of breakpoints
+					   (with-current-buffer (marker-buffer (realgud-loc-marker loc))
+					     (realgud-bp-add-info loc))
+
 					   (realgud-cmdbuf-info-bp-list=
-					    (cons loc-or-error (realgud-sget 'cmdbuf-info 'bp-list)))
+					    (cons loc (realgud-sget 'cmdbuf-info 'bp-list)))
 					   ;; Set to return location
 					   loc-or-error))))
 				 nil))))
