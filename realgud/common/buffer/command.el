@@ -178,8 +178,10 @@ Information is put in an internal buffer called *Describe*."
 		(insert "** General Information (")
 		(insert-text-button
 		 "realgud-cmdbuf-info"
-		 ;; FIXME figure out how to set buffer to cmdbuf so we get cmdbuf value
-		 'action '(lambda(button) (describe-variable 'realgud-cmdbuf-info))
+		 'buffer buffer
+		 'action (lambda (b)
+		 	   (with-current-buffer (button-get b 'buffer)
+		 	     (describe-variable 'realgud-cmdbuf-info)))
 		 'help-echo "mouse-2: help-on-variable")
 		(insert ")\n")
 
