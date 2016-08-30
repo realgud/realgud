@@ -55,8 +55,9 @@ function FN-SYM."
   (not (buffer-live-p buffer)))
 
 (defmacro with-current-buffer-safe (buffer &rest body)
-  "Check that BUFFER has not been deleted before calling
-`with-current-buffer'. If it has been deleted return nil."
+  "Check that BUFFER is not nil and has not been deleted before
+calling `with-current-buffer'. If it has been deleted return
+nil."
   (declare (indent 1) (debug t))
   `(if (or (not ,buffer) (buffer-killed? ,buffer))
        nil

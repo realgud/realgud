@@ -166,7 +166,7 @@ highlighted with FACE."
   "Add a breakpoint icon at POS according to breakpoint-display-style.
 Use the fringe if available, and the margin otherwise.  Record
 breakpoint status ENABLE? and breakpoint number BP-NUM in
-overlay.  BUF is the buffer that POS refers to; it detaults to
+overlay.  BUF is the buffer that POS refers to; it defaults to
 the current buffer."
   (let* ((bp-text) (bp-face) (line-face) (margin-icon) (fringe-icon))
     (realgud-set-bp-icons)
