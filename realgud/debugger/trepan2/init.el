@@ -65,6 +65,10 @@ realgud-loc-pat struct")
 (setf (gethash "pytest-error" realgud:trepan2-pat-hash)
       realgud-pytest-error-loc-pat)
 
+;;  Regular expression that describes location in a flake8 message
+(setf (gethash "flake8-msg" realgud:trepan2-pat-hash)
+      realgud-flake8-msg-loc-pat)
+
 ;;  Regular expression that describes a "breakpoint set" line
 (setf (gethash "brkpt-set" realgud:trepan2-pat-hash)
       realgud:python-trepan-brkpt-set-pat)

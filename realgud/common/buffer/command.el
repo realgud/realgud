@@ -53,7 +53,7 @@
   :version "24.3")
 
 
-(defstruct realgud-cmdbuf-info
+(cl-defstruct realgud-cmdbuf-info
   "The debugger object/structure specific to a process buffer."
   debugger-name        ;; Name of debugger
   base-variable-name   ;; prefix used in variables pertinent to this
@@ -165,7 +165,7 @@ Information is put in an internal buffer called *Describe*."
   (setq buffer (realgud-get-cmdbuf buffer))
   (if buffer
       (with-current-buffer buffer
-	(let ((info realgud-cmdbuf-info)
+	(lexical-let ((info realgud-cmdbuf-info)
 	      (cmdbuf-name (buffer-name)))
 	  (if info
 	      (progn
@@ -178,10 +178,8 @@ Information is put in an internal buffer called *Describe*."
 		(insert "** General Information (")
 		(insert-text-button
 		 "realgud-cmdbuf-info"
-		 'buffer buffer
-		 'action (lambda (b)
-		 	   (with-current-buffer (button-get b 'buffer)
-		 	     (describe-variable 'realgud-cmdbuf-info)))
+		 ;; FIXME figure out how to set buffer to cmdbuf so we get cmdbuf value
+		 'action (lambda(button) (describe-variable 'realgud-cmdbuf-info))
 		 'help-echo "mouse-2: help-on-variable")
 		(insert ")\n")
 

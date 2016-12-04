@@ -38,7 +38,7 @@
 (declare-function realgud:file-loc-from-line 'realgud-file)
 (declare-function realgud:loc-describe 'realgud-loc)
 
-(defstruct realgud-backtrace-info
+(cl-defstruct realgud-backtrace-info
   "debugger object/structure specific to a (top-level) program to be debugged."
   (cmdbuf    nil)  ;; buffer of the associated debugger process
   (cur-pos   0)    ;; Frame we are at
