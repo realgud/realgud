@@ -61,6 +61,10 @@ realgud-loc-pat struct")
 (setf (gethash "pytest-error" realgud:pdb-pat-hash)
       realgud-pytest-error-loc-pat)
 
+;;  Regular expression that describes location in a flake8 message
+(setf (gethash "flake8-msg" realgud:pdb-pat-hash)
+      realgud-flake8-msg-loc-pat)
+
 ;;  Regular expression that describes a "breakpoint set" line. For example:
 ;;     Breakpoint 1 at /usr/bin/pdb:7
 (setf (gethash "brkpt-set" realgud:pdb-pat-hash)
