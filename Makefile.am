@@ -1,1 +1,1 @@
-SUBDIRS = common debugger lang
+SUBDIRS = realgud

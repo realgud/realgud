@@ -11,9 +11,8 @@
 (test-simple-start)
 
 (eval-when-compile
-  (defvar loc-pat)   (defvar prompt-pat) (defvar realgud:pdb-pat-hash)
-  (defvar tb-pat)    (defvar test-text)  (defvar prompt-str)
-  (defvar bps-pat)
+  (defvar loc-pat)   (defvar realgud:flake8-msg-loc-pat)
+  (defvar test-text)
 )
 
 ;; FIXME: we get a void variable somewhere in here when running

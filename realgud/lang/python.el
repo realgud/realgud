@@ -42,6 +42,7 @@ traceback) line."  )
   (define-key map (kbd "C-c !b") 'realgud:goto-debugger-backtrace-line)
   (define-key map (kbd "C-c !!") 'realgud:goto-lang-backtrace-line)
   (define-key map (kbd "C-c !e") 'realgud:pytest-goto-errmsg-line)
+  (define-key map (kbd "C-c !8") 'realgud:flake8-goto-msg-line)
   )
 
 
@@ -171,6 +172,25 @@ traceback) line."  )
   "Display the location mentioned by the pytest error at PT."
   (interactive "d")
   (realgud-goto-line-for-pt pt "pytest-error"))
+
+
+(defconst realgud-flake8-msg-loc-pat
+  (make-realgud-loc-pat
+   :regexp "^\\(.*\\):\\([0-9]+\\):\\([0-9]+\\): [EW]\\([0-9]+\\) "
+   :file-group 1
+   :line-group 2
+   :char-offset-group 3
+   )
+  "A realgud-loc-pat struct that describes a flake8 warning or error line"
+  )
+
+
+;; FIXME: there is probably a less redundant way to do the following
+;; FNS.
+(defun realgud:flake8-goto-msg-line (pt)
+  "Display the location mentioned by the flake8 warning or error."
+  (interactive "d")
+  (realgud-goto-line-for-pt pt "flake8-msg"))
 
 
 (provide-me "realgud-lang-")
