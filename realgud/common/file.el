@@ -23,10 +23,14 @@
   value is associated filesystem string presumably in the
   filesystem")
 
+
 (declare-function realgud:strip         'realgud)
 (declare-function realgud-loc-goto      'realgud-loc)
 (declare-function buffer-killed?        'helper)
 (declare-function compilation-find-file 'compile)
+
+(defcustom realgud-file-find-function 'compilation-find-file
+  "Function to call when we can't easily find file")
 
 (defun realgud:file-line-count(filename)
   "Return the number of lines in file FILENAME, or nil FILENAME can't be
@@ -76,30 +80,32 @@ problem as best as we can determine."
 
   (unless (and filename (file-readable-p filename))
     (if find-file-fn
-	(setq filename (funcall find-file-fn filename))
+        (setq filename (funcall find-file-fn filename))
       ;; FIXME: Remove the below by refactoring to use the above find-file-fn
       ;; else
       (if (and ignore-file-re (string-match ignore-file-re filename))
-	  (message "tracking ignored for psuedo-file %s" filename)
-	;; else
-	(let ((remapped-filename))
-	  (if (gethash filename realgud-file-remap)
-	      (progn
-		(setq remapped-filename (gethash filename realgud-file-remap))
-		(if (file-exists-p remapped-filename)
-		    (setq filename remapped-filename)
-		  (remhash filename realgud-file-remap)))
-	    ;; else
-	    (progn
-	      (setq remapped-filename
-		    (buffer-file-name
-		     (compilation-find-file (point-marker) filename directory)))
-	      (when (and remapped-filename (file-exists-p remapped-filename))
-		(puthash filename remapped-filename realgud-file-remap)
-		(setq filename remapped-filename)
-		)
-	      )))
-	)
+          (message "tracking ignored for psuedo-file %s" filename)
+        ;; else
+        (let ((remapped-filename))
+          (if (gethash filename realgud-file-remap)
+              (progn
+                (setq remapped-filename (gethash filename realgud-file-remap))
+                (if (file-exists-p remapped-filename)
+                    (setq filename remapped-filename)
+                  (remhash filename realgud-file-remap)))
+            ;; else
+            (progn
+              (let ((found-file (funcall realgud-file-find-function (point-marker) filename directory)))
+                (when found-file
+                  (setq remapped-filename
+                        (buffer-file-name
+                         found-file))
+                  (when (and remapped-filename (file-exists-p remapped-filename))
+                    (puthash filename remapped-filename realgud-file-remap)
+                    (setq filename remapped-filename)
+                    ))
+                ))))
+        )
       ;; FIXME: remove above -----------------------------------.
       ))
   (if filename
