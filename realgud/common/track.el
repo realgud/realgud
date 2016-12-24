@@ -375,7 +375,7 @@ encountering a new loc."
   )
 
 (defun realgud-track-loc(text cmd-mark &optional opt-regexp opt-file-group
-			   opt-line-group no-warn-on-no-match?
+			   opt-line-group opt-col-group no-warn-on-no-match?
 			   opt-ignore-file-re)
   "Do regular-expression matching to find a file name and line number inside
 string TEXT. If we match, we will turn the result into a realgud-loc struct.
@@ -397,6 +397,8 @@ Otherwise return nil."
 			   (realgud-sget 'cmdbuf-info 'file-group)))
 	   (line-group (or opt-line-group
 			   (realgud-sget 'cmdbuf-info 'line-group)))
+	   (column-group (or opt-col-group
+			     (realgud-sget 'cmdbuf-info 'char-offset-group)))
 	   (alt-file-group (realgud-sget 'cmdbuf-info 'alt-file-group))
 	   (alt-line-group (realgud-sget 'cmdbuf-info 'alt-line-group))
 	   (text-group (realgud-sget 'cmdbuf-info 'text-group))
@@ -410,9 +412,13 @@ Otherwise return nil."
 				     (match-string alt-file-group text)))
 		       (line-str (or (match-string line-group text)
 				     (match-string alt-line-group text)))
+		       (column-str
+			(cond (column-group (match-string column-group text))
+			      ('t "1")))
 		       (source-str (and text-group
 					(match-string text-group text)))
 		       (lineno (string-to-number (or line-str "1")))
+		       (column (string-to-number (or column-str "1")))
 		       (directory
 			(cond ((boundp 'starting-directory) starting-directory)
 				     (t nil)))
@@ -428,7 +434,7 @@ Otherwise return nil."
 			 (unless line-str
 			   (message "line number not found -- using 1"))
 			 (if (and filename lineno)
-			     (realgud:file-loc-from-line filename lineno
+			     (realgud:file-loc-from-line filename lineno column
 							 cmd-mark
 							 source-str nil
 							 ignore-file-re
@@ -466,6 +472,7 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 		    (loc-regexp     (realgud-loc-pat-regexp loc-pat))
 		    (file-group     (realgud-loc-pat-file-group loc-pat))
 		    (line-group     (realgud-loc-pat-line-group loc-pat))
+		    (col-group      (realgud-loc-pat-char-offset-group loc-pat))
 		    (text-group     (realgud-loc-pat-text-group loc-pat))
 		    (ignore-file-re (realgud-loc-pat-ignore-file-re loc-pat))
 		    (callback-loc-fn (realgud-sget 'cmdbuf-info 'callback-loc-fn))
@@ -716,6 +723,7 @@ find a location. non-nil if we can find a location.
 				(realgud-loc-pat-regexp loc-pat)
 				(realgud-loc-pat-file-group loc-pat)
 				(realgud-loc-pat-line-group loc-pat)
+				(realgud-loc-pat-char-offset-group loc-pat)
 				nil
 				(realgud-loc-pat-ignore-file-re loc-pat)
 				))

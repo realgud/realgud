@@ -87,7 +87,7 @@ we may also consult PYTHONPATH."
 
 (defun realgud:trepan2-loc-fn-callback(text filename lineno source-str
 					    ignore-file-re cmd-mark)
-  (realgud:file-loc-from-line filename lineno
+  (realgud:file-loc-from-line filename lineno nil
 			      cmd-mark source-str nil nil
 			      'realgud:trepan2-find-file))
 

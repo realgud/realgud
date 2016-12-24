@@ -97,6 +97,7 @@
   line-group
   alt-file-group
   alt-line-group
+  char-offset-group
   text-group
   ignore-file-re
 
@@ -331,6 +332,7 @@ values set in the debugger's init.el."
 	     :line-group (realgud-sget 'loc-pat 'line-group)
 	     :alt-file-group (realgud-sget 'loc-pat 'alt-file-group)
 	     :alt-line-group (realgud-sget 'loc-pat 'alt-line-group)
+	     :char-offset-group (realgud-sget 'loc-pat 'char-offset-group)
 	     :text-group (realgud-sget 'loc-pat 'text-group)
 	     :ignore-file-re (realgud-sget 'loc-pat 'ignore-file-re)
 	     :loc-hist (make-realgud-loc-hist)

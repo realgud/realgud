@@ -28,6 +28,7 @@
   (defvar line-number)
   (defvar realgud-pat-hash)
   (defvar test-filename)
+  (defvar test-loc)
 )
 
 ;; Some setup usually done in setting up the buffer.
@@ -43,16 +44,15 @@
 (setq line-number 7)
 (setq debugger-output (format "-> (%s:%d)\nrequire 'foo'\n(trepan):\n"
 			      test-filename line-number))
-(let ((loc (realgud-track-loc debugger-output nil)))
-  (assert-t (realgud-loc-p loc)   "loc extracted")
-  (assert-equal "(trepan):\n"
-		(realgud-track-loc-remaining debugger-output)
-		"loc-remaining")
-  (assert-equal test-filename (realgud-loc-filename loc)
-		"loc filename extracted")
-  (assert-equal line-number (realgud-loc-line-number loc)
-		"loc line-number extracted")
-  )
+(setq test-loc (realgud-track-loc debugger-output nil))
+(assert-t (realgud-loc-p test-loc)   "loc extracted")
+(assert-equal "(trepan):\n"
+	      (realgud-track-loc-remaining debugger-output)
+	      "loc-remaining")
+(assert-equal test-filename (realgud-loc-filename test-loc)
+	      "loc filename extracted")
+(assert-equal line-number (realgud-loc-line-number test-loc)
+	      "loc line-number extracted")
 
 (note "realgud-track-selected-frame")
 (setq debugger-output "up
