@@ -109,7 +109,7 @@ realgud-loc-pat struct")
        :num 1
        :file-group 2
        :line-group 3
-       :char-offset-group 4))
+       :column-group 4))
 
 (defconst realgud:nodejs-debugger-name "nodejs" "Name of debugger")
 

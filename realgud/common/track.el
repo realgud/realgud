@@ -398,10 +398,12 @@ Otherwise return nil."
 	   (line-group (or opt-line-group
 			   (realgud-sget 'cmdbuf-info 'line-group)))
 	   (column-group (or opt-col-group
-			     (realgud-sget 'cmdbuf-info 'char-offset-group)))
+			     (realgud-sget 'cmdbuf-info 'column-group)))
 	   (alt-file-group (realgud-sget 'cmdbuf-info 'alt-file-group))
 	   (alt-line-group (realgud-sget 'cmdbuf-info 'alt-line-group))
-	   (text-group (realgud-sget 'cmdbuf-info 'text-group))
+	   ;; FIXME: should pass as parameter
+	   (text-group)
+	   ;; (text-group (realgud-sget 'cmdbuf-info 'text-group))
 	   (ignore-file-re (or opt-ignore-file-re
 			       (realgud-sget 'cmdbuf-info 'ignore-file-re)))
 	   (callback-loc-fn (realgud-sget 'cmdbuf-info 'callback-loc-fn))
@@ -472,7 +474,7 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 		    (loc-regexp     (realgud-loc-pat-regexp loc-pat))
 		    (file-group     (realgud-loc-pat-file-group loc-pat))
 		    (line-group     (realgud-loc-pat-line-group loc-pat))
-		    (col-group      (realgud-loc-pat-char-offset-group loc-pat))
+		    (col-group      (realgud-loc-pat-column-group loc-pat))
 		    (text-group     (realgud-loc-pat-text-group loc-pat))
 		    (ignore-file-re (realgud-loc-pat-ignore-file-re loc-pat))
 		    (callback-loc-fn (realgud-sget 'cmdbuf-info 'callback-loc-fn))
@@ -723,7 +725,7 @@ find a location. non-nil if we can find a location.
 				(realgud-loc-pat-regexp loc-pat)
 				(realgud-loc-pat-file-group loc-pat)
 				(realgud-loc-pat-line-group loc-pat)
-				(realgud-loc-pat-char-offset-group loc-pat)
+				(realgud-loc-pat-column-group loc-pat)
 				nil
 				(realgud-loc-pat-ignore-file-re loc-pat)
 				))

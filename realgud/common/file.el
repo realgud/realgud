@@ -123,7 +123,7 @@ problem as best as we can determine."
 				(goto-char (point-min))
 				;; FIXME allow for byte offset
 				(forward-line (1- line-number))
-				(forward-char (1- column-number))
+				(move-to-column (1- column-number))
 				(make-realgud-loc
 				      :num           bp-num
 				      :cmd-marker    cmd-marker

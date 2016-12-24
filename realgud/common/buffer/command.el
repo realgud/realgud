@@ -93,12 +93,17 @@
 
   ;; FIXME: REMOVE THIS and use regexp-hash
   loc-regexp   ;; Location regular expression string
-  file-group
-  line-group
+  file-group   ;; file path
+  line-group   ;; line number
+  ;; FIXME: remove alt- things
+  ;; They are here because sometimes we can't get a single regexp
+  ;; pattern to have all regexp file paths or line numbers appear at the
+  ;; same pattern group (e.g. in the first position)
   alt-file-group
   alt-line-group
-  char-offset-group
-  text-group
+  column-group  ;; Column within a line
+  char-offset-group ;; char offset from begging of file
+  text-group  ;; Matching text
   ignore-file-re
 
   loc-hist     ;; ring of locations seen in the course of execution
@@ -332,7 +337,8 @@ values set in the debugger's init.el."
 	     :line-group (realgud-sget 'loc-pat 'line-group)
 	     :alt-file-group (realgud-sget 'loc-pat 'alt-file-group)
 	     :alt-line-group (realgud-sget 'loc-pat 'alt-line-group)
-	     :char-offset-group (realgud-sget 'loc-pat 'char-offset-group)
+	     :column-group (realgud-sget 'loc-pat 'column-group)
+	     :char-offset-group (realgud-sget 'loc-pat 'column-group)
 	     :text-group (realgud-sget 'loc-pat 'text-group)
 	     :ignore-file-re (realgud-sget 'loc-pat 'ignore-file-re)
 	     :loc-hist (make-realgud-loc-hist)

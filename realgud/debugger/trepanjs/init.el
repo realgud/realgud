@@ -48,7 +48,7 @@ realgud-loc-pat struct")
 		realgud:regexp-captured-num)
        :file-group 1
        :line-group 2
-       :char-offset-group 3
+       :column-group 3
        ))
 
 ;; realgud-loc-pat that describes a trepanjs command prompt
@@ -123,7 +123,7 @@ realgud-loc-pat struct")
        :num 1
        :file-group 2
        :line-group 3
-       :char-offset-group 4
+       :column-group 4
        ))
 
 (defconst realgud:trepanjs-debugger-name "trepanjs" "Name of debugger")

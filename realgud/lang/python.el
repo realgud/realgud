@@ -179,7 +179,8 @@ traceback) line."  )
    :regexp "^\\(.*\\):\\([0-9]+\\):\\([0-9]+\\): [EFW]\\([0-9]+\\) "
    :file-group 1
    :line-group 2
-   :char-offset-group 3
+   :column-group 3
+   :text-group nil
    )
   "A realgud-loc-pat struct that describes a flake8 warning or error line"
   )

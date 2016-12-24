@@ -12,11 +12,13 @@
 
 (eval-when-compile
   (defvar dbg-name)
-  (defvar realgud:gub-pat-hash)
   (defvar panic-tb)
-  (defvar test-tb)
+  (defvar prompt-match)
   (defvar prompt-pat)
+  (defvar realgud:gub-pat-hash)
+  (defvar tb-loc-match)
   (defvar test-dbgr)
+  (defvar test-tb)
   (defvar test-text)
 )
 
