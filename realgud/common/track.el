@@ -154,7 +154,17 @@ finding a new location/s.  The parameter TEXT appears because it
 is part of the comint-output-filter-functions API. Instead we use
 marks set in buffer-local variables to extract text"
   (if (and realgud-track-mode (realgud-cmdbuf? (current-buffer)))
-      (realgud-track-loc text (point-marker))
+      (let ((loc-regexp (realgud-sget 'cmdbuf-info 'loc-regexp))
+	    (file-group (realgud-sget 'cmdbuf-info 'file-group))
+	    (line-group (realgud-sget 'cmdbuf-info 'line-group))
+	    (column-group (realgud-sget 'cmdbuf-info 'column-group))
+	    (alt-file-group (realgud-sget 'cmdbuf-info 'alt-file-group))
+	    (alt-line-group (realgud-sget 'cmdbuf-info 'alt-line-group))
+	    (text-group (realgud-sget 'cmdbuf-info 'text-group))
+	    )
+	(realgud-track-loc text (point-marker) loc-regexp file-group
+			   line-group column-group text-group
+			   ))
     ))
 
 (defun realgud:track-complain-if-not-in-cmd-buffer (&optional buf errorp)
@@ -183,13 +193,22 @@ evaluating (realgud-cmdbuf-info-loc-regexp realgud-cmdbuf-info)"
   (interactive "r")
   (if (> from to) (psetq to from from to))
   (let* ((text (buffer-substring-no-properties from to))
-	 (loc (realgud-track-loc text cmd-mark))
+	 (cmdbuf (or opt-cmdbuf (current-buffer)))
+	 (loc-regexp (realgud-sget 'cmdbuf-info 'loc-regexp))
+	 (file-group (realgud-sget 'cmdbuf-info 'file-group))
+	 (line-group (realgud-sget 'cmdbuf-info 'line-group))
+	 (column-group (realgud-sget 'cmdbuf-info 'column-group))
+	 (alt-file-group (realgud-sget 'cmdbuf-info 'alt-file-group))
+	 (alt-line-group (realgud-sget 'cmdbuf-info 'alt-line-group))
+	 (text-group (realgud-sget 'cmdbuf-info 'text-group))
+	 (loc (realgud-track-loc text cmd-mark loc-regexp file-group
+				 line-group column-group text-group
+				 ))
 	 ;; If we see a selected frame number, it is stored
 	 ;; in frame-num. Otherwise, nil.
 	 (frame-num)
 	 (text-sans-loc)
 	 (bp-loc)
-	 (cmdbuf (or opt-cmdbuf (current-buffer)))
 	 )
     (unless (realgud:track-complain-if-not-in-cmd-buffer cmdbuf t)
 	(if (not (equal "" text))
@@ -374,9 +393,10 @@ encountering a new loc."
 	))
   )
 
-(defun realgud-track-loc(text cmd-mark &optional opt-regexp opt-file-group
-			   opt-line-group opt-col-group no-warn-on-no-match?
-			   opt-ignore-file-re)
+(defun realgud-track-loc(text cmd-mark loc-regexp file-group
+			      line-group column-group text-group
+			      &optional no-warn-on-no-match?
+			      opt-ignore-file-re)
   "Do regular-expression matching to find a file name and line number inside
 string TEXT. If we match, we will turn the result into a realgud-loc struct.
 Otherwise return nil."
@@ -391,19 +411,8 @@ Otherwise return nil."
 
   (unless (realgud:track-complain-if-not-in-cmd-buffer)
       (let
-	  ((loc-regexp (or opt-regexp
-			   (realgud-sget 'cmdbuf-info 'loc-regexp)))
-	   (file-group (or opt-file-group
-			   (realgud-sget 'cmdbuf-info 'file-group)))
-	   (line-group (or opt-line-group
-			   (realgud-sget 'cmdbuf-info 'line-group)))
-	   (column-group (or opt-col-group
-			     (realgud-sget 'cmdbuf-info 'column-group)))
-	   (alt-file-group (realgud-sget 'cmdbuf-info 'alt-file-group))
+	  ((alt-file-group (realgud-sget 'cmdbuf-info 'alt-file-group))
 	   (alt-line-group (realgud-sget 'cmdbuf-info 'alt-line-group))
-	   ;; FIXME: should pass as parameter
-	   (text-group)
-	   ;; (text-group (realgud-sget 'cmdbuf-info 'text-group))
 	   (ignore-file-re (or opt-ignore-file-re
 			       (realgud-sget 'cmdbuf-info 'ignore-file-re)))
 	   (callback-loc-fn (realgud-sget 'cmdbuf-info 'callback-loc-fn))
@@ -430,7 +439,7 @@ Otherwise return nil."
 				      source-str)))
 		  (cond (callback-loc-fn
 			 (funcall callback-loc-fn text
-				  filename lineno source-str
+				  filename lineno column source-str
 				  ignore-file-re cmd-mark))
 			('t
 			 (unless line-str
@@ -726,6 +735,7 @@ find a location. non-nil if we can find a location.
 				(realgud-loc-pat-file-group loc-pat)
 				(realgud-loc-pat-line-group loc-pat)
 				(realgud-loc-pat-column-group loc-pat)
+				(realgud-loc-pat-text-group loc-pat)
 				nil
 				(realgud-loc-pat-ignore-file-re loc-pat)
 				))
