@@ -7,6 +7,20 @@
 
 (test-simple-start)
 
+(eval-when-compile
+  (defvar bps-pat)
+  (defvar dbg-bt-pat)
+  (defvar ctrl-pat)
+  (defvar file-group)
+  (defvar line-group)
+  (defvar prompt-pat)
+  (defvar lang-bt-pat)
+  (defvar tb-loc-match)
+  (defvar test-dbgr)
+  (defvar test-s1)
+  (defvar test-text)
+)
+
 (set (make-local-variable 'bps-pat)
      (gethash "brkpt-set"          realgud:trepan-pat-hash))
 (set (make-local-variable 'dbg-bt-pat)
@@ -21,26 +35,26 @@
 ;; FIXME: we get a void variable somewhere in here when running
 ;;        even though we define it in lexical-let. Dunno why.
 ;;        setq however will workaround this.
-(set (make-local-variable 'text)
+(set (make-local-variable 'test-text)
  "	from /usr/local/bin/irb:12:in `<main>'")
 
 (note "traceback location matching")
 
-(setq text "	from /usr/local/bin/irb:12:in `<main>'")
+(setq test-text "	from /usr/local/bin/irb:12:in `<main>'")
 
-(assert-t (numberp (loc-match text lang-bt-pat))
+(assert-t (numberp (loc-match test-text lang-bt-pat))
 	  "basic traceback location")
 (assert-equal "/usr/local/bin/irb"
-	      (match-string (realgud-loc-pat-file-group lang-bt-pat) text)
+	      (match-string (realgud-loc-pat-file-group lang-bt-pat) test-text)
 	      "extract traceback file name")
 
 (assert-equal "12"
 	      (match-string (realgud-loc-pat-line-group
-			     lang-bt-pat) text)
+			     lang-bt-pat) test-text)
 	      "extract traceback line number")
 
 (note "debugger-backtrace")
-(set (make-local-variable 's1)
+(set (make-local-variable 'test-s1)
      "--> #0 METHOD Object#require(path) in file <internal:lib/require> at line 28
     #1 TOP Object#<top /tmp/linecache.rb> in file /tmp/linecache.rb
 ")
@@ -54,26 +68,26 @@
 (set (make-local-variable 'line-group)
      (realgud-loc-pat-line-group dbg-bt-pat))
 
-(assert-equal 0 (string-match frame-re s1))
-(assert-equal "0" (substring s1
+(assert-equal 0 (string-match frame-re test-s1))
+(assert-equal "0" (substring test-s1
 			     (match-beginning num-group)
 			     (match-end num-group)))
 (assert-equal "<internal:lib/require>"
-	      (substring s1
+	      (substring test-s1
 			 (match-beginning file-group)
 			 (match-end file-group)))
 (assert-equal "28"
-	      (substring s1
+	      (substring test-s1
 			 (match-beginning line-group)
 			 (match-end line-group)))
 (setq pos (match-end 0))
 
-(assert-equal 77 (string-match frame-re s1 pos))
-(assert-equal "1" (substring s1
+(assert-equal 77 (string-match frame-re test-s1 pos))
+(assert-equal "1" (substring test-s1
 			     (match-beginning num-group)
 			     (match-end num-group)))
 (assert-equal "/tmp/linecache.rb"
-	      (substring s1
+	      (substring test-s1
 			 (match-beginning file-group)
 			 (match-end file-group)))
 
@@ -102,23 +116,24 @@
 		 ctrl-pat)
 	      )
 
-(setq text "Breakpoint 1 set at VM offset 2 of instruction sequence \"<top /usr/local/bin/irb>\",
+(setq test-text
+      "Breakpoint 1 set at VM offset 2 of instruction sequence \"<top /usr/local/bin/irb>\",
 	line 9 in file /usr/local/bin/irb.
 ")
 
 
-(assert-t (numberp (loc-match text bps-pat))
+(assert-t (numberp (loc-match test-text bps-pat))
 	  "basic breakpoint location")
 
 
 (assert-equal "/usr/local/bin/irb"
 	      (match-string (realgud-loc-pat-file-group
-			     bps-pat) text)
+			     bps-pat) test-text)
 	      "extract breakpoint file name")
 
 (assert-equal "9"
 	      (match-string (realgud-loc-pat-line-group
-			     bps-pat) text)
+			     bps-pat) test-text)
 	      "extract breakpoint line number")
 
 (end-tests)

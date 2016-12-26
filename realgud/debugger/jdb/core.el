@@ -97,10 +97,10 @@ that works."
      ))
   )
 
-(defun realgud:jdb-loc-fn-callback(text filename lineno source-str
+(defun realgud:jdb-loc-fn-callback(text filename lineno column source-str
 					ignore-file-re cmd-mark)
-  (realgud:file-loc-from-line filename lineno
-			      cmd-mark source-str nil
+  (realgud:file-loc-from-line filename lineno nil
+			      cmd-mark source-str column
 			      ignore-file-re 'realgud:jdb-find-file))
 
 (defun realgud:jdb-parse-cmd-args (orig-args)

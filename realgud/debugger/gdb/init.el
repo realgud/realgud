@@ -45,7 +45,7 @@ realgud-loc-pat struct")
 		       realgud:gdb-frame-file-regexp realgud:regexp-captured-num)
        :file-group 1
        :line-group 2
-       :char-offset-group 3))
+       :column-group 3))
 
 ;; Regular expression that describes a gdb prompt
 ;; For example:

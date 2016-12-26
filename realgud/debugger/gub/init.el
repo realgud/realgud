@@ -81,7 +81,7 @@ realgud-loc-pat struct")
        :num 1
        :file-group 2
        :line-group 3
-       :char-offset-group 4))
+       :column-group 4))
 
 ;; Regular expression that describes a debugger "delete" (breakpoint) response.
 ;; For example:

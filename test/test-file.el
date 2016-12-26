@@ -68,12 +68,12 @@
   (assert-t (stringp (realgud:file-loc-from-line test-filename 10001))
 	    "Line number too large for file")
 
-  (setq test-file-loc (realgud:file-loc-from-line (__FILE__) 5 nil ";; Note"))
+  (setq test-file-loc (realgud:file-loc-from-line (__FILE__) 5 nil nil ";; Note"))
   (assert-t (realgud-loc? test-file-loc)
 	    "Ok loc creation - no cmd marker")
 
   (assert-t (realgud-loc?
-	     (realgud:file-loc-from-line test-filename 30 (make-marker)))
+	     (realgud:file-loc-from-line test-filename 30 nil (make-marker)))
 	    "Ok loc creation - cmd marker")
 
   (assert-equal 5 (realgud-loc-line-number test-file-loc))

@@ -76,9 +76,9 @@ future, we may also consult RUBYPATH."
       ))
     ))
 
-(defun realgud:trepan-loc-fn-callback(text filename lineno source-str
+(defun realgud:trepan-loc-fn-callback(text filename lineno column source-str
 					   ignore-file-re cmd-mark)
-  (realgud:file-loc-from-line filename lineno
+  (realgud:file-loc-from-line filename lineno column
 			      cmd-mark source-str nil nil
 			      'realgud:trepan-find-file))
 

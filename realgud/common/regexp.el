@@ -41,13 +41,13 @@ output by a debugger inside a process shell"
                        ;; file position as in Perl locations.
   (regexp)             ;; a stack position, or thread number.
   (file-group)         ;; Filename position in struct
-  (line-group)         ;; Line number position in struct
+  (line-group)         ;; Line number position in struct. First line is 1
   (alt-file-group)     ;; Used when regexp is too complicated and use \|
                        ;; e.g. perldb file loc regexps
   (alt-line-group)     ;; ditto
+  (column-group)       ;; Column position in struct. First position is 1
   (char-offset-group)  ;; Character offset position in struct
   (instruction-address-group)
-  (column-group)
   (ignore-file-re)     ;; Some debuggers create pseudo files in eval strings
                        ;; for example "(eval)" in Ruby and Perl
   (text-group)         ;; Some source text that should found at position
