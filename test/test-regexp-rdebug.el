@@ -10,10 +10,6 @@
 (test-simple-start)
 
 (eval-when-compile
-  (defvar helper-bps)
-  (defvar helper-bt)
-  (defvar prompt-pat)
-  (defvar rails-bt)
   (defvar realgud-rdebug-pat-hash)
 )
 

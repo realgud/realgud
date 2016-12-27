@@ -35,7 +35,7 @@
 		   realgud:regexp-captured-num realgud:regexp-captured-num)
    :file-group 2
    :line-group 3
-   :column-group 4)
+   :char-offset-group 4)
   "A realgud-loc-pat struct that describes a V8 backtrace location")
 
 (provide-me "realgud-lang-")

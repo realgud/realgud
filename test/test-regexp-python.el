@@ -35,7 +35,7 @@
 			    test-text))
 
 (assert-equal "17"
-	      (match-string (realgud-loc-pat-column-group realgud-flake8-msg-loc-pat)
+	      (match-string (realgud-loc-pat-char-offset-group realgud-flake8-msg-loc-pat)
 			    test-text))
 
 (setq test-text
@@ -54,7 +54,7 @@
 			    test-text))
 
 (assert-equal "1"
-	      (match-string (realgud-loc-pat-column-group realgud-flake8-msg-loc-pat)
+	      (match-string (realgud-loc-pat-char-offset-group realgud-flake8-msg-loc-pat)
 			    test-text))
 
 ;; FIXME add pytest testing

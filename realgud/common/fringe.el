@@ -131,9 +131,7 @@ for example to indicate a debugger position."
 		;; We need to ignore field boundaries, so we use
 		;; forward-line rather than beginning-of-line.
 		(forward-line 0)
-		(setq overlay-arrow-position (point-marker))
-		(goto-char position)
-		)))))))
+		(set overlay-arrow (point-marker)))))))))
 
 (defun realgud-fringe-history-set (loc-hist &optional do-cmdbuf?)
   "Set arrows on the last positions we have stopped on."
@@ -160,7 +158,8 @@ for example to indicate a debugger position."
     (when loc1
       (realgud-fringe-set-arrow 'realgud-overlay-arrow1 mark1)
       (when (and do-cmdbuf? cmd-mark1)
-	  (realgud-fringe-set-arrow 'realgud-overlay-arrow1 cmd-mark1))
+	  (realgud-fringe-set-arrow 'realgud-overlay-arrow1 cmd-mark1)
+	  (goto-char (marker-position cmd-mark1)))
       )
     ))
 

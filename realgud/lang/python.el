@@ -176,11 +176,10 @@ traceback) line."  )
 
 (defconst realgud-flake8-msg-loc-pat
   (make-realgud-loc-pat
-   :regexp "^\\(.*\\):\\([0-9]+\\):\\([0-9]+\\): [EFWCN]\\([0-9]+\\) "
+   :regexp "^\\(.*\\):\\([0-9]+\\):\\([0-9]+\\): [EW]\\([0-9]+\\) "
    :file-group 1
    :line-group 2
-   :column-group 3
-   :text-group nil
+   :char-offset-group 3
    )
   "A realgud-loc-pat struct that describes a flake8 warning or error line"
   )

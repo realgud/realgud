@@ -20,7 +20,7 @@
 (declare-function assert-equal 'test-simple)
 (declare-function note 'test-simple)
 (declare-function end-tests 'test-simple)
-(declare-function realgud-loc-pat-column-group  'realgud:nodejs-init)
+(declare-function realgud-loc-pat-char-offset-group  'realgud:nodejs-init)
 
 (test-simple-start)
 
@@ -68,7 +68,7 @@
 (setq num-group (realgud-loc-pat-num realgud-pat-bt))
 (setq file-group (realgud-loc-pat-file-group realgud-pat-bt))
 (setq line-group (realgud-loc-pat-line-group realgud-pat-bt))
-(setq col-group (realgud-loc-pat-column-group realgud-pat-bt))
+(setq col-group (realgud-loc-pat-char-offset-group realgud-pat-bt))
 (assert-equal 0 (string-match bt-re test-s1))
 (assert-equal "0" (substring test-s1
 			     (match-beginning num-group)

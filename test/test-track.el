@@ -24,18 +24,10 @@
 (test-simple-start)
 
 (eval-when-compile
-  (defvar alt-file-group)
-  (defvar alt-line-group)
-  (defvar column-group)
   (defvar debugger-output)
-  (defvar file-group)
-  (defvar line-group)
   (defvar line-number)
-  (defvar loc-regexp)
   (defvar realgud-pat-hash)
   (defvar test-filename)
-  (defvar test-loc)
-  (defvar text-group)
 )
 
 ;; Some setup usually done in setting up the buffer.
@@ -45,34 +37,22 @@
 
 ;; FIXME/WARNING the below is customized for trepan
 (realgud-cmdbuf-init (current-buffer) "trepan"
-		     (gethash "trepan" realgud-pat-hash))
-
-(setq loc-regexp (realgud-sget 'cmdbuf-info 'loc-regexp))
-(setq file-group (realgud-sget 'cmdbuf-info 'file-group))
-(setq line-group (realgud-sget 'cmdbuf-info 'line-group))
-(setq column-group (realgud-sget 'cmdbuf-info 'column-group))
-(setq alt-file-group (realgud-sget 'cmdbuf-info 'alt-file-group))
-(setq alt-line-group (realgud-sget 'cmdbuf-info 'alt-line-group))
-(setq text-group (realgud-sget 'cmdbuf-info 'text-group))
+		  (gethash "trepan" realgud-pat-hash))
 
 (setq test-filename (symbol-file 'test-simple))
 (setq line-number 7)
 (setq debugger-output (format "-> (%s:%d)\nrequire 'foo'\n(trepan):\n"
 			      test-filename line-number))
-(setq test-loc
-      (realgud-track-loc debugger-output nil
-			 loc-regexp file-group
-			 line-group column-group text-group
-			 ))
-
-(assert-t (realgud-loc-p test-loc)   "loc extracted")
-(assert-equal "(trepan):\n"
-	      (realgud-track-loc-remaining debugger-output)
-	      "loc-remaining")
-(assert-equal test-filename (realgud-loc-filename test-loc)
-	      "loc filename extracted")
-(assert-equal line-number (realgud-loc-line-number test-loc)
-	      "loc line-number extracted")
+(let ((loc (realgud-track-loc debugger-output nil)))
+  (assert-t (realgud-loc-p loc)   "loc extracted")
+  (assert-equal "(trepan):\n"
+		(realgud-track-loc-remaining debugger-output)
+		"loc-remaining")
+  (assert-equal test-filename (realgud-loc-filename loc)
+		"loc filename extracted")
+  (assert-equal line-number (realgud-loc-line-number loc)
+		"loc line-number extracted")
+  )
 
 (note "realgud-track-selected-frame")
 (setq debugger-output "up

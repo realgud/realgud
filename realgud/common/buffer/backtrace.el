@@ -461,7 +461,7 @@ filename, line number, whether the frame is selected as text properties."
 	  ))
 
 	(when (and (stringp filename) (numberp line-num))
-	  (let ((loc (realgud:file-loc-from-line filename line-num nil cmdbuf)))
+	  (let ((loc (realgud:file-loc-from-line filename line-num cmdbuf)))
 	    (put-text-property (match-beginning 0) (match-end 0)
 			       'loc loc string)
 	    ))

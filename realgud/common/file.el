@@ -55,8 +55,9 @@ at LINE-NUMBER or nil if it is not there"
                 (current-column))))))
     (error nil)))
 
+;; FIXME: should allow column number to be passed in.
 (defun realgud:file-loc-from-line(filename line-number
-					   &optional column cmd-marker source-text bp-num
+					   &optional cmd-marker source-text bp-num
 					   ;; FIXME: remove ignore-file-re and cover with
 					   ;; find-file-fn.
 					   ignore-file-re find-file-fn directory)
@@ -109,11 +110,9 @@ problem as best as we can determine."
 		    (if (setq line-count (realgud:file-line-count filename))
 			(if (> line-count line-number)
 			    (let* ((column-number
-				    (or column
-					(realgud:file-column-from-string filename
-									 line-number
-									 source-text)
-					1))
+				    (realgud:file-column-from-string filename
+								    line-number
+								    source-text))
 				   (source-buffer (find-file-noselect filename))
 				   (source-mark))
 
@@ -121,10 +120,8 @@ problem as best as we can determine."
 			      ;; doing something other than validation?
 			      (with-current-buffer source-buffer
 				(goto-char (point-min))
-				;; FIXME allow for byte offset
+				;; FIXME also allow column number and byte offset
 				(forward-line (1- line-number))
-				(if (> column-number 0)
-				    (move-to-column (1- column-number)))
 				(make-realgud-loc
 				      :num           bp-num
 				      :cmd-marker    cmd-marker
