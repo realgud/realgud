@@ -30,7 +30,8 @@
 (declare-function compilation-find-file 'compile)
 
 (defcustom realgud-file-find-function 'compilation-find-file
-  "Function to call when we can't easily find file")
+  "Function to call when we can't easily find file"
+  :type 'function)
 
 (defun realgud:file-line-count(filename)
   "Return the number of lines in file FILENAME, or nil FILENAME can't be
