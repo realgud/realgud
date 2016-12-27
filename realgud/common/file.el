@@ -84,7 +84,7 @@ problem as best as we can determine."
       ;; FIXME: Remove the below by refactoring to use the above find-file-fn
       ;; else
       (if (and ignore-file-re (string-match ignore-file-re filename))
-          (message "tracking ignored for psuedo-file %s" filename)
+          (message "tracking ignored for pseudo-file %s" filename)
         ;; else
         (let ((remapped-filename))
           (if (gethash filename realgud-file-remap)
@@ -94,17 +94,14 @@ problem as best as we can determine."
                     (setq filename remapped-filename)
                   (remhash filename realgud-file-remap)))
             ;; else
-            (progn
-              (let ((found-file (funcall realgud-file-find-function (point-marker) filename directory)))
+            (let ((found-file (funcall realgud-file-find-function (point-marker) filename directory)))
                 (when found-file
-                  (setq remapped-filename
-                        (buffer-file-name
-                         found-file))
+                  (setq remapped-filename (buffer-file-name found-file))
                   (when (and remapped-filename (file-exists-p remapped-filename))
                     (puthash filename remapped-filename realgud-file-remap)
                     (setq filename remapped-filename)
                     ))
-                ))))
+                )))
         )
       ;; FIXME: remove above -----------------------------------.
       ))
