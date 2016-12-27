@@ -10,7 +10,12 @@
 (test-simple-start)
 
 (eval-when-compile
+  (defvar helper-bps)
+  (defvar helper-tb)
+  (defvar prompt-pat)
+  (defvar rails-bt)
   (defvar realgud-rdebug-pat-hash)
+  (defvar test-text)
 )
 
 (setup-regexp-vars realgud-rdebug-pat-hash)
@@ -19,7 +24,7 @@
 ;; FIXME: we get a void variable somewhere in here when running
 ;;        even though we define it in lexical-let. Dunno why.
 ;;        setq however will workaround this.
-(setq text "	from /usr/local/bin/irb:12:in `<main>'")
+(setq test-text "	from /usr/local/bin/irb:12:in `<main>'")
 (note "traceback location matching")
 (let ((text "	from /usr/local/bin/irb:12:in `<main>'"))
   (assert-t (numberp (loc-match text helper-tb)) "basic traceback location")
