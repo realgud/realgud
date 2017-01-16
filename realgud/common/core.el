@@ -228,15 +228,16 @@ NO-RESET is nil, then that information which may point into other
 buffers and source buffers which may contain marks and fringe or
 marginal icons is reset."
 
-  (let* ((current-directory
-	  (or (file-name-directory script-filename)
+  (let* ((non-nil-filename (or script-filename "+No filename+"))
+	 (current-directory
+	  (or (file-name-directory non-nil-filename)
 	      default-directory "./"))
 	 (cmdproc-buffer-name
 	  (replace-regexp-in-string
 	   "\s+" "\s"
 	   (format "*%s %s shell*"
 		   (file-name-nondirectory debugger-name)
-		   (file-name-nondirectory script-filename))))
+		   (file-name-nondirectory non-nil-filename))))
 	 (cmdproc-buffer (get-buffer-create cmdproc-buffer-name))
 	 (realgud-buf (current-buffer))
 	 (cmd-args (cons program args))
@@ -302,7 +303,7 @@ marginal icons is reset."
 	  (let ((src-buffer)
 		(cmdline-list (cons program args)))
 	    ;; is this right?
-	    (when (and (file-exists-p script-filename)
+	    (when (and script-filename (file-exists-p script-filename)
 		       (not (realgud:binary script-filename)))
 	      (setq src-buffer (find-file-noselect script-filename))
 	      (point-max)
