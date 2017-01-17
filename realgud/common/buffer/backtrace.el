@@ -2,7 +2,7 @@
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc
+;; Copyright (C) 2015-2017 Free Software Foundation, Inc
 
 ;; This program is free software: you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -431,7 +431,7 @@ filename, line number, whether the frame is selected as text properties."
 	    (setq frame-num-str
 		    (substring stripped-string (match-beginning 0)
 			       (match-end 0)))
-	    (setq frame-num (incf alt-frame-num))
+	    (setq frame-num (cl-incf alt-frame-num))
 	    (setq frame-num-pos (match-beginning 0))
 	    (add-to-list 'frame-num-pos-list frame-num-pos t)
 	    (add-text-properties (match-beginning 0) (match-end 0)
