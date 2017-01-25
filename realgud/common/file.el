@@ -1,4 +1,4 @@
-;; Copyright (C) 2010-2011, 2013-2014, 2016 Free Software Foundation, Inc
+;; Copyright (C) 2010-2011, 2013-2014, 2016-2017 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -31,7 +31,8 @@
 
 (defcustom realgud-file-find-function 'compilation-find-file
   "Function to call when we can't easily find file"
-  :type 'function)
+  :type 'function
+  :group 'realgud)
 
 (defun realgud:file-line-count(filename)
   "Return the number of lines in file FILENAME, or nil FILENAME can't be
