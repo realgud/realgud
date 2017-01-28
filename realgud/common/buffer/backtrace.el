@@ -144,7 +144,7 @@
 			   frame-pat cmdbuf divert-string indicator-re))
 			 (string-with-props
 			  (ansi-color-filter-apply (car triple)))
-			 (frame-num-pos-list (caddr triple))
+			 (frame-num-pos-list (cl-caddr triple))
 			 )
 		    (setq selected-frame-num (cadr triple))
 		    (insert string-with-props)
