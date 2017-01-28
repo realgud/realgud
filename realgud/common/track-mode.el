@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc
+;; Copyright (C) 2015-2017 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -38,6 +38,7 @@
 		  'realgud-buffer-command)
 (declare-function realgud:canonic-major-mode
 		  'realgud-utils)
+(declare-function shell-mode 'shell)
 
 (defvar realgud-track-mode-map
   (let ((map  (copy-keymap shell-mode-map)))

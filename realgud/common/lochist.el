@@ -63,8 +63,7 @@
   "Get the current item stored at POSITION of the ring
 component in LOC-HIST"
   (lexical-let ((ring (realgud-loc-hist-ring loc-hist)))
-    (if (ring-empty-p ring)
-	nil
+    (unless (ring-empty-p ring)
       (ring-ref ring position))))
 
 (defun realgud-loc-hist-item(loc-hist)
