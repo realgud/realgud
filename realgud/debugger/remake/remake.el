@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc
+;; Copyright (C) 2015-2017 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -56,7 +56,7 @@ Otherwise nil is returned.
 	 (cmd-args (split-string-and-unquote cmd-str))
 	 (parsed-args (remake-parse-cmd-args cmd-args))
 	 (debugger (car parsed-args))
-	 (script-args (caddr parsed-args))
+	 (script-args (cl-caddr parsed-args))
 	 (script-name (cadr parsed-args))
 	 )
     (realgud:run-process debugger script-name cmd-args
