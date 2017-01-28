@@ -16,7 +16,7 @@
   (defvar lang-bt-pat)
   (defvar line-group)
   (defvar num-group)
-  (defvar pos)
+  (defvar test-pos)
   (defvar prompt-pat)
   (defvar prompt-str)
   (defvar tb-loc-match)
@@ -84,9 +84,9 @@
 	      (substring test-s1
 			 (match-beginning line-group)
 			 (match-end line-group)))
-(setq pos (match-end 0))
+(setq test-pos (match-end 0))
 
-(assert-equal 77 (string-match frame-re test-s1 pos))
+(assert-equal 77 (string-match frame-re test-s1 test-pos))
 (assert-equal "1" (substring test-s1
 			     (match-beginning num-group)
 			     (match-end num-group)))
