@@ -192,6 +192,10 @@ backtrace listing.")
 ;; 	;;  (0 jdb-frames-current-frame-face append))
 ;; 	))
 
+;; realgud-loc-pat for a termination message.
+(setf (gethash "termination" realgud:jdb-pat-hash)
+       "^The application exited\n")
+
 (setf (gethash realgud:jdb-debugger-name realgud-pat-hash) realgud:jdb-pat-hash)
 
 (defvar realgud:jdb-command-hash (make-hash-table :test 'equal)
