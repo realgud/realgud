@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc
+;; Copyright (C) 2015-2017 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -18,17 +18,21 @@
 			 )
 		       "realgud-")
 (require-relative-list '("core" "init") "realgud:jdb-")
-(require-relative-list '("../../lang/ruby") "realgud-lang-")
+(require-relative-list '("../../lang/java") "realgud-lang-")
 
 (declare-function realgud-track-mode 'realgud-track-mode)
 (declare-function realgud-track-mode-hook 'realgud-track-mode)
 (declare-function realgud-track-mode-setup 'realgud-track-mode)
 (declare-function realgud:track-set-debugger 'realgud-track-mode)
 (declare-function realgud-goto-line-for-pt 'realgud-track-mode)
+(declare-function realgud-java-populate-command-keys 'realgud-lang-java)
 
 (realgud-track-mode-vars "realgud:jdb")
 ;;(defvaralias 'jdb-short-key-mode-map 'realgud:jdb-short-key-mode-map)
 ;;(defvaralias 'jdb-track-mode         'realgud:track-mode)
+
+(realgud-java-populate-command-keys realgud:jdb-track-mode-map)
+
 
 (define-key realgud-track-mode-map
   (kbd "C-c !!") 'realgud:goto-lang-backtrace-line)

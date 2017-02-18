@@ -1,4 +1,4 @@
-;; Copyright (C) 2014-2016 Free Software Foundation, Inc
+;; Copyright (C) 2014-2017 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -15,7 +15,7 @@
 			 "../../common/init")
 		       "realgud-")
 
-;; (require-relative-list '("../../lang/java") "realgud-lang-")
+(require-relative-list '("../../lang/java") "realgud-lang-")
 
 (defvar realgud-pat-hash)
 (declare-function make-realgud-loc-pat (realgud-loc))
@@ -125,6 +125,10 @@ backtrace listing.")
    :regexp "^\\(?:[\t ]*[\\[[0-9]+\\] \\)\\([A-Za-z_.][A-Za-z0-9.]+\\):\\([0-9]+\\)"
    :file-group 1
    :line-group 2))
+
+;;  Regular expression that describes location in a maven error
+(setf (gethash "maven-error" realgud:jdb-pat-hash)
+      realgud-maven-error-loc-pat)
 
 (setf (gethash "font-lock-keywords" realgud:jdb-pat-hash)
       '(
