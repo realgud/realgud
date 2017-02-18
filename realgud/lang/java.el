@@ -32,7 +32,7 @@
 
 (defconst realgud-maven-error-loc-pat
   (make-realgud-loc-pat
-   :regexp "^\\[ERROR\\] \\(.*\\):\\[\\([0-9][0-9]*\\),\\([0-9][0-9]*\\)\\]"
+   :regexp "^\\[\\(?:ERROR\\|WARNING\\)\\] \\(.*\\):\\[\\([0-9][0-9]*\\),\\([0-9][0-9]*\\)\\]"
    :file-group 1
    :line-group 2
    :char-offset-group 3)

@@ -26,11 +26,6 @@
 (assert-t (numberp (loc-match test-text realgud-maven-error-loc-pat))
 	  "maven error")
 
-;; (string-match "^\\[ERROR\\] \\(.*\\):\\[\\([0-9][0-9]*\\),\\([0-9][0-9]*\\)\\]" test-text)
-;; (match-string 1 test-text)
-;; (match-string 2 test-text)
-;; (match-string 3 test-text)
-
 (assert-equal "/Users/rocky/pymaven/LexumoIndexer.java"
 	      (match-string (realgud-loc-pat-file-group realgud-maven-error-loc-pat)
 			    test-text))
@@ -42,9 +37,5 @@
 (assert-equal "26"
 	      (match-string (realgud-loc-pat-char-offset-group realgud-maven-error-loc-pat)
 			    test-text))
-
-;; FIXME add pytest testing
-;; (note "pytest testing")
-
 
 (end-tests)
