@@ -13,5 +13,4 @@ install:
 
 # run the tests
 script:
-   - export EMACSLOADPATH=$(emacs --batch --eval "(print (mapconcat 'identity load-path \":\"))" 2>/dev/null)
   - NO_CHECK_EMACS_PACKAGES=1 /bin/bash ./autogen.sh && cd test && make check-elget
