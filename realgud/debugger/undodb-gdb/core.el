@@ -1,6 +1,8 @@
+
 ;; Copyright (C) 2015-2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
+;; Author: Felipe Lema <felipelema@mortemale.org>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -15,6 +17,8 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+;;; Code:
+
 (require 'load-relative)
 (require-relative-list '("../../common/track"
 			 "../../common/core"
@@ -26,61 +30,59 @@
 (declare-function realgud-parse-command-arg 'realgud-core)
 (declare-function realgud-query-cmdline 'realgud-core)
 
-;; FIXME: I think the following could be generalized and moved to
-;; realgud-... probably via a macro.
-(defvar realgud:gdb-minibuffer-history nil
-  "minibuffer history list for the command `gdb'.")
+(defvar realgud:undodb-gdb-minibuffer-history nil
+  "Minibuffer history list for the command `undodb-gdb'.")
 
-(easy-mmode-defmap realgud:gdb-minibuffer-local-map
-  '(("\C-i" . comint-dynamic-complete-filename))
-  "Keymap for minibuffer prompting of gud startup command."
-  :inherit minibuffer-local-map)
+(easy-mmode-defmap realgud:undodb-gdb-minibuffer-local-map
+                   '(("\C-i" . comint-dynamic-complete-filename))
+                   "Keymap for minibuffer prompting of gud startup command."
+                   :inherit minibuffer-local-map)
 
-;; FIXME: I think this code and the keymaps and history
-;; variable chould be generalized, perhaps via a macro.
-(defun realgud:gdb-query-cmdline (&optional opt-debugger)
+(defun realgud:undodb-gdb-query-cmdline (&optional opt-debugger)
   (realgud-query-cmdline
-   'realgud:gdb-suggest-invocation
-   realgud:gdb-minibuffer-local-map
-   'realgud:gdb-minibuffer-history
+   'realgud:undodb-gdb-suggest-invocation
+   realgud:undodb-gdb-minibuffer-local-map
+   'realgud:undodb-gdb-minibuffer-history
    opt-debugger))
 
-(defun realgud:gdb-parse-cmd-args (orig-args)
-  "Parse command line ARGS for the annotate level and name of script to debug.
+(defun realgud:undodb-gdb-parse-cmd-args (orig-args)
+  "Parse command line ORIG-ARGS for annotate level & name of script to debug.
 
 ORIG_ARGS should contain a tokenized list of the command line to run.
 
 We return the a list containing
-* the name of the debugger given (e.g. gdb) and its arguments - a list of strings
+* the name of the debugger given (e.g. undodb-gdb) and its arguments -
+  a list of strings
 * nil (a placeholder in other routines of this ilk for a debugger
 * the script name and its arguments - list of strings
-* whether the annotate or emacs option was given ('-A', '--annotate' or '--emacs) - a boolean
+* whether the annotate or Emacs option was given
+  ('-A', '--annotate' or '--emacs) - a boolean
 
 For example for the following input
   (map 'list 'symbol-name
-   '(gdb --tty /dev/pts/1 -cd ~ --emacs ./gcd.py a b))
+   '(undodb-gdb --tty /dev/pts/1 -cd ~ --emacs ./gcd.py a b))
 
 we might return:
-   ((\"gdb\" \"--tty\" \"/dev/pts/1\" \"-cd\" \"home/rocky\' \"--emacs\") nil \"(/tmp/gcd.py a b\") 't\")
+   ((\"undodb-gdb\" \"--tty\" \"/dev/pts/1\"
+    \"-cd\" \"home/rocky\' \"--emacs\") nil \"(/tmp/gcd.py a b\") 't\")
 
-Note that path elements have been expanded via `expand-file-name'.
-"
+Note that path elements have been expanded via `expand-file-name'."
 
   ;; Parse the following kind of pattern:
-  ;;  gdb gdb-options script-name script-options
+  ;;  undodb-gdb undodb-gdb-options script-name script-options
   (let (
 	(args orig-args)
 	(pair)          ;; temp return from
 
 	;; One dash is added automatically to the below, so
 	;; h is really -h and -host is really --host.
-	(gdb-two-args '("x" "-command" "b" "-exec"
-			"cd" "-pid"  "-core" "-directory"
-			"-annotate"
-			"i" "-interpreter"
-			"se" "-symbols" "-tty"))
-	;; gdb doesn't optionsl 2-arg options.
-	(gdb-opt-two-args '())
+	(undodb-gdb-two-args '("x" "-command" "b" "-exec"
+                               "cd" "-pid"  "-core" "-directory"
+                               "-annotate"
+                               "i" "-interpundodb-gdber"
+                               "se" "-symbols" "-tty"))
+	;; undodb-gdb doesn't optionsl 2-arg options.
+	(undodb-gdb-opt-two-args '())
 
 	;; Things returned
 	(script-name nil)
@@ -95,13 +97,13 @@ Note that path elements have been expanded via `expand-file-name'.
       ;; else
       (progn
 
-	;; Remove "gdb" from "gdb --gdb-options script
+	;; Remove "undodb-gdb" from "undodb-gdb --gdb-options script
 	;; --script-options"
 	(setq debugger-name (file-name-sans-extension
 			     (file-name-nondirectory (car args))))
-	(unless (string-match "^gdb.*" debugger-name)
+	(unless (string-match "^undodb-gdb.*" debugger-name)
 	  (message
-	   "Expecting debugger name `%s' to be `gdb'"
+	   "Expecting debugger name `%s' to be `undodb-gdb'"
 	   debugger-name))
 	(setq debugger-args (list (pop args)))
 
@@ -111,7 +113,7 @@ Note that path elements have been expanded via `expand-file-name'.
 	    (cond
 	     ;; Annotation or emacs option with level number.
 	     ((or (member arg '("--annotate" "-A"))
-		  (equal arg "--emacs"))
+                 (equal arg "--emacs"))
 	      (setq annotate-p t)
 	      (nconc debugger-args (list (pop args) (pop args))))
 	     ;; Combined annotation and level option.
@@ -133,8 +135,8 @@ Note that path elements have been expanded via `expand-file-name'.
 	     ;; Options with arguments.
 	     ((string-match "^-" arg)
 	      (setq pair (realgud-parse-command-arg
-			  args gdb-two-args gdb-opt-two-args))
-	      (nconc debugger-args (car pair))
+                          args undodb-gdb-two-args undodb-gdb-opt-two-args))
+              (nconc debugger-args (car pair))
 	      (setq args (cadr pair)))
 	     ;; Anything else must be the script to debug.
 	     (t (setq script-name arg)
@@ -142,10 +144,10 @@ Note that path elements have been expanded via `expand-file-name'.
 	     )))
 	(list debugger-args nil script-args annotate-p)))))
 
-(defvar realgud:gdb-command-name)
+(defvar realgud:undodb-gdb-command-name)
 
-(defun realgud:gdb-executable (file-name)
-  "Return a priority for whether FILE-NAME is likely we can run gdb on"
+(defun realgud:undodb-gdb-executable (file-name)
+  "Return a priority for whether FILE-NAME is likely we can run undodb-gdb on."
   (let ((output (shell-command-to-string
 		 (format "file %s" (file-chase-links file-name)))))
     (cond
@@ -154,70 +156,66 @@ Note that path elements have been expanded via `expand-file-name'.
      ((string-match "executable" output) 6)
      ('t 5))))
 
-(defun realgud:gdb-suggest-invocation (&optional debugger-name)
-  "Suggest a gdb command invocation. Here is the priority we use:
-* an executable file with the name of the current buffer stripped of its extension
+(defun realgud:undodb-gdb-suggest-invocation (&optional debugger-name)
+  "Suggest a undodb-gdb command invocation based on DEBUGGER-NAME.
+Here is the priority we use:
+* an executable file with the name of the current buffer stripped of
+  its extension
 * any executable file in the current directory with no extension
-* the last invocation in gdb:minibuffer-history
+* the last invocation in undodb-gdb:minibuffer-history
 * any executable in the current directory
 When all else fails return the empty string."
   (let* ((file-list (directory-files default-directory))
 	 (priority 2)
 	 (best-filename nil)
-	 (try-filename (file-name-base (or (buffer-file-name) "gdb"))))
+	 (try-filename (file-name-base (or (buffer-file-name) "undodb-gdb"))))
     (when (member try-filename (directory-files default-directory))
-	(setq best-filename try-filename)
-	(setq priority (+ (realgud:gdb-executable try-filename) 2)))
+      (setq best-filename try-filename)
+      (setq priority (+ (undodb-gdbealgud:gdb-executable try-filename) 2)))
 
-    ;; FIXME: I think a better test would be to look for
-    ;; c-mode in the buffer that have a corresponding executable
-    (while (and (setq try-filename (car-safe file-list)) (< priority 8))
-      (setq file-list (cdr file-list))
-      (if (and (file-executable-p try-filename)
-	       (not (file-directory-p try-filename)))
-	  (if (equal try-filename (file-name-sans-extension try-filename))
-	      (progn
-		(setq best-filename try-filename)
-		(setq priority (1+ (realgud:gdb-executable best-filename))))
-	    ;; else
-	    (progn
-	      (setq best-filename try-filename)
-	      (setq priority (realgud:gdb-executable best-filename))
-	      ))
-	))
-    (if (< priority 8)
-	(cond
-	 (realgud:gdb-minibuffer-history
-	  (car realgud:gdb-minibuffer-history))
-	 ((equal priority 7)
-	  (concat "gdb " best-filename))
-	 (t "gdb "))
-      ;; else
-      (concat "gdb " best-filename))
-    ))
+  (while (and (setq try-filename (car-safe file-list)) (< priority 8))
+    (setq file-list (cdr file-list))
+    (if (and (file-executable-p try-filename)
+           (not (file-directory-p try-filename)))
+        (if (equal try-filename (file-name-sans-extension try-filename))
+            (progn
+              (setq best-filename try-filename)
+              (setq priority
+                    (1+ (realgud:undodb-gdb-executable best-filename))))
+          ;; else
+          (progn
+            (setq best-filename try-filename)
+            (setq priority (realgud:undodb-gdb-executable best-filename))
+            ))
+      ))
+  (if (< priority 8)
+      (cond
+       (realgud:undodb-gdb-minibuffer-history
+        (car realgud:undodb-gdb-minibuffer-history))
+       ((equal priority 7)
+        (concat "undodb-gdb " best-filename))
+       (t "undodb-gdb "))
+    ;; else
+    (concat "undodb-gdb " best-filename))
+  ))
 
-(defun realgud:gdb-reset ()
-  "Gdb cleanup - remove debugger's internal buffers (frame,
-breakpoints, etc.)."
+(defun realgud:undodb-gdb-reset ()
+  "Undodb-Gdb cleanup.
+Remove debugger's internal buffers (frame,breakpoints, etc.)."
   (interactive)
-  ;; (gdb-breakpoint-remove-all-icons)
+  ;; (undodb-gdb-breakpoint-remove-all-icons)
   (dolist (buffer (buffer-list))
-    (when (string-match "\\*gdb-[a-z]+\\*" (buffer-name buffer))
+    (when (string-match "\\*undodb-gdb-[a-z]+\\*" (buffer-name buffer))
       (let ((w (get-buffer-window buffer)))
         (when w
           (delete-window w)))
       (kill-buffer buffer))))
 
-;; (defun gdb-reset-keymaps()
-;;   "This unbinds the special debugger keys of the source buffers."
-;;   (interactive)
-;;   (setcdr (assq 'gdb-debugger-support-minor-mode minor-mode-map-alist)
-;; 	  gdb-debugger-support-minor-mode-map-when-deactive))
 
-
-(defun realgud:gdb-customize ()
-  "Use `customize' to edit the settings of the `realgud:gdb' debugger."
+(defun realgud:undodb-gdb-customize ()
+  "Use `customize' to edit the settings of the `realgud:undodb-gdb' debugger."
   (interactive)
-  (customize-group 'realgud:gdb))
+  (customize-group 'realgud:undodb-gdb))
 
-(provide-me "realgud:gdb-")
+(provide-me "realgud:undodb-gdb-")
+;;; core.el ends here
