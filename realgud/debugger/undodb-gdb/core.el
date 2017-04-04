@@ -171,33 +171,33 @@ When all else fails return the empty string."
 	 (try-filename (file-name-base (or (buffer-file-name) "undodb-gdb"))))
     (when (member try-filename (directory-files default-directory))
       (setq best-filename try-filename)
-      (setq priority (+ (undodb-gdbealgud:gdb-executable try-filename) 2)))
+      (setq priority (+ (realgud:undodb-gdb-executable try-filename) 2)))
 
-  (while (and (setq try-filename (car-safe file-list)) (< priority 8))
-    (setq file-list (cdr file-list))
-    (if (and (file-executable-p try-filename)
-           (not (file-directory-p try-filename)))
-        (if (equal try-filename (file-name-sans-extension try-filename))
+    (while (and (setq try-filename (car-safe file-list)) (< priority 8))
+      (setq file-list (cdr file-list))
+      (if (and (file-executable-p try-filename)
+             (not (file-directory-p try-filename)))
+          (if (equal try-filename (file-name-sans-extension try-filename))
+              (progn
+                (setq best-filename try-filename)
+                (setq priority
+                      (1+ (realgud:undodb-gdb-executable best-filename))))
+            ;; else
             (progn
               (setq best-filename try-filename)
-              (setq priority
-                    (1+ (realgud:undodb-gdb-executable best-filename))))
-          ;; else
-          (progn
-            (setq best-filename try-filename)
-            (setq priority (realgud:undodb-gdb-executable best-filename))
-            ))
-      ))
-  (if (< priority 8)
-      (cond
-       (realgud:undodb-gdb-minibuffer-history
-        (car realgud:undodb-gdb-minibuffer-history))
-       ((equal priority 7)
-        (concat "undodb-gdb " best-filename))
-       (t "undodb-gdb "))
-    ;; else
-    (concat "undodb-gdb " best-filename))
-  ))
+              (setq priority (realgud:undodb-gdb-executable best-filename))
+              ))
+        ))
+    (if (< priority 8)
+        (cond
+         (realgud:undodb-gdb-minibuffer-history
+          (car realgud:undodb-gdb-minibuffer-history))
+         ((equal priority 7)
+          (concat "undodb-gdb " best-filename))
+         (t "undodb-gdb "))
+      ;; else
+      (concat "undodb-gdb " best-filename))
+    ))
 
 (defun realgud:undodb-gdb-reset ()
   "Undodb-Gdb cleanup.
