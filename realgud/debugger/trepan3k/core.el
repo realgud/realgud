@@ -1,4 +1,4 @@
-;; Copyright (C) 2010, 2012-2016 Free Software Foundation, Inc
+;; Copyright (C) 2010, 2012-2017 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -155,7 +155,7 @@ NOTE: the above should have each item listed in quotes.
 
 (defun trepan3k-suggest-invocation (debugger-name)
   "Suggest a trepan3k command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation realgud:trepan3k-command-name
+  (realgud-suggest-invocation (or debugger-name realgud:trepan2-command-name)
 			      realgud:trepan3k-minibuffer-history
 			      "python" "\\.py"
 			      realgud:trepan3k-command-name))

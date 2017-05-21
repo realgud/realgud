@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc
+;; Copyright (C) 2015-2017 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -165,7 +165,7 @@ Note that path elements have been expanded via `realgud:expand-file-name-if-exis
 
 (defun bashdb-suggest-invocation (debugger-name)
   "Suggest a bashdb command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation realgud:bashdb-command-name
+  (realgud-suggest-invocation (or debugger-name realgud:bashdb-command-name)
 			      realgud:bashdb-minibuffer-history
 			      "sh" "\\.\\(?:ba\\)?sh$"
 			      realgud:bashdb-command-name))
