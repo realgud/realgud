@@ -150,7 +150,7 @@ Note that the script name path has been expanded via `expand-file-name'.
 
 (defun realgud:trepanpl-suggest-invocation (debugger-name)
   "Suggest a trepanpl command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation (or debugger realgud:trepanpl-command-name)
+  (realgud-suggest-invocation (or debugger-name realgud:trepanpl-command-name)
 			      realgud:trepanpl-minibuffer-history
 			      "perl" "\\.pl$" "trepan.pl"))
 
