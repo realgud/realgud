@@ -209,7 +209,7 @@ NOTE: the above should have each item listed in quotes.
 
 (defun trepan2-suggest-invocation (debugger-name)
   "Suggest a trepan2 command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation realgud:trepan2-command-name
+  (realgud-suggest-invocation (or debugger-name realgud:trepan2-command-name)
 			      realgud:trepan2-minibuffer-history
 			      "python" "\\.py"
 			      realgud:trepan2-command-name))
