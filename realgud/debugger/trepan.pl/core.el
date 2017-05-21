@@ -1,4 +1,4 @@
-;; Copyright (C) 2011-2012, 2014, 2016 Free Software Foundation, Inc
+;; Copyright (C) 2011-2012, 2014, 2016-2017 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -150,7 +150,7 @@ Note that the script name path has been expanded via `expand-file-name'.
 
 (defun realgud:trepanpl-suggest-invocation (debugger-name)
   "Suggest a trepanpl command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation realgud:trepanpl-command-name
+  (realgud-suggest-invocation (or debugger realgud:trepanpl-command-name)
 			      realgud:trepanpl-minibuffer-history
 			      "perl" "\\.pl$" "trepan.pl"))
 
