@@ -159,7 +159,7 @@ Note that the script name path has been expanded via `expand-file-name'.
 
 (defun jdb-suggest-invocation (debugger-name)
   "Suggest a jdb command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation realgud:jdb-command-name
+  (realgud-suggest-invocation (or debugger-name realgud:jdb-command-name)
 			      realgud:jdb-minibuffer-history
 			      "java" "\\.java$" "jdb"))
 

@@ -144,7 +144,7 @@ NOTE: the above should have each item listed in quotes.
 
 (defun kshdb-suggest-invocation (debugger-name)
   "Suggest a kshdb command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation realgud:kshdb-command-name
+  (realgud-suggest-invocation (or debugger-name realgud:kshdb-command-name)
 			      realgud:kshdb-minibuffer-history
 			      "sh" "\\.\\(?:k\\)?sh$"))
 

@@ -117,7 +117,7 @@ NOTE: the above should have each item listed in quotes.
 
 (defun gub-suggest-invocation (debugger-name)
   "Suggest a command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation realgud:gub-command-name
+  (realgud-suggest-invocation (or debugger-name realgud:gub-command-name)
 			      realgud:gub-minibuffer-history
 			      "go" "\\.go$"))
 

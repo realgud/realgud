@@ -1,4 +1,4 @@
-;; Copyright (C) 2016 Free Software Foundation, Inc
+;; Copyright (C) 2016-2017 Free Software Foundation, Inc
 
 ;; Author: Sean Farley <sean@farley.io>, Rocky Bernstein (rocky@gnu.org)
 
@@ -180,7 +180,7 @@ Note that the script name path has been expanded via `expand-file-name'.
 
 (defun ipdb-suggest-invocation (debugger-name)
   "Suggest a ipdb command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation realgud:ipdb-command-name
+  (realgud-suggest-invocation (or debugger-name realgud:ipdb-command-name)
 			      realgud:ipdb-minibuffer-history
 			      "python" "\\.py"))
 

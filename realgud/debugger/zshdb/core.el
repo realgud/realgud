@@ -151,7 +151,7 @@ Note that path elements have been expanded via `realgud:expand-file-name-if-exis
 
 (defun zshdb-suggest-invocation (debugger-name)
   "Suggest a zshdb command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation realgud:zshdb-command-name
+  (realgud-suggest-invocation (or debugger-name realgud:zshdb-command-name)
 			      realgud:zshdb-minibuffer-history
 			      "sh" "\\.\\(?:z\\)?sh$"))
 

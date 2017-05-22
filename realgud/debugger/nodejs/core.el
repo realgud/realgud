@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc
+;; Copyright (C) 2015-2017 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -126,7 +126,7 @@ Note that path elements have been expanded via `expand-file-name'.
 
 (defun realgud:nodejs-suggest-invocation (debugger-name)
   "Suggest a nodejs command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation realgud:nodejs-command-name
+  (realgud-suggest-invocation (or debugger-name realgud:nodejs-command-name)
 			      realgud:nodejs-minibuffer-history
 			      "js" "\\.js$"))
 
