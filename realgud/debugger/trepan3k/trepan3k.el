@@ -1,4 +1,4 @@
-;; Copyright (C) 2010-2014, 2016 Free Software Foundation, Inc
+;; Copyright (C) 2010-2014, 2016-2017 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -67,7 +67,30 @@ fringe and marginal icons.
 			opt-cmd-line no-reset)
   )
 
-
 (defalias 'trepan3k 'realgud:trepan3k)
+
+;;;###autoload
+(defun realgud:trepan3k-delayed ()
+  "This is like `trepan3k', but assumes inside the program to be debugged, you
+have a call to the debugger somewhere, e.g. 'from trepan.api import debug; debug()'.
+Therefore we invoke python rather than the debugger initially.
+"
+  (interactive)
+  (let* ((initial-debugger "python")
+	 (actual-debugger "trepan3k")
+	 (cmd-str (trepan2-query-cmdline initial-debugger))
+	 (cmd-args (split-string-and-unquote cmd-str))
+	 ;; XXX: python gets registered as the interpreter rather than
+	 ;; a debugger, and the debugger position (nth 1) is missing:
+	 ;; the script-args takes its place.
+	 (parsed-args (trepan3k-parse-cmd-args cmd-args))
+	 (script-args (nth 1 parsed-args))
+	 (script-name (car script-args))
+	 (parsed-cmd-args
+	  (cl-remove-if 'nil (realgud:flatten parsed-args))))
+    (realgud:run-process actual-debugger script-name parsed-cmd-args
+			 'realgud:trepan3k-minibuffer-history)))
+
+(defalias 'trepan3k-delayed 'realgud:trepan3k-delayed)
 
 (provide-me "realgud-")
