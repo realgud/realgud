@@ -1126,6 +1126,54 @@ fringe and marginal icons.
 
 ;;;***
 
+;;;### (autoloads nil "realgud/debugger/undodb-gdb/core" "realgud/debugger/undodb-gdb/core.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from realgud/debugger/undodb-gdb/core.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/debugger/undodb-gdb/core" '("realgud:undodb-gdb-" "undodb-gdb-query-cmdline" "undodb-gdb-parse-cmd-args" "undodb-gdb-suggest-invocation" "undodb-gdb-reset")))
+
+;;;***
+
+;;;### (autoloads nil "realgud/debugger/undodb-gdb/init" "realgud/debugger/undodb-gdb/init.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from realgud/debugger/undodb-gdb/init.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/debugger/undodb-gdb/init" '("realgud:undodb-gdb-pat-hash" "realgud:undodb-gdb-command-hash")))
+
+;;;***
+
+;;;### (autoloads nil "realgud/debugger/undodb-gdb/track-mode" "realgud/debugger/undodb-gdb/track-mode.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from realgud/debugger/undodb-gdb/track-mode.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/debugger/undodb-gdb/track-mode" '("undodb-gdb-track-mode")))
+
+;;;***
+
+;;;### (autoloads nil "realgud/debugger/undodb-gdb/undodb-gdb" "realgud/debugger/undodb-gdb/undodb-gdb.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from realgud/debugger/undodb-gdb/undodb-gdb.el
+
+(autoload 'realgud:undodb-gdb "realgud/debugger/undodb-gdb/undodb-gdb" "\
+Invoke the gdb debugger and start the Emacs user interface.
+
+OPT-CMD-LINE is treated like a shell string; arguments are
+tokenized by `split-string-and-unquote'.
+
+Normally, command buffers are reused when the same debugger is
+reinvoked inside a command buffer with a similar command. If we
+discover that the buffer has prior command-buffer information and
+NO-RESET is nil, then that information which may point into other
+buffers and source buffers which may contain marks and fringe or
+marginal icons is reset. See `loc-changes-clear-buffer' to clear
+fringe and marginal icons.
+
+\(fn &optional OPT-CMD-LINE NO-RESET)" t nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/debugger/undodb-gdb/undodb-gdb" '("realgud:undodb-gdb-command-name" "undodb-gdb")))
+
+;;;***
+
 ;;;### (autoloads nil "realgud/debugger/zshdb/core" "realgud/debugger/zshdb/core.el"
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/debugger/zshdb/core.el

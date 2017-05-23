@@ -100,6 +100,7 @@
      "./realgud/debugger/trepan.pl/trepanpl"
      "./realgud/debugger/trepan2/trepan2"
      "./realgud/debugger/trepan3k/trepan3k"
+     "./realgud/debugger/undodb-gdb/gdb"
      "./realgud/debugger/zshdb/zshdb"
      ) "realgud-")
   )
