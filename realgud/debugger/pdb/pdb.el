@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc
+;; Copyright (C) 2015-2017 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -104,5 +104,30 @@ fringe and marginal icons.
 
 
 (defalias 'pdb 'realgud:pdb)
+
+;;;###autoload
+(defun realgud:pdb-delayed ()
+  "This is like `pdb', but assumes inside the program to be debugged, you
+have a call to the debugger somewhere, e.g. 'from trepan.api import debug; debug()'.
+Therefore we invoke python rather than the debugger initially.
+
+"
+  (interactive)
+  (let* ((initial-debugger python-shell-interpreter)
+	 (actual-debugger "pdb")
+	 (cmd-str (trepan2-query-cmdline initial-debugger))
+	 (cmd-args (split-string-and-unquote cmd-str))
+	 ;; XXX: python gets registered as the interpreter rather than
+	 ;; a debugger, and the debugger position (nth 1) is missing:
+	 ;; the script-args takes its place.
+	 (parsed-args (trepan2-parse-cmd-args cmd-args))
+	 (script-args (nth 1 parsed-args))
+	 (script-name (car script-args))
+	 (parsed-cmd-args
+	  (cl-remove-if 'nil (realgud:flatten parsed-args))))
+    (realgud:run-process actual-debugger script-name parsed-cmd-args
+			 'realgud:trepan2-minibuffer-history)))
+
+(realgud-deferred-invoke-setup "pdb")
 
 (provide-me "realgud-")

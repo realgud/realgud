@@ -9,6 +9,7 @@
 
 ;; Main interface to trepan2 via Emacs
 
+(require 'python) ; for python-shell-interpreter
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("../../common/run")    "realgud:")
@@ -69,16 +70,15 @@ fringe and marginal icons.
 			opt-cmd-line no-reset)
   )
 
-(defalias 'trepan2 'realgud:trepan2)
-
 ;;;###autoload
 (defun realgud:trepan2-delayed ()
   "This is like `trepan2', but assumes inside the program to be debugged, you
 have a call to the debugger somewhere, e.g. 'from trepan.api import debug; debug()'.
 Therefore we invoke python rather than the debugger initially.
+
 "
   (interactive)
-  (let* ((initial-debugger "python")
+  (let* ((initial-debugger python-shell-interpreter)
 	 (actual-debugger "trepan2")
 	 (cmd-str (trepan2-query-cmdline initial-debugger))
 	 (cmd-args (split-string-and-unquote cmd-str))
@@ -93,6 +93,6 @@ Therefore we invoke python rather than the debugger initially.
     (realgud:run-process actual-debugger script-name parsed-cmd-args
 			 'realgud:trepan2-minibuffer-history)))
 
-(defalias 'trepan2-delayed 'realgud:trepan2-delayed)
+(realgud-deferred-invoke-setup "trepan2")
 
 (provide-me "realgud-")

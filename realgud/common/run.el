@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc
+;; Copyright (C) 2015-2017 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -197,6 +197,21 @@ Otherwise nil is returned.
 			 minibuffer-history no-reset)
     )
   )
+
+;; For name = trepan2 we produce:
+;;
+;; (defalias 'trepan2 'realgud:trepan2)
+;; (defvar realgud:trepan2-delayed-minibuffer-history nil
+;;   "minibuffer history list for the command `realgud:trepan2-delayed'.")
+
+(defmacro realgud-deferred-invoke-setup (name)
+  `(progn
+     (defalias
+       ',(intern (concat name "-delayed"))
+       ',(intern (concat "realgud:" name "-delayed")))
+     (defvar ,(intern (concat "realgud:" name "-delayed-minibuffer-history")) nil
+      ,(format "minibuffer history for the command `%s-delayed'" name))
+     ))
 
 (provide-me "realgud:")
 

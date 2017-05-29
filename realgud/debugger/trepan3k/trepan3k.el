@@ -7,6 +7,7 @@
 ;; the Free Software Foundation, either version 3 of the License, or
 ;; (at your option) any later version.
 
+(require 'python) ; for python-shell-interpreter
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("../../common/run")    "realgud:")
@@ -76,7 +77,7 @@ have a call to the debugger somewhere, e.g. 'from trepan.api import debug; debug
 Therefore we invoke python rather than the debugger initially.
 "
   (interactive)
-  (let* ((initial-debugger "python")
+  (let* ((initial-debugger python-shell-interpreter)
 	 (actual-debugger "trepan3k")
 	 (cmd-str (trepan2-query-cmdline initial-debugger))
 	 (cmd-args (split-string-and-unquote cmd-str))
@@ -89,8 +90,8 @@ Therefore we invoke python rather than the debugger initially.
 	 (parsed-cmd-args
 	  (cl-remove-if 'nil (realgud:flatten parsed-args))))
     (realgud:run-process actual-debugger script-name parsed-cmd-args
-			 'realgud:trepan3k-minibuffer-history)))
+			 'realgud:trepan3k-deferred-minibuffer-history)))
 
-(defalias 'trepan3k-delayed 'realgud:trepan3k-delayed)
+(realgud-deferred-invoke-setup "trepan3k")
 
 (provide-me "realgud-")
