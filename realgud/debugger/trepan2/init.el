@@ -41,9 +41,14 @@ realgud-loc-pat struct")
 (setf (gethash "loc" realgud:trepan2-pat-hash)
       realgud:python-trepan-loc-pat)
 
+;; Regular expression that describes a trepan2 prompt.
+;; Note: the prompt in nested debugging
+;; For example:
+;; (trepan2)
+;; ((trepan2))
 (setf (gethash "prompt" realgud:trepan2-pat-hash)
       (make-realgud-loc-pat
-       :regexp   "^(trepan2) "
+       :regexp   "^(+trepan2)+ "
        ))
 
 ;; Regular expression that describes a trepan2 backtrace line.

@@ -47,9 +47,14 @@ realgud-loc-pat struct")
 (setf (gethash "loc" realgud:trepan3k-pat-hash)
       realgud:python-trepan-loc-pat)
 
+;; Regular expression that describes a trepan3k prompt.
+;; Note: the prompt in nested debugging
+;; For example:
+;; (trepan3)
+;; ((trepan3k))
 (setf (gethash "prompt" realgud:trepan3k-pat-hash)
       (make-realgud-loc-pat
-       :regexp   "^(trepan3k) "
+       :regexp   "^(+trepan3k+) "
        ))
 
 ;; realgud-loc-pat that describes a trepan3k backtrace line.
