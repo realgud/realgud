@@ -29,51 +29,27 @@
 
 ;; FIXME: Figure out how to do this as a macro.
 
-(if (equal 'dark (frame-parameter nil 'background-mode))
-    (progn
-      (defface realgud-overlay-arrow1
-	'((t
-	   :foreground "green"
-	   :weight bold))
-	"Fringe face for current position."
-	:group 'realgud)
+(defface realgud-overlay-arrow1
+  '((((class color) (min-colors 16) (background light)) :foreground "ForestGreen" :weight bold)
+    (((class color) (min-colors 16) (background dark))  :foreground "PaleGreen" :weight bold)
+    (((class color) (min-colors 8)) :foreground "green")
+    (((class grayscale) (background light)) :foreground "Black" :weight bold)
+    (((class grayscale) (background dark))  :foreground "White" :weight bold)
+    (t :weight bold))
+    "Realgud fringe face for current position indicator."
+    :group 'realgud)
 
-      (defface realgud-overlay-arrow2
-	'((t
-	   :foreground "white"
-	   :weight bold))
-	"Fringe face for position one back in fringe."
-	:group 'realgud)
+(defface realgud-overlay-arrow2
+  '((((background  dark)) :foreground "white" :weight bold)
+    (((background light)) :foreground "black" :weight bold))
+  "Fringe face for current position."
+  :group 'realgud)
 
-      (defface realgud-overlay-arrow3
-	'((t
-	   :foreground "gray"
-	   :weight bold))
-	"Fringe face for position two back in fringe."
-	:group 'realgud)
-      )
-  ;; else
-  (progn
-    (defface realgud-overlay-arrow1
-      '((t
-	 :foreground "black"
-	 :weight bold))
-      "Fringe face for current position."
-      :group 'realgud)
-
-    (defface realgud-overlay-arrow2
-      '((t
-	 :foreground "gray"
-	 :weight bold))
-      "Fringe face for position one back in fringe."
-      :group 'realgud)
-
-    (defface realgud-overlay-arrow3
-      '((t
-	 :foreground "gainsboro"
-	 :weight bold))
-      "Fringe face for position two back in fringe."
-      :group 'realgud)))
+(defface realgud-overlay-arrow3
+  '((((background  dark)) :foreground "DimGray")
+    (((background light)) :foreground "DarkGray"))
+  "Fringe face for current position."
+  :group 'realgud)
 
 
 (defvar realgud-overlay-arrow1 nil
