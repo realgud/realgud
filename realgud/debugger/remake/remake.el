@@ -83,6 +83,7 @@ This should be an executable on your path, or an absolute file name."
   (realgud:remake-run-debugger opt-cmd-line no-reset)
   )
 
+;;;###autoload
 (defalias 'remake 'realgud:remake)
 
 (provide-me "realgud-")

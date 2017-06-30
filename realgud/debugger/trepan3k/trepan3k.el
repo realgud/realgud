@@ -68,6 +68,7 @@ fringe and marginal icons.
 			opt-cmd-line no-reset)
   )
 
+;;;###autoload
 (defalias 'trepan3k 'realgud:trepan3k)
 
 ;;;###autoload

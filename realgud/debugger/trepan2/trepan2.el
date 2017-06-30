@@ -46,6 +46,9 @@ This should be an executable on your path, or an absolute file name."
 ;;
 
 ;;;###autoload
+(defalias 'trepan2 'realgud:trepan2)
+
+;;;###autoload
 (defun realgud:trepan2 (&optional opt-cmd-line no-reset)
   "Invoke the trepan2 Python debugger and start the Emacs user interface.
 

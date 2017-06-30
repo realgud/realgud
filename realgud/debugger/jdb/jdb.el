@@ -102,6 +102,7 @@ fringe and marginal icons.
     )
   )
 
+;;;###autoload
 (defalias 'jdb 'realgud:jdb)
 (provide-me "realgud-")
 

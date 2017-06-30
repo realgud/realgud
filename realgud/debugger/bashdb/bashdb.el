@@ -77,6 +77,7 @@ fringe and marginal icons.
 			opt-cmd-line no-reset)
   )
 
+;;;###autoload
 (defalias 'bashdb 'realgud:bashdb)
 
 (provide-me "realgud-")

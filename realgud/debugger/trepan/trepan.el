@@ -66,6 +66,7 @@ fringe and marginal icons.
 			opt-cmd-line no-reset)
   )
 
+;;;###autoload
 (defalias 'trepan 'realgud:trepan)
 (provide-me "realgud-")
 ;;; trepan.el ends here

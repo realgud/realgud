@@ -119,5 +119,6 @@ fringe and marginal icons.
   )
 
 
+;;;###autoload
 (defalias 'rdebug 'realgud:rdebug)
 (provide-me "realgud-")

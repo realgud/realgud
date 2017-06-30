@@ -80,6 +80,7 @@ marginal icons is reset."
   (realgud-gub-fn opt-command-line no-reset)
   )
 
+;;;###autoload
 (defalias 'gub 'realgud-gub)
 
 (provide-me "realgud-")

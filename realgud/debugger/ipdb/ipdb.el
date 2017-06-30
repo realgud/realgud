@@ -117,6 +117,7 @@ fringe and marginal icons.
   )
 
 
+;;;###autoload
 (defalias 'ipdb 'realgud:ipdb)
 
 (provide-me "realgud-")

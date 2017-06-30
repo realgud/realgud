@@ -103,6 +103,7 @@ fringe and marginal icons.
   )
 
 
+;;;###autoload
 (defalias 'pdb 'realgud:pdb)
 
 ;;;###autoload

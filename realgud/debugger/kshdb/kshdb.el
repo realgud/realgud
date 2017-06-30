@@ -64,6 +64,7 @@ marginal icons is reset."
 			 no-reset)
     ))
 
+;;;###autoload
 (defalias 'kshdb 'realgud:kshdb)
 (provide-me "realgud-")
 

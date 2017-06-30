@@ -68,6 +68,7 @@ fringe and marginal icons.
 			'realgud:trepanpl-minibuffer-history
 			opt-cmd-line no-reset))
 
+;;;###autoload
 (defalias 'trepan.pl 'realgud:trepan.pl)
 (provide-me "realgud-")
 ;;; trepanpl.el ends here

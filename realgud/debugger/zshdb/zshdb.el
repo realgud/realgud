@@ -83,6 +83,7 @@ fringe and marginal icons.
     ;;   )
     ))
 
+;;;###autoload
 (defalias 'zshdb 'realgud:zshdb)
 
 (provide-me "realgud-")
