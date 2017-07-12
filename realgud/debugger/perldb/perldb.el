@@ -1,4 +1,4 @@
-;; Copyright (C) 2011, 2014-2016 Free Software Foundation, Inc
+;; Copyright (C) 2011, 2014-2017 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -36,7 +36,6 @@
 ;; The end.
 ;;
 
-(declare-function perldb-track-mode (bool))
 (declare-function realgud:perldb-query-cmdline  'realgud:perldb-core)
 (declare-function realgud:perldb-parse-cmd-args 'realgud:perldb-core)
 

@@ -1,4 +1,4 @@
-;; Copyright (C) 2010, 2012-2015 Free Software Foundation, Inc
+;; Copyright (C) 2010, 2012-2015, 2017 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -106,12 +106,12 @@ Only used in text terminals: fringe icons always use
   :group 'realgud-bp)
 
 (defface realgud-bp-line-enabled-face
-  '((t :inherit diff-removed))
+  '((t :underline "red"))
   "Face for lines with enabled breakpoints."
   :group 'realgud-bp)
 
 (defface realgud-bp-line-disabled-face
-  '((t))
+  '((t :underline "gray"))
   "Face for lines with disabled breakpoints."
   :group 'realgud-bp)
 
