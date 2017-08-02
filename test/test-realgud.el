@@ -1,31 +1,34 @@
-;; Press C-x C-e at the end of the next line to run this file test non-interactively
-;; (test-simple-run "emacs -batch -L %s -l %s" (file-name-directory (locate-library "test-simple.elc")) buffer-file-name)
+;; Manually run the test as follows:
+;; emacs --batch --no-site-file --no-splash --script setup.el --chdir PACAKGESDIR/realgud  -l test/test-realgud.el -f ert-run-tests-batch-and-exit
+;;
+;; where setup.el looks something like:
+;; (add-to-list 'load-path "$HOME/.emacs.d/elpa/test-simple-20170117.411")
+;; (add-to-list 'load-path "$HOME/.emacs.d/elpa/load-relative-20160716.438")
+;; (add-to-list 'load-path "$HOME/.emacs.d/elpa/loc-changes-20160801.1008")
 
-(require 'test-simple)
-(load-file "../realgud.el")
+(defun realgud-test-helper()
+  (delq nil
+		(mapcar (lambda (x) (and (string-match-p "^\\(realgud:\\|realgud-\\)" (symbol-name x)) x))
+				features)))
 
-(declare-function realgud:loaded-features    'realgud)
-(declare-function realgud:unload-features    'realgud-regexp)
-(declare-function __FILE__                   'load-relative)
+(ert-deftest test-feature-unload()
 
-(test-simple-start)
+  ; no realgud features exist by default
+  (should (= 0 (length (realgud-test-helper))))
+  (should-not (member 'realgud-pdb features))
 
-(eval-when-compile
-  (defvar test-realgud:features)
-)
+  (load-file "realgud.el") ; manually load the first time
 
-(note "realgud")
+  ; we should now have realgud features;
+  (should-not (= 0 (length (realgud-test-helper))))
+  (should (member 'realgud-pdb features))
+  ; test at least 1 by name
+  (should (member 'realgud-pdb features))
 
-(note "realgud:loaded-features")
-(set (make-local-variable 'test-realgud:features) (realgud:loaded-features))
-;; (dolist (feature '(realgud-trepan
-;; 			       realgud-core))
-;;   (assert-t (not (not (member feature test-realgud:features)))) )
+  (realgud:unload-features) ; unload all and test
+  (should (= 0 (length (realgud-test-helper))))
 
-(note "realgud-unload-features")
-(load-file "../realgud.el")
-(assert-nil (not (realgud:loaded-features)))
-(assert-nil (not (realgud:unload-features)))
-(realgud:loaded-features)
+  (realgud:load-features) ; load and test
+  (should-not (= 0 (length (realgud-test-helper))))
+  (should (member 'realgud-pdb features)))
 
-(end-tests)
