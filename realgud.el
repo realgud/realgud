@@ -123,8 +123,10 @@ that start with 'realgud-' and 'realgud:'"
 (defun realgud:unload-features()
   "Remove all features loaded from this package. Used in
 `realgud:reload-features'. See that."
-  (dolist (feature (realgud:loaded-features))
-	(unload-feature feature t)))
+  (let ((removal-set (realgud:loaded-features)))
+	(dolist (feature removal-set)
+	  (unload-feature feature t))
+	removal-set)) ; return removed set
 
 (defun realgud:reload-features()
   "Reload all features loaded from this package. Useful if have
