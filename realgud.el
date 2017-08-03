@@ -80,28 +80,31 @@
 
 ;; FIXME: extend require-relative for "autoload".
 (defun realgud:load-features()
-  (require-relative-list
-   '(
-     "./realgud/common/track-mode"
-     "./realgud/common/utils"
-     "./realgud/debugger/bashdb/bashdb"
-     "./realgud/debugger/gdb/gdb"
-     "./realgud/debugger/gub/gub"
-     "./realgud/debugger/ipdb/ipdb"
-     "./realgud/debugger/jdb/jdb"
-     "./realgud/debugger/kshdb/kshdb"
-     "./realgud/debugger/nodejs/nodejs"
-     "./realgud/debugger/pdb/pdb"
-     "./realgud/debugger/perldb/perldb"
-     "./realgud/debugger/rdebug/rdebug"
-     "./realgud/debugger/remake/remake"
-     "./realgud/debugger/trepan/trepan"
-     "./realgud/debugger/trepanjs/trepanjs"
-     "./realgud/debugger/trepan.pl/trepanpl"
-     "./realgud/debugger/trepan2/trepan2"
-     "./realgud/debugger/trepan3k/trepan3k"
-     "./realgud/debugger/zshdb/zshdb"
-     ) "realgud-")
+  (progn
+    (require-relative-list
+     '(
+       "./realgud/common/track-mode"
+       "./realgud/common/utils"
+       "./realgud/debugger/bashdb/bashdb"
+       "./realgud/debugger/gdb/gdb"
+       "./realgud/debugger/gub/gub"
+       "./realgud/debugger/ipdb/ipdb"
+       "./realgud/debugger/jdb/jdb"
+       "./realgud/debugger/kshdb/kshdb"
+       "./realgud/debugger/nodejs/nodejs"
+       "./realgud/debugger/pdb/pdb"
+       "./realgud/debugger/perldb/perldb"
+       "./realgud/debugger/rdebug/rdebug"
+       "./realgud/debugger/remake/remake"
+       "./realgud/debugger/trepan/trepan"
+       "./realgud/debugger/trepanjs/trepanjs"
+       "./realgud/debugger/trepan.pl/trepanpl"
+       "./realgud/debugger/trepan2/trepan2"
+       "./realgud/debugger/trepan3k/trepan3k"
+       "./realgud/debugger/zshdb/zshdb"
+       ) "realgud-")
+    (realgud:loaded-features)
+    )
   )
 
 (load-relative "./realgud/common/custom")
