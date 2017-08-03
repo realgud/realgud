@@ -113,42 +113,20 @@
   )
 
 (defun realgud:loaded-features()
-  "Return a list of loaded debugger features. These are the
-features that start with 'realgud-' and also include standalone debugger features
-like 'pydbgr'."
-  (let ((result nil)
-	(feature-str))
-    (dolist (feature features result)
-      (setq feature-str (symbol-name feature))
-      (cond ((eq 't
-		 (string-prefix-p feature-str "realgud-"))
-	     (setq result (cons feature-str result)))
-	    ((eq 't
-		 (string-prefix-p feature-str "nodejs"))
-	     (setq result (cons feature-str result)))
-	    ((eq 't
-		 ;; No trailing '-' to get a plain "trepan".
-		 (string-prefix-p feature-str "trepan"))
-	     (setq result (cons feature-str result)))
-	    ((eq 't
-		 ;; No trailing '-' to get a plain "trepanx".
-		 (string-prefix-p feature-str "trepanx"))
-	     (setq result (cons feature-str result)))
-	    ('t nil))
-	)
-      )
-)
+  "Return a list of loaded debugger features. These are the features
+that start with 'realgud-' and 'realgud:'"
+
+  (delq nil
+		(mapcar (lambda (x) (and (string-match-p "^\\(realgud:\\|realgud-\\)" (symbol-name x)) x))
+				features)))
 
 (defun realgud:unload-features()
   "Remove all features loaded from this package. Used in
 `realgud:reload-features'. See that."
-  (interactive "")
-  (let ((result (realgud:loaded-features)))
-    (dolist (feature result result)
-      (unless (symbolp feature) (setq feature (make-symbol feature)))
-      (if (featurep feature)
-	(unload-feature feature) 't))
-  ))
+  (let ((removal-set (realgud:loaded-features)))
+	(dolist (feature removal-set)
+	  (unload-feature feature t))
+	removal-set)) ; return removed set
 
 (defun realgud:reload-features()
   "Reload all features loaded from this package. Useful if have
