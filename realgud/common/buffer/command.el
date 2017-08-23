@@ -156,6 +156,40 @@
       (insert "\n")
       )))
 
+;;; JSON encoder
+
+(defun realgud:org-mode-encode (header object)
+  "Return an org-mode representation of OBJECT as an org-mode string."
+  (format "%s\n%s" header
+	  (cond ((not object) "nil\n")
+		;; ((stringp object)      (realgud:org-mode-encodestring object))
+		;; ((keywordp object)     (realgud:org-mode-encodestring
+		;;                         (substring (symbol-name object) 1)))
+		;;((symbolp object)      (realgud:org-mode-encodestring
+		;;                        (symbol-name object)))
+		;; ((numberp object)      (realgud:org-mode-encodenumber object))
+		;; ((arrayp object)       (realgud:org-mode-encodearray object))
+		((hash-table-p object) (realgud:org-mode-encode-htable object))
+		;; ((listp object)        (realgud:org-mode-encodelist object))
+		(t                     (signal 'error (list object))))))
+
+(defun realgud:org-mode-encode-htable (hash-table)
+  "Return an  org-mode representation of HASH-TABLE as a s."
+  (format "%s"
+	  (json-join
+	   (let (r)
+	     (maphash
+	      (lambda (k v)
+		(push (format
+		       "  - %s\t: %s" k v)
+		      r))
+	      hash-table)
+	     r)
+	   "\n")))
+
+
+
+
 (defun realgud:cmdbuf-info-describe (&optional buffer)
   "Display realgud-cmdcbuf-info fields of BUFFER.
 BUFFER is either a debugger command or source buffer. If BUFFER is not given
@@ -172,21 +206,25 @@ Information is put in an internal buffer called *Describe*."
 		(switch-to-buffer (get-buffer-create "*Describe*"))
 		(setq buffer-read-only 'nil)
 		(delete-region (point-min) (point-max))
-		(insert "#+STARTUP: showall\n")
 		;;(insert "#+OPTIONS:    H:2 num:nil toc:t \\n:nil ::t |:t ^:nil -:t f:t *:t tex:t d:(HIDE) tags:not-in-toc\n")
-		(insert (format "#+TITLE: Debugger info for %s\n" cmdbuf-name))
-		(insert "** General Information (")
-		(insert-text-button
-		 "realgud-cmdbuf-info"
-		 ;; FIXME figure out how to set buffer to cmdbuf so we get cmdbuf value
-		 'action (lambda(button) (describe-variable 'realgud-cmdbuf-info))
-		 'help-echo "mouse-2: help-on-variable")
-		(insert ")\n")
+		(insert (format "#+TITLE: Debugger info for %s
+
+This is based on an org-mode buffer. Hit tab to expand/contract sections.
+\n"
+				cmdbuf-name))
+		(insert "** General Information (realgud-cmdbuf-info)\n")
+		;; (insert "** General Information (")
+		;; (insert-text-button
+		;;  "realgud-cmdbuf-info"
+		;;  ;; FIXME figure out how to set buffer to cmdbuf so we get cmdbuf value
+		;;  'action (lambda(button) (describe-variable 'realgud-cmdbuf-info))
+		;;  'help-echo "mouse-2: help-on-variable")
+		;; (insert ")\n")
 
 		(mapc 'insert
 		      (list
 		       (format "  - Debugger name     ::\t%s\n"
-			       (json-encode (realgud-cmdbuf-info-debugger-name info)))
+			       (realgud-cmdbuf-info-debugger-name info))
 		       (format "  - Command-line args ::\t%s\n"
 			       (json-encode (realgud-cmdbuf-info-cmd-args info)))
 		       (format "  - Starting directory ::\t%s\n"
@@ -197,19 +235,31 @@ Information is put in an internal buffer called *Describe*."
 			       (realgud-cmdbuf-info-last-input-end info))
 		       (format "  - Source should go into short-key mode? :: %s\n"
 			       (realgud-cmdbuf-info-src-shortkey? info))
-		       (format "  - Breakpoint list   ::\t %s\n"
-			       (realgud-cmdbuf-info-bp-list info))
-		       (format "  - Remap table for debugger commands ::\n\t%s\n"
-			       (json-encode (realgud-cmdbuf-info-cmd-hash info)))
-		       (format "  - Backtrace buffer  ::\t%s\n"
-			       (realgud-cmdbuf-info-bt-buf info))
+
 		       (format "  - In debugger?      ::\t%s\n"
 			       (realgud-cmdbuf-info-in-debugger? info))
+
+		       ;; FIXME populate bp-list!
+		       ;; (format "  - Breakpoint list   ::\t %s\n"
+		       ;; 	       (realgud-cmdbuf-info-bp-list info))
+		       (realgud:org-mode-encode "\n*** Remap table for debugger commands"
+						      (realgud-cmdbuf-info-cmd-hash info))
+		       ;; (format "  - Remap table for debugger commands ::\n\t%s\n"
+		       ;;   (json-encode (realgud-cmdbuf-info-cmd-hash info)))
+		       ;; (realgud:org-mode-encode "\n*** Backtrace buffer"
+		       ;; 				(realgud-cmdbuf-info-bt-buf info))
+		       ;; (format "  - Backtrace buffer  ::\t%s\n"
+		       ;;   (realgud-cmdbuf-info-bt-buf info))
 		       ))
 		(insert "\n")
 		(realgud:cmdbuf-buffers-describe info)
-		(insert "\n")
 		(realgud:loc-hist-describe (realgud-cmdbuf-info-loc-hist info))
+		(insert "
+#+STARTUP: overview
+     #+STARTUP: content
+     #+STARTUP: showall
+     #+STARTUP: showeverything
+")
 		(goto-char (point-min))
 		(realgud:info-mode)
 		)
