@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc
+;; Copyright (C) 2015-2017 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -62,9 +62,16 @@ without buffer properties."
 Information is put in an internal buffer called *Describe*."
   (interactive "")
   (switch-to-buffer (get-buffer-create "*Describe*"))
-  (let ((link-start) (link-end) (map) (filename))
+  (realgud:org-mode-append-loc loc))
+
+(defun realgud:org-mode-append-loc (loc)
+  "Display realgud-cmdcbuf-info.
+Information is put in an internal buffer called *Describe*."
+  (let ((column-number (realgud-loc-column-number loc))
+	(bp-num (realgud-loc-num loc))
+	(source-text (realgud-loc-source-text loc))
+	(filename (realgud-loc-filename loc)))
     (insert "  - filename      :: ")
-    (setq filename (realgud-loc-filename loc))
     (put-text-property
      (insert-text-button filename
 			 'action 'realgud:follow-event
@@ -75,10 +82,16 @@ Information is put in an internal buffer called *Describe*."
     (mapc 'insert
 	  (list
 	   (format "  - line number   :: %s\n" (realgud-loc-line-number loc))
-	   (format "  - brkpt num     :: %s\n" (realgud-loc-num loc))
-	   (format "  - column number :: %s\n"
-		   (realgud-loc-column-number loc))
-	   (format "  - source text   :: %s\n" (realgud-loc-source-text loc))
+	   (if bp-num
+	       (format "  - brkpt num     :: %s\n" (realgud-loc-num loc))
+	     "")
+	   (if column-number
+	       (format "  - column number :: %s\n"
+		       (realgud-loc-column-number loc))
+	     "")
+	   (if source-text
+	       (format "  - source text   :: %s\n" (realgud-loc-source-text loc))
+	     "")
 	   ))
     ;; Make locations clickable
     (insert "  - source marker :: ")

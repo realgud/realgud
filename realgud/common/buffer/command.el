@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc
+;; Copyright (C) 2015-2017 Free Software Foundation, Inc
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -156,19 +156,33 @@
       (insert "\n")
       )))
 
-;;; JSON encoder
+;; FIXME: this is a cheat. We are inserting
+;; and afterwards inserting ""
+(defun realgud:cmdbuf-bp-list-describe (info)
+  (let ((bp-list (realgud-cmdbuf-info-bp-list info)))
+    (cond (bp-list
+	   (insert "** Breakpoint list (bp-list)\n")
+	   (dolist (loc bp-list "")
+	     (let ((bp-num (realgud-loc-num loc)))
+	       (insert (format "*** Breakpoint %d\n" bp-num))
+	       (realgud:org-mode-append-loc loc))))
+	  ;; Since we are inserting, the below in fact
+	  ;; inserts nothing. The string return is
+	  ;; aspirational for when this is fixed
+	  (t "\n")
+	  )))
 
 (defun realgud:org-mode-encode (header object)
   "Return an org-mode representation of OBJECT as an org-mode string."
-  (format "%s\n%s" header
+  (format "%s%s" header
 	  (cond ((not object) "nil\n")
-		;; ((stringp object)      (realgud:org-mode-encodestring object))
-		;; ((keywordp object)     (realgud:org-mode-encodestring
-		;;                         (substring (symbol-name object) 1)))
-		;;((symbolp object)      (realgud:org-mode-encodestring
-		;;                        (symbol-name object)))
-		;; ((numberp object)      (realgud:org-mode-encodenumber object))
-		;; ((arrayp object)       (realgud:org-mode-encodearray object))
+		((stringp object)      (format "%s\n" object))
+		((keywordp object)     (json-encode-string
+					 (substring (symbol-name object) 1)))
+		((symbolp object)      (json-encode-string
+					 (symbol-name object)))
+		((numberp object)      (json-encode-number object))
+		((arrayp object)       (json-encode-array object))
 		((hash-table-p object) (realgud:org-mode-encode-htable object))
 		;; ((listp object)        (realgud:org-mode-encodelist object))
 		(t                     (signal 'error (list object))))))
@@ -181,14 +195,11 @@
 	     (maphash
 	      (lambda (k v)
 		(push (format
-		       "  - %s\t: %s" k v)
+		       "  - %s\t: %s" k (realgud:org-mode-encode v ""))
 		      r))
 	      hash-table)
 	     r)
-	   "\n")))
-
-
-
+	   "")))
 
 (defun realgud:cmdbuf-info-describe (&optional buffer)
   "Display realgud-cmdcbuf-info fields of BUFFER.
@@ -235,24 +246,21 @@ This is based on an org-mode buffer. Hit tab to expand/contract sections.
 			       (realgud-cmdbuf-info-last-input-end info))
 		       (format "  - Source should go into short-key mode? :: %s\n"
 			       (realgud-cmdbuf-info-src-shortkey? info))
-
 		       (format "  - In debugger?      ::\t%s\n"
 			       (realgud-cmdbuf-info-in-debugger? info))
 
-		       ;; FIXME populate bp-list!
-		       ;; (format "  - Breakpoint list   ::\t %s\n"
-		       ;; 	       (realgud-cmdbuf-info-bp-list info))
-		       (realgud:org-mode-encode "\n*** Remap table for debugger commands"
+		       (realgud:org-mode-encode "\n*** Remap table for debugger commands\n"
 						      (realgud-cmdbuf-info-cmd-hash info))
-		       ;; (format "  - Remap table for debugger commands ::\n\t%s\n"
-		       ;;   (json-encode (realgud-cmdbuf-info-cmd-hash info)))
 		       ;; (realgud:org-mode-encode "\n*** Backtrace buffer"
 		       ;; 				(realgud-cmdbuf-info-bt-buf info))
 		       ;; (format "  - Backtrace buffer  ::\t%s\n"
 		       ;;   (realgud-cmdbuf-info-bt-buf info))
 		       ))
 		(insert "\n")
+		(realgud:cmdbuf-bp-list-describe info)
+		(insert "\n")
 		(realgud:cmdbuf-buffers-describe info)
+		(insert "\n")
 		(realgud:loc-hist-describe (realgud-cmdbuf-info-loc-hist info))
 		(insert "
 #+STARTUP: overview

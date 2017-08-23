@@ -510,7 +510,7 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 					     (realgud-bp-add-info loc))
 
 					   (realgud-cmdbuf-info-bp-list=
-					    (cons loc (realgud-sget 'cmdbuf-info 'bp-list)))
+					    (add-to-list loc (realgud-sget 'cmdbuf-info 'bp-list)))
 					   ;; Set to return location
 					   loc-or-error))))
 				 nil))))
