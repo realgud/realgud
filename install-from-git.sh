@@ -47,6 +47,7 @@
 #   GIT_PROTOCOL='git' SUDO_CMD=' ' sh ./install-from-git.sh --prefix=/tmp
 
 GIT_PROTOCOL=${GIT_PROTOCOL:-https}
+MAKE=${MAKE:-make}
 
 # Run and echo a command
 run_cmd() {
@@ -79,24 +80,26 @@ fi
 
 for program in git make $try_cmd ; do
     if ! which $program >/dev/null 2>&1 ; then
-	echo "Can't find program $program in $PATH"
+	echo 2>&1 "Can't find program $program in $PATH"
 	exit 1
     fi
 done
 
-for pkg in emacs-{test-simple,load-relative,loc-changes,dbgr} ; do
+cd /tmp
+for pkg in rocky/emacs-{test-simple,load-relative,loc-changes} realgud/realgud ; do
     echo '******************************************'
     echo Trying to install ${pkg}...
     echo '******************************************'
-    if [[ -d $pkg ]]; then
-	run_cmd $need_sudo rm -fr $pkg
+    pkg_short=$(basename $pkg)
+    if [[ -d $pkg_short ]]; then
+	run_cmd $need_sudo rm -fr $pkg_short
     fi
-    run_cmd git clone ${GIT_PROTOCOL}://github.com/rocky/${pkg}.git
-    (cd $pkg && \
+    run_cmd git clone ${GIT_PROTOCOL}://github.com/${pkg}.git
+    (cd $pkg_short && \
         run_cmd $SHELL ./autogen.sh && \
 	run_cmd ./configure $@ && \
-	run_cmd make && \
-	run_cmd make check && \
-        run_cmd $need_sudo make install
+	run_cmd ${MAKE} && \
+	run_cmd ${MAKE} check && \
+        run_cmd $need_sudo ${MAKE} install
     )
 done

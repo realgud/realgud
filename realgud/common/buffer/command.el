@@ -195,7 +195,7 @@
 	     (maphash
 	      (lambda (k v)
 		(push (format
-		       "  - %s\t: %s" k (realgud:org-mode-encode v ""))
+		       "  - %s\t::\t%s" k (realgud:org-mode-encode v ""))
 		      r))
 	      hash-table)
 	     r)
