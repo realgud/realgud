@@ -7,9 +7,9 @@ SUBDIRS = common debugger lang
 # problem.
 lispdir = ${datarootdir}/emacs/site-lisp/realgud
 
-# My default this is based off of $lispdir, but that
-# is set funny, so we'll be explicit about lispdir_realgud
-# althoug in fact it isn't used.
+# By default this is based off of $lispdir, but that
+# is set funny, so we'll be explicit about lispdir_realgud,
+# although in fact it isn't used.
 lispdir_realgud = ${datarootdir}/emacs/site-lisp/realgud
 
 # .nosearch isn't a lisp file, but we want it installed along with the
