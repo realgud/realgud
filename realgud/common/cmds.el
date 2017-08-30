@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc
+;; Copyright (C) 2015-2017 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -86,26 +86,31 @@ with other motion initiated by debugger messages."
 
 (defconst realgud-cmd:default-hash
   (let ((hash (make-hash-table :test 'equal)))
-    (puthash "backtrace" "backtrace" hash)
-    (puthash "break" "break %X:%l" hash)
-    (puthash "clear" "clear %l" hash)
-    (puthash "continue" "continue" hash)
-    (puthash "delete" "delete %p" hash)
-    (puthash "disable" "disable %p" hash)
-    (puthash "down" "down %p" hash)
-    (puthash "enable" "enable %p" hash)
-    (puthash "eval" "eval %s" hash)
-    (puthash "finish" "finish" hash)
-    (puthash "frame" "frame %p" hash)
-    (puthash "jump" "jump %l" hash)
-    (puthash "kill" "kill" hash)
-    (puthash "next" "next %p" hash)
+    (puthash "backtrace"   "backtrace" hash)
+    (puthash "break"       "break %X:%l" hash)
+    (puthash "break_fn"    "break %s" hash)
+    (puthash "clear"       "clear %l" hash)
+    (puthash "continue"    "continue" hash)
+    (puthash "delete"      "delete %p" hash)
+    (puthash "delete_all"  "delete" hash)
+    (puthash "disable"     "disable %p" hash)
+    (puthash "disable_all" "disable" hash)
+    (puthash "down"        "down %p" hash)
+    (puthash "enable"      "enable %p" hash)
+    (puthash "enable_all"  "enable" hash)
+    (puthash "eval"        "eval %s" hash)
+    (puthash "finish"      "finish" hash)
+    (puthash "frame"       "frame %p" hash)
+    (puthash "help"        "help" hash)
+    (puthash "jump"        "jump %l" hash)
+    (puthash "kill"        "kill" hash)
+    (puthash "next"        "next %p" hash)
     (puthash "repeat-last" "\n" hash)
-    (puthash "restart" "run" hash)
-    (puthash "shell" "shell" hash)
-    (puthash "step" "step %p" hash)
-    (puthash "until" "until" hash)
-    (puthash "up" "up %p" hash)
+    (puthash "restart"     "run" hash)
+    (puthash "shell"       "shell" hash)
+    (puthash "step"        "step %p" hash)
+    (puthash "until"       "until" hash)
+    (puthash "up"          "up %p" hash)
     hash)
   "Default hash of command name → debugger command.
 This is used as a fallback when the debugger-specific command
