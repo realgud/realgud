@@ -124,7 +124,7 @@ Note that path elements have been expanded via `expand-file-name'.
 	     ((equal "-i" arg)
 	      (warn "realgud doesn't support the -i option; option ignored")
 	      (setq args (cddr args)))
-	     ;; path-argument ooptions
+	     ;; path-argument options
 	     ((member arg '("-cd" ))
 	      (setq arg (pop args))
 	      (nconc debugger-args
