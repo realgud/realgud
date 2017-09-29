@@ -131,6 +131,7 @@ realgud-loc-pat struct")
 
 (setf (gethash "break"    realgud:gdb-command-hash) "break %X:%l")
 (setf (gethash "clear"    realgud:gdb-command-hash) "clear %X:%l")
+(setf (gethash "delete"   realgud:gdb-command-hash) "clear %X:%l")
 (setf (gethash "continue" realgud:gdb-command-hash) "continue")
 (setf (gethash "eval"     realgud:gdb-command-hash) "print %s")
 (setf (gethash "quit"     realgud:gdb-command-hash) "quit")
