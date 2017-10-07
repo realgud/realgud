@@ -25,12 +25,12 @@
   (assert-equal '("3" "5") (cddr cmd-args) "command args listified")
   )
 
-(note "pdb-parse-cmd-args")
-(assert-equal (list nil '("pdb") (list (expand-file-name "foo")) nil)
-	      (pdb-parse-cmd-args '("pdb" "foo")))
-(assert-equal (list nil '("pdb") (list (expand-file-name "program.py") "foo") nil)
-	      (pdb-parse-cmd-args
-	       '("pdb" "program.py" "foo")))
+;; (note "pdb-parse-cmd-args")
+;; (assert-equal (list nil '("pdb") (list (expand-file-name "foo")) nil)
+;; 	      (pdb-parse-cmd-args '("pdb" "foo")))
+;; (assert-equal (list nil '("pdb") (list (expand-file-name "program.py") "foo") nil)
+;; 	      (pdb-parse-cmd-args
+;; 	       '("pdb" "program.py" "foo")))
 
 (realgud:pdb "pdb ./gcd.py 3 5")
 ;; Restore the old value of realgud:run-process

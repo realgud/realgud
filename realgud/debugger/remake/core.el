@@ -1,4 +1,4 @@
-;; Copyright (C) 2011, 2014-2016 Free Software Foundation, Inc
+;; Copyright (C) 2011, 2014-2017 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -89,16 +89,6 @@ we might return:
       (while args
 	(let ((arg (pop args)))
 	  (cond
-	   ;; ;; Annotation or emacs option with level number.
-	   ;; ((or (member arg '("--annotate" "-A"))
-	   ;; 	(equal arg "--emacs"))
-	   ;;  (setq annotate-p t)
-	   ;;  (nconc debugger-args (list (pop args))))
-	   ;; ;; Combined annotation and level option.
-	   ;; ((string-match "^--annotate=[0-9]" arg)
-	   ;;  (nconc debugger-args (list (pop args)) )
-	   ;;  (setq annotate-p t))
-
 	   ((member arg '("--file" "--makefile" "-f"))
 	    (setq remake-args (nconc remake-args (list arg)))
 	    (setq makefile-name (realgud:expand-file-name-if-exists

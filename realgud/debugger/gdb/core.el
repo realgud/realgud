@@ -137,8 +137,8 @@ Note that path elements have been expanded via `expand-file-name'.
 	      (nconc debugger-args (car pair))
 	      (setq args (cadr pair)))
 	     ;; Anything else must be the script to debug.
-	     (t (setq script-name arg)
-		(setq script-args args))
+	     (t (setq script-name (realgud:expand-file-name-if-exists arg))
+		(setq script-args (cons script-name (cdr args))))
 	     )))
 	(list debugger-args nil script-args annotate-p)))))
 

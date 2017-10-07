@@ -1,4 +1,4 @@
-;; Copyright (C) 2014-2016 Free Software Foundation, Inc
+;; Copyright (C) 2014-2017 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -15,6 +15,7 @@
 (require-relative-list '("init") "realgud:pdb-")
 
 
+(declare-function realgud:expand-file-name-if-exists 'realgud-core)
 (declare-function realgud-lang-mode? 'realgud-lang)
 (declare-function realgud-parse-command-arg 'realgud-core)
 (declare-function realgud-query-cmdline 'realgud-core)
@@ -138,7 +139,7 @@ Note that the script name path has been expanded via `expand-file-name'.
 	    (nconc debugger-args (car pair))
 	    (setq args (cadr pair)))
 	   ;; Anything else must be the script to debug.
-	   (t (setq script-name (expand-file-name arg))
+	   (t (setq script-name (realgud:expand-file-name-if-exists arg))
 	      (setq script-args (cons script-name (cdr args))))
 	   )))
       (list interpreter-args debugger-args script-args annotate-p))))
