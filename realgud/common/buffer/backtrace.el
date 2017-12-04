@@ -407,6 +407,13 @@ filename, line number, whether the frame is selected as text properties."
 	    ;; FIXME: Remove hack that group 1 is always the frame indicator.
 	    (frame-indicator
 	     (substring stripped-string (match-beginning 1) (match-end 1)))
+	    ;; From https://github.com/realgud/realgud/pull/192
+	    ;; Each frame of backtrace is searched via string-match
+	    ;; invocation and a position of the current frame is
+	    ;; updated via (setq last-pos (match-end 0)) in the end of
+	    ;; the loop. But somewhere in the body of the loop (I do
+	    ;; not know exactly where), there is another call to
+	    ;; string-match and it messes up all positions.
 	    (whole-match-begin (match-beginning 0))
 	    (whole-match-end (match-end 0))
 	    (frame-num-pos)
