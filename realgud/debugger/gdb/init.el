@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc
+;; Copyright (C) 2015-2017 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -132,10 +132,12 @@ realgud-loc-pat struct")
 (setf (gethash "break"    realgud:gdb-command-hash) "break %X:%l")
 (setf (gethash "clear"    realgud:gdb-command-hash) "clear %X:%l")
 (setf (gethash "continue" realgud:gdb-command-hash) "continue")
+(setf (gethash "delete"   realgud:gdb-command-hash) "delete %p")
 (setf (gethash "eval"     realgud:gdb-command-hash) "print %s")
 (setf (gethash "quit"     realgud:gdb-command-hash) "quit")
 (setf (gethash "run"      realgud:gdb-command-hash) "run")
 (setf (gethash "step"     realgud:gdb-command-hash) "step %p")
+
 (setf (gethash "gdb" realgud-command-hash) realgud:gdb-command-hash)
 
 (setf (gethash "gdb" realgud-pat-hash) realgud:gdb-pat-hash)
