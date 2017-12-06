@@ -168,6 +168,23 @@ message."
              "Buffer %s is not a debugger command buffer" buf)
     t))
 
+(defun realgud:get-output-command(text)
+  "Splits the TEXT by newline."
+  (car (split-string text "\n")))
+
+(defun realgud:get-eval-output(text)
+  "Gets the output stripping the command and debugger prompt from the TEXT."
+  (string-join (butlast (cdr (split-string text "\n"))) "\n"))
+
+(defun realgud:eval-command-p(text)
+  "Checks the TEXT if the command that was ran was an eval command."
+  (let ((eval-string (buffer-local-value 'realgud-eval-string (current-buffer))))
+    (string-prefix-p eval-string (realgud:get-output-command text))))
+
+(defun realgud:message-eval-results(text)
+  "Output the TEXT to the message area."
+  (message (realgud:get-eval-output text)))
+
 (defun realgud:track-from-region(from to &optional cmd-mark opt-cmdbuf
 				      shortkey-on-tracing? no-warn-if-no-match?)
   "Find and position a buffer at the location found in the marked region.
@@ -193,6 +210,9 @@ evaluating (realgud-cmdbuf-info-loc-regexp realgud-cmdbuf-info)"
 	 (cmdbuf (or opt-cmdbuf (current-buffer)))
 	 )
     (unless (realgud:track-complain-if-not-in-cmd-buffer cmdbuf t)
+      (if (realgud:eval-command-p text)
+          (realgud:message-eval-results text))
+
 	(if (not (equal "" text))
 	    (with-current-buffer cmdbuf
 	      (if (realgud-sget 'cmdbuf-info 'divert-output?)
@@ -740,6 +760,10 @@ find a location. non-nil if we can find a location.
 	  nil))
       ))
     )
+(defun realgud-set-eval-string-to-buffer-local (command-hash)
+  "Sets the eval string as a buffer local variable from the COMMAND-HASH."
+  (set (make-local-variable 'realgud-eval-string)
+       (replace-regexp-in-string "%s" "" (or (gethash "eval" command-hash) "No Eval String"))))
 
 (defun realgud:track-set-debugger (debugger-name)
   "Set debugger name and information associated with that
@@ -761,6 +785,9 @@ we can't find a debugger with that information.`.
       (setq regexp-hash (gethash base-variable-name realgud-pat-hash))
       (setq command-hash (gethash base-variable-name realgud-command-hash))
       )
+
+    (realgud-set-eval-string-to-buffer-local command-hash)
+
     (if regexp-hash
 	(let* (
 	       (mode-name (concat " " (capitalize base-variable-name) "-Track"))
