@@ -29,9 +29,10 @@
 (require-relative-list
  '("core"           "file"     "fringe"
    "helper"         "init"     "loc"    "lochist"
-   "regexp"         "shortkey" "window"
+   "regexp"         "shortkey" "window" "utils"
    "bp"
    ) "realgud-")
+
 
 (require-relative-list
  '("buffer/command" "buffer/helper" "buffer/source") "realgud-buffer-")
@@ -77,6 +78,7 @@
 (declare-function realgud-window-src                  'realgud-window)
 (declare-function realgud-window-src-undisturb-cmd    'realgud-window)
 (declare-function realgud-window-update-position      'realgud-window)
+(declare-function realgud:join-string                 'realgud-utils)
 
 (make-variable-buffer-local  (defvar realgud-track-mode))
 (fn-p-to-fn?-alias 'realgud-loc-p)
@@ -174,7 +176,7 @@ message."
 
 (defun realgud:get-eval-output(text)
   "Gets the output stripping the command and debugger prompt from the TEXT."
-  (string-join (butlast (cdr (split-string text "\n"))) "\n"))
+  (realgud:join-string (butlast (cdr (split-string text "\n"))) "\n"))
 
 (defun realgud:eval-command-p(text)
   "Checks the TEXT if the command that was ran was an eval command."
