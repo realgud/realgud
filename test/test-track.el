@@ -7,19 +7,25 @@
 (load-file "../realgud/common/track.el")
 (load-file "../realgud/common/core.el")
 (load-file "../realgud/common/loc.el")
+(load-file "../realgud/common/utils.el")
 (load-file "../realgud/debugger/trepan/core.el")
 (load-file "../realgud/debugger/trepan/init.el")
 
-(declare-function __FILE__                     'load-relative)
-(declare-function realgud-cmdbuf-init          'realgud-buffer-command)
-(declare-function realgud-loc-filename         'realgud-loc)
-(declare-function realgud-loc-p                'realgud-loc)
-(declare-function realgud-loc-line-number      'realgud-loc)
-(declare-function realgud:track-from-region    'realgud-track)
-(declare-function realgud-track-loc            'realgud-track)
-(declare-function realgud-track-loc-remaining  'realgud-track)
-(declare-function realgud-track-selected-frame 'realgud-track)
-(declare-function realgud-track-termination?   'realgud-track)
+(declare-function __FILE__                                'load-relative)
+(declare-function realgud-cmdbuf-init                     'realgud-buffer-command)
+(declare-function realgud-loc-filename                    'realgud-loc)
+(declare-function realgud-loc-p                           'realgud-loc)
+(declare-function realgud-loc-line-number                 'realgud-loc)
+(declare-function realgud:track-from-region               'realgud-track)
+(declare-function realgud-track-loc                       'realgud-track)
+(declare-function realgud-track-loc-remaining             'realgud-track)
+(declare-function realgud-track-selected-frame            'realgud-track)
+(declare-function realgud-track-termination?              'realgud-track)
+(declare-function realgud:get-eval-output                 'realgud-track)
+(declare-function realgud:get-output-command              'realgud-track)
+(declare-function realgud:eval-command-p                  'realgud-track)
+(declare-function realgud-set-eval-string-to-buffer-local 'realgud-track)
+
 
 (test-simple-start)
 
@@ -87,6 +93,25 @@ trepan: That's all, folks...
 ")
 (assert-t (realgud-track-termination? debugger-output))
 
+
+(note "realgud:get-eval-output")
+(assert-equal "'cow'" (realgud:get-eval-output "eval 'cow'\n'cow'\n(pdb)"))
+(assert-equal "" (realgud:get-eval-output "weird output"))
+
+(note "realgud:get-output-command")
+(assert-equal "eval bang" (realgud:get-output-command "eval bang\noutput"))
+(assert-equal "" (realgud:get-output-command ""))
+
+(note "realgud:eval-command-p")
+(set (make-local-variable 'realgud-eval-string) "eval ")
+(assert-t (realgud:eval-command-p "eval 'cow'\n'cow'\n(pdb)"))
+(assert-nil (realgud:eval-command-p "next 1"))
+
+(note "realgud-set-eval-string-to-buffer-local")
+(setq test-command-hash (make-hash-table :test 'equal))
+(puthash "eval" "eval %s" test-command-hash)
+(realgud-set-eval-string-to-buffer-local test-command-hash)
+(assert-equal "eval " (buffer-local-value 'realgud-eval-string (current-buffer)))
 
 ;; (setq debugger-bp-output (format "Breakpoint %d set at line %d\n\tin file %s.\n"
 ;; 				  bp-num line-number test-filename))
