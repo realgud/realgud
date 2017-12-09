@@ -42,6 +42,11 @@
   :type 'symbolp
   :group 'realgud)
 
+(defcustom realgud-eval-message-print-length 1000
+"If non-nil, truncate eval output into the echo area"
+  :type 'symbolp
+  :group 'realgud)
+
 (declare-function buffer-killed?                      'realgud-helper)
 (declare-function fn-p-to-fn?-alias                   'realgud-helper)
 (declare-function realgud-bp-add-info                 'realgud-bp)
@@ -178,14 +183,23 @@ message."
   "Gets the output stripping the command and debugger prompt from the TEXT."
   (realgud:join-string (butlast (cdr (split-string text "\n"))) "\n"))
 
+(defun realgud:get-command-name(command-name)
+  "Gets the COMMAND-NAME for this particular debugger."
+  (gethash command-name (buffer-local-value 'realgud-command-name-hash (current-buffer))))
+
 (defun realgud:eval-command-p(text)
   "Checks the TEXT if the command that was ran was an eval command."
-  (let ((eval-string (buffer-local-value 'realgud-eval-string (current-buffer))))
-    (string-prefix-p eval-string (realgud:get-output-command text))))
+  (string-prefix-p (realgud:get-command-name "eval") (realgud:get-output-command text)))
+
+(defun realgud:truncate-eval-message(text)
+  "Truncates the TEXT to the size of realgud-eval-message-print-length."
+  (if (< realgud-eval-message-print-length (length text))
+      (substring text 0 realgud-eval-message-print-length)
+    text))
 
 (defun realgud:message-eval-results(text)
   "Output the TEXT to the message area."
-  (message (realgud:get-eval-output text)))
+  (message (realgud:truncate-eval-message (realgud:get-eval-output text))))
 
 (defun realgud:track-from-region(from to &optional cmd-mark opt-cmdbuf
 				      shortkey-on-tracing? no-warn-if-no-match?)
@@ -761,11 +775,18 @@ find a location. non-nil if we can find a location.
 	(if loc (or (realgud-track-loc-action loc cmdbuf) 't)
 	  nil))
       ))
-    )
-(defun realgud-set-eval-string-to-buffer-local (command-hash)
+  )
+
+(defun realgud:populate-command-hash(key value)
+  "Adds a KEY and VALUE to the realgud-command-name-hash the command name to a debugger specific command."
+  (puthash key
+           (replace-regexp-in-string "%.*" "" (car (split-string value " ")))
+           realgud-command-name-hash))
+
+(defun realgud-set-command-name-hash-to-buffer-local (command-hash)
   "Sets the eval string as a buffer local variable from the COMMAND-HASH."
-  (set (make-local-variable 'realgud-eval-string)
-       (replace-regexp-in-string "%s" "" (or (gethash "eval" command-hash) "No Eval String"))))
+  (set (make-local-variable 'realgud-command-name-hash) (make-hash-table :test 'equal))
+  (maphash 'realgud:populate-command-hash command-hash))
 
 (defun realgud:track-set-debugger (debugger-name)
   "Set debugger name and information associated with that
@@ -788,7 +809,7 @@ we can't find a debugger with that information.`.
       (setq command-hash (gethash base-variable-name realgud-command-hash))
       )
 
-    (realgud-set-eval-string-to-buffer-local command-hash)
+    (realgud-set-command-name-hash-to-buffer-local command-hash)
 
     (if regexp-hash
 	(let* (
