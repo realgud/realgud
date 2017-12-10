@@ -62,6 +62,7 @@
     (define-key map "j"        'realgud:cmd-jump)
     (define-key map "c"        'realgud:cmd-continue)
     (define-key map "e"        'realgud:cmd-eval-dwim)
+    (define-key map "E"        'realgud:cmd-eval-at-point)
     (define-key map "U"        'realgud:cmd-until)
     (define-key map [mouse-2]  'realgud:tooltip-eval)
     (define-key map [left-fringe mouse-1] #'realgud-cmds--mouse-add-remove-bp)

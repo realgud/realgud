@@ -288,6 +288,11 @@ EVENT should be a mouse click on the left fringe or margin."
                           #'realgud:cmd-eval-region
                         #'realgud:cmd-eval)))
 
+(defun realgud:cmd-eval-at-point()
+  "Eval symbol under point."
+  (interactive)
+  (realgud:cmd-run-command (thing-at-point 'symbol) "eval"))
+
 (defun realgud:cmd-finish(&optional arg)
     "Run until the completion of the current stack frame.
 

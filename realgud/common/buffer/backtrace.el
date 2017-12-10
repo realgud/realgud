@@ -407,6 +407,15 @@ filename, line number, whether the frame is selected as text properties."
 	    ;; FIXME: Remove hack that group 1 is always the frame indicator.
 	    (frame-indicator
 	     (substring stripped-string (match-beginning 1) (match-end 1)))
+	    ;; From https://github.com/realgud/realgud/pull/192
+	    ;; Each frame of backtrace is searched via string-match
+	    ;; invocation and a position of the current frame is
+	    ;; updated via (setq last-pos (match-end 0)) in the end of
+	    ;; the loop. But somewhere in the body of the loop (I do
+	    ;; not know exactly where), there is another call to
+	    ;; string-match and it messes up all positions.
+	    (whole-match-begin (match-beginning 0))
+	    (whole-match-end (match-end 0))
 	    (frame-num-pos)
 
 	    )
@@ -462,12 +471,12 @@ filename, line number, whether the frame is selected as text properties."
 
 	(when (and (stringp filename) (numberp line-num))
 	  (let ((loc (realgud:file-loc-from-line filename line-num cmdbuf)))
-	    (put-text-property (match-beginning 0) (match-end 0)
+	    (put-text-property whole-match-begin whole-match-end
 			       'loc loc string)
 	    ))
-	(put-text-property (match-beginning 0) (match-end 0)
+	(put-text-property whole-match-begin whole-match-end
 			   'frame-num  frame-num string)
-	(setq last-pos (match-end 0))
+	(setq last-pos whole-match-end)
 
 	(if (string-match frame-indicator-re frame-indicator)
 	  (setq selected-frame-num frame-num))
