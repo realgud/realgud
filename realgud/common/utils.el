@@ -30,11 +30,15 @@
    (t
     (append (realgud:flatten (car mylist)) (realgud:flatten (cdr mylist))))))
 
-;; From https://stackoverflow.com/questions/12999530/is-there-a-function-that-joins-a-string-into-a-delimited-string
-(defun realgud:join-string (list joiner)
-  (if (< emacs-major-version 25)
-      (mapconcat 'identity list joiner)
-    (string-join list joiner)))
+(if (or (< emacs-major-version 24)
+	(and (= emacs-major-version 24) (<= emacs-minor-version 3)))
+    ;; From
+    ;; https://stackoverflow.com/questions/12999530/is-there-a-function-that-joins-a-string-into-a-delimited-string
+    (defun realgud:join-string (list joiner)
+      (mapconcat 'identity list joiner))
+  (progn
+    (require 'subr-x)
+    (defalias 'realgud:join-string 'string-join)))
 
 (defun realgud:canonic-major-mode()
   "Return
