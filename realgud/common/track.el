@@ -189,7 +189,8 @@ message."
 
 (defun realgud:eval-command-p(text)
   "Checks the TEXT if the command that was ran was an eval command."
-  (string-prefix-p (realgud:get-command-name "eval") (realgud:get-output-command text)))
+  (let (cmd-name (realgud:get-command-name "eval"))
+	(and (stringp cmd-name) (string-prefix-p (realgud:get-command-name "eval") (realgud:get-output-command text)))))
 
 (defun realgud:truncate-eval-message(text)
   "Truncates the TEXT to the size of realgud-eval-message-print-length."
