@@ -96,6 +96,7 @@ realgud-loc-pat struct")
 (setf (gethash "zshdb"  realgud-command-hash) realgud:zshdb-command-hash)
 
 (setf (gethash "clear"  realgud:zshdb-command-hash) "clear %l")
+(setf (gethash "eval"   realgud:zshdb-command-hash) "eval %s")
 (setf (gethash "quit"   realgud:zshdb-command-hash) "quit")
 (setf (gethash "until"  realgud:zshdb-command-hash) "continue %l")
 

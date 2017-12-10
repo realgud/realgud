@@ -269,6 +269,7 @@ backtrace listing.")
   the trepanpl command to use, like 'quit!'")
 
 (setf (gethash "break"  realgud:trepanpl-command-hash) "break %x %l")
+(setf (gethash "eval"   realgud:trepanpl-command-hash) "eval %s")
 (setf (gethash "quit"   realgud:trepanpl-command-hash) "quit!")
 (setf (gethash "until"   realgud:trepanpl-command-hash) "continue %l")
 (setf (gethash realgud:trepanpl-debugger-name

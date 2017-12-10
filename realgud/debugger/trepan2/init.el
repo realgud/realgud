@@ -107,6 +107,7 @@ realgud-loc-pat struct")
   "Hash key is command name like 'shell' and the value is
   the trepan2 command to use, like 'python'")
 
+(setf (gethash "eval"  realgud:trepan2-command-hash) "eval %s")
 (setf (gethash "shell" realgud:trepan2-command-hash) "python")
 (setf (gethash "until" realgud:trepan2-command-hash) "continue %l")
 
