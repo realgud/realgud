@@ -105,8 +105,9 @@ trepan: That's all, folks...
 
 (note "realgud:eval-command-p")
 (setq test-command-name-hash (make-hash-table :test 'equal))
-(puthash "eval" "eval" test-command-name-hash)
 (set (make-local-variable 'realgud-command-name-hash) test-command-name-hash)
+(assert-nil (realgud:eval-command-p "eval 'cow'\n'cow'\n(pdb)"))
+(puthash "eval" "eval" test-command-name-hash)
 (assert-t (realgud:eval-command-p "eval 'cow'\n'cow'\n(pdb)"))
 (assert-nil (realgud:eval-command-p "next 1"))
 
