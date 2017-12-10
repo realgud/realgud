@@ -31,7 +31,7 @@
     (append (realgud:flatten (car mylist)) (realgud:flatten (cdr mylist))))))
 
 (if (or (< emacs-major-version 24)
-	(and (= emacs-major-version 24) (< 4 emacs-minor-version)))
+	(and (= emacs-major-version 24) (< emacs-minor-version 3)))
     ;; From
     ;; https://stackoverflow.com/questions/12999530/is-there-a-function-that-joins-a-string-into-a-delimited-string
     (defun realgud:join-string (list joiner)
