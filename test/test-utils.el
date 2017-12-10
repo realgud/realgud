@@ -12,6 +12,7 @@
 (declare-function realgud:strip              'realgud-regexp)
 (declare-function __FILE__                   'load-relative)
 (declare-function realgud:canonic-major-mode 'realgud-utils)
+(declare-function realgud:join-string        'realgud-utils)
 
 (test-simple-start)
 
@@ -22,6 +23,9 @@
 (note "realgud:strip")
 (assert-equal "abc" (realgud:strip "abc"))
 (assert-equal "def" (realgud:strip "\n  def\t  "))
+
+(note "realgud:join-string")
+(assert-equal "a b c" (realgud:join-string '("a" "b" "c") " "))
 
 (note "realgud:flatten")
 (assert-equal '(abc) (realgud:flatten '(abc)))

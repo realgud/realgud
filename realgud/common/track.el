@@ -29,15 +29,21 @@
 (require-relative-list
  '("core"           "file"     "fringe"
    "helper"         "init"     "loc"    "lochist"
-   "regexp"         "shortkey" "window"
+   "regexp"         "shortkey" "window" "utils"
    "bp"
    ) "realgud-")
+
 
 (require-relative-list
  '("buffer/command" "buffer/helper" "buffer/source") "realgud-buffer-")
 
 (defcustom realgud-short-key-on-tracing? nil
 "If non-nil, set short-key mode for any source buffer that is traced into"
+  :type 'symbolp
+  :group 'realgud)
+
+(defcustom realgud-eval-message-print-length 1000
+"If non-nil, truncate eval output into the echo area"
   :type 'symbolp
   :group 'realgud)
 
@@ -77,6 +83,7 @@
 (declare-function realgud-window-src                  'realgud-window)
 (declare-function realgud-window-src-undisturb-cmd    'realgud-window)
 (declare-function realgud-window-update-position      'realgud-window)
+(declare-function realgud:join-string                 'realgud-utils)
 
 (make-variable-buffer-local  (defvar realgud-track-mode))
 (fn-p-to-fn?-alias 'realgud-loc-p)
@@ -168,6 +175,32 @@ message."
              "Buffer %s is not a debugger command buffer" buf)
     t))
 
+(defun realgud:get-output-command(text)
+  "Splits the TEXT by newline."
+  (car (split-string text "\n")))
+
+(defun realgud:get-eval-output(text)
+  "Gets the output stripping the command and debugger prompt from the TEXT."
+  (realgud:join-string (butlast (cdr (split-string text "\n"))) "\n"))
+
+(defun realgud:get-command-name(command-name)
+  "Gets the COMMAND-NAME for this particular debugger."
+  (gethash command-name (buffer-local-value 'realgud-command-name-hash (current-buffer))))
+
+(defun realgud:eval-command-p(text)
+  "Checks the TEXT if the command that was ran was an eval command."
+  (string-prefix-p (realgud:get-command-name "eval") (realgud:get-output-command text)))
+
+(defun realgud:truncate-eval-message(text)
+  "Truncates the TEXT to the size of realgud-eval-message-print-length."
+  (if (< realgud-eval-message-print-length (length text))
+      (substring text 0 realgud-eval-message-print-length)
+    text))
+
+(defun realgud:message-eval-results(text)
+  "Output the TEXT to the message area."
+  (message (realgud:truncate-eval-message (realgud:get-eval-output text))))
+
 (defun realgud:track-from-region(from to &optional cmd-mark opt-cmdbuf
 				      shortkey-on-tracing? no-warn-if-no-match?)
   "Find and position a buffer at the location found in the marked region.
@@ -193,6 +226,9 @@ evaluating (realgud-cmdbuf-info-loc-regexp realgud-cmdbuf-info)"
 	 (cmdbuf (or opt-cmdbuf (current-buffer)))
 	 )
     (unless (realgud:track-complain-if-not-in-cmd-buffer cmdbuf t)
+      (if (realgud:eval-command-p text)
+          (realgud:message-eval-results text))
+
 	(if (not (equal "" text))
 	    (with-current-buffer cmdbuf
 	      (if (realgud-sget 'cmdbuf-info 'divert-output?)
@@ -739,7 +775,18 @@ find a location. non-nil if we can find a location.
 	(if loc (or (realgud-track-loc-action loc cmdbuf) 't)
 	  nil))
       ))
-    )
+  )
+
+(defun realgud:populate-command-hash(key value)
+  "Adds a KEY and VALUE to the realgud-command-name-hash the command name to a debugger specific command."
+  (puthash key
+           (replace-regexp-in-string "%.*" "" (car (split-string value " ")))
+           realgud-command-name-hash))
+
+(defun realgud-set-command-name-hash-to-buffer-local (command-hash)
+  "Sets the eval string as a buffer local variable from the COMMAND-HASH."
+  (set (make-local-variable 'realgud-command-name-hash) (make-hash-table :test 'equal))
+  (maphash 'realgud:populate-command-hash command-hash))
 
 (defun realgud:track-set-debugger (debugger-name)
   "Set debugger name and information associated with that
@@ -761,6 +808,9 @@ we can't find a debugger with that information.`.
       (setq regexp-hash (gethash base-variable-name realgud-pat-hash))
       (setq command-hash (gethash base-variable-name realgud-command-hash))
       )
+
+    (realgud-set-command-name-hash-to-buffer-local command-hash)
+
     (if regexp-hash
 	(let* (
 	       (mode-name (concat " " (capitalize base-variable-name) "-Track"))

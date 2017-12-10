@@ -30,6 +30,12 @@
    (t
     (append (realgud:flatten (car mylist)) (realgud:flatten (cdr mylist))))))
 
+;; From https://stackoverflow.com/questions/12999530/is-there-a-function-that-joins-a-string-into-a-delimited-string
+(defun realgud:join-string (list joiner)
+  (if (< emacs-major-version 25)
+      (mapconcat 'identity list joiner)
+    (string-join list joiner)))
+
 (defun realgud:canonic-major-mode()
   "Return
     - 'eshell if we are in eshell-mode,
