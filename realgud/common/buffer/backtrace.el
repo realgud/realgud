@@ -209,7 +209,7 @@
     )
   )
 
-(defun realgud-backtrace-moveto-frame (num &optional opt-buffer)
+(defun realgud-backtrace-moveto-frame (num &optional _opt-buffer)
   (if (integerp num)
       (if (realgud-backtrace?)
 	  (let* ((ring (realgud-sget 'backtrace-info 'frame-ring))
@@ -427,7 +427,7 @@ filename, line number, whether the frame is selected as text properties."
 			       (match-end frame-group-pat)))
 	      (setq frame-num (string-to-number frame-num-str))
 	      (setq frame-num-pos (match-beginning frame-group-pat))
-	      (add-to-list 'frame-num-pos-list frame-num-pos t)
+	      (cl-pushnew frame-num-pos frame-num-pos-list)
 	      (add-text-properties (match-beginning frame-group-pat)
 				   (match-end frame-group-pat)
 				   (list 'mouse-face 'highlight
@@ -442,7 +442,7 @@ filename, line number, whether the frame is selected as text properties."
 			       (match-end 0)))
 	    (setq frame-num (cl-incf alt-frame-num))
 	    (setq frame-num-pos (match-beginning 0))
-	    (add-to-list 'frame-num-pos-list frame-num-pos t)
+	    (cl-pushnew frame-num-pos frame-num-pos-list)
 	    (add-text-properties (match-beginning 0) (match-end 0)
 				 (list 'mouse-face 'highlight
 				       'help-echo "mouse-2: goto this frame"
@@ -482,7 +482,7 @@ filename, line number, whether the frame is selected as text properties."
 	  (setq selected-frame-num frame-num))
 	))
 
-    (list string selected-frame-num frame-num-pos-list)
+    (list string selected-frame-num (nreverse frame-num-pos-list))
     )
   )
 
