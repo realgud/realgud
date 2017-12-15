@@ -16,6 +16,7 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 (require 'load-relative)
+(require 'thingatpt)
 (require-relative-list  '("send" "core") "realgud-")
 (require-relative-list  '("buffer/command") "realgud-buffer-")
 (require-relative-list  '("buffer/source") "realgud-buffer-")
@@ -291,7 +292,14 @@ EVENT should be a mouse click on the left fringe or margin."
 (defun realgud:cmd-eval-at-point()
   "Eval symbol under point."
   (interactive)
-  (realgud:cmd-run-command (thing-at-point 'symbol) "eval"))
+
+  (beginning-of-thing 'symbol)
+  (set-mark-command 'nil)
+  (end-of-thing 'symbol)
+
+  (realgud:cmd-run-command
+   (read-string "Eval: " (thing-at-point 'symbol))
+   "eval"))
 
 (defun realgud:cmd-finish(&optional arg)
     "Run until the completion of the current stack frame.
