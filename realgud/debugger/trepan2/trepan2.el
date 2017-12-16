@@ -27,6 +27,8 @@
 (declare-function trepan2-parse-cmd-args 'realgud:trepan2-core)
 (declare-function trepan2-track-mode     'realgud:pydbgr-track-mode)
 (declare-function realgud:run-debugger   'realgud:run)
+(declare-function realgud:run-process  'realgud:core)
+(declare-function realgud:flatten      'realgud-utils)
 
 ;; -------------------------------------------------------------------
 ;; User-definable variables

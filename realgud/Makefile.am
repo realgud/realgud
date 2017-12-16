@@ -15,3 +15,7 @@ lispdir_realgud = ${datarootdir}/emacs/site-lisp/realgud
 # .nosearch isn't a lisp file, but we want it installed along with the
 # lisp files.
 lisp_LISP = .nosearch
+
+# Overwrite clean-lisp target so it doesn't remove .nosearch
+# Note: There are no lisp files in this directory
+clean-lisp:

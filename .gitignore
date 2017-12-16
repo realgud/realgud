@@ -13,6 +13,9 @@
 /configure
 /configure.lineno
 /elpa
+/emacs-load-relative
+/emacs-loc-changes
+/emacs-test-simple
 /how-to-make-a-release.txt
 /install-sh
 /missing

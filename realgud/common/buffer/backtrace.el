@@ -28,14 +28,16 @@
 (require-relative-list
  '("command") "realgud-buffer-")
 
-(declare-function realgud-cmdbuf-debugger-name 'realgud-buffer-command)
-(declare-function realgud-cmdbuf?              'realgud-buffer-command)
+(declare-function realgud-cmdbuf-debugger-name        'realgud-buffer-command)
+(declare-function realgud-cmdbuf?                     'realgud-buffer-command)
+(declare-function realgud-cmdbuf-info-divert-output?= 'realgud-buffer-command)
 (declare-function realgud-backtrace-mode (cmdbuf))
 (declare-function realgud:cmd-backtrace (arg))
 (declare-function realgud-cmdbuf-pat(key))
 (declare-function realgud-cmdbuf-info-in-srcbuf?= (arg))
 (declare-function realgud-get-cmdbuf 'realgud-buffer-helper)
 (declare-function realgud:file-loc-from-line 'realgud-file)
+(declare-function buffer-killed?       'realgud-helper)
 (declare-function realgud:loc-describe 'realgud-loc)
 
 (cl-defstruct realgud-backtrace-info

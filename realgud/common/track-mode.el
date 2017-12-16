@@ -30,8 +30,7 @@
 (declare-function realgud-fringe-erase-history-arrows 'realgud-buffer-command)
 (declare-function realgud:track-set-debugger          'realgud-track)
 (declare-function realgud-populate-debugger-menu      'realgud-menu)
-(declare-function realgud-cmdbuf-info-divert-output?=
-		  'realgud-buffer-command)
+(declare-function realgud-cmdbuf-info-divert-output?= 'realgud-buffer-command)
 (declare-function realgud-cmdbuf-info-prior-prompt-regexp=
 		  'realgud-buffer-command)
 (declare-function realgud-cmdbuf-info-set?

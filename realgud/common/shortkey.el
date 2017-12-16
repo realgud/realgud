@@ -1,4 +1,4 @@
-;; Copyright (C) 2010-2015 Free Software Foundation, Inc
+;; Copyright (C) 2010-2015, 2017 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -16,7 +16,7 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 (require 'load-relative)
-(require-relative-list '("custom" "eval" "helper" "key" "lochist" "loc"
+(require-relative-list '("cmds" "custom" "eval" "helper" "key" "lochist" "loc"
 			 "menu")
 		       "realgud-")
 (require-relative-list '("buffer/command" "buffer/helper" "buffer/source")
@@ -27,6 +27,7 @@
 )
 
 
+(declare-function realgud-cmds--mouse-add-remove-bp     'realgud-cmds)
 (declare-function realgud-cmdbuf?                       'realgud-buffer-command)
 (declare-function realgud:debugger-name-transform       'realgud-helper)
 (declare-function realgud-get-cmdbuf                    'realgud-buffer-helper)
@@ -40,6 +41,8 @@
 (declare-function realgud-srcbuf-info-was-read-only?=   'realgud-source)
 (declare-function realgud-srcbuf-info-prev-local-map=   'realgud-source)
 (declare-function realgud-srcbuf?                       'realgud-buffer-source)
+(declare-function realgud--ensure-attached              'realgud-buffer-source)
+(declare-function realgud-srcbuf-info-set?              'realgud-buffer-source)
 
 ;; (defvar realgud::tool-bar-map) ;; fully defined in track-mode.el
 

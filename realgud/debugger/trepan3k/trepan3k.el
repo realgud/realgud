@@ -24,6 +24,8 @@
 (declare-function trepan3k-query-cmdline  'realgud:trepan3k-core)
 (declare-function trepan3k-parse-cmd-args 'realgud:trepan3k-core)
 (declare-function realgud:run-debugger    'realgud:run)
+(declare-function realgud:run-process     'realgud:core)
+(declare-function realgud:flatten         'realgud-utils)
 
 ;; -------------------------------------------------------------------
 ;; User-definable variables
@@ -49,7 +51,7 @@ This should be an executable on your path, or an absolute file name."
 
 String OPT-CMD-LINE is treated like a shell string; arguments are
 tokenized by `split-string-and-unquote'. The tokenized string is
-parsed by `trepan2-parse-cmd-args' and path elements found by that
+parsed by `trepan3k-parse-cmd-args' and path elements found by that
 are expanded using `realgud:expand-file-name-if-exists'.
 
 Normally, command buffers are reused when the same debugger is
@@ -80,7 +82,7 @@ Therefore we invoke python rather than the debugger initially.
   (interactive)
   (let* ((initial-debugger python-shell-interpreter)
 	 (actual-debugger "trepan3k")
-	 (cmd-str (trepan2-query-cmdline initial-debugger))
+	 (cmd-str (trepan3k-query-cmdline initial-debugger))
 	 (cmd-args (split-string-and-unquote cmd-str))
 	 ;; XXX: python gets registered as the interpreter rather than
 	 ;; a debugger, and the debugger position (nth 1) is missing:
