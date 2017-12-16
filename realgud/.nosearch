@@ -1,0 +1,11 @@
+The default install-from-git.sh can install realgud into a site-lisp,
+e.g /usr/local/share/emacs-site-lisp.
+
+site-lisp directories and their subdirectories may be automatically
+added to load path, in particular in Debian
+/usr/local/share/emacs/site-lisp/ is added to load-path before emacs
+system directories.  So realgud's common/buffer/info.el is loaded
+before emacs's info.el
+
+Adding this ".nosearch" file prevents emacs from adding realgud to the
+load-path.
