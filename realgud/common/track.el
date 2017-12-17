@@ -223,18 +223,17 @@ evaluating (realgud-cmdbuf-info-loc-regexp realgud-cmdbuf-info)"
 	 ;; in frame-num. Otherwise, nil.
 	 (frame-num)
 	 (text-sans-loc)
-	 (bp-loc)
 	 (cmdbuf (or opt-cmdbuf (current-buffer)))
 	 )
     (unless (realgud:track-complain-if-not-in-cmd-buffer cmdbuf t)
       (if (realgud:eval-command-p text)
           (realgud:message-eval-results text))
 
-	(if (not (equal "" text))
-	    (with-current-buffer cmdbuf
+      (if (not (equal "" text))
+          (with-current-buffer cmdbuf
 	      (if (realgud-sget 'cmdbuf-info 'divert-output?)
 		  (realgud-track-divert-prompt text cmdbuf to))
-	      ;; FIXME: instead of these fixed filters,
+              ;; FIXME: instead of these fixed filters,
 	      ;; put into a list and iterate over that.
 	      (realgud-track-termination? text)
 	      (setq text-sans-loc (or (realgud-track-loc-remaining text) text))
@@ -249,13 +248,8 @@ evaluating (realgud-cmdbuf-info-loc-regexp realgud-cmdbuf-info)"
 		  (setq loc (realgud-track-loc-from-selected-frame
 			     text cmd-mark)))
 
-	      (setq bp-loc (realgud-track-bp-loc text-sans-loc cmd-mark cmdbuf))
-	      (if bp-loc
-		  (let ((src-buffer (realgud-loc-goto bp-loc)))
-		    (realgud-cmdbuf-add-srcbuf src-buffer cmdbuf)
-		    (with-current-buffer src-buffer
-		      (realgud-bp-add-info bp-loc)
-		      )))
+              (realgud:track-add-breakpoint (realgud-track-bp-loc text-sans-loc cmd-mark cmdbuf) cmdbuf)
+
 	      (if loc
 		  (let ((selected-frame
 			 (or (not frame-num)
@@ -264,17 +258,29 @@ evaluating (realgud-cmdbuf-info-loc-regexp realgud-cmdbuf-info)"
                                               shortkey-on-tracing?)
 		    (realgud-cmdbuf-info-in-debugger?= 't)
                     (realgud-cmdbuf-mode-line-update))
-                (dolist (bp-loc (realgud-track-bp-delete text-sans-loc cmd-mark cmdbuf))
-                  (let ((src-buffer (realgud-loc-goto bp-loc)))
-                    (realgud-cmdbuf-add-srcbuf src-buffer cmdbuf)
-                    (with-current-buffer src-buffer
-                      (realgud-bp-del-info bp-loc)
-                      ))))
+                (realgud:track-remove-breakpoints
+                 (realgud-track-bp-delete text-sans-loc cmd-mark cmdbuf)))
               )
           )
         )
     )
   )
+
+(defun realgud:track-add-breakpoint (bp-loc cmdbuf)
+  "Add a breakpoint fringe in source window if BP-LOC."
+  (if bp-loc
+      (let ((src-buffer (realgud-loc-goto bp-loc)))
+        (realgud-cmdbuf-add-srcbuf src-buffer cmdbuf)
+        (with-current-buffer src-buffer
+          (realgud-bp-add-info bp-loc)))))
+
+(defun realgud:track-remove-breakpoints (bp-locs cmdbuf)
+  "Remove all breakpoints in source window found in BP-LOCS."
+  (dolist (bp-loc bp-locs)
+    (let ((src-buffer (realgud-loc-goto bp-loc)))
+      (realgud-cmdbuf-add-srcbuf src-buffer cmdbuf)
+      (with-current-buffer src-buffer
+        (realgud-bp-del-info bp-loc)))))
 
 (defun realgud-track-hist-fn-internal(fn)
   "Update both command buffer and a source buffer to reflect the
@@ -582,7 +588,6 @@ of the breakpoints found in command buffer."
   ; that struct is the regexp hash to match positions. By setting the
   ; the fields of realgud-cmdbuf-info appropriately we can accomodate a
   ; family of debuggers -- one at a time -- for the buffer process.
-
   (setq cmdbuf (or cmdbuf (current-buffer)))
   (with-current-buffer cmdbuf
     (unless (realgud:track-complain-if-not-in-cmd-buffer cmdbuf t)
