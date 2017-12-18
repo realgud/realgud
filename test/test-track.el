@@ -10,6 +10,9 @@
 (load-file "../realgud/common/utils.el")
 (load-file "../realgud/debugger/trepan/core.el")
 (load-file "../realgud/debugger/trepan/init.el")
+(load-file "../realgud/debugger/pdb/core.el")
+(load-file "../realgud/debugger/pdb/init.el")
+(load-file "../realgud/debugger/pdb/track-mode.el")
 
 (declare-function __FILE__                                      'load-relative)
 (declare-function realgud-cmdbuf-init                           'realgud-buffer-command)
@@ -142,18 +145,20 @@ trepan: That's all, folks...
   (insert "if 1:\n    x = x + 1\n"))
 
 (setq test-buffer (find-file "test_file.py"))
-(realgud-cmdbuf-init test-buffer "trepan"
-		  (gethash "trepan" realgud-pat-hash))
+(realgud-cmdbuf-init test-buffer "pdb"
+		  (gethash "pdb" realgud-pat-hash))
 
 (setq bp-num 1)
-(setq debugger-bp-output (format "Breakpoint %d set at 	line %d\n\tin file %s."
-                                   bp-num 1 buffer-file-name))
+(setq debugger-bp-output (format "Breakpoint %d at %s:%d\n"
+                                 bp-num buffer-file-name 1))
+
+(setq debugger-bp-delete-output (format "Deleted breakpoint %d at %s:%d\n"
+                                        bp-num buffer-file-name 1))
 (save-excursion
-  (setq bp-loc (realgud-track-bp-loc debugger-bp-output nil))
   (let ((num-overlays (length (overlays-in 0 (point-max)))))
-    (realgud:track-add-breakpoint bp-loc test-buffer)
+    (realgud:track-add-breakpoint debugger-bp-output nil test-buffer)
     (assert-equal (+ 1 num-overlays) (length (overlays-in 0 (point-max))))
-    (realgud:track-remove-breakpoints (list bp-loc) (current-buffer))
+    (realgud:track-remove-breakpoints debugger-bp-delete-output nil test-buffer)
     (assert-equal num-overlays (length (overlays-in 0 (point-max))))))
 (kill-buffer "test_file.py")
 (delete-file "test_file.py")

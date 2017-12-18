@@ -237,18 +237,12 @@ evaluating (realgud-cmdbuf-info-loc-regexp realgud-cmdbuf-info)"
             ;; put into a list and iterate over that.
             (realgud-track-termination? text)
             (setq text-sans-loc (or (realgud-track-loc-remaining text) text))
-            (realgud-track-bp-enable-disable text-sans-loc
-                                             (realgud-cmdbuf-pat "brkpt-enable")
-                                             't)
-            (realgud-track-bp-enable-disable text-sans-loc
-                                             (realgud-cmdbuf-pat "brkpt-disable")
-                                             nil)
             (setq frame-num (realgud-track-selected-frame text))
             (if (and frame-num (not loc))
                 (setq loc (realgud-track-loc-from-selected-frame
                            text cmd-mark)))
 
-            (realgud:track-add-breakpoint (realgud-track-bp-loc text-sans-loc cmd-mark cmdbuf) cmdbuf)
+            (realgud:track-handle-breakpoints text-sans-loc cmd-mark cmdbuf)
 
             (if loc
                 (let ((selected-frame
@@ -257,27 +251,38 @@ evaluating (realgud-cmdbuf-info-loc-regexp realgud-cmdbuf-info)"
                   (realgud-track-loc-action loc cmdbuf (not selected-frame)
                                             shortkey-on-tracing?)
                   (realgud-cmdbuf-info-in-debugger?= 't)
-                  (realgud-cmdbuf-mode-line-update))
-              (realgud:track-remove-breakpoints
-               (realgud-track-bp-delete text-sans-loc cmd-mark cmdbuf)
-               cmdbuf))
+                  (realgud-cmdbuf-mode-line-update)))
+
             )
         )
       )
     )
   )
 
-(defun realgud:track-add-breakpoint (bp-loc cmdbuf)
-  "Add a breakpoint fringe in source window if BP-LOC."
-  (if bp-loc
-      (let ((src-buffer (realgud-loc-goto bp-loc)))
-        (realgud-cmdbuf-add-srcbuf src-buffer cmdbuf)
-        (with-current-buffer src-buffer
-          (realgud-bp-add-info bp-loc)))))
+(defun realgud:track-handle-breakpoints (text-sans-loc cmd-mark cmdbuf)
+  (realgud:track-add-breakpoint text-sans-loc cmd-mark cmdbuf)
+  (realgud:track-remove-breakpoints text-sans-loc cmd-mark cmdbuf))
 
-(defun realgud:track-remove-breakpoints (bp-locs cmdbuf)
+(defun realgud:track-add-breakpoint (text-sans-loc cmd-mark cmdbuf)
+  "Add a breakpoint fringe in source window if BP-LOC."
+  (realgud-track-bp-enable-disable text-sans-loc
+                                   (realgud-cmdbuf-pat "brkpt-enable")
+                                   't)
+
+  (let ((bp-loc (realgud-track-bp-loc text-sans-loc cmd-mark cmdbuf)))
+    (if bp-loc
+        (let ((src-buffer (realgud-loc-goto bp-loc)))
+          (realgud-cmdbuf-add-srcbuf src-buffer cmdbuf)
+          (with-current-buffer src-buffer
+            (realgud-bp-add-info bp-loc))))))
+
+(defun realgud:track-remove-breakpoints (text-sans-loc cmd-mark cmdbuf)
   "Remove all breakpoints in source window found in BP-LOCS."
-  (dolist (bp-loc bp-locs)
+  (realgud-track-bp-enable-disable text-sans-loc
+                                   (realgud-cmdbuf-pat "brkpt-disable")
+                                   nil)
+
+  (dolist (bp-loc (realgud-track-bp-delete text-sans-loc cmd-mark cmdbuf))
     (let ((src-buffer (realgud-loc-goto bp-loc)))
       (realgud-cmdbuf-add-srcbuf src-buffer cmdbuf)
       (with-current-buffer src-buffer
