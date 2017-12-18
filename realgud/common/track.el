@@ -231,38 +231,38 @@ evaluating (realgud-cmdbuf-info-loc-regexp realgud-cmdbuf-info)"
 
       (if (not (equal "" text))
           (with-current-buffer cmdbuf
-	      (if (realgud-sget 'cmdbuf-info 'divert-output?)
-		  (realgud-track-divert-prompt text cmdbuf to))
-              ;; FIXME: instead of these fixed filters,
-	      ;; put into a list and iterate over that.
-	      (realgud-track-termination? text)
-	      (setq text-sans-loc (or (realgud-track-loc-remaining text) text))
-	      (realgud-track-bp-enable-disable text-sans-loc
-					       (realgud-cmdbuf-pat "brkpt-enable")
-					       't)
-	      (realgud-track-bp-enable-disable text-sans-loc
-					       (realgud-cmdbuf-pat "brkpt-disable")
-					       nil)
-	      (setq frame-num (realgud-track-selected-frame text))
-	      (if (and frame-num (not loc))
-		  (setq loc (realgud-track-loc-from-selected-frame
-			     text cmd-mark)))
+            (if (realgud-sget 'cmdbuf-info 'divert-output?)
+                (realgud-track-divert-prompt text cmdbuf to))
+            ;; FIXME: instead of these fixed filters,
+            ;; put into a list and iterate over that.
+            (realgud-track-termination? text)
+            (setq text-sans-loc (or (realgud-track-loc-remaining text) text))
+            (realgud-track-bp-enable-disable text-sans-loc
+                                             (realgud-cmdbuf-pat "brkpt-enable")
+                                             't)
+            (realgud-track-bp-enable-disable text-sans-loc
+                                             (realgud-cmdbuf-pat "brkpt-disable")
+                                             nil)
+            (setq frame-num (realgud-track-selected-frame text))
+            (if (and frame-num (not loc))
+                (setq loc (realgud-track-loc-from-selected-frame
+                           text cmd-mark)))
 
-              (realgud:track-add-breakpoint (realgud-track-bp-loc text-sans-loc cmd-mark cmdbuf) cmdbuf)
+            (realgud:track-add-breakpoint (realgud-track-bp-loc text-sans-loc cmd-mark cmdbuf) cmdbuf)
 
-	      (if loc
-		  (let ((selected-frame
-			 (or (not frame-num)
-			     (eq frame-num (realgud-cmdbuf-pat "top-frame-num")))))
-		    (realgud-track-loc-action loc cmdbuf (not selected-frame)
-                                              shortkey-on-tracing?)
-		    (realgud-cmdbuf-info-in-debugger?= 't)
-                    (realgud-cmdbuf-mode-line-update))
-                (realgud:track-remove-breakpoints
-                 (realgud-track-bp-delete text-sans-loc cmd-mark cmdbuf)))
-              )
-          )
+            (if loc
+                (let ((selected-frame
+                       (or (not frame-num)
+                           (eq frame-num (realgud-cmdbuf-pat "top-frame-num")))))
+                  (realgud-track-loc-action loc cmdbuf (not selected-frame)
+                                            shortkey-on-tracing?)
+                  (realgud-cmdbuf-info-in-debugger?= 't)
+                  (realgud-cmdbuf-mode-line-update))
+              (realgud:track-remove-breakpoints
+               (realgud-track-bp-delete text-sans-loc cmd-mark cmdbuf)))
+            )
         )
+      )
     )
   )
 
