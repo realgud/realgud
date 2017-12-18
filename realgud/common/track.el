@@ -259,7 +259,8 @@ evaluating (realgud-cmdbuf-info-loc-regexp realgud-cmdbuf-info)"
                   (realgud-cmdbuf-info-in-debugger?= 't)
                   (realgud-cmdbuf-mode-line-update))
               (realgud:track-remove-breakpoints
-               (realgud-track-bp-delete text-sans-loc cmd-mark cmdbuf)))
+               (realgud-track-bp-delete text-sans-loc cmd-mark cmdbuf)
+               cmdbuf))
             )
         )
       )
