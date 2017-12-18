@@ -27,15 +27,23 @@
 (declare-function realgud-set-command-name-hash-to-buffer-local 'realgud-track)
 (declare-function realgud:truncate-eval-message                 'realgud-track)
 (declare-function realgud:track-add-breakpoint                  'realgud-track)
+(declare-function realgud-track-bp-loc                          'realgud-track)
 (declare-function realgud:track-remove-breakpoints              'realgud-track)
 
 
 (test-simple-start)
 
 (eval-when-compile
+  (defvar bp-loc)
+  (defvar bp-num)
+  (defvar debugger-bp-output)
   (defvar debugger-output)
   (defvar line-number)
+  (defvar realgud-command-name-hash)
   (defvar realgud-pat-hash)
+  (defvar test-buffer)
+  (defvar test-command-hash)
+  (defvar test-command-name-hash)
   (defvar test-filename)
 )
 

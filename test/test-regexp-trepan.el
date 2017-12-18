@@ -23,7 +23,15 @@
   (defvar test-dbgr)
   (defvar test-s1)
   (defvar test-text)
+  (defvar realgud:trepan-pat-hash)
 )
+
+(declare-function loc-match	                 'realgud-helper)
+(declare-function prompt-match                   'regexp-helper)
+(declare-function realgud-loc-pat-file-group     'realgud-regexp)
+(declare-function realgud-loc-pat-line-group     'realgud-regexp)
+(declare-function realgud-loc-pat-num            'realgud-regexp)
+(declare-function realgud-loc-pat-regexp         'realgud-regexp)
 
 (set (make-local-variable 'bps-pat)
      (gethash "brkpt-set"          realgud:trepan-pat-hash))

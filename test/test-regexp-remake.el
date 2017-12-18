@@ -14,6 +14,12 @@
   (defvar num-pat)    (defvar num-group)   (defvar realgud:remake-pat-hash)
 )
 
+(declare-function prompt-match                   'regexp-helper)
+(declare-function realgud-loc-pat-num            'realgud-regexp)
+(declare-function realgud-loc-pat-regexp         'realgud-regexp)
+(declare-function realgud-loc-pat-file-group     'realgud-regexp)
+(declare-function realgud-loc-pat-line-group     'realgud-regexp)
+
 (set (make-local-variable 'prompt-pat)
      (gethash "prompt"             realgud:remake-pat-hash))
 (set (make-local-variable 'frame-pat)
