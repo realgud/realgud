@@ -272,7 +272,7 @@ EVENT should be a mouse click on the left fringe or margin."
 
 (defun realgud:cmd-eval(arg)
     "Evaluate an expression."
-    (interactive "MEval expesssion: ")
+    (interactive "MEval expression: ")
     (realgud:cmd-run-command arg "eval")
 )
 
