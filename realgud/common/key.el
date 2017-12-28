@@ -4,7 +4,7 @@
 ;; URL: http://github.com/rocky/emacs-load-relative
 ;; Compatibility: GNU Emacs 24.x
 
-;; Copyright (C) 2015 Free Software Foundation, Inc
+;; Copyright (C) 2015, 2017 Free Software Foundation, Inc
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -27,27 +27,14 @@
 
 (defcustom realgud-populate-common-fn-keys-function
   'realgud-populate-common-fn-keys-standard
-  "The function to call to populate key bindings common to all dbgr windows.
+  "The function to call to populate key bindings common to all realgud windows.
 This includes the secondary windows, the debugger shell, and all
-Ruby source buffers when the debugger is active.
+realgud source buffers when the debugger is active.
 
 This variable can be bound to the following:
 
-* nil -- Don't bind any keys.
-
+* `realgud-populate-common-fn-keys-none' -- Don't bind any keys.
 * `realgud-populate-common-fn-keys-standard' -- Bind the function
-  keys according to a widely used debugger convention:
-
-\\{realgud-example-map-standard}
-
-* `realgud-populate-common-fn-keys-eclipse' -- Bind according to Eclipse.
-
-\\{realgud-example-map-eclipse}
-
-* `realgud-populate-common-fn-keys-netbeans' -- Bind according to NetBeans.
-
-\\{realgud-example-map-netbeans}
-
 * Any other value is expected to be a callable function that takes one
   argument, the keymap, and populates it with suitable keys."
   :type 'function
@@ -81,6 +68,10 @@ This variable can be bound to the following:
   (define-key map [M-S-down]  'realgud-track-hist-newest)
   (define-key map [M-S-up]    'realgud-track-hist-oldest)
   (define-key map "\C-c " 'realgud:cmd-break)
+  )
+
+(defun realgud-populate-common-fn-keys-none (&optional map)
+  "Do not any debugger function keys"
   )
 
 ;; TODO: add eclipse, and netbeans
