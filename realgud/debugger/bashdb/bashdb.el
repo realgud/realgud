@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016, 2018 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -77,7 +77,32 @@ fringe and marginal icons.
 			opt-cmd-line no-reset)
   )
 
+(defun realgud:bashdb-large (&optional opt-cmd-line no-reset)
+  "Use this is the program you are debugging is large, say over 1,000 lines or so.
+"
+  (interactive)
+  (let ((cmd-buf
+	 (realgud:run-debugger "bashdb"
+			       'bashdb-query-cmdline
+			       'bashdb-parse-cmd-args
+			       'realgud:bashdb-minibuffer-history
+			       opt-cmd-line no-reset)
+	 ))
+    (if cmd-buf
+	(let ((process (get-buffer-process cmd-buf)))
+	  (if (and process (eq 'run (process-status process)))
+	      (with-current-buffer cmd-buf
+		(sleep-for 1)
+		(realgud-command "frame 0" nil nil nil)
+		)))
+      )
+    ))
+
+
 ;;;###autoload
 (defalias 'bashdb 'realgud:bashdb)
+
+;;;###autoload
+(defalias 'bashdb-large 'realgud:bashdb-large)
 
 (provide-me "realgud-")
