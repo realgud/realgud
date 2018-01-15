@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2017 Free Software Foundation, Inc
+;; Copyright (C) 2015-2018 Free Software Foundation, Inc
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -32,26 +32,6 @@
   (defvar realgud-cmdbuf-info)
   )
 (require 'cl-lib)
-
-(defface debugger-running
-  '((((class color) (min-colors 16) (background light))
-     (:foreground "Green4" :weight bold))
-    (((class color) (min-colors 88) (background dark))
-     (:foreground "Green1" :weight bold))
-    (((class color) (min-colors 16) (background dark))
-     (:foreground "Green" :weight bold))
-    (((class color)) (:foreground "green" :weight bold))
-    (t (:weight bold)))
-  "Face used to highlight debugger run information."
-  :group 'realgud
-  :version "24.3")
-
-(defface debugger-not-running
-  '((t :inherit font-lock-warning-face))
-  "Face used when debugger or process is not running."
-  :group 'realgud
-  :version "24.3")
-
 
 (cl-defstruct realgud-cmdbuf-info
   "The debugger object/structure specific to a process buffer."
@@ -468,9 +448,9 @@ command-process buffer has stored."
 		    (list (propertize
 			   (format ":%s%s"
 				   (process-status cmd-process) debug-status)
-			   'face 'debugger-running))
+			   'face 'realgud-debugger-running))
 		  (list (propertize ":not running" 'face
-			'debugger-not-running))
+			'realgud-debugger-not-running))
 		  ))
 	  (setq mode-line-process status)
 	  ;; Force mode line redisplay soon.

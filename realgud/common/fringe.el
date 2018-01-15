@@ -1,4 +1,4 @@
-;; Copyright (C) 2010, 2012, 2014-2016 Free Software Foundation, Inc
+;; Copyright (C) 2010, 2012, 2014-2016, 2018 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -27,15 +27,30 @@
     (define-fringe-bitmap 'hollow-right-triangle
       "\xe0\x90\x88\x84\x84\x88\x90\xe0"))
 
+(defface realgud-debugger-running
+  '((((class color) (min-colors 16) (background light))
+     (:foreground "Green4" :weight bold))
+    (((class color) (min-colors 88) (background dark))
+     (:foreground "Green1" :weight bold))
+    (((class color) (min-colors 16) (background dark))
+     (:foreground "Green" :weight bold))
+    (((class color)) (:foreground "green" :weight bold))
+    (t (:weight bold)))
+  "Face used to highlight debugger run information."
+  :group 'realgud
+  :version "24.3")
+
+(defface realgud-debugger-not-running
+  '((t :inherit font-lock-warning-face))
+  "Face used when debugger or process is not running."
+  :group 'realgud
+  :version "24.3")
+
+
 ;; FIXME: Figure out how to do this as a macro.
 
 (defface realgud-overlay-arrow1
-  '((((class color) (min-colors 16) (background light)) :foreground "ForestGreen" :weight bold)
-    (((class color) (min-colors 16) (background dark))  :foreground "PaleGreen" :weight bold)
-    (((class color) (min-colors 8)) :foreground "green")
-    (((class grayscale) (background light)) :foreground "Black" :weight bold)
-    (((class grayscale) (background dark))  :foreground "White" :weight bold)
-    (t :weight bold))
+  '((t :inherit realgud-debugger-running))
     "Realgud fringe face for current position indicator."
     :group 'realgud)
 

@@ -168,7 +168,7 @@ of this mode."
 	     (status (if cmd-process
 			 (list (propertize (format ":%s"
 						   (process-status cmd-process))
-			    'face 'debugger-running))
+			    'face 'realgud-debugger-running))
 		       ""))
 	     )
 	(setq mode-line-process status)
