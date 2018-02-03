@@ -56,13 +56,13 @@
 
 (defface realgud-overlay-arrow2
   '((((background  dark)) :foreground "white" :weight bold)
-    (((background light)) :foreground "black" :weight bold))
+    (((background light)) :foreground "tan1" :weight bold))
   "Fringe face for current position."
   :group 'realgud)
 
 (defface realgud-overlay-arrow3
   '((((background  dark)) :foreground "DimGray")
-    (((background light)) :foreground "DarkGray"))
+    (((background light)) :foreground "tan4"))
   "Fringe face for current position."
   :group 'realgud)
 
