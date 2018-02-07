@@ -1,4 +1,4 @@
-;; Copyright (C) 2010-2017 Free Software Foundation, Inc
+;; Copyright (C) 2010-2018 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -113,13 +113,13 @@ realgud-loc-pat struct")
   "Hash key is command name like 'shell' and the value is
   the trepan3k command to use, like 'python'")
 
-(setf (gethash "eval"  realgud:trepan3k-command-hash) "eval %s")
+(setf (gethash "eval"   realgud:trepan3k-command-hash) "eval %s")
 (setf (gethash "pprint" realgud:trepan3k-command-hash) "pp %s")
-(setf (gethash "shell" realgud:trepan3k-command-hash) "python")
-(setf (gethash "until" realgud:trepan3k-command-hash) "continue %l")
+(setf (gethash "shell"  realgud:trepan3k-command-hash) "python")
+(setf (gethash "until"  realgud:trepan3k-command-hash) "continue %l")
 
 ;; If your version of trepan3k doesn't support "quit!",
-;; get a more recent version of trepan2
+;; get a more recent version of trepan3k
 (setf (gethash "quit" realgud:trepan3k-command-hash) "quit!")
 
 (setf (gethash "trepan3k" realgud-command-hash) realgud:trepan3k-command-hash)
