@@ -114,6 +114,7 @@ realgud-loc-pat struct")
   the trepan3k command to use, like 'python'")
 
 (setf (gethash "eval"  realgud:trepan3k-command-hash) "eval %s")
+(setf (gethash "pprint" realgud:trepan3k-command-hash) "pp %s")
 (setf (gethash "shell" realgud:trepan3k-command-hash) "python")
 (setf (gethash "until" realgud-command-hash) "continue %l")
 
