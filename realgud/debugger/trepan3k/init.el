@@ -115,7 +115,7 @@ realgud-loc-pat struct")
 
 (setf (gethash "eval"  realgud:trepan3k-command-hash) "eval %s")
 (setf (gethash "shell" realgud:trepan3k-command-hash) "python")
-(setf (gethash "until" realgud-command-hash) "continue %l")
+(setf (gethash "until" realgud:trepan3k-command-hash) "continue %l")
 
 ;; If your version of trepan3k doesn't support "quit!",
 ;; get a more recent version of trepan2
