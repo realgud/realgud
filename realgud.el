@@ -35,7 +35,7 @@
 ;;
 ;; Once upon a time in an Emacs far far away and a programming-style
 ;; deservedly banished, there was a monolithic Cathederal-like
-;; debugger front-end called gub.  This interfaced with a number of
+;; debugger front-end called gud.  This interfaced with a number of
 ;; debuggers, many now dead.  Is there anyone still alive that
 ;; remembers sdb from UNIX/32V circa 1980?
 ;;
