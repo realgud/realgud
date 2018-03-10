@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016, 2018 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -14,6 +14,10 @@
 
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+;;; "node debug" debugger
+
+;;; Note: this code is obsolete. FIXME: Move into another repository
 ;;; Regular expressions for nodejs Javascript debugger.
 
 (eval-when-compile (require 'cl-lib))   ;For setf.
@@ -45,7 +49,7 @@ realgud-loc-pat struct")
        :file-group 1
        :line-group 2))
 
-;; Regular expression that describes a nodejs command prompt
+;; Regular expression that describes a node-debug command prompt
 ;; For example:
 ;;   debug>
 (setf (gethash "prompt" realgud:nodejs-pat-hash)
@@ -84,7 +88,7 @@ realgud-loc-pat struct")
 (defconst realgud:nodejs-frame-module-regexp "[^ \t\n]+")
 (defconst realgud:nodejs-frame-file-regexp   "[^ \t\n]+")
 
-;; Regular expression that describes a nodejs location generally shown
+;; Regular expression that describes a node-debug location generally shown
 ;; Regular expression that describes a debugger "backtrace" command line.
 ;; For example:
 ;; #0 module.js:380:17
@@ -142,18 +146,28 @@ realgud-loc-pat struct")
 (setf (gethash realgud:nodejs-debugger-name realgud-pat-hash)
       realgud:nodejs-pat-hash)
 
+;;  Prefix used in variable names (e.g. short-key-mode-map) for
+;; this debugger
+
+(setf (gethash "nodejs" realgud:variable-basename-hash)
+      "nodejs")
+
 (defvar realgud:nodejs-command-hash (make-hash-table :test 'equal)
   "Hash key is command name like 'finish' and the value is
   the nodejs command to use, like 'out'")
 
-(setf (gethash "backtrace"  realgud:nodejs-command-hash) "T")
+(setf (gethash realgud:nodejs-debugger-name
+	       realgud-command-hash)
+      realgud:nodejs-command-hash)
+
+(setf (gethash "backtrace"  realgud:nodejs-command-hash) "backtrace")
 (setf (gethash "break"      realgud:nodejs-command-hash)
       "setBreakpoint('%X',%l)")
 (setf (gethash "continue"   realgud:nodejs-command-hash) "cont")
 (setf (gethash "quit"       realgud:nodejs-command-hash) "quit")
 (setf (gethash "finish"     realgud:nodejs-command-hash) "out")
 (setf (gethash "shell"      realgud:nodejs-command-hash) "repl")
-(setf (gethash "eval"       realgud:nodejs-command-hash) "*not-implemented*")
+(setf (gethash "eval"       realgud:nodejs-command-hash) "exec('%s')")
 
 ;; We need aliases for step and next because the default would
 ;; do step 1 and nodejs doesn't handle this. And if it did,
@@ -162,6 +176,10 @@ realgud-loc-pat struct")
 (setf (gethash "next"       realgud:nodejs-command-hash) "next")
 
 ;; Unsupported features:
-(setf (gethash "jump"  realgud:nodejs-command-hash) "*not-implemented*")
+(setf (gethash "jump"       realgud:nodejs-command-hash) "*not-implemented*")
+(setf (gethash "up"         realgud:nodejs-command-hash) "*not-implemented*")
+(setf (gethash "down"       realgud:nodejs-command-hash) "*not-implemented*")
+(setf (gethash "frame"      realgud:nodejs-command-hash) "*not-implemented*")
+
 
 (provide-me "realgud:nodejs-")

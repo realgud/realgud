@@ -126,7 +126,7 @@ Note that path elements have been expanded via `expand-file-name'.
 
 (defun realgud:nodejs-suggest-invocation (debugger-name)
   "Suggest a nodejs command invocation via `realgud-suggest-invocaton'"
-  (realgud-suggest-invocation (or debugger-name realgud:nodejs-command-name)
+  (realgud-suggest-invocation realgud:nodejs-command-name
 			      realgud:nodejs-minibuffer-history
 			      "js" "\\.js$"))
 

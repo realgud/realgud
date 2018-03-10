@@ -1,4 +1,4 @@
-;; Copyright (C) 2014-2016 Free Software Foundation, Inc
+;; Copyright (C) 2014-2016, 2018 Free Software Foundation, Inc
 
 ;; Author: Free Software Foundation, Inc
 
@@ -76,7 +76,12 @@ fringe and marginal icons.
     ;;   )
     ))
 
-;; There is already a nodejs command in `nodejs-repl'.
-;; (defalias 'nodejs 'realgud:nodejs)
+;; Note: There is already a nodejs command in `nodejs-repl'.
+
+;;;###autoload
+(defalias 'realgud:node-debug 'realgud:nodejs)
+
+;;;###autoload
+(defalias 'node-debug 'realgud:nodejs)
 
 (provide-me "realgud-")
