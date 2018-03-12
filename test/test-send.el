@@ -44,6 +44,9 @@
 	      (realgud-expand-format "h%s!" "i, rocky")
 	      "format %s")
 
+(assert-equal "\"\\\"fake\\\" news\"!"
+	      (realgud-expand-format "%q!" "\"fake\" news"))
+
 (setup)
 ;; Current buffer is now set up as a source buffer
 (setq file-name (buffer-file-name))

@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016, 2018 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -140,6 +140,7 @@ taken from current buffer, or OPT-BUFFER if non-nil.  Some
   %c -- Fully qualified class name derived from the expression
         surrounding point.
   %p -- Value of OPT-STR, converted to string using `int-to-string'
+  %q -- Value of OPT-STR with string escapes (as ksh, bash, and zsh do).
   %s -- Value of OPT-STR.
 
 %p and %s are replaced by an empty string if OPT-STR is nil."
@@ -149,7 +150,7 @@ taken from current buffer, or OPT-BUFFER if non-nil.  Some
 	 result)
     (while (and fmt-str
 		(let ((case-fold-search nil))
-		  (string-match "\\([^%]*\\)%\\([dfFlpxXs]\\)" fmt-str)))
+		  (string-match "\\([^%]*\\)%\\([dfFlpqxXs]\\)" fmt-str)))
       (let* ((key-str (match-string 2 fmt-str))
 	     (key (string-to-char key-str)))
 	(setq result
@@ -179,20 +180,34 @@ taken from current buffer, or OPT-BUFFER if non-nil.  Some
 			  (+ (count-lines (point-min) (point))
 			     (if (bolp) 1 0)))))
 		   "source-buffer-not-found-for-%l"))
+
+                ((eq key ?p) (if opt-str (int-to-string opt-str) ""))
+
+		;; String with escapes. %q follows shell (ksh, bash, zsh)
+		;; The other possibility was Python's %r, !r or "repr".
+		;; That isn't as perfect a fit though.
+                ((eq key ?q) (if opt-str
+				 (let ((print-escape-newlines t))
+				   (prin1-to-string opt-str))
+				 ""))
+
+		;; String
+                ((eq key ?s) (or opt-str ""))
+
 		((eq key ?x)
 		 (or (and src-file-name src-file-name)
 		     "*source-file-not-found-for-%x"))
 		((eq key ?X)
 		 (or (and src-file-name (expand-file-name src-file-name))
 		     "*source-file-not-found-for-%X"))
+
 		;; ((eq key ?e)
 		;;  (gud-find-expr))
 		;; ((eq key ?a)
 		;;  (gud-read-address))
 		;; ((eq key ?c)
 		;;   (gud-find-class srcbuf))
-                ((eq key ?p) (if opt-str (int-to-string opt-str) ""))
-                ((eq key ?s) (or opt-str ""))
+
                 (t key)))))
       (setq fmt-str (substring fmt-str (match-end 2))))
     ;; There might be text left in FMT-STR when the loop ends.

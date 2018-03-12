@@ -40,6 +40,5 @@ function gcd(a, b) {
 var a = parseInt(process.argv[0]) || 24,
     b = parseInt(process.argv[0]) || 5;
 
-console.log(util.format("The GCD of %d and %d is %d", a, b,
-			gcd(a, b)));
+console.log(util.format("The GCD of %d and %d is %d", a, b, gcd(a, b)));
 process.exit();

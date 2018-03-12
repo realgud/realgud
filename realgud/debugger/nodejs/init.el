@@ -167,7 +167,7 @@ realgud-loc-pat struct")
 (setf (gethash "quit"       realgud:nodejs-command-hash) "quit")
 (setf (gethash "finish"     realgud:nodejs-command-hash) "out")
 (setf (gethash "shell"      realgud:nodejs-command-hash) "repl")
-(setf (gethash "eval"       realgud:nodejs-command-hash) "exec('%s')")
+(setf (gethash "eval"       realgud:nodejs-command-hash) "exec(%q)")
 
 ;; We need aliases for step and next because the default would
 ;; do step 1 and nodejs doesn't handle this. And if it did,
