@@ -62,10 +62,10 @@
       ))
 
 (defun realgud:trepanjs-loc-fn-callback(text filename lineno source-str
-					ignore-file-re-list cmd-mark directory)
+					cmd-mark directory)
   (realgud:file-loc-from-line filename lineno
 			      cmd-mark source-str nil
-			      ignore-file-re-list 'realgud:trepanjs-find-file))
+			      'realgud:trepanjs-find-file directory))
 
 (defun realgud:trepanjs-parse-cmd-args (orig-args)
   "Parse command line ARGS for the name of script to debug.

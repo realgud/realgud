@@ -1,4 +1,4 @@
-;; Copyright (C) 2014, 2016 Free Software Foundation, Inc
+;; Copyright (C) 2014, 2016, 2018 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -98,11 +98,10 @@ that works."
   )
 
 (defun realgud:jdb-loc-fn-callback(text filename lineno source-str
-					ignore-file-re-list cmd-mark directory)
+					cmd-mark directory)
   (realgud:file-loc-from-line filename lineno
 			      cmd-mark source-str nil
-			      ignore-file-re-list 'realgud:jdb-find-file
-			      directory))
+			      'realgud:jdb-find-file directory))
 
 (defun realgud:jdb-parse-cmd-args (orig-args)
   "Parse command line ARGS for the annotate level and name of script to debug.

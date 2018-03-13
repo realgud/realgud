@@ -17,6 +17,7 @@
 (require 'compile) ;; for compilation-find-file
 (require 'seq) ;; for seq-find
 (require-relative-list '("helper" "loc") "realgud-")
+(require-relative-list '("buffer/command") "realgud-buffer-")
 
 (defvar realgud-file-remap (make-hash-table :test 'equal)
   "How to remap files we otherwise can't find in the
@@ -27,8 +28,10 @@
 
 (declare-function realgud:strip         'realgud)
 (declare-function realgud-loc-goto      'realgud-loc)
+(declare-function realgud-get-cmdbuf    'realgud-buffer-helper)
 (declare-function buffer-killed?        'helper)
 (declare-function compilation-find-file 'compile)
+(declare-function realgud-cmdbuf-info-ignore-re-file-list= 'realgud-buffer-command)
 
 (defcustom realgud-file-find-function 'compilation-find-file
   "Function to call when we can't easily find file"
@@ -102,7 +105,7 @@ problem as best as we can determine."
 
        ;; Do we have a custom find-file function?
        (find-file-fn
-	(setq filename (funcall find-file-fn filename)))
+	(setq filename (funcall find-file-fn cmd-marker filename directory)))
 
        (t (setq filename nil)
 	  (if remapped-filename

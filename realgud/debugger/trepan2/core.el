@@ -1,4 +1,4 @@
-;; Copyright (C) 2010-2012, 2014-2016 Free Software Foundation, Inc
+;; Copyright (C) 2010-2012, 2014-2016, 2018 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -55,13 +55,10 @@ in variable `realgud:trepan2-file-remap' when that works. In the future,
 we may also consult PYTHONPATH."
   (let* ((transformed-file)
 	 (stripped-filename (realgud:strip filename))
-	 (ignore-file-re realgud-python-ignore-file-re)
 	)
     (cond
      ((file-exists-p filename) filename)
      ((file-exists-p stripped-filename) stripped-filename)
-     ((string-match ignore-file-re filename)
-	(message "tracking ignored for file: %s" filename) nil)
      ('t
       ;; FIXME search PYTHONPATH if not absolute file
       (if (gethash filename realgud-file-remap)
@@ -86,11 +83,9 @@ we may also consult PYTHONPATH."
     ))
 
 (defun realgud:trepan2-loc-fn-callback(text filename lineno source-str
-					    ignore-file-re-list cmd-mark
-					    directory)
-  (realgud:file-loc-from-line filename lineno
-			      cmd-mark source-str nil ignore-file-re-list
-			      'realgud:trepan2-find-file))
+					    cmd-mark directory)
+  (realgud:file-loc-from-line filename lineno cmd-mark source-str nil
+			      'realgud:trepan2-find-file directory))
 
 ;; FIXME: I think this code and the keymaps and history
 ;; variable chould be generalized, perhaps via a macro.
