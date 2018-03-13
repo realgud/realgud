@@ -60,7 +60,7 @@ ca.mgcill.rocky.snpEff.main => ca/mcgill/rocky/snpEff"
   value is associated filesystem string presumably in the
   filesystem")
 
-(defun realgud:jdb-find-file(filename)
+(defun realgud:jdb-find-file(marker filename directory)
   "A find-file specific for java/jdb. We use `gdb-jdb-find-source' to map a
 name to a filename. Failing that we can add on .java to the name. Failing that
 we will prompt for a mapping and save that in `realgud:jdb-file-remap' when
@@ -87,8 +87,8 @@ that works."
 	      (guess-filename (realgud:jdb-dot-to-slash filename)))
 	  (setq remapped-filename
 		(buffer-file-name
-		 (compilation-find-file (point-marker) guess-filename
-					nil "%s.java")))
+		 (compilation-find-file marker guess-filename
+					directory "%s.java")))
 	  (when (and remapped-filename (file-exists-p remapped-filename))
 	    (puthash stripped-filename remapped-filename realgud:jdb-file-remap)
 	    remapped-filename
@@ -98,10 +98,11 @@ that works."
   )
 
 (defun realgud:jdb-loc-fn-callback(text filename lineno source-str
-					ignore-file-re cmd-mark)
+					ignore-file-re-list cmd-mark directory)
   (realgud:file-loc-from-line filename lineno
 			      cmd-mark source-str nil
-			      ignore-file-re 'realgud:jdb-find-file))
+			      ignore-file-re-list 'realgud:jdb-find-file
+			      directory))
 
 (defun realgud:jdb-parse-cmd-args (orig-args)
   "Parse command line ARGS for the annotate level and name of script to debug.

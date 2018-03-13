@@ -31,15 +31,17 @@
 	       '("trepan2" "program.py" "foo")))
 
 (note "realgud:trepan2-find-file")
-(assert-nil (realgud:trepan2-find-file "<string>")
-	    "Should ignore psuedo file")
+(assert-nil
+ (realgud:trepan2-find-file nil "<string>" nil)
+ "Should ignore pseudo file")
 
 (eval-when-compile
   (defvar test-python-file))
 
 (set (make-local-variable 'test-python-file)
      (concat (file-name-directory (__FILE__)) "gcd.py"))
-(assert-equal test-python-file (realgud:trepan2-find-file test-python-file)
-	    "Should ignore psuedo file")
+(assert-equal test-python-file
+	      (realgud:trepan2-find-file nil test-python-file nil)
+	    "Should find file")
 
 (end-tests)

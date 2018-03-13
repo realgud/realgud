@@ -3,7 +3,7 @@
 /*-pkg.el
 /*.tar.gz
 /.cask/
-/.python-version
+.python-version
 /README
 /aclocal.m4
 /autom4te.cache

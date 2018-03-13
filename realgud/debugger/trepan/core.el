@@ -77,10 +77,12 @@ future, we may also consult RUBYPATH."
     ))
 
 (defun realgud:trepan-loc-fn-callback(text filename lineno source-str
-					   ignore-file-re cmd-mark)
+					   cmd-mark
+					   directory)
   (realgud:file-loc-from-line filename lineno
-			      cmd-mark source-str nil nil
-			      'realgud:trepan-find-file))
+			      cmd-mark source-str nil
+			      'realgud:trepan-find-file
+			      directory))
 
 ;; FIXME: I think this code and the keymaps and history
 ;; variable chould be generalized, perhaps via a macro.

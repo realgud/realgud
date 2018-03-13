@@ -34,6 +34,9 @@ realgud-loc-pat struct")
 
 (defconst realgud:trepanjs-file-regexp   "\\([^ \t\n]+\\)\\(?: \\[.*\\]\\)?")
 
+(setf (gethash "loc-callback-fn" realgud:trepanjs-pat-hash)
+      'realgud:trepanjs-loc-fn-callback)
+
 ;; realgud-loc-pat that describes a trepanjs location generally shown
 ;; before a command prompt.
 ;; For example:

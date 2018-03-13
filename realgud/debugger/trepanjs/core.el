@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016, 2018 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -15,6 +15,8 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+(require 'compile) ;; for compilation-find-file
+
 (require 'load-relative)
 (require-relative-list '("../../common/track"
                          "../../common/core"
@@ -26,11 +28,15 @@
 (declare-function realgud-parse-command-arg  'realgud-core)
 (declare-function realgud-query-cmdline      'realgud-core)
 (declare-function realgud-suggest-invocation 'realgud-core)
+(declare-function realgud:file-loc-from-line 'realgud-file)
 
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
 (defvar realgud:trepanjs-minibuffer-history nil
   "minibuffer history list for the command `realgud:trepanjs'.")
+
+(defvar realgud:trepanjs-blacklist nil
+  "List of black-listed file regexp that we should ignore file tracking")
 
 (easy-mmode-defmap realgud:trepanjs-minibuffer-local-map
   '(("\C-i" . comint-dynamic-complete-filename))
@@ -45,6 +51,21 @@
    realgud:trepanjs-minibuffer-local-map
    'realgud:trepanjs-minibuffer-history
    opt-debugger))
+
+(defun realgud:trepanjs-find-file(marker filename directory)
+  "A find-file specific for trepanjs."
+  (cond ((member filename realgud:trepanjs-blacklist) nil)
+	((y-or-n-p "Black-list this file for location tracking?")
+	 (push filename realgud:trepanjs-blacklist)
+	 nil)
+	(t (compilation-find-file marker filename directory))
+      ))
+
+(defun realgud:trepanjs-loc-fn-callback(text filename lineno source-str
+					ignore-file-re-list cmd-mark directory)
+  (realgud:file-loc-from-line filename lineno
+			      cmd-mark source-str nil
+			      ignore-file-re-list 'realgud:trepanjs-find-file))
 
 (defun realgud:trepanjs-parse-cmd-args (orig-args)
   "Parse command line ARGS for the name of script to debug.

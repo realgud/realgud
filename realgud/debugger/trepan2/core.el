@@ -48,7 +48,7 @@
   filesystem")
 
 ;; FIXME: this code could be generalized and put in a common place.
-(defun realgud:trepan2-find-file(filename)
+(defun realgud:trepan2-find-file(marker filename directory)
   "A find-file specific for python/trepan. We strip off trailing
 blanks. Failing that we will prompt for a mapping and save that
 in variable `realgud:trepan2-file-remap' when that works. In the future,
@@ -61,7 +61,7 @@ we may also consult PYTHONPATH."
      ((file-exists-p filename) filename)
      ((file-exists-p stripped-filename) stripped-filename)
      ((string-match ignore-file-re filename)
-	(message "tracking ignored for psuedo-file: %s" filename) nil)
+	(message "tracking ignored for file: %s" filename) nil)
      ('t
       ;; FIXME search PYTHONPATH if not absolute file
       (if (gethash filename realgud-file-remap)
@@ -75,8 +75,8 @@ we may also consult PYTHONPATH."
 	    (let ((remapped-filename))
 	      (setq remapped-filename
 		    (buffer-file-name
-		     (compilation-find-file (point-marker) stripped-filename
-					    nil "%s.py")))
+		     (compilation-find-file marker stripped-filename
+					    directory "%s.py")))
 	      (when (and remapped-filename (file-exists-p remapped-filename))
 		(puthash filename remapped-filename realgud-file-remap)
 		remapped-filename
@@ -86,9 +86,10 @@ we may also consult PYTHONPATH."
     ))
 
 (defun realgud:trepan2-loc-fn-callback(text filename lineno source-str
-					    ignore-file-re cmd-mark)
+					    ignore-file-re-list cmd-mark
+					    directory)
   (realgud:file-loc-from-line filename lineno
-			      cmd-mark source-str nil nil
+			      cmd-mark source-str nil ignore-file-re-list
 			      'realgud:trepan2-find-file))
 
 ;; FIXME: I think this code and the keymaps and history

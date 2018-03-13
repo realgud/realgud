@@ -29,7 +29,8 @@ name. For example java.lang.Class.getDeclaredMethods")
 backtrace, prompt, etc.  The values of a hash entry is a
 realgud-loc-pat struct")
 
-(setf (gethash "loc-callback-fn" realgud:jdb-pat-hash) 'realgud:jdb-loc-fn-callback)
+(setf (gethash "loc-callback-fn" realgud:jdb-pat-hash)
+      'realgud:jdb-loc-fn-callback)
 
 ;; realgud-loc-pat that describes a jdb location generally shown
 ;; before a command prompt. For example:
