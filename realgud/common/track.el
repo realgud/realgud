@@ -594,6 +594,7 @@ of the breakpoints found in command buffer."
   ; that struct is the regexp hash to match positions. By setting the
   ; the fields of realgud-cmdbuf-info appropriately we can accomodate a
   ; family of debuggers -- one at a time -- for the buffer process.
+
   (setq cmdbuf (or cmdbuf (current-buffer)))
   (with-current-buffer cmdbuf
     (unless (realgud:track-complain-if-not-in-cmd-buffer cmdbuf t)

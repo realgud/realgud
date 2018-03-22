@@ -33,6 +33,26 @@
   )
 (require 'cl-lib)
 
+(defface debugger-running
+  '((((class color) (min-colors 16) (background light))
+     (:foreground "Green4" :weight bold))
+    (((class color) (min-colors 88) (background dark))
+     (:foreground "Green1" :weight bold))
+    (((class color) (min-colors 16) (background dark))
+     (:foreground "Green" :weight bold))
+    (((class color)) (:foreground "green" :weight bold))
+    (t (:weight bold)))
+  "Face used to highlight debugger run information."
+  :group 'realgud
+  :version "24.3")
+
+(defface debugger-not-running
+  '((t :inherit font-lock-warning-face))
+  "Face used when debugger or process is not running."
+  :group 'realgud
+  :version "24.3")
+
+
 (cl-defstruct realgud-cmdbuf-info
   "The debugger object/structure specific to a process buffer."
   debugger-name        ;; Name of debugger
