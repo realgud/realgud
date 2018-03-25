@@ -12,7 +12,10 @@
   (defvar temp-cmdbuf)
   (defvar temp-bt)
   (defvar realgud-pat-hash)
-)
+  )
+
+(if (or (<= emacs-major-version 24))
+    (defalias 'font-lock-ensure 'font-lock-fontify-buffer))
 
 (defun setup-bt-vars(debugger-name)
   "Sets up globals temp-cmdbuf and temp-bt with command buffer
@@ -38,7 +41,8 @@ for DEBUGGER-NAME and initializes it to STRING"
     (goto-char (point-min))
     (setq buffer-read-only nil)
     (insert string)
-    (font-lock-fontify-buffer) ;; 24 doesn't have (font-lock-ensure)
+    (message "%s" emacs-version)
+    (font-lock-ensure)
     ;; Newer emacs's use:
     (goto-char (point-min))
     )
