@@ -38,7 +38,7 @@ for DEBUGGER-NAME and initializes it to STRING"
     (goto-char (point-min))
     (setq buffer-read-only nil)
     (insert string)
-    (font-lock-ensure)
+    (font-lock-fontify-buffer) ;; 24 doesn't have (font-lock-ensure)
     ;; Newer emacs's use:
     (goto-char (point-min))
     )
