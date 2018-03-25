@@ -32,11 +32,12 @@
   :type 'function
   :group 'realgud)
 
-(defun realgud:find-file (marker filename directory)
+(defun realgud:find-file (marker filename directory &optional formats)
   "A wrapper around compilation find-file. We set the prompt
    to indicate we are looking for a source-code file."
-  (let ((compilation-error "source-code file"))
-    (compilation-find-file marker filename directory "%s")))
+   (or formats (setq formats "%s"))
+   (let ((compilation-error "source-code file"))
+    (compilation-find-file marker filename directory formats)))
 
 (defun realgud:file-line-count(filename)
   "Return the number of lines in file FILENAME, or nil FILENAME can't be

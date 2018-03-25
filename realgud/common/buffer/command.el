@@ -162,8 +162,9 @@
 (realgud-struct-field-setter "realgud-cmdbuf-info" "ignore-re-file-list")
 ;; (realgud-struct-field-setter "realgud-cmdbuf-info" "filename-remap-alist")
 
-(defun realgud-cmdbuf-filename-remap-alist= (value)
-    (setf (realgud-cmdbuf-info-filename-remap-alist realgud-cmdbuf-info) value))
+(defun realgud-cmdbuf-filename-remap-alist= (value &optional buffer)
+  (setq buffer (realgud-get-cmdbuf buffer))
+  (setf (realgud-cmdbuf-info-filename-remap-alist realgud-cmdbuf-info) value))
 
 (defun realgud:cmdbuf-follow-buffer(event)
   (interactive "e")

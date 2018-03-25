@@ -25,7 +25,8 @@ for DEBUGGER-NAME"
 		      (gethash debugger-name realgud-pat-hash))
 
     (switch-to-buffer nil)
-  ))
+    )
+  temp-cmdbuf)
 
 
 (defun setup-bt(debugger-name string)
@@ -37,7 +38,7 @@ for DEBUGGER-NAME and initializes it to STRING"
     (goto-char (point-min))
     (setq buffer-read-only nil)
     (insert string)
-    (font-lock-fontify-buffer)
+    (font-lock-ensure)
     ;; Newer emacs's use:
     (goto-char (point-min))
     )

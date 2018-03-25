@@ -54,48 +54,50 @@ ca.mgcill.rocky.snpEff.main => ca/mcgill/rocky/snpEff"
       (setq str (replace-regexp-in-string "\\." "/" str))
       str)
 
-(defvar realgud:jdb-file-remap (make-hash-table :test 'equal)
-  "How to remap Java files in jdb when we otherwise can't find in
-  the filesystem. The hash key is the file string we saw, and the
-  value is associated filesystem string presumably in the
-  filesystem")
-
 (defun realgud:jdb-find-file(marker filename directory)
   "A find-file specific for java/jdb. We use `gdb-jdb-find-source' to map a
 name to a filename. Failing that we can add on .java to the name. Failing that
-we will prompt for a mapping and save that in `realgud:jdb-file-remap' when
-that works."
+we will prompt for a mapping and save that the remap."
   (let* ((transformed-file)
+	 (cmdbuf (realgud-get-cmdbuf))
+	 (ignore-re-file-list (realgud-cmdbuf-ignore-re-file-list cmdbuf))
+	 (filename-remap-alist (realgud-cmdbuf-filename-remap-alist))
 	 (stripped-filename (realgud:strip filename))
 	 (gud-jdb-filename (gud-jdb-find-source stripped-filename))
+	 (remapped-filename
+	  (assoc filename filename-remap-alist))
 	)
     (cond
      ((and gud-jdb-filename (file-exists-p gud-jdb-filename))
       gud-jdb-filename)
      ((file-exists-p (setq transformed-file (concat stripped-filename ".java")))
       transformed-file)
-     ('t
-      (if (gethash stripped-filename realgud:jdb-file-remap)
-	  (let ((remapped-filename))
-	    (setq remapped-filename (gethash stripped-filename realgud:jdb-file-remap))
-	    (if (file-exists-p remapped-filename)
-		remapped-filename
-	      ;; else
-	      (and (remhash filename realgud-file-remap) nil)))
+     ((realgud:file-ignore filename ignore-re-file-list)
+      (message "tracking ignored for %s" filename) nil)
+     (t
+      (if remapped-filename
+	  (if (file-exists-p (cdr remapped-filename))
+	      (cdr remapped-filename)
+     	    ;; else remove from map since no find
+     	    (and (realgud-cmdbuf-filename-remap-alist=
+     		  (delq (assoc remapped-filename filename-remap-alist)
+     			filename-remap-alist))
+     		  nil))
 	;; else
 	(let ((remapped-filename)
 	      (guess-filename (realgud:jdb-dot-to-slash filename)))
 	  (setq remapped-filename
 		(buffer-file-name
-		 (compilation-find-file marker guess-filename
-					directory "%s.java")))
+		 (realgud:find-file marker guess-filename
+				    directory "%s.java")))
 	  (when (and remapped-filename (file-exists-p remapped-filename))
-	    (puthash stripped-filename remapped-filename realgud:jdb-file-remap)
-	    remapped-filename
+     	    (realgud-cmdbuf-filename-remap-alist=
+     	     (cons
+     	      (cons filename remapped-filename)
+     	      filename-remap-alist))
 	    ))
 	))
-     ))
-  )
+     )))
 
 (defun realgud:jdb-loc-fn-callback(text filename lineno source-str
 					cmd-mark directory)

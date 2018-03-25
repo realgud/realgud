@@ -54,33 +54,42 @@ blanks. Failing that we will prompt for a mapping and save that
 in variable `realgud:trepan2-file-remap' when that works. In the future,
 we may also consult PYTHONPATH."
   (let* ((transformed-file)
+	 (cmdbuf (realgud-get-cmdbuf))
 	 (stripped-filename (realgud:strip filename))
+	 (ignore-re-file-list (realgud-cmdbuf-ignore-re-file-list cmdbuf))
+	 (filename-remap-alist (realgud-cmdbuf-filename-remap-alist))
+	 (remapped-filename
+	  (assoc filename filename-remap-alist))
 	)
     (cond
      ((file-exists-p filename) filename)
      ((file-exists-p stripped-filename) stripped-filename)
-     ('t
+     ((realgud:file-ignore filename ignore-re-file-list)
+      (message "tracking ignored for %s" filename) nil)
+     (t
       ;; FIXME search PYTHONPATH if not absolute file
-      (if (gethash filename realgud-file-remap)
-	  (let ((remapped-filename))
-	    (setq remapped-filename (gethash filename realgud:trepan2-file-remap))
-	    (if (file-exists-p remapped-filename)
-		remapped-filename
-	      ;; else
-	      (and (remhash filename realgud-file-remap)) nil)
-	    ;; else
-	    (let ((remapped-filename))
-	      (setq remapped-filename
-		    (buffer-file-name
-		     (compilation-find-file marker stripped-filename
-					    directory "%s.py")))
-	      (when (and remapped-filename (file-exists-p remapped-filename))
-		(puthash filename remapped-filename realgud-file-remap)
-		remapped-filename
-		))
-	    ))
-      ))
-    ))
+      (if remapped-filename
+     	  (if (file-exists-p (cdr remapped-filename))
+     	      (cdr remapped-filename)
+     	    ;; else remove from map since no find
+     	    (and (realgud-cmdbuf-filename-remap-alist=
+     		  (delq (assoc remapped-filename filename-remap-alist)
+     			filename-remap-alist))
+     		  nil))
+     	;; else
+     	(let ((remapped-filename))
+     	  (setq remapped-filename
+     		(buffer-file-name
+     		 (realgud:find-file marker stripped-filename
+     				    directory "%s.py")))
+     	  (when (and remapped-filename (file-exists-p remapped-filename))
+     	    (realgud-cmdbuf-filename-remap-alist=
+     	     (cons
+     	      (cons filename remapped-filename)
+     	      filename-remap-alist))
+     	    ))
+	))
+     )))
 
 (defun realgud:trepan2-loc-fn-callback(text filename lineno source-str
 					    cmd-mark directory)
