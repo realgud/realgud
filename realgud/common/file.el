@@ -26,16 +26,17 @@
 (declare-function compilation-find-file 'compile)
 (declare-function realgud-cmdbuf-info-ignore-re-file-list= 'realgud-buffer-command)
 
-;; (defcustom realgud-file-find-function 'realgud:find-file
-(defcustom realgud-file-find-function 'compilation-find-file
+(defcustom realgud-file-find-function 'realgud:find-file
+;;(defcustom realgud-file-find-function 'compilation-find-file
   "Function to call when we can't easily find file"
   :type 'function
   :group 'realgud)
 
-;; (defun realgud:find-file (marker filename directory &rest formats)
-;;   "A wrapper around compilation find-file."
-;;   (let ((compilation-error "source-code file"))
-;;     (compilation-find-file marker filename directory formats)))
+(defun realgud:find-file (marker filename directory)
+  "A wrapper around compilation find-file. We set the prompt
+   to indicate we are looking for a source-code file."
+  (let ((compilation-error "source-code file"))
+    (compilation-find-file marker filename directory "%s")))
 
 (defun realgud:file-line-count(filename)
   "Return the number of lines in file FILENAME, or nil FILENAME can't be
