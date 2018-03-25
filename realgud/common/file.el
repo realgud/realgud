@@ -19,13 +19,6 @@
 (require-relative-list '("helper" "loc") "realgud-")
 (require-relative-list '("buffer/command") "realgud-buffer-")
 
-(defvar realgud-file-remap (make-hash-table :test 'equal)
-  "How to remap files we otherwise can't find in the
-  filesystem. The hash key is the file string we saw, and the
-  value is associated filesystem string presumably in the
-  filesystem")
-
-
 (declare-function realgud:strip         'realgud)
 (declare-function realgud-loc-goto      'realgud-loc)
 (declare-function realgud-get-cmdbuf    'realgud-buffer-helper)
@@ -33,10 +26,16 @@
 (declare-function compilation-find-file 'compile)
 (declare-function realgud-cmdbuf-info-ignore-re-file-list= 'realgud-buffer-command)
 
+;; (defcustom realgud-file-find-function 'realgud:find-file
 (defcustom realgud-file-find-function 'compilation-find-file
   "Function to call when we can't easily find file"
   :type 'function
   :group 'realgud)
+
+;; (defun realgud:find-file (marker filename directory &rest formats)
+;;   "A wrapper around compilation find-file."
+;;   (let ((compilation-error "source-code file"))
+;;     (compilation-find-file marker filename directory formats)))
 
 (defun realgud:file-line-count(filename)
   "Return the number of lines in file FILENAME, or nil FILENAME can't be
@@ -85,44 +84,62 @@ blanks, or deliberately ignoring 'pseudo-file patterns like (eval
 If we're unable find the source code we return a string describing the
 problem as best as we can determine."
 
-  (unless (and filename (file-readable-p filename))
-    (let* ((cmdbuf (realgud-get-cmdbuf))
-	   (ignore-re-file-list (realgud-sget 'cmdbuf-info 'ignore-re-file-list))
-	   (remapped-filename (gethash filename realgud-file-remap))
-	   )
-      (cond
-       ;; Is file already listed for ignore?
-       ((realgud:file-ignore filename ignore-re-file-list)
-	(message "tracking ignored for %s" filename))
+  (let* ((cmdbuf (realgud-get-cmdbuf))
+	 (ignore-re-file-list (realgud-cmdbuf-ignore-re-file-list cmdbuf))
+	 (filename-remap-alist (realgud-cmdbuf-filename-remap-alist cmdbuf))
+	 (remapped-filename
+	  (assoc filename filename-remap-alist))
+	 (mutex (realgud-cmdbuf-mutex cmdbuf))
+	 )
 
-       ;; Do we want to black-list this?
-       ((y-or-n-p (format "Black-list file %s for location tracking?" filename))
-	;; FIXME: there has to be a simpler way to set ignore-file-list
-	(with-current-buffer cmdbuf
-	  (push filename ignore-re-file-list)
-	  (realgud-cmdbuf-info-ignore-re-file-list= ignore-re-file-list))
-	(setq filename nil))
+    ;;(with-mutex
+    ;; mutex
+     (when remapped-filename
+       (if (file-readable-p (cdr remapped-filename))
+	   (setq filename (cdr remapped-filename))
+	 ;; else remove from map since no find
+	 (realgud-cmdbuf-filename-remap-alist=
+	  (delq (assoc remapped-filename filename-remap-alist)
+					  filename-remap-alist))))
 
-       ;; Do we have a custom find-file function?
-       (find-file-fn
-	(setq filename (funcall find-file-fn cmd-marker filename directory)))
+     (unless (and filename (file-readable-p filename))
 
-       (t (setq filename nil)
-	  (if remapped-filename
-	      (if (file-exists-p remapped-filename)
-		  (setq filename remapped-filename)
-		;; else remove from map since no find
-		(remhash filename realgud-file-remap)))
-	    ;; else - try find-file-function
-	    (let ((found-file (funcall realgud-file-find-function (point-marker) filename directory)))
-	      (when found-file
-		(setq remapped-filename (buffer-file-name found-file))
-		(when (and remapped-filename (file-exists-p remapped-filename))
-		  (puthash filename remapped-filename realgud-file-remap)
-		  (setq filename remapped-filename)
-		  ))
-	      )))
-       ))
+       (cond
+	;; Is file already listed for ignore?
+	((realgud:file-ignore filename ignore-re-file-list)
+	 (message "tracking ignored for %s" filename))
+
+	;; Do we want to black-list this?
+	((y-or-n-p (format "Black-list file %s for location tracking?" filename))
+	 ;; FIXME: there has to be a simpler way to set ignore-file-list
+	 (with-current-buffer cmdbuf
+	   (push filename ignore-re-file-list)
+	   (realgud-cmdbuf-info-ignore-re-file-list= ignore-re-file-list))
+	 (setq filename nil)
+	 )
+
+	;; Do we have a custom find-file function?
+	(find-file-fn
+	 (setq filename (funcall find-file-fn cmd-marker filename directory)))
+
+	(t
+	 (let ((found-file (funcall realgud-file-find-function (point-marker) filename directory)))
+	   (if found-file
+	       (progn
+		 (setq remapped-filename (buffer-file-name found-file))
+		 (when (and remapped-filename (file-exists-p remapped-filename))
+		   (realgud-cmdbuf-filename-remap-alist=
+		    (cons
+		     (cons filename remapped-filename)
+		     filename-remap-alist))
+		   (setq filename remapped-filename)
+		   ))
+	     ;; else
+	     (setq filename nil)
+	     )))
+	)))
+  ;;)
+
   (if filename
       (if (file-readable-p filename)
 	  (if (integerp line-number)
