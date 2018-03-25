@@ -98,6 +98,7 @@
    loc-changes 		        ; loc marks in buffers
    load-relative		; load emacs lisp relative to emacs source
    test-simple			; simple test framework
+   seq         			; sequence manipulation used in testing
    ))
 
 ;; install new packages and init already installed packages
