@@ -9,7 +9,6 @@
 
 ;; We use gud to handle the classpath-to-filename mapping
 (require 'gud)
-(require 'compile) ;; for compilation-find-file
 
 (require 'load-relative)
 (require-relative-list '("../../common/track"

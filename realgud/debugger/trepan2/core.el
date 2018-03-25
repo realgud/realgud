@@ -15,7 +15,6 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-(require 'compile) ;; for compilation-find-file
 (require 'load-relative)
 (require-relative-list '("../../common/track"
 			 "../../common/core"

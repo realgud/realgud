@@ -15,8 +15,6 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-(require 'compile) ;; for compilation-find-file
-
 (require 'load-relative)
 (require-relative-list '("../../common/track"
                          "../../common/core"
@@ -51,21 +49,6 @@
    realgud:trepanjs-minibuffer-local-map
    'realgud:trepanjs-minibuffer-history
    opt-debugger))
-
-(defun realgud:trepanjs-find-file(marker filename directory)
-  "A find-file specific for trepanjs."
-  (cond ((member filename realgud:trepanjs-blacklist) nil)
-	((y-or-n-p "Black-list this file for location tracking?")
-	 (push filename realgud:trepanjs-blacklist)
-	 nil)
-	(t (compilation-find-file marker filename directory))
-      ))
-
-(defun realgud:trepanjs-loc-fn-callback(text filename lineno source-str
-					cmd-mark directory)
-  (realgud:file-loc-from-line filename lineno
-			      cmd-mark source-str nil
-			      'realgud:trepanjs-find-file directory))
 
 (defun realgud:trepanjs-parse-cmd-args (orig-args)
   "Parse command line ARGS for the name of script to debug.
