@@ -41,6 +41,14 @@ realgud-loc-pat struct")
 (setf (gethash "loc" realgud:trepan2-pat-hash)
       realgud:python-trepan-loc-pat)
 
+;; An initial list of regexps that don't generally have files
+;; associated with them and therefore we should not try to find file
+;; associations for them.  This list is used to seed a field of the
+;; same name in the cmd-info structure inside a command buffer. A user
+;; may add additional files to the command-buffer's re-ignore-list.
+(setf (gethash "ignore-re-file-list" realgud:trepan2-pat-hash)
+      (list realgud-python-ignore-file-re))
+
 ;; Regular expression that describes a trepan2 prompt.
 ;; Note: the prompt in nested debugging
 ;; For example:

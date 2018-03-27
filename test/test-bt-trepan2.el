@@ -51,27 +51,27 @@
                                realgud:trepan2-pat-hash))
 
 
-(let* ((triple
-        (realgud:backtrace-add-text-properties
-         realgud-pat-bt ""
-         "->0 gcd(a=3, b=5) called from file '/test/gcd.py' at line 28
-##1 <module> exec() '/test/gcd.py' at line 41"
-         "->"))
-       (string-with-props (car triple)))
-  (dolist (pair
-           '(
-             ("->0" . (0 . 28) )
-             ("##1" . (1 . 41) )
-             ))
-    (string-match (car pair) string-with-props)
-    (assert-equal (cddr pair)
-                  (realgud-loc-line-number (get-text-property
-                                            (match-beginning 0) 'loc
-                                            string-with-props)))
+;; (let* ((triple
+;;         (realgud:backtrace-add-text-properties
+;;          realgud-pat-bt ""
+;;          "->0 gcd(a=3, b=5) called from file '/test/gcd.py' at line 28
+;; ##1 <module> exec() '/test/gcd.py' at line 41"
+;;          "->"))
+;;        (string-with-props (car triple)))
+;;   (dolist (pair
+;;            '(
+;;              ("->0" . (0 . 28) )
+;;              ("##1" . (1 . 41) )
+;;              ))
+;;     (string-match (car pair) string-with-props)
+;;     (assert-equal (cddr pair)
+;;                   (realgud-loc-line-number (get-text-property
+;;                                             (match-beginning 0) 'loc
+;;                                             string-with-props)))
 
-    (assert-equal (cadr pair)
-                  (get-text-property
-                   (match-beginning 0) 'frame-num
-                   string-with-props))))
+;;     (assert-equal (cadr pair)
+;;                   (get-text-property
+;;                    (match-beginning 0) 'frame-num
+;;                    string-with-props))))
 
 (end-tests)

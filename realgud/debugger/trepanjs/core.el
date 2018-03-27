@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016, 2018 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -26,11 +26,15 @@
 (declare-function realgud-parse-command-arg  'realgud-core)
 (declare-function realgud-query-cmdline      'realgud-core)
 (declare-function realgud-suggest-invocation 'realgud-core)
+(declare-function realgud:file-loc-from-line 'realgud-file)
 
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.
 (defvar realgud:trepanjs-minibuffer-history nil
   "minibuffer history list for the command `realgud:trepanjs'.")
+
+(defvar realgud:trepanjs-blacklist nil
+  "List of black-listed file regexp that we should ignore file tracking")
 
 (easy-mmode-defmap realgud:trepanjs-minibuffer-local-map
   '(("\C-i" . comint-dynamic-complete-filename))

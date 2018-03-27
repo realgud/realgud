@@ -1,4 +1,4 @@
-;; Copyright (C) 2016 Free Software Foundation, Inc
+;; Copyright (C) 2016, 2018 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 ;; Author: Sean Farley <sean@farley.io>
@@ -48,6 +48,14 @@ realgud-loc-pat struct")
        :regexp "^> \\(\\(?:[a-zA-Z]:\\)?[-a-zA-Z0-9_/.\\\\ ]+\\)(\\([0-9]+\\))"
        :file-group 1
        :line-group 2))
+
+;; An initial list of regexps that don't generally have files
+;; associated with them and therefore we should not try to find file
+;; associations for them.  This list is used to seed a field of the
+;; same name in the cmd-info structure inside a command buffer. A user
+;; may add additional files to the command-buffer's re-ignore-list.
+(setf (gethash "ignore-re-file-list" realgud:ipdb-pat-hash)
+      (list realgud-python-ignore-file-re))
 
 (setf (gethash "prompt" realgud:ipdb-pat-hash)
       (make-realgud-loc-pat

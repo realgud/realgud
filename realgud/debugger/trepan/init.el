@@ -46,8 +46,15 @@ realgud-loc-pat struct")
        :file-group 1
        :line-group 2
        :text-group 3
-       :ignore-file-re  "(eval: .*)"
        ))
+
+;; An initial list of regexps that don't generally have files
+;; associated with them and therefore we should not try to find file
+;; associations for them.  This list is used to seed a field of the
+;; same name in the cmd-info structure inside a command buffer. A user
+;; may add additional files to the command-buffer's re-ignore-list.
+(setf (gethash "ignore-re-file-list" realgud:trepan-pat-hash)
+      '("(eval: .*)"))
 
 ;; Regular expression that describes a trepan command prompt
 ;; For example:

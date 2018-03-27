@@ -1,4 +1,4 @@
-;; Copyright (C) 2010-2012, 2014-2016 Free Software Foundation, Inc
+;; Copyright (C) 2010-2012, 2014-2016, 2018 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -15,7 +15,6 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-(require 'compile) ;; for compilation-find-file
 (require 'load-relative)
 (require-relative-list '("../../common/track"
 			 "../../common/core"
@@ -48,48 +47,53 @@
   filesystem")
 
 ;; FIXME: this code could be generalized and put in a common place.
-(defun realgud:trepan2-find-file(filename)
+(defun realgud:trepan2-find-file(marker filename directory)
   "A find-file specific for python/trepan. We strip off trailing
 blanks. Failing that we will prompt for a mapping and save that
 in variable `realgud:trepan2-file-remap' when that works. In the future,
 we may also consult PYTHONPATH."
   (let* ((transformed-file)
+	 (cmdbuf (realgud-get-cmdbuf))
 	 (stripped-filename (realgud:strip filename))
-	 (ignore-file-re realgud-python-ignore-file-re)
+	 (ignore-re-file-list (realgud-cmdbuf-ignore-re-file-list cmdbuf))
+	 (filename-remap-alist (realgud-cmdbuf-filename-remap-alist))
+	 (remapped-filename
+	  (assoc filename filename-remap-alist))
 	)
     (cond
      ((file-exists-p filename) filename)
      ((file-exists-p stripped-filename) stripped-filename)
-     ((string-match ignore-file-re filename)
-	(message "tracking ignored for psuedo-file: %s" filename) nil)
-     ('t
+     ((realgud:file-ignore filename ignore-re-file-list)
+      (message "tracking ignored for %s" filename) nil)
+     (t
       ;; FIXME search PYTHONPATH if not absolute file
-      (if (gethash filename realgud-file-remap)
-	  (let ((remapped-filename))
-	    (setq remapped-filename (gethash filename realgud:trepan2-file-remap))
-	    (if (file-exists-p remapped-filename)
-		remapped-filename
-	      ;; else
-	      (and (remhash filename realgud-file-remap)) nil)
-	    ;; else
-	    (let ((remapped-filename))
-	      (setq remapped-filename
-		    (buffer-file-name
-		     (compilation-find-file (point-marker) stripped-filename
-					    nil "%s.py")))
-	      (when (and remapped-filename (file-exists-p remapped-filename))
-		(puthash filename remapped-filename realgud-file-remap)
-		remapped-filename
-		))
-	    ))
-      ))
-    ))
+      (if remapped-filename
+     	  (if (file-exists-p (cdr remapped-filename))
+     	      (cdr remapped-filename)
+     	    ;; else remove from map since no find
+     	    (and (realgud-cmdbuf-filename-remap-alist=
+     		  (delq (assoc remapped-filename filename-remap-alist)
+     			filename-remap-alist))
+     		  nil))
+     	;; else
+     	(let ((remapped-filename))
+     	  (setq remapped-filename
+     		(buffer-file-name
+     		 (realgud:find-file marker stripped-filename
+     				    directory "%s.py")))
+     	  (when (and remapped-filename (file-exists-p remapped-filename))
+     	    (realgud-cmdbuf-filename-remap-alist=
+     	     (cons
+     	      (cons filename remapped-filename)
+     	      filename-remap-alist))
+     	    ))
+	))
+     )))
 
 (defun realgud:trepan2-loc-fn-callback(text filename lineno source-str
-					    ignore-file-re cmd-mark)
-  (realgud:file-loc-from-line filename lineno
-			      cmd-mark source-str nil nil
-			      'realgud:trepan2-find-file))
+					    cmd-mark directory)
+  (realgud:file-loc-from-line filename lineno cmd-mark source-str nil
+			      'realgud:trepan2-find-file directory))
 
 ;; FIXME: I think this code and the keymaps and history
 ;; variable chould be generalized, perhaps via a macro.

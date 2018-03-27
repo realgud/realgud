@@ -5,10 +5,12 @@
 (load-file "../realgud/debugger/trepan2/trepan2.el")
 (load-file "../realgud/debugger/trepan2/core.el")
 (load-file "../realgud.el")
+(load-file "./bt-helper.el")
 
 (declare-function trepan2-parse-cmd-args    'realgud:trepan2)
 (declare-function realgud:trepan2-find-file 'realgud:trepan2-core)
 (declare-function __FILE__                  'load-relative)
+(declare-function setup-bt-vars             'bt-helper)
 
 
 (test-simple-start)
@@ -30,16 +32,25 @@
 	      (trepan2-parse-cmd-args
 	       '("trepan2" "program.py" "foo")))
 
-(note "realgud:trepan2-find-file")
-(assert-nil (realgud:trepan2-find-file "<string>")
-	    "Should ignore psuedo file")
-
 (eval-when-compile
-  (defvar test-python-file))
+  (defvar test-python-file)
+  )
 
-(set (make-local-variable 'test-python-file)
-     (concat (file-name-directory (__FILE__)) "gcd.py"))
-(assert-equal test-python-file (realgud:trepan2-find-file test-python-file)
-	    "Should ignore psuedo file")
+(note "realgud:trepan2-find-file")
+
+(defun test-trepan2-find-file()
+  (let ((temp-cmdbuf (setup-bt-vars "trepan2")))
+    (with-current-buffer temp-cmdbuf
+      (assert-nil
+       (realgud:trepan2-find-file (mark) "<string>" nil)
+       "Should ignore pseudo file")
+
+      (set (make-local-variable 'test-python-file)
+	   (concat (file-name-directory (__FILE__)) "gcd.py"))
+      (assert-equal test-python-file
+		    (realgud:trepan2-find-file (mark) test-python-file nil)
+		    "Should find file"))))
+
+(test-trepan2-find-file)
 
 (end-tests)

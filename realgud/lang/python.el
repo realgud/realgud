@@ -91,9 +91,7 @@ traceback) line."  )
    :num 2
    :file-group 3
    :line-group 4
-   :ignore-file-re  realgud-python-ignore-file-re)
-      "A realgud-loc-pat struct that describes a Python trepan
-      backtrace location line." )
+   ))
 
 ;;  Regular expression that describes a "breakpoint set" line
 (defconst realgud:python-trepan-brkpt-set-pat

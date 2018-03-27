@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2017 Free Software Foundation, Inc
+;; Copyright (C) 2015-2018 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -425,8 +425,7 @@ encountering a new loc."
   )
 
 (defun realgud-track-loc(text cmd-mark &optional opt-regexp opt-file-group
-			   opt-line-group no-warn-on-no-match?
-			   opt-ignore-file-re)
+			   opt-line-group no-warn-on-no-match?)
   "Do regular-expression matching to find a file name and line number inside
 string TEXT. If we match, we will turn the result into a realgud-loc struct.
 Otherwise return nil."
@@ -450,8 +449,6 @@ Otherwise return nil."
 	   (alt-file-group (realgud-sget 'cmdbuf-info 'alt-file-group))
 	   (alt-line-group (realgud-sget 'cmdbuf-info 'alt-line-group))
 	   (text-group (realgud-sget 'cmdbuf-info 'text-group))
-	   (ignore-file-re (or opt-ignore-file-re
-			       (realgud-sget 'cmdbuf-info 'ignore-file-re)))
 	   (callback-loc-fn (realgud-sget 'cmdbuf-info 'callback-loc-fn))
 	   )
 	(if loc-regexp
@@ -473,7 +470,7 @@ Otherwise return nil."
 		  (cond (callback-loc-fn
 			 (funcall callback-loc-fn text
 				  filename lineno source-str
-				  ignore-file-re cmd-mark))
+				  cmd-mark directory))
 			('t
 			 (unless line-str
 			   (message "line number not found -- using 1"))
@@ -481,7 +478,6 @@ Otherwise return nil."
 			     (realgud:file-loc-from-line filename lineno
 							 cmd-mark
 							 source-str nil
-							 ignore-file-re
 							 nil
 							 directory
 							 )
@@ -495,7 +491,7 @@ Otherwise return nil."
     )
   )
 
-(defun realgud-track-bp-loc(text &optional cmd-mark cmdbuf ignore-file-re)
+(defun realgud-track-bp-loc(text &optional cmd-mark cmdbuf opt-ignore-re-file-list)
   "Do regular-expression matching to find a file name and line number inside
 string TEXT. If we match, we will turn the result into a realgud-loc struct.
 Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
@@ -518,7 +514,8 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 		  (file-group     (realgud-loc-pat-file-group loc-pat))
 		  (line-group     (realgud-loc-pat-line-group loc-pat))
 		  (text-group     (realgud-loc-pat-text-group loc-pat))
-		  (ignore-file-re (realgud-loc-pat-ignore-file-re loc-pat))
+		  (ignore-re-file-list (or opt-ignore-re-file-list
+					   (realgud-sget 'cmdbuf-info 'ignore-re-file-list)))
 		  (callback-loc-fn (realgud-sget 'cmdbuf-info 'callback-loc-fn))
 		    )
 	      (if loc-regexp
@@ -532,7 +529,7 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 			(cond (callback-loc-fn
 			       (funcall callback-loc-fn text
 					filename lineno source-str
-					ignore-file-re cmd-mark))
+					ignore-re-file-list cmd-mark))
 
 			      ('t
 			       (unless line-str
@@ -548,7 +545,7 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 					    cmd-mark
 					    source-str
 					    (string-to-number bp-num)
-					    ignore-file-re nil directory
+					    nil directory
 					    )))
 				     (if (stringp loc-or-error)
 					 (progn
@@ -584,7 +581,7 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
     )
   )
 
-(defun realgud-track-bp-delete(text &optional cmd-mark cmdbuf ignore-file-re)
+(defun realgud-track-bp-delete(text &optional cmd-mark cmdbuf ignore-re-file-list)
   "Do regular-expression matching to see if a breakpoint has been
 deleted inside string TEXT. Return a list of breakpoint locations
 of the breakpoints found in command buffer."
@@ -690,13 +687,13 @@ loc-regexp pattern"
 
 
 (defun realgud-track-loc-from-selected-frame(text cmd-mark &optional
-						  opt-regexp opt-ignore-file-re)
+						  opt-regexp opt-ignore-re-file-list)
   "Return a selected frame number found in TEXT or nil if none found."
   (if (realgud-cmdbuf?)
       (let ((selected-frame-pat (realgud-cmdbuf-pat "selected-frame"))
 	    (frame-num-regexp)
-	    (ignore-file-re (or opt-ignore-file-re
-				(realgud-sget 'cmdbuf-info 'ignore-file-re))))
+	    (ignore-re-file-list (or opt-ignore-re-file-list
+				(realgud-sget 'cmdbuf-info 'ignore-re-file-list))))
 	(if (and selected-frame-pat
 		 (setq frame-num-regexp (realgud-loc-pat-regexp
 					 selected-frame-pat)))
@@ -707,7 +704,7 @@ loc-regexp pattern"
 		       (lineno (string-to-number (match-string line-group text))))
 		  (if (and filename lineno)
 		      (realgud:file-loc-from-line filename lineno
-						  cmd-mark nil nil ignore-file-re)
+						  cmd-mark nil nil)
 		    nil))
 	      nil)
 	  nil))
@@ -781,7 +778,6 @@ find a location. non-nil if we can find a location.
 				(realgud-loc-pat-file-group loc-pat)
 				(realgud-loc-pat-line-group loc-pat)
 				nil
-				(realgud-loc-pat-ignore-file-re loc-pat)
 				))
       (if (stringp loc)
 	  (message loc)
