@@ -119,8 +119,11 @@ realgud-loc-pat struct")
 
 ;; (setf (gethash "quit" realgud:kshdb-command-hash) "quit!")
 
-(setf (gethash "kshdb" realgud-pat-hash) realgud:kshdb-pat-hash)
-(setf (gethash "clear" realgud:kshdb-command-hash) "clear %l")
-(setf (gethash "eval" realgud:kshdb-command-hash) "eval %s")
+(setf (gethash "kshdb" realgud-command-hash) realgud:kshdb-command-hash)
+
+(setf (gethash "clear"  realgud:kshdb-command-hash) "clear %l")
+(setf (gethash "eval"   realgud:kshdb-command-hash) "eval %s")
+(setf (gethash "quit"   realgud:bashdb-command-hash) "quit")
+(setf (gethash "until"  realgud:bashdb-command-hash) "continue %l")
 
 (provide-me "realgud:kshdb-")
