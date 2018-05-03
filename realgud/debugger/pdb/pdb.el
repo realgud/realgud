@@ -108,9 +108,6 @@ fringe and marginal icons.
 
 
 ;;;###autoload
-(defalias 'pdb 'realgud:pdb)
-
-;;;###autoload
 (defun realgud:pdb-delayed ()
   "This is like `pdb', but assumes inside the program to be debugged, you
 have a call to the debugger somewhere, e.g. 'from trepan.api import debug; debug()'.
