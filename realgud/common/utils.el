@@ -46,10 +46,10 @@
     - 'comint if the major comint-mode or shell-mode
 Or raise an error if neither."
 
-  (cond ((eq major-mode 'eshell-mode)
-	'eshell)
-	((or (eq major-mode 'comint-mode) (eq major-mode 'shell-mode))
-	  'comint)
+  (cond ((derived-mode-p 'eshell-mode)
+	 'eshell)
+	((derived-mode-p 'comint-mode)
+	 'comint)
 	('t (error "We can only handle comint, shell, or eshell buffers"))
 	))
 
