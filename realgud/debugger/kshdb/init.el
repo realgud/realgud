@@ -88,11 +88,11 @@ realgud-loc-pat struct")
 
 (setf (gethash "kshdb" realgud-pat-hash) realgud:kshdb-pat-hash)
 
-(setf (gethash "kshdb" realgud-command-hash) realgud:kshdb-command-hash)
-
 (defvar realgud:kshdb-command-hash (make-hash-table :test 'equal)
   "hash key is command name like 'quit' and the value is
   the trepan command to use, like 'quit!'")
+
+(setf (gethash "kshdb" realgud-command-hash) realgud:kshdb-command-hash)
 
 ;; (setf (gethash "quit" realgud:kshdb-command-hash) "quit!")
 
@@ -103,6 +103,6 @@ realgud-loc-pat struct")
 (setf (gethash "until"  realgud:kshdb-command-hash) "continue %l")
 
 ;; Unsupported features:
-(setf (gethash "jump"  realgud:bashdb-command-hash) "*not-implemented*")
+(setf (gethash "jump"  realgud:kshdb-command-hash) "*not-implemented*")
 
 (provide-me "realgud:kshdb-")
