@@ -74,7 +74,7 @@ Note that path elements have been expanded via `expand-file-name'.
 
 	;; One dash is added automatically to the below, so
 	;; h is really -h and -host is really --host.
-	(gdb-two-args '("x" "-command" "b" "-exec"
+	(gdb-two-args '("x" "-command" "ex" "-eval-command" "b" "-exec"
 			"cd" "-pid"  "-core" "-directory"
 			"-annotate"
 			"i" "-interpreter"
