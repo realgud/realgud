@@ -110,6 +110,7 @@ with other motion initiated by debugger messages."
     (puthash "restart"     "run" hash)
     (puthash "shell"       "shell" hash)
     (puthash "step"        "step %p" hash)
+    (puthash "tbreak"      "tbreak %X:%l" hash)
     (puthash "until"       "until" hash)
     (puthash "up"          "up %p" hash)
     hash)
@@ -179,6 +180,13 @@ With prefix argument LINE-NUMBER, prompt for line number."
   (interactive (realgud:cmd--line-number-from-prefix-arg))
   (realgud:cmd--with-line-override line-number
                                    (realgud:cmd-run-command line-number "break")))
+
+(defun realgud:cmd-tbreak (&optional line-number)
+  "Set a temporary breakpoint at the current line.
+With prefix argument LINE-NUMBER, prompt for line number."
+  (interactive (realgud:cmd--line-number-from-prefix-arg))
+  (realgud:cmd--with-line-override line-number
+                                   (realgud:cmd-run-command line-number "tbreak")))
 
 (defun realgud:cmd-clear(&optional line-number)
   "Delete breakpoint at the current line.
