@@ -507,9 +507,15 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
   (with-current-buffer cmdbuf
     (unless (realgud:track-complain-if-not-in-cmd-buffer cmdbuf t)
       (let* ((loc-pat (realgud-cmdbuf-pat "brkpt-set"))
-	     (shortkey-mode? (realgud-sget 'cmdbuf-info 'src-shortkey?)))
-	(if loc-pat
-	    (let ((bp-num-group   (realgud-loc-pat-num loc-pat))
+	     (shortkey-mode? (realgud-sget 'cmdbuf-info 'src-shortkey?))
+	     (found-loc nil)
+	     (loc-pat-list loc-pat))
+	(unless (listp loc-pat-list)
+	  (setq loc-pat-list (list loc-pat)))
+	(while loc-pat-list
+	  (setq loc-pat (car loc-pat-list))
+	  (setq loc-pat-list (cdr loc-pat-list))
+	  (let ((bp-num-group   (realgud-loc-pat-num loc-pat))
 		  (loc-regexp     (realgud-loc-pat-regexp loc-pat))
 		  (file-group     (realgud-loc-pat-file-group loc-pat))
 		  (line-group     (realgud-loc-pat-line-group loc-pat))
@@ -527,9 +533,10 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 			     (lineno (string-to-number (or line-str "1")))
 			     )
 			(cond (callback-loc-fn
-			       (funcall callback-loc-fn text
-					filename lineno source-str
-					ignore-re-file-list cmd-mark))
+			       (setq found-func (funcall callback-loc-fn text
+							 filename lineno source-str
+							 ignore-re-file-list cmd-mark))
+			       (setq loc-pat-list nil))
 
 			      ('t
 			       (unless line-str
@@ -551,7 +558,8 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 					 (progn
 					   (message loc-or-error)
 					   ;; set to return nil
-					   nil)
+					   (setq found-loc nil)
+					   (setq loc-pat-list nil))
 				       ;; else
 				       (let ((loc loc-or-error)
 					     (bp-list (realgud-sget 'cmdbuf-info 'bp-list)))
@@ -573,13 +581,13 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 					   (realgud-cmdbuf-info-bp-list= (cons loc bp-list)))
 
 					 ;; Set to return location
-					 loc-or-error))))
-			       nil))))
-		nil))
-	  nil))
-      )
-    )
-  )
+					 (setq found-loc loc-or-error)
+					 (setq loc-pat-list nil))
+				       )))
+			       )))
+		    ))))
+	found-loc)
+    )))
 
 (defun realgud-track-bp-delete(text &optional cmd-mark cmdbuf ignore-re-file-list)
   "Do regular-expression matching to see if a breakpoint has been

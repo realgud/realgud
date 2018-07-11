@@ -59,12 +59,21 @@ realgud-loc-pat struct")
 ;; For example:
 ;;   Breakpoint 1, main (argc=1, argv=0x7fffffffdbd8) at main.c:24
 (setf (gethash "brkpt-set" realgud:gdb-pat-hash)
-      (make-realgud-loc-pat
-       :regexp (format "^Breakpoint %s at 0x\\([0-9a-f]*\\): file \\(.+\\), line %s.\n"
-		       realgud:regexp-captured-num realgud:regexp-captured-num)
-       :num 1
-       :file-group 3
-       :line-group 4))
+      (list
+       (make-realgud-loc-pat
+	:regexp (format "^Breakpoint %s at 0x\\([0-9a-f]*\\): file \\(.+\\), line %s[.]\n"
+			realgud:regexp-captured-num realgud:regexp-captured-num)
+	:num 1
+	:file-group 3
+	:line-group 4)
+       ;; Another breakpoint pattern seen
+       (make-realgud-loc-pat
+	:regexp (format "^Breakpoint %s, .* at \\(.+\\):%s[.]\n"
+			realgud:regexp-captured-num realgud:regexp-captured-num)
+	:num 1
+	:file-group 2
+	:line-group 3)
+       ))
 
 ;; Regular expression that describes a debugger "delete" (breakpoint)
 ;; response.

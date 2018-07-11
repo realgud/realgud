@@ -42,9 +42,13 @@ output by a debugger inside a process shell"
   (regexp)             ;; a stack position, or thread number.
   (file-group)         ;; Filename position in struct
   (line-group)         ;; Line number position in struct
+
+  ;; FIXME: fix code to handle lists of locs and then remove
   (alt-file-group)     ;; Used when regexp is too complicated and use \|
                        ;; e.g. perldb file loc regexps
   (alt-line-group)     ;; ditto
+
+
   (char-offset-group)  ;; Character offset position in struct
   (instruction-address-group)
   (column-group)
@@ -53,7 +57,8 @@ output by a debugger inside a process shell"
   (text-group)         ;; Some source text that should found at position
   (class-group)        ;; Java doesn't refer to files, but class names
   (event-group)        ;; Stopping event, e.g.statement, breakpoint,
-		       ;; call, return, exception, etc.
+                       ;; call, return, exception, etc.
+  (function-group)     ;; function name
 )
 
 (defconst realgud:regexp-captured-num  "\\([0-9]+\\)")
