@@ -156,6 +156,9 @@ problem as best as we can determine."
 				   (source-buffer (find-file-noselect filename))
 				   (source-mark))
 
+			      ;; Set this filename as the last one seen in cmdbuf
+			      (realgud-cmdbuf-info-source-path= filename)
+
 			      ;; And you thought we'd never get around to
 			      ;; doing something other than validation?
 			      (with-current-buffer source-buffer

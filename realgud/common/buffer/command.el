@@ -81,6 +81,8 @@
                        ;; this debugger. Eventually loc-regexp, file-group
                        ;; and line-group below will removed and stored here.
   srcbuf-list          ;; list of source buffers we have stopped at
+  source-path          ;; last source-code path we've seen
+
   bt-buf               ;; backtrace buffer if it exists
   bp-list              ;; list of breakpoints
   divert-output?       ;; Output is part of a conversation between front-end
@@ -95,7 +97,6 @@
                        ;; when evaluating an expression. For example,
                        ;; some trepan debuggers expression values prefaced with:
                        ;; $DB::D[0] =
-
   ;; FIXME: REMOVE THIS and use regexp-hash
   loc-regexp   ;; Location regular expression string
   file-group
@@ -155,6 +156,7 @@
 (realgud-struct-field-setter "realgud-cmdbuf-info" "no-record?")
 (realgud-struct-field-setter "realgud-cmdbuf-info" "prior-prompt-regexp")
 (realgud-struct-field-setter "realgud-cmdbuf-info" "src-shortkey?")
+(realgud-struct-field-setter "realgud-cmdbuf-info" "source-path")
 (realgud-struct-field-setter "realgud-cmdbuf-info" "in-debugger?")
 (realgud-struct-field-setter "realgud-cmdbuf-info" "callback-loc-fn")
 (realgud-struct-field-setter "realgud-cmdbuf-info" "callback-eval-filter")
@@ -280,6 +282,8 @@ This is based on an org-mode buffer. Hit tab to expand/contract sections.
 			       (json-encode (realgud-cmdbuf-info-cmd-args info)))
 		       (format "  - Starting directory  ::\t%s\n"
 			       (realgud-cmdbuf-info-starting-directory info))
+		       (format "  - Current source-code path  ::\t[[%s]]\n"
+			       (realgud-cmdbuf-info-source-path info))
 		       (format "  - Selected window should contain source? :: %s\n"
 			       (realgud-cmdbuf-info-in-srcbuf? info))
 		       (format "  - Last input end      ::\t%s\n"

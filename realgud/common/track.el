@@ -492,7 +492,7 @@ Otherwise return nil."
   )
 
 (defun realgud-track-bp-loc(text &optional cmd-mark cmdbuf opt-ignore-re-file-list)
-  "Do regular-expression matching to find a file name and line number inside
+   "Do regular-expression matching to find a file name and line number inside
 string TEXT. If we match, we will turn the result into a realgud-loc struct.
 Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 "
@@ -526,8 +526,12 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 		    )
 	      (if loc-regexp
 		  (if (string-match loc-regexp text)
-		      (let* ((bp-num (match-string bp-num-group text))
-			     (filename (match-string file-group text))
+		      (let* ((bp-num (and bp-num-group (match-string bp-num-group text)))
+			     (filename
+			      (if file-group
+				  (match-string file-group text)
+				(realgud-sget 'cmdbuf-info 'source-path)
+				))
 			     (line-str (match-string line-group text))
 			     (source-str (and text-group (match-string text-group text)))
 			     (lineno (string-to-number (or line-str "1")))
