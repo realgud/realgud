@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016, 2018 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -19,6 +19,8 @@
 (require-relative-list '("../common/regexp" "../common/loc" "../common/track")
 		       "realgud-")
 
+(declare-function realgud-goto-line-for-pt 'realgud-track)
+
 (defconst realgud:js-term-escape "[[0-9]+[GKJ]"
   "Escape sequence regular expression pattern trepanjs often puts
   in around prompts")
@@ -37,5 +39,20 @@
    :line-group 3
    :char-offset-group 4)
   "A realgud-loc-pat struct that describes a V8 backtrace location")
+
+(defconst realgud:js-file-line-loc-pat
+  (make-realgud-loc-pat
+   :regexp (format "^\\([^:]+\\):%s" realgud:regexp-captured-num)
+   :file-group 1
+   :line-group 2)
+  "A realgud-loc-pat struct that describes a V8 file/line location")
+
+;; FIXME: there is probably a less redundant way to do the following
+;; FNS.
+(defun realgud:js-goto-file-line (pt)
+  "Display the location mentioned by the js file/line warning or error."
+  (interactive "d")
+  (realgud-goto-line-for-pt pt "file-line"))
+
 
 (provide-me "realgud-lang-")
