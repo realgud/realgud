@@ -10,7 +10,7 @@ AC_ARG_WITH(emacs, AC_HELP_STRING([--with-emacs],
 
 AC_MSG_NOTICE("Checking emacs version")
 $EMACS -batch -q --no-site-file -eval \
-  '(if (<= emacs-major-version 23)
+  '(if (< emacs-major-version 24)
        (progn
          (error "You need GNU Emacs 24 or better.")
          (kill-emacs 1)
@@ -33,8 +33,8 @@ if test $? -ne 0 ; then
 fi
 
 ##################################################################
-# See if --with-lispdir was set. If not, set it to a reasonable default
-# based on where bash thinks bashdb is supposed to be installed.
+# See if --with-lispdir was set. If not, set it to a reasonable
+#default.
 ##################################################################
 
 AM_MISSING_PROG(GIT2CL, git2cl, $missing_dir)
