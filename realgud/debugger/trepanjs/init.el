@@ -32,8 +32,6 @@ realgud-loc-pat struct")
 
 (declare-function make-realgud-loc-pat (realgud-loc))
 
-(defconst realgud:trepanjs-file-regexp   "\\([^ \t\n]+\\)\\(?: \\[.*\\]\\)?")
-
 ;; realgud-loc-pat that describes a trepanjs location generally shown
 ;; before a command prompt.
 ;; For example:
@@ -43,13 +41,15 @@ realgud-loc-pat struct")
       (make-realgud-loc-pat
        :regexp (format
 		"\\(?:%s\\)*\\(?:break\\|exception\\|call\\) in %s at line %s:%s"
-		realgud:js-term-escape realgud:trepanjs-file-regexp
+		realgud:js-term-escape realgud:js-file-regexp
 		realgud:regexp-captured-num
 		realgud:regexp-captured-num)
        :file-group 1
        :line-group 2
        :char-offset-group 3
        ))
+
+(setf (gethash "file-line" realgud:trepanjs-pat-hash) realgud:js-file-line-loc-pat)
 
 ;; realgud-loc-pat that describes a trepanjs command prompt
 ;; For example:
@@ -67,7 +67,7 @@ realgud-loc-pat struct")
       (make-realgud-loc-pat
        :regexp (format "^Breakpoint %s set in file %s, line %s.\n"
 		       realgud:regexp-captured-num
-		       realgud:trepanjs-file-regexp
+		       realgud:js-file-regexp
 		       realgud:regexp-captured-num)
        :num 1
        :file-group 2
@@ -113,7 +113,7 @@ realgud-loc-pat struct")
        :regexp 	(concat realgud:trepanjs-frame-start-regexp " "
 			realgud:regexp-captured-num " "
 			"\\(?:" realgud:trepanjs-frame-module-regexp "[ \t\n]+called from file "
-			realgud:trepanjs-file-regexp
+			realgud:js-file-regexp
 			"\\)\\| in file "
 			realgud:regexp-captured-num
 			"\\)"

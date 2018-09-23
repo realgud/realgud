@@ -25,6 +25,10 @@
   "Escape sequence regular expression pattern trepanjs often puts
   in around prompts")
 
+(defconst realgud:js-file-regexp "\\([^ \t\n]+\\)\\(?: \\[.*\\]\\)?")
+
+
+
 (declare-function realgud-goto-line-for-pt 'realgud-track)
 
 ;;  Regular expression that describes a Perl Carp backtrace line.

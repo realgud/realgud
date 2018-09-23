@@ -1088,7 +1088,7 @@ fringe and marginal icons.
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/debugger/trepanjs/init.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/debugger/trepanjs/init" '("realgud:trepanjs-frame-" "realgud:trepanjs-pat-hash" "realgud:trepanjs-file-regexp" "realgud:trepanjs-debugger-name" "realgud:trepanjs-command-hash")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/debugger/trepanjs/init" '("realgud:trepanjs-frame-" "realgud:trepanjs-pat-hash" "realgud:js-file-regexp" "realgud:trepanjs-debugger-name" "realgud:trepanjs-command-hash")))
 
 ;;;***
 
