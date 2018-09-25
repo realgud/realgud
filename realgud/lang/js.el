@@ -58,5 +58,11 @@
   (interactive "d")
   (realgud-goto-line-for-pt pt "file-line"))
 
+(defun realgud:js-goto-syntax-error-line (pt)
+  "Display the location mentioned in a Syntax error line
+described by PT."
+  (interactive "d")
+  (realgud-goto-line-for-pt pt "syntax-error"))
+
 
 (provide-me "realgud-lang-")

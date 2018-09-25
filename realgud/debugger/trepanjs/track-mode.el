@@ -45,14 +45,8 @@
 
 (declare-function realgud:ruby-populate-command-keys 'realgud-lang-ruby)
 
-(defun realgud:trepanjs-goto-syntax-error-line (pt)
-  "Display the location mentioned in a Syntax error line
-described by PT."
-  (interactive "d")
-  (realgud-goto-line-for-pt pt "syntax-error"))
-
 (define-key trepanjs-track-mode-map
-  (kbd "C-c !s") 'realgud:trepanjs-goto-syntax-error-line)
+  (kbd "C-c !s") 'realgud:js-goto-syntax-error-line)
 
 (defun trepanjs-track-mode-hook()
   (if trepanjs-track-mode
