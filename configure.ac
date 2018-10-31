@@ -25,8 +25,7 @@ AC_MSG_NOTICE("Checking prerequiste packages")
 $EMACS -batch -q --no-site-file -eval \
   '(dolist (package
          (quote (cl-lib loc-changes load-relative test-simple)))
-        (require package))
-   )'
+        (require package))'
 fi
 if test $? -ne 0 ; then
     AC_MSG_ERROR([Can't continue until above error is corrected.])
