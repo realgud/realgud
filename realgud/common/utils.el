@@ -1,4 +1,4 @@
-;; Copyright (C) 2016-2017 Free Software Foundation, Inc
+;; Copyright (C) 2016-2018 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -60,7 +60,7 @@ prompts and interactive output with"
   (add-to-list
    'comint-preoutput-filter-functions
    (lambda (output)
-     (replace-regexp-in-string "\033\\[[0-9]*[GKJhl]" "" output)))
+     (replace-regexp-in-string "\033\\[[0-9]*[CDGKJhl]" "" output)))
   )
 
 
