@@ -67,6 +67,8 @@
     (define-key map "e"        'realgud:cmd-eval-dwim)
     (define-key map "E"        'realgud:cmd-eval-at-point)
     (define-key map "U"        'realgud:cmd-until)
+    (define-key map "h"        'realgud:cmd-until-here)
+    
     (define-key map [mouse-2]  'realgud:tooltip-eval)
     (define-key map [left-fringe mouse-1] #'realgud-cmds--mouse-add-remove-bp)
     (define-key map [left-margin mouse-1] #'realgud-cmds--mouse-add-remove-bp)
