@@ -37,7 +37,7 @@
 ;; 	main::foo(3) called at /tmp/foo.pl line 8
 (defconst realgud:js-backtrace-loc-pat
   (make-realgud-loc-pat
-   :regexp (format "^\\(?:[\t ]+at \\)?\\([^:]+\\) (\\(.*\\):%s:%s)"
+   :regexp (format "^\\(?:[<]?[\t ]+at \\)?\\([^:]+\\) (\\(.*\\):%s:%s)"
 		   realgud:regexp-captured-num realgud:regexp-captured-num)
    :file-group 2
    :line-group 3

@@ -113,7 +113,7 @@ We return the a list containing
 
 * the command debugger (e.g. jdb)
 
-* debugger command rguments if any - a list of strings
+* debugger command arguments if any - a list of strings
 
 * the script name and its arguments - list of strings
 
