@@ -100,7 +100,7 @@ Use `M-x realgud-track-mode` inside an existing [shell](http://www.gnu.org/softw
 
 ### RealGUD's wiki
 
-Browse the [wiki](http://wiki.github.com/realgud/realgud/) for more information about [setting up](http://wiki.github.com/realgud/realgud/how-to-install), [using realgud](http://wiki.github.com/realgud/realgud/how-to-use), [exploring features](https://github.com/realgud/realgud/wiki/Features), and lots more.
+Browse the [wiki](https://github.com/realgud/realgud/wiki) for more information about [setting up](https://github.com/realgud/realgud/wiki/How-to-Install), [using realgud](https://github.com/realgud/realgud/wiki/How-to-Use), [exploring features](https://github.com/realgud/realgud/wiki/Features), and lots more.
 
 [travis-image]: https://api.travis-ci.org/realgud/realgud.svg?branch=master
 [travis-url]: https://travis-ci.org/realgud/realgud
