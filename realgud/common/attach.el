@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016, 2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -27,6 +27,7 @@
 (declare-function realgud-srcbuf-init-or-update       'realgud-source)
 (declare-function realgud-short-key-mode-setup        'realgud-shortkey)
 
+;;;###autoload
 (defun realgud:attach-source-buffer(srcbuf)
   "Associate a source buffer with the current command buffer"
   (interactive "bsource buffer: ")
@@ -47,6 +48,7 @@
     )
   )
 
+;;;###autoload
 (defun realgud:attach-command-buffer(cmdbuf)
   "Associate a command buffer with the current source buffer"
 

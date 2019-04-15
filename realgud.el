@@ -91,6 +91,7 @@
   (progn
     (require-relative-list
      '(
+       "./realgud/common/attach"
        "./realgud/common/track-mode"
        "./realgud/common/utils"
        "./realgud/debugger/bashdb/bashdb"
