@@ -535,11 +535,14 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 			     (line-str (match-string line-group text))
 			     (source-str (and text-group (match-string text-group text)))
 			     (lineno (string-to-number (or line-str "1")))
+			     (directory
+			      (cond ((boundp 'starting-directory) starting-directory)
+				    (t nil)))
 			     )
 			(cond (callback-loc-fn
 			       (setq found-func (funcall callback-loc-fn text
 							 filename lineno source-str
-							 ignore-re-file-list cmd-mark))
+							 cmd-mark directory))
 			       (setq loc-pat-list nil))
 
 			      ('t
