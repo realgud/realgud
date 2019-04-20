@@ -17,6 +17,8 @@
 ;;; Emacs Commands to associate or attach a source buffer to a command
 ;;; buffer and vice versa.
 
+(eval-when-compile (require 'cl-seq))   ;For cl-remove-if-not.
+
 (require 'load-relative)
 (require-relative-list  '("buffer/command" "buffer/source")
 			"realgud-buffer-")
@@ -26,6 +28,9 @@
 (declare-function realgud-cmdbuf?                     'realgud-buffer-command)
 (declare-function realgud-srcbuf-init-or-update       'realgud-source)
 (declare-function realgud-short-key-mode-setup        'realgud-shortkey)
+
+;; (defvar realgud:attach-cmdbuf-history nil "minibuffer command buffer history list'.")
+
 
 ;;;###autoload
 (defun realgud:attach-source-buffer(srcbuf)
@@ -49,10 +54,15 @@
   )
 
 ;;;###autoload
-(defun realgud:attach-command-buffer(cmdbuf)
+(defun realgud:attach-cmd-buffer(cmdbuf)
   "Associate a command buffer with the current source buffer"
 
-  (interactive "bcommand buffer: ")
+  (interactive
+   (list
+    (completing-read "Choose a realgud command buffer: "
+		     (realgud:attach-list-command-buffers) nil t nil
+		     nil nil)))
+		     ;; realgud:attach-cmdbuf-history (car-safe realgud:attach-cmdbuf-history))))
   (if (stringp cmdbuf) (setq cmdbuf (get-buffer cmdbuf)))
   (let* ((srcbuf (current-buffer))
 	 (shortkey-mode?))
@@ -62,9 +72,14 @@
       (unless (get-buffer-process (current-buffer))
 	(warn "Can't find a process for command buffer %s" (current-buffer)))
       (setq shortkey-mode? (realgud-sget 'cmdbuf-info 'src-shortkey?)))
+    ;; (add-to-list 'realgud:attach-cmdbuf-history (buffer-name cmdbuf))
     (realgud-cmdbuf-add-srcbuf srcbuf)
     (realgud-srcbuf-init-or-update srcbuf cmdbuf)
     (if shortkey-mode? (realgud-short-key-mode-setup 't)))
   )
+
+(defun realgud:attach-list-command-buffers()
+  (mapcar 'buffer-name (cl-remove-if-not 'realgud-cmdbuf? (buffer-list))))
+
 
 (provide-me "realgud-")
