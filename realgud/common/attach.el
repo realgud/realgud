@@ -29,7 +29,7 @@
 (declare-function realgud-srcbuf-init-or-update       'realgud-source)
 (declare-function realgud-short-key-mode-setup        'realgud-shortkey)
 
-;; (defvar realgud:attach-cmdbuf-history nil "minibuffer command buffer history list'.")
+(defvar realgud:attach-cmdbuf-history nil "attach command buffer history list'.")
 
 
 ;;;###autoload
@@ -61,8 +61,7 @@
    (list
     (completing-read "Choose a realgud command buffer: "
 		     (realgud:attach-list-command-buffers) nil t nil
-		     nil nil)))
-		     ;; realgud:attach-cmdbuf-history (car-safe realgud:attach-cmdbuf-history))))
+		     'realgud:attach-cmdbuf-history nil)))
   (if (stringp cmdbuf) (setq cmdbuf (get-buffer cmdbuf)))
   (let* ((srcbuf (current-buffer))
 	 (shortkey-mode?))
@@ -72,7 +71,7 @@
       (unless (get-buffer-process (current-buffer))
 	(warn "Can't find a process for command buffer %s" (current-buffer)))
       (setq shortkey-mode? (realgud-sget 'cmdbuf-info 'src-shortkey?)))
-    ;; (add-to-list 'realgud:attach-cmdbuf-history (buffer-name cmdbuf))
+    (add-to-list 'realgud:attach-cmdbuf-history (buffer-name cmdbuf))
     (realgud-cmdbuf-add-srcbuf srcbuf)
     (realgud-srcbuf-init-or-update srcbuf cmdbuf)
     (if shortkey-mode? (realgud-short-key-mode-setup 't)))

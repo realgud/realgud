@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2018 Free Software Foundation, Inc
+;; Copyright (C) 2015-2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -520,6 +520,7 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 		  (file-group     (realgud-loc-pat-file-group loc-pat))
 		  (line-group     (realgud-loc-pat-line-group loc-pat))
 		  (text-group     (realgud-loc-pat-text-group loc-pat))
+		  (column-group   (realgud-loc-pat-column-group loc-pat))
 		  (ignore-re-file-list (or opt-ignore-re-file-list
 					   (realgud-sget 'cmdbuf-info 'ignore-re-file-list)))
 		  (callback-loc-fn (realgud-sget 'cmdbuf-info 'callback-loc-fn))
@@ -535,66 +536,96 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 			     (line-str (match-string line-group text))
 			     (source-str (and text-group (match-string text-group text)))
 			     (lineno (string-to-number (or line-str "1")))
+			     (column-str (and column-group (match-string column-group text)))
+			     (column (string-to-number (or column-str "1")))
 			     (directory
 			      (cond ((boundp 'starting-directory) starting-directory)
 				    (t nil)))
 			     )
 			(cond (callback-loc-fn
-			       (setq found-func (funcall callback-loc-fn text
+			       (if (setq found-loc (funcall callback-loc-fn text
 							 filename lineno source-str
-							 cmd-mark directory))
-			       (setq loc-pat-list nil))
+							 cmd-mark directory column))
+				   ;; FIXME: dry with code in realgud-track-bp-file-line
+				   (let ((bp-list (realgud-sget 'cmdbuf-info 'bp-list))
+					 srcbuf)
 
-			      ('t
+				     ;; Add src buffer mentioned and set it possibly to go into shortkey mode
+				     (setq srcbuf (realgud-loc-goto found-loc))
+				     (realgud-cmdbuf-add-srcbuf srcbuf cmdbuf)
+				     (realgud-srcbuf-init-or-update srcbuf cmdbuf)
+				     (with-current-buffer srcbuf
+				       (realgud-short-key-mode-setup
+					(or realgud-short-key-on-tracing? shortkey-mode?)
+					))
+
+				     ;; Add breakpoint to list of breakpoints
+				     (with-current-buffer-safe (marker-buffer (realgud-loc-marker found-loc))
+				       (realgud-bp-add-info found-loc))
+
+				     (unless (member found-loc bp-list)
+				       (realgud-cmdbuf-info-bp-list= (cons found-loc bp-list)))
+				     )
+				 (setq loc-pat-list nil)))
+			      (t
 			       (unless line-str
 				 (message "line number not found -- using 1"))
-			       (if (and filename lineno)
-				   (let* ((directory
-					   (cond ((boundp 'starting-directory) starting-directory)
-						 (t nil)))
-					  (srcbuf)
-					  (loc-or-error
-					   (realgud:file-loc-from-line
-					    filename lineno
-					    cmd-mark
-					    source-str
-					    (string-to-number bp-num)
-					    nil directory
-					    )))
-				     (if (stringp loc-or-error)
-					 (progn
-					   (message loc-or-error)
-					   ;; set to return nil
-					   (setq found-loc nil)
-					   (setq loc-pat-list nil))
-				       ;; else
-				       (let ((loc loc-or-error)
-					     (bp-list (realgud-sget 'cmdbuf-info 'bp-list)))
+			       (if (setq found-loc
+					 (realgud-track-bp-file-line cmd-mark cmdbuf filename lineno source-str bp-num directory column shortkey-mode?))
+				   (setq loc-pat-list nil)))
 
-					 ;; Add src buffer mentioned and set it possibly to go into shortkey mode
-					 (setq srcbuf (realgud-loc-goto loc))
-					 (realgud-cmdbuf-add-srcbuf srcbuf cmdbuf)
-					 (realgud-srcbuf-init-or-update srcbuf cmdbuf)
-					 (with-current-buffer srcbuf
-					   (realgud-short-key-mode-setup
-					    (or realgud-short-key-on-tracing? shortkey-mode?)
-					    ))
-
-					 ;; Add breakpoint to list of breakpoints
-					 (with-current-buffer-safe (marker-buffer (realgud-loc-marker loc))
-								   (realgud-bp-add-info loc))
-
-					 (unless (member loc bp-list)
-					   (realgud-cmdbuf-info-bp-list= (cons loc bp-list)))
-
-					 ;; Set to return location
-					 (setq found-loc loc-or-error)
-					 (setq loc-pat-list nil))
-				       )))
-			       )))
+			      )
+			)
 		    ))))
 	found-loc)
+      )))
+
+(defun realgud-track-bp-file-line(cmd-mark cmdbuf filename lineno source-str bp-num directory column shortkey-mode?)
+  (if (and filename lineno)
+      (let* ((directory
+	      (cond ((boundp 'starting-directory) starting-directory)
+		    (t nil)))
+	     (srcbuf)
+	     (found-loc nil)
+	     (loc-or-error
+	      (realgud:file-loc-from-line
+	       filename lineno
+	       cmd-mark
+	       source-str
+	       (string-to-number bp-num)
+	       nil directory
+	       )))
+	(if (stringp loc-or-error)
+	    (progn
+	      (message loc-or-error)
+	      ;; set to return nil
+	      (setq found-loc nil))
+	  ;; else
+	  (let ((loc loc-or-error)
+		(bp-list (realgud-sget 'cmdbuf-info 'bp-list)))
+
+	    ;; Add src buffer mentioned and set it possibly to go into shortkey mode
+	    (setq srcbuf (realgud-loc-goto loc))
+	    (realgud-cmdbuf-add-srcbuf srcbuf cmdbuf)
+	    (realgud-srcbuf-init-or-update srcbuf cmdbuf)
+	    (with-current-buffer srcbuf
+	      (realgud-short-key-mode-setup
+	       (or realgud-short-key-on-tracing? shortkey-mode?)
+	       ))
+
+	    ;; Add breakpoint to list of breakpoints
+	    (with-current-buffer-safe (marker-buffer (realgud-loc-marker loc))
+	      (realgud-bp-add-info loc))
+
+	    (unless (member loc bp-list)
+	      (realgud-cmdbuf-info-bp-list= (cons loc bp-list)))
+
+	    ;; Set to return location
+	    (setq found-loc loc-or-error)
+	  ))
+    found-loc
     )))
+
 
 (defun realgud-track-bp-delete(text &optional cmd-mark cmdbuf ignore-re-file-list)
   "Do regular-expression matching to see if a breakpoint has been

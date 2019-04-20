@@ -205,7 +205,7 @@ taken from current buffer, or OPT-BUFFER if non-nil.  Some
 
 		((eq key ?U)
 		 (if (string-match src-file-name "^file://")
-		     (setq src-file-name (substring 7)))
+		     (setq src-file-name (substring src-file-name 7)))
 		 (or (and src-file-name (expand-file-name src-file-name))
 		     "*source-file-not-found-for-%X"))
 
