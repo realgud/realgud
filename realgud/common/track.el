@@ -467,7 +467,7 @@ Otherwise return nil."
 		  (when source-str
 		    (setq source-str (ansi-color-filter-apply
 				      source-str)))
-		  (cond (callback-loc-fn
+		  (cond ((and nil callback-loc-fn)
 			 (funcall callback-loc-fn text
 				  filename lineno source-str
 				  cmd-mark directory))
