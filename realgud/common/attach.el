@@ -17,7 +17,7 @@
 ;;; Emacs Commands to associate or attach a source buffer to a command
 ;;; buffer and vice versa.
 
-(eval-when-compile (require 'cl-seq))   ;For cl-remove-if-not.
+(eval-when-compile (require 'cl-lib))   ;For cl-remove-if-not.
 
 (require 'load-relative)
 (require-relative-list  '("buffer/command" "buffer/source")
