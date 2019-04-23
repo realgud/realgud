@@ -3,6 +3,7 @@
 
 (eval-when-compile
   (defvar helper-bps)
+  (defvar helper-info-brkpt)
   (defvar helper-loc)
   (defvar helper-tb)
   (defvar prompt-pat)
@@ -14,9 +15,10 @@
 
 
 (defun setup-regexp-vars(pat-hash)
-  (setq helper-bps    (gethash "brkpt-set" pat-hash))
-  (setq helper-loc    (gethash "loc"       pat-hash))
-  (setq helper-tb     (gethash "lang-backtrace" pat-hash))
+  (setq helper-bps         (gethash "brkpt-set" pat-hash))
+  (setq helper-info-brkpt  (gethash "debugger-breakpoint" pat-hash))
+  (setq helper-loc         (gethash "loc"       pat-hash))
+  (setq helper-tb          (gethash "lang-backtrace" pat-hash))
 )
 
 (defun loc-match(text regexp-list)

@@ -164,4 +164,19 @@
  (match-string (realgud-loc-pat-text-group helper-loc)
 	       test-s1)   "extract source text")
 
+(setq test-s1
+      "1   breakpoint    keep y   at /home/rocky/.pyenv/versions/3.7.2/lib/python3.7/importlib/_bootstrap.py:1019")
+
+(assert-t (numberp (loc-match test-s1 helper-info-brkpt))
+	  "basic breakpoint location")
+(assert-equal "1"
+	      (match-string 1 test-s1)   "extract breakpoint number")
+
+(assert-equal "/home/rocky/.pyenv/versions/3.7.2/lib/python3.7/importlib/_bootstrap.py"
+	      (match-string 5 test-s1)   "extract breakpoint file name")
+(assert-equal "1019"
+	      (match-string 6 test-s1)
+	      "extract breakpoint line number")
+
+
 (end-tests)

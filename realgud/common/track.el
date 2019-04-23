@@ -617,8 +617,7 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 	    (with-current-buffer-safe (marker-buffer (realgud-loc-marker loc))
 	      (realgud-bp-add-info loc))
 
-	    (unless (member loc bp-list)
-	      (realgud-cmdbuf-info-bp-list= (cons loc bp-list)))
+	    (realgud-cmdbuf-info-bp-list= (delete-dups (cl-adjoin loc bp-list :test #'equal)))
 
 	    ;; Set to return location
 	    (setq found-loc loc-or-error)

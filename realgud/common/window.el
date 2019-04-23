@@ -1,4 +1,4 @@
-;; Copyright (C) 2010, 2014-2016 Free Software Foundation, Inc
+;; Copyright (C) 2010, 2014-2016, 2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -52,7 +52,7 @@ See also `realgud-window-src-undisturb-cmd'"
   "Make sure the source buffers is displayed in windows without
 disturbing the command window if it is also displayed. Returns
 the command window
-See also `realgud-window-src'"
+See also `realgud-window-src'."
   (interactive)
   (let* ((buffer (or opt-buffer (current-buffer)))
 	 (src-buffer (realgud-get-srcbuf buffer))
@@ -77,10 +77,9 @@ See also `realgud-window-src'"
   )
 
 (defun realgud-window-cmd-undisturb-src ( &optional opt-buffer switch?)
-  "Make sure the source buffer is displayed in windows without
+  "Make sure the command buffer is displayed in windows without
 disturbing the command window if it is also displayed. Returns
-the source window.
-See also `realgud-window-src'"
+the source window."
   (interactive)
   (let* ((buffer (or opt-buffer (current-buffer)))
 	 (src-buffer (realgud-get-srcbuf buffer))
@@ -143,12 +142,56 @@ See also `realgud-window-src'"
     src-window)
   )
 
+(defun realgud:window-brkpt-undisturb-src ( &optional opt-buffer switch?)
+  "Make sure the backtrace buffer is displayed in windows without
+disturbing the source window if it is also displayed. Returns
+the source window
+See also `realgud-window-src'"
+  (interactive)
+  (let* ((buffer (or opt-buffer (current-buffer)))
+	 (src-buffer (realgud-get-srcbuf buffer))
+	 (src-window (get-buffer-window src-buffer))
+	 (cmd-buffer (realgud-get-cmdbuf buffer))
+	 (cmd-window (get-buffer-window cmd-buffer))
+	 (brkpt-buffer (realgud-get-breakpoint-buf cmd-buffer))
+	 (brkpt-window (get-buffer-window brkpt-buffer))
+	 (window (selected-window))
+	 )
+    (when cmd-buffer
+      (unless brkpt-window
+	(setq brkpt-window
+	      (if (eq window src-window)
+		  ;; FIXME: generalize what to do here.
+		  (if (one-window-p 't)
+		      (split-window)
+		    (next-window window 'no-minibuf))
+		window))
+	(set-window-buffer brkpt-window brkpt-buffer)
+	)
+      (if switch?
+	  (and (select-window brkpt-window)
+	       (switch-to-buffer brkpt-buffer)))
+
+      )
+    src-window)
+  )
+
 (defun realgud:window-bt()
   "Refresh backtrace information and display that in a buffer"
   (interactive)
   (with-current-buffer-safe (realgud-get-cmdbuf)
     (realgud:backtrace-init)
     (realgud:window-bt-undisturb-src)
+    )
+  )
+
+
+(defun realgud:window-brkpt()
+  "Refresh breakpoint information and display that in a buffer"
+  (interactive)
+  (with-current-buffer-safe (realgud-get-cmdbuf)
+    (realgud:breakpoint-init)
+    (realgud:window-brkpt-undisturb-src)
     )
   )
 

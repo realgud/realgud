@@ -355,6 +355,12 @@ If no argument specified use 0 or the most recent frame."
     (realgud:cmd-run-command arg "frame" nil t t)
 )
 
+(defun realgud:cmd-info-breakpoints()
+  "Show all list of all breakpoints."
+  (interactive "")
+  (realgud:cmd-run-command nil "info-breakpoints")
+  )
+
 (defun realgud:cmd-kill()
   "Kill debugger process."
   (interactive)
