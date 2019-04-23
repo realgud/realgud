@@ -1,4 +1,4 @@
-;; Copyright (C) 2010, 2012, 2014-2016 Free Software Foundation, Inc
+;; Copyright (C) 2010, 2012, 2014-2016, 2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -39,8 +39,8 @@
   (ring (make-ring realgud-loc-hist-size)))
 
 (defun realgud:loc-hist-describe(loc-hist)
-  "Format LOC-HIST values inside buffer *Describe*"
-  (switch-to-buffer (get-buffer-create "*Describe*"))
+  "Format LOC-HIST values inside buffer *Describe Debugger Session*"
+  (switch-to-buffer (get-buffer-create "*Describe Debugger Session*"))
   (org-mode)
   (insert "** Source Positions Stopped at (loc-hist)\n")
   (mapc 'insert

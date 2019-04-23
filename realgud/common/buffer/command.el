@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2018 Free Software Foundation, Inc
+;; Copyright (C) 2015-2019 Free Software Foundation, Inc
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -247,7 +247,7 @@
   "Display realgud-cmdcbuf-info fields of BUFFER.
 BUFFER is either a debugger command or source buffer. If BUFFER is not given
 the current buffer is used as a starting point.
-Information is put in an internal buffer called *Describe*."
+Information is put in an internal buffer called *Describe Debugger Session*."
   (interactive "")
   (setq buffer (realgud-get-cmdbuf buffer))
   (if buffer
@@ -256,7 +256,7 @@ Information is put in an internal buffer called *Describe*."
 	      (cmdbuf-name (buffer-name)))
 	  (if info
 	      (progn
-		(switch-to-buffer (get-buffer-create "*Describe*"))
+		(switch-to-buffer (get-buffer-create "*Describe Debugger Session*"))
 		(setq buffer-read-only 'nil)
 		(delete-region (point-min) (point-max))
 		;;(insert "#+OPTIONS:    H:2 num:nil toc:t \\n:nil ::t |:t ^:nil -:t f:t *:t tex:t d:(HIDE) tags:not-in-toc\n")

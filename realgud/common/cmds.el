@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2017 Free Software Foundation, Inc
+;; Copyright (C) 2015-2017, 2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -87,37 +87,43 @@ with other motion initiated by debugger messages."
 
 (defconst realgud-cmd:default-hash
   (let ((hash (make-hash-table :test 'equal)))
-    (puthash "backtrace"   "backtrace" hash)
-    (puthash "break"       "break %X:%l" hash)
-    (puthash "break_fn"    "break %s" hash)
-    (puthash "clear"       "clear %l" hash)
-    (puthash "continue"    "continue" hash)
-    (puthash "delete"      "delete %p" hash)
-    (puthash "delete_all"  "delete" hash)
-    (puthash "disable"     "disable %p" hash)
-    (puthash "disable_all" "disable" hash)
-    (puthash "down"        "down %p" hash)
-    (puthash "enable"      "enable %p" hash)
-    (puthash "enable_all"  "enable" hash)
-    (puthash "eval"        "eval %s" hash)
-    (puthash "finish"      "finish" hash)
-    (puthash "frame"       "frame %p" hash)
-    (puthash "help"        "help" hash)
-    (puthash "jump"        "jump %l" hash)
-    (puthash "kill"        "kill" hash)
-    (puthash "next"        "next %p" hash)
-    (puthash "repeat-last" "\n" hash)
-    (puthash "restart"     "run" hash)
-    (puthash "shell"       "shell" hash)
-    (puthash "step"        "step %p" hash)
-    (puthash "tbreak"      "tbreak %X:%l" hash)
-    (puthash "until"       "until" hash)
-    (puthash "until-here"  "until %l" hash)    
-    (puthash "up"          "up %p" hash)
+    (puthash "backtrace"         "backtrace" hash)
+    (puthash "break"             "break %X:%l" hash)
+    (puthash "break-fn"          "break %s" hash)
+    (puthash "clear"             "clear %l" hash)
+    (puthash "continue"          "continue" hash)
+    (puthash "delete"            "delete %p" hash)
+    (puthash "delete-all"        "delete" hash)
+    (puthash "disable"           "disable %p" hash)
+    (puthash "disable-all"       "disable" hash)
+    (puthash "down"              "down %p" hash)
+    (puthash "enable"            "enable %p" hash)
+    (puthash "enable-all"        "enable" hash)
+    (puthash "eval"              "eval %s" hash)
+    (puthash "finish"            "finish" hash)
+    (puthash "frame"             "frame %p" hash)
+    (puthash "help"              "help" hash)
+    (puthash "info-breakpoints"  "info break" hash)
+    (puthash "jump"              "jump %l" hash)
+    (puthash "kill"              "kill" hash)
+    (puthash "next"              "next %p" hash)
+    (puthash "repeat-last"       "\n" hash)
+    (puthash "restart"           "run" hash)
+    (puthash "shell"             "shell" hash)
+    (puthash "step"              "step %p" hash)
+    (puthash "tbreak"            "tbreak %X:%l" hash)
+    (puthash "until"             "until" hash)
+    (puthash "until-here"        "until %l" hash)
+    (puthash "up"                "up %p" hash)
     hash)
   "Default hash of command name → debugger command.
 This is used as a fallback when the debugger-specific command
-hash does not specify a custom debugger command.")
+hash does not specify a custom debugger command. The keys of the
+hash contain all the debugger commands we know about.
+
+If a value is *not-implemented*, then this command is not available
+in a particular debugger.
+")
 
 (defun realgud:cmd-run-command(arg cmd-name &optional
                                    default-cmd-template no-record?
@@ -190,7 +196,7 @@ With prefix argument LINE-NUMBER, prompt for line number."
                                    (realgud:cmd-run-command line-number "tbreak")))
 
 (defun realgud:cmd-until-here (&optional line-number)
-  "Continue until the current line. 
+  "Continue until the current line.
 With prefix argument LINE-NUMBER, prompt for line number."
   (interactive (realgud:cmd--line-number-from-prefix-arg))
   (realgud:cmd--with-line-override line-number
@@ -221,24 +227,40 @@ running."
                    "Continue to next breakpoint?"))
       (realgud:cmd-run-command arg "continue")))
 
+(defun realgud-get-bp-list()
+  "Return breakpoint numbers as a list of strings. This can be used for
+example in a completing read."
+  (with-current-buffer (realgud-get-cmdbuf)
+    ;; Remove duplicates doesn't seem to work on strings so
+    ;; we need a separate mapcar outside to stringify
+    ;; Also note that lldb breakpoint numbers can be dotted like
+    ;; 5.1.
+    (mapcar (lambda (num) (format "%s" num))
+	    (remove-duplicates
+	     (mapcar (lambda(loc) (realgud-loc-num loc))
+		     (realgud-cmdbuf-info-bp-list realgud-cmdbuf-info))))))
+
 (defun realgud:bpnum-on-current-line()
   "Return number of one breakpoint on current line, if any.
 If none is found, return nil."
   (realgud-get-bpnum-from-line-num (line-number-at-pos)))
 
-(defun realgud:bpnum-from-prefix-arg()
+(defun realgud:bpnum-from-prefix-arg(action-verb)
   "Return number of one breakpoint on current line, if any.
 If none is found, or if `current-prefix-arg' is a cons (i.e. a
 C-u prefix arg), ask user for a breakpoint number.  If
 `current-prefix-arg' is a number (i.e. a numeric prefix arg),
 return it unmodified."
   (let ((must-prompt (consp current-prefix-arg))
+	(cmd-buffer (realgud-get-cmdbuf))
         (current-bp (realgud:bpnum-on-current-line)))
-    (list
-     (if (numberp current-prefix-arg)
-         current-prefix-arg
-       (or (and (not must-prompt) current-bp)
-           (read-number "Breakpoint number: " current-bp))))))
+      (list
+       (if (numberp current-prefix-arg)
+	   current-prefix-arg
+	 (or (and (not must-prompt) current-bp)
+	     (string-to-number (completing-read (format "%s breakpoint number: " action-verb)
+			      (realgud-get-bp-list)
+			      nil nil current-bp)))))))
 
 (defun realgud:cmd-delete(bpnum)
     "Delete breakpoint by number.
@@ -246,7 +268,7 @@ Interactively, find breakpoint on current line, if any.  With
 numeric prefix argument, delete breakpoint with that number
 instead.  With prefix argument (C-u), or when no breakpoint can
 be found on the current line, prompt for a breakpoint number."
-    (interactive (realgud:bpnum-from-prefix-arg))
+    (interactive (realgud:bpnum-from-prefix-arg "Delete"))
     (realgud:cmd-run-command bpnum "delete"))
 
 (defun realgud:cmd-disable(bpnum)
@@ -255,7 +277,7 @@ Interactively, find breakpoint on current line, if any.  With
 numeric prefix argument, disable breakpoint with that number
 instead.  With prefix argument (C-u), or when no breakpoint can
 be found on the current line, prompt for a breakpoint number."
-    (interactive (realgud:bpnum-from-prefix-arg))
+    (interactive (realgud:bpnum-from-prefix-arg "Disable"))
     (realgud:cmd-run-command bpnum "disable"))
 
 (defun realgud:cmd-enable(bpnum)
@@ -264,7 +286,7 @@ Interactively, find breakpoint on current line, if any.  With
 numeric prefix argument, enable breakpoint with that number
 instead.  With prefix argument (C-u), or when no breakpoint can
 be found on the current line, prompt for a breakpoint number."
-    (interactive (realgud:bpnum-from-prefix-arg))
+    (interactive (realgud:bpnum-from-prefix-arg "Enable"))
     (realgud:cmd-run-command bpnum "enable"))
 
 (defun realgud-cmds--add-remove-bp (pos)

@@ -154,7 +154,7 @@ use to get the information from.
 	      (a2 realgud-overlay-arrow2)
 	      (a3 realgud-overlay-arrow3)
 	      )
-	  (switch-to-buffer (get-buffer-create "*Describe*"))
+	  (switch-to-buffer (get-buffer-create "*Describe Debugger Session*"))
 	  (delete-region (point-min) (point-max))
 	  (mapc 'insert
 		(list

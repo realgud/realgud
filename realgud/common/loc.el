@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2017 Free Software Foundation, Inc
+;; Copyright (C) 2015-2017, 2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -59,14 +59,14 @@ without buffer properties."
 
 (defun realgud:loc-describe (loc)
   "Display realgud-cmdcbuf-info.
-Information is put in an internal buffer called *Describe*."
+Information is put in an internal buffer called *Describe Debugger Session*."
   (interactive "")
-  (switch-to-buffer (get-buffer-create "*Describe*"))
+  (switch-to-buffer (get-buffer-create "*Describe Debugger Session*"))
   (realgud:org-mode-append-loc loc))
 
 (defun realgud:org-mode-append-loc (loc)
   "Display realgud-cmdcbuf-info.
-Information is put in an internal buffer called *Describe*."
+Information is put in an internal buffer called *Describe Debugger Session*."
   (let ((column-number (realgud-loc-column-number loc))
 	(bp-num (realgud-loc-num loc))
 	(source-text (realgud-loc-source-text loc))

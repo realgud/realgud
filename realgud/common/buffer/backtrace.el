@@ -2,7 +2,7 @@
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
-;; Copyright (C) 2015-2017 Free Software Foundation, Inc
+;; Copyright (C) 2015-2017, 2019 Free Software Foundation, Inc
 
 ;; This program is free software: you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -83,7 +83,7 @@
 	  (frame)
 	  (loc)
 	  (i 0))
-      (switch-to-buffer (get-buffer-create "*Describe*"))
+      (switch-to-buffer (get-buffer-create "*Describe Backtrace*"))
       (while (and (< i (ring-length frames)) (setq frame (ring-ref frames i)))
 	(insert (format "*** %d\n" i))
 	(insert (format "%s\n" frame))
