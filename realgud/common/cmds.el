@@ -185,6 +185,7 @@ as in `realgud:cmd-run-command'."
   "Set a breakpoint at the current line.
 With prefix argument LINE-NUMBER, prompt for line number."
   (interactive (realgud:cmd--line-number-from-prefix-arg))
+  ;; Note a file name may be picked up inside realgud:cmd-run-runcmd's stored pattern
   (realgud:cmd--with-line-override line-number
                                    (realgud:cmd-run-command line-number "break")))
 
