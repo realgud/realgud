@@ -203,13 +203,18 @@
 ;; FIXME: this is a cheat. We are inserting
 ;; and afterwards inserting ""
 (defun realgud:cmdbuf-bp-list-describe (info)
-  (let ((bp-list (delete-dups (realgud-cmdbuf-info-bp-list info))))
+  (let ((bp-list (realgud-cmdbuf-info-bp-list info))
+	;; For reasons I don't understand bp-list has duplicates
+	(bp-nums nil))
     (cond (bp-list
 	   (insert "** Breakpoint list (bp-list)\n")
 	   (dolist (loc bp-list "")
 	     (let ((bp-num (realgud-loc-num loc)))
-	       (insert (format "*** Breakpoint %d\n" bp-num))
-	       (realgud:org-mode-append-loc loc))))
+	       (when (not (cl-member bp-num bp-nums))
+		 (insert (format "*** Breakpoint %d\n" bp-num))
+		 (realgud:org-mode-append-loc loc)
+		 (setq bp-nums (cl-adjoin bp-num bp-nums))
+	       ))))
 	  ;; Since we are inserting, the below in fact
 	  ;; inserts nothing. The string return is
 	  ;; aspirational for when this is fixed

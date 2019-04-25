@@ -94,6 +94,7 @@
     (with-current-buffer-safe cmdbuf
       (let ((brkpt-pat (realgud-cmdbuf-pat "debugger-breakpoint"))
 	    (brkpt-pos-ring)
+	    (bp-list (realgud-cmdbuf-info-bp-list realgud-cmdbuf-info))
 	    (sleep-count 0)
 	    )
 	(unless brkpt-pat
@@ -126,7 +127,7 @@
 	      (if divert-string
 		  (let* ((duple
 			  (realgud:breakpoint-add-text-properties
-			   brkpt-pat cmdbuf divert-string))
+			   brkpt-pat cmdbuf divert-string bp-list))
 			 (string-with-props
 			  (ansi-color-filter-apply (car duple)))
 			 (brkpt-num-pos-list (cadr duple))
@@ -246,14 +247,11 @@ non-digit will start entry number from the beginning again."
               (setq acc "")))))
     (message "`realgud-goto-breakpoint-n' must be bound to a number key")))
 
-(defun realgud:breakpoint-add-text-properties(brkpt-pat cmdbuf &optional opt-string)
-  "Parse OPT-STRING or the current buffer and add frame properties: frame number,
-filename, line number, whether the frame is selected as text properties."
+(defun realgud:breakpoint-add-text-properties(brkpt-pat cmdbuf string bp-list)
+  "Parse STRING or the current buffer and add frame properties: breakpoint number,
+filename, and line number as text properties."
 
-  (let* ((string (or opt-string
-		    (buffer-substring (point-min) (point-max))
-		    ))
-	 (stripped-string (ansi-color-filter-apply string))
+  (let* ((stripped-string (ansi-color-filter-apply string))
 	 (brkpt-regexp (realgud-loc-pat-regexp brkpt-pat))
 	 (brkpt-group-pat (realgud-loc-pat-num brkpt-pat))
 	 (file-group-pat (realgud-loc-pat-file-group brkpt-pat))
@@ -265,6 +263,7 @@ filename, line number, whether the frame is selected as text properties."
 	 )
     (while (string-match brkpt-regexp stripped-string last-pos)
       (let ((brkpt-num-str) (brkpt-num) (line-num) (filename)
+	    (loc)
 	    ;; From https://github.com/realgud/realgud/pull/192
 	    ;; Each brkpt of breakpoint is searched via string-match
 	    ;; invocation and a position of the current brkpt is
@@ -284,13 +283,14 @@ filename, line number, whether the frame is selected as text properties."
 			       (match-beginning brkpt-group-pat)
 			       (match-end brkpt-group-pat)))
 	      (setq brkpt-num (string-to-number brkpt-num-str))
+	      (setq loc (seq-find (lambda (elt) (equal brkpt-num (realgud-loc-num elt))) bp-list))
 	      (setq brkpt-num-pos (match-beginning brkpt-group-pat))
 	      (cl-pushnew brkpt-num-pos brkpt-num-pos-list)
 	      (add-text-properties (match-beginning brkpt-group-pat)
 				   (match-end brkpt-group-pat)
 				   (list 'mouse-face 'highlight
 					 'help-echo "mouse-2: goto this brkpt"
-					 'brkpt brkpt-num)
+					 'mark (realgud-loc-marker loc))
 				   string)
 	      )
 	  ; else
@@ -330,7 +330,7 @@ filename, line number, whether the frame is selected as text properties."
 	(when (and (stringp filename) (numberp line-num))
 	  (let ((loc (realgud:file-loc-from-line filename line-num cmdbuf)))
 	    (put-text-property whole-match-begin whole-match-end
-			       'loc loc string)
+			       'mark loc string)
 	    ))
 	(put-text-property whole-match-begin whole-match-end
 			   'brkpt-num  brkpt-num string)
