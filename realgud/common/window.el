@@ -17,7 +17,9 @@
 (require-relative-list '("buffer/helper") "realgud-buffer-")
 
 (declare-function realgud:backtrace-init    'realgud-buffer-helper)
+(declare-function realgud:breakpoint-init   'realgud-buffer-helper)
 (declare-function realgud-get-backtrace-buf 'realgud-buffer-helper)
+(declare-function realgud-get-breakpoint-buf 'realgud-buffer-helper)
 (declare-function realgud-get-cmdbuf        'realgud-buffer-helper)
 (declare-function realgud-get-srcbuf        'realgud-buffer-helper)
 (declare-function buffer-killed?            'realgud-helper)
