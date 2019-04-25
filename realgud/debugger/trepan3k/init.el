@@ -40,7 +40,7 @@ realgud-loc-pat struct")
 ;; before a command prompt.
 ;;
 ;; For example:
-;;   (/usr/bin/zonetab2pot.py:15): <module>
+;;   (/usr/bin/zonetab2pot.py:15 @3): <module>
 ;;   (/usr/bin/zonetab2pot.py:15 remapped <string>): <module>
 ;; or MS Windows:
 ;;   (c:\\mydirectory\\gcd.py:10): <module>
@@ -55,7 +55,7 @@ realgud-loc-pat struct")
 (setf (gethash "ignore-re-file-list" realgud:trepan3k-pat-hash)
       (list realgud-python-ignore-file-re))
 
-;; Regular expression that describes a trepan3k prompt.
+;; realgud-loc-pat that describes a trepan3k prompt.
 ;; Note: the prompt in nested debugging
 ;; For example:
 ;; (trepan3)
@@ -90,7 +90,7 @@ realgud-loc-pat struct")
 (setf (gethash "pytest-error" realgud:trepan3k-pat-hash)
       realgud-pytest-error-loc-pat)
 
-;;  Regular expression that describes location in a flake8 message
+;;  realgud-loc-pat that describes location in a flake8 message
 (setf (gethash "flake8-msg" realgud:trepan3k-pat-hash)
       realgud-flake8-msg-loc-pat)
 
@@ -130,10 +130,11 @@ realgud-loc-pat struct")
   "Hash key is command name like 'shell' and the value is
   the trepan3k command to use, like 'python'")
 
-(setf (gethash "eval"   realgud:trepan3k-command-hash) "eval %s")
-(setf (gethash "pprint" realgud:trepan3k-command-hash) "pp %s")
-(setf (gethash "shell"  realgud:trepan3k-command-hash) "python")
-(setf (gethash "until"  realgud:trepan3k-command-hash) "continue %l")
+(setf (gethash "eval"             realgud:trepan3k-command-hash) "eval %s")
+(setf (gethash "info-breakpoints" realgud:trepan3k-command-hash) "info break")
+(setf (gethash "pprint"           realgud:trepan3k-command-hash) "pp %s")
+(setf (gethash "shell"            realgud:trepan3k-command-hash) "python")
+(setf (gethash "until"            realgud:trepan3k-command-hash) "continue %l")
 
 ;; If your version of trepan3k doesn't support "quit!",
 ;; get a more recent version of trepan3k

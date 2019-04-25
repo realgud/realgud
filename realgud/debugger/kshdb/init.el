@@ -1,4 +1,4 @@
-;; Copyright (C) 2010-2011, 2016-2017 Free Software Foundation, Inc
+;; Copyright (C) 2010-2011, 2016-2017, 2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -79,12 +79,25 @@ realgud-loc-pat struct")
 (setf (gethash "debugger-backtrace" realgud:kshdb-pat-hash)
       realgud:POSIX-debugger-backtrace-pat)
 
+;; FIXME breakpoints aren't locations. It should be a different structure
+;; realgud-loc that describes a zshdb "info breakpoints" line.
+(setf (gethash "debugger-breakpoint" realgud:kshdb-pat-hash)
+      realgud:POSIX-debugger-backtrace-pat)
+
 ;; Regular expression that for a termination message.
 (setf (gethash "termination" realgud:kshdb-pat-hash)
        "^kshdb: That's all, folks...\n")
 
+;; FIXME breakpoints aren't locations. It should be a different structure
+;; realgud-loc that describes a zshdb "info breakpoints" line.
+(setf (gethash "debugger-breakpoint" realgud:kshdb-pat-hash)
+      realgud:POSIX-debugger-breakpoint-pat)
+
 (setf (gethash "font-lock-keywords" realgud:kshdb-pat-hash)
       realgud:POSIX-debugger-font-lock-keywords)
+
+(setf (gethash "font-lock-breakpoint-keywords" realgud:kshdb-pat-hash)
+      realgud:POSIX-debugger-font-lock-breakpoint-keywords)
 
 (setf (gethash "kshdb" realgud-pat-hash) realgud:kshdb-pat-hash)
 
@@ -97,12 +110,15 @@ realgud-loc-pat struct")
 ;; (setf (gethash "quit" realgud:kshdb-command-hash) "quit!")
 
 
-(setf (gethash "clear"  realgud:kshdb-command-hash) "clear %l")
-(setf (gethash "eval"   realgud:kshdb-command-hash) "eval %s")
-(setf (gethash "quit"   realgud:kshdb-command-hash) "quit")
-(setf (gethash "until"  realgud:kshdb-command-hash) "continue %l")
+(setf (gethash "clear"            realgud:kshdb-command-hash) "clear %l")
+(setf (gethash "eval"             realgud:kshdb-command-hash) "eval %s")
+(setf (gethash "info-breakpoints" realgud:kshdb-command-hash) "info breakpoints")
+(setf (gethash "quit"             realgud:kshdb-command-hash) "quit")
+(setf (gethash "until"            realgud:kshdb-command-hash) "continue %l")
 
 ;; Unsupported features:
-(setf (gethash "jump"  realgud:kshdb-command-hash) "*not-implemented*")
+(setf (gethash "jump"   realgud:kshdb-command-hash) "*not-implemented*")
+(setf (gethash "finish" realgud:kshdb-command-hash) "*not-implemented*")
+(setf (gethash "jump"   realgud:kshdb-command-hash) "*not-implemented*")
 
 (provide-me "realgud:kshdb-")

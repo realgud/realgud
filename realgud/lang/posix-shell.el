@@ -68,7 +68,7 @@ traceback) line."  )
       "A realgud-loc-pat struct that describes a POSIX shell debugger
       location line.")
 
-;; Regular expression that describes a debugger "backtrace" command line.
+;; realgud-loc that describes a debugger "backtrace" command line.
 ;; For example:
 ;;   ->0 in file `/etc/apparmor/fns' at line 24
 ;;   ##1 /etc/apparmor/fns called from file `/etc/init.d/apparmor' at line 35
@@ -86,6 +86,22 @@ traceback) line."  )
    :line-group 5)
   "A realgud-loc-pat struct that describes a Python trepan
       backtrace location line." )
+
+;; FIXME breakpoints aren't locations. It should be a different structure
+;; realgud-loc that describes a bashdb/zshdb/kshdb "info breakpoints" line.
+;; For example:
+;; 1   breakpoint keep y   /Users/rocky/.bashrc:17
+;; 2   breakpoint keep y   /Users/rocky/.bashrc:18
+(defconst realgud:POSIX-debugger-breakpoint-pat
+  (make-realgud-loc-pat
+   :regexp (format "^%s[ \t]+\\(breakpoint\\)[ \t]+\\(keep\\|del\\)[ \t]+\\([yn]\\)[ \t]+\\(.+\\):%s"
+		   realgud:regexp-captured-num realgud:regexp-captured-num)
+   :num 1
+   :text-group 2  ;; misnamed Is "breakpoint" or "watchpoint"
+   :string 3      ;; misnamed. Is "keep" or "del"
+   :file-group 5
+   :line-group 6)
+  "A realgud-loc-pat struct that describes a bashdb/zshdb/kshdb breakpoint."  )
 
 ;;  Regular expression that describes a "breakpoint set" line
 (defconst realgud:POSIX-debugger-brkpt-set-pat
@@ -145,6 +161,23 @@ traceback) line."  )
      (1 realgud-line-number-face))
     ;; (trepan-frames-match-current-line
     ;;  (0 trepan-frames-current-frame-face append))
+    ))
+
+(defconst realgud:POSIX-debugger-font-lock-breakpoint-keywords
+  '(
+    ;; The breakpoint number, type and disposition
+    ;; 1   breakpoint    keep y   /Users/rocky/.bashrc:6
+    ;; ^   ^^^^^^^^^^    ^^^^
+    ("^\\([0-9]+\\)[ \t]+\\(breakpoint\\)[ \t]+\\(keep\\|del\\)"
+     (1 realgud-breakpoint-number-face)
+     (2 font-lock-function-name-face nil t)     ; t means optional.
+     (3 font-lock-function-name-face nil t))     ; t means optional.
+
+    ;; 1   breakpoint    keep y   /Users/rocky/.bashrc:6
+    ;;                            ^^^^^^^^^^^^^^^^^^^^^^
+    ("[ \t]+\\(.+*\\):\\([0-9]+\\)"
+     (1 realgud-file-name-face)
+     (1 realgud-line-number-face))
     ))
 
 (provide-me "realgud-lang-")

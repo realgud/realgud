@@ -103,7 +103,7 @@ with other motion initiated by debugger messages."
     (puthash "finish"            "finish" hash)
     (puthash "frame"             "frame %p" hash)
     (puthash "help"              "help" hash)
-    (puthash "info-breakpoints"  "info break" hash)
+    (puthash "info-breakpoints"  "info breakpoints" hash)
     (puthash "jump"              "jump %l" hash)
     (puthash "kill"              "kill" hash)
     (puthash "next"              "next %p" hash)
@@ -237,7 +237,7 @@ example in a completing read."
     ;; Also note that lldb breakpoint numbers can be dotted like
     ;; 5.1.
     (mapcar (lambda (num) (format "%s" num))
-	    (remove-duplicates
+	    (cl-remove-duplicates
 	     (mapcar (lambda(loc) (realgud-loc-num loc))
 		     (realgud-cmdbuf-info-bp-list realgud-cmdbuf-info))))))
 

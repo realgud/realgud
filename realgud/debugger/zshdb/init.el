@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016, 2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -80,12 +80,20 @@ realgud-loc-pat struct")
 (setf (gethash "debugger-backtrace" realgud:zshdb-pat-hash)
       realgud:POSIX-debugger-backtrace-pat)
 
+;; FIXME breakpoints aren't locations. It should be a different structure
+;; realgud-loc that describes a zshdb "info breakpoints" line.
+(setf (gethash "debugger-breakpoint" realgud:zshdb-pat-hash)
+      realgud:POSIX-debugger-breakpoint-pat)
+
 ;; realgud-loc-pat that for a termination message.
 (setf (gethash "termination" realgud:zshdb-pat-hash)
        "^zshdb: That's all, folks...\n")
 
 (setf (gethash "font-lock-keywords" realgud:zshdb-pat-hash)
       realgud:POSIX-debugger-font-lock-keywords)
+
+(setf (gethash "font-lock-breakpoint-keywords" realgud:zshdb-pat-hash)
+      realgud:POSIX-debugger-font-lock-breakpoint-keywords)
 
 (setf (gethash "zshdb" realgud-pat-hash) realgud:zshdb-pat-hash)
 
@@ -95,12 +103,15 @@ realgud-loc-pat struct")
 
 (setf (gethash "zshdb"  realgud-command-hash) realgud:zshdb-command-hash)
 
-(setf (gethash "clear"  realgud:zshdb-command-hash) "clear %l")
-(setf (gethash "eval"   realgud:zshdb-command-hash) "eval %s")
-(setf (gethash "quit"   realgud:zshdb-command-hash) "quit")
-(setf (gethash "until"  realgud:zshdb-command-hash) "continue %l")
+(setf (gethash "clear"            realgud:zshdb-command-hash) "clear %l")
+(setf (gethash "eval"             realgud:zshdb-command-hash) "eval %s")
+(setf (gethash "info-breakpoints" realgud:zshdb-command-hash) "info breakpoints")
+(setf (gethash "quit"             realgud:zshdb-command-hash) "quit")
+(setf (gethash "until"            realgud:zshdb-command-hash) "continue %l")
 
 ;; Unsupported features:
-(setf (gethash "jump"  realgud:zshdb-command-hash) "*not-implemented*")
+(setf (gethash "break-fn" realgud:zshdb-command-hash) "*not-implemented*")
+(setf (gethash "finish"   realgud:zshdb-command-hash) "*not-implemented*")
+(setf (gethash "jump"     realgud:zshdb-command-hash) "*not-implemented*")
 
 (provide-me "realgud:zshdb-")

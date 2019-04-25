@@ -94,7 +94,7 @@ traceback) line."  )
    ))
 
 ;; FIXME breakpoints aren't locations. It should be a different structure
-;; Regular expression that describes a trepan2/3k backtrace line.
+;; realgud-loc that describes a trepan2/3k "info breakpoints" line.
 ;; For example:
 ;; 1   breakpoint    keep y   at /home/rocky/.pyenv/versions/3.7.2/lib/python3.7/importlib/_bootstrap.py:1019
 ;; 2   breakpoint    keep y   at /home/rocky/.pyenv/versions/3.7.2/lib/python3.7/importlib/_bootstrap.py:1023

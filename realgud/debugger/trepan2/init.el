@@ -1,4 +1,4 @@
-;; Copyright (C) 2010-2012, 2014-2017 Free Software Foundation, Inc
+;; Copyright (C) 2010-2012, 2014-2017, 2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -6,6 +6,14 @@
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
 ;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;; trepan2: Python 2.5 - 2.7; for 3.0+ see trepan3k
 
@@ -30,7 +38,7 @@ realgud-loc-pat struct")
 
 (setf (gethash "loc-callback-fn" realgud:trepan2-pat-hash) 'realgud:trepan2-loc-fn-callback)
 
-;; Regular expression that describes a trepan2 location generally shown
+;; realgud-loc-pat that describes a trepan2 location generally shown
 ;; before a command prompt.
 ;;
 ;; For example:
@@ -49,7 +57,7 @@ realgud-loc-pat struct")
 (setf (gethash "ignore-re-file-list" realgud:trepan2-pat-hash)
       (list realgud-python-ignore-file-re))
 
-;; Regular expression that describes a trepan2 prompt.
+;; realgud-loc-pat that describes a trepan2 prompt.
 ;; Note: the prompt in nested debugging
 ;; For example:
 ;; (trepan2)
@@ -59,7 +67,7 @@ realgud-loc-pat struct")
        :regexp   "^(+trepan2)+ "
        ))
 
-;; Regular expression that describes a trepan2 backtrace line.
+;; realgud-loc-pat that describes a trepan2 backtrace line.
 ;; For example:
 ;; ->0 get_distribution(dist='trepan==0.3.9')
 ;;     called from file '/python2.7/dist-packages/pkg_res.py' at line 341
@@ -70,44 +78,53 @@ realgud-loc-pat struct")
 (setf (gethash "debugger-backtrace" realgud:trepan2-pat-hash)
       realgud:python-trepan-backtrace-pat)
 
-;;  Regular expression that describes a Python backtrace line.
+;; realgud-loc-pat that describes a line a Python "info break" line.
+;; For example:
+;; 1   breakpoint    keep y   at /usr/local/bin/trepan2k:7
+(setf (gethash "debugger-breakpoint" realgud:trepan2-pat-hash)
+      realgud-python-breakpoint-pat)
+
+;;  realgud-loc-pat that describes a Python backtrace line.
 (setf (gethash "lang-backtrace" realgud:trepan2-pat-hash)
       realgud-python-backtrace-loc-pat)
 
-;;  Regular expression that describes location in a pytest error
+;;  realgud-loc-pat expression that describes location in a pytest error
 (setf (gethash "pytest-error" realgud:trepan2-pat-hash)
       realgud-pytest-error-loc-pat)
 
-;;  Regular expression that describes location in a flake8 message
+;;  realgud-loc-pat that describes location in a flake8 message
 (setf (gethash "flake8-msg" realgud:trepan2-pat-hash)
       realgud-flake8-msg-loc-pat)
 
-;;  Regular expression that describes a "breakpoint set" line
+;;  realgud-loc-pat that describes a "breakpoint set" line
 (setf (gethash "brkpt-set" realgud:trepan2-pat-hash)
       realgud:python-trepan-brkpt-set-pat)
 
-;;  Regular expression that describes a "delete breakpoint" line
+;;  realgud-loc-pat that describes a "delete breakpoint" line
 (setf (gethash "brkpt-del" realgud:trepan2-pat-hash)
       realgud:python-trepan-brkpt-del-pat)
 
-;; Regular expression that describes a debugger "disable" (breakpoint) response.
+;; realgud-loc-pat that describes a debugger "disable" (breakpoint) response.
 ;; For example:
 ;;   Breakpoint 4 disabled.
 (setf (gethash "brkpt-disable" realgud:trepan2-pat-hash)
       realgud:python-trepan-brkpt-disable-pat)
 
-;; Regular expression that describes a debugger "enable" (breakpoint) response.
+;; realgud-loc-pat that describes a debugger "enable" (breakpoint) response.
 ;; For example:
 ;;   Breakpoint 4 enabled.
 (setf (gethash "brkpt-enable" realgud:trepan2-pat-hash)
       realgud:python-trepan-brkpt-disable-pat)
 
-;; Regular expression for a termination message.
+;; realgud-loc-pat for a termination message.
 (setf (gethash "termination" realgud:trepan2-pat-hash)
       "^trepan2: That's all, folks...\n")
 
 (setf (gethash "font-lock-keywords" realgud:trepan2-pat-hash)
       realgud:python-debugger-font-lock-keywords)
+
+(setf (gethash "font-lock-breakpoint-keywords" realgud:trepan2-pat-hash)
+      realgud:python-debugger-font-lock-breakpoint-keywords)
 
 (setf (gethash "trepan2" realgud-pat-hash) realgud:trepan2-pat-hash)
 
@@ -115,9 +132,11 @@ realgud-loc-pat struct")
   "Hash key is command name like 'shell' and the value is
   the trepan2 command to use, like 'python'")
 
-(setf (gethash "eval"  realgud:trepan2-command-hash) "eval %s")
-(setf (gethash "shell" realgud:trepan2-command-hash) "python")
-(setf (gethash "until" realgud:trepan2-command-hash) "continue %l")
+(setf (gethash "eval"             realgud:trepan2-command-hash) "eval %s")
+(setf (gethash "pprint"           realgud:trepan2-command-hash) "pp %s")
+(setf (gethash "info-breakpoints" realgud:trepan2-command-hash) "info break")
+(setf (gethash "shell"            realgud:trepan2-command-hash) "python")
+(setf (gethash "until"            realgud:trepan2-command-hash) "continue %l")
 
 ;; If your version of trepan2 doesn't support "quit!",
 ;; get a more recent version of trepan2
