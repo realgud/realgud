@@ -1,4 +1,4 @@
-;; Copyright (C) 2010-2018 Free Software Foundation, Inc
+;; Copyright (C) 2010-2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -76,6 +76,12 @@ realgud-loc-pat struct")
 (setf (gethash "debugger-backtrace" realgud:trepan3k-pat-hash)
       realgud:python-trepan-backtrace-pat)
 
+;;  realgud-loc-pat that describes a line a Python "info break" line.
+;; For example:
+;; 1   breakpoint    keep y   at /usr/local/bin/trepan3k:7
+(setf (gethash "debugger-breakpoint" realgud:trepan3k-pat-hash)
+      realgud-python-breakpoint-pat)
+
 ;;  realgud-loc-pat that describes a Python backtrace line.
 (setf (gethash "lang-backtrace" realgud:trepan3k-pat-hash)
       realgud-python-backtrace-loc-pat)
@@ -114,6 +120,9 @@ realgud-loc-pat struct")
 
 (setf (gethash "font-lock-keywords" realgud:trepan3k-pat-hash)
       realgud:python-debugger-font-lock-keywords)
+
+(setf (gethash "font-lock-breakpoint-keywords" realgud:trepan3k-pat-hash)
+      realgud:python-debugger-font-lock-breakpoint-keywords)
 
 (setf (gethash "trepan3k" realgud-pat-hash) realgud:trepan3k-pat-hash)
 

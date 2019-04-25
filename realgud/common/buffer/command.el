@@ -84,6 +84,7 @@
   source-path          ;; last source-code path we've seen
 
   bt-buf               ;; backtrace buffer if it exists
+  brkpt-buf            ;; breakpoint buffer if it exists
   bp-list              ;; list of breakpoints
   divert-output?       ;; Output is part of a conversation between front-end
                        ;; debugger.
@@ -148,6 +149,7 @@
 ;; FIXME: figure out how to put in a loop.
 (realgud-struct-field-setter "realgud-cmdbuf-info" "bp-list")
 (realgud-struct-field-setter "realgud-cmdbuf-info" "bt-buf")
+(realgud-struct-field-setter "realgud-cmdbuf-info" "brkpt-buf")
 (realgud-struct-field-setter "realgud-cmdbuf-info" "cmd-args")
 (realgud-struct-field-setter "realgud-cmdbuf-info" "last-input-end")
 (realgud-struct-field-setter "realgud-cmdbuf-info" "divert-output?")
@@ -201,7 +203,7 @@
 ;; FIXME: this is a cheat. We are inserting
 ;; and afterwards inserting ""
 (defun realgud:cmdbuf-bp-list-describe (info)
-  (let ((bp-list (realgud-cmdbuf-info-bp-list info)))
+  (let ((bp-list (delete-dups (realgud-cmdbuf-info-bp-list info))))
     (cond (bp-list
 	   (insert "** Breakpoint list (bp-list)\n")
 	   (dolist (loc bp-list "")
@@ -426,6 +428,7 @@ values set in the debugger's init.el."
   (with-current-buffer-safe cmd-buf
     (let ((realgud-loc-pat (gethash "loc" regexp-hash))
 	  (font-lock-keywords)
+	  (font-lock-breakpoint-keywords)
 	  )
       (setq realgud-cmdbuf-info
 	    (make-realgud-cmdbuf-info
@@ -442,6 +445,7 @@ values set in the debugger's init.el."
 	     :regexp-hash regexp-hash
 	     :srcbuf-list nil
 	     :bt-buf nil
+	     :brkpt-buf nil
 	     :bp-list nil
 	     :divert-output? nil
 	     :cmd-hash cmd-hash
@@ -464,8 +468,11 @@ values set in the debugger's init.el."
       (if font-lock-keywords
 	  (set (make-local-variable 'font-lock-defaults)
 	       (list font-lock-keywords)))
+      (setq font-lock-breakpoint-keywords (realgud-cmdbuf-pat "font-lock-breakpoint-keywords"))
+      (if font-lock-breakpoint-keywords
+	  (set (make-local-variable 'font-lock-breakpoint-keywords)
+	       (list font-lock-breakpoint-keywords)))
       )
-
     (put 'realgud-cmdbuf-info 'variable-documentation
 	 "Debugger object for a process buffer."))
   )

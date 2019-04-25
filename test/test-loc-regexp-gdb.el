@@ -24,6 +24,7 @@
   (defvar dbg-name)
   (defvar realgud-pat-hash)
   (defvar helper-bps)
+  (defvar helper-info-brkpt)
   (defvar loc-pat)
   (defvar prompt-pat)
   (defvar realgud:gdb-pat-hash)
@@ -100,6 +101,20 @@
 	      (match-string 2 test-s1)   "extract breakpoint file name")
 (assert-equal "22"
 	      (match-string 3  test-s1)
+	      "extract breakpoint line number")
+
+(setq test-s1
+      "1       breakpoint     keep y   0x0000000000401471 in vcdnav_get_entries at ctest.c:67")
+
+(assert-t (numberp (loc-match test-s1 helper-info-brkpt))
+	  "basic breakpoint location")
+(assert-equal "1"
+	      (match-string 1 test-s1)   "extract breakpoint number")
+
+(assert-equal "ctest.c"
+	      (match-string 5 test-s1)   "extract breakpoint file name")
+(assert-equal "67"
+	      (match-string 6  test-s1)
 	      "extract breakpoint line number")
 
 

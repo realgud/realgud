@@ -93,6 +93,23 @@ traceback) line."  )
    :line-group 4
    ))
 
+;; FIXME breakpoints aren't locations. It should be a different structure
+;; Regular expression that describes a trepan2/3k backtrace line.
+;; For example:
+;; 1   breakpoint    keep y   at /home/rocky/.pyenv/versions/3.7.2/lib/python3.7/importlib/_bootstrap.py:1019
+;; 2   breakpoint    keep y   at /home/rocky/.pyenv/versions/3.7.2/lib/python3.7/importlib/_bootstrap.py:1023
+;; 3   breakpoint    keep y   at /home/rocky/.pyenv/versions/3.7.2/lib/python3.7/importlib/_bootstrap.py:1
+(defconst realgud-python-breakpoint-pat
+  (make-realgud-loc-pat
+   :regexp (format "^%s[ \t]+\\(breakpoint\\)[ \t]+\\(keep\\|del\\)[ \t]+\\([yn]\\)[ \t]+.*at \\(.+\\):%s"
+		   realgud:regexp-captured-num realgud:regexp-captured-num)
+   :num 1
+   :text-group 2  ;; misnamed Is "breakpoint" or "watchpoint"
+   :string 3      ;; misnamed. Is "keep" or "del"
+   :file-group 5
+   :line-group 6)
+  "A realgud-loc-pat struct that describes a Python breakpoint."  )
+
 ;;  Regular expression that describes a "breakpoint set" line
 (defconst realgud:python-trepan-brkpt-set-pat
   (make-realgud-loc-pat
@@ -153,6 +170,23 @@ traceback) line."  )
      (2 font-lock-function-name-face))
     ;; (trepan2-frames-match-current-line
     ;;  (0 trepan2-frames-current-frame-face append))
+    ))
+
+(defconst realgud:python-debugger-font-lock-breakpoint-keywords
+  '(
+    ;; The breakpoint number, type and disposition
+    ;; 1   breakpoint    keep y   at /home/rocky/.pyenv/versions/3.7.2/bin/trepan3k:6
+    ;; ^   ^^^^^^^^^^    ^^^^
+    ("^\\([0-9]+\\)[ \t]+\\(breakpoint\\)[ \t]+\\(keep\\|del\\)"
+     (1 realgud-breakpoint-number-face)
+     (2 font-lock-function-name-face nil t)     ; t means optional.
+     (3 font-lock-function-name-face nil t))     ; t means optional.
+
+    ;; 1   breakpoint    keep y   at /home/rocky/.pyenv/versions/3.7.2/bin/trepan3k:6
+    ;;                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ("[ \t]+at \\(.+*\\):\\([0-9]+\\)"
+     (1 realgud-file-name-face)
+     (1 realgud-line-number-face))
     ))
 
 (defconst realgud-pytest-error-loc-pat

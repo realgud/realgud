@@ -1,4 +1,4 @@
-;; Copyright (C) 2010, 2015 Free Software Foundation, Inc
+;; Copyright (C) 2010, 2015, 2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -38,6 +38,9 @@
 
 (defvar realgud-backtrace-number-face 'realgud-backtrace-number
   "Face name to use for backtrace numbers.")
+
+(defvar realgud-breakpoint-number-face 'realgud-backtrace-number
+  "Face name to use for breakpoint numbers.")
 
 (defvar realgud-file-name-face 'realgud-file-name
   "Face name to use for file names.")
