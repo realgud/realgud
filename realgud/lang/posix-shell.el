@@ -174,10 +174,10 @@ traceback) line."  )
      (3 font-lock-function-name-face nil t))     ; t means optional.
 
     ;; 1   breakpoint    keep y   /Users/rocky/.bashrc:6
-    ;;                            ^^^^^^^^^^^^^^^^^^^^^^
+    ;;                            ^^^^^^^^^^^^^^^^^^^^ ^
     ("[ \t]+\\(.+*\\):\\([0-9]+\\)"
      (1 realgud-file-name-face)
-     (1 realgud-line-number-face))
+     (2 realgud-line-number-face))
     ))
 
 (provide-me "realgud-lang-")

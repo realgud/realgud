@@ -1,4 +1,4 @@
-;; Copyright (C) 2011, 2014, 2016 Free Software Foundation, Inc
+;; Copyright (C) 2011, 2014, 2016, 2019 Free Software Foundation, Inc
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -112,6 +112,43 @@ backtrace listing.")
        :file-group 4
        :line-group 5)
       )
+
+;; FIXME breakpoints aren't locations. It should be a different structure
+;; Regular expression that describes a gdb "info breakpoint" line
+;; For example:
+;;  1 breakpoint     keep   y 0x07 ../../../config.status at /src/realgud/realgud/debugger/remake/Makefile:282
+;;  2 breakpoint     keep   y 0x07 ../../../configure at /src/realgud/realgud/debugger/remake/Makefile:285
+;;  3 breakpoint     keep   y 0x07 ../../../configure.ac at /src/realgud/realgud/debugger/remake/Makefile:289
+
+(setf (gethash "debugger-breakpoint" realgud:remake-pat-hash)
+  (make-realgud-loc-pat
+   :regexp (format "^%s[ \t]+\\(breakpoint\\)[ \t]+\\(keep\\|del\\)[ \t]+\\([yn]\\)[ \t]+.\\(0x??\\) \\(.+\\):%s"
+		   realgud:regexp-captured-num realgud:regexp-captured-num)
+   :num 1
+   :text-group 2  ;; misnamed Is "breakpoint" or "watchpoint"
+   :string 3      ;; misnamed. Is "keep" or "del"
+   ;; Enable is missing
+   ;; Skipped mask
+   :file-group 5
+   :line-group 6)
+  )
+
+
+(setf (gethash "font-lock-breakpoint-keywords" realgud:remake-pat-hash)
+  '(
+    ;;  1 breakpoint     keep   y 0x07 ../../../config.status at /src/external-vcs/github/rocky/realgud/realgud/debugger/remake/Makefile:282
+    ;;  ^ ^^^^^^^^^^     ^^^^   ^
+    ("^[ \t]+\\([0-9]+\\)[ \t]+\\(breakpoint\\)[ \t]+\\(keep\\|del\\)[ \t]+\\([yn]\\)"
+     (1 realgud-breakpoint-number-face)
+     (2 font-lock-function-name-face nil t)     ; t means optional.
+     (3 font-lock-function-name-face nil t))    ; t means optional.
+
+    ;;  1 breakpoint     keep   y 0x07 ../../../config.status at /src/realgud/realgud/debugger/remake/Makefile:282
+    ;;                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ^^^
+    (" \\(0x??\\) \\(.+\\) at \\(.+\\):\\([0-9]+\\)"
+     (3 realgud-file-name-face)
+     (4 realgud-line-number-face))
+    ))
 
 ;; realgud-loc-pat that describes which frame is selected in
 ;; a debugger backtrace listing.

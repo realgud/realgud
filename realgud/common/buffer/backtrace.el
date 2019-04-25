@@ -25,8 +25,7 @@
 (require-relative-list
  '("../key" "helper" "../follow" "../loc") "realgud-")
 
-(require-relative-list
- '("command") "realgud-buffer-")
+(require-relative-list '("command") "realgud-buffer-")
 
 (declare-function realgud-cmdbuf-debugger-name        'realgud-buffer-command)
 (declare-function realgud-cmdbuf?                     'realgud-buffer-command)

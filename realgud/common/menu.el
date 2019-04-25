@@ -82,6 +82,12 @@ menu. (The common map typically contains function key bindings.)"
 			 :help (documentation 'realgud:window-bt)
 			 ))
 
+    (define-key debugger-map [breakpoints]
+      (realgud-menu-item debugger-map "Breakpoints" 'realgud:window-brkpt
+			 :enable '(realgud-get-process)
+			 :help (documentation 'realgud:window-brkpt)
+			 ))
+
     (define-key debugger-map [arrow3]
       (realgud-menu-item debugger-map "Arrow 3" 'realgud-goto-arrow3
 			 :enable '(realgud-get-process)

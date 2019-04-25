@@ -86,7 +86,7 @@ blanks, or deliberately ignoring 'pseudo-file patterns like (eval
 If we're unable find the source code we return a string describing the
 problem as best as we can determine."
 
-  (let* ((cmdbuf (realgud-get-cmdbuf))
+  (let* ((cmdbuf (or (realgud-get-cmdbuf) cmd-marker))
 	 (ignore-re-file-list (realgud-cmdbuf-ignore-re-file-list cmdbuf))
 	 (filename-remap-alist (realgud-cmdbuf-filename-remap-alist cmdbuf))
 	 (remapped-filename
@@ -133,7 +133,8 @@ problem as best as we can determine."
 		   (realgud-cmdbuf-filename-remap-alist=
 		    (cons
 		     (cons filename remapped-filename)
-		     filename-remap-alist))
+		     filename-remap-alist)
+		    cmdbuf)
 		   (setq filename remapped-filename)
 		   ))
 	     ;; else

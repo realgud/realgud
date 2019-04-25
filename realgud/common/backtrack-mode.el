@@ -28,8 +28,6 @@
    "fringe" "window" "regexp" "menu"
    "send"   "shortkey") "realgud-")
 
-(require-relative-list  '("buffer/command") "realgud-buffer-")
-
 (declare-function realgud:debugger-name-transform 'realgud-helper)
 (declare-function realgud-populate-debugger-menu  'realgud-menu)
 (declare-function realgud:track-set-debugger      'realgud-track)

@@ -183,10 +183,10 @@ traceback) line."  )
      (3 font-lock-function-name-face nil t))     ; t means optional.
 
     ;; 1   breakpoint    keep y   at /home/rocky/.pyenv/versions/3.7.2/bin/trepan3k:6
-    ;;                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ;;                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ^
     ("[ \t]+at \\(.+*\\):\\([0-9]+\\)"
      (1 realgud-file-name-face)
-     (1 realgud-line-number-face))
+     (2 realgud-line-number-face))
     ))
 
 (defconst realgud-pytest-error-loc-pat

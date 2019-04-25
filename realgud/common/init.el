@@ -20,6 +20,9 @@
   :group 'realgud
   :version "23.4")
 
+(defvar realgud-address-face 'realgud-line-number
+  "Face name to use for addresses.")
+
 (defvar realgud-line-number-face 'realgud-line-number
   "Face name to use for line numbers.")
 
