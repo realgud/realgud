@@ -4,7 +4,7 @@
 ;; URL: http://github.com/rocky/emacs-load-relative
 ;; Compatibility: GNU Emacs 24.x
 
-;; Copyright (C) 2015, 2017 Free Software Foundation, Inc
+;; Copyright (C) 2015, 2017, 2019 Free Software Foundation, Inc
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -116,6 +116,7 @@ Nor does it touch prefix keys; for that see `realgud-populate-keys-standard'"
     (define-key map "<" 'realgud:cmd-newer-frame)
     (define-key map ">" 'realgud:cmd-older-frame)
     (define-key map "d" 'realgud:cmd-newer-frame)
+    (define-key map "B" 'realgud:window-brkpt-undisturb-src)
     (define-key map "u" 'realgud:cmd-older-frame)
     (define-key map "C" 'realgud-window-cmd-undisturb-src)
     (define-key map "F" 'realgud:window-bt)
@@ -123,7 +124,7 @@ Nor does it touch prefix keys; for that see `realgud-populate-keys-standard'"
     (define-key map "S" 'realgud-window-src-undisturb-cmd)
     (define-key map "U" 'realgud:cmd-until)
     (define-key map "h" 'realgud:cmd-until-here)
-    
+
     (define-key map [M-down]    'realgud-track-hist-newer)
     (define-key map [M-kp-2]    'realgud-track-hist-newer)
     (define-key map [M-up]      'realgud-track-hist-older)
