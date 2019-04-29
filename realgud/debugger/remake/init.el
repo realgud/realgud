@@ -122,15 +122,14 @@ backtrace listing.")
 
 (setf (gethash "debugger-breakpoint" realgud:remake-pat-hash)
   (make-realgud-loc-pat
-   :regexp (format "^%s[ \t]+\\(breakpoint\\)[ \t]+\\(keep\\|del\\)[ \t]+\\([yn]\\)[ \t]+.\\(0x??\\) \\(.+\\):%s"
+   :regexp (format "^[ \t]*%s[ \t]+\\(breakpoint\\)[ \t]+\\(keep\\|del\\)[ \t]+\\([yn]\\)[ \t]+\\(0x??\\).* at \\(.+\\):%s"
 		   realgud:regexp-captured-num realgud:regexp-captured-num)
    :num 1
    :text-group 2  ;; misnamed Is "breakpoint" or "watchpoint"
    :string 3      ;; misnamed. Is "keep" or "del"
-   ;; Enable is missing
    ;; Skipped mask
-   :file-group 5
-   :line-group 6)
+   :file-group 6
+   :line-group 7)
   )
 
 
@@ -183,6 +182,7 @@ backtrace listing.")
 
 (setf (gethash "break"  realgud:remake-command-hash) "break %l")
 (setf (gethash "eval"   realgud:remake-command-hash) "expand %s")
+(setf (gethash "info-breakpoints" realgud:remake-command-hash) "info breakpoints")
 (setf (gethash "remake" realgud-command-hash) realgud:remake-command-hash)
 
 ;; Unsupported features:

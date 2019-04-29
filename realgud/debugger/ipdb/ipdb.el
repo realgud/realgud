@@ -1,4 +1,4 @@
-;; Copyright (C) 2016 Free Software Foundation, Inc
+;; Copyright (C) 2016, 2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 ;; Author: Sean Farley <sean@farley.io>
@@ -28,6 +28,8 @@
   "The realgud interface to the Python ipdb debugger"
   :group 'realgud
   :version "24.3")
+
+(declare-function make-realgud-loc "realgud-loc" (a b c d e f))
 
 ;; -------------------------------------------------------------------
 ;; User-definable variables

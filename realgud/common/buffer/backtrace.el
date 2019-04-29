@@ -105,14 +105,14 @@
   	(process)
   	)
     (with-current-buffer-safe cmdbuf
-      (let ((frame-pat (realgud-cmdbuf-pat "debugger-backtrace"))
+      (let ((backtrace-pat (realgud-cmdbuf-pat "debugger-backtrace"))
 	    (indicator-re (or (realgud-cmdbuf-pat "selected-frame-indicator")
 			      "->"))
 	    (selected-frame-num)
 	    (frame-pos-ring)
 	    (sleep-count 0)
 	    )
-	(unless frame-pat
+	(unless backtrace-pat
 	  (error "No 'debugger-backtrace' regular expression recorded for debugger %s"
 		 (realgud-cmdbuf-debugger-name)))
 	(setq process (get-buffer-process (current-buffer)))
@@ -142,7 +142,7 @@
 	      (if divert-string
 		  (let* ((triple
 			  (realgud:backtrace-add-text-properties
-			   frame-pat cmdbuf divert-string indicator-re))
+			   backtrace-pat cmdbuf divert-string indicator-re))
 			 (string-with-props
 			  (ansi-color-filter-apply (car triple)))
 			 (frame-num-pos-list (cl-caddr triple))
@@ -385,7 +385,7 @@ non-digit will start entry number from the beginning again."
       (setq realgud-goto-entry-acc ""))
   (realgud-goto-frame-n-internal (this-command-keys)))
 
-(defun realgud:backtrace-add-text-properties(frame-pat cmdbuf &optional opt-string
+(defun realgud:backtrace-add-text-properties(backtrace-pat cmdbuf &optional opt-string
 						       frame-indicator-re)
   "Parse OPT-STRING or the current buffer and add frame properties: frame number,
 filename, line number, whether the frame is selected as text properties."
@@ -394,10 +394,10 @@ filename, line number, whether the frame is selected as text properties."
 		    (buffer-substring (point-min) (point-max))
 		    ))
 	 (stripped-string (ansi-color-filter-apply string))
-	 (frame-regexp (realgud-loc-pat-regexp frame-pat))
-	 (frame-group-pat (realgud-loc-pat-num frame-pat))
-	 (file-group-pat (realgud-loc-pat-file-group frame-pat))
-	 (line-group-pat (realgud-loc-pat-line-group frame-pat))
+	 (frame-regexp (realgud-loc-pat-regexp backtrace-pat))
+	 (frame-group-pat (realgud-loc-pat-num backtrace-pat))
+	 (file-group-pat (realgud-loc-pat-file-group backtrace-pat))
+	 (line-group-pat (realgud-loc-pat-line-group backtrace-pat))
 	 (alt-frame-num -1)
 	 (last-pos 0)
 	 (selected-frame-num nil)

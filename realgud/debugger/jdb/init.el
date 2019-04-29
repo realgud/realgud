@@ -226,6 +226,8 @@ backtrace listing.")
 (setf (gethash "clear"       realgud:jdb-command-hash) "*not-implemented*")
 (setf (gethash "restart"     realgud:jdb-command-hash) "*not-implemented*")
 
+(setf (gethash "info-breakpoints" realgud:jdb-command-hash) "clear")
+
 (setf (gethash "continue"    realgud:jdb-command-hash) "cont")
 (setf (gethash "finish"      realgud:jdb-command-hash) "step up")
 (setf (gethash "up"          realgud:jdb-command-hash) "up\C-Mwhere")

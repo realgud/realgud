@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2016, 2018 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016, 2018-2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -35,6 +35,10 @@ realgud-loc-pat struct")
 
 (declare-function make-realgud-loc "realgud-loc" (a b c d e f))
 
+;; -------------------------------------------------------------------
+;; User-definable variables
+;;
+
 ;; Regular expression that describes a pdb location generally shown
 ;; before a command prompt.
 ;;
@@ -61,15 +65,31 @@ realgud-loc-pat struct")
        :regexp   "^[(]+Pdb[)]+ "
        ))
 
-;;  Regular expression that describes a Python backtrace line.
+;; realgud-loc-pat that describes a Python backtrace line.
 (setf (gethash "lang-backtrace" realgud:pdb-pat-hash)
       realgud-python-backtrace-loc-pat)
 
-;;  Regular expression that describes location in a pytest error
+(setf (gethash "debugger-backtrace" realgud:pdb-pat-hash)
+      realgud:python-trepan-backtrace-pat)
+
+;;  realgud-loc-pat that describes a line a Python "info break" line.
+;; For example:
+;; 1   breakpoint    keep y   at /usr/local/bin/trepan3k:7
+(setf (gethash "debugger-breakpoint" realgud:pdb-pat-hash)
+  (make-realgud-loc-pat
+   :regexp (format "^%s[ \t]+\\(breakpoint\\)[ \t]+\\(keep\\|del\\)[ \t]+\\(yes\\|no\\)[ \t]+.*at \\(.+\\):%s"
+		   realgud:regexp-captured-num realgud:regexp-captured-num)
+   :num 1
+   :text-group 2  ;; misnamed Is "breakpoint" or "watchpoint"
+   :string 3      ;; misnamed. Is "keep" or "del"
+   :file-group 5
+   :line-group 6))
+
+;;  realgud-loc-pat that describes location in a pytest error
 (setf (gethash "pytest-error" realgud:pdb-pat-hash)
       realgud-pytest-error-loc-pat)
 
-;;  Regular expression that describes location in a flake8 message
+;;  realgud-loc-pat that describes location in a flake8 message
 (setf (gethash "flake8-msg" realgud:pdb-pat-hash)
       realgud-flake8-msg-loc-pat)
 
@@ -82,7 +102,7 @@ realgud-loc-pat struct")
        :file-group 2
        :line-group 3))
 
-;;  Regular expression that describes a "delete breakpoint" line
+;; realgud-loc-pat that describes a "delete breakpoint" line
 ;; Python 3 includes a file name and line number; Python 2 doesn't
 (setf (gethash "brkpt-del" realgud:pdb-pat-hash)
       (make-realgud-loc-pat
@@ -119,8 +139,8 @@ realgud-loc-pat struct")
 	;;  (0 pdb-frames-current-frame-face append))
 	))
 
-(setf (gethash "pdb" realgud-pat-hash) realgud:pdb-pat-hash)
-
+(setf (gethash "font-lock-breakpoint-keywords" realgud:pdb-pat-hash)
+      realgud:python-debugger-font-lock-breakpoint-keywords)
 
 (defvar realgud:pdb-command-hash (make-hash-table :test 'equal)
   "Hash key is command name like 'finish' and the value is
@@ -129,17 +149,20 @@ the pdb command to use, like 'return'")
 (setf (gethash "pdb" realgud-command-hash) realgud:pdb-command-hash)
 
 ;; Mappings between PDB-specific names and GUD names
-(setf (gethash "finish" realgud:pdb-command-hash) "return")
-(setf (gethash "kill" realgud:pdb-command-hash) "quit")
-(setf (gethash "backtrace" realgud:pdb-command-hash) "where")
+(setf (gethash "finish"           realgud:pdb-command-hash) "return")
+(setf (gethash "kill"             realgud:pdb-command-hash) "quit")
+(setf (gethash "backtrace"        realgud:pdb-command-hash) "where")
 ;; Clear in Python does both the usual “delete” and “clear”
-(setf (gethash "delete" realgud:pdb-command-hash) "clear %p")
-(setf (gethash "clear" realgud:pdb-command-hash) "clear %X:%l")
+(setf (gethash "delete"           realgud:pdb-command-hash) "clear %p")
+(setf (gethash "clear"            realgud:pdb-command-hash) "clear %X:%l")
 ;; Use ‘!’ instead of ‘p’, since ‘p’ only works for expressions, not statements
-(setf (gethash "eval" realgud:pdb-command-hash) "!%s")
+(setf (gethash "eval"             realgud:pdb-command-hash) "!%s")
+(setf (gethash "info-breakpoints" realgud:pdb-command-hash) "break")
 
 ;; Unsupported features:
 (setf (gethash "shell" realgud:pdb-command-hash) "*not-implemented*")
 (setf (gethash "frame" realgud:pdb-command-hash) "*not-implemented*")
+
+(setf (gethash "pdb" realgud-pat-hash) realgud:pdb-pat-hash)
 
 (provide-me "realgud:pdb-")

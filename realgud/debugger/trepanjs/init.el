@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2016, 2018 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016, 2018, 2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -153,10 +153,11 @@ realgud-loc-pat struct")
 ;; We need aliases for step and next because the default would
 ;; do step 1 and trepanjs doesn't handle this. Or when it does,
 ;; it will probably look like step(1)
-(setf (gethash "eval"       realgud:trepanjs-command-hash) "eval(%q)")
-(setf (gethash "quit"       realgud:trepanjs-command-hash) "quit()")
+(setf (gethash "eval"             realgud:trepanjs-command-hash) "eval(%q)")
+(setf (gethash "info-breakpoints" realgud:trepanjs-command-hash) "info('breakpoints')")
+(setf (gethash "quit"             realgud:trepanjs-command-hash) "quit()")
 
 ;; Unsupported features:
-(setf (gethash "kill"  realgud:trepanjs-command-hash) "*not-implemented*")
+(setf (gethash "kill"             realgud:trepanjs-command-hash) "*not-implemented*")
 
 (provide-me "realgud:trepanjs-")

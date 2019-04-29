@@ -1,4 +1,4 @@
-;; Copyright (C) 2016, 2018 Free Software Foundation, Inc
+;; Copyright (C) 2016, 2018-2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 ;; Author: Sean Farley <sean@farley.io>
@@ -15,7 +15,7 @@
 
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
-;; Stock Python debugger ipdb
+;; ipdb: "interactive" debugger extension to Python debugger pdb
 
 (eval-when-compile (require 'cl-lib))   ;For setf.
 
@@ -35,6 +35,10 @@ backtrace, prompt, etc.  The values of a hash entry is a
 realgud-loc-pat struct")
 
 (declare-function make-realgud-loc "realgud-loc" (a b c d e f))
+
+;; -------------------------------------------------------------------
+;; User-definable variables
+;;
 
 ;; realgud-loc-pat that describes a ipdb location generally shown
 ;; before a command prompt.
@@ -66,11 +70,27 @@ realgud-loc-pat struct")
 (setf (gethash "lang-backtrace" realgud:ipdb-pat-hash)
       realgud-python-backtrace-loc-pat)
 
+(setf (gethash "debugger-backtrace" realgud:ipdb-pat-hash)
+      realgud:python-trepan-backtrace-pat)
+
+;;  realgud-loc-pat that describes a line a Python "info break" line.
+;; For example:
+;; 1   breakpoint    keep y   at /usr/local/bin/trepan3k:7
+(setf (gethash "debugger-breakpoint" realgud:ipdb-pat-hash)
+  (make-realgud-loc-pat
+   :regexp (format "^%s[ \t]+\\(breakpoint\\)[ \t]+\\(keep\\|del\\)[ \t]+\\(yes\\|no\\)[ \t]+.*at \\(.+\\):%s"
+		   realgud:regexp-captured-num realgud:regexp-captured-num)
+   :num 1
+   :text-group 2  ;; misnamed Is "breakpoint" or "watchpoint"
+   :string 3      ;; misnamed. Is "keep" or "del"
+   :file-group 5
+   :line-group 6))
+
 ;;  realgud-loc-pat that describes location in a pytest error
 (setf (gethash "pytest-error" realgud:ipdb-pat-hash)
       realgud-pytest-error-loc-pat)
 
-;;  Regular expression that describes location in a flake8 message
+;;  realgud-loc-pat that describes location in a flake8 message
 (setf (gethash "flake8-msg" realgud:ipdb-pat-hash)
       realgud-flake8-msg-loc-pat)
 
@@ -126,19 +146,21 @@ realgud-loc-pat struct")
   "Hash key is command name like 'finish' and the value is
 the ipdb command to use, like 'return'")
 
-(setf (gethash "ipdb" realgud-command-hash) realgud:ipdb-command-hash)
-
 ;; Mappings between ipdb-specific names and GUD names
-(setf (gethash "finish" realgud:ipdb-command-hash) "return")
-(setf (gethash "kill" realgud:ipdb-command-hash) "quit")
-(setf (gethash "backtrace" realgud:ipdb-command-hash) "where")
+(setf (gethash "finish"           realgud:ipdb-command-hash) "return")
+(setf (gethash "kill"             realgud:ipdb-command-hash) "quit")
+(setf (gethash "backtrace"        realgud:ipdb-command-hash) "where")
 ;; Clear in Python does both the usual “delete” and “clear”
-(setf (gethash "delete" realgud:ipdb-command-hash) "clear %p")
-(setf (gethash "clear" realgud:ipdb-command-hash) "clear %X:%l")
-(setf (gethash "eval" realgud:ipdb-command-hash) "pp %s")
+(setf (gethash "delete"           realgud:ipdb-command-hash) "clear %p")
+(setf (gethash "clear"            realgud:ipdb-command-hash) "clear %X:%l")
+;; Use ‘!’ instead of ‘p’, since ‘p’ only works for expressions, not statements
+(setf (gethash "eval"             realgud:ipdb-command-hash) "pp %s")
+(setf (gethash "info-breakpoints" realgud:ipdb-command-hash) "break")
 
 ;; Unsupported features:
 (setf (gethash "shell" realgud:ipdb-command-hash) "*not-implemented*")
 (setf (gethash "frame" realgud:ipdb-command-hash) "*not-implemented*")
+
+(setf (gethash "ipdb" realgud-command-hash) realgud:ipdb-command-hash)
 
 (provide-me "realgud:ipdb-")

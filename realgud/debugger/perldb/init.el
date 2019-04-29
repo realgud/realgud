@@ -1,4 +1,4 @@
-;;; Copyright (C) 2011, 2014-2016 Free Software Foundation, Inc
+;;; Copyright (C) 2011, 2014-2016, 2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 ;; This program is free software; you can redistribute it and/or modify
@@ -121,18 +121,19 @@ realgud-loc-pat struct")
 
 (setf (gethash "perldb"  realgud-pat-hash) realgud:perldb-pat-hash)
 
-(setf (gethash "backtrace" realgud:perldb-command-hash) "T")
-(setf (gethash "break"     realgud:perldb-command-hash) "b %l")
-(setf (gethash "clear"     realgud:perldb-command-hash) "B %l")
-(setf (gethash "continue"  realgud:perldb-command-hash) "c")
-(setf (gethash "eval"      realgud:perldb-command-hash) "x %s")
-(setf (gethash "quit"      realgud:perldb-command-hash) "q")
-(setf (gethash "restart"   realgud:perldb-command-hash) "R")
-(setf (gethash "run"       realgud:perldb-command-hash) "R")
-(setf (gethash "step"      realgud:perldb-command-hash) "s")
-(setf (gethash "next"      realgud:perldb-command-hash) "n")
-(setf (gethash "until"     realgud:perldb-command-hash) "c %l")
-(setf (gethash "perldb" realgud-command-hash) realgud:perldb-command-hash)
+(setf (gethash "backtrace"        realgud:perldb-command-hash) "T")
+(setf (gethash "break"            realgud:perldb-command-hash) "b %l")
+(setf (gethash "clear"            realgud:perldb-command-hash) "B %l")
+(setf (gethash "continue"         realgud:perldb-command-hash) "c")
+(setf (gethash "eval"             realgud:perldb-command-hash) "x %s")
+(setf (gethash "info-breakpoints" realgud:perldb-command-hash) "L")
+(setf (gethash "quit"             realgud:perldb-command-hash) "q")
+(setf (gethash "restart"          realgud:perldb-command-hash) "R")
+(setf (gethash "run"              realgud:perldb-command-hash) "R")
+(setf (gethash "step"             realgud:perldb-command-hash) "s")
+(setf (gethash "next"             realgud:perldb-command-hash) "n")
+(setf (gethash "until"            realgud:perldb-command-hash) "c %l")
+(setf (gethash "perldb"           realgud-command-hash) realgud:perldb-command-hash)
 
 ;; Unsupported features:
 (setf (gethash "frame" realgud:perldb-command-hash) "*not-implemented*")
