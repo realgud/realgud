@@ -286,12 +286,13 @@ filename, and line number as text properties."
 	      (setq loc (seq-find (lambda (elt) (equal brkpt-num (realgud-loc-num elt))) bp-list))
 	      (setq brkpt-num-pos (match-beginning brkpt-group-pat))
 	      (cl-pushnew brkpt-num-pos brkpt-num-pos-list)
-	      (add-text-properties (match-beginning brkpt-group-pat)
-				   (match-end brkpt-group-pat)
-				   (list 'mouse-face 'highlight
-					 'help-echo "mouse-2: goto this brkpt"
-					 'mark (realgud-loc-marker loc))
-				   string)
+	      (when loc
+		(add-text-properties (match-beginning brkpt-group-pat)
+				     (match-end brkpt-group-pat)
+				     (list 'mouse-face 'highlight
+					   'help-echo "mouse-2: goto this brkpt"
+					   'mark (realgud-loc-marker loc))
+				     string))
 	      )
 	  ; else
 	  (progn
