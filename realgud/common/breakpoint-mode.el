@@ -47,7 +47,7 @@
     ;; key.el
     (define-key map "q"       'realgud:cmd-quit)
     (define-key map "C"       'realgud-window-cmd-undisturb-src)
-    (define-key map "F"       'realgud:window-bt)
+    (define-key map "B"       'realgud:window-brkpt)
     (define-key map "I"       'realgud:cmdbuf-info-describe)
     (define-key map "S"       'realgud-window-src-undisturb-cmd)
 
