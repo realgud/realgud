@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016, 2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -17,7 +17,9 @@
 
 ;;  `realgud:gdb' Main interface to gdb via Emacs
 (require 'load-relative)
-(require-relative-list '("../../common/helper" "../../common/utils")
+(require-relative-list '("../../common/cmds"
+			 "../../common/helper"
+			 "../../common/utils")
 		       "realgud-")
 
 (require-relative-list '("../../common/buffer/command"
@@ -50,7 +52,7 @@ This should be an executable on your path, or an absolute file name."
   :group 'realgud:gdb)
 
 (declare-function realgud:gdb-track-mode     'realgud:gdb-track-mode)
-(declare-function realgud-command            'realgud:gdb-core)
+(declare-function realgud-command            'realgud:cmds)
 (declare-function realgud:gdb-parse-cmd-args 'realgud:gdb-core)
 (declare-function realgud:gdb-query-cmdline  'realgud:gdb-core)
 (declare-function realgud:run-process        'realgud-core)

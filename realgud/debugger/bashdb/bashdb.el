@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2016, 2018 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016, 2018-2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -17,7 +17,9 @@
 
 ;;  `bashdb' Main interface to bashdb via Emacs
 (require 'load-relative)
-(require-relative-list '("../../common/helper") "realgud-")
+(require-relative-list '("../../common/cmds"
+			 "../../common/helper")
+		       "realgud-")
 (require-relative-list '("../../common/run")    "realgud:")
 (require-relative-list '("core" "track-mode")   "realgud:bashdb-")
 
@@ -27,6 +29,8 @@
   "The realgud interface to bashdb"
   :group 'realgud
   :version "24.3")
+
+(declare-function realgud-command            'realgud:cmds)
 
 ;; -------------------------------------------------------------------
 ;; User-definable variables

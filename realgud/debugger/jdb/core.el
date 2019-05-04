@@ -1,4 +1,4 @@
-;; Copyright (C) 2014, 2016, 2018 Free Software Foundation, Inc
+;; Copyright (C) 2014, 2016, 2018-2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -25,6 +25,7 @@
 (declare-function realgud-query-cmdline      'realgud-core)
 (declare-function realgud-suggest-invocation 'realgud-core)
 (declare-function realgud:file-loc-from-line 'realgud-file)
+(declare-function realgud:find-file          'realgud-file)
 
 ;; FIXME: I think the following could be generalized and moved to
 ;; realgud-... probably via a macro.

@@ -1,4 +1,4 @@
-;; Copyright (C) 2010-2011, 2013-2014, 2016-2018 Free Software Foundation, Inc
+;; Copyright (C) 2010-2011, 2013-2014, 2016-2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -24,7 +24,12 @@
 (declare-function realgud-get-cmdbuf    'realgud-buffer-helper)
 (declare-function buffer-killed?        'helper)
 (declare-function compilation-find-file 'compile)
+(declare-function realgud-cmdbuf-info-ignore-re-file-list  'realgud-buffer-command)
 (declare-function realgud-cmdbuf-info-ignore-re-file-list= 'realgud-buffer-command)
+(declare-function realgud-cmdbuf-mutex                     'realgud-buffer-command)
+(declare-function realgud-cmdbuf-filename-remap-alist      'realgud-buffer-command)
+(declare-function realgud-cmdbuf-filename-remap-alist=     'realgud-buffer-command)
+(declare-function realgud-cmdbuf-mutex                     'realgud-buffer-command)
 
 (defcustom realgud-file-find-function 'realgud:find-file
 ;;(defcustom realgud-file-find-function 'compilation-find-file

@@ -35,6 +35,7 @@
 (declare-function realgud:track-set-debugger 'realgud-track-mode)
 (declare-function realgud-python-populate-command-keys 'realgud-lang-python)
 (declare-function realgud:ipdb-completion-at-point 'realgud:ipdb-core)
+(declare-function realgud:remove-ansi-schmutz      'realgud:utils)
 
 (realgud-python-populate-command-keys ipdb-track-mode-map)
 

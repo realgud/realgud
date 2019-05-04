@@ -88,8 +88,19 @@
 (make-variable-buffer-local  (defvar realgud-track-mode))
 (fn-p-to-fn?-alias 'realgud-loc-p)
 
-(defvar realgud-track-divert-string)
-(defvar starting-directory)
+(defvar realgud-track-divert-string
+  ""
+  "Some commands need information from the debugger to perform certain actions, such as show what breapoints exist, give back trace information. The output of debugger commands which need to be captured, are stored in this buffer-local string variable.")
+
+(defvar starting-directory
+  nil
+  "When set this indicates the base directory that source code path should be based off of when the path is a relative path."
+  )
+
+
+(defvar realgud-command-name-hash
+  nil
+  "This buffer-local hash maps a debugger, like `gdb', or `pdb', to a hash table which describes how to implement generic debugger functions into the commands of that debugger. This information is set up by individual `init' function of the debugger. The keys at any given time will be those debuggers that have been used so far in the Emacs session.")
 
 (defun realgud-track-comint-output-filter-hook(text)
   "An output-filter hook custom for comint shells.  Find

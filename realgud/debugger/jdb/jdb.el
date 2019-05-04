@@ -22,6 +22,10 @@
 (declare-function realgud:run-process        'realgud:core)
 (declare-function realgud:flatten            'realgud-utils)
 
+(defvar realgud:jdb-file-remap nil
+  "A buffer-local hash table to map a Java file reproted by jdb into a file seen in the filesystem."
+)
+
 
 ;; This is needed, or at least the docstring part of it is needed to
 ;; get the customization menu to work in Emacs 24.
