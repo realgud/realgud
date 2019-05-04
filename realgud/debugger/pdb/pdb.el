@@ -35,7 +35,7 @@
 ;;
 
 (defcustom realgud:pdb-command-name
-  "pdb"
+  "python -m pdb"
   "File name for executing the stock Python debugger and command options.
 This should be an executable on your path, or an absolute file name."
   :type 'string
