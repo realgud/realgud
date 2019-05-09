@@ -184,7 +184,7 @@
 	 (filename)
 	 (remapped-filename)
 	 )
-    (insert "** Source Buffers Seen (srcbuf-list)\n")
+    (insert "* Source Buffers Seen (srcbuf-list)\n")
 
     (dolist (buffer buffer-list)
       (insert "  - ")
@@ -207,11 +207,11 @@
 	;; For reasons I don't understand bp-list has duplicates
 	(bp-nums nil))
     (cond (bp-list
-	   (insert "** Breakpoint list (bp-list)\n")
+	   (insert "* Breakpoint list (bp-list)\n")
 	   (dolist (loc bp-list "")
 	     (let ((bp-num (realgud-loc-num loc)))
-	       (when (not (cl-member bp-num bp-nums))
-		 (insert (format "*** Breakpoint %d\n" bp-num))
+	       (when (and bp-num (not (cl-member bp-num bp-nums)))
+		 (insert (format "** Breakpoint %d\n" bp-num))
 		 (realgud:org-mode-append-loc loc)
 		 (setq bp-nums (cl-adjoin bp-num bp-nums))
 	       ))))
@@ -240,15 +240,19 @@
   "Return an  org-mode representation of HASH-TABLE as a s."
   (format "%s"
 	  (json-join
-	   (let (r)
-	     (maphash
-	      (lambda (k v)
-		(push (format
-		       "  - %s\t::\t%s" k (realgud:org-mode-encode v ""))
-		      r))
-	      hash-table)
-	     r)
-	   "")))
+	   (sort (realgud:org-mode-encode-htable-1 hash-table)
+		 'string<) "")))
+
+(defun realgud:org-mode-encode-htable-1 (hash-table)
+  "Return an  org-mode representation of HASH-TABLE as a s."
+  (let (r)
+    (maphash
+     (lambda (k v)
+       (push (format
+	      "  - %s\t::\t%s" k (realgud:org-mode-encode v ""))
+	     r))
+     hash-table)
+    r))
 
 (defun realgud:cmdbuf-info-describe (&optional buffer)
   "Display realgud-cmdcbuf-info fields of BUFFER.
@@ -272,8 +276,8 @@ Information is put in an internal buffer called *Describe Debugger Session*."
 This is based on an org-mode buffer. Hit tab to expand/contract sections.
 \n"
 				cmdbuf-name))
-		(insert "** General Information (realgud-cmdbuf-info)\n")
-		;; (insert "** General Information (")
+		(insert "* General Information (realgud-cmdbuf-info)\n")
+		;; (insert "* General Information (")
 		;; (insert-text-button
 		;;  "realgud-cmdbuf-info"
 		;;  ;; FIXME figure out how to set buffer to cmdbuf so we get cmdbuf value
@@ -304,9 +308,9 @@ This is based on an org-mode buffer. Hit tab to expand/contract sections.
 		       (format "  - remapped file names ::\t%s\n"
 			       (realgud-cmdbuf-info-filename-remap-alist info))
 
-		       (realgud:org-mode-encode "\n*** Remap table for debugger commands\n"
+		       (realgud:org-mode-encode "\n** Remap table for debugger commands\n"
 						      (realgud-cmdbuf-info-cmd-hash info))
-		       ;; (realgud:org-mode-encode "\n*** Backtrace buffer"
+		       ;; (realgud:org-mode-encode "\n** Backtrace buffer"
 		       ;; 				(realgud-cmdbuf-info-bt-buf info))
 		       ;; (format "  - Backtrace buffer  ::\t%s\n"
 		       ;;   (realgud-cmdbuf-info-bt-buf info))
@@ -319,9 +323,9 @@ This is based on an org-mode buffer. Hit tab to expand/contract sections.
 		(realgud:loc-hist-describe (realgud-cmdbuf-info-loc-hist info))
 		(insert "
 #+STARTUP: overview
-     #+STARTUP: content
-     #+STARTUP: showall
-     #+STARTUP: showeverything
+#+STARTUP: content
+#+STARTUP: showall
+#+STARTUP: showeverything
 ")
 		(goto-char (point-min))
 		(realgud:info-mode)
