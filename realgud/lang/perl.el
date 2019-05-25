@@ -1,4 +1,4 @@
-;; Copyright (C) 2011, 2014, 2016 Free Software Foundation, Inc
+;; Copyright (C) 2011, 2014, 2016, 2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -13,6 +13,7 @@
 		       "realgud-")
 
 (declare-function realgud-goto-line-for-pt 'realgud-track)
+(declare-function make-realgud-loc-pat 'realgud-regexp)
 
 ;;  Regular expression that describes a Perl Carp backtrace line.
 ;;  at /tmp/foo.pl line 7

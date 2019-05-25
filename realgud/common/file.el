@@ -25,7 +25,7 @@
 (declare-function buffer-killed?        'helper)
 (declare-function compilation-find-file 'compile)
 (declare-function realgud-cmdbuf-info-ignore-re-file-list  'realgud-buffer-command)
-(declare-function realgud-cmdbuf-info-ignore-re-file-list= 'realgud-buffer-command)
+(declare-function realgud-cmdbuf-info-source-path=         'realgud-buffer-command)
 (declare-function realgud-cmdbuf-mutex                     'realgud-buffer-command)
 (declare-function realgud-cmdbuf-filename-remap-alist      'realgud-buffer-command)
 (declare-function realgud-cmdbuf-filename-remap-alist=     'realgud-buffer-command)

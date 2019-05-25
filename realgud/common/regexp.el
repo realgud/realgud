@@ -1,4 +1,4 @@
-;; Copyright (C) 2010-2011, 2014-2016 Free Software Foundation, Inc
+;; Copyright (C) 2010-2011, 2014-2016, 2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -64,18 +64,19 @@ output by a debugger inside a process shell"
 (defconst realgud:regexp-captured-num  "\\([0-9]+\\)")
 
 (defvar realgud-pat-hash (make-hash-table :test 'equal)
-  "Hash key is the debugger name, a string. The values of a hash entry
-  is a realgud-loc-pat struct")
+  "Hash key is the debugger name, a string.
+The values of a hash entry is a realgud-loc-pat struct")
 
 (defvar realgud-command-hash (make-hash-table :test 'equal)
-  "Hash key is the debugger name, a string. The value of a hash
-  entry is a hash table mapping cannonic command name
-  debugger-specific command name. For example, for trepanning:
+  "Hash key is the debugger name, a string.
+The value of a hash entry is a hash table mapping cannonic command name
+  debugger-specific command name.  For example, for trepanning:
   'quit' -> 'quit!'")
 
 (defvar realgud:variable-basename-hash (make-hash-table :test 'equal)
-  "Hash key is the debugger name, a string. The value of a hash
-  entry is the base name to use that variables of that debugger use.
+  "Hash key is the debugger name, a string.
+The value of a hash
+entry is the base name to use that variables of that debugger use.
   For example, for 'gdb' it is 'realgud:gdb'.")
 
 (provide 'realgud-regexp)

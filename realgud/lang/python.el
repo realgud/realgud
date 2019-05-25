@@ -21,6 +21,7 @@
 		       "realgud-")
 
 (declare-function realgud-goto-line-for-pt 'realgud-track)
+(declare-function make-realgud-loc-pat 'realgud-regexp)
 
 (defconst realgud-python-backtrace-loc-pat
   (make-realgud-loc-pat

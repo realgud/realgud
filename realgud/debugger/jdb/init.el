@@ -18,7 +18,7 @@
 (require-relative-list '("../../lang/java") "realgud-lang-")
 
 (defvar realgud-pat-hash)
-(declare-function make-realgud-loc-pat (realgud-loc))
+(declare-function make-realgud-loc-pat 'realgud-regexp)
 
 (defconst realgud:jdb-identifier "[A-Za-z_][A-Za-z0-9_.]+"
 "Regexp string that matches a Java identifier possily with class

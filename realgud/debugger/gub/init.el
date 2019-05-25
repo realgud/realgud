@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016, 2019 Free Software Foundation, Inc
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
 ;; This program is free software: you can redistribute it and/or
@@ -26,7 +26,7 @@
 		       "realgud-")
 
 (defvar realgud-pat-hash)
-(declare-function make-realgud-loc-pat (realgud-loc))
+(declare-function make-realgud-loc-pat 'realgud-regexp)
 
 (defvar realgud:gub-pat-hash (make-hash-table :test 'equal)
   "Hash key is the what kind of pattern we want to match:

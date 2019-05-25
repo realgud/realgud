@@ -29,6 +29,7 @@
 
 (declare-function realgud-cmdbuf-debugger-name        'realgud-buffer-command)
 (declare-function realgud-cmdbuf?                     'realgud-buffer-command)
+(declare-function realgud-cmdbuf-info-bt-buf=         'realgud-buffer-command)
 (declare-function realgud-cmdbuf-info-divert-output?= 'realgud-buffer-command)
 (declare-function realgud-backtrace-mode (cmdbuf))
 (declare-function realgud:cmd-backtrace (arg))

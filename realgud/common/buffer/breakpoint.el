@@ -1,4 +1,4 @@
-;;; Backtrace buffer
+;;; Breakpoint buffer
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -20,6 +20,7 @@
 
 (require 'ansi-color)
 (require 'ring)
+(require 'seq)
 (require 'load-relative)
 (eval-when-compile (require 'cl-lib))
 (require-relative-list
@@ -30,14 +31,15 @@
 
 (declare-function realgud-cmdbuf-debugger-name        'realgud-buffer-command)
 (declare-function realgud-cmdbuf?                     'realgud-buffer-command)
+(declare-function realgud-cmdbuf-info-bkpt-buf=       'realgud-buffer-command)
 (declare-function realgud-cmdbuf-info-divert-output?= 'realgud-buffer-command)
-(declare-function realgud-breakpoint-mode (cmdbuf))
-(declare-function realgud:cmd-breakpoint (arg))
+(declare-function realgud-cmdbuf-info-in-srcbuf?=     'realgud-buffer-command)
+(declare-function realgud:cmd-breakpoint              'realgud-cmds)
 (declare-function realgud:cmd-info-breakpoints 'realgud-cmds)
-(declare-function realgud-cmdbuf-pat(key))
-(declare-function realgud-cmdbuf-info-in-srcbuf?= (arg))
-(declare-function realgud-get-cmdbuf 'realgud-buffer-helper)
-(declare-function realgud:file-loc-from-line 'realgud-file)
+(declare-function realgud-cmdbuf-pat                  'realgud-buffer-command)
+(declare-function realgud-get-cmdbuf                  'realgud-buffer-helper)
+(declare-function realgud:file-loc-from-line          'realgud-file)
+(declare-function realgud-loc-goto                    'realgud-loc)
 (declare-function buffer-killed?       'realgud-helper)
 (declare-function realgud:loc-describe 'realgud-loc)
 

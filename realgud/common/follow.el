@@ -16,6 +16,7 @@
 (require 'load-relative)
 
 (declare-function realgud:cmd-frame 'realgud-cmds)
+(declare-function realgud-loc-p     'realgud-loc)
 
 (defun realgud:follow-mark(mark)
   (when (markerp mark)

@@ -1,4 +1,4 @@
-;; Copyright (C) 2017 Free Software Foundation, Inc
+;; Copyright (C) 2017, 2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -21,6 +21,7 @@
 		       "realgud-")
 
 (declare-function realgud-goto-line-for-pt 'realgud-track)
+(declare-function make-realgud-loc-pat 'realgud-regexp)
 
 (defun realgud-java-populate-command-keys (&optional map)
   "Bind the debugger function key layout used by many debuggers.

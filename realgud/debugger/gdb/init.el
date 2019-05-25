@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2017 Free Software Foundation, Inc
+;; Copyright (C) 2015-2017, 2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -23,10 +23,10 @@
 (require-relative-list '("../../common/regexp" "../../common/loc") "realgud-")
 
 (defvar realgud-pat-hash)
-(declare-function make-realgud-loc-pat (realgud-loc))
+(declare-function make-realgud-loc-pat 'realgud-regexp)
 
 (defvar realgud:gdb-pat-hash (make-hash-table :test 'equal)
-  "hash key is the what kind of pattern we want to match:
+  "Hash key is the what kind of pattern we want to match:
 backtrace, prompt, etc.  the values of a hash entry is a
 realgud-loc-pat struct")
 
@@ -172,7 +172,7 @@ realgud-loc-pat struct")
 
 (defvar realgud:gdb-command-hash (make-hash-table :test 'equal)
   "Hash key is command name like 'continue' and the value is
-  the gdb command to use, like 'continue'")
+the gdb command to use, like 'continue'.")
 
 (setf (gethash "break"    realgud:gdb-command-hash) "break %X:%l")
 (setf (gethash "clear"    realgud:gdb-command-hash) "clear %X:%l")

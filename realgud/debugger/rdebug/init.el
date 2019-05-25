@@ -16,7 +16,7 @@
 (require-relative-list '("../../lang/ruby") "realgud-lang-")
 
 (defvar realgud-pat-hash)
-(declare-function make-realgud-loc-pat (realgud-loc))
+(declare-function make-realgud-loc-pat 'realgud-regexp)
 
 (defvar realgud-rdebug-pat-hash (make-hash-table :test 'equal)
   "Hash key is the what kind of pattern we want to match:

@@ -26,7 +26,7 @@
 (require-relative-list '("../../lang/posix-shell") "realgud-lang-")
 
 (defvar realgud:bashdb-pat-hash)
-(declare-function make-realgud-loc-pat (realgud-loc))
+(declare-function make-realgud-loc-pat 'realgud-regexp)
 
 (defvar realgud:bashdb-pat-hash (make-hash-table :test 'equal)
   "Hash key is the what kind of pattern we want to match:
@@ -103,7 +103,7 @@ realgud-loc-pat struct")
 
 (defvar realgud:bashdb-command-hash (make-hash-table :test 'equal)
   "Hash key is command name like 'quit' and the value is
-  the bashdb command to use, like 'quit!'")
+the bashdb command to use, like 'quit!'")
 
 (setf (gethash "bashdb" realgud-command-hash) realgud:bashdb-command-hash)
 

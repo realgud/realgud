@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016, 2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -26,6 +26,7 @@
 (require-relative-list '("../common/regexp" "../common/loc"
 			 "../common/track" "../common/send")
 		       "realgud-")
+(declare-function make-realgud-loc-pat 'realgud-regexp)
 
 (defconst realgud-shell-backtrace-loc-pat
   (make-realgud-loc-pat

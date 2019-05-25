@@ -30,7 +30,7 @@
 backtrace, prompt, etc.  The values of a hash entry is a
 realgud-loc-pat struct")
 
-(declare-function make-realgud-loc-pat (realgud-loc))
+(declare-function make-realgud-loc-pat 'realgud-regexp)
 
 ;; realgud-loc-pat that describes a trepanjs location generally shown
 ;; before a command prompt.
