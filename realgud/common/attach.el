@@ -29,7 +29,7 @@
 (declare-function realgud-srcbuf-init-or-update       'realgud-source)
 (declare-function realgud-short-key-mode-setup        'realgud-shortkey)
 
-(defvar realgud:attach-cmdbuf-history nil "attach command buffer history list'.")
+(defvar realgud:attach-cmdbuf-history nil "Attach command buffer history list'.")
 
 
 ;;;###autoload

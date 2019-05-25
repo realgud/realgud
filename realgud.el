@@ -1,11 +1,11 @@
-;;; realgud.el --- A modular front-end for interacting with external debuggers
+;;; realgud.el --- A modular front-end for interacting with external debuggers -*- lexical-binding: t -*-
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
-;; Version: 1.4.8
+;; Version: 1.5.0
 ;; Package-Type: multi
-;; Package-Requires: ((load-relative "1.2") (loc-changes "1.2") (test-simple  "1.2.0") (cl-lib "0.5") (emacs "24"))
+;; Package-Requires: ((load-relative "1.2") (loc-changes "1.2") (test-simple  "1.2.0") (cl-lib "0.5") (emacs "25"))
 ;; URL: http://github.com/realgud/realgud/
-;; Keywords: debugger, gdb, python, perl, go, bash, nodejs, zsh, bashdb, zshdb, remake, trepan, perldb, pdb
+;; Keywords: debugger, gdb, python, perl, go, bash, zsh, bashdb, zshdb, remake, trepan, perldb, pdb
 
 ;; Copyright (C) 2015-2019 Free Software Foundation, Inc
 
@@ -49,7 +49,7 @@
 ;; Oh, and because global variables are largely banned, we can support
 ;; several simultaneous debug sessions.
 
-;; RealGUD supports many external debuggers. See URL
+;; RealGUD supports many external debuggers.  See URL
 ;; `https://github.com/realgud/realgud/wiki/Debuggers-Supported' for a
 ;; list.  However, if you don't see your favorite debugger, see URL
 ;; `https://github.com/realgud/realgud/wiki/How-to-add-a-new-debugger/'
@@ -68,7 +68,7 @@
 
 ;; [1] Four or more years in, as of 2018 realgud sports a number of
 ;; old debuggers too.  However we *mark* them as such, and move them
-;; out of the main code base. See for example:
+;; out of the main code base.  See for example:
 ;; https://github.com/realgud/realgud-old-debuggers.  So that's
 ;; another difference: this code better *maintained*.
 
@@ -84,7 +84,7 @@
   "The Grand Cathedral Debugger rewrite"
   :group 'processes
   :group 'tools
-  :version "24.3")
+  :version "25.1")
 
 ;; FIXME: extend require-relative for "autoload".
 (defun realgud:load-features()
