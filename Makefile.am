@@ -15,3 +15,10 @@ install-short:
 	$(MAKE) install 2>&1  | $(RUBY) test/make-check-filter.rb
 
 .PHONY: test check check-short rmChangeLog
+
+# FIXME fix up to use the git2cl in MAINT_MAKEFILE
+GIT2CL = ./git2cl
+
+#: create ChangeLog for distirbution from 'git log'
+ChangeLog:
+	git log --pretty --numstat --summary | $(GIT2CL) > $@

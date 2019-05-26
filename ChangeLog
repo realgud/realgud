@@ -1,3 +1,873 @@
+2019-05-25  rocky <rocky@gnu.org>
+
+	* ChangeLog, configure.ac, realgud.el: Get ready for release 1.4.8
+
+2019-05-25  rocky <rocky@gnu.org>
+
+	* realgud/common/buffer/backtrace.el,
+	realgud/common/buffer/breakpoint.el, realgud/common/file.el,
+	realgud/common/follow.el, realgud/common/regexp.el,
+	realgud/common/send.el, realgud/debugger/bashdb/init.el,
+	realgud/debugger/gdb/init.el, realgud/debugger/gub/init.el,
+	realgud/debugger/ipdb/init.el, realgud/debugger/jdb/init.el,
+	realgud/debugger/kshdb/init.el, realgud/debugger/nodejs/init.el,
+	realgud/debugger/pdb/init.el, realgud/debugger/perldb/init.el,
+	realgud/debugger/rdebug/init.el, realgud/debugger/remake/init.el,
+	realgud/debugger/trepan.pl/init.el,
+	realgud/debugger/trepan/init.el, realgud/debugger/trepan2/init.el,
+	realgud/debugger/trepan3k/init.el,
+	realgud/debugger/trepanjs/init.el, realgud/debugger/zshdb/init.el,
+	realgud/lang/Makefile.am, realgud/lang/java.el, realgud/lang/js.el,
+	realgud/lang/perl.el, realgud/lang/posix-shell.el,
+	realgud/lang/python.el, realgud/lang/ruby.el: Another pass over
+	function declarations
+
+2019-05-09  rocky <rocky@gnu.org>
+
+	* realgud/common/buffer/command.el: buffer info org-mode tweaks
+
+2019-05-09  rocky <rocky@gnu.org>
+
+	* realgud/common/file.el: Add realgud:file-remove-ignore to remove a
+	previously ignored entry.
+
+2019-05-04  rocky <rocky@gnu.org>
+
+	* realgud.el: Get ready for release 1.4.6
+
+2019-05-04  rocky <rocky@gnu.org>
+
+	* realgud/common/file.el, realgud/common/track.el,
+	realgud/debugger/bashdb/bashdb.el, realgud/debugger/gdb/gdb.el,
+	realgud/debugger/ipdb/track-mode.el, realgud/debugger/jdb/core.el,
+	realgud/debugger/jdb/jdb.el, realgud/debugger/trepan2/core.el: 
+	Compile linting
+
+2019-05-04  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #241 from beyondpie/pdb_pr_szu change pdb to python -m pdb.
+
+2019-05-02  rocky <rocky@gnu.org>
+
+	* realgud/common/buffer/breakpoint.el: Handle location not found in
+	bp-list for breakpoint buffer
+
+2019-04-29  rocky <rocky@gnu.org>
+
+	* realgud/common/key.el: Add 'B' key to get list of breakpoints
+
+2019-04-29  rocky <rocky@gnu.org>
+
+	* realgud.el, realgud/common/buffer/backtrace.el,
+	realgud/debugger/ipdb/init.el, realgud/debugger/ipdb/ipdb.el,
+	realgud/debugger/jdb/init.el, realgud/debugger/pdb/init.el,
+	realgud/debugger/perldb/init.el, realgud/debugger/remake/init.el,
+	realgud/debugger/trepanjs/init.el, realgud/lang/js.el: Add
+	breakpoint-all regexps for most debuggers
+
+2019-04-25  rocky <rocky@gnu.org>
+
+	* realgud.el, realgud/common/backtrack-mode.el,
+	realgud/common/buffer/backtrace.el, realgud/common/file.el,
+	realgud/common/init.el, realgud/common/menu.el,
+	realgud/debugger/gdb/init.el, realgud/debugger/remake/init.el,
+	realgud/lang/posix-shell.el, realgud/lang/python.el: remake and gdb
+	breakpoint buffers + add to menu
+
+2019-04-25  rocky <rocky@gnu.org>
+
+	* realgud/common/buffer/breakpoint.el,
+	realgud/common/buffer/command.el, realgud/common/follow.el: Add
+	breakpoint buffer tracking to source window
+
+2019-04-25  rocky <rocky@gnu.org>
+
+	* realgud/common/cmds.el, realgud/debugger/bashdb/init.el,
+	realgud/debugger/kshdb/init.el, realgud/debugger/trepan2/init.el,
+	realgud/debugger/trepan3k/init.el, realgud/debugger/zshdb/init.el,
+	realgud/lang/posix-shell.el, realgud/lang/python.el: Initialize more
+	debuggers with breakpoint buffer information
+
+2019-04-24  rocky <rocky@gnu.org>
+
+	* realgud/common/window.el: Remove some emacs compile warnings
+
+2019-04-24  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #244 from realgud/add-brpt-buffer Add a breakpoint buffer analogous to backtrace
+
+2019-04-23  rocky <rocky@gnu.org>
+
+	* realgud/common/cmds.el: Add a comment
+
+2019-04-23  rocky <rocky@gnu.org>
+
+	* realgud/common/buffer/backtrace.el,
+	realgud/common/buffer/command.el, realgud/common/buffer/helper.el,
+	realgud/common/cmds.el, realgud/common/loc.el,
+	realgud/common/lochist.el: Lots of small changes...  Add completing read of debugger breakpoint numbers *Describe*  ->
+	*Describe Debugger Session* Command hash key underscores are now
+	dashes
+
+2019-04-20  rocky <rocky@gnu.org>
+
+	* realgud/common/track.el: Disable breakpoint file finding callback
+	function for noww
+
+2019-04-20  rocky <rocky@gnu.org>
+
+	* realgud/common/attach.el, realgud/common/send.el,
+	realgud/common/track.el: keep history in attaching command-buffers
+	...  track.el: using breakpoint locate-file function marks breakpoint now
+	send.el: fix bug in handling %U
+
+2019-04-20  rocky <rocky@gnu.org>
+
+	* realgud/common/attach.el: cl-seq -> cl-lib
+
+2019-04-19  rocky <rocky@gnu.org>
+
+	* realgud/common/attach.el, realgud/common/send.el: Improve
+	realgud:attach-cmd-buffer...  And add %U specifier for url's
+
+2019-04-19  rocky <rocky@gnu.org>
+
+	* realgud/common/track.el: Fix improper breakpoint file-callback
+	function parameters
+
+2019-04-14  rocky <rocky@gnu.org>
+
+	* realgud.el, realgud/common/attach.el: Make sure to autoload attach
+	functions
+
+2019-04-01  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #242 from alyssais/patch-1 Fix wiki links in README
+
+2019-03-06  beyondpie <panshi.pie@gmail.com>
+
+	* realgud/debugger/pdb/pdb.el: change pdb to python -m pdb.
+
+2019-01-21  rocky <rocky@gnu.org>
+
+	* : commit 565ac7843e827a9a43c8ace86f3a21b0e4173ff8 Author: rocky
+	<rocky@gnu.org> Date:   Mon Jan 21 19:43:11 2019 -0500
+
+2018-12-10  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #230 from cranechu/master add key 'h' for cmd-until-here: continue until the current line
+
+2018-11-26  rocky <rocky@gnu.org>
+
+	* realgud/common/utils.el, realgud/debugger/ipdb/track-mode.el: ipdb
+	need ANSI schmutz removed...  And it looks like ipdb adds some new kind of ANSI schmutz
+
+2018-10-31  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #226 from Apteryks/master configure.ac: Fix NO_CHECK_EMACS_PACKAGES elisp.
+
+2018-09-24  rocky <rocky@gnu.org>
+
+	* realgud/debugger/trepanjs/track-mode.el, realgud/lang/js.el: Hoist
+	syntax-checking kbd command
+
+2018-09-23  rocky <rocky@gnu.org>
+
+	* realgud-recursive-autoloads.el,
+	realgud/debugger/trepanjs/init.el, realgud/lang/js.el: DRY a js
+	regexp by hoisting it to lang/js.el
+
+2018-09-20  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #223 from realgud/better-bp-track Better bp track and misc tweaks
+
+2018-09-20  rocky <rocky@gnu.org>
+
+	* configure.ac, realgud/common/buffer/command.el,
+	realgud/common/file.el, realgud/common/track.el,
+	realgud/lang/Makefile.am: Adds ource-path to cmdbuf...  to track last source code file seen.  Don't require breakpoint-set messages to require a filename or a
+	breakpoint location.  Use the current source-code path if it is no source path is given.
+
+2018-07-10  rocky <rocky@gnu.org>
+
+	* : commit 4548392392d0dd9ae24a46de532b9409ebe286a2 Author: rocky
+	<rocky@gnu.org> Date:   Tue Jul 10 22:52:37 2018 -0400
+
+2018-07-05  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #221 from MaskRay/ex gdb: parse -ex --eval-command
+
+2018-07-04  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #220 from MaskRay/tbreak Add tbreak as per break
+
+2018-06-26  rocky <rocky@gnu.org>
+
+	* realgud/debugger/kshdb/init.el: Last commit introduced a couple of
+	bugs
+
+2018-06-26  rocky <rocky@gnu.org>
+
+	* realgud/debugger/kshdb/init.el: Track breakpoing deletion
+
+2018-05-10  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #217 from muffinmad/patch-1 Check major mode with derived-mode-p
+
+2018-05-03  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #214 from xuchunyang/master Remove pdb alias
+
+2018-04-19  rocky <rocky@gnu.org>
+
+	* realgud/debugger/kshdb/init.el: Bug in kshdb initialization
+
+2018-03-27  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #212 from realgud/filter-lists Filter lists
+
+2018-03-25  rocky <rocky@gnu.org>
+
+	* test/bt-helper.el: Better Emacs compatibility
+
+2018-03-24  rocky <rocky@gnu.org>
+
+	* realgud/debugger/jdb/core.el, realgud/debugger/trepan2/core.el,
+	realgud/debugger/trepanjs/core.el,
+	realgud/debugger/trepanjs/init.el: Tidy a bit
+
+2018-03-24  rocky <rocky@gnu.org>
+
+	* test/bt-helper.el: TravisCI 3rd try
+
+2018-03-24  rocky <rocky@gnu.org>
+
+	* el-get-install.el: CircleCI 2nd try
+
+2018-03-24  rocky <rocky@gnu.org>
+
+	* el-get-install.el: Administrivia Add seq to el-get...  For CircleCI testing.
+
+2018-03-24  rocky <rocky@gnu.org>
+
+	* realgud/common/buffer/command.el, realgud/common/file.el,
+	realgud/debugger/jdb/core.el, realgud/debugger/trepan2/core.el,
+	test/bt-helper.el, test/test-bt-trepan.el, test/test-file.el,
+	test/test-trepan2.el: Correct testing for API change...  We now need more complete command buffers
+
+2018-03-24  rocky <rocky@gnu.org>
+
+	* realgud/common/file.el: Customize compilation-find-file...  to say this is a source-code file, not a file with an error in it.
+
+2018-03-24  rocky <rocky@gnu.org>
+
+	* realgud/common/buffer/command.el, realgud/common/file.el: File
+	remap is session specific...  finish session file-map ignore re's
+
+2018-03-22  rocky <rocky@gnu.org>
+
+	* : commit 388a650dccdd532486d71ed04d20e3f1017e5836 Author: rocky
+	<rocky@gnu.org> Date:   Thu Mar 22 05:12:11 2018 -0400
+
+2018-03-22  rocky <rocky@gnu.org>
+
+	* realgud.el, test/.gitignore: Commit stable version before a minor
+	upheaval
+
+2018-03-13  rocky <rocky@gnu.org>
+
+	* realgud/common/file.el, realgud/debugger/jdb/core.el,
+	realgud/debugger/trepan/core.el, realgud/debugger/trepan2/core.el,
+	realgud/debugger/trepanjs/core.el: Make calls consistent in light of
+	changes
+
+2018-03-13  rocky <rocky@gnu.org>
+
+	* .gitignore, realgud/common/buffer/command.el,
+	realgud/common/file.el, realgud/common/track.el,
+	realgud/debugger/ipdb/init.el, realgud/debugger/jdb/core.el,
+	realgud/debugger/jdb/init.el, realgud/debugger/pdb/init.el,
+	realgud/debugger/rdebug/init.el, realgud/debugger/trepan/core.el,
+	realgud/debugger/trepan/init.el, realgud/debugger/trepan2/core.el,
+	realgud/debugger/trepan2/init.el,
+	realgud/debugger/trepan3k/init.el,
+	realgud/debugger/trepanjs/core.el,
+	realgud/debugger/trepanjs/init.el, realgud/lang/python.el,
+	test/test-bt-trepan2.el, test/test-file.el, test/test-trepan2.el: 
+	Large change to allow blacklisted files ignore-re has been moved out of the loc struct and into the
+	realgud-cmdbuf-info. It is now a list of regexps/strings which can
+	be modified per debug session
+
+2018-03-12  rocky <rocky@gnu.org>
+
+	* realgud/common/send.el, realgud/debugger/nodejs/init.el,
+	realgud/debugger/trepanjs/init.el, test/gcd.js, test/test-send.el: 
+	Add format specifier %q a la ksh...  Used in nodejs exec(%q) for example
+
+2018-03-09  rocky <rocky@gnu.org>
+
+	* realgud.el, realgud/debugger/nodejs/core.el,
+	realgud/debugger/nodejs/init.el, realgud/debugger/nodejs/nodejs.el,
+	test/test-send.el: Start nodejs -> node debug rename...  node inspect: add "eval", fix "backtrace" and remove up/down/frame
+
+2018-03-08  rocky <rocky@gnu.org>
+
+	* realgud.el: Small typo
+
+2018-02-07  rocky <rocky@gnu.org>
+
+	* realgud/debugger/trepan3k/init.el: Small changes
+
+2018-02-07  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #209 from dangirsh/patch-2 Add "until" to correct command hash
+
+2018-02-07  Dan <dangirsh@users.noreply.github.com>
+
+	* realgud/debugger/trepan3k/init.el: Add "until" to correct command
+	hash "until" was being added to the wrong hash table.
+
+2018-02-07  Dan <dangirsh@users.noreply.github.com>
+
+	* realgud/debugger/trepan3k/init.el: Add pprint to command hash In my debug mode, I'd like hitting "p" on a symbol to pretty print
+	its value in the debugger via realgud:cmd-run-command. For this, the
+	command hash must include an entry for "pp".
+
+2018-02-03  rocky <rocky@gnu.org>
+
+	* realgud.el, realgud/common/fringe.el: Make fringe arrows a little
+	more colorful
+
+2018-01-15  rocky <rocky@gnu.org>
+
+	* : commit 2eb9519df850ca6ff61f8576bc9d0bc3176c87b4 Author: rocky
+	<rocky@gnu.org> Date:   Mon Jan 15 04:24:40 2018 -0500
+
+2018-01-14  rocky <rocky@gnu.org>
+
+	* realgud/common/bp.el: Use boxed attributes in breakpoint
+	enable/disable faces
+
+2018-01-02  rocky <rocky@gnu.org>
+
+	* realgud/debugger/bashdb/bashdb.el: Add realgud:bashdb-large to
+	handle large bash files
+
+2017-12-28  rocky <rocky@gnu.org>
+
+	* : commit 937bea03540811a2bcf46dfbcf5431b5d8b8e539 Author: rocky
+	<rocky@gnu.org> Date:   Thu Dec 28 12:17:40 2017 -0500
+
+2017-12-28  rocky <rocky@gnu.org>
+
+	* realgud/common/key.el: Add realgud-populate-common-fn-keys-none to
+	not set function keys...  Change other remnants from ruby code and dbgr name heritage
+
+2017-12-18  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #201 from jodonnell/spelling fix spelling error
+
+2017-12-18  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #200 from jodonnell/move-bps Move bps
+
+2017-12-17  Jacob O'Donnell <jacobodonnell@gmail.com>
+
+	* realgud/common/track.el: moving breakpoint functions to more
+	central locations
+
+2017-12-17  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #199 from jodonnell/whoops fixed an error
+
+2017-12-17  rocky <rocky@gnu.org>
+
+	* test/test-regexp-remake.el, test/test-regexp-trepan.el,
+	test/test-track.el: Some test lint'ing
+
+2017-12-17  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #198 from jodonnell/refactor extract method for breakpoint stuff in realgud:track-from-region
+
+2017-12-17  Jacob O'Donnell <jacobodonnell@gmail.com>
+
+	* realgud/common/track.el, test/test-track.el: extract method for
+	breakpoint stuff in realgud:track-from-region
+
+2017-12-16  rocky <rocky@gnu.org>
+
+	* realgud/.nosearch: Administrivia
+
+2017-12-16  rocky <rocky@gnu.org>
+
+	* .gitignore, realgud.el, realgud/.nosearch, realgud/Makefile.am,
+	realgud/common/buffer/backtrace.el, realgud/common/shortkey.el,
+	realgud/common/track-mode.el, realgud/common/track.el,
+	realgud/common/utils.el, realgud/debugger/kshdb/init.el,
+	realgud/debugger/pdb/pdb.el, realgud/debugger/trepan2/init.el,
+	realgud/debugger/trepan2/trepan2.el,
+	realgud/debugger/trepan3k/core.el,
+	realgud/debugger/trepan3k/init.el,
+	realgud/debugger/trepan3k/trepan3k.el: Get ready for 1.4.4 release.
+	Admnistrivia realgud.el: bump version number Remove/reduce messages of undefined
+	functions pdb: correct some variabes names Makefile.am: don't remove
+	.nosearch Update copyright on files that have changed htis year
+
+2017-12-15  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #197 from jodonnell/eval-command change E to put the thing at point in the read string
+
+2017-12-11  rocky <rocky@gnu.org>
+
+	* realgud/common/buffer/backtrace.el: Track changes in elpa: From Stephan Monnier: add-to-list -> cl-pushnew Reverse order of stack listing opt-buffer
+	-> _opt-buffer  (it's not used so maybe it should disappear? )
+
+2017-12-10  rocky <rocky@gnu.org>
+
+	* : commit 53b0c1acc0d9c8dd99cfd57157a24eaf45f1e5ba Author: rocky
+	<rocky@gnu.org> Date:   Sun Dec 10 16:04:01 2017 -0500
+
+2017-12-10  rocky <rocky@gnu.org>
+
+	* : commit aa933ebbaae74b50308acc4eb8e1545fe42ff6b4 Merge: df03ba5
+	57eed60 Author: R. Bernstein <rocky@users.noreply.github.com> Date:
+	Sun Dec 10 14:21:53 2017 -0500
+
+2017-12-10  rocky <rocky@gnu.org>
+
+	* test/test-track.el: Comment better a track test
+
+2017-12-10  rocky <rocky@gnu.org>
+
+	* realgud/common/utils.el: < -> <=. See comment before
+
+2017-12-10  rocky <rocky@gnu.org>
+
+	* realgud/common/utils.el: I am also bad at match relations
+
+2017-12-10  rocky <rocky@gnu.org>
+
+	* realgud/common/utils.el: I am really bad with Elisp syntax
+
+2017-12-10  rocky <rocky@gnu.org>
+
+	* realgud/common/utils.el, test/test-track.el: More Emacs-gaurded
+	handling of realgud:join-string
+
+2017-12-10  rocky <rocky@gnu.org>
+
+	* realgud/common/track.el: wrong 'let' syntax - caught thanks to the
+	jodonnell's test!
+
+2017-12-10  rocky <rocky@gnu.org>
+
+	* realgud/common/track.el: Guard against nil
+	(realgud:get-command-name "eval")
+
+2017-12-10  rocky <rocky@gnu.org>
+
+	* : commit df03ba5e6b43bed794b422afa050268c4247871c Merge: 59b2563
+	1180d9f Author: R. Bernstein <rocky@users.noreply.github.com> Date:
+	Sun Dec 10 12:39:04 2017 -0500
+
+2017-12-09  Jacob O'Donnell <jacobodonnell@gmail.com>
+
+	* realgud/common/cmds.el, realgud/common/shortkey.el: add eval at
+	point and bind it to E in shortkey mode
+
+2017-12-09  Jacob O'Donnell <jacobodonnell@gmail.com>
+
+	* realgud/common/track.el, test/test-track.el, test/test-utils.el: 
+	making eval output truncate and saving all the current command hash
+	instead of just eval for future usage
+
+2017-12-07  Jacob O'Donnell <jacobodonnell@gmail.com>
+
+	* test/test-track.el: adding tests for print to message area
+
+2017-12-05  Jacob O'Donnell <jacobodonnell@gmail.com>
+
+	* realgud/common/track.el, realgud/common/utils.el: making join
+	string not emacs 25 only
+
+2017-12-05  Jacob O'Donnell <jacobodonnell@gmail.com>
+
+	* realgud/common/track.el: making eval print to the message area
+
+2017-12-03  rocky <rocky@gnu.org>
+
+	* realgud/debugger/gdb/init.el: Add gdb "delete" template
+
+2017-12-03  rocky <rocky@gnu.org>
+
+	* INSTALL.md, realgud/common/buffer/backtrace.el: Info ...  Document what's known about the backtrace-init infinite loop.
+	Correct and expand install instructions.
+
+2017-12-03  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #192 from dvzubarev/master Fix infinite loop in realgud:backtrace-init
+
+2017-12-03  denin <dvzubarev@yandex.ru>
+
+	* realgud/common/buffer/backtrace.el: Fix infinite loop in
+	realgud:backtrace-init match-end and match-begin is overriden in
+	realgud:file-loc-from-line.  It is better to store them in
+	variables.
+
+2017-10-06  rocky <rocky@gnu.org>
+
+	* realgud/debugger/gdb/core.el, realgud/debugger/pdb/core.el,
+	realgud/debugger/rdebug/core.el, realgud/debugger/remake/core.el,
+	test/test-pdb.el: Expand script path where appropriate
+
+2017-09-07  rocky <rocky@gnu.org>
+
+	* realgud/common/track.el, realgud/debugger/gdb/core.el: When a
+	breakpoint is seen, add source...  to list of source buffers seen. May also go into track mode.  gdb/core.el: simple typo
+
+2017-08-30  rocky <rocky@gnu.org>
+
+	* realgud/common/cmds.el: Add more default commands modelled from
+	gdb Todo: adjust all of the debuggers!
+
+2017-08-25  rocky <rocky@gnu.org>
+
+	* realgud/Makefile.am: Spelling typos
+
+2017-08-25  rocky <rocky@gnu.org>
+
+	* install-from-git.sh, realgud/.nosearch, realgud/Makefile.am,
+	realgud/common/buffer/command.el: Fix misfeatures in
+	install-from-git.sh...  Install .nosearch when install in from git. Fixes #187 Docuement
+	.nosearch in file Build code in /tmp realgud repo has changed:
+	rocky/emacs-dbgr -> realgud/realgud command.el: use better org formatting
+
+2017-08-23  rocky <rocky@gnu.org>
+
+	* realgud/common/track.el: Bug in last commit.
+
+2017-08-23  rocky <rocky@gnu.org>
+
+	* realgud/common/buffer/command.el, realgud/common/loc.el,
+	realgud/common/track.el: Fix up breakpoint display
+
+2017-08-23  rocky <rb@dustyfeet.com>
+
+	* realgud/common/buffer/command.el: Improve Debugger Info org-mode
+	buffer - Elide entries initially - Disable things that aren't set (for now) - Format hash tables better
+
+2017-08-03  rocky <rocky@gnu.org>
+
+	* realgud.el: (realgud:load-features) now features loaded
+
+2017-08-03  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #182 from roymath/master fixed unload; added ert-based tests for realgud
+
+2017-08-02  Roy Mathew <1578069+roymath@users.noreply.github.com>
+
+	* realgud.el, test/test-realgud.el: fixed unload; added ert-based
+	tests for realgud
+
+2017-07-12  rocky <rb@dustyfeet.com>
+
+	* realgud/common/bp.el, realgud/debugger/perldb/perldb.el: 
+	realgud-bp-line-{en/di}sabled-face change...  Make them both have underline property.  Dont inherit from diff
+	which might not be set.
+
+2017-06-30  rocky <rocky@gnu.org>
+
+	* realgud/debugger/bashdb/bashdb.el, realgud/debugger/gub/gub.el,
+	realgud/debugger/ipdb/ipdb.el, realgud/debugger/jdb/jdb.el,
+	realgud/debugger/kshdb/kshdb.el, realgud/debugger/pdb/pdb.el,
+	realgud/debugger/rdebug/rdebug.el,
+	realgud/debugger/remake/remake.el,
+	realgud/debugger/trepan.pl/trepanpl.el,
+	realgud/debugger/trepan/trepan.el,
+	realgud/debugger/trepan2/trepan2.el,
+	realgud/debugger/trepan3k/trepan3k.el,
+	realgud/debugger/zshdb/zshdb.el: Add autoloads for defalias debugger
+	invocations
+
+2017-06-29  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #177 from realgud/fringe-arrow Simplify and perhaps generalize
+
+2017-06-03  rocky <rocky@gnu.org>
+
+	* realgud/debugger/trepan2/init.el,
+	realgud/debugger/trepan3k/init.el: Match nested prompts in python
+	trepan debuggers
+
+2017-05-29  rocky <rocky@gnu.org>
+
+	* realgud/common/run.el, realgud/debugger/pdb/pdb.el,
+	realgud/debugger/trepan2/trepan2.el,
+	realgud/debugger/trepan3k/trepan3k.el: Start macro for delayed- and expand to cover pdb
+
+2017-05-22  rocky <rocky@gnu.org>
+
+	* : commit a0af8eb0c874f92644a249cd48e698c362e77e89 Author: rocky
+	<rocky@gnu.org> Date:   Mon May 22 06:18:12 2017 -0400
+
+2017-05-21  rocky <rb@dustyfeet.com>
+
+	* realgud/debugger/trepan.pl/core.el: Typo
+
+2017-05-21  rocky <rb@dustyfeet.com>
+
+	* realgud/debugger/trepan.pl/core.el,
+	realgud/debugger/zshdb/core.el: And a couple more
+
+2017-05-21  rocky <rb@dustyfeet.com>
+
+	* realgud.el, realgud/debugger/bashdb/core.el,
+	realgud/debugger/gdb/core.el, realgud/debugger/gub/core.el,
+	realgud/debugger/ipdb/core.el, realgud/debugger/jdb/core.el,
+	realgud/debugger/kshdb/core.el, realgud/debugger/nodejs/core.el,
+	realgud/debugger/trepan3k/core.el: Last change distributed a bit
+	over other debuggers
+
+2017-05-21  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #175 from Apteryks/patch-1 Honor debugger-name in trepan2-suggest-invocation
+
+2017-03-16  rocky <rb@dustyfeet.com>
+
+	* .travis.yml, test/Makefile.am: travis 5th try
+
+2017-03-16  rocky <rb@dustyfeet.com>
+
+	* .travis.yml: Set EMACSLOADPATH in travis run
+
+2017-03-16  rocky <rb@dustyfeet.com>
+
+	* Makefile.am, autogen.sh, test/Makefile.am: Fix up automake install
+
+2017-02-18  rocky <rocky@gnu.org>
+
+	* realgud/lang/java.el, test/test-regexp-java.el: Small cleanups
+
+2017-02-18  rocky <rb@dustyfeet.com>
+
+	* : commit e85da349602a2ffa65a7c4792842741d81e42ebe Author: rocky
+	<rb@dustyfeet.com> Date:   Sat Feb 18 09:19:20 2017 -0500
+
+2017-02-18  rocky <rocky@gnu.org>
+
+	* realgud/debugger/jdb/jdb.el: Initalize local-variable
+	realgd:jdb-file-remap See Issue # 171
+
+2017-02-14  rocky <rb@dustyfeet.com>
+
+	* realgud/debugger/jdb/init.el: Add jdb termination message
+
+2017-02-18  rocky <rocky@gnu.org>
+
+	* : commit f73b9371f23442808205b6d1060e7daa1a669325 Author: rocky
+	<rocky@gnu.org> Date:   Sat Feb 18 02:37:34 2017 -0500
+
+2017-02-14  rocky <rb@dustyfeet.com>
+
+	* realgud/debugger/jdb/init.el: Add jdb termination message
+
+2017-01-28  rocky <rb@dustyfeet.com>
+
+	* : commit f4a6f3086a3ceec5cf5b03fb6edd46025799066d Author: rocky
+	<rb@dustyfeet.com> Date:   Sat Jan 28 10:27:23 2017 -0500
+
+2017-01-28  rocky <rocky@gnu.org>
+
+	* test/test-regexp-trepan.el: lint on test
+
+2017-01-28  rocky <rocky@gnu.org>
+
+	* realgud/common/buffer/backtrace.el,
+	realgud/debugger/remake/remake.el: caddr -> cl-caddr
+
+2017-01-25  rocky <rb@dustyfeet.com>
+
+	* realgud/common/file.el: realgud-file-find-function is in realgud
+	group
+
+2017-01-17  rocky <rb@dustyfeet.com>
+
+	* realgud/common/buffer/backtrace.el,
+	realgud/common/buffer/source.el: Use cl-lib names
+
+2017-01-16  rocky <rb@dustyfeet.com>
+
+	* realgud/common/core.el: Allow nil as file parameter in
+	realgud-exec-shell Fixes #165
+
+2016-12-27  rocky <rb@dustyfeet.com>
+
+	* realgud/common/file.el: Fixes #164
+
+2016-12-27  rocky <rb@dustyfeet.com>
+
+	* realgud/lang/python.el, test/test-regexp-rdebug.el,
+	test/test-regexp-trepan.el: Increase flake8 message coverage...  more test lint
+
+2016-12-27  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #163 from FelipeLema/master Customizable "search for this (relative) bp file"
+
+2016-12-27  rocky <rb@dustyfeet.com>
+
+	* realgud/common/buffer/backtrace.el,
+	realgud/common/buffer/command.el, realgud/common/file.el,
+	realgud/common/fringe.el, realgud/common/regexp.el,
+	realgud/common/track.el, realgud/debugger/gdb/init.el,
+	realgud/debugger/gub/init.el, realgud/debugger/jdb/core.el,
+	realgud/debugger/nodejs/init.el, realgud/debugger/trepan/core.el,
+	realgud/debugger/trepan2/core.el,
+	realgud/debugger/trepanjs/init.el, realgud/lang/js.el,
+	realgud/lang/python.el, test/test-file.el,
+	test/test-loc-regexp-nodejs.el, test/test-regexp-gub.el,
+	test/test-regexp-python.el, test/test-regexp-rdebug.el,
+	test/test-regexp-trepan.el, test/test-track.el: Revert column
+	tracking change except Makefile.am change for "check" targets
+
+2016-12-26  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #162 from realgud/column-offsets Column offsets
+
+2016-12-25  rocky <rb@dustyfeet.com>
+
+	* Makefile.am, realgud/common/file.el, realgud/common/track.el,
+	realgud/debugger/jdb/core.el, realgud/debugger/trepan/core.el,
+	realgud/debugger/trepan2/core.el, test/test-track.el: Closer to
+	getting column info used Pass column parameter and rely less on command-buffer global
+	settings but instead get those from the location structure.
+
+2016-12-24  rocky <rb@dustyfeet.com>
+
+	* realgud/common/buffer/command.el, realgud/common/file.el,
+	realgud/common/regexp.el, realgud/common/track.el,
+	realgud/debugger/gdb/init.el, realgud/debugger/gub/init.el,
+	realgud/debugger/nodejs/init.el, realgud/debugger/trepanjs/init.el,
+	realgud/lang/js.el, realgud/lang/python.el,
+	test/test-loc-regexp-nodejs.el, test/test-regexp-gub.el,
+	test/test-regexp-python.el, test/test-regexp-rdebug.el,
+	test/test-regexp-trepan.el: field char-offset -> column
+
+2016-12-24  rocky <rocky@gnu.org>
+
+	* realgud/common/buffer/backtrace.el,
+	realgud/common/buffer/command.el, realgud/common/file.el,
+	realgud/common/regexp.el, realgud/common/track.el,
+	realgud/debugger/jdb/core.el, realgud/debugger/trepan/core.el,
+	realgud/debugger/trepan2/core.el, realgud/lang/python.el,
+	test/test-file.el, test/test-track.el: WIP: stab at positioning with
+	column offsets
+
+2016-12-23  Felipe Lema <felipelema@mortemale.org>
+
+	* realgud/common/file.el: Customizable "search for this (relative)
+	bp file" I personally don't like `compilation-find-file` prompting me at the
+	start of every gdb session when it can't find a relative breakpoint
+	in a large code base at a separate folder.
+
+2016-12-20  rocky <rocky@gnu.org>
+
+	* realgud/debugger/ipdb/init.el: Fixes issue #33 Was using wrong debugger name in command-hash (pdb vs ipdb) Default
+	eval is pp now.
+
+2016-12-04  rocky <rocky@gnu.org>
+
+	* Makefile.am, realgud/common/buffer/backtrace.el,
+	realgud/common/buffer/command.el, realgud/debugger/ipdb/init.el,
+	realgud/debugger/pdb/init.el, realgud/debugger/trepan2/init.el,
+	realgud/debugger/trepan3k/init.el, realgud/lang/python.el,
+	test/test-regexp-python.el: Add flake8 pattern
+
+2016-08-29  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #150 from realgud/breakpoint-display Breakpoint display
+
+2016-08-28  rocky <rocky@gnu.org>
+
+	* : Tidy a bit
+
+2016-08-27  rocky <rocky@gnu.org>
+
+	* realgud/common/file.el: Tidy code a little
+
+2016-08-27  rocky <rocky@gnu.org>
+
+	* realgud/common/bp.el, realgud/common/file.el,
+	realgud/common/track.el: Towards tracking breakpoints more often file.el: Create and set a source-file marker in the list of
+	breakpoint track.el: Add source breakpoint annotations when we add
+	the source-file maker in the list of breakpoints
+
+2016-08-13  rocky <rocky@gnu.org>
+
+	* realgud/debugger/bashdb/init.el, realgud/debugger/ipdb/init.el,
+	realgud/debugger/trepan/init.el, realgud/debugger/trepan3k/init.el,
+	realgud/debugger/trepanjs/init.el, realgud/debugger/zshdb/init.el: 
+	more doc corrections: Regluar expression that -> realgud-loc-pat that
+
+2016-08-13  rocky <rocky@gnu.org>
+
+	* realgud/common/buffer/source.el: Small docstring clarification
+
+2016-08-08  rocky <rocky@gnu.org>
+
+	* realgud/common/buffer/command.el, realgud/common/lochist.el: 
+	realgud:cmdbuf-buffers-describe shows field names
+
+2016-08-07  rocky <rocky@gnu.org>
+
+	* realgud/debugger/nodejs/nodejs.el,
+	realgud/debugger/nodejs/track-mode.el,
+	realgud/debugger/trepanjs/track-mode.el,
+	realgud/debugger/trepanjs/trepanjs.el,
+	realgud/debugger/zshdb/track-mode.el,
+	realgud/debugger/zshdb/zshdb.el: host removing ansi-schmutz to mode
+	setting.
+
+2016-08-07  rocky <rocky@gnu.org>
+
+	* realgud/common/buffer/command.el, realgud/debugger/jdb/jdb.el: 
+	file remapping changes * command.el: Show file remapping in Describe buffer; add
+	cmdbuf-reset * jdb.el: make file mapping hash buffer local
+
+2016-08-07  rocky <rocky@gnu.org>
+
+	* realgud/common/track.el, realgud/common/utils.el,
+	realgud/debugger/jdb/core.el, realgud/debugger/trepanjs/trepanjs.el: 
+	Bp tracking respects custom filename lookup ...  * track.el: use callback-loc-fn in realgud-track-bp-loc * jdb/core.el: remove gud reference * jdb/core.el: remove gud reference * trepanjs.el: typo
+
+2016-08-06  rocky <rocky@gnu.org>
+
+	* realgud/common/utils.el, realgud/debugger/nodejs/nodejs.el,
+	realgud/debugger/trepanjs/core.el,
+	realgud/debugger/trepanjs/trepanjs.el, realgud/lang/js.el: Hoist
+	remove-ansi-schmutz above just js
+
+2016-08-06  rocky <rocky@gnu.org>
+
+	* ChangeLog, Makefile.am, common.mk.in, realgud/common/Makefile.am,
+	realgud/common/buffer/Makefile.am,
+	realgud/debugger/bashdb/Makefile.am,
+	realgud/debugger/gdb/Makefile.am, realgud/debugger/gub/Makefile.am,
+	realgud/debugger/ipdb/Makefile.am,
+	realgud/debugger/jdb/Makefile.am,
+	realgud/debugger/kshdb/Makefile.am,
+	realgud/debugger/nodejs/Makefile.am,
+	realgud/debugger/pdb/Makefile.am,
+	realgud/debugger/perldb/Makefile.am,
+	realgud/debugger/rdebug/Makefile.am,
+	realgud/debugger/remake/Makefile.am,
+	realgud/debugger/trepan.pl/Makefile.am,
+	realgud/debugger/trepan/Makefile.am,
+	realgud/debugger/trepan2/Makefile.am,
+	realgud/debugger/trepan3k/Makefile.am,
+	realgud/debugger/trepanjs/Makefile.am,
+	realgud/debugger/zshdb/Makefile.am, test/Makefile.am: Fix up "make
+	dist" make distcheck now works
+
 2016-08-04  rocky <rocky@gnu.org>
 
 	* ChangeLog, Makefile.am, configure.ac: make install packaging Fixes
@@ -335,7 +1205,7 @@
 	* : commit bc1f4ba4944ff83f19cbf02ff0dd5414589a15ec Author: rocky
 	<rocky@gnu.org> Date:   Sun Jun 12 18:32:23 2016 -0400
 
-2016-06-12  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-06-12  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/debugger/ipdb/init.el, realgud/debugger/pdb/init.el: Relax
 	deleted breakpoint regexp in PDB to support Python 2 and 3 In Python 3, the deleted breakpoint message include a file path and
@@ -378,11 +1248,11 @@
 	"breakpoint deleted" regexp test-regexp-zshdb.el: beef up and sync to corresponding bashdb test.
 	Makefile.am: make "make check-short" in this directory work
 
-2016-06-04  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-06-04  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* README.md: Update Travis links
 
-2016-06-04  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-06-04  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* INSTALL, README.md, realgud.el: A few more link updates (+ small
 	edits in Commentary)
@@ -397,7 +1267,7 @@
 
 	* realgud.el: Update doc links
 
-2016-06-02  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-06-02  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/follow.el, realgud/common/fringe.el,
 	realgud/common/shortkey.el: Fix invalid references to
@@ -405,7 +1275,7 @@
 	dcc152aa6aea8d201596750c1b69b63e57c4fd43, but a few references to
 	loc-follow had remained since then.  Also replace a few instances of (interactive "") with (interactive).  Fixes #91.
 
-2016-06-01  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-06-01  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* README.md, realgud/common/cmds.el, realgud/common/shortkey.el: Add
 	basic support for jumping
@@ -414,13 +1284,13 @@
 
 	* : Merge pull request #119 from realgud/improve-break-C-u Further cleanups of cmds.el + improved C-u behaviour
 
-2016-06-01  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-06-01  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/cmds.el: Further cleanup in cmds.el: remove unused
 	arguments Affected commands: kill, next-no-arg, repeat-last, restart, and
 	shell.
 
-2016-06-01  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-06-01  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/send.el: Clarify %p in documentation of
 	expand-format Also ensure %s formats nil as an empty string (for consistency with
@@ -430,34 +1300,34 @@
 
 	* : Merge pull request #114 from rocky/default-hash Further refactor cmds.el
 
-2016-05-31  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-31  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* : Ensure that the Github organization logo is a square
 
-2016-05-31  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-31  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/cmds.el: Further refactor cmds.el Instead of passing a default template in each individual call,
 	collect all default templates in a single hash.  Take that
 	opportunity to clean up the two 'cmd-*-no-args' implementations.
 
-2016-05-31  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-31  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/cmds.el: Remove unwanted argument in call to
 	cmd-run-command (this is a leftover from d2b8d132388d18c0ce865a21eafc666ecb7d2b03)
 
-2016-05-31  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-31  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* : Merge pull request #113 from rocky/logo New RealGUD logo
 
-2016-05-31  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-31  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* etc/screenshot.el: Update screenshot
 
-2016-05-31  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-31  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* README.md: Slightly shorten setup instructions in README
 
-2016-05-30  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-30  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/file.el: Fix file-column-to-string in the presence
 	of composed characters (- (current-column) (length source-text)) is not necessarily a valid
@@ -491,7 +1361,7 @@
 
 	* : Merge pull request #110 from rocky/delete-multiple-breakpoints Allow realgud-track-bp-delete to recognize multiple breakpoints
 
-2016-05-30  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-30  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/track.el, realgud/debugger/gdb/init.el: Allow
 	realgud-track-bp-delete to recognize multiple breakpoints
@@ -515,30 +1385,30 @@
 
 	* : Merge pull request #106 from rocky/75-ipdb-completion Improve IPDB completion
 
-2016-05-30  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-30  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/debugger/ipdb/core.el: Improve IPDB completion Fail gracefully if point isn't at prompt, and get prefix from
 	iPython instead of relying on bounds-of-thing-at-point.  Fixes #75.
 
-2016-05-30  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-30  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* README.md, etc/screenshot.el: Rewrite README Closes #72.  Screenshot is auto-generated using etc/screenshot.el.
 
-2016-05-30  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-30  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/fringe-utils.py: Add python3 shebang to
 	fringe-utils.py
 
-2016-05-30  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-30  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* Cask: Fill in missing bits of Cask file
 
-2016-05-30  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-30  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/buffer/source.el: Simplify the implementation of
 	realgud:cmdbuf-associate
 
-2016-05-29  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-29  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/buffer/source.el: Show default buffer when
 	automatically attaching
@@ -552,7 +1422,7 @@
 
 	* realgud.el: Update commentary; e.g. link to debuggers handled
 
-2016-05-29  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-29  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/buffer/source.el, realgud/common/shortkey.el: 
 	Automatically attach to a command buffer when enabling
@@ -562,12 +1432,12 @@
 	only if there is no available command buffer).  Additionally make shortkey-mode-setup more robust by restoring the
 	original local map properly disabling the toolbar after exiting.  Closes #36; thanks for the suggestion!
 
-2016-05-29  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-29  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/buffer/source.el, realgud/common/shortkey.el: Minor
 	docstring and code cleanups
 
-2016-05-29  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-29  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/helper.el: Use `buffer-live-p' instead of
 	`buffer-name' in `buffer-killed?'
@@ -576,7 +1446,7 @@
 
 	* : Merge pull request #101 from rocky/bp-icon-in-fringe Refactor and improve breakpoint UI
 
-2016-05-29  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-29  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/cmds.el: Ignore safe-mode setting when clicking a
 	toolbar button
@@ -585,12 +1455,12 @@
 
 	* : Merge pull request #98 from rocky/83-better-scope-keybindings Fix 83 and 88: refactor cmds.el
 
-2016-05-28  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-28  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/key.el: Add a few bindings to shortkey-mode This is in preparation for refactoring cmds.el.  All keys were
 	picked from calls to cmd-remap.
 
-2016-05-28  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-28  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/debugger/nodejs/init.el,
 	realgud/debugger/nodejs/track-mode.el,
@@ -599,7 +1469,7 @@
 	realgud/debugger/zshdb/track-mode.el: Prepare for refactoring of
 	realgud-cmd * all: remove (declare-function cmd-remap) * perldb: Remove custom binding for backtrace * nodejs: Remove custom bindings for backtrace.  Remove rebinding of   ‚Äúbreak‚Äù and update hash instead.
 
-2016-05-28  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-28  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/cmds.el: Rename
 	realgud:prompt-if-{prefix-or-,}safe-mode The if-prefix part was an unfortunate choice.
@@ -621,7 +1491,7 @@
 	* : Merge pull request #89 from
 	cpitclaudel/87-improve-delete-command Improve behavior of delete, enable, and disable
 
-2016-05-28  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-28  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/cmds.el: Add a "safe mode" setting (on by default) In safe mode, prompt and offer a tip on how to disable safe mode
 	before running "continue".
@@ -630,7 +1500,7 @@
 
 	* : Merge pull request #90 from cpitclaudel/82-add-prefix-arg-to-c Add a prefix arg to "continue" command
 
-2016-05-28  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-28  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/cmds.el: Improve behavior of delete, enable, and
 	disable Interactively, these three commands now disable, enable, or delete a
@@ -646,7 +1516,7 @@
 
 	* : Merge pull request #85 from cpitclaudel/84-pdb-fixes Improve command mappings in pdb-command-hash
 
-2016-05-27  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-27  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/debugger/pdb/init.el: Improve command mappings in
 	pdb-command-hash This fixes parts of issue #82.
@@ -655,7 +1525,7 @@
 
 	* : Merge pull request #81 from rocky/ipdb-complete Ipdb complete
 
-2016-05-25  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-25  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/core.el: Improve completion and default value in
 	realgud-query-cmdline
@@ -1286,8 +2156,8 @@
 
 2015-02-17  rocky <rocky@gnu.org>
 
-	* Makefile.am, make-check-filter.rb, test/make-check-filter.rb: Move
-	test helper into test
+	* Makefile.am, make-check-filter.rb => test/make-check-filter.rb: 
+	Move test helper into test
 
 2015-02-17  rocky <rocky@gnu.org>
 
@@ -3420,150 +4290,118 @@
 
 2013-04-01  rocky <rocky@gnu.org>
 
-	* Makefile.am, configure.ac, dbgr.el, dbgr/Makefile.am,
-	dbgr/common/Makefile.am, dbgr/common/backtrace-mode.el,
-	dbgr/common/backtrack-mode.el, dbgr/common/bp-image-data.el,
-	dbgr/common/bp.el, dbgr/common/buffer/Makefile.am,
-	dbgr/common/buffer/backtrace.el, dbgr/common/buffer/command.el,
-	dbgr/common/buffer/helper.el, dbgr/common/buffer/source.el,
-	dbgr/common/cmds.el, dbgr/common/core.el, dbgr/common/custom.el,
-	dbgr/common/file.el, dbgr/common/fringe.el, dbgr/common/helper.el,
-	dbgr/common/init.el, dbgr/common/key.el, dbgr/common/lang.el,
-	dbgr/common/loc.el, dbgr/common/lochist.el, dbgr/common/menu.el,
-	dbgr/common/regexp.el, dbgr/common/reset.el, dbgr/common/send.el,
+	* Makefile.am, configure.ac, dbgr.el,
+	dbgr/common/backtrace-mode.el, dbgr/common/fringe.el,
+	dbgr/common/key.el, dbgr/common/lochist.el, dbgr/common/menu.el,
 	dbgr/common/shortkey.el, dbgr/common/track-mode.el,
-	dbgr/common/track.el, dbgr/common/window.el,
-	dbgr/debugger/Makefile.am, dbgr/debugger/bashdb/Makefile.am,
-	dbgr/debugger/bashdb/bashdb.el, dbgr/debugger/bashdb/core.el,
-	dbgr/debugger/bashdb/init.el, dbgr/debugger/bashdb/track-mode.el,
-	dbgr/debugger/common.mk, dbgr/debugger/gdb/Makefile.am,
-	dbgr/debugger/gdb/core.el, dbgr/debugger/gdb/gdb.el,
-	dbgr/debugger/gdb/init.el, dbgr/debugger/gdb/track-mode.el,
-	dbgr/debugger/kshdb/Makefile.am, dbgr/debugger/kshdb/core.el,
-	dbgr/debugger/kshdb/init.el, dbgr/debugger/kshdb/kshdb.el,
-	dbgr/debugger/kshdb/track-mode.el, dbgr/debugger/pdb/Makefile.am,
-	dbgr/debugger/pdb/core.el, dbgr/debugger/pdb/init.el,
-	dbgr/debugger/pdb/pdb.el, dbgr/debugger/pdb/track-mode.el,
-	dbgr/debugger/perldb/Makefile.am, dbgr/debugger/perldb/core.el,
-	dbgr/debugger/perldb/init.el, dbgr/debugger/perldb/perldb.el,
-	dbgr/debugger/perldb/track-mode.el, dbgr/debugger/pydb/Makefile.am,
-	dbgr/debugger/pydb/core.el, dbgr/debugger/pydb/init.el,
-	dbgr/debugger/pydb/pydb.el, dbgr/debugger/pydb/track-mode.el,
-	dbgr/debugger/pydbgr/Makefile.am, dbgr/debugger/pydbgr/core.el,
-	dbgr/debugger/pydbgr/init.el, dbgr/debugger/pydbgr/pydbgr.el,
-	dbgr/debugger/pydbgr/track-mode.el,
-	dbgr/debugger/rdebug/Makefile.am, dbgr/debugger/rdebug/core.el,
-	dbgr/debugger/rdebug/init.el, dbgr/debugger/rdebug/rdebug.el,
-	dbgr/debugger/rdebug/track-mode.el,
-	dbgr/debugger/remake/Makefile.am, dbgr/debugger/remake/core.el,
-	dbgr/debugger/remake/init.el, dbgr/debugger/remake/remake.el,
-	dbgr/debugger/remake/track-mode.el,
-	dbgr/debugger/trepan.pl/Makefile.am,
-	dbgr/debugger/trepan.pl/backtrack-mode.el,
-	dbgr/debugger/trepan.pl/core.el, dbgr/debugger/trepan.pl/init.el,
+	dbgr/common/track.el, dbgr/debugger/gdb/track-mode.el,
+	dbgr/debugger/perldb/init.el, dbgr/debugger/perldb/track-mode.el,
 	dbgr/debugger/trepan.pl/track-mode.el,
-	dbgr/debugger/trepan.pl/trepanpl.el,
-	dbgr/debugger/trepan/Makefile.am,
-	dbgr/debugger/trepan/backtrack-mode.el,
-	dbgr/debugger/trepan/core.el, dbgr/debugger/trepan/init.el,
-	dbgr/debugger/trepan/track-mode.el, dbgr/debugger/trepan/trepan.el,
-	dbgr/debugger/trepan3k/Makefile.am, dbgr/debugger/trepan3k/core.el,
-	dbgr/debugger/trepan3k/init.el,
-	dbgr/debugger/trepan3k/track-mode.el,
-	dbgr/debugger/trepan3k/trepan3k.el,
-	dbgr/debugger/trepan8/Makefile.am, dbgr/debugger/trepan8/core.el,
-	dbgr/debugger/trepan8/init.el, dbgr/debugger/trepan8/track-mode.el,
-	dbgr/debugger/trepan8/trepan8.el,
-	dbgr/debugger/trepanx/Makefile.am, dbgr/debugger/trepanx/core.el,
-	dbgr/debugger/trepanx/init.el, dbgr/debugger/trepanx/track-mode.el,
-	dbgr/debugger/trepanx/trepanx.el, dbgr/debugger/zshdb/Makefile.am,
-	dbgr/debugger/zshdb/core.el, dbgr/debugger/zshdb/init.el,
-	dbgr/debugger/zshdb/track-mode.el, dbgr/debugger/zshdb/zshdb.el,
-	dbgr/lang/Makefile.am, dbgr/lang/perl.el, dbgr/lang/posix-shell.el,
-	dbgr/lang/python.el, dbgr/lang/ruby.el, emacs-dbgr-pkg.el,
-	realgud-pkg.el, realgud.el, realgud/Makefile.am,
-	realgud/common/Makefile.am, realgud/common/backtrace-mode.el,
-	realgud/common/backtrack-mode.el, realgud/common/bp-image-data.el,
-	realgud/common/bp.el, realgud/common/buffer/Makefile.am,
-	realgud/common/buffer/backtrace.el,
-	realgud/common/buffer/command.el, realgud/common/buffer/helper.el,
-	realgud/common/buffer/source.el, realgud/common/cmds.el,
-	realgud/common/core.el, realgud/common/custom.el,
-	realgud/common/file.el, realgud/common/fringe.el,
-	realgud/common/helper.el, realgud/common/init.el,
-	realgud/common/key.el, realgud/common/lang.el,
-	realgud/common/loc.el, realgud/common/lochist.el,
-	realgud/common/menu.el, realgud/common/regexp.el,
-	realgud/common/reset.el, realgud/common/send.el,
-	realgud/common/shortkey.el, realgud/common/track-mode.el,
-	realgud/common/track.el, realgud/common/window.el,
-	realgud/debugger/Makefile.am, realgud/debugger/bashdb/Makefile.am,
-	realgud/debugger/bashdb/bashdb.el, realgud/debugger/bashdb/core.el,
-	realgud/debugger/bashdb/init.el,
-	realgud/debugger/bashdb/track-mode.el, realgud/debugger/common.mk,
-	realgud/debugger/gdb/Makefile.am, realgud/debugger/gdb/core.el,
-	realgud/debugger/gdb/gdb.el, realgud/debugger/gdb/init.el,
-	realgud/debugger/gdb/track-mode.el,
-	realgud/debugger/kshdb/Makefile.am, realgud/debugger/kshdb/core.el,
-	realgud/debugger/kshdb/init.el, realgud/debugger/kshdb/kshdb.el,
-	realgud/debugger/kshdb/track-mode.el,
-	realgud/debugger/pdb/Makefile.am, realgud/debugger/pdb/core.el,
-	realgud/debugger/pdb/init.el, realgud/debugger/pdb/pdb.el,
-	realgud/debugger/pdb/track-mode.el,
-	realgud/debugger/perldb/Makefile.am,
-	realgud/debugger/perldb/core.el, realgud/debugger/perldb/init.el,
-	realgud/debugger/perldb/perldb.el,
-	realgud/debugger/perldb/track-mode.el,
-	realgud/debugger/pydb/Makefile.am, realgud/debugger/pydb/core.el,
-	realgud/debugger/pydb/init.el, realgud/debugger/pydb/pydb.el,
-	realgud/debugger/pydb/track-mode.el,
-	realgud/debugger/pydbgr/Makefile.am,
-	realgud/debugger/pydbgr/core.el, realgud/debugger/pydbgr/init.el,
-	realgud/debugger/pydbgr/pydbgr.el,
-	realgud/debugger/pydbgr/track-mode.el,
-	realgud/debugger/rdebug/Makefile.am,
-	realgud/debugger/rdebug/core.el, realgud/debugger/rdebug/init.el,
-	realgud/debugger/rdebug/rdebug.el,
-	realgud/debugger/rdebug/track-mode.el,
-	realgud/debugger/remake/Makefile.am,
-	realgud/debugger/remake/core.el, realgud/debugger/remake/init.el,
-	realgud/debugger/remake/remake.el,
-	realgud/debugger/remake/track-mode.el,
-	realgud/debugger/trepan.pl/Makefile.am,
-	realgud/debugger/trepan.pl/backtrack-mode.el,
-	realgud/debugger/trepan.pl/core.el,
-	realgud/debugger/trepan.pl/init.el,
-	realgud/debugger/trepan.pl/track-mode.el,
-	realgud/debugger/trepan.pl/trepanpl.el,
-	realgud/debugger/trepan/Makefile.am,
-	realgud/debugger/trepan/backtrack-mode.el,
-	realgud/debugger/trepan/core.el, realgud/debugger/trepan/init.el,
-	realgud/debugger/trepan/track-mode.el,
-	realgud/debugger/trepan/trepan.el,
-	realgud/debugger/trepan3k/Makefile.am,
-	realgud/debugger/trepan3k/core.el,
-	realgud/debugger/trepan3k/init.el,
-	realgud/debugger/trepan3k/track-mode.el,
-	realgud/debugger/trepan3k/trepan3k.el,
-	realgud/debugger/trepan8/Makefile.am,
-	realgud/debugger/trepan8/core.el, realgud/debugger/trepan8/init.el,
-	realgud/debugger/trepan8/track-mode.el,
-	realgud/debugger/trepan8/trepan8.el,
-	realgud/debugger/trepanx/Makefile.am,
-	realgud/debugger/trepanx/core.el, realgud/debugger/trepanx/init.el,
-	realgud/debugger/trepanx/track-mode.el,
-	realgud/debugger/trepanx/trepanx.el,
-	realgud/debugger/zshdb/Makefile.am, realgud/debugger/zshdb/core.el,
-	realgud/debugger/zshdb/init.el,
-	realgud/debugger/zshdb/track-mode.el,
-	realgud/debugger/zshdb/zshdb.el, realgud/lang/Makefile.am,
-	realgud/lang/perl.el, realgud/lang/posix-shell.el,
-	realgud/lang/python.el, realgud/lang/ruby.el, test/bt-helper.el,
-	test/regexp-helper.el, test/test-bp.el, test/test-bt-pdb.el,
-	test/test-bt-pydb.el, test/test-bt-pydbgr.el,
-	test/test-bt-rdebug.el, test/test-bt-trepan.el,
-	test/test-bt-trepanx.el, test/test-bt-zshdb.el,
-	test/test-buf-bt.el, test/test-buf-cmd.el,
+	dbgr/debugger/trepan8/track-mode.el,
+	dbgr/debugger/trepanx/track-mode.el, dbgr/lang/python.el,
+	emacs-dbgr-pkg.el => realgud-pkg.el, realgud.el, {dbgr =>
+	realgud}/Makefile.am, {dbgr => realgud}/common/Makefile.am,
+	realgud/common/backtrace-mode.el, {dbgr =>
+	realgud}/common/backtrack-mode.el, {dbgr =>
+	realgud}/common/bp-image-data.el, {dbgr => realgud}/common/bp.el,
+	{dbgr => realgud}/common/buffer/Makefile.am, {dbgr =>
+	realgud}/common/buffer/backtrace.el, {dbgr =>
+	realgud}/common/buffer/command.el, {dbgr =>
+	realgud}/common/buffer/helper.el, {dbgr =>
+	realgud}/common/buffer/source.el, {dbgr => realgud}/common/cmds.el,
+	{dbgr => realgud}/common/core.el, {dbgr =>
+	realgud}/common/custom.el, {dbgr => realgud}/common/file.el,
+	realgud/common/fringe.el, {dbgr => realgud}/common/helper.el, {dbgr
+	=> realgud}/common/init.el, realgud/common/key.el, {dbgr =>
+	realgud}/common/lang.el, {dbgr => realgud}/common/loc.el,
+	realgud/common/lochist.el, realgud/common/menu.el, {dbgr =>
+	realgud}/common/regexp.el, {dbgr => realgud}/common/reset.el, {dbgr
+	=> realgud}/common/send.el, realgud/common/shortkey.el,
+	realgud/common/track-mode.el, realgud/common/track.el, {dbgr =>
+	realgud}/common/window.el, {dbgr => realgud}/debugger/Makefile.am,
+	{dbgr => realgud}/debugger/bashdb/Makefile.am, {dbgr =>
+	realgud}/debugger/bashdb/bashdb.el, {dbgr =>
+	realgud}/debugger/bashdb/core.el, {dbgr =>
+	realgud}/debugger/bashdb/init.el, {dbgr =>
+	realgud}/debugger/bashdb/track-mode.el, {dbgr =>
+	realgud}/debugger/common.mk, {dbgr =>
+	realgud}/debugger/gdb/Makefile.am, {dbgr =>
+	realgud}/debugger/gdb/core.el, {dbgr =>
+	realgud}/debugger/gdb/gdb.el, {dbgr =>
+	realgud}/debugger/gdb/init.el, realgud/debugger/gdb/track-mode.el,
+	{dbgr => realgud}/debugger/kshdb/Makefile.am, {dbgr =>
+	realgud}/debugger/kshdb/core.el, {dbgr =>
+	realgud}/debugger/kshdb/init.el, {dbgr =>
+	realgud}/debugger/kshdb/kshdb.el, {dbgr =>
+	realgud}/debugger/kshdb/track-mode.el, {dbgr =>
+	realgud}/debugger/pdb/Makefile.am, {dbgr =>
+	realgud}/debugger/pdb/core.el, {dbgr =>
+	realgud}/debugger/pdb/init.el, {dbgr =>
+	realgud}/debugger/pdb/pdb.el, {dbgr =>
+	realgud}/debugger/pdb/track-mode.el, {dbgr =>
+	realgud}/debugger/perldb/Makefile.am, {dbgr =>
+	realgud}/debugger/perldb/core.el, realgud/debugger/perldb/init.el,
+	{dbgr => realgud}/debugger/perldb/perldb.el,
+	realgud/debugger/perldb/track-mode.el, {dbgr =>
+	realgud}/debugger/pydb/Makefile.am, {dbgr =>
+	realgud}/debugger/pydb/core.el, {dbgr =>
+	realgud}/debugger/pydb/init.el, {dbgr =>
+	realgud}/debugger/pydb/pydb.el, {dbgr =>
+	realgud}/debugger/pydb/track-mode.el, {dbgr =>
+	realgud}/debugger/pydbgr/Makefile.am, {dbgr =>
+	realgud}/debugger/pydbgr/core.el, {dbgr =>
+	realgud}/debugger/pydbgr/init.el, {dbgr =>
+	realgud}/debugger/pydbgr/pydbgr.el, {dbgr =>
+	realgud}/debugger/pydbgr/track-mode.el, {dbgr =>
+	realgud}/debugger/rdebug/Makefile.am, {dbgr =>
+	realgud}/debugger/rdebug/core.el, {dbgr =>
+	realgud}/debugger/rdebug/init.el, {dbgr =>
+	realgud}/debugger/rdebug/rdebug.el, {dbgr =>
+	realgud}/debugger/rdebug/track-mode.el, {dbgr =>
+	realgud}/debugger/remake/Makefile.am, {dbgr =>
+	realgud}/debugger/remake/core.el, {dbgr =>
+	realgud}/debugger/remake/init.el, {dbgr =>
+	realgud}/debugger/remake/remake.el, {dbgr =>
+	realgud}/debugger/remake/track-mode.el, {dbgr =>
+	realgud}/debugger/trepan.pl/Makefile.am, {dbgr =>
+	realgud}/debugger/trepan.pl/backtrack-mode.el, {dbgr =>
+	realgud}/debugger/trepan.pl/core.el, {dbgr =>
+	realgud}/debugger/trepan.pl/init.el,
+	realgud/debugger/trepan.pl/track-mode.el, {dbgr =>
+	realgud}/debugger/trepan.pl/trepanpl.el, {dbgr =>
+	realgud}/debugger/trepan/Makefile.am, {dbgr =>
+	realgud}/debugger/trepan/backtrack-mode.el, {dbgr =>
+	realgud}/debugger/trepan/core.el, {dbgr =>
+	realgud}/debugger/trepan/init.el, {dbgr =>
+	realgud}/debugger/trepan/track-mode.el, {dbgr =>
+	realgud}/debugger/trepan/trepan.el, {dbgr =>
+	realgud}/debugger/trepan3k/Makefile.am, {dbgr =>
+	realgud}/debugger/trepan3k/core.el, {dbgr =>
+	realgud}/debugger/trepan3k/init.el, {dbgr =>
+	realgud}/debugger/trepan3k/track-mode.el, {dbgr =>
+	realgud}/debugger/trepan3k/trepan3k.el, {dbgr =>
+	realgud}/debugger/trepan8/Makefile.am, {dbgr =>
+	realgud}/debugger/trepan8/core.el, {dbgr =>
+	realgud}/debugger/trepan8/init.el,
+	realgud/debugger/trepan8/track-mode.el, {dbgr =>
+	realgud}/debugger/trepan8/trepan8.el, {dbgr =>
+	realgud}/debugger/trepanx/Makefile.am, {dbgr =>
+	realgud}/debugger/trepanx/core.el, {dbgr =>
+	realgud}/debugger/trepanx/init.el,
+	realgud/debugger/trepanx/track-mode.el, {dbgr =>
+	realgud}/debugger/trepanx/trepanx.el, {dbgr =>
+	realgud}/debugger/zshdb/Makefile.am, {dbgr =>
+	realgud}/debugger/zshdb/core.el, {dbgr =>
+	realgud}/debugger/zshdb/init.el, {dbgr =>
+	realgud}/debugger/zshdb/track-mode.el, {dbgr =>
+	realgud}/debugger/zshdb/zshdb.el, {dbgr =>
+	realgud}/lang/Makefile.am, {dbgr => realgud}/lang/perl.el, {dbgr =>
+	realgud}/lang/posix-shell.el, realgud/lang/python.el, {dbgr =>
+	realgud}/lang/ruby.el, test/bt-helper.el, test/regexp-helper.el,
+	test/test-bp.el, test/test-bt-pdb.el, test/test-bt-pydb.el,
+	test/test-bt-pydbgr.el, test/test-bt-rdebug.el,
+	test/test-bt-trepan.el, test/test-bt-trepanx.el,
+	test/test-bt-zshdb.el, test/test-buf-bt.el, test/test-buf-cmd.el,
 	test/test-common-helper.el, test/test-core.el, test/test-dbgr.el,
 	test/test-file.el, test/test-lang.el,
 	test/test-loc-regexp-trepan.el, test/test-loc-regexp-trepanpl.el,
@@ -3665,9 +4503,9 @@
 2012-12-26  rocky <rocky@gnu.org>
 
 	* configure.ac, dbgr/common/Makefile.am, dbgr/common/init.el,
-	dbgr/common/init/.gitignore, dbgr/common/init/Makefile.am,
-	dbgr/common/init/pydb.el, dbgr/debugger/Makefile.am,
-	dbgr/debugger/pdb/.gitignore, dbgr/debugger/pydb/.gitignore,
+	dbgr/common/init/Makefile.am, dbgr/common/init/pydb.el,
+	dbgr/debugger/Makefile.am, dbgr/debugger/pdb/.gitignore,
+	dbgr/{common/init => debugger/pydb}/.gitignore,
 	dbgr/debugger/pydb/Makefile.am, dbgr/debugger/pydb/core.el,
 	dbgr/debugger/pydb/init.el, dbgr/debugger/pydb/pydb.el,
 	dbgr/debugger/pydb/track-mode.el, test/test-bt-pydb.el,
@@ -4681,8 +5519,8 @@
 2011-04-04  rocky <rocky@gnu.org>
 
 	* dbgr/common/init/perldb.el, dbgr/common/track.el,
-	dbgr/debugger/remake/init.el, test/Makefile.am, test/helper.el,
-	test/test-helper.el, test/test-regexp-gdb.el,
+	dbgr/debugger/remake/init.el, test/Makefile.am,
+	test/{test-helper.el => helper.el}, test/test-regexp-gdb.el,
 	test/test-regexp-perldb.el: Start perldb track mode. I don't think
 	there's another one out there.  Makefile.am: DRY check code - thanks
 	to "remake" for helping me figure this out.
@@ -4974,55 +5812,45 @@
 
 2010-11-03  rocky <rocky@gnu.org>
 
-	* dbgr/common/init/gdb.el, dbgr/debugger/gdb/init.el,
+	* dbgr/{common/init/gdb.el => debugger/gdb/init.el},
 	dbgr/debugger/gdb/track-mode.el, test/test-regexp-gdb.el: 
 	common/init/gdb.el -> debugger/gdb/init.el gdb-pat-hash ->
 	dbgr-gdb-pat-hash
 
 2010-11-02  rocky <rockyb@rubyforge.org>
 
-	* configure.ac, dbgr.el, dbgr/Makefile.am, dbgr/common.mk,
-	dbgr/common/Makefile.am, dbgr/common/buffer/Makefile.am,
-	dbgr/debugger/.gitignore, dbgr/debugger/Makefile.am,
-	dbgr/debugger/common.mk, dbgr/debugger/gdb/.gitignore,
-	dbgr/debugger/gdb/Makefile.am, dbgr/debugger/gdb/core.el,
-	dbgr/debugger/gdb/gdb.el, dbgr/debugger/gdb/track-mode.el,
-	dbgr/debugger/pydbgr/.gitignore, dbgr/debugger/pydbgr/Makefile.am,
-	dbgr/debugger/pydbgr/cmds.el, dbgr/debugger/pydbgr/core.el,
-	dbgr/debugger/pydbgr/init.el, dbgr/debugger/pydbgr/pydbgr.el,
-	dbgr/debugger/pydbgr/track-mode.el,
-	dbgr/debugger/rdebug/.gitignore, dbgr/debugger/rdebug/Makefile.am,
-	dbgr/debugger/rdebug/cmds.el, dbgr/debugger/rdebug/core.el,
-	dbgr/debugger/rdebug/init.el, dbgr/debugger/rdebug/rdebug.el,
-	dbgr/debugger/rdebug/track-mode.el,
-	dbgr/debugger/trepan/.gitignore, dbgr/debugger/trepan/Makefile.am,
-	dbgr/debugger/trepan/cmds.el, dbgr/debugger/trepan/core.el,
-	dbgr/debugger/trepan/init.el, dbgr/debugger/trepan/track-mode.el,
-	dbgr/debugger/trepan/trepan.el, dbgr/debugger/trepanx/.gitignore,
-	dbgr/debugger/trepanx/Makefile.am, dbgr/debugger/trepanx/cmds.el,
-	dbgr/debugger/trepanx/core.el, dbgr/debugger/trepanx/init.el,
-	dbgr/debugger/trepanx/track-mode.el,
-	dbgr/debugger/trepanx/trepanx.el, dbgr/debugger/zshdb/.gitignore,
-	dbgr/debugger/zshdb/Makefile.am, dbgr/debugger/zshdb/cmds.el,
-	dbgr/debugger/zshdb/core.el, dbgr/debugger/zshdb/init.el,
-	dbgr/debugger/zshdb/track-mode.el, dbgr/debugger/zshdb/zshdb.el,
-	dbgr/gdb/.gitignore, dbgr/gdb/Makefile.am, dbgr/gdb/core.el,
-	dbgr/gdb/gdb.el, dbgr/gdb/track-mode.el, dbgr/lang/Makefile.am,
-	dbgr/pydbgr/.gitignore, dbgr/pydbgr/Makefile.am,
-	dbgr/pydbgr/cmds.el, dbgr/pydbgr/core.el, dbgr/pydbgr/init.el,
-	dbgr/pydbgr/pydbgr.el, dbgr/pydbgr/track-mode.el,
-	dbgr/rdebug/.gitignore, dbgr/rdebug/Makefile.am,
-	dbgr/rdebug/cmds.el, dbgr/rdebug/core.el, dbgr/rdebug/init.el,
-	dbgr/rdebug/rdebug.el, dbgr/rdebug/track-mode.el,
-	dbgr/trepan/.gitignore, dbgr/trepan/Makefile.am,
-	dbgr/trepan/cmds.el, dbgr/trepan/core.el, dbgr/trepan/init.el,
-	dbgr/trepan/track-mode.el, dbgr/trepan/trepan.el,
-	dbgr/trepanx/.gitignore, dbgr/trepanx/Makefile.am,
-	dbgr/trepanx/cmds.el, dbgr/trepanx/core.el, dbgr/trepanx/init.el,
-	dbgr/trepanx/track-mode.el, dbgr/trepanx/trepanx.el,
-	dbgr/zshdb/.gitignore, dbgr/zshdb/Makefile.am, dbgr/zshdb/cmds.el,
-	dbgr/zshdb/core.el, dbgr/zshdb/init.el, dbgr/zshdb/track-mode.el,
-	dbgr/zshdb/zshdb.el, test/test-bt-pydbgr.el,
+	* configure.ac, dbgr.el, dbgr/Makefile.am, dbgr/common/Makefile.am,
+	dbgr/common/buffer/Makefile.am, dbgr/debugger/.gitignore,
+	dbgr/debugger/Makefile.am, dbgr/{ => debugger}/common.mk, dbgr/{ =>
+	debugger}/gdb/.gitignore, dbgr/{ => debugger}/gdb/Makefile.am,
+	dbgr/{ => debugger}/gdb/core.el, dbgr/{ => debugger}/gdb/gdb.el,
+	dbgr/{ => debugger}/gdb/track-mode.el, dbgr/{ =>
+	debugger}/pydbgr/.gitignore, dbgr/{ =>
+	debugger}/pydbgr/Makefile.am, dbgr/{ => debugger}/pydbgr/cmds.el,
+	dbgr/{ => debugger}/pydbgr/core.el, dbgr/{ =>
+	debugger}/pydbgr/init.el, dbgr/{ => debugger}/pydbgr/pydbgr.el,
+	dbgr/{ => debugger}/pydbgr/track-mode.el, dbgr/{ =>
+	debugger}/rdebug/.gitignore, dbgr/{ =>
+	debugger}/rdebug/Makefile.am, dbgr/{ => debugger}/rdebug/cmds.el,
+	dbgr/{ => debugger}/rdebug/core.el, dbgr/{ =>
+	debugger}/rdebug/init.el, dbgr/{ => debugger}/rdebug/rdebug.el,
+	dbgr/{ => debugger}/rdebug/track-mode.el, dbgr/{ =>
+	debugger}/trepan/.gitignore, dbgr/{ =>
+	debugger}/trepan/Makefile.am, dbgr/{ => debugger}/trepan/cmds.el,
+	dbgr/{ => debugger}/trepan/core.el, dbgr/{ =>
+	debugger}/trepan/init.el, dbgr/{ => debugger}/trepan/track-mode.el,
+	dbgr/{ => debugger}/trepan/trepan.el, dbgr/{ =>
+	debugger}/trepanx/.gitignore, dbgr/{ =>
+	debugger}/trepanx/Makefile.am, dbgr/{ => debugger}/trepanx/cmds.el,
+	dbgr/{ => debugger}/trepanx/core.el, dbgr/{ =>
+	debugger}/trepanx/init.el, dbgr/{ =>
+	debugger}/trepanx/track-mode.el, dbgr/{ =>
+	debugger}/trepanx/trepanx.el, dbgr/{ => debugger}/zshdb/.gitignore,
+	dbgr/{ => debugger}/zshdb/Makefile.am, dbgr/{ =>
+	debugger}/zshdb/cmds.el, dbgr/{ => debugger}/zshdb/core.el, dbgr/{
+	=> debugger}/zshdb/init.el, dbgr/{ =>
+	debugger}/zshdb/track-mode.el, dbgr/{ => debugger}/zshdb/zshdb.el,
+	dbgr/lang/Makefile.am, test/test-bt-pydbgr.el,
 	test/test-bt-rdebug.el, test/test-bt-trepan.el,
 	test/test-bt-trepanx.el, test/test-bt-zshdb.el,
 	test/test-buf-cmd.el, test/test-core.el, test/test-pydbgr.el,
@@ -5126,9 +5954,9 @@
 
 2010-10-31  rocky <rocky@gnu.org>
 
-	* dbgr/common/buffer/backtrace.el, dbgr/common/init/trepan.el,
-	dbgr/trepan/cmds.el, dbgr/trepan/core.el, dbgr/trepan/init.el,
-	dbgr/trepan/track-mode.el, dbgr/trepan/trepan.el,
+	* dbgr/common/buffer/backtrace.el, dbgr/trepan/cmds.el,
+	dbgr/trepan/core.el, dbgr/{common/init/trepan.el =>
+	trepan/init.el}, dbgr/trepan/track-mode.el, dbgr/trepan/trepan.el,
 	test/test-regexp-trepan.el, test/test-track.el: 
 	common/init/trepan.el -> trepan/init.el backtrace.el: remove compile
 	warnings by commenting out future code
@@ -5136,21 +5964,21 @@
 2010-10-31  rocky <rockyb@rubyforge.org>
 
 	* dbgr/common/buffer/backtrace.el, test/Makefile.am,
-	test/test-buf-bt.el, test/test-buf-cmd.el, test/test-cmdbuf.el: Work
+	test/test-buf-bt.el, test/{test-cmdbuf.el => test-buf-cmd.el}: Work
 	on backtrace buffer and mode. More to come...
 
 2010-10-31  rocky <rockyb@rubyforge.org>
 
-	* dbgr/common/init/rdebug.el, dbgr/rdebug/cmds.el,
-	dbgr/rdebug/core.el, dbgr/rdebug/init.el, dbgr/rdebug/rdebug.el,
-	dbgr/rdebug/track-mode.el, test/test-regexp-rdebug.el: 
-	common/init/rdebug.el -> rdebug/init.el
+	* dbgr/rdebug/cmds.el, dbgr/rdebug/core.el,
+	dbgr/{common/init/rdebug.el => rdebug/init.el},
+	dbgr/rdebug/rdebug.el, dbgr/rdebug/track-mode.el,
+	test/test-regexp-rdebug.el: common/init/rdebug.el -> rdebug/init.el
 
 2010-10-31  rocky <rocky@gnu.org>
 
-	* dbgr/common/buffer/backtrace.el, dbgr/common/init/pydbgr.el,
-	dbgr/pydbgr/cmds.el, dbgr/pydbgr/core.el, dbgr/pydbgr/init.el,
-	dbgr/pydbgr/pydbgr.el, dbgr/pydbgr/track-mode.el,
+	* dbgr/common/buffer/backtrace.el, dbgr/pydbgr/cmds.el,
+	dbgr/pydbgr/core.el, dbgr/{common/init/pydbgr.el =>
+	pydbgr/init.el}, dbgr/pydbgr/pydbgr.el, dbgr/pydbgr/track-mode.el,
 	dbgr/zshdb/core.el, dbgr/zshdb/init.el, dbgr/zshdb/track-mode.el,
 	test/test-regexp-pydbgr.el: Move init/pydbgr.el to pydbgr/init.el.
 	zshdb/*.el: Correct some mistakes in moving from before.
@@ -5158,24 +5986,24 @@
 
 2010-10-31  rocky <rocky@gnu.org>
 
-	* dbgr/common/init/zshdb.el, dbgr/zshdb/cmds.el,
-	dbgr/zshdb/core.el, dbgr/zshdb/init.el, dbgr/zshdb/track-mode.el,
-	dbgr/zshdb/zshdb.el: Start to move init/*.el into respective
-	debugger-specific directories.
+	* dbgr/zshdb/cmds.el, dbgr/zshdb/core.el,
+	dbgr/{common/init/zshdb.el => zshdb/init.el},
+	dbgr/zshdb/track-mode.el, dbgr/zshdb/zshdb.el: Start to move
+	init/*.el into respective debugger-specific directories.
 
 2010-10-31  rocky <rockyb@rubyforge.org>
 
-	* configure.ac, dbgr/common/Makefile.am, dbgr/common/bt-buf.el,
-	dbgr/common/buffer.el, dbgr/common/buffer/.gitignore,
-	dbgr/common/buffer/Makefile.am, dbgr/common/buffer/backtrace.el,
-	dbgr/common/buffer/command.el, dbgr/common/buffer/helper.el,
-	dbgr/common/buffer/source.el, dbgr/common/cmdbuf.el,
-	dbgr/common/cmds.el, dbgr/common/core.el, dbgr/common/reset.el,
-	dbgr/common/send.el, dbgr/common/shortkey.el,
-	dbgr/common/srcbuf.el, dbgr/common/track-mode.el,
-	dbgr/common/track.el, dbgr/common/window.el, test/test-cmdbuf.el,
-	test/test-regexp.el, test/test-srcbuf.el: Move buffer-related files
-	into a separate directory. Will help future growth.
+	* configure.ac, dbgr/common/Makefile.am,
+	dbgr/common/buffer/.gitignore, dbgr/common/buffer/Makefile.am,
+	dbgr/common/{bt-buf.el => buffer/backtrace.el},
+	dbgr/common/{cmdbuf.el => buffer/command.el},
+	dbgr/common/{buffer.el => buffer/helper.el}, dbgr/common/{srcbuf.el
+	=> buffer/source.el}, dbgr/common/cmds.el, dbgr/common/core.el,
+	dbgr/common/reset.el, dbgr/common/send.el, dbgr/common/shortkey.el,
+	dbgr/common/track-mode.el, dbgr/common/track.el,
+	dbgr/common/window.el, test/test-cmdbuf.el, test/test-regexp.el,
+	test/test-srcbuf.el: Move buffer-related files into a separate
+	directory. Will help future growth.
 
 2010-10-31  rocky <rockyb@rubyforge.org>
 
@@ -5222,11 +6050,10 @@
 
 2010-10-30  rocky <rockyb@rubyforge.org>
 
-	* dbgr/common/bt-buf.el, dbgr/common/cmdbuf.el,
-	dbgr/common/send.el, dbgr/common/tb-buf.el,
-	dbgr/common/track-mode.el, dbgr/common/track.el,
-	test/test-track-mode.el, test/test-track.el: More progress on
-	diverting output.
+	* dbgr/common/{tb-buf.el => bt-buf.el}, dbgr/common/cmdbuf.el,
+	dbgr/common/send.el, dbgr/common/track-mode.el,
+	dbgr/common/track.el, test/test-track-mode.el, test/test-track.el: 
+	More progress on diverting output.
 
 2010-10-30  rocky <rockyb@rubyforge.org>
 
@@ -5369,8 +6196,8 @@
 
 2010-09-24  rocky <rocky@gnu.org>
 
-	* dbgr.el, dbgr/trepan/.gitignore, dbgr/trepanx/rbdbgr.el,
-	dbgr/trepanx/trepanx.el, test/test-regexp-trepan.el,
+	* dbgr.el, dbgr/trepan/.gitignore, dbgr/trepanx/{rbdbgr.el =>
+	trepanx.el}, test/test-regexp-trepan.el,
 	test/test-regexp-trepanx.el: Growing pains related to adding
 	trepan(x).
 
@@ -5552,58 +6379,51 @@
 
 2010-03-19  R. Bernstein <rocky@gnu.org>
 
-	* dbgr.el, dbgr/Makefile.am, dbgr/gdb/core.el,
-	dbgr/gdb/gdb-core.el, dbgr/gdb/gdb-track-mode.el, dbgr/gdb/gdb.el,
-	dbgr/gdb/track-mode.el, dbgr/pydbgr/.gitignore,
-	dbgr/pydbgr/Makefile.am, dbgr/pydbgr/core.el,
-	dbgr/pydbgr/pydbgr.el, dbgr/pydbgr/track-mode.el,
-	dbgr/python/.gitignore, dbgr/python/Makefile.am,
-	dbgr/python/pydbgr-core.el, dbgr/python/pydbgr-track-mode.el,
-	dbgr/python/pydbgr.el, test/Makefile.am,
-	test/test-regexp-pydbgr.el, test/test-regexp-python.el: directory
-	python -> pydbgr. Debugger-specific file anme simplifications.
+	* dbgr.el, dbgr/Makefile.am, dbgr/gdb/{gdb-core.el => core.el},
+	dbgr/gdb/gdb.el, dbgr/gdb/{gdb-track-mode.el => track-mode.el},
+	dbgr/{python => pydbgr}/.gitignore, dbgr/{python =>
+	pydbgr}/Makefile.am, dbgr/{python/pydbgr-core.el =>
+	pydbgr/core.el}, dbgr/{python => pydbgr}/pydbgr.el,
+	dbgr/{python/pydbgr-track-mode.el => pydbgr/track-mode.el},
+	test/Makefile.am, test/{test-regexp-python.el =>
+	test-regexp-pydbgr.el}: directory python -> pydbgr.
+	Debugger-specific file anme simplifications.
 
 2010-03-19  R. Bernstein <rocky@gnu.org>
 
-	* configure.ac, dbgr.el, dbgr/Makefile.am, dbgr/bp.el,
-	dbgr/buffer.el, dbgr/cmdbuf.el, dbgr/cmds.el,
-	dbgr/common/.gitignore, dbgr/common/Makefile.am, dbgr/common/bp.el,
-	dbgr/common/buffer.el, dbgr/common/cmdbuf.el, dbgr/common/cmds.el,
-	dbgr/common/core.el, dbgr/common/custom.el, dbgr/common/file.el,
-	dbgr/common/fringe.el, dbgr/common/helper.el, dbgr/common/init.el,
-	dbgr/common/init/.gitignore, dbgr/common/init/Makefile.am,
-	dbgr/common/init/bashdb.el, dbgr/common/init/gdb.el,
-	dbgr/common/init/kshdb.el, dbgr/common/init/pydb.el,
-	dbgr/common/init/pydbgr.el, dbgr/common/init/rbdbgr.el,
-	dbgr/common/init/rdebug.el, dbgr/common/init/remake.el,
-	dbgr/common/init/zshdb.el, dbgr/common/key.el, dbgr/common/loc.el,
-	dbgr/common/lochist.el, dbgr/common/menu.el, dbgr/common/regexp.el,
-	dbgr/common/reset.el, dbgr/common/send.el, dbgr/common/shortkey.el,
-	dbgr/common/srcbuf.el, dbgr/common/track-mode.el,
-	dbgr/common/track.el, dbgr/common/window.el, dbgr/core.el,
-	dbgr/custom.el, dbgr/file.el, dbgr/fringe.el, dbgr/gdb/gdb-core.el,
-	dbgr/gdb/gdb-track-mode.el, dbgr/gdb/gdb.el, dbgr/helper.el,
-	dbgr/init.el, dbgr/init/.gitignore, dbgr/init/Makefile.am,
-	dbgr/init/bashdb.el, dbgr/init/gdb.el, dbgr/init/kshdb.el,
-	dbgr/init/pydb.el, dbgr/init/pydbgr.el, dbgr/init/rbdbgr.el,
-	dbgr/init/rdebug.el, dbgr/init/remake.el, dbgr/init/zshdb.el,
-	dbgr/key.el, dbgr/loc.el, dbgr/lochist.el, dbgr/menu.el,
+	* configure.ac, dbgr.el, dbgr/Makefile.am, dbgr/{init =>
+	common}/.gitignore, dbgr/common/Makefile.am, dbgr/{ =>
+	common}/bp.el, dbgr/{ => common}/buffer.el, dbgr/{ =>
+	common}/cmdbuf.el, dbgr/{ => common}/cmds.el, dbgr/{ =>
+	common}/core.el, dbgr/{ => common}/custom.el, dbgr/{ =>
+	common}/file.el, dbgr/{ => common}/fringe.el, dbgr/{ =>
+	common}/helper.el, dbgr/{ => common}/init.el,
+	dbgr/common/init/.gitignore, dbgr/{ => common}/init/Makefile.am,
+	dbgr/{ => common}/init/bashdb.el, dbgr/{ => common}/init/gdb.el,
+	dbgr/{ => common}/init/kshdb.el, dbgr/{ => common}/init/pydb.el,
+	dbgr/{ => common}/init/pydbgr.el, dbgr/{ => common}/init/rbdbgr.el,
+	dbgr/{ => common}/init/rdebug.el, dbgr/{ => common}/init/remake.el,
+	dbgr/{ => common}/init/zshdb.el, dbgr/{ => common}/key.el, dbgr/{
+	=> common}/loc.el, dbgr/{ => common}/lochist.el, dbgr/{ =>
+	common}/menu.el, dbgr/{ => common}/regexp.el, dbgr/{ =>
+	common}/reset.el, dbgr/{ => common}/send.el, dbgr/{ =>
+	common}/shortkey.el, dbgr/{ => common}/srcbuf.el, dbgr/{ =>
+	common}/track-mode.el, dbgr/{ => common}/track.el, dbgr/{ =>
+	common}/window.el, dbgr/gdb/gdb-core.el,
+	dbgr/gdb/gdb-track-mode.el, dbgr/gdb/gdb.el,
 	dbgr/python/pydbgr-core.el, dbgr/python/pydbgr-track-mode.el,
 	dbgr/python/pydbgr.el, dbgr/rbdbgr/cmds.el, dbgr/rbdbgr/core.el,
 	dbgr/rbdbgr/rbdbgr.el, dbgr/rbdbgr/track-mode.el,
 	dbgr/rdebug/cmds.el, dbgr/rdebug/core.el, dbgr/rdebug/rdebug.el,
-	dbgr/rdebug/track-mode.el, dbgr/regexp.el, dbgr/reset.el,
-	dbgr/send.el, dbgr/shortkey.el, dbgr/srcbuf.el, dbgr/track-mode.el,
-	dbgr/track.el, dbgr/window.el, test/test-bp.el,
-	test/test-cmdbuf.el, test/test-core.el, test/test-file.el,
-	test/test-helper.el, test/test-loc.el, test/test-lochist.el,
-	test/test-regexp-gdb.el, test/test-regexp-python.el,
-	test/test-regexp-rbdbgr.el, test/test-regexp-rdebug.el,
-	test/test-regexp.el, test/test-send.el, test/test-shortkey.el,
-	test/test-srcbuf.el, test/test-track.el: All common code now pushed
-	to common directory one level don. First part an overall filesystem
-	reorganization.  Later on we will remove init, and rename python to
-	pydbgr, and add pydb.
+	dbgr/rdebug/track-mode.el, test/test-bp.el, test/test-cmdbuf.el,
+	test/test-core.el, test/test-file.el, test/test-helper.el,
+	test/test-loc.el, test/test-lochist.el, test/test-regexp-gdb.el,
+	test/test-regexp-python.el, test/test-regexp-rbdbgr.el,
+	test/test-regexp-rdebug.el, test/test-regexp.el, test/test-send.el,
+	test/test-shortkey.el, test/test-srcbuf.el, test/test-track.el: All
+	common code now pushed to common directory one level don. First part
+	an overall filesystem reorganization.  Later on we will remove init,
+	and rename python to pydbgr, and add pydb.
 
 2010-03-13  rocky <rockyb@rubyforge.org>
 
@@ -5623,15 +6443,14 @@
 2010-03-04  R. Bernstein <rocky@gnu.org>
 
 	* configure.ac, dbgr.el, dbgr/Makefile.am, dbgr/init/rdebug.el,
-	dbgr/rbdbgr/.gitignore, dbgr/rbdbgr/Makefile.am,
-	dbgr/rbdbgr/cmds.el, dbgr/rbdbgr/core.el, dbgr/rbdbgr/rbdbgr.el,
-	dbgr/rbdbgr/track-mode.el, dbgr/rdebug/.gitignore,
+	dbgr/{ruby => rbdbgr}/.gitignore, dbgr/{ruby =>
+	rbdbgr}/Makefile.am, dbgr/{ruby => rbdbgr}/cmds.el, dbgr/{ruby =>
+	rbdbgr}/core.el, dbgr/{ruby => rbdbgr}/rbdbgr.el, dbgr/{ruby =>
+	rbdbgr}/track-mode.el, dbgr/rdebug/.gitignore,
 	dbgr/rdebug/Makefile, dbgr/rdebug/Makefile.am, dbgr/rdebug/cmds.el,
 	dbgr/rdebug/core.el, dbgr/rdebug/elc-stamp, dbgr/rdebug/rdebug.el,
-	dbgr/rdebug/track-mode.el, dbgr/ruby/.gitignore,
-	dbgr/ruby/Makefile.am, dbgr/ruby/cmds.el, dbgr/ruby/core.el,
-	dbgr/ruby/rbdbgr.el, dbgr/ruby/track-mode.el, test/test-core.el: 
-	Start rdebug. Will probably reorganize directories down the line.
+	dbgr/rdebug/track-mode.el, test/test-core.el: Start rdebug. Will
+	probably reorganize directories down the line.
 
 2010-01-31  rocky <rockyb@rubyforge.org>
 
@@ -5642,10 +6461,10 @@
 
 2010-01-31  rocky <rockyb@rubyforge.org>
 
-	* dbgr/ruby/cmds.el, dbgr/ruby/core.el, dbgr/ruby/rbdbgr-core.el,
-	dbgr/ruby/rbdbgr-track-mode.el, dbgr/ruby/track-mode.el: Move
-	forward towards handling breakpoints: Keep a list of breakpoints in
-	cmdbuf, add menu item to set a breakpoint ruby/*: simplify names track.el: reduce use of depricated loc-regex,
+	* dbgr/ruby/cmds.el, dbgr/ruby/{rbdbgr-core.el => core.el},
+	dbgr/ruby/{rbdbgr-track-mode.el => track-mode.el}: Move forward
+	towards handling breakpoints: Keep a list of breakpoints in cmdbuf,
+	add menu item to set a breakpoint ruby/*: simplify names track.el: reduce use of depricated loc-regex,
 	file-group, line-group fields.
 
 2010-01-30  rocky <rockyb@rubyforge.org>
@@ -5736,8 +6555,8 @@
 
 2010-01-01  rocky <rocky@gnu.org>
 
-	* test/test-regexp-rbdbgr.el, test/test-regexp-rdebug.el,
-	test/test-regexp-ruby.el: Add breakpoint tracking for rdebug.
+	* test/{test-regexp-ruby.el => test-regexp-rbdbgr.el},
+	test/test-regexp-rdebug.el: Add breakpoint tracking for rdebug.
 
 2010-01-01  rocky <rocky@gnu.org>
 
@@ -5756,7 +6575,7 @@
 
 2009-12-28  rocky <rockyb@rubyforge.org>
 
-	* dbgr/bp.el, dbgr/brkpt.el: Add breakpoint handling test.
+	* dbgr/{brkpt.el => bp.el}: Add breakpoint handling test.
 
 2009-12-28  rocky <rockyb@rubyforge.org>
 
@@ -5805,37 +6624,34 @@
 
 2009-12-16  rocky <rockyb@rubyforge.org>
 
-	* .gitignore, Makefile.am, buffer.el, cmdbuf.el, cmds.el,
-	configure.ac, core.el, custom.el, dbgr.el, dbgr/.gitignore,
-	dbgr/Makefile.am, dbgr/buffer.el, dbgr/cmdbuf.el, dbgr/cmds.el,
-	dbgr/core.el, dbgr/custom.el, dbgr/file.el, dbgr/fringe.el,
-	dbgr/helper.el, dbgr/init.el, dbgr/init/.gitignore,
-	dbgr/init/Makefile.am, dbgr/init/bashdb.el, dbgr/init/kshdb.el,
-	dbgr/init/pydb.el, dbgr/init/pydbgr.el, dbgr/init/rbdbgr.el,
-	dbgr/init/rdebug.el, dbgr/init/remake.el, dbgr/init/zshdb.el,
-	dbgr/key.el, dbgr/loc.el, dbgr/lochist.el, dbgr/python/.gitignore,
-	dbgr/python/Makefile.am, dbgr/python/pydbgr-core.el,
-	dbgr/python/pydbgr-track-mode.el, dbgr/python/pydbgr.el,
-	dbgr/regexp.el, dbgr/ruby/.gitignore, dbgr/ruby/Makefile.am,
-	dbgr/ruby/rbdbgr-core.el, dbgr/ruby/rbdbgr-track-mode.el,
-	dbgr/ruby/rbdbgr.el, dbgr/send.el, dbgr/shortkey.el,
-	dbgr/srcbuf.el, dbgr/track-mode.el, dbgr/track.el, dbgr/window.el,
-	file.el, fringe.el, helper.el, init.el, init/.gitignore,
-	init/Makefile.am, init/bashdb.el, init/kshdb.el, init/pydb.el,
-	init/pydbgr.el, init/rbdbgr.el, init/rdebug.el, init/remake.el,
-	init/zshdb.el, key.el, loc.el, lochist.el, python/.gitignore,
-	python/Makefile.am, python/pydbgr-core.el,
-	python/pydbgr-track-mode.el, python/pydbgr.el, regexp.el,
-	ruby/.gitignore, ruby/Makefile.am, ruby/rbdbgr-core.el,
-	ruby/rbdbgr-track-mode.el, ruby/rbdbgr.el, send.el, shortkey.el,
-	srcbuf.el, test/test-cmdbuf.el, test/test-core.el,
-	test/test-file.el, test/test-helper.el, test/test-loc.el,
-	test/test-lochist.el, test/test-regexp-python.el,
+	* .gitignore, Makefile.am, configure.ac, dbgr.el, {init =>
+	dbgr}/.gitignore, dbgr/Makefile.am, buffer.el => dbgr/buffer.el,
+	cmdbuf.el => dbgr/cmdbuf.el, cmds.el => dbgr/cmds.el, core.el =>
+	dbgr/core.el, custom.el => dbgr/custom.el, file.el => dbgr/file.el,
+	fringe.el => dbgr/fringe.el, helper.el => dbgr/helper.el, init.el
+	=> dbgr/init.el, dbgr/init/.gitignore, {init =>
+	dbgr/init}/Makefile.am, {init => dbgr/init}/bashdb.el, {init =>
+	dbgr/init}/kshdb.el, {init => dbgr/init}/pydb.el, {init =>
+	dbgr/init}/pydbgr.el, {init => dbgr/init}/rbdbgr.el, {init =>
+	dbgr/init}/rdebug.el, {init => dbgr/init}/remake.el, {init =>
+	dbgr/init}/zshdb.el, key.el => dbgr/key.el, loc.el => dbgr/loc.el,
+	lochist.el => dbgr/lochist.el, {python => dbgr/python}/.gitignore,
+	{python => dbgr/python}/Makefile.am, {python =>
+	dbgr/python}/pydbgr-core.el, {python =>
+	dbgr/python}/pydbgr-track-mode.el, {python =>
+	dbgr/python}/pydbgr.el, regexp.el => dbgr/regexp.el, {ruby =>
+	dbgr/ruby}/.gitignore, {ruby => dbgr/ruby}/Makefile.am, {ruby =>
+	dbgr/ruby}/rbdbgr-core.el, {ruby =>
+	dbgr/ruby}/rbdbgr-track-mode.el, {ruby => dbgr/ruby}/rbdbgr.el,
+	send.el => dbgr/send.el, shortkey.el => dbgr/shortkey.el, srcbuf.el
+	=> dbgr/srcbuf.el, track-mode.el => dbgr/track-mode.el, track.el =>
+	dbgr/track.el, window.el => dbgr/window.el, test/test-cmdbuf.el,
+	test/test-core.el, test/test-file.el, test/test-helper.el,
+	test/test-loc.el, test/test-lochist.el, test/test-regexp-python.el,
 	test/test-regexp-ruby.el, test/test-regexp.el, test/test-send.el,
-	test/test-shortkey.el, test/test-srcbuf.el, test/test-track.el,
-	track-mode.el, track.el, window.el: dbgr.el - loads everything (via
-	load-relative).  Push dbgr source files into dbgr which is where
-	they are installed. Cleaner this way.
+	test/test-shortkey.el, test/test-srcbuf.el, test/test-track.el: 
+	dbgr.el - loads everything (via load-relative).  Push dbgr source
+	files into dbgr which is where they are installed. Cleaner this way.
 
 2009-12-14  rocky <rockyb@rubyforge.org>
 
@@ -5986,24 +6802,24 @@
 
 2009-11-22  rocky <rockyb@rubyforge.org>
 
-	* buffer.el, cmdbuf.el, cmds.el, core.el, custom.el,
-	dbgr-buffer.el, dbgr-cmdbuf.el, dbgr-cmds.el, dbgr-core.el,
-	dbgr-custom.el, dbgr-file.el, dbgr-fringe.el, dbgr-helper.el,
-	dbgr-init.el, dbgr-key.el, dbgr-loc.el, dbgr-lochist.el,
-	dbgr-regexp.el, dbgr-send.el, dbgr-shortkey.el, dbgr-srcbuf.el,
-	dbgr-track-mode.el, dbgr-track.el, dbgr-window.el, file.el,
-	fringe.el, helper.el, init.el, init/bashdb.el, init/kshdb.el,
-	init/pydb.el, init/pydbgr.el, init/rbdbgr.el, init/rdebug.el,
-	init/remake.el, init/zshdb.el, key.el, loc.el, lochist.el,
-	python/pydbgr-core.el, python/pydbgr-track-mode.el,
-	python/pydbgr.el, regexp.el, ruby/rbdbgr-core.el,
-	ruby/rbdbgr-track-mode.el, ruby/rbdbgr.el, send.el, shortkey.el,
-	srcbuf.el, test/test-core.el, test/test-file.el,
-	test/test-helper.el, test/test-loc.el, test/test-lochist.el,
-	test/test-regexp.el, test/test-send.el, test/test-srcbuf.el,
-	test/test-track.el, track-mode.el, track.el, window.el: Remove dbgr-
-	from filenames, although the files still provide with a dbgr- prefix
-	thanks to recent changes to load-relative.
+	* dbgr-buffer.el => buffer.el, dbgr-cmdbuf.el => cmdbuf.el,
+	dbgr-cmds.el => cmds.el, dbgr-core.el => core.el, dbgr-custom.el =>
+	custom.el, dbgr-file.el => file.el, dbgr-fringe.el => fringe.el,
+	dbgr-helper.el => helper.el, dbgr-init.el => init.el,
+	init/bashdb.el, init/kshdb.el, init/pydb.el, init/pydbgr.el,
+	init/rbdbgr.el, init/rdebug.el, init/remake.el, init/zshdb.el,
+	dbgr-key.el => key.el, dbgr-loc.el => loc.el, dbgr-lochist.el =>
+	lochist.el, python/pydbgr-core.el, python/pydbgr-track-mode.el,
+	python/pydbgr.el, dbgr-regexp.el => regexp.el, ruby/rbdbgr-core.el,
+	ruby/rbdbgr-track-mode.el, ruby/rbdbgr.el, dbgr-send.el => send.el,
+	dbgr-shortkey.el => shortkey.el, dbgr-srcbuf.el => srcbuf.el,
+	test/test-core.el, test/test-file.el, test/test-helper.el,
+	test/test-loc.el, test/test-lochist.el, test/test-regexp.el,
+	test/test-send.el, test/test-srcbuf.el, test/test-track.el,
+	dbgr-track-mode.el => track-mode.el, dbgr-track.el => track.el,
+	dbgr-window.el => window.el: Remove dbgr- from filenames, although
+	the files still provide with a dbgr- prefix thanks to recent changes
+	to load-relative.
 
 2009-11-22  rocky <rockyb@rubyforge.org>
 
@@ -6065,7 +6881,7 @@
 
 2009-11-19  R. Bernstein <rocky@gnu.org>
 
-	* dbgr-arrow.el, dbgr-buffer.el, dbgr-cmdbuf.el, dbgr-core.el,
+	* dbgr-buffer.el, dbgr-cmdbuf.el, dbgr-core.el, dbgr-arrow.el =>
 	dbgr-fringe.el, dbgr-loc.el, dbgr-track.el: dbgr-arrow ->
 	dbgr-fringe. Simplify a tad more.
 
@@ -6127,9 +6943,9 @@
 	* Makefile.am, configure.ac, dbgr-cmdbuf.el, dbgr-core.el,
 	dbgr-init.el, dbgr-regexp.el, dbgr-track.el, init/.gitignore,
 	init/Makefile.am, init/bashdb.el, init/kshdb.el, init/pydb.el,
-	init/pydbgr.el, init/rbdbgr.el, init/rdebug.el, init/remake.el,
-	init/zshdb.el, python/pydbgr-core.el, python/pydbgr-regexp.el,
-	python/pydbgr.el, ruby/rbdbgr-core.el, ruby/rbdbgr-regexp.el,
+	python/pydbgr-regexp.el => init/pydbgr.el, ruby/rbdbgr-regexp.el =>
+	init/rbdbgr.el, init/rdebug.el, init/remake.el, init/zshdb.el,
+	python/pydbgr-core.el, python/pydbgr.el, ruby/rbdbgr-core.el,
 	ruby/rbdbgr-track-mode.el, ruby/rbdbgr.el, test/test-cmdbuf.el,
 	test/test-regexp-python.el, test/test-regexp-ruby.el,
 	test/test-regexp.el, test/test-send.el: Create a global hash which
@@ -6216,7 +7032,7 @@
 2009-11-15  rocky <rockyb@rubyforge.org>
 
 	* Makefile.am, dbgr-buffer.el, dbgr-cmdbuf.el, dbgr-core.el,
-	dbgr-helper.el, dbgr-regexp.el, dbgr-scriptbuf.el, dbgr-send.el,
+	dbgr-helper.el, dbgr-regexp.el, dbgr-send.el, dbgr-scriptbuf.el =>
 	dbgr-srcbuf.el, dbgr-track-mode.el, dbgr-track.el,
 	python/pydbgr-core.el, python/pydbgr-regexp.el, python/pydbgr.el,
 	ruby/rbdbgr-core.el, ruby/rbdbgr-regexp.el, ruby/rbdbgr.el,
@@ -6226,8 +7042,8 @@
 
 2009-11-15  rocky <rockyb@rubyforge.org>
 
-	* test/test-helper.el, test/test-regexp-ruby.el,
-	test/test-regexp2.el: Add with-current-buffer-safe to guard against
+	* test/test-helper.el, test/{test-regexp2.el =>
+	test-regexp-ruby.el}: Add with-current-buffer-safe to guard against
 	deleted buffers.  Set/save comint-prompt-regexp. Correct debugger
 	prompts which are not the same as location matching patterns.
 	Workaround problem in loading pydbg/rbdbgr not pulling in all files.
@@ -6323,9 +7139,10 @@
 
 2009-11-11  R. Bernstein <rocky@gnu.org>
 
-	* dbgr-cmdbuf.el, dbgr-core.el, dbgr-procbuf.el, dbgr-scriptbuf.el,
-	dbgr-track-mode.el, dbgr-track.el, test/test-regexp.el,
-	test/test-scriptbuf.el, test/test-track.el: procbuf -> cmdbuf
+	* dbgr-procbuf.el => dbgr-cmdbuf.el, dbgr-core.el,
+	dbgr-scriptbuf.el, dbgr-track-mode.el, dbgr-track.el,
+	test/test-regexp.el, test/test-scriptbuf.el, test/test-track.el: 
+	procbuf -> cmdbuf
 
 2009-11-11  rocky <rockyb@rubyforge.org>
 

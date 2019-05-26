@@ -1,5 +1,5 @@
 dnl FIXME: pick up from realgud.el
-AC_INIT(emacs-realgud, 1.4.3,)
+AC_INIT(emacs-realgud, 1.4.8,)
 AC_CONFIG_SRCDIR(realgud.el)
 AM_INIT_AUTOMAKE([foreign])
 AM_MAINTAINER_MODE
