@@ -38,13 +38,13 @@
     (t (:weight bold)))
   "Face used to highlight debugger run information."
   :group 'realgud
-  :version "24.3")
+  :version "25.1")
 
 (defface realgud-debugger-not-running
   '((t :inherit font-lock-warning-face))
   "Face used when debugger or process is not running."
   :group 'realgud
-  :version "24.3")
+  :version "25.1")
 
 
 ;; FIXME: Figure out how to do this as a macro.

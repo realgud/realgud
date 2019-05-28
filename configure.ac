@@ -66,9 +66,7 @@ AC_CONFIG_FILES([Makefile \
 		 realgud/debugger/bashdb/Makefile \
 		 realgud/debugger/gdb/Makefile \
 		 realgud/debugger/gub/Makefile \
-		 realgud/debugger/ipdb/Makefile \
 		 realgud/debugger/kshdb/Makefile \
-		 realgud/debugger/nodejs/Makefile \
 		 realgud/debugger/perldb/Makefile \
 		 realgud/debugger/pdb/Makefile \
 		 realgud/debugger/rdebug/Makefile \

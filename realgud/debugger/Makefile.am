@@ -1,5 +1,5 @@
 SUBDIRS = \
-	bashdb gdb gub kshdb nodejs \
+	bashdb gdb gub kshdb \
 	pdb perldb rdebug remake \
 	trepan trepan2 trepan3k trepan.pl \
 	zshdb

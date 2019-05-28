@@ -16,12 +16,12 @@
 (require-relative-list '("core" "track-mode")   "realgud:trepan2-")
 
 ;; This is needed, or at least the docstring part of it is needed to
-;; get the customization menu to work in Emacs 24.
+;; get the customization menu to work in Emacs 25.
 (defgroup realgud:trepan2 nil
   "The realgud interface to the Python trepan2 debugger"
   :group 'realgud
   :group 'python
-  :version "24.2")
+  :version "25.1")
 
 (declare-function trepan2-query-cmdline  'realgud:trepan2-core)
 (declare-function trepan2-parse-cmd-args 'realgud:trepan2-core)
