@@ -29,6 +29,8 @@
 (require-relative-list
  '("command") "realgud-buffer-")
 
+(declare-function realgud-breakpoint-mode              'realgud-breakpoint-mod)
+(declare-function realgud-get-buffer-base-name        'realgud-buffer-backtrace)
 (declare-function realgud-cmdbuf-debugger-name        'realgud-buffer-command)
 (declare-function realgud-cmdbuf?                     'realgud-buffer-command)
 (declare-function realgud-cmdbuf-info-bkpt-buf=       'realgud-buffer-command)

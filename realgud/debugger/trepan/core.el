@@ -55,13 +55,13 @@ future, we may also consult RUBYPATH."
      ;; 	(message "tracking ignored for psuedo-file: %s" filename) nil)
      ('t
       ;; FIXME search RUBYLIB if not absolute file?
-      (if (gethash filename realgud-file-remap)
+      (if (gethash filename realgud:trepan-file-remap)
 	  (let ((remapped-filename))
 	    (setq remapped-filename (gethash filename realgud:trepan-file-remap))
 	    (if (file-exists-p remapped-filename)
 		remapped-filename
 	      ;; else
-	      (and (remhash filename realgud-file-remap)) nil)
+	      (and (remhash filename realgud:trepan-file-remap)) nil)
 	    ;; else
 	    (let ((remapped-filename))
 	      (setq remapped-filename
@@ -69,7 +69,7 @@ future, we may also consult RUBYPATH."
 		     (compilation-find-file (point-marker) stripped-filename
 					    nil "%s.rb")))
 	      (when (and remapped-filename (file-exists-p remapped-filename))
-		(puthash filename remapped-filename realgud-file-remap)
+		(puthash filename remapped-filename realgud:trepan-file-remap)
 		remapped-filename
 		))
 	    ))
