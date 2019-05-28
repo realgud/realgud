@@ -4,7 +4,7 @@
 ;; Version: 1.1
 ;; Keywords: internal
 ;; URL: http://github.com/rocky/emacs-load-relative
-;; Compatibility: GNU Emacs 24.x
+;; Compatibility: GNU Emacs 25.x
 
 ;; Copyright (C) 2015 Free Software Foundation, Inc
 

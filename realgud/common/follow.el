@@ -1,4 +1,4 @@
-;; Copyright (C) 2015 Free Software Foundation, Inc
+;; Copyright (C) 2015, 2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -15,8 +15,9 @@
 ;;; Follows or goto's something
 (require 'load-relative)
 
-(declare-function realgud:cmd-frame 'realgud-cmds)
-(declare-function realgud-loc-p     'realgud-loc)
+(declare-function realgud:cmd-frame  'realgud-cmds)
+(declare-function realgud-loc-marker 'realgud-loc)
+(declare-function realgud-loc-p      'realgud-loc)
 
 (defun realgud:follow-mark(mark)
   (when (markerp mark)

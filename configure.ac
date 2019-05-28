@@ -1,5 +1,5 @@
 dnl FIXME: pick up from realgud.el
-AC_INIT(emacs-realgud, 1.4.8,)
+AC_INIT(emacs-realgud, 1.5.0,)
 AC_CONFIG_SRCDIR(realgud.el)
 AM_INIT_AUTOMAKE([foreign])
 AM_MAINTAINER_MODE
@@ -10,9 +10,9 @@ AC_ARG_WITH(emacs, AC_HELP_STRING([--with-emacs],
 
 AC_MSG_NOTICE("Checking emacs version")
 $EMACS -batch -q --no-site-file -eval \
-  '(if (< emacs-major-version 24)
+  '(if (< emacs-major-version 25)
        (progn
-         (error "You need GNU Emacs 24 or better.")
+         (error "You need GNU Emacs 25 or better.")
          (kill-emacs 1)
        )
    )'
@@ -41,7 +41,7 @@ AM_MISSING_PROG(GIT2CL, git2cl, $missing_dir)
 # Check whether --with-lispdir was given.
 if test "${with_lispdir+set}" = set; then :
 else
-  my_lispdir="${datadir}/emacs/site-lisp"
+  my_lispdir=$(EMACS_PROG=$EMACS $SH_PROG $(dirname $0)/compute-lispdir.sh)
   if test "${my_lispdir+set}" = set; then :
     with_lispdir=$my_lispdir
   fi
@@ -66,10 +66,7 @@ AC_CONFIG_FILES([Makefile \
 		 realgud/debugger/bashdb/Makefile \
 		 realgud/debugger/gdb/Makefile \
 		 realgud/debugger/gub/Makefile \
-		 realgud/debugger/ipdb/Makefile \
-		 realgud/debugger/jdb/Makefile \
 		 realgud/debugger/kshdb/Makefile \
-		 realgud/debugger/nodejs/Makefile \
 		 realgud/debugger/perldb/Makefile \
 		 realgud/debugger/pdb/Makefile \
 		 realgud/debugger/rdebug/Makefile \
@@ -78,7 +75,6 @@ AC_CONFIG_FILES([Makefile \
 		 realgud/debugger/trepan2/Makefile \
 		 realgud/debugger/trepan3k/Makefile \
 		 realgud/debugger/trepan.pl/Makefile \
-		 realgud/debugger/trepanjs/Makefile \
 		 realgud/debugger/zshdb/Makefile \
 		 realgud/lang/Makefile \
 		 test/Makefile \

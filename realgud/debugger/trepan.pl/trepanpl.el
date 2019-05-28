@@ -20,7 +20,7 @@
   "The realgud interface to the Perl \"trepanning\" debugger"
   :group 'perl
   :group 'realgud
-  :version "24.3")
+  :version "25.1")
 
 ;; -------------------------------------------------------------------
 ;; User definable variables

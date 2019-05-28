@@ -19,11 +19,11 @@
 (declare-function zshdb-parse-cmd-args 'realgud:zshdb-core)
 
 ;; This is needed, or at least the docstring part of it is needed to
-;; get the customization menu to work in Emacs 24.
+;; get the customization menu to work in Emacs 25.
 (defgroup realgud:zshdb nil
   "The realgud interface to the Zsh debugger, zshdb"
   :group 'realgud
-  :version "24.3")
+  :version "25.1")
 
 ;; -------------------------------------------------------------------
 ;; User definable variables

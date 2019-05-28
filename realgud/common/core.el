@@ -14,11 +14,6 @@
 
 ;; (require 'term)
 
-(if (< emacs-major-version 24)
-    (error
-     "You need at least Emacs 24 or greater to run this - you have version %d"
-     emacs-major-version))
-
 (require 'comint)
 (require 'load-relative)
 (require 'loc-changes)

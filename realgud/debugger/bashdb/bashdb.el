@@ -24,11 +24,11 @@
 (require-relative-list '("core" "track-mode")   "realgud:bashdb-")
 
 ;; This is needed, or at least the docstring part of it is needed to
-;; get the customization menu to work in Emacs 24.
+;; get the customization menu to work in Emacs 25.
 (defgroup realgud:bashdb nil
   "The realgud interface to bashdb"
   :group 'realgud
-  :version "24.3")
+  :version "25.3")
 
 (declare-function realgud-command            'realgud:cmds)
 

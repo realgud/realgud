@@ -22,12 +22,12 @@
 (require-relative-list '("../../common/run")    "realgud:")
 (require-relative-list '("core" "track-mode") "realgud:remake-")
 ;; This is needed, or at least the docstring part of it is needed to
-;; get the customization menu to work in Emacs 24.
+;; get the customization menu to work in Emacs 25.
 (defgroup realgud:remake nil
   "The realgud interface to the GNU Make debugger"
   :group 'realgud
   :group 'make
-  :version "24.3")
+  :version "25.1")
 
 (eval-when-compile (require 'cl-lib))
 

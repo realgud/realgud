@@ -14,7 +14,7 @@
   (defvar debugger-name)
   (defvar realgud-pat-hash)
   (defvar test-keymap)
-  (defvar nodejs-short-key-mode-map)
+  (defvar zshdb-short-key-mode-map)
 )
 
 (declare-function __FILE__           'load-relative)
@@ -28,13 +28,13 @@
 (note "realgud-get-short-key-mode-map")
 
 (setq temp-cmdbuf (generate-new-buffer "*cmdbuf-test*"))
-(setq debugger-name "nodejs")
-(load-file "../realgud/debugger/nodejs/nodejs.el")
+(setq debugger-name "zshdb")
+(load-file "../realgud/debugger/zshdb/zshdb.el")
 (realgud-cmdbuf-init temp-cmdbuf debugger-name
 		     (gethash debugger-name realgud-pat-hash))
 (setq test-keymap (realgud-get-short-key-mode-map temp-cmdbuf))
 (assert-t (keymapp test-keymap)
 	  "realgud-get-short-key-mode-map returns keymap")
-(assert-equal test-keymap nodejs-short-key-mode-map
-	  "realgud-get-short-key-mode-map returns nodejs-short-key-mode-map")
+(assert-equal test-keymap zshdb-short-key-mode-map
+	  "realgud-get-short-key-mode-map returns zshdb-short-key-mode-map")
 (end-tests)
