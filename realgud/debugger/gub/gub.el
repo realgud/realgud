@@ -54,7 +54,7 @@ This should be an executable on your path, or an absolute file name."
 	 (parsed-args (gub-parse-cmd-args cmd-args))
 	 (gub-program (car parsed-args))
 	 (gub-args (cadr parsed-args))
-	 (go-prog-and-args (caddr parsed-args))
+	 (go-prog-and-args (cl-caddr parsed-args))
 	 (script-filename (car go-prog-and-args))
 	 (cmd-buf))
     (realgud:run-process gub-program script-filename cmd-args

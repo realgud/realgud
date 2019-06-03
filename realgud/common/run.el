@@ -188,7 +188,7 @@ Otherwise nil is returned.
   (let* ((cmd-str (or opt-command-line (funcall query-cmdline-fn debugger-name)))
 	 (cmd-args (split-string-and-unquote cmd-str))
 	 (parsed-args (funcall parse-cmd-args-fn cmd-args))
-	 (script-args (caddr parsed-args))
+	 (script-args (cl-caddr parsed-args))
 	 (script-name (or opt-script-name (car script-args)))
 	 (parsed-cmd-args
 	  (cl-remove-if 'nil (realgud:flatten parsed-args)))

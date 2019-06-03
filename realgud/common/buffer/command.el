@@ -263,7 +263,7 @@ Information is put in an internal buffer called *Describe Debugger Session*."
   (setq buffer (realgud-get-cmdbuf buffer))
   (if buffer
       (with-current-buffer buffer
-	(lexical-let ((info realgud-cmdbuf-info)
+	(let ((info realgud-cmdbuf-info)
 	      (cmdbuf-name (buffer-name)))
 	  (if info
 	      (progn
@@ -414,7 +414,7 @@ This is based on an org-mode buffer. Hit tab to expand/contract sections.
 	    ((cmd-args (realgud-sget 'cmdbuf-info 'cmd-args))
 	     (result (car cmd-args)))
 	  (and cmd-args
-	       (reduce (lambda(result x)
+	       (cl-reduce (lambda(result x)
 			 (setq result (concat result " " x)))
 		       cmd-args)))))
      (t nil)))
@@ -541,7 +541,7 @@ command-process buffer has stored."
 (defun realgud-cmdbuf-src-marker(cmd-buf)
   "Return a marker to current source location stored in the history ring."
   (with-current-buffer cmd-buf
-    (lexical-let* ((loc (realgud-loc-hist-item (realgud-cmdbuf-loc-hist cmd-buf))))
+    (let* ((loc (realgud-loc-hist-item (realgud-cmdbuf-loc-hist cmd-buf))))
       (and loc (realgud-loc-marker loc)))))
 
 (defun realgud-cmdbuf-mode-line-update (&optional opt-cmdbuf)

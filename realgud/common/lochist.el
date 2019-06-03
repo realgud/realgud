@@ -62,7 +62,7 @@
 (defun realgud-loc-hist-item-at(loc-hist position)
   "Get the current item stored at POSITION of the ring
 component in LOC-HIST"
-  (lexical-let ((ring (realgud-loc-hist-ring loc-hist)))
+  (let ((ring (realgud-loc-hist-ring loc-hist)))
     (unless (ring-empty-p ring)
       (ring-ref ring position))))
 
@@ -94,22 +94,22 @@ component in LOC-HIST"
 
 (defun realgud-loc-hist-clear(loc-hist)
   "Clear out all source locations in LOC-HIST"
-  (lexical-let* ((ring (ring-ref (realgud-loc-hist-ring loc-hist)
-				 (realgud-loc-hist-position loc-hist)))
-		 (head (car ring)))
+  (let* ((ring (ring-ref (realgud-loc-hist-ring loc-hist)
+			 (realgud-loc-hist-position loc-hist)))
+	 (head (car ring)))
     (setf (realgud-loc-hist-position loc-hist) (- head 1))
     (while (not (ring-empty-p ring))
       (ring-remove ring))))
 
 (defun realgud-loc-hist-index(loc-hist)
   "Return the ring-index value of LOC-HIST"
-  (lexical-let* (
-		 (ring (realgud-loc-hist-ring loc-hist))
-		 (head (car ring))
-		 (ringlen (cadr ring))
-		 (index (mod (+ ringlen head
-				(- (realgud-loc-hist-position loc-hist)))
-			     ringlen)))
+  (let* (
+	 (ring (realgud-loc-hist-ring loc-hist))
+	 (head (car ring))
+	 (ringlen (cadr ring))
+	 (index (mod (+ ringlen head
+			(- (realgud-loc-hist-position loc-hist)))
+		     ringlen)))
     (if (zerop index) ringlen index)
     ))
 
@@ -138,8 +138,8 @@ component in LOC-HIST"
 
 (defun realgud-loc-hist-oldest (loc-hist)
   "Set LOC-HIST to the oldest stopping point."
-  (lexical-let* ((ring (realgud-loc-hist-ring loc-hist))
-		 (head (car ring)))
+  (let* ((ring (realgud-loc-hist-ring loc-hist))
+	 (head (car ring)))
     (setf (realgud-loc-hist-position loc-hist) head)))
 
 (provide-me "realgud-")

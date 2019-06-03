@@ -70,12 +70,14 @@ This should be an executable on your path, or an absolute file name."
 (defun realgud:gdb-find-command-buffer (pid)
   "Find the among current buffers a buffer that is a realgud command buffer
 running gdb on process number PID"
-  (let ((find-cmd-buf (realgud:gdb-pid-command-buffer pid)))
+  (let ((find-cmd-buf (realgud:gdb-pid-command-buffer pid))
+	(found-buf))
     (dolist (buf (buffer-list))
       (if (and (equal find-cmd-buf (buffer-name buf))
 		(realgud-cmdbuf? buf)
 		(get-buffer-process buf))
-	(return buf)))))
+	  (setq found-buf buf)))
+    found-buf))
 
 (defun realgud:gdb-pid (pid)
   "Start debugging gdb process with pid PID."
@@ -118,7 +120,7 @@ fringe and marginal icons.
   (let* ((cmd-str (or opt-cmd-line (realgud:gdb-query-cmdline "gdb")))
 	 (cmd-args (split-string-and-unquote cmd-str))
 	 (parsed-args (realgud:gdb-parse-cmd-args cmd-args))
-	 (script-args (caddr parsed-args))
+	 (script-args (cl-caddr parsed-args))
 	 (script-name (or (car script-args) ""))
 	 (parsed-cmd-args
            (cl-remove-if-not 'stringp (realgud:flatten parsed-args)))

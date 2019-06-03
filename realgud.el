@@ -3,7 +3,7 @@
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 ;; Version: 1.5.0
 ;; Package-Type: multi
-;; Package-Requires: ((load-relative "1.2") (loc-changes "1.2") (test-simple  "1.2.0") (emacs "25"))
+;; Package-Requires: ((load-relative "1.3.1") (loc-changes "1.2") (test-simple  "1.3.0") (emacs "25"))
 ;; URL: http://github.com/realgud/realgud/
 ;; Keywords: debugger, gdb, python, perl, go, bash, zsh, bashdb, zshdb, remake, trepan, perldb, pdb
 
@@ -111,11 +111,21 @@
        "./realgud/debugger/trepan3k/trepan3k"
        "./realgud/debugger/zshdb/zshdb"
        ) "realgud-")
+    (require-relative-list
+     '(
+       "./realgud/lang/java"
+       "./realgud/lang/js"
+       "./realgud/lang/perl"
+       "./realgud/lang/posix-shell"
+       "./realgud/lang/python"
+       "./realgud/lang/ruby"
+       ) "realgud-lang-")
     (realgud:loaded-features)
     )
   )
 
 (load-relative "./realgud/common/custom")
+(load-relative "./realgud/lang/java")
 
 (defun realgud-feature-starts-with(feature prefix)
   "realgud-strings-starts-with on stringified FEATURE and PREFIX."

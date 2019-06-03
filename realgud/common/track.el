@@ -154,15 +154,15 @@ marks set in buffer-local variables to extract text"
 
   ;; FIXME: Add unwind-protect?
   (if realgud-track-mode
-      (lexical-let* ((cmd-buff (current-buffer))
-		     (cmd-mark (point-marker))
-		     (shortkey
-		      (realgud-cmdbuf-info-src-shortkey?
-		       realgud-cmdbuf-info))
-		     (loc (realgud:track-from-region
-			   eshell-last-output-start
-			   eshell-last-output-end cmd-mark cmd-buff
-			   shortkey)))
+      (let* ((cmd-buff (current-buffer))
+	     (cmd-mark (point-marker))
+	     (shortkey
+	      (realgud-cmdbuf-info-src-shortkey?
+	       realgud-cmdbuf-info))
+	     (loc (realgud:track-from-region
+		   eshell-last-output-start
+		   eshell-last-output-end cmd-mark cmd-buff
+		   shortkey)))
 	(realgud-track-loc-action loc cmd-buff 't shortkey))
     ))
 
@@ -227,7 +227,7 @@ field loc-regexp. You can see what this is by
 evaluating (realgud-cmdbuf-info-loc-regexp realgud-cmdbuf-info)"
 
   (interactive "r")
-  (if (> from to) (psetq to from from to))
+  (if (> from to) (cl-psetq to from from to))
   (let* ((text (buffer-substring-no-properties from to))
 	 (loc (realgud-track-loc text cmd-mark))
 	 ;; If we see a selected frame number, it is stored
