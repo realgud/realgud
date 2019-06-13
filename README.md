@@ -76,7 +76,7 @@ Here is a quick rundown of the most useful commands. “🐁” indicates mouse 
 
 # Supported debuggers
 
-RealGUD supports [many external debuggers](https://github.com/realgud/realgud/wiki/Debuggers-Supported).  Help us [support even more](https://github.com/realgud/realgud/wiki/How-to-add-a-new-debugger)!
+RealGUD supports [many external debuggers](https://github.com/realgud/realgud/wiki/Debuggers-Available).  Help us [support even more](https://github.com/realgud/realgud/wiki/How-to-add-a-new-debugger)!
 
 # Advanced topics
 
