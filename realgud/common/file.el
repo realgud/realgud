@@ -199,10 +199,10 @@ are ignored in debugger location tracking. You might do this if you accidentllay
 added a a path for ignoring by mistake."
   (interactive
    (list (completing-read "File name to stop ignoring: "
-		    (realgud-cmdbuf-ignore-re-path-list (current-buffer))
+		    (realgud-cmdbuf-ignore-re-file-list (current-buffer))
 		    nil t)))
   (when (member path-to-stop-ignoring (realgud-cmdbuf-ignore-re-file-list (current-buffer)))
-    (realgud-cmdbuf-info-ignore-re-path-list=
+    (realgud-cmdbuf-info-ignore-re-file-list=
      (delete path-to-stop-ignoring (realgud-cmdbuf-ignore-re-file-list (current-buffer)))))
   )
 
