@@ -1,4 +1,4 @@
-;; Copyright (C) 2011, 2014-2016 Free Software Foundation, Inc
+;; Copyright (C) 2011, 2014-2016, 2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -17,7 +17,7 @@
 (defgroup realgud:kshdb nil
   "The realgud interface to the Korn shell debugger, kshdb"
   :group 'realgud
-  :version "24.3")
+  :version "25.1")
 
 ;; -------------------------------------------------------------------
 ;; User definable variables

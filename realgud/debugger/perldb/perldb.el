@@ -1,4 +1,4 @@
-;; Copyright (C) 2011, 2014-2017 Free Software Foundation, Inc
+;; Copyright (C) 2011, 2014-2017, 2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -20,7 +20,7 @@
 (defgroup realgud:perldb nil
   "The realgud interface to the Perl debugger, perldb"
   :group 'realgud
-  :version "24.3")
+  :version "25.1")
 
 ;; -------------------------------------------------------------------
 ;; User-definable variables
@@ -43,7 +43,7 @@
 (defun realgud:perldb (&optional opt-cmd-line no-reset)
   "Invoke the Perl debugger and start the Emacs user interface.
 
-String OPT-CMD-LINE specifies how to run nodejs.
+String OPT-CMD-LINE specifies how to run perldb.
 
 OPT-CMD-LINE is treated like a shell string; arguments are
 tokenized by `split-string-and-unquote'. The tokenized string is

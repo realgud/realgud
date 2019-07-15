@@ -398,249 +398,11 @@ marginal icons is reset.
 
 ;;;***
 
-;;;### (autoloads nil "realgud/debugger/ipdb/core" "realgud/debugger/ipdb/core.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from realgud/debugger/ipdb/core.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/debugger/ipdb/core" '("realgud:ipdb-" "ipdb-parse-" "ipdb-reset" "ipdb-suggest-invocation" "ipdb-query-cmdline")))
-
-;;;***
-
-;;;### (autoloads nil "realgud/debugger/ipdb/init" "realgud/debugger/ipdb/init.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from realgud/debugger/ipdb/init.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/debugger/ipdb/init" '("realgud:ipdb-pat-hash" "realgud:ipdb-command-hash")))
-
-;;;***
-
-;;;### (autoloads nil "realgud/debugger/ipdb/ipdb" "realgud/debugger/ipdb/ipdb.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from realgud/debugger/ipdb/ipdb.el
-
-(autoload 'realgud:ipdb "realgud/debugger/ipdb/ipdb" "\
-Invoke the ipdb Python debugger and start the Emacs user interface.
-
-String OPT-CMD-LINE specifies how to run ipdb. You will be prompted
-for a command line is one isn't supplied.
-
-OPT-COMMAND-LINE is treated like a shell string; arguments are
-tokenized by `split-string-and-unquote'. The tokenized string is
-parsed by `ipdb-parse-cmd-args' and path elements found by that
-are expanded using `realgud:expand-file-name-if-exists'.
-
-Normally, command buffers are reused when the same debugger is
-reinvoked inside a command buffer with a similar command. If we
-discover that the buffer has prior command-buffer information and
-NO-RESET is nil, then that information which may point into other
-buffers and source buffers which may contain marks and fringe or
-marginal icons is reset. See `loc-changes-clear-buffer' to clear
-fringe and marginal icons.
-
-\(fn &optional OPT-CMD-LINE NO-RESET)" t nil)
-
-(autoload 'realgud:ipdb-remote "realgud/debugger/ipdb/ipdb" "\
-Invoke the ipdb Python debugger and start the Emacs user interface.
-
-String OPT-CMD-LINE specifies how to run ipdb. You will be prompted
-for a command line is one isn't supplied.
-
-OPT-COMMAND-LINE is treated like a shell string; arguments are
-tokenized by `split-string-and-unquote'. The tokenized string is
-parsed by `ipdb-parse-remote-cmd-args' and path elements found by that
-are expanded using `realgud:expand-file-name-if-exists'.
-
-Normally, command buffers are reused when the same debugger is
-reinvoked inside a command buffer with a similar command. If we
-discover that the buffer has prior command-buffer information and
-NO-RESET is nil, then that information which may point into other
-buffers and source buffers which may contain marks and fringe or
-marginal icons is reset. See `loc-changes-clear-buffer' to clear
-fringe and marginal icons.
-
-\(fn &optional OPT-CMD-LINE NO-RESET)" t nil)
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/debugger/ipdb/ipdb" '("realgud:ipdb-command-name" "ipdb")))
-
-;;;***
-
-;;;### (autoloads nil "realgud/debugger/ipdb/track-mode" "realgud/debugger/ipdb/track-mode.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from realgud/debugger/ipdb/track-mode.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/debugger/ipdb/track-mode" '("ipdb-track-mode")))
-
-;;;***
-
-;;;### (autoloads nil "realgud/debugger/jdb/backtrack-mode" "realgud/debugger/jdb/backtrack-mode.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from realgud/debugger/jdb/backtrack-mode.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/debugger/jdb/backtrack-mode" '("realgud:jdb-goto-control-frame-line" "jdb-backtrack-mode")))
-
-;;;***
-
-;;;### (autoloads nil "realgud/debugger/jdb/core" "realgud/debugger/jdb/core.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from realgud/debugger/jdb/core.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/debugger/jdb/core" '("realgud:jdb-" "jdb-reset" "jdb-suggest-invocation")))
-
-;;;***
-
-;;;### (autoloads nil "realgud/debugger/jdb/file" "realgud/debugger/jdb/file.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from realgud/debugger/jdb/file.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/debugger/jdb/file" '("gud-jdb-")))
-
-;;;***
-
-;;;### (autoloads nil "realgud/debugger/jdb/init" "realgud/debugger/jdb/init.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from realgud/debugger/jdb/init.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/debugger/jdb/init" '("realgud:jdb-")))
-
-;;;***
-
-;;;### (autoloads nil "realgud/debugger/jdb/jdb" "realgud/debugger/jdb/jdb.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from realgud/debugger/jdb/jdb.el
-
-(autoload 'realgud:jdb "realgud/debugger/jdb/jdb" "\
-Invoke the Java jdb debugger and start the Emacs user interface.
-
-String OPT-CMD-LINE is treated like a shell string; arguments are
-tokenized by `split-string-and-unquote'. The tokenized string is
-parsed by `jdb-parse-cmd-args' and path elements found by that
-are expanded using `expand-file-name'.
-
-Normally, command buffers are reused when the same debugger is
-reinvoked inside a command buffer with a similar command. If we
-discover that the buffer has prior command-buffer information and
-NO-RESET is nil, then that information which may point into other
-buffers and source buffers which may contain marks and fringe or
-marginal icons is reset. See `loc-changes-clear-buffer' to clear
-fringe and marginal icons.
-
-\(fn &optional OPT-CMD-LINE NO-RESET)" t nil)
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/debugger/jdb/jdb" '("realgud:jdb-command-name" "jdb")))
-
-;;;***
-
-;;;### (autoloads nil "realgud/debugger/jdb/track-mode" "realgud/debugger/jdb/track-mode.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from realgud/debugger/jdb/track-mode.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/debugger/jdb/track-mode" '("realgud:jdb-track-mode" "realgud:jdb-goto-control-frame-line" "realgud:jdb-goto-syntax-error-line")))
-
-;;;***
-
-;;;### (autoloads nil "realgud/debugger/kshdb/core" "realgud/debugger/kshdb/core.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from realgud/debugger/kshdb/core.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/debugger/kshdb/core" '("realgud:kshdb-" "kshdb-query-cmdline" "kshdb-parse-cmd-args" "kshdb-suggest-invocation" "kshdb-reset")))
-
-;;;***
-
-;;;### (autoloads nil "realgud/debugger/kshdb/init" "realgud/debugger/kshdb/init.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from realgud/debugger/kshdb/init.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/debugger/kshdb/init" '("realgud:kshdb-pat-hash" "realgud:kshdb-command-hash")))
-
-;;;***
-
-;;;### (autoloads nil "realgud/debugger/kshdb/kshdb" "realgud/debugger/kshdb/kshdb.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from realgud/debugger/kshdb/kshdb.el
-
-(autoload 'realgud:kshdb "realgud/debugger/kshdb/kshdb" "\
-Invoke the Korn shell debugger, kshdb, and start the Emacs user interface.
-
-String COMMAND-LINE specifies how to run kshdb.
-
-Normally command buffers are reused when the same debugger is
-reinvoked inside a command buffer with a similar command. If we
-discover that the buffer has prior command-buffer information and
-NO-RESET is nil, then that information which may point into other
-buffers and source buffers which may contain marks and fringe or
-marginal icons is reset.
-
-\(fn &optional OPT-COMMAND-LINE NO-RESET)" t nil)
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/debugger/kshdb/kshdb" '("realgud:kshdb-command-name" "kshdb")))
-
-;;;***
-
 ;;;### (autoloads nil "realgud/debugger/kshdb/track-mode" "realgud/debugger/kshdb/track-mode.el"
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/debugger/kshdb/track-mode.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/debugger/kshdb/track-mode" '("kshdb-track-mode")))
-
-;;;***
-
-;;;### (autoloads nil "realgud/debugger/nodejs/core" "realgud/debugger/nodejs/core.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from realgud/debugger/nodejs/core.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/debugger/nodejs/core" '("realgud:nodejs-" "nodejs-query-cmdline" "nodejs-parse-cmd-args")))
-
-;;;***
-
-;;;### (autoloads nil "realgud/debugger/nodejs/init" "realgud/debugger/nodejs/init.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from realgud/debugger/nodejs/init.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/debugger/nodejs/init" '("realgud:nodejs-frame-" "realgud:nodejs-pat-hash" "realgud:nodejs-debugger-name" "realgud:nodejs-command-hash")))
-
-;;;***
-
-;;;### (autoloads nil "realgud/debugger/nodejs/nodejs" "realgud/debugger/nodejs/nodejs.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from realgud/debugger/nodejs/nodejs.el
-
-(autoload 'realgud:nodejs "realgud/debugger/nodejs/nodejs" "\
-Invoke the nodejs shell debugger and start the Emacs user interface.
-
-String OPT-CMD-LINE specifies how to run nodejs.
-
-OPT-CMD-LINE is treated like a shell string; arguments are
-tokenized by `split-string-and-unquote'. The tokenized string is
-parsed by `nodejs-parse-cmd-args' and path elements found by that
-are expanded using `realgud:expand-file-name-if-exists'.
-
-Normally, command buffers are reused when the same debugger is
-reinvoked inside a command buffer with a similar command. If we
-discover that the buffer has prior command-buffer information and
-NO-RESET is nil, then that information which may point into other
-buffers and source buffers which may contain marks and fringe or
-marginal icons is reset. See `loc-changes-clear-buffer' to clear
-fringe and marginal icons.
-
-\(fn &optional OPT-CMD-LINE NO-RESET)" t nil)
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/debugger/nodejs/nodejs" '("realgud:nodejs-command-name")))
-
-;;;***
-
-;;;### (autoloads nil "realgud/debugger/nodejs/track-mode" "realgud/debugger/nodejs/track-mode.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from realgud/debugger/nodejs/track-mode.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/debugger/nodejs/track-mode" '("realgud:nodejs-track-mode-internal" "nodejs-track-mode")))
-
-;;;***
-
-;;;### (autoloads nil "realgud/debugger/pdb/core" "realgud/debugger/pdb/core.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from realgud/debugger/pdb/core.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/debugger/pdb/core" '("realgud:pdb-" "pdb-parse-" "pdb-reset" "pdb-suggest-invocation" "pdb-query-cmdline")))
 
 ;;;***
 
@@ -733,7 +495,7 @@ fringe and marginal icons.
 (autoload 'realgud:perldb "realgud/debugger/perldb/perldb" "\
 Invoke the Perl debugger and start the Emacs user interface.
 
-String OPT-CMD-LINE specifies how to run nodejs.
+String OPT-CMD-LINE specifies how to run perldb.
 
 OPT-CMD-LINE is treated like a shell string; arguments are
 tokenized by `split-string-and-unquote'. The tokenized string is
@@ -1271,13 +1033,11 @@ fringe and marginal icons.
 ;;;;;;  "test/test-bt-trepan.el" "test/test-bt-trepan2.el" "test/test-bt-trepan3k.el"
 ;;;;;;  "test/test-bt-zshdb.el" "test/test-buf-bt.el" "test/test-buf-cmd.el"
 ;;;;;;  "test/test-core.el" "test/test-file.el" "test/test-gdb-core.el"
-;;;;;;  "test/test-gub-core.el" "test/test-ipdb.el" "test/test-jdb.el"
 ;;;;;;  "test/test-lang.el" "test/test-loc-regexp-gub.el" "test/test-loc-regexp-nodejs.el"
 ;;;;;;  "test/test-loc-regexp-trepan.el" "test/test-loc-regexp-trepanpl.el"
 ;;;;;;  "test/test-loc.el" "test/test-lochist.el" "test/test-nodejs.el"
 ;;;;;;  "test/test-pdb.el" "test/test-perldb.el" "test/test-rdebug.el"
 ;;;;;;  "test/test-realgud.el" "test/test-regexp-bashdb.el" "test/test-regexp-gdb.el"
-;;;;;;  "test/test-regexp-gub.el" "test/test-regexp-ipdb.el" "test/test-regexp-jdb.el"
 ;;;;;;  "test/test-regexp-nodejs.el" "test/test-regexp-pdb.el" "test/test-regexp-perldb.el"
 ;;;;;;  "test/test-regexp-rdebug.el" "test/test-regexp-remake.el"
 ;;;;;;  "test/test-regexp-ruby.el" "test/test-regexp-trepan.el" "test/test-regexp-trepan2.el"

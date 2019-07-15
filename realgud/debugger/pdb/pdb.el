@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2017 Free Software Foundation, Inc
+;; Copyright (C) 2015-2017, 2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -28,7 +28,7 @@
 (defgroup realgud:pdb nil
   "The realgud interface to the Python pdb debugger"
   :group 'realgud
-  :version "24.3")
+  :version "25.13")
 
 ;; -------------------------------------------------------------------
 ;; User-definable variables

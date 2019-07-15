@@ -1,6 +1,64 @@
+2019-07-15  rocky <rocky@gnu.org>
+
+	* configure.ac, realgud-recursive-autoloads.el, realgud.el,
+	realgud/debugger/kshdb/kshdb.el, realgud/debugger/pdb/pdb.el,
+	realgud/debugger/perldb/perldb.el: Get ready for release 1.5.1...  * recursive-autoloads: Remove autoloads from packages that no longer
+	  are included, e.g. ipdb, jdb, nodejs * Require 25.1 or greater pervasively; :version 24.3 -> 25.1
+	  wherever that appears * perldb.el: fix small cut-and-paste holdover * NEWS -> NEWS.md
+
+2019-07-09  rocky <rocky@gnu.org>
+
+	* : commit 9af758d550fc845bf40f9e3d6c861ef03f74b186 Author: rocky
+	<rocky@gnu.org> Date:   Tue Jul 9 18:27:41 2019 -0400
+
+2019-06-13  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #250 from andschwa/patch-1 Fix link to supported debuggers
+
+2019-06-03  rocky <rocky@gnu.org>
+
+	* realgud.el, realgud/common/buffer/command.el,
+	realgud/common/lochist.el, realgud/common/run.el,
+	realgud/common/track.el, realgud/debugger/gdb/gdb.el,
+	realgud/debugger/gub/gub.el: Need import lang modules. Add cl-
+	prefixes ...  remove lexical-let which was giving warnings.  Other warnings reduced.
+
+2019-05-28  rocky <rocky@gnu.org>
+
+	* realgud.el, realgud/common/buffer/breakpoint.el,
+	realgud/common/send.el, realgud/debugger/trepan/core.el: Drop cl-lib
+	as a dependency...  And other small function declarations
+
+2019-05-28  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #249 from realgud/release-1.5.0 Release 1.5.0
+
 2019-05-25  rocky <rocky@gnu.org>
 
-	* ChangeLog, configure.ac, realgud.el: Get ready for release 1.4.8
+	* compute-lispdir.sh, configure.ac, elisp-comp, realgud.el,
+	realgud/common/attach.el, realgud/debugger/Makefile.am,
+	realgud/debugger/ipdb/Makefile.am, realgud/debugger/ipdb/core.el,
+	realgud/debugger/ipdb/init.el, realgud/debugger/ipdb/ipdb.el,
+	realgud/debugger/ipdb/track-mode.el,
+	realgud/debugger/jdb/Makefile.am, realgud/debugger/jdb/README,
+	realgud/debugger/jdb/backtrack-mode.el,
+	realgud/debugger/jdb/core.el, realgud/debugger/jdb/file.el,
+	realgud/debugger/jdb/init.el, realgud/debugger/jdb/jdb.el,
+	realgud/debugger/jdb/track-mode.el,
+	realgud/debugger/nodejs/Makefile.am,
+	realgud/debugger/nodejs/core.el, realgud/debugger/nodejs/init.el,
+	realgud/debugger/nodejs/nodejs.el,
+	realgud/debugger/nodejs/track-mode.el: [WIP] Release 1.5.0
+
+2019-05-26  rocky <rocky@gnu.org>
+
+	* el-get-install.el: el-get-install.el doesn't have an FSF
+	copyright...  and wasn't written by me.
+
+2019-05-25  rocky <rocky@gnu.org>
+
+	* ChangeLog, Makefile.am, configure.ac, git2cl, realgud.el: Get
+	ready for release 1.4.8
 
 2019-05-25  rocky <rocky@gnu.org>
 
