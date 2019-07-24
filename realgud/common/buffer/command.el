@@ -80,7 +80,8 @@
   regexp-hash          ;; hash table of regular expressions appropriate for
                        ;; this debugger. Eventually loc-regexp, file-group
                        ;; and line-group below will removed and stored here.
-  srcbuf-list          ;; list of source buffers we have stopped at
+  srcbuf-list          ;; list of source buffers we have encountered. This includes buffers
+                       ;; that have been stopped at or attached.
   source-path          ;; last source-code path we've seen
 
   bt-buf               ;; backtrace buffer if it exists

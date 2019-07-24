@@ -137,14 +137,16 @@ current buffer."
   "Initialize SRC-BUFFER as a source-code buffer for a debugger.
 CMDPROC-BUFFER is the process-command buffer containing the
 debugger."
-  (with-current-buffer cmdproc-buffer
-    (set-buffer src-buffer)
-    (set (make-local-variable 'realgud-srcbuf-info)
-	 (make-realgud-srcbuf-info
-	  :cmdproc cmdproc-buffer
-	  :loc-hist (make-realgud-loc-hist)))
-    (put 'realgud-srcbuf-info 'variable-documentation
-	 "Debugger information for a buffer containing source code.")))
+  (with-current-buffer-safe cmdproc-buffer
+    (when (bufferp src-buffer)
+      (set-buffer src-buffer)
+      (realgud-cmdbuf-add-srcbuf src-buffer cmdproc-buffer)
+      (set (make-local-variable 'realgud-srcbuf-info)
+	   (make-realgud-srcbuf-info
+	    :cmdproc cmdproc-buffer
+	    :loc-hist (make-realgud-loc-hist)))
+      (put 'realgud-srcbuf-info 'variable-documentation
+	   "Debugger information for a buffer containing source code."))))
 
 (defun realgud-srcbuf-init-or-update (src-buffer cmdproc-buffer)
   "Call `realgud-srcbuf-init' for SRC-BUFFER update `realgud-srcbuf-info' variables
