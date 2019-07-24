@@ -14,8 +14,7 @@
 
 ; Should realgud:file-loc-from-line be here or elsewhere?
 (require 'load-relative)
-(require 'compile) ;; for compilation-find-file
-(require 'seq) ;; for seq-find
+(require 'seq) ;; for seq-find seq-filter
 (require-relative-list '("helper" "loc") "realgud-")
 (require-relative-list '("buffer/command") "realgud-buffer-")
 
@@ -37,12 +36,8 @@
   :type 'function
   :group 'realgud)
 
-(defun realgud:find-file (marker filename directory &optional formats)
-  "A wrapper around compilation find-file. We set the prompt
-   to indicate we are looking for a source-code file."
-   (or formats (setq formats "%s"))
-   (let ((compilation-error "source-code file"))
-    (compilation-find-file marker filename directory formats)))
+(defun realgud--file-matching-suffix(paths suffix)
+  (seq-filter (lambda (x) (string-suffix-p suffix x)) paths))
 
 (defun realgud:file-line-count(filename)
   "Return the number of lines in file FILENAME, or nil FILENAME can't be
@@ -97,7 +92,8 @@ problem as best as we can determine."
 	 (remapped-filename
 	  (assoc filename filename-remap-alist))
 	 (mutex (realgud-cmdbuf-mutex cmdbuf))
-	 )
+	 (matching-file-list)
+	 (buffer-files))
 
     ;;(with-mutex
     ;; mutex
@@ -115,6 +111,16 @@ problem as best as we can determine."
 	;; Is file already listed for ignore?
 	((realgud:file-ignore filename ignore-re-file-list)
 	 (message "tracking ignored for %s" filename))
+
+	;; If we can find the filename, e.g. "src/code.c" as a suffix of file in
+	;; the list of buffers seen, use that
+	((and
+	  (setq buffer-files
+	     (with-current-buffer (marker-buffer cmd-marker)
+	       (mapcar (lambda (buf) (buffer-file-name buf))
+		       (realgud-cmdbuf-info-srcbuf-list realgud-cmdbuf-info))))
+	  (setq matching-file-list (realgud--file-matching-suffix buffer-files filename))
+	  (car matching-file-list)))
 
 	;; Do we want to black-list this?
 	((y-or-n-p (format "Black-list file %s for location tracking?" filename))

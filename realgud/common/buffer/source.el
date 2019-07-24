@@ -1,4 +1,4 @@
-;;; Copyright (C) 2010, 2012-2015, 2017 Free Software Foundation, Inc
+;;; Copyright (C) 2010, 2012-2015, 2017, 2019 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
