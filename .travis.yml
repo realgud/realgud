@@ -2,6 +2,7 @@ language: emacs-lisp
 sudo: no
 
 env:
+ - EVM_EMACS=emacs-26.1-travis
  - EVM_EMACS=emacs-26.2-travis
 
 # Install EVM, version EVM_EMACS
