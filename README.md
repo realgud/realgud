@@ -1,4 +1,4 @@
-<!-- [![Build Status][travis-image]][travis-url] -->
+[![Build Status][travis-image]][travis-url]
 [![MELPA][melpa-image]][melpa]
 [![MELPA Stable][melpa-stable-image]][melpa-stable]
 
