@@ -5,3 +5,8 @@
 	(file-name-directory (directory-file-name default-directory))
       default-directory)))
   (cask-initialize parent-dir))
+;; There is a bug on Travis where we are getting
+;; "Symbol’s function definition is void: make-mutex"
+;; We'll work around it here
+(if (!functionp 'make-mutex)
+    (defun make-mutex(&optional name)))

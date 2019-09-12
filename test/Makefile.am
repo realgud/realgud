@@ -44,7 +44,8 @@ test_files := $(wildcard test-*.el)
 
 CHECK_FILES = $(notdir $(test_files:.el=.run))
 
-travis_test_files := $(wildcard test-[c-z]*.el)
+# There is a big in the Travis setup where
+travis_test_files := $(wildcard test-[c-r,t-z]*.el)
 
 EL_GET_CHECK_FILES = $(notdir $(travis_test_files:.el=.elrun))
 
