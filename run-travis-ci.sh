@@ -18,4 +18,4 @@ $EMACS --version
 echo
 
 cask
-NO_CHECK_EMACS_PACKAGES=1 /bin/bash ./autogen.sh && cd test && make check-elget
+NO_CHECK_EMACS_PACKAGES=1 /bin/bash ./autogen.sh && cd test && make check
