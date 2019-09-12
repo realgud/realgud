@@ -64,7 +64,7 @@ test-%.run:
 
 #: Run tests using cask to specify external Lisp dependencies
 test-%.elrun:
-	(cd $(top_srcdir)/test && $(EMACS) --batch  --no-splash --load ../cask-install.el --load $(@:.elrun=.el))
+	(cd $(top_srcdir)/test && $(EMACS) --batch --no-site-file --no-splash --load ../cask-install.el --load $(@:.elrun=.el))
 
 install-lispLISP: $(lisp_LISP) $(ELCFILES)
 
