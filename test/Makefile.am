@@ -43,7 +43,10 @@ test-elget: check-elget
 test_files := $(wildcard test-*.el)
 
 CHECK_FILES = $(notdir $(test_files:.el=.run))
-EL_GET_CHECK_FILES = $(notdir $(test_files:.el=.elrun))
+
+travis_test_files := $(wildcard test-[c-z]*.el)
+
+EL_GET_CHECK_FILES = $(notdir $(travis_test_files:.el=.elrun))
 
 #: Run all tests
 check: $(CHECK_FILES)
