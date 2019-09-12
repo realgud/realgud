@@ -30,7 +30,7 @@
 (declare-function realgud-cmdbuf-filename-remap-alist=     'realgud-buffer-command)
 (declare-function realgud-cmdbuf-mutex                     'realgud-buffer-command)
 
-(defcustom realgud-file-find-function 'realgud:find-file
+(defcustom realgud-file-find-function 'compilation-find-file
 ;;(defcustom realgud-file-find-function 'compilation-find-file
   "Function to call when we can't easily find file"
   :type 'function

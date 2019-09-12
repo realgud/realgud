@@ -1,16 +1,13 @@
 language: emacs-lisp
+sudo: no
 
 env:
-  - EMACS=emacs24
+ - EVM_EMACS=emacs-26.1-travis
 
+# Install EVM, version EVM_EMACS
 install:
-  - if [ "$EMACS" = 'emacs24' ]; then
-      sudo add-apt-repository -y ppa:cassou/emacs &&
-      sudo apt-get -qq update &&
-      sudo apt-get -qq -f install &&
-      sudo apt-get -qq install emacs24 emacs24-el;
-    fi
+  - curl -fsSkL https://gist.github.com/rejeep/ebcd57c3af83b049833b/raw > travis.sh && source ./travis.sh
 
 # run the tests
 script:
-  - NO_CHECK_EMACS_PACKAGES=1 /bin/bash ./autogen.sh && cd test && make check-elget
+  - ./run-travis-ci.sh
