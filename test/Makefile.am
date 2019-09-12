@@ -48,8 +48,8 @@ EL_GET_CHECK_FILES = $(notdir $(test_files:.el=.elrun))
 #: Run all tests
 check: $(CHECK_FILES)
 
-#: Run all tests via el-get
-check-elget: $(EL_GET_CHECK_FILES)
+#: Run all tests via cask
+check-cask: $(EL_GET_CHECK_FILES)
 
 #: Run all tests with minimum verbosity
 check-short:
@@ -64,7 +64,7 @@ test-%.run:
 
 #: Run tests using el-get to specify external Lisp dependencies
 test-%.elrun:
-	(cd $(top_srcdir)/test && $(EMACS) --batch --no-site-file --no-splash --load ../el-get-install.el --load $(@:.elrun=.el))
+	(cd $(top_srcdir)/test && $(EMACS) --batch --no-site-file --no-splash --load ../cask-install.el --load $(@:.elrun=.el))
 
 install-lispLISP: $(lisp_LISP) $(ELCFILES)
 
