@@ -1,5 +1,5 @@
 language: emacs-lisp
-sudo: no
+sudo: yes
 
 env:
  - EVM_EMACS=emacs-26.2-travis
@@ -9,6 +9,7 @@ env:
 
 # Install EVM, version EVM_EMACS
 install:
+  - sudo apt-install gnutls-dev
   - curl -fsSkL https://gist.github.com/rejeep/ebcd57c3af83b049833b/raw > travis.sh && source ./travis.sh
   - evm install $EVM_EMACS --use --skip
 
