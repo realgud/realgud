@@ -1,5 +1,11 @@
-* Have `test-simple`, `loc-changes`, `cl-lib` and `load-relative` installed.
-* From inside emacs, evaluate:
+Have `test-simple`, `loc-changes`, `cl-lib` and `load-relative` installed.
+
+    $ cd realgud  # where you placed the project
+    $ emacs
+
+
+From inside emacs, evaluate:
+
 ```lisp
   (compile (format "EMACSLOADPATH=:%s:%s:%s:%s ./autogen.sh" (file-name-directory (locate-library "test-simple.elc")) (file-name-directory (locate-library "load-relative.elc")) (file-name-directory (locate-library "loc-changes.elc")) (file-name-directory (locate-library "realgud.elc")) ))
   ```
