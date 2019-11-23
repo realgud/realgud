@@ -53,6 +53,21 @@ Or raise an error if neither."
 	('t (error "We can only handle comint, shell, or eshell buffers"))
 	))
 
+(defun realgud:remove-ansi-schmutz-in-string (string)
+  "Remove ASCII escape sequences from STRING"
+  (replace-regexp-in-string
+   ;; Strip ANSI escape codes, e.g. gdb produces ^[[?2004h and ^[[?2004l before
+   ;; prompts. This regex handles these sequences, colors, and more. However, it
+   ;; doesn't cover all. To cover all, we'd need something like
+   ;; "\033\\[\\??[0-9;]*[a-zA-Z]" but this covers non-defined escape sequences and is
+   ;; missing sequences that have multiple ending letters. The multi-letter ending
+   ;; escape sequences probably won't occur because these are cursor movement
+   ;; sequences. Examining the escape code spec, this regex should cover all cases
+   ;; we'd hit from a debugger.
+   ;; https://github.com/realgud/realgud/issues/257
+   ;; https://en.wikipedia.org/wiki/ANSI_escape_code
+   "\033\\[\\??[0-9;]*[CDGKJhlm]" "" string))
+
 (defun realgud:remove-ansi-schmutz()
   "Remove ASCII escape sequences that node.js 'decorates' in
 prompts and interactive output with"
@@ -60,7 +75,7 @@ prompts and interactive output with"
   (add-to-list
    'comint-preoutput-filter-functions
    (lambda (output)
-     (replace-regexp-in-string "\033\\[[0-9]*[CDGKJhl]" "" output)))
+     (realgud:remove-ansi-schmutz-in-string output)))
   )
 
 

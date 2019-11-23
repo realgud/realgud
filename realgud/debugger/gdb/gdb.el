@@ -134,6 +134,14 @@ fringe and marginal icons.
 	  (if (and process (eq 'run (process-status process)))
 	      (with-current-buffer cmd-buf
 		(realgud-command "set annotate 1" nil nil nil)
+                ;; In gdb, when setting breakpoint on function, we want it to produce an absolute
+                ;; path, so set filename-display to absolute. We want:
+                ;;   (gdb) b functionName
+                ;;   Breakpoint 1 at 0x7fff607e4dd6: file /abs/path/to/file.cpp, line 273.
+                ;; Without this, gdb will display the path supplied when the code was compiled, i.e.
+                ;; if a relative path is supplied to gcc, gdb will display the relative path
+                ;; tripping up realgud, causing it to ask if you want to blacklist the file.
+                (realgud-command "set filename-display absolute" nil nil nil)
 		)))
       )
     ))

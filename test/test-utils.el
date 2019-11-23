@@ -50,4 +50,9 @@
 ;;   (assert-equal 'comint (realgud:canonic-major-mode))
 ;;   )
 
+(note "realgud:remove-ansi-schmutz-in-string")
+(assert-equal "(gdb) " (realgud:remove-ansi-schmutz-in-string "[?2004h[?2004l[?2004h(gdb) "))
+(assert-equal "color" (realgud:remove-ansi-schmutz-in-string "[30;46mcolor[0m"))
+
+
 (end-tests)

@@ -122,8 +122,8 @@ problem as best as we can determine."
 	  (setq matching-file-list (realgud--file-matching-suffix buffer-files filename))
 	  (car matching-file-list)))
 
-	;; Do we want to black-list this?
-	((y-or-n-p (format "Black-list file %s for location tracking?" filename))
+	;; Do we want to blacklist this?
+	((y-or-n-p (format "Unable to locate %s\nBlacklist it for location tracking?" filename))
 	 ;; FIXME: there has to be a simpler way to set ignore-file-list
 	 (with-current-buffer cmdbuf
 	   (push filename ignore-re-file-list)
