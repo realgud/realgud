@@ -7,8 +7,16 @@ Have `test-simple`, `loc-changes`, `cl-lib` and `load-relative` installed.
 From inside emacs, evaluate:
 
 ```lisp
-  (compile (format "EMACSLOADPATH=:%s:%s:%s:%s ./autogen.sh" (file-name-directory (locate-library "test-simple.elc")) (file-name-directory (locate-library "load-relative.elc")) (file-name-directory (locate-library "loc-changes.elc")) (file-name-directory (locate-library "realgud.elc")) ))
+  (compile (format "EMACSLOADPATH=:%s:%s:%s:%s ./autogen.sh" (file-name-directory (locate-library "test-simple.elc")) (file-name-directory (locate-library "load-relative.elc")) (file-name-directory (locate-library "loc-changes.elc")) default-directory) )
   ```
+
+
+Optional: if you want to install to a custom location, use ./configure as shown.
+Note, that --prefix does not prefix the lispdir, you must use --with-lispdir in
+addition to --prefix.
+
+    ./configure --prefix=INSTALL_DIR --with-lispdir=INSTALL_DIR/share/emacs/site-lisp
+
 
 After this you should be able to run:
 

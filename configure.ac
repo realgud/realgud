@@ -5,7 +5,7 @@ AM_INIT_AUTOMAKE([foreign])
 AM_MAINTAINER_MODE
 
 AC_PATH_PROG([EMACS], [emacs], [emacs])
-AC_ARG_WITH(emacs, AC_HELP_STRING([--with-emacs],
+AC_ARG_WITH(emacs, AC_HELP_STRING([--with-emacs=VALUE],
                   [location of emacs program]), EMACS=$withval)
 
 AC_MSG_NOTICE("Checking emacs version")
