@@ -47,43 +47,44 @@
   :type 'symbolp
   :group 'realgud)
 
-(declare-function buffer-killed?                      'realgud-helper)
-(declare-function fn-p-to-fn?-alias                   'realgud-helper)
-(declare-function realgud-bp-add-info                 'realgud-bp)
-(declare-function realgud-bp-del-info                 'realgud-bp)
-(declare-function realgud-bp-enable-disable-info      'realgud-bp)
-(declare-function realgud-cmdbuf-add-srcbuf           'realgud-buffer-command)
-(declare-function realgud-cmdbuf-debugger-name        'realgud-buffer-command)
-(declare-function realgud-cmdbuf-info-bp-list=        'realgud-buffer-command)
-(declare-function realgud-cmdbuf-info-divert-output?= 'realgud-buffer-command)
-(declare-function realgud-cmdbuf-info-in-debugger?    'realgud-buffer-command)
-(declare-function realgud-cmdbuf-info-in-debugger?=   'realgud-buffer-command)
-(declare-function realgud-cmdbuf-info-last-input-end= 'realgud-buffer-command)
-(declare-function realgud-cmdbuf-init                 'realgud-buffer-command)
-(declare-function realgud-cmdbuf-loc-hist             'realgud-buffer-command)
-(declare-function realgud-cmdbuf-mode-line-update     'realgud-buffer-command)
-(declare-function realgud-cmdbuf-mode-line-update     'realgud-buffer-command)
-(declare-function realgud-cmdbuf-pat                  'realgud-buffer-command)
-(declare-function realgud-cmdbuf?                     'realgud-buffer-command)
-(declare-function realgud-cmdbuf-info-in-srcbuf?=     'realgud-buffer-command)
-(declare-function realgud:debugger-name-transform     'realgud-helper)
-(declare-function realgud:terminate                   'realgud-core)
-(declare-function realgud:file-loc-from-line          'realgud-file)
-(declare-function realgud-fringe-history-set          'realgud-fringe)
-(declare-function realgud-get-cmdbuf                  'realgud-buffer-command)
-(declare-function realgud-get-srcbuf-from-cmdbuf      'realgud-buffer-helper)
-(declare-function realgud-loc-goto                    'realgud-loc)
-(declare-function realgud-loc-hist-add                'realgud-lochist)
-(declare-function realgud-loc-hist-index              'realgud-lochist)
-(declare-function realgud-loc-hist-item               'realgud-lochist)
-(declare-function realgud-loc?                        'realgud-loc)
-(declare-function realgud-short-key-mode-setup        'realgud-shortkey)
-(declare-function realgud-srcbuf-init-or-update       'realgud-source)
-(declare-function realgud-srcbuf-loc-hist             'realgud-source)
-(declare-function realgud-window-src                  'realgud-window)
-(declare-function realgud-window-src-undisturb-cmd    'realgud-window)
-(declare-function realgud-window-update-position      'realgud-window)
-(declare-function realgud:join-string                 'realgud-utils)
+(declare-function buffer-killed?                        'realgud-helper)
+(declare-function fn-p-to-fn?-alias                     'realgud-helper)
+(declare-function realgud-bp-add-info                   'realgud-bp)
+(declare-function realgud-bp-del-info                   'realgud-bp)
+(declare-function realgud-bp-enable-disable-info        'realgud-bp)
+(declare-function realgud-cmdbuf-add-srcbuf             'realgud-buffer-command)
+(declare-function realgud-cmdbuf-debugger-name          'realgud-buffer-command)
+(declare-function realgud-cmdbuf-info-bp-list=          'realgud-buffer-command)
+(declare-function realgud-cmdbuf-info-divert-output?=   'realgud-buffer-command)
+(declare-function realgud-cmdbuf-info-in-debugger?      'realgud-buffer-command)
+(declare-function realgud-cmdbuf-info-in-debugger?=     'realgud-buffer-command)
+(declare-function realgud-cmdbuf-info-last-input-end=   'realgud-buffer-command)
+(declare-function realgud-cmdbuf-init                   'realgud-buffer-command)
+(declare-function realgud-cmdbuf-loc-hist               'realgud-buffer-command)
+(declare-function realgud-cmdbuf-mode-line-update       'realgud-buffer-command)
+(declare-function realgud-cmdbuf-mode-line-update       'realgud-buffer-command)
+(declare-function realgud-cmdbuf-pat                    'realgud-buffer-command)
+(declare-function realgud-cmdbuf?                       'realgud-buffer-command)
+(declare-function realgud-cmdbuf-info-in-srcbuf?=       'realgud-buffer-command)
+(declare-function realgud:debugger-name-transform       'realgud-helper)
+(declare-function realgud:terminate                     'realgud-core)
+(declare-function realgud:file-loc-from-line            'realgud-file)
+(declare-function realgud-fringe-history-set            'realgud-fringe)
+(declare-function realgud-get-cmdbuf                    'realgud-buffer-command)
+(declare-function realgud-get-srcbuf-from-cmdbuf        'realgud-buffer-helper)
+(declare-function realgud-loc-goto                      'realgud-loc)
+(declare-function realgud-loc-hist-add                  'realgud-lochist)
+(declare-function realgud-loc-hist-index                'realgud-lochist)
+(declare-function realgud-loc-hist-item                 'realgud-lochist)
+(declare-function realgud-loc?                          'realgud-loc)
+(declare-function realgud-short-key-mode-setup          'realgud-shortkey)
+(declare-function realgud-srcbuf-init-or-update         'realgud-source)
+(declare-function realgud-srcbuf-loc-hist               'realgud-source)
+(declare-function realgud-window-src                    'realgud-window)
+(declare-function realgud-window-src-undisturb-cmd      'realgud-window)
+(declare-function realgud-window-update-position        'realgud-window)
+(declare-function realgud:join-string                   'realgud-utils)
+(declare-function realgud:remove-ansi-schmutz-in-string 'realgud-utils)
 
 (make-variable-buffer-local  (defvar realgud-track-mode))
 (fn-p-to-fn?-alias 'realgud-loc-p)
@@ -228,18 +229,7 @@ evaluating (realgud-cmdbuf-info-loc-regexp realgud-cmdbuf-info)"
 
   (interactive "r")
   (if (> from to) (cl-psetq to from from to))
-  (let* ((text (replace-regexp-in-string
-                ;; Strip ANSI escape codes, e.g. gdb produces ^[[?2004h and ^[[?2004l before
-                ;; prompts. This regex handles these sequences, colors, and more. However, it
-                ;; doesn't cover all. To cover all, we'd need something like
-                ;; "\033\\[\\??[0-9;]*[a-zA-Z]" but this covers non-defined escape sequences and is
-                ;; missing sequences that have multiple ending letters. The multi-letter ending
-                ;; escape sequences probably won't occur because these are cursor movement
-                ;; sequences. Examining the escape code spec, this regex should cover all cases
-                ;; we'd hit from a debugger.
-                ;; https://github.com/realgud/realgud/issues/257
-                ;; https://en.wikipedia.org/wiki/ANSI_escape_code
-                "\033\\[\\??[0-9;]*[CDGKJhlm]" ""
+  (let* ((text (realgud:remove-ansi-schmutz-in-string
                 (buffer-substring-no-properties from to)))
 	 (loc (realgud-track-loc text cmd-mark))
 	 ;; If we see a selected frame number, it is stored
