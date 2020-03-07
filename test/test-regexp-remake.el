@@ -25,6 +25,9 @@
 (set (make-local-variable 'frame-pat)
      (gethash "debugger-backtrace" realgud:remake-pat-hash))
 
+(set (make-local-variable 'loc-pat)
+     (gethash "loc" realgud:remake-pat-hash))
+
 (note "remake prompt")
 (prompt-match "remake<10> "  "10")
 (prompt-match	"remake<<1>> " "1" "recursive remake %s")
@@ -71,5 +74,17 @@
 	      (substring test-text
 			 (match-beginning line-group)
 			 (match-end line-group)))
+
+(note "target dependency testing")
+(setq test-text
+      "-> (/src/external-vcs/github/rocky/remake/Makefile:1466)")
+
+(assert-t (numberp (loc-match test-text loc-pat))
+	  "remake dependency location")
+
+(assert-equal "/src/external-vcs/github/rocky/remake/Makefile"
+	      (match-string (realgud-loc-pat-file-group loc-pat)
+			    test-text))
+
 
 (end-tests)
