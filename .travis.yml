@@ -4,7 +4,7 @@ sudo: no
 env:
 #  - EVM_EMACS=emacs-26.3-travis # Broken on travis
  - EVM_EMACS=emacs-25.3-travis
- - EVM_EMACS=emacs-25.2-travis
+# - EVM_EMACS=emacs-25.2-travis
 
 # Install EVM, version EVM_EMACS
 install:
