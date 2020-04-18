@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2017 Free Software Foundation, Inc
+;; Copyright (C) 2015-2017, 2020 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -102,6 +102,82 @@
   (realgud-track-mode-setup realgud-track-mode)
   )
 
+(defun realgud-remove-track-hooks()
+  (let ((mode (realgud:canonic-major-mode)))
+    (cond ((eq mode 'eshell)
+	   (remove-hook 'eshell-output-filter-functions
+			'realgud-track-eshell-output-filter-hook))
+	  ((eq mode 'comint)
+	   (remove-hook 'comint-output-filter-functions
+			'realgud-track-comint-output-filter-hook))
+	  )))
+
+(defun realgud-add-track-hooks()
+  (let ((mode (realgud:canonic-major-mode)))
+    (cond ((eq mode 'eshell)
+	   (add-hook 'eshell-output-filter-functions
+		     'realgud-track-eshell-output-filter-hook))
+	  ((eq mode 'comint)
+	   (add-hook 'comint-output-filter-functions
+		     'realgud-track-comint-output-filter-hook))
+	  )))
+
+;; We will hijack comint-truncate-buffer to augment it with awareness of
+;; realgud. We save the original value and restore that when leaving the mode.
+(defalias 'comint-truncate-buffer-orig
+  (symbol-function 'comint-truncate-buffer))
+
+(defun realgud-truncate-buffer (&optional last-n)
+  "Truncate the buffer to `comint-buffer-maximum-size'.
+This function could be on `comint-output-filter-functions' or bound to a key."
+  (interactive "")
+  (if (realgud-cmdbuf?)
+      (when (y-or-n-p "Clear buffer and destroy realgud debug history? ")
+	(save-excursion
+	  ;; Delete up to position indicated
+	  (if last-n
+	      ;; FIXME figure out what the place is from the history ring.
+	      ;; (goto-char ... )
+	      (goto-char (process-mark (get-buffer-process (current-buffer))))
+	    ;; else
+	      (goto-char (process-mark (get-buffer-process (current-buffer))))
+	    )
+	  (forward-line 0)
+	  (beginning-of-line)
+	  (let ((inhibit-read-only t))
+	    (delete-region (point-min) (point)))
+	  (realgud-add-track-hooks)
+	  (setf (realgud-cmdbuf-info-last-input-end realgud-cmdbuf-info) (point-max))
+	  (setf (realgud-cmdbuf-info-loc-hist realgud-cmdbuf-info) (make-realgud-loc-hist))
+	  ))
+    ;; else
+    (message "Nothing done - not in command buffer")
+    ))
+
+(defun realgud-clear-buffer()
+  "Remove the entire command buffer. This is like `comint-clear-buffer` or
+  `comint-truncate-buffer` except we coordinate the delete with realgud so that it
+   doesn't get bolixed by marker removal.
+  "
+  (interactive "")
+  (if (realgud-cmdbuf?)
+      (when (y-or-n-p "Clear buffer and destroy realgud debug history? ")
+	(realgud-remove-track-hooks)
+	(save-excursion
+	  (goto-char (process-mark (get-buffer-process (current-buffer))))
+	  (forward-line 0)
+	  (beginning-of-line)
+	  (let ((inhibit-read-only t))
+	    (delete-region (point-min) (point))))
+	(realgud-add-track-hooks)
+	(setf (realgud-cmdbuf-info-last-input-end realgud-cmdbuf-info) (point-max))
+	(setf (realgud-cmdbuf-info-loc-hist realgud-cmdbuf-info) (make-realgud-loc-hist))
+	)
+    ;; else
+    (message "Nothing done - not in command buffer")
+    ))
+
+
 ;; FIXME: this should have been picked up by require'ing track.
 (defvar realgud-track-divert-string)
 
@@ -139,14 +215,7 @@ of this mode."
 	  (set-marker comint-last-output-start (point)))
 
 	(set (make-local-variable 'tool-bar-map) realgud:tool-bar-map)
-	(let ((mode (realgud:canonic-major-mode)))
-	  (cond ((eq mode 'eshell)
-		 (add-hook 'eshell-output-filter-functions
-			   'realgud-track-eshell-output-filter-hook))
-		((eq mode 'comint)
-		 (add-hook 'comint-output-filter-functions
-			   'realgud-track-comint-output-filter-hook))
-		))
+	(realgud-add-track-hooks)
 	(run-mode-hooks 'realgud-track-mode-hook))
   ;; else
     (progn
@@ -156,14 +225,7 @@ of this mode."
 	)
       (kill-local-variable 'realgud:tool-bar-map)
       (realgud-fringe-erase-history-arrows)
-      (let ((mode (realgud:canonic-major-mode)))
-	(cond ((eq mode 'eshell)
-	       (remove-hook 'eshell-output-filter-functions
-		    'realgud-track-eshell-output-filter-hook))
-	      ((eq mode 'comint)
-	       (remove-hook 'comint-output-filter-functions
-			    'realgud-track-comint-output-filter-hook))
-	      ))
+      (realgud-remove-track-hooks)
       (let* ((cmd-process (get-buffer-process (current-buffer)))
 	     (status (if cmd-process
 			 (list (propertize (format ":%s"
