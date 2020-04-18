@@ -39,6 +39,10 @@
 		  'realgud-utils)
 (declare-function shell-mode 'shell)
 
+(defconst realgud-track-truncate-default
+  10
+  "When `realgud-truncate-buffer` is called without arguments, save this many history location steps.")
+
 (defvar realgud-track-mode-map
   (let ((map  (copy-keymap shell-mode-map)))
     (realgud-populate-debugger-menu map)
@@ -81,7 +85,7 @@
 	       map)
       (tool-bar-local-item-from-menu
        (car x) (cdr x) map realgud-track-mode-map)))
-  "toolbar use when `realgud' interface is active"
+  "Toolbar used when `realgud' interface is active."
   )
 
 (define-minor-mode realgud-track-mode
@@ -102,7 +106,7 @@
   (realgud-track-mode-setup realgud-track-mode)
   )
 
-(defun realgud-remove-track-hooks()
+(defun realgud-track-remove-hooks()
   (let ((mode (realgud:canonic-major-mode)))
     (cond ((eq mode 'eshell)
 	   (remove-hook 'eshell-output-filter-functions
@@ -112,7 +116,7 @@
 			'realgud-track-comint-output-filter-hook))
 	  )))
 
-(defun realgud-add-track-hooks()
+(defun realgud-track-add-hooks()
   (let ((mode (realgud:canonic-major-mode)))
     (cond ((eq mode 'eshell)
 	   (add-hook 'eshell-output-filter-functions
@@ -127,51 +131,82 @@
 (defalias 'comint-truncate-buffer-orig
   (symbol-function 'comint-truncate-buffer))
 
-(defun realgud-truncate-buffer (&optional last-n)
-  "Truncate the buffer to `comint-buffer-maximum-size'.
+(defun realgud-track-truncate-buffer (&optional last-n)
+  "Truncate the buffer to the last LAST-N history commands.
 This function could be on `comint-output-filter-functions' or bound to a key."
-  (interactive "")
+  (interactive "p")
   (if (realgud-cmdbuf?)
-      (when (y-or-n-p "Clear buffer and destroy realgud debug history? ")
-	(save-excursion
-	  ;; Delete up to position indicated
-	  (if last-n
-	      ;; FIXME figure out what the place is from the history ring.
-	      ;; (goto-char ... )
-	      (goto-char (process-mark (get-buffer-process (current-buffer))))
-	    ;; else
-	      (goto-char (process-mark (get-buffer-process (current-buffer))))
-	    )
-	  (forward-line 0)
-	  (beginning-of-line)
-	  (let ((inhibit-read-only t))
-	    (delete-region (point-min) (point)))
-	  (realgud-add-track-hooks)
-	  (setf (realgud-cmdbuf-info-last-input-end realgud-cmdbuf-info) (point-max))
-	  (setf (realgud-cmdbuf-info-loc-hist realgud-cmdbuf-info) (make-realgud-loc-hist))
-	  ))
+      (let* ((info realgud-cmdbuf-info)
+	     (loc-hist (realgud-cmdbuf-info-loc-hist info))
+	     (loc-ring (realgud-loc-hist-ring loc-hist))
+	     (locs (ring-elements loc-ring))
+	     (clamped-last-n (min (or last-n realgud-track-truncate-default)
+				  (length locs)))
+	     (i (max 0 clamped-last-n))
+	     (loc (ring-ref loc-ring i))
+	     (cmd-marker)
+	     )
+
+	(when (y-or-n-p
+	       (format-message
+		"Truncate buffer to last %d steps and destroy older realgud debug history? "
+		clamped-last-n))
+
+	  (save-excursion
+	    ;; Find a location marker in the history associated with clamped-last-n
+	    (while (and (not (realgud-loc? loc)) (> i 0))
+	      (setq i (1- i))
+	      (setq loc (ring-ref loc-ring i)))
+
+	    (when (realgud-loc? loc)
+	      ;; Delete up to loc.
+	      (setq cmd-marker (realgud-loc-cmd-marker loc))
+	      (goto-char cmd-marker)
+	      (forward-line 0)
+	      (beginning-of-line)
+	      (let ((inhibit-read-only t))
+		(delete-region
+		 (or (and (boundp 'realgud-point-min) realgud-point-min)
+		     (point-min))
+		 (point)))
+
+	      ;; Clear out location history for portion that was deleted.
+	      (while (> (ring-length loc-ring) clamped-last-n)
+		(ring-remove loc-ring))
+
+	      ;; Set new last position and restore realgud tracking hooks.
+	      (setf (realgud-cmdbuf-info-last-input-end realgud-cmdbuf-info) (point-max))
+	      (realgud-track-add-hooks)
+	    ))
+	))
     ;; else
     (message "Nothing done - not in command buffer")
     ))
 
-(defun realgud-clear-buffer()
-  "Remove the entire command buffer. This is like `comint-clear-buffer` or
-  `comint-truncate-buffer` except we coordinate the delete with realgud so that it
-   doesn't get bolixed by marker removal.
-  "
+(defun realgud-track-clear-buffer()
+  "Remove the entire command buffer.
+This is like `comint-clear-buffer' or `comint-truncate-buffer' except we
+coordinate the delete with realgud so that it doesn't get bolixed
+by marker removal."
   (interactive "")
   (if (realgud-cmdbuf?)
       (when (y-or-n-p "Clear buffer and destroy realgud debug history? ")
-	(realgud-remove-track-hooks)
+	(realgud-track-remove-hooks)
+
+	;; Delete buffer from the beginning to just before the last input region.
 	(save-excursion
 	  (goto-char (process-mark (get-buffer-process (current-buffer))))
 	  (forward-line 0)
 	  (beginning-of-line)
 	  (let ((inhibit-read-only t))
-	    (delete-region (point-min) (point))))
-	(realgud-add-track-hooks)
+	    (delete-region
+	     (or (and (boundp 'realgud-point-min) realgud-point-min))
+	     (point))))
+
+	;; Set new last position, while location history, and restore realgud tracking hooks.
 	(setf (realgud-cmdbuf-info-last-input-end realgud-cmdbuf-info) (point-max))
 	(setf (realgud-cmdbuf-info-loc-hist realgud-cmdbuf-info) (make-realgud-loc-hist))
+	(realgud-track-add-hooks)
 	)
     ;; else
     (message "Nothing done - not in command buffer")
@@ -182,9 +217,9 @@ This function could be on `comint-output-filter-functions' or bound to a key."
 (defvar realgud-track-divert-string)
 
 (defun realgud-track-mode-setup (mode-on?)
-  "Called when entering or leaving `realgud-track-mode'. Variable
-MODE-ON is a boolean which specifies if we are going into or out
-of this mode."
+  "Mode setup when entering or leaving `realgud-track-mode'.
+Variable MODE-ON? is a boolean which specifies if we are going
+into or out of this mode."
   (if mode-on?
       (let ((process (get-buffer-process (current-buffer))))
 	(unless process
@@ -215,7 +250,7 @@ of this mode."
 	  (set-marker comint-last-output-start (point)))
 
 	(set (make-local-variable 'tool-bar-map) realgud:tool-bar-map)
-	(realgud-add-track-hooks)
+	(realgud-track-add-hooks)
 	(run-mode-hooks 'realgud-track-mode-hook))
   ;; else
     (progn
@@ -225,7 +260,7 @@ of this mode."
 	)
       (kill-local-variable 'realgud:tool-bar-map)
       (realgud-fringe-erase-history-arrows)
-      (realgud-remove-track-hooks)
+      (realgud-track-remove-hooks)
       (let* ((cmd-process (get-buffer-process (current-buffer)))
 	     (status (if cmd-process
 			 (list (propertize (format ":%s"
@@ -253,6 +288,7 @@ of this mode."
 ;;   (defvar trepan-short-key-mode-map (make-sparse-keymap))
 ;;   (set-keymap-parent trepan-short-key-mode-map realgud-short-key-mode-map)
 (defmacro realgud-track-mode-vars (name)
+  "Create a number of track-mode variables based on the debugger name NAME."
   `(progn
      (defvar ,(intern (concat name "-track-mode")) nil
 	,(format "Non-nil if using %s-track-mode as a minor mode of some other mode.
@@ -265,8 +301,8 @@ Use the command `%s-track-mode' to toggle or set this variable." name name))
 ;; FIXME: The below could be a macro? I have a hard time getting
 ;; macros right.
 (defun realgud-track-mode-body(name)
-  "Used in by custom debuggers: pydbgr, trepan, gdb, etc. NAME is
-the name of the debugger which is used to preface variables."
+  "This function is used in by custom debuggers: trepan3k, remake, gdb, etc.
+NAME is the name of the debugger which is used to preface variables."
   (realgud:track-set-debugger name)
   (funcall (intern (concat "realgud-define-" name "-commands")))
   (if (intern (concat name "-track-mode"))
@@ -278,7 +314,7 @@ the name of the debugger which is used to preface variables."
       )))
 
 (defun realgud:track-mode-disable()
-  "Disable the debugger track-mode hook"
+  "Disable the debugger track-mode hook."
   (interactive "")
   (if realgud-track-mode
       (progn
@@ -291,7 +327,7 @@ the name of the debugger which is used to preface variables."
     (message "Debugger is not in track mode")))
 
 (defun realgud:track-mode-enable()
-  "Enable the debugger track-mode hook"
+  "Enable the debugger track-mode hook."
   (interactive "")
   (if realgud-track-mode
       (message "Debugger track mode is already enabled.")
