@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2019 Free Software Foundation, Inc
+;; Copyright (C) 2015-2020 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -876,7 +876,9 @@ we can't find a debugger with that information.`.
       (setq command-hash (gethash base-variable-name realgud-command-hash))
       )
 
-    (realgud-set-command-name-hash-to-buffer-local command-hash)
+    (when command-hash
+      (realgud-set-command-name-hash-to-buffer-local command-hash)
+      )
 
     (if regexp-hash
 	(let* (
