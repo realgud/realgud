@@ -48,7 +48,7 @@ This should be an executable on your path, or an absolute file name."
 (declare-function pdb-query-cmdline    'realgud:pdb-core)
 (declare-function pdb-parse-cmd-args   'realgud:pdb-core)
 (declare-function realgud:run-debugger 'realgud:run)
-(declare-function realgud:run-process  'realgud:core)
+(declare-function realgud:run-process  'realgud:run)
 (declare-function realgud:flatten      'realgud-utils)
 
 ;;;###autoload

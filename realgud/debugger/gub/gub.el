@@ -20,6 +20,7 @@
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("../../common/track") "realgud-")
 (require-relative-list '("core" "track-mode") "realgud:gub-")
+(require-relative-list '("../../common/run") "realgud:")
 
 (eval-when-compile (require 'cl-lib))
 
@@ -43,7 +44,7 @@ This should be an executable on your path, or an absolute file name."
 
 (declare-function gub-query-cmdline  'realgud-gub-core)
 (declare-function gub-parse-cmd-args 'realgud-gub-core)
-(declare-function realgud:run-process 'realgud-core)
+(declare-function realgud:run-process 'realgud:run)
 
 
 (defun realgud-gub-fn (&optional opt-command-line no-reset)

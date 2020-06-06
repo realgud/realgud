@@ -22,6 +22,9 @@
 			 "../../common/utils")
 		       "realgud-")
 
+(require-relative-list '("../../common/run")
+                       "realgud:")
+
 (require-relative-list '("../../common/buffer/command"
 			 "../../common/buffer/source")
 		       "realgud-buffer-")
@@ -55,7 +58,7 @@ This should be an executable on your path, or an absolute file name."
 (declare-function realgud-command            'realgud:cmds)
 (declare-function realgud:gdb-parse-cmd-args 'realgud:gdb-core)
 (declare-function realgud:gdb-query-cmdline  'realgud:gdb-core)
-(declare-function realgud:run-process        'realgud-core)
+(declare-function realgud:run-process        'realgud:run)
 (declare-function realgud:flatten            'realgud-utils)
 
 ;; -------------------------------------------------------------------
