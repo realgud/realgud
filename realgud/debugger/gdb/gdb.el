@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2016, 2019 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016, 2019-2020 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -19,6 +19,7 @@
 (require 'load-relative)
 (require-relative-list '("../../common/cmds"
 			 "../../common/helper"
+			 "../../common/run"
 			 "../../common/utils")
 		       "realgud-")
 
