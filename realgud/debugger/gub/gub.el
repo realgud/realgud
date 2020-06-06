@@ -1,4 +1,4 @@
-;; Copyright (C) 2015 Free Software Foundation, Inc
+;; Copyright (C) 2015, 2020 Free Software Foundation, Inc
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
 ;; This program is free software: you can redistribute it and/or
@@ -19,6 +19,7 @@
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("../../common/track") "realgud-")
+(require-relative-list '("../../common/run") "realgud-")
 (require-relative-list '("core" "track-mode") "realgud:gub-")
 
 (eval-when-compile (require 'cl-lib))
@@ -43,7 +44,7 @@ This should be an executable on your path, or an absolute file name."
 
 (declare-function gub-query-cmdline  'realgud-gub-core)
 (declare-function gub-parse-cmd-args 'realgud-gub-core)
-(declare-function realgud:run-process 'realgud-core)
+(declare-function realgud:run-process 'realgud:run)
 
 
 (defun realgud-gub-fn (&optional opt-command-line no-reset)

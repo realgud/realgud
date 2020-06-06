@@ -1,4 +1,4 @@
-;; Copyright (C) 2010-2014, 2016-2017 Free Software Foundation, Inc
+;; Copyright (C) 2010-2014, 2016-2017, 2020 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -24,7 +24,7 @@
 (declare-function trepan3k-query-cmdline  'realgud:trepan3k-core)
 (declare-function trepan3k-parse-cmd-args 'realgud:trepan3k-core)
 (declare-function realgud:run-debugger    'realgud:run)
-(declare-function realgud:run-process     'realgud:core)
+(declare-function realgud:run-process     'realgud:run)
 (declare-function realgud:flatten         'realgud-utils)
 
 ;; -------------------------------------------------------------------
