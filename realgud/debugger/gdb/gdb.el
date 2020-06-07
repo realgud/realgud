@@ -23,6 +23,9 @@
 			 "../../common/utils")
 		       "realgud-")
 
+(require-relative-list '("../../common/run")
+                       "realgud:")
+
 (require-relative-list '("../../common/buffer/command"
 			 "../../common/buffer/source")
 		       "realgud-buffer-")
