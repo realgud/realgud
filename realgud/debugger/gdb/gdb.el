@@ -19,7 +19,6 @@
 (require 'load-relative)
 (require-relative-list '("../../common/cmds"
 			 "../../common/helper"
-			 "../../common/run"
 			 "../../common/utils")
 		       "realgud-")
 

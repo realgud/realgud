@@ -19,7 +19,6 @@
 (require 'load-relative)
 (require-relative-list '("../../common/helper") "realgud-")
 (require-relative-list '("../../common/track") "realgud-")
-(require-relative-list '("../../common/run") "realgud-")
 (require-relative-list '("core" "track-mode") "realgud:gub-")
 (require-relative-list '("../../common/run") "realgud:")
 
