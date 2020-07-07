@@ -1,4 +1,4 @@
-;; Copyright (C) 2010-2016 Free Software Foundation, Inc
+;; Copyright (C) 2010-2016, 2020 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -274,6 +274,22 @@ marginal icons is reset."
 
 	;; For comint.el.
 	(comint-mode)
+
+	(let ((map (make-sparse-keymap)))
+	  ;; Signals
+	  (let ((signals-map (make-sparse-keymap "Signals")))
+	    (define-key map [menu-bar signals] (cons "Signals" signals-map))
+	    (define-key signals-map [eof]   '("EOF"   . comint-send-eof))
+	    (define-key signals-map [kill]  '("KILL"  . comint-kill-subjob))
+	    (define-key signals-map [quit]  '("QUIT"  . comint-quit-subjob))
+	    (define-key signals-map [cont]  '("CONT"  . comint-continue-subjob))
+	    (define-key signals-map [stop]  '("STOP"  . comint-stop-subjob))
+	    (define-key signals-map [break] '("BREAK" . comint-interrupt-subjob)))
+	  ;; Put them in the menu bar:
+	  (setq menu-bar-final-items (append '(signals)
+					     menu-bar-final-items))
+	  map)
+
 
 	;; Making overlay-arrow-variable-list buffer local has to be
 	;; done after running commint mode. FIXME: find out why and if
