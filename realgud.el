@@ -4,10 +4,10 @@
 ;; Version: 1.5.1
 ;; Package-Type: multi
 ;; Package-Requires: ((load-relative "1.3.1") (loc-changes "1.2") (test-simple  "1.3.0") (emacs "25"))
-;; URL: http://github.com/realgud/realgud/
+;; URL: https://github.com/realgud/realgud/
 ;; Keywords: debugger, gdb, python, perl, go, bash, zsh, bashdb, zshdb, remake, trepan, perldb, pdb
 
-;; Copyright (C) 2015-2019 Free Software Foundation, Inc
+;; Copyright (C) 2015-2020 Free Software Foundation, Inc
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
