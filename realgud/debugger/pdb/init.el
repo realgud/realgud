@@ -159,6 +159,10 @@ the pdb command to use, like 'return'")
 (setf (gethash "eval"             realgud:pdb-command-hash) "!%s")
 (setf (gethash "info-breakpoints" realgud:pdb-command-hash) "break")
 
+(setf (gethash "info-locals-names-list" realgud:pdb-command-hash) "print('\\n'.join(locals().keys()))")
+(setf (gethash "info-value" realgud:pdb-command-hash) "pp %s")
+(setf (gethash "info-type" realgud:pdb-command-hash) "type(%s)")
+
 ;; Unsupported features:
 (setf (gethash "shell" realgud:pdb-command-hash) "*not-implemented*")
 (setf (gethash "frame" realgud:pdb-command-hash) "*not-implemented*")

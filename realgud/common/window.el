@@ -198,6 +198,14 @@ See also `realgud-window-src'"
   )
 
 
+(defun realgud:window-locals()
+  "Refresh locals information and display that in a buffer"
+  (interactive)
+  (with-current-buffer-safe (realgud-get-cmdbuf)
+    (realgud-locals-init)
+    )
+  )
+
 ;; (defun realgud-window-src-and-cmd ( &optional opt-buffer )
 ;;   "Make sure the source buffers is displayed in windows without
 ;; disturbing the command window if it is also displayed. Returns
