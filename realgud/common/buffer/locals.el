@@ -4,7 +4,7 @@
 (require-relative-list
  '("command") "realgud-buffer-")
 
-(make-variable-buffer-local (defvar realgud-buffer-type 'locals))
+(make-variable-buffer-local (defvar realgud-buffer-type))
 
 (cl-defstruct realgud-locals-info
   "debugger object/structure specific to a (top-level) program to be debugged."
@@ -13,8 +13,10 @@
 (make-variable-buffer-local (defvar realgud-locals-info))
 
 (defun realgud-locals? ( &optional buffer)
-  (with-current-buffer-safe
-      (or buffer (current-buffer))
+  "Return true if BUFFER is a locals buffer.
+
+If no BUFFER is given, current buffer is used."
+  (with-current-buffer-safe (or buffer (current-buffer))
     (and (boundp 'realgud-buffer-type)
 	 (equal realgud-buffer-type 'locals) )))
 
@@ -52,6 +54,7 @@ ARGS - arguments for command"
 	(realgud-cmdbuf-info-locals-buf= locals-buffer)
 	(with-current-buffer locals-buffer
 	  (realgud-locals-mode)
+	  (setq realgud-buffer-type 'locals)
 	  (set (make-local-variable 'realgud-locals-info)
 	       (make-realgud-locals-info
 		:cmdbuf cmdbuf)) )
