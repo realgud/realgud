@@ -178,6 +178,41 @@ See also `realgud-window-src'"
     src-window)
   )
 
+(defun realgud:window-locals-undisturb-src ( &optional opt-buffer switch?)
+  "Make sure the locals buffer is displayed in windows without
+disturbing the source window if it is also displayed. Returns
+the source window
+See also `realgud-window-src'"
+  (interactive)
+  (let* ((buffer (or opt-buffer (current-buffer)))
+	 (src-buffer (realgud-get-srcbuf buffer))
+	 (src-window (get-buffer-window src-buffer))
+	 (cmd-buffer (realgud-get-cmdbuf buffer))
+	 (cmd-window (get-buffer-window cmd-buffer))
+	 (locals-buffer (realgud-get-locals-buf cmd-buffer))
+	 (locals-window (get-buffer-window locals-buffer))
+	 (window (selected-window))
+	 )
+    (when cmd-buffer
+      (unless locals-window
+	(setq locals-window
+	      (if (eq window src-window)
+		  ;; FIXME: generalize what to do here.
+		  (if (one-window-p 't)
+		      (split-window)
+		    (next-window window 'no-minibuf))
+		window))
+	(set-window-buffer locals-window locals-buffer)
+	)
+      (if switch?
+	  (and (select-window locals-window)
+	       (switch-to-buffer locals-buffer)))
+
+      )
+    src-window)
+  )
+
+
 (defun realgud:window-bt()
   "Refresh backtrace information and display that in a buffer"
   (interactive)
@@ -203,6 +238,7 @@ See also `realgud-window-src'"
   (interactive)
   (with-current-buffer-safe (realgud-get-cmdbuf)
     (realgud-locals-init)
+    (realgud:window-locals-undisturb-src)
     )
   )
 
