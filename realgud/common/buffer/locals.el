@@ -1,9 +1,29 @@
+;;; Locals buffer
+
+;; Author: 813gan
+
+;; This program is free software: you can redistribute it and/or
+;; modify it under the terms of the GNU General Public License as
+;; published by the Free Software Foundation, either version 3 of the
+;; License, or (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful, but
+;; WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+;; General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see
+;; <http://www.gnu.org/licenses/>.
+
 (require 'load-relative)
 (require-relative-list
  '("helper") "realgud-")
 (require-relative-list
  '("command") "realgud-buffer-")
 
+;; Local variable for easier buffer identification
+;; "realgud-locals-init" will set it to "'locals"
 (make-variable-buffer-local (defvar realgud-buffer-type))
 
 (cl-defstruct realgud-locals-info
@@ -44,7 +64,7 @@ ARGS - arguments for command"
 	(cdr (split-string realgud-track-divert-string "\n" t)) )) ))
 
 (defun realgud-locals-init ()
-  "Create locals buffer."
+  "Create locals buffer and fill it for first time."
   (let ((cmdbuf (realgud-get-cmdbuf)))
     (with-current-buffer-safe cmdbuf
       (let ((locals-buffer (get-buffer-create

@@ -580,6 +580,7 @@ command-process buffer has stored."
   )
 
 (defun realgud-get-info (key &optional opt-buffer)
+  "Convinient function for getting data from realgud-cmdbuf-info."
   (let* ((buffer (or opt-buffer (current-buffer)))
 	 (cmdbuf (realgud-get-cmdbuf buffer)))
     (if cmdbuf
