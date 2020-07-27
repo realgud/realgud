@@ -15,10 +15,11 @@
 (require 'load-relative)
 (require-relative-list '("../fringe" "../helper" "../lochist")
 		       "realgud-")
-(require-relative-list '("command" "source" "backtrace" "breakpoint") "realgud-buffer-")
+(require-relative-list '("command" "source" "backtrace" "breakpoint" "locals") "realgud-buffer-")
 
 (declare-function realgud-backtrace?        'realgud-buffer-backtace)
 (declare-function realgud-breakpoint?       'realgud-buffer-breakpoint)
+(declare-function realgud-locals?           'realgud-buffer-locals)
 (declare-function realgud-cmdbuf?           'realgud-buffer-command)
 (declare-function realgud:loc-hist-describe 'realgud-lochist)
 (declare-function realgud-loc-hist-item     'realgud-lochist)

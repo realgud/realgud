@@ -154,4 +154,4 @@ LOCAL-VAR-NAME - variable to toggle"
 	(setq prev-buffer-end (point-max)) )
       (setq buffer-read-only t) )) )
 
-(provide-me "realgud-")
+(provide-me "realgud-buffer-")
