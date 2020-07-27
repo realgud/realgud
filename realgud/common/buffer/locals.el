@@ -67,7 +67,7 @@ ARGS - arguments for command"
 LOCAL-VAR-NAME - variable to inspect"
   (list
    (car (realgud-run-command-get-output 'realgud:cmd-info-type local-var-name))
-   (car (realgud-run-command-get-output 'realgud:cmd-info-value local-var-name)) ))
+   (mapconcat 'identity (realgud-run-command-get-output 'realgud:cmd-info-value local-var-name) "\n") ))
 
 (defun realgud-locals-register-reload ()
   "Get list of local variables and load values selected by user."
