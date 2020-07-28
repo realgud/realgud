@@ -13,9 +13,9 @@
 ;; GNU General Public License for more details.
 
 (require 'load-relative)
-(require-relative-list '("../fringe" "../helper" "../lochist")
+(require-relative-list '("../fringe" "../helper" "../lochist" "locals")
 		       "realgud-")
-(require-relative-list '("command" "source" "backtrace" "breakpoint" "locals") "realgud-buffer-")
+(require-relative-list '("command" "source" "backtrace" "breakpoint") "realgud-buffer-")
 
 (declare-function realgud-backtrace?        'realgud-buffer-backtace)
 (declare-function realgud-breakpoint?       'realgud-buffer-breakpoint)
