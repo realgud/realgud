@@ -435,6 +435,8 @@ encountering a new loc."
 	    (realgud-cmdbuf-info-in-srcbuf?= nil))
 	  )
 	))
+  (with-current-buffer-safe (realgud-get-srcbuf)
+    (run-hooks 'realgud-update-hook) )
   )
 
 (defun realgud-track-loc(text cmd-mark &optional opt-regexp opt-file-group

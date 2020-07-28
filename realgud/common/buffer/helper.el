@@ -13,12 +13,13 @@
 ;; GNU General Public License for more details.
 
 (require 'load-relative)
-(require-relative-list '("../fringe" "../helper" "../lochist")
+(require-relative-list '("../fringe" "../helper" "../lochist" "locals")
 		       "realgud-")
 (require-relative-list '("command" "source" "backtrace" "breakpoint") "realgud-buffer-")
 
 (declare-function realgud-backtrace?        'realgud-buffer-backtace)
 (declare-function realgud-breakpoint?       'realgud-buffer-breakpoint)
+(declare-function realgud-locals?           'realgud-buffer-locals)
 (declare-function realgud-cmdbuf?           'realgud-buffer-command)
 (declare-function realgud:loc-hist-describe 'realgud-lochist)
 (declare-function realgud-loc-hist-item     'realgud-lochist)
@@ -45,6 +46,16 @@ assumed to be a source-code buffer."
     (if (realgud-breakpoint? buffer)
 	(with-current-buffer-safe buffer
 	  (realgud-sget 'breakpoint-info 'cmdbuf))
+      nil)))
+
+(defun realgud-get-cmdbuf-from-locals ( &optional opt-buffer)
+  "Return the command buffer associated with source
+OPT-BUFFER or if that is ommited `current-buffer' which is
+assumed to be a source-code buffer."
+  (let ((buffer (or opt-buffer (current-buffer))))
+    (if (realgud-locals? buffer)
+	(with-current-buffer-safe buffer
+	  (realgud-sget 'locals-info 'cmdbuf))
       nil)))
 
 (defun realgud-get-cmdbuf-from-srcbuf ( &optional opt-buffer)
@@ -128,6 +139,8 @@ if we don't find anything."
 	(realgud-get-cmdbuf-from-backtrace buffer))
        ((realgud-breakpoint? buffer)
 	(realgud-get-cmdbuf-from-breakpoint buffer))
+       ((realgud-locals? buffer)
+	(realgud-get-cmdbuf-from-locals buffer))
        (t nil)))))
 
 (defun realgud-get-backtrace-buf( &optional opt-buffer)
@@ -147,6 +160,16 @@ OPT-BUFFER or if that is ommited `current-buffer'."
 	 (cmdbuf (realgud-get-cmdbuf buffer)))
     (with-current-buffer-safe cmdbuf
       (realgud-sget 'cmdbuf-info 'brkpt-buf)
+      ))
+  )
+
+(defun realgud-get-locals-buf( &optional opt-buffer)
+  "Return the locals buffer associated with
+OPT-BUFFER or if that is ommited `current-buffer'."
+  (let* ((buffer (or opt-buffer (current-buffer)))
+	 (cmdbuf (realgud-get-cmdbuf buffer)))
+    (with-current-buffer-safe cmdbuf
+      (realgud-sget 'cmdbuf-info 'locals-buf)
       ))
   )
 

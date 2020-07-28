@@ -95,6 +95,7 @@
        "./realgud/common/track-mode"
        "./realgud/common/backtrack-mode"
        "./realgud/common/breakpoint-mode"
+       "./realgud/common/locals-mode"
        "./realgud/common/utils"
        "./realgud/debugger/bashdb/bashdb"
        "./realgud/debugger/gdb/gdb"

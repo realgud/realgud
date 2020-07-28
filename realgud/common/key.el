@@ -117,6 +117,7 @@ Nor does it touch prefix keys; for that see `realgud-populate-keys-standard'"
     (define-key map ">" 'realgud:cmd-older-frame)
     (define-key map "d" 'realgud:cmd-newer-frame)
     (define-key map "B" 'realgud:window-brkpt)
+    (define-key map "L" 'realgud:window-locals)
     (define-key map "u" 'realgud:cmd-older-frame)
     (define-key map "C" 'realgud-window-cmd-undisturb-src)
     (define-key map "F" 'realgud:window-bt)

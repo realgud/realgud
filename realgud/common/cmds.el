@@ -362,6 +362,24 @@ If no argument specified use 0 or the most recent frame."
   (realgud:cmd-run-command nil "info-breakpoints")
   )
 
+(defun realgud:cmd-info-locals-name-list()
+  "Get list of locals value's names"
+  (interactive "")
+  (realgud:cmd-run-command nil "info-locals-names-list")
+  )
+
+(defun realgud:cmd-info-value(var-name)
+  "Get value of single variable"
+  (interactive "sVariable name: ")
+  (realgud:cmd-run-command var-name "info-value")
+  )
+
+(defun realgud:cmd-info-type(var-name)
+  "Get type of single variable"
+  (interactive "sVariable name: ")
+  (realgud:cmd-run-command var-name "info-type")
+  )
+
 (defun realgud:cmd-kill()
   "Kill debugger process."
   (interactive)
