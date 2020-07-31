@@ -98,16 +98,24 @@ LOCAL-VAR-NAME - variable to inspect"
    (car (realgud-run-command-get-output 'realgud:cmd-info-type local-var-name))
    (mapconcat 'identity (realgud-run-command-get-output 'realgud:cmd-info-value local-var-name) "\n") ))
 
-(defun realgud-locals-register-reload ()
-  "Get list of local variables and load values selected by user."
+(defun realgud-locals-register-reload (&optional action)
+  "Get list of local variables and load values selected by user.
+
+If ACTION is set to 'showall unconditionally show all values.
+If ACTION is set to 'hideall hide all values."
   (let* ((locals-names-list (realgud-run-command-get-output 'realgud:cmd-info-locals-name-list))
 	 (frame-id 'frame_id_placeholder)
 	 (locals-data-hash (realgud-get-info 'locals-data))
 	 (frame-data-hash (gethash frame-id locals-data-hash))
 	 (new-frame-data-hash (make-hash-table :test 'equal)))
+    ;; Iterate over list of variables and get values if user expanded values in past
+    ;;  or we are in this frame for first time, but "realgud-immediately-show-all-locals" is t
+    ;;  or function is called with ACTION argument
     (dolist (local-var-name locals-names-list)
-      (if (and frame-data-hash
-	       (gethash local-var-name frame-data-hash))
+      (if (and (not (eq action 'hideall))
+	   (or (and frame-data-hash (gethash local-var-name frame-data-hash))
+	       (and (not frame-data-hash) realgud-immediately-show-all-locals)
+	       (eq action 'showall) ))
 	  (puthash local-var-name
 		   (realgud-locals-get-variable-data local-var-name)
 		   new-frame-data-hash)
@@ -127,6 +135,25 @@ LOCAL-VAR-NAME - variable to toggle"
       (setq value (realgud-locals-get-variable-data local-var-name)))
     (puthash local-var-name value frame-data-hash) )
   (realgud-locals-insert) )
+
+(defun realgud:locals-show-all-values ()
+  "Expand values of all variables."
+  ;; TODO in future this function should use separated debugger command that would get all values
+  ;;  in single call. Current implementation may be painful to use during remote debugging
+  ;;  in high latency networks.
+  (interactive)
+  (with-current-buffer-safe (realgud-get-cmdbuf)
+    (realgud-locals-register-reload 'showall)
+    (realgud-locals-insert) )
+  )
+
+(defun realgud:locals-hide-all-values ()
+  "Collapse values of all variables."
+  (interactive)
+  (with-current-buffer-safe (realgud-get-cmdbuf)
+    (realgud-locals-register-reload 'hideall)
+    (realgud-locals-insert) )
+  )
 
 (defun realgud-locals-insert ()
   "Serialize and format locales data."
