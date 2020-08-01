@@ -147,6 +147,7 @@ return the first argument is always removed.
       (redisplay)
       )
     (loc-changes-clear-buffer)
+    (realgud-srcbuf-mode -1)
     ))
 
 (defun realgud:terminate (&optional buf)
