@@ -28,6 +28,7 @@
 
 (note "Realgud keys not present in srcbuf after quit")
 (with-current-buffer temp-srcbuf
+  (python-mode)
   (assert-nil (equal 'realgud:cmd-step (key-binding (kbd "<f11>")))) )
 
 (end-tests)
