@@ -22,12 +22,12 @@
 
 (note "Realgud keys present in srcbuf")
 (with-current-buffer temp-srcbuf
-  (assert-t (equal 'realgud:cmd-step (key-binding (kbd "<A-up>")))) )
+  (assert-t (equal 'realgud:cmd-step (key-binding (kbd "<f11>")))) )
 
 (realgud:terminate-srcbuf temp-srcbuf)
 
 (note "Realgud keys not present in srcbuf after quit")
 (with-current-buffer temp-srcbuf
-  (assert-nil (equal 'realgud:cmd-step (key-binding (kbd "<A-up>")))) )
+  (assert-nil (equal 'realgud:cmd-step (key-binding (kbd "<f11>")))) )
 
 (end-tests)
