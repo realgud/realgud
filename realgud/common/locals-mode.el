@@ -24,8 +24,10 @@
   (let ((map  (realgud-populate-debugger-menu (make-sparse-keymap))))
     (suppress-keymap map)
     (realgud-populate-common-keys map)
-    (define-key map "q"       'realgud:cmd-quit)
-    (define-key map "L"       'realgud:window-locals)
+    (define-key map "q" 'realgud:cmd-quit)
+    (define-key map "L" 'realgud:window-locals)
+    (define-key map "s" 'realgud:locals-show-all-values)
+    (define-key map "h" 'realgud:locals-hide-all-values)
     map)
   )
 

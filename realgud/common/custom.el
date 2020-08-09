@@ -25,6 +25,11 @@ A setting of `nil` allows editing, but Short-Key-mode use may inhibit this."
   :type 'boolean
   :group 'realgud)
 
+(defcustom realgud-immediately-show-all-locals t
+  "Immediately expand all values in locals window."
+  :type 'boolean
+  :group 'realgud)
+
 (defcustom realgud-update-hook nil
   "List of hooks to be run when debugger hits breakpoint"
   :type 'hook
