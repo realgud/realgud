@@ -104,7 +104,7 @@ LOCAL-VAR-NAME - variable to inspect"
 If ACTION is set to 'showall unconditionally show all values.
 If ACTION is set to 'hideall hide all values."
   (let* ((locals-names-list (realgud-run-command-get-output 'realgud:cmd-info-locals-name-list))
-	 (frame-id 'frame_id_placeholder)
+	 (frame-id locals-names-list)
 	 (locals-data-hash (realgud-get-info 'locals-data))
 	 (frame-data-hash (gethash frame-id locals-data-hash))
 	 (new-frame-data-hash (make-hash-table :test 'equal)))
@@ -127,7 +127,8 @@ If ACTION is set to 'hideall hide all values."
 
 LOCAL-VAR-NAME - variable to toggle"
   (interactive "sVariable: ")
-  (let* ((frame-id 'frame_id_placeholder)
+  (let* ((locals-names-list (realgud-run-command-get-output 'realgud:cmd-info-locals-name-list))
+	 (frame-id locals-names-list)
 	 (locals-data-hash (realgud-get-info 'locals-data))
 	 (frame-data-hash (gethash frame-id locals-data-hash))
 	 (value nil))
@@ -157,10 +158,11 @@ LOCAL-VAR-NAME - variable to toggle"
 
 (defun realgud-locals-insert ()
   "Serialize and format locales data."
-  (let ((frame-data-hash
-	 (gethash 'frame_id_placeholder (realgud-get-info 'locals-data)))
-	(variable-data nil)
-	(prev-buffer-end (point-min)) )
+  (let* ((locals-names-list (realgud-run-command-get-output 'realgud:cmd-info-locals-name-list))
+	 (frame-data-hash
+	  (gethash locals-names-list (realgud-get-info 'locals-data)))
+	 (variable-data nil)
+	 (prev-buffer-end (point-min)) )
     (with-current-buffer (realgud-get-locals-buf)
       (setq buffer-read-only nil)
       (delete-region (point-min) (point-max))
