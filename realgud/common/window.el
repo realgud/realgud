@@ -26,6 +26,23 @@
 
 (declare-function one-window-p(bool))
 
+(defcustom realgud-window-split-orientation 'vertical
+  "Orientation when splitting window."
+  :type '(choice (const :tag "Vertical" vertical)
+                 (const :tag "Horizontal" horizontal))
+  :group 'realgud)
+
+(defun realgud-prepare-window (window)
+  "Setup layout based on WINDOW, then select and return a window."
+  (if (one-window-p 't)
+      (cond
+       ((eq realgud-window-split-orientation 'vertical)
+        (split-window-vertically))
+       ((eq realgud-window-split-orientation 'horizontal)
+        (split-window-horizontally))
+       (t (error "TODO: implement customized layout")))
+    (next-window window 'no-minibuf)))
+
 (defun realgud-window-update-position (buffer marker)
   "Update BUFFER to position specified with MARKER.
 We assume MARKER points inside BUFFER"
@@ -61,17 +78,10 @@ See also `realgud-window-src'."
 	 (src-window (get-buffer-window src-buffer))
 	 (cmd-buffer (realgud-get-cmdbuf buffer))
 	 (cmd-window (get-buffer-window cmd-buffer))
-	 (window (selected-window))
 	 )
     (if src-buffer
 	(unless src-window
-	  (setq src-window
-		(if (eq window cmd-window)
-		    ;; FIXME: generalize what to do here.
-		    (if (one-window-p 't)
-			(split-window)
-		      (next-window window 'no-minibuf))
-		  window))
+	  (setq src-window (realgud-prepare-window (selected-window)))
 	  (set-window-buffer src-window src-buffer))
 	)
     (select-window src-window)
@@ -88,17 +98,10 @@ the source window."
 	 (src-window (get-buffer-window src-buffer))
 	 (cmd-buffer (realgud-get-cmdbuf buffer))
 	 (cmd-window (get-buffer-window cmd-buffer))
-	 (window (selected-window))
 	 )
     (when cmd-buffer
       (unless cmd-window
-	(setq cmd-window
-	      (if (eq window src-window)
-		  ;; FIXME: generalize what to do here.
-		  (if (one-window-p 't)
-		      (split-window)
-		    (next-window window 'no-minibuf))
-		window))
+	(setq cmd-window (realgud-prepare-window (selected-window)))
 	(set-window-buffer cmd-window cmd-buffer)
 	)
       (if switch?
@@ -123,17 +126,10 @@ See also `realgud-window-src'"
 	 (cmd-window (get-buffer-window cmd-buffer))
 	 (bt-buffer (realgud-get-backtrace-buf cmd-buffer))
 	 (bt-window (get-buffer-window bt-buffer))
-	 (window (selected-window))
 	 )
     (when cmd-buffer
       (unless bt-window
-	(setq bt-window
-	      (if (eq window src-window)
-		  ;; FIXME: generalize what to do here.
-		  (if (one-window-p 't)
-		      (split-window)
-		    (next-window window 'no-minibuf))
-		window))
+	(setq bt-window (realgud-prepare-window (selected-window)))
 	(set-window-buffer bt-window bt-buffer)
 	)
       (if switch?
@@ -157,17 +153,10 @@ See also `realgud-window-src'"
 	 (cmd-window (get-buffer-window cmd-buffer))
 	 (brkpt-buffer (realgud-get-breakpoint-buf cmd-buffer))
 	 (brkpt-window (get-buffer-window brkpt-buffer))
-	 (window (selected-window))
 	 )
     (when cmd-buffer
       (unless brkpt-window
-	(setq brkpt-window
-	      (if (eq window src-window)
-		  ;; FIXME: generalize what to do here.
-		  (if (one-window-p 't)
-		      (split-window)
-		    (next-window window 'no-minibuf))
-		window))
+	(setq brkpt-window (realgud-prepare-window (selected-window)))
 	(set-window-buffer brkpt-window brkpt-buffer)
 	)
       (if switch?
@@ -191,17 +180,10 @@ See also `realgud-window-src'"
 	 (cmd-window (get-buffer-window cmd-buffer))
 	 (locals-buffer (realgud-get-locals-buf cmd-buffer))
 	 (locals-window (get-buffer-window locals-buffer))
-	 (window (selected-window))
 	 )
     (when cmd-buffer
       (unless locals-window
-	(setq locals-window
-	      (if (eq window src-window)
-		  ;; FIXME: generalize what to do here.
-		  (if (one-window-p 't)
-		      (split-window)
-		    (next-window window 'no-minibuf))
-		window))
+	(setq locals-window (realgud-prepare-window (selected-window)))
 	(set-window-buffer locals-window locals-buffer)
 	)
       (if switch?
