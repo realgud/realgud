@@ -1,4 +1,4 @@
-;; Copyright (C) 2010-2011, 2013-2014, 2016-2019 Free Software Foundation, Inc
+;; Copyright (C) 2010-2011, 2013-2014, 2016-2020 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -107,51 +107,52 @@ problem as best as we can determine."
 
      (unless (and filename (file-readable-p filename))
 
-       (cond
-	;; Is file already listed for ignore?
-	((realgud:file-ignore filename ignore-re-file-list)
-	 (message "tracking ignored for %s" filename))
+       (with-current-buffer cmdbuf
+	 (cond
+	  ;; Is file already listed for ignore?
+	  ((realgud:file-ignore filename ignore-re-file-list)
+	   (message "tracking ignored for %s" filename))
 
-	;; If we can find the filename, e.g. "src/code.c" as a suffix of file in
-	;; the list of buffers seen, use that
-	((and
-	  (setq buffer-files
-	     (with-current-buffer (marker-buffer cmd-marker)
-	       (mapcar (lambda (buf) (buffer-file-name buf))
-		       (realgud-cmdbuf-info-srcbuf-list realgud-cmdbuf-info))))
-	  (setq matching-file-list (realgud--file-matching-suffix buffer-files filename))
-	  (car matching-file-list)))
+	  ;; If we can find the filename, e.g. "src/code.c" as a suffix of file in
+	  ;; the list of buffers seen, use that
+	  ((and
+	    (setq buffer-files
+		  (with-current-buffer (marker-buffer cmd-marker)
+		    (mapcar (lambda (buf) (buffer-file-name buf))
+			    (realgud-cmdbuf-info-srcbuf-list realgud-cmdbuf-info))))
+	    (setq matching-file-list (realgud--file-matching-suffix buffer-files filename))
+	    (car matching-file-list)))
 
-	;; Do we want to blacklist this?
-	((y-or-n-p (format "Unable to locate %s\nBlacklist it for location tracking?" filename))
-	 ;; FIXME: there has to be a simpler way to set ignore-file-list
-	 (with-current-buffer cmdbuf
-	   (push filename ignore-re-file-list)
-	   (realgud-cmdbuf-info-ignore-re-file-list= ignore-re-file-list))
-	 (setq filename nil)
-	 )
-
-	;; Do we have a custom find-file function?
-	(find-file-fn
-	 (setq filename (funcall find-file-fn cmd-marker filename directory)))
-
-	(t
-	 (let ((found-file (funcall realgud-file-find-function (point-marker) filename directory)))
-	   (if found-file
-	       (progn
-		 (setq remapped-filename (buffer-file-name found-file))
-		 (when (and remapped-filename (file-exists-p remapped-filename))
-		   (realgud-cmdbuf-filename-remap-alist=
-		    (cons
-		     (cons filename remapped-filename)
-		     filename-remap-alist)
-		    cmdbuf)
-		   (setq filename remapped-filename)
-		   ))
-	     ;; else
+	  ;; Do we want to blacklist this?
+	  ((y-or-n-p (format "Unable to locate %s\nBlacklist it for location tracking?" filename))
+	   ;; FIXME: there has to be a simpler way to set ignore-file-list
+	   (progn
+	     (push filename ignore-re-file-list)
+	     (realgud-cmdbuf-info-ignore-re-file-list= ignore-re-file-list)
 	     (setq filename nil)
-	     )))
-	)))
+	   ))
+
+	  ;; Do we have a custom find-file function?
+	  (find-file-fn
+	   (setq filename (funcall find-file-fn cmd-marker filename directory)))
+
+	  (t
+	   (let ((found-file (funcall realgud-file-find-function (point-marker) filename directory)))
+	     (if found-file
+		 (progn
+		   (setq remapped-filename (buffer-file-name found-file))
+		   (when (and remapped-filename (file-exists-p remapped-filename))
+		     (realgud-cmdbuf-filename-remap-alist=
+		      (cons
+		       (cons filename remapped-filename)
+		       filename-remap-alist)
+		      cmdbuf)
+		     (setq filename remapped-filename)
+		     ))
+	       ;; else
+	       (setq filename nil)
+	       )))
+	  ))))
   ;;)
 
   (if filename
