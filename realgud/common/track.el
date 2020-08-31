@@ -435,7 +435,7 @@ encountering a new loc."
 	    (realgud-cmdbuf-info-in-srcbuf?= nil))
 	  )
 	))
-  (with-current-buffer-safe (realgud-get-srcbuf)
+  (with-current-buffer-safe (realgud-get-cmdbuf)
     (run-hooks 'realgud-update-hook) )
   )
 
