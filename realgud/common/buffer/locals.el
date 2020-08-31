@@ -29,7 +29,6 @@
 (cl-defstruct realgud-locals-info
   "debugger object/structure specific to a (top-level) program to be debugged."
   (cmdbuf    nil)  ;; buffer of the associated debugger process
-  (srcbuf    nil)  ;; associated source buffer
   )
 (make-variable-buffer-local (defvar realgud-locals-info))
 
@@ -66,29 +65,30 @@ ARGS - arguments for command"
 
 (defun realgud-locals-init ()
   "Create locals buffer and fill it for first time."
-  (let ((cmdbuf (realgud-get-cmdbuf))
-	(srcbuf (realgud-get-srcbuf)))
+  (let ((cmdbuf (realgud-get-cmdbuf)) )
     (with-current-buffer-safe cmdbuf
       (let ((locals-buffer (get-buffer-create
 			    (format "*locals %s*"
 				    (realgud-get-buffer-base-name
 				     (buffer-name))))))
 	(realgud-cmdbuf-info-locals-buf= locals-buffer)
-	(with-current-buffer-safe (realgud-get-srcbuf)
+	(with-current-buffer-safe (realgud-get-cmdbuf)
+	  ;; Hook loc change for autorefresh.
 	  (add-hook 'realgud-update-hook 'realgud:window-locals nil t) )
 	(with-current-buffer locals-buffer
 	  (realgud-locals-mode) ; It kills local variables
-	  (add-hook 'kill-buffer-hook
-		    (lambda ()
-		      (with-current-buffer-safe (realgud-sget 'locals-info 'srcbuf)
-			(remove-hook 'realgud-update-hook 'realgud:window-locals t) )) nil t)
+	  (add-hook 'kill-buffer-hook 'realgud-locals-terminate)
 	  (setq realgud-buffer-type 'locals)
 	  (set (make-local-variable 'realgud-locals-info)
 	       (make-realgud-locals-info
-		:cmdbuf cmdbuf
-		:srcbuf srcbuf)) )
+		:cmdbuf cmdbuf)) )
 	(realgud-locals-register-reload)
 	(realgud-locals-insert) ))))
+
+(defun realgud-locals-terminate (&optional buf)
+  (with-current-buffer (or buf (current-buffer))
+    (with-current-buffer-safe (realgud-get-cmdbuf)
+      (remove-hook 'realgud-update-hook 'realgud:window-locals t) )))
 
 (defun realgud-locals-get-variable-data (local-var-name)
   "Return list with type and value of variable, in that order.

@@ -29,6 +29,7 @@
 (declare-function realgud-cmdbuf-command-string       'realgud-buffer-command)
 (declare-function realgud-cmdbuf-debugger-name        'realgud-buffer-command)
 (declare-function realgud-cmdbuf-info-bp-list=        'realgud-buffer-command)
+(declare-function realgud-locals-terminate            'realgud-locals)
 (declare-function realgud-cmdbuf-info-in-debugger?=   'realgud-buffer-command)
 (declare-function realgud-cmdbuf-info-starting-directory= 'realgud-buffer-command)
 (declare-function realgud-cmdbuf-mode-line-update     'realgud-buffer-command)
@@ -159,6 +160,7 @@ icons and resets short-key mode."
   (let ((cmdbuf (realgud-get-cmdbuf buf)))
     (if cmdbuf
 	(with-current-buffer cmdbuf
+	  (realgud-locals-terminate)
 	  (realgud-cmdbuf-info-in-debugger?= nil)
 	  (realgud-cmdbuf-info-bp-list= '())
 	  (realgud-cmdbuf-mode-line-update)
