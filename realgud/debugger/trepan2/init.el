@@ -62,9 +62,10 @@ realgud-loc-pat struct")
 ;; For example:
 ;; (trepan2)
 ;; ((trepan2))
+;; ((trepan2:Server Thread-11))
 (setf (gethash "prompt" realgud:trepan2-pat-hash)
       (make-realgud-loc-pat
-       :regexp   "^(+trepan2)+ "
+       :regexp   "^(+trepan2\\(?:[:].+\\)?)+ "
        ))
 
 ;; realgud-loc-pat that describes a trepan2 backtrace line.

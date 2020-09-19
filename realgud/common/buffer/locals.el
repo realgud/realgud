@@ -183,4 +183,6 @@ LOCAL-VAR-NAME - variable to toggle"
 	(setq prev-buffer-end (point-max)) )
       (setq buffer-read-only t) )) )
 
-(provide-me "realgud-")
+;; FIXME: provide-me isn't working and somewhere something is also expecting realgud-locals
+(provide 'realgud-buffer-locals)
+(provide 'realgud-locals)

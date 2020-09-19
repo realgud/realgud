@@ -41,6 +41,7 @@
      (gethash "prompt" realgud:trepan3k-pat-hash))
 
 (prompt-match "(trepan3k) ")
+(prompt-match "((trepan3k:Server Thread-11)) ")
 
 (setup-regexp-vars realgud:trepan3k-pat-hash)
 

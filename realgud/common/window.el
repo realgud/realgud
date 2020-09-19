@@ -14,7 +14,7 @@
 
 (require 'load-relative)
 (require-relative-list '("helper") "realgud-")
-(require-relative-list '("buffer/helper") "realgud-buffer-")
+(require-relative-list '("buffer/helper" "buffer/locals") "realgud-buffer-")
 
 (declare-function realgud:backtrace-init    'realgud-buffer-helper)
 (declare-function realgud:breakpoint-init   'realgud-buffer-helper)

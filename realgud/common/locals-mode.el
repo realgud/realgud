@@ -17,8 +17,8 @@
 ;; <http://www.gnu.org/licenses/>.
 
 (require 'load-relative)
-(require-relative-list
- '("helper" "buffer/locals") "realgud-")
+(require-relative "helper" "realgud-")
+(require-relative "buffer/locals" "realgud-buffer-")
 
 (defvar realgud-locals-mode-map
   (let ((map  (realgud-populate-debugger-menu (make-sparse-keymap))))
