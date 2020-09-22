@@ -17,7 +17,7 @@
 ;; <http://www.gnu.org/licenses/>.
 
 (require 'load-relative)
-(require-relative "helper" "realgud-")
+(require-relative "helper" nil "realgud-")
 (require-relative "buffer/locals" "realgud-buffer-")
 
 (defvar realgud-locals-mode-map
