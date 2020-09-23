@@ -18,7 +18,7 @@
 
 (require 'load-relative)
 (require-relative "helper" nil "realgud-")
-(require-relative "buffer/locals" "realgud-buffer-")
+(require-relative "buffer/locals" nil "realgud-buffer-")
 
 (defvar realgud-locals-mode-map
   (let ((map  (realgud-populate-debugger-menu (make-sparse-keymap))))
