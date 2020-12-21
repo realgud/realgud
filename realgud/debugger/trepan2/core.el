@@ -92,7 +92,7 @@ we may also consult PYTHONPATH."
      )))
 
 (defun realgud:trepan2-loc-fn-callback(text filename lineno source-str
-					    cmd-mark directory)
+					    cmd-mark directory &optional column)
   (realgud:file-loc-from-line filename lineno cmd-mark source-str nil
 			      'realgud:trepan2-find-file directory))
 
