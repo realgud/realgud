@@ -88,6 +88,7 @@
   "Toolbar used when `realgud' interface is active."
   )
 
+;;;###autoload
 (define-minor-mode realgud-track-mode
   "Minor mode for tracking debugging inside a process shell."
   :init-value nil
