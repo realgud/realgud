@@ -1,4 +1,5 @@
 ;;; Locals buffer
+;; Copyright (C) 2021 Free Software Foundation, Inc
 
 ;; Author: 813gan
 

@@ -2,12 +2,29 @@
 ;;
 ;;; Code:
 
+;;;### (autoloads nil "realgud/common/attach" "realgud/common/attach.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from realgud/common/attach.el
+
+(autoload 'realgud:attach-source-buffer "realgud/common/attach" "\
+Associate a source buffer with the current command buffer
+
+\(fn SRCBUF)" t nil)
+
+(autoload 'realgud:attach-cmd-buffer "realgud/common/attach" "\
+Associate a command buffer with the current source buffer
+
+\(fn CMDBUF)" t nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/attach" '("realgud:attach-cmdbuf-history")))
+
++;;;***
 
 ;;;### (autoloads nil "realgud/common/backtrace-mode" "realgud/common/backtrace-mode.el"
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/common/backtrace-mode.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/backtrace-mode" '("realgud-backtrace-mode-map" "realgud-backtrace-mode" "realgud:frames-menu")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/backtrace-mode" '("realgud")))
 
 ;;;***
 
@@ -15,7 +32,7 @@
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/common/backtrack-mode.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/backtrack-mode" '("realgud-backtrack-set-debugger" "realgud-backtrack-mode" "realgud-backtrack-mode-map" "realgud-backtrack-mode-vars")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/backtrack-mode" '("realgud-backtrack-")))
 
 ;;;***
 
@@ -31,7 +48,15 @@
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/common/bp-image-data.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/bp-image-data" '("realgud-bp-disabled-" "realgud-bp-enabled-tiff-data" "realgud-bp-enabled-svg-data" "realgud-bp-enabled-pbm-data" "realgud-bp-xpm-data")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/bp-image-data" '("realgud-bp-")))
+
+;;;***
+
+;;;### (autoloads nil "realgud/common/breakpoint-mode" "realgud/common/breakpoint-mode.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from realgud/common/breakpoint-mode.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/breakpoint-mode" '("realgud")))
 
 ;;;***
 
@@ -39,7 +64,15 @@
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/common/buffer/backtrace.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/buffer/backtrace" '("realgud-backtrace-" "realgud-goto-" "realgud:backtrace-" "realgud-track-divert-string" "realgud-backtrace?")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/buffer/backtrace" '("realgud")))
+
+;;;***
+
+;;;### (autoloads nil "realgud/common/buffer/breakpoint" "realgud/common/buffer/breakpoint.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from realgud/common/buffer/breakpoint.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/buffer/breakpoint" '("realgud")))
 
 ;;;***
 
@@ -47,7 +80,7 @@
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/common/buffer/command.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/buffer/command" '("realgud-cmdbuf-" "realgud:cmdbuf-buffers-describe" "realgud:cmdbuf-info-describe" "realgud-cmdbuf?")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/buffer/command" '("realgud")))
 
 ;;;***
 
@@ -55,7 +88,7 @@
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/common/buffer/helper.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/buffer/helper" '("realgud:srcbuf-info-describe" "realgud-get-process" "realgud-get-srcbuf-from-cmdbuf" "realgud-get-cmdbuf-from-srcbuf" "realgud-get-cmdbuf-from-backtrace")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/buffer/helper" '("realgud")))
 
 ;;;***
 
@@ -63,7 +96,15 @@
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/common/buffer/info.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/buffer/info" '("realgud:info-mode-hook" "realgud:info-mode" "realgud-backtrace-info")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/buffer/info" '("realgud:info-mode")))
+
+;;;***
+
+;;;### (autoloads nil "realgud/common/buffer/locals" "realgud/common/buffer/locals.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from realgud/common/buffer/locals.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/buffer/locals" '("realgud")))
 
 ;;;***
 
@@ -71,7 +112,7 @@
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/common/buffer/source.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/buffer/source" '("realgud-srcbuf-" "realgud-srcbuf?")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/buffer/source" '("realgud")))
 
 ;;;***
 
@@ -79,7 +120,7 @@
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/common/cmds.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/cmds" '("realgud-safe-mode" "realgud:cmd-quit" "realgud:cmd-terminate")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/cmds" '("realgud")))
 
 ;;;***
 
@@ -87,7 +128,7 @@
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/common/core.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/core" '("realgud-" "realgud:")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/core" '("realgud")))
 
 ;;;***
 
@@ -95,7 +136,7 @@
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/common/custom.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/custom" '("realgud-srcbuf-lock" "realgud-key-prefix")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/custom" '("realgud-")))
 
 ;;;***
 
@@ -103,7 +144,7 @@
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/common/eval.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/eval" '("realgud:tooltip-eval" "realgud:eval-process-output")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/eval" '("realgud:")))
 
 ;;;***
 
@@ -111,7 +152,7 @@
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/common/file.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/file" '("realgud-file-remap")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/file" '("realgud-file-find-function")))
 
 ;;;***
 
@@ -119,7 +160,7 @@
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/common/fringe.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/fringe" '("realgud-overlay-" "realgud-fringe-erase-history-arrows" "realgud-fringe-history-set" "realgud-fringe-set-arrow")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/fringe" '("realgud-")))
 
 ;;;***
 
@@ -127,7 +168,7 @@
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/common/helper.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/helper" '("realgud-" "with-current-buffer-safe" "buffer-killed?" "realgud:debugger-name-transform" "fn-p-to-fn?-alias")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/helper" '("realgud" "with-current-buffer-safe" "buffer-killed?" "fn-p-to-fn?-alias")))
 
 ;;;***
 
@@ -135,7 +176,7 @@
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/common/init.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/init" '("realgud-line-number-face" "realgud-backtrace-number-face" "realgud-file-name-face")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/init" '("realgud-")))
 
 ;;;***
 
@@ -143,7 +184,7 @@
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/common/key.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/key" '("realgud-populate-src-buffer-map-plain" "realgud-populate-common-keys" "realgud-populate-common-fn-keys-function" "realgud-populate-common-fn-keys-standard")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/key" '("realgud-populate-")))
 
 ;;;***
 
@@ -151,7 +192,7 @@
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/common/lang.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/lang" '("realgud-suggest-lang-file" "realgud-lang-mode?" "realgud:suggest-file-from-buffer")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/lang" '("realgud")))
 
 ;;;***
 
@@ -159,7 +200,15 @@
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/common/loc.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/loc" '("realgud-loc?" "realgud-loc" "realgud:loc-describe")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/loc" '("realgud")))
+
+;;;***
+
+;;;### (autoloads nil "realgud/common/locals-mode" "realgud/common/locals-mode.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from realgud/common/locals-mode.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/locals-mode" '("realgud-locals-mode")))
 
 ;;;***
 
@@ -167,7 +216,7 @@
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/common/lochist.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/lochist" '("realgud-loc-hist-" "realgud-loc-hist")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/lochist" '("realgud-loc-hist-")))
 
 ;;;***
 
@@ -175,7 +224,7 @@
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/common/menu.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/menu" '("realgud-menu-item" "realgud-populate-debugger-menu")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/menu" '("realgud-")))
 
 ;;;***
 
@@ -183,7 +232,7 @@
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/common/regexp.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/regexp" '("realgud:regexp-captured-num" "realgud:variable-basename-hash" "realgud-loc-pat" "realgud-pat-hash" "realgud-command-hash")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/regexp" '("realgud")))
 
 ;;;***
 
@@ -199,7 +248,7 @@
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/common/run.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/run" '("realgud:run-debugger")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/run" '("realgud")))
 
 ;;;***
 
@@ -207,7 +256,7 @@
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/common/send.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/send" '("realgud:send-" "realgud-send-" "comint-output-filter-orig" "realgud-expand-format" "realgud-command")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/send" '("realgud" "comint-output-filter-orig")))
 
 ;;;***
 
@@ -215,7 +264,7 @@
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/common/shortkey.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/shortkey" '("realgud:goto-loc-hist-" "realgud-short-key-" "realgud:shortkey-mode-map" "realgud-get-short-key-mode-map" "realgud-populate-src-buffer-map")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/shortkey" '("realgud")))
 
 ;;;***
 
@@ -223,7 +272,7 @@
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/common/track.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/track" '("realgud-goto-line-for-" "realgud-track-" "realgud:goto-" "realgud-short-key-on-tracing?" "realgud:track-set-debugger")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/track" '("realgud" "starting-directory")))
 
 ;;;***
 
@@ -231,7 +280,7 @@
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/common/track-mode.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/track-mode" '("realgud-track-mode" "realgud:tool-bar-map" "realgud-track-mode-map" "realgud-track-mode-setup" "realgud-track-mode-vars")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/track-mode" '("realgud" "comint-truncate-buffer-orig")))
 
 ;;;***
 
@@ -239,7 +288,7 @@
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/common/utils.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/utils" '("realgud:strip" "realgud:flatten")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/utils" '("realgud:")))
 
 ;;;***
 
