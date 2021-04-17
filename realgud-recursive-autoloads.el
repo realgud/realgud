@@ -20,6 +20,24 @@ Associate a command buffer with the current source buffer
 
 +;;;***
 
+;;;### (autoloads nil "realgud/common/attach" "realgud/common/attach.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from realgud/common/attach.el
+
+(autoload 'realgud:attach-source-buffer "realgud/common/attach" "\
+Associate a source buffer with the current command buffer
+
+\(fn SRCBUF)" t nil)
+
+(autoload 'realgud:attach-cmd-buffer "realgud/common/attach" "\
+Associate a command buffer with the current source buffer
+
+\(fn CMDBUF)" t nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/attach" '("realgud:attach-cmdbuf-history")))
+
+;;;***
+
 ;;;### (autoloads nil "realgud/common/backtrace-mode" "realgud/common/backtrace-mode.el"
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from realgud/common/backtrace-mode.el
