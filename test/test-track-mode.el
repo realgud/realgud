@@ -21,7 +21,7 @@
 (declare-function realgud-track-mode-vars 'realgud-track-mode)
 (declare-function realgud-backtrace-mode 'realgud-backtrace-mode)
 
-(defun setup ()
+(defun realgud--setup ()
   (setq temp-cmdbuf (generate-new-buffer "*cmdbuf-test*"))
   ;; (start-process "test-track-mode" temp-cmdbuf nil)
   (start-process "test-track-mode" temp-cmdbuf "/bin/sh")
@@ -37,7 +37,7 @@
   (kill-buffer temp-cmdbuf)
 )
 
-(setup)
+(realgud--setup)
 
 ;; Current buffer is now set up as a source buffer
 

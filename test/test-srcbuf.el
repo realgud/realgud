@@ -32,7 +32,7 @@
   (kill-buffer temp-srcbuf)
 )
 
-(defun setup ()
+(defun realgud--setup ()
   (setq temp-cmdbuf (generate-new-buffer "*cmdbuf-test*"))
   (realgud-cmdbuf-init temp-cmdbuf "trepan" (gethash "trepan" realgud-pat-hash))
   (setq temp-srcbuf (find-file-noselect "./gcd.rb"))
@@ -44,7 +44,7 @@
 	    "realgud-srcbuf? before init - but nil")
 
 (note "realgud-srcbuf-init")
-(setup)
+(realgud--setup)
 (realgud-srcbuf-init temp-srcbuf temp-cmdbuf)
 
 (assert-t (realgud-srcbuf? temp-srcbuf)

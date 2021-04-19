@@ -1,4 +1,4 @@
-;; Copyright (C) 2012, 2014-2016 Free Software Foundation, Inc
+;; Copyright (C) 2014-2021  Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -44,15 +44,11 @@
 
 If called interactively with no prefix argument, the mode is toggled. A prefix argument, captured as ARG, enables the mode if the argument is positive, and disables it otherwise.
 
-\\{remake-track-mode-map}
-"
-  "Minor mode for tracking ruby debugging inside a process shell."
-  :init-value nil
+\\{remake-track-mode-map}"
   ;; :lighter " remake"   ;; mode-line indicator from realgud-track is sufficient.
   ;; The minor mode bindings.
   :global nil
   :group 'realgud:remake
-  :keymap remake-track-mode-map
 
   (realgud:track-set-debugger "remake")
   (if remake-track-mode

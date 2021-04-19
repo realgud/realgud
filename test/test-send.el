@@ -21,7 +21,7 @@
   (defvar file-name)
 )
 
-(defun setup ()
+(defun realgud--setup ()
   (setq temp-cmdbuf (generate-new-buffer "*cmdbuf-test*"))
   (realgud-cmdbuf-init temp-cmdbuf "trepan" (gethash "trepan" realgud-pat-hash))
   (realgud-srcbuf-init (current-buffer) temp-cmdbuf)
@@ -47,7 +47,7 @@
 (assert-equal "\"\\\"fake\\\" news\"!"
 	      (realgud-expand-format "%q!" "\"fake\" news"))
 
-(setup)
+(realgud--setup)
 ;; Current buffer is now set up as a source buffer
 (setq file-name (buffer-file-name))
 (note "File formatting")
