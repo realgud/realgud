@@ -18,7 +18,7 @@ Associate a command buffer with the current source buffer
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "realgud/common/attach" '("realgud:attach-cmdbuf-history")))
 
-+;;;***
+;;;***
 
 ;;;### (autoloads nil "realgud/common/attach" "realgud/common/attach.el"
 ;;;;;;  (0 0 0 0))
