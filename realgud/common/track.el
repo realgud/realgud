@@ -421,8 +421,7 @@ encountering a new loc."
 		      ;; 				'realgud-overlay-arrow1)
 		      ;; 	)
 		      (realgud-window-update-position srcbuf realgud-overlay-arrow1)))
-		)
-	      (if cmd-window (select-window cmd-window)))
+		))
 	  ; else
 	  (with-current-buffer srcbuf
 	    (realgud-window-src srcbuf)
