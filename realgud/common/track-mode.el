@@ -45,6 +45,7 @@
 
 (defvar realgud-track-mode-map
   (let ((map  (copy-keymap shell-mode-map)))
+    (set-keymap-parent map comint-mode-map)
     (realgud-populate-debugger-menu map)
     (define-key map "\r"	'realgud:send-input)
     (define-key map [M-right]	'realgud-track-hist-newest)
