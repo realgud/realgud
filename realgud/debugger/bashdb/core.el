@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2017 Free Software Foundation, Inc
+;; Copyright (C) 2015-2017, 2021 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -34,6 +34,12 @@
   '(("\C-i" . comint-dynamic-complete-filename))
   "Keymap for minibuffer prompting of bashdb startup command."
   :inherit minibuffer-local-map)
+
+(defvar realgud:bashdb-file-remap (make-hash-table :test 'equal)
+  "How to remap script files in bashdb when we otherwise can't
+  find in the filesystem. The hash key is the file string we saw,
+  and the value is associated filesystem string presumably in the
+  filesystem")
 
 ;; FIXME: I think this code and the keymaps and history
 ;; variable chould be generalized, perhaps via a macro.
