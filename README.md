@@ -1,4 +1,5 @@
 [![Build Status][travis-image]][travis-url]
+[![GNU ELPA][gnu-elpa-image]][gnu-elpa]
 [![MELPA][melpa-image]][melpa]
 [![MELPA Stable][melpa-stable-image]][melpa-stable]
 
@@ -104,6 +105,8 @@ Browse the [wiki](https://github.com/realgud/realgud/wiki) for more information 
 
 [travis-image]: https://api.travis-ci.org/realgud/realgud.svg?branch=master
 [travis-url]: https://travis-ci.org/realgud/realgud
+[gnu-elpa-image]: https://elpa.gnu.org/packages/realgud.svg
+[gnu-elpa]: https://elpa.gnu.org/packages/realgud.html
 [melpa-stable-image]: http://stable.melpa.org/packages/realgud-badge.svg
 [melpa-stable]: http://stable.melpa.org/#/realgud
 [melpa-image]: http://melpa.org/packages/realgud-badge.svg
