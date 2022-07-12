@@ -79,10 +79,13 @@ realgud-loc-pat struct")
 ;; response.
 ;; For example:
 ;;   Deleted breakpoint 1
+;;   Deleted breakpoint 1 Deleted breakpoint 1
 ;;   Deleted breakpoints 1 2 3 4
+;; The event listener seems to trigger twice when a breakpoint is deleted using the
+;; clear command. The regexp works around this by allowing one repetition of the match.
 (setf (gethash "brkpt-del" realgud:gdb-pat-hash)
       (make-realgud-loc-pat
-       :regexp "^Deleted breakpoints? \\(\\([0-9]+ *\\)+\\)\n"
+       :regexp "^\\(?:Deleted breakpoints? \\(\\([0-9]+ *\\)+\\) *\\)\\{1,2\\}\n"
        :num 1))
 
 (defconst realgud:gdb-frame-start-regexp

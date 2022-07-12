@@ -145,6 +145,9 @@ fringe and marginal icons.
                 ;; if a relative path is supplied to gcc, gdb will display the relative path
                 ;; tripping up realgud, causing it to ask if you want to blacklist the file.
                 (realgud-command "set filename-display absolute" nil nil nil)
+                ;; gdb doesn't print a confirmation that a breakpoint was deleted successfully by default.
+                ;; This event listener adds a status message for every deleted breakpoint.
+                (realgud-command "python gdb.events.breakpoint_deleted.connect(lambda b: print(f\"Deleted breakpoint {b.number}\"))" nil nil nil)
 		)))
       )
     ))
