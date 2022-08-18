@@ -93,7 +93,7 @@ Therefore we invoke python rather than the debugger initially.
 	 (parsed-cmd-args
 	  (cl-remove-if 'nil (realgud:flatten parsed-args))))
     (realgud:run-process actual-debugger script-name parsed-cmd-args
-			 'realgud:trepan3k-deferred-minibuffer-history)))
+			 'realgud:trepan3k-delayed-minibuffer-history)))
 
 (realgud-deferred-invoke-setup "trepan3k")
 
