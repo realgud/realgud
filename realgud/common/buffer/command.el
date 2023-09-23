@@ -146,6 +146,12 @@
   )
 (make-variable-buffer-local 'realgud-cmdbuf-info)
 (make-variable-buffer-local 'realgud-last-output-start)
+(defvar-local realgud-dap-message-que '((que . nil)
+					(mutex . nil)
+					(notify-var . nil)))
+(defvar-local realgud-dap-que nil)
+(defvar-local realgud-dap-mutex nil)
+(defvar-local realgud-dap-notify-var nil)
 
 (defalias 'realgud-cmdbuf-info? 'realgud-cmdbuf-info-p)
 
@@ -423,6 +429,16 @@ This is based on an org-mode buffer. Hit tab to expand/contract sections.
 		       cmd-args)))))
      (t nil)))
 
+(defun realgud-dap-setup-que (session-name)
+  (setq-local realgud-dap-mutex (make-mutex session-name))
+  (setf (alist-get 'mutex realgud-dap-message-que) realgud-dap-mutex)
+  (setq-local realgud-dap-notify-var
+	      (make-condition-variable realgud-dap-mutex session-name))
+  (setf (alist-get 'notify-var realgud-dap-message-que) realgud-dap-notify-var)
+
+  (setf (alist-get 'que realgud-dap-message-que) realgud-dap-que)
+  )
+
 ;; FIXME cmd-hash should not be optional. And while I am at it, remove
 ;; parameters loc-regexp, file-group, and line-group which can be found
 ;; inside pat-hash
@@ -488,6 +504,7 @@ values set in the debugger's init.el."
 	  (set (make-local-variable 'font-lock-breakpoint-keywords)
 	       (list font-lock-breakpoint-keywords)))
       )
+    (realgud-dap-setup-que "realgud-dap")
     (put 'realgud-cmdbuf-info 'variable-documentation
 	 "Debugger object for a process buffer."))
   )
