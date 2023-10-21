@@ -150,7 +150,8 @@ taken from current buffer, or OPT-BUFFER if non-nil.  Some
   (let* ((buffer (or opt-buffer (current-buffer)))
 	 (srcbuf (realgud-get-srcbuf buffer))
 	 (src-file-name-raw (and srcbuf (buffer-file-name srcbuf)))
-         (src-file-name (if (file-remote-p src-file-name-raw) (file-remote-p src-file-name-raw 'localname) src-file-name-raw))
+         (src-file-name (and src-file-name-raw
+                             (if (file-remote-p src-file-name-raw) (file-remote-p src-file-name-raw 'localname) src-file-name-raw)))
 	 result)
     (while (and fmt-str
 		(let ((case-fold-search nil))
