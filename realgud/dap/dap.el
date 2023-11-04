@@ -6,20 +6,67 @@
 		       "realgud-")
 (require-relative-list '("../common/buffer/command")
 		       "realgud-buffer-")
+(require-relative-list '("../debugger/dap/dap")
+		       "realgud-")
+
+(defvar realgud--dap--debug-msg-buf-to-message 't
+  "For debugging proposes.  Print message buffer to messages buffer.")
 
+(defun realgud--dap-make-type-Source (path)
+  "Build source object for file under PATH.
+https://microsoft.github.io/debug-adapter-protocol/specification#Types_Source"
+  `(:path ,path :adapterData nil :checksums ('TODO) :origin ""
+	  :presentationHint "normal" :sourceReference 0
+	  :sources nil)
+  )
 
-(defvar realgud:dap-pat-hash (make-hash-table :test 'equal)
-  "dummy hash entry for compatibility")
-(setf (gethash "loc" realgud:dap-pat-hash) (make-realgud-loc-pat))
-(setf (gethash "prompt" realgud:dap-pat-hash) (make-realgud-loc-pat))
-(setf (gethash "dap" realgud-pat-hash) realgud:dap-pat-hash)
+;; TODO; rest of fields.
+;; documentation says sth about assuming utf16, so i probably need temporary change, hopefully folliowing snippet enough. also i must disable feature columnsStartAt1
+;; (let ((old-buffer-file-coding-system buffer-file-coding-system))
+;;   (unwind-protect
+;;       (progn
+;; 	(set-buffer-file-coding-system 'utf-16 nil 't)
+;; 	(current-column))
+;;       (setq buffer-file-coding-system old-buffer-file-coding-system) ))
 
+(defun realgud--dap-make-type-SourceBreakpoint (line)
+  "Build SourceBreakpoint object pointing at LINE.
+https://microsoft.github.io/debug-adapter-protocol/specification#Types_SourceBreakpoint"
+  `(:line ,line)
+  )
 
+(defun realgud--dap-make-request-SetBreakpointsRequest (path line)
+  "Build SetBreakpointsRequest payload.
+Add breakpoint for source referenced by PATH at LINE.
+https://microsoft.github.io/debug-adapter-protocol/specification#leftwards_arrow_with_hook-setbreakpoints-request"
+  `(:command "setBreakpoints" :type "request" :arguments
+	     (:breakpoints
+		,(realgud--dap-make-type-SourceBreakpoint line)
+		:source
+		,(realgud--dap-make-type-Source path))
+	     ))
+
+(defun realgud--dap-make-request-InitializeRequestArguments nil
+  `(:command "initialize" :type "request" :arguments
+	     (
+	      :adapterID "idk" ;; TODO
+			 :linesStartAt1 t :columnsStartAt1 nil
+			 :pathFormat "path" ;; TODO probably should be URI GNU/Linux->M$ windows connection
+			 :supportsRunInTerminalRequest nil
+			 :supportsArgsCanBeInterpretedByShell nil
+			 :supportsVariablePaging nil
+			 :supportsProgressReporting nil
+			 :supportsInvalidatedEvent nil
+			 :supportsMemoryEvent nil ;; TODO?
+			 :supportsVariableType nil ;; TODO?
+			 :supportsMemoryReferences nil ;; TODO?)
+	     )))
+
 (defun realgud--dap-headers-make-assoc (headers-str)
-  (let* ((splitted (split-string headers-str ": " 't "[ \f\t\n\r\v]+")))
+  (let* ((splitted (split-string headers-str ": " 't "[ \n\r]+")))
     `((,(nth 0 splitted) . ,(nth 1 splitted))) ))
 
-(defun realgud--dap-parse-output ()
+(defun realgud--dap-parse-output (cmdbuff)
   "Parse DAP message.  Return 't if any message was found."
   (goto-char (point-min))
   (when (search-forward "\r\n\r\n" nil 't)
@@ -46,15 +93,53 @@
 	  ;; 	(setf .que (list new-message)) )
 	  ;;     (condition-notify .notify-var) )
 	  ;;   )
-	  (with-mutex (alist-get 'mutex realgud-dap-message-que)
-	    (if (alist-get 'que realgud-dap-message-que)
-		(push new-message (cdr (last (alist-get 'que realgud-dap-message-que))))
-	      (setf (alist-get 'que realgud-dap-message-que) (list new-message)) )
-	    (condition-notify (alist-get 'notify-var realgud-dap-message-que)) ) )
+	  (with-current-buffer cmdbuff
+	    (with-mutex (alist-get 'mutex realgud-dap-message-que)
+	      (if (alist-get 'que realgud-dap-message-que)
+		  (push new-message (cdr (last (alist-get 'que realgud-dap-message-que))))
+		(setf (alist-get 'que realgud-dap-message-que) (list new-message)) )
+	      (condition-notify (alist-get 'notify-var realgud-dap-message-que)) )) )
+	(when realgud--dap--debug-msg-buf-to-message
+	  (message (concat "===== DAP MESSAGE BEGIN =======\n"
+			   (buffer-substring (point-min) (+ headers-end-point len))
+			   (unless (equal (+ headers-end-point len) (point-max))
+			     (concat "\n===== DAP MESSAGE TRAILING ====\n"
+				     (buffer-substring (+ headers-end-point len) (point-max))))
+			   "\n=== DAP MESSAGE END ===========\n"
+			   )
+		   ))
 	(delete-region (point-min) (+ headers-end-point len))
 	't) )) )
 
-(defun realgud--dap-process-filter (proc string)
+(defun realgud--dap-process-send-message (message-plist)
+  "Serial plist MESSAGE-PLIST ans send to DAP server.
+Add `seq' to message and increment it."
+  ; TODO add new mutex? ; TODO run in loop in separated thread!!!
+  (with-current-buffer (realgud-get-cmdbuf)
+    (let* ((proc (realgud-sget 'cmdbuf-info 'dap-network-process))
+	   (seq nil)
+	   (message-str nil)
+	   (len nil)
+	   (json-false nil))
+      (setq seq (realgud-sget 'cmdbuf-info 'dap-seq))
+      (realgud-cmdbuf-info-dap-seq= (1+ seq))
+      (setq message-str
+	    (json-encode-plist (append message-plist `(:seq ,seq))))
+      (setq len (string-bytes message-str))
+      (when realgud--dap--debug-msg-buf-to-message
+	(message (concat "===== DAP SEND BEGIN =======\n"
+			 (concat "Content-Length: " (int-to-string len) "\r\n\r\n"
+				 message-str)
+			 "\n=== DAP MESSAGE END ===========\n"
+			 )
+		 ))
+      (unless proc (error "dap-network-process is nil!!!"))
+      (process-send-string proc
+       (concat "Content-Length: " (int-to-string len) "\r\n\r\n"
+	       message-str))
+      )))
+
+(defun realgud--dap-process-filter (proc string cmdbuff)
   ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Filter-Functions.html
   (when (buffer-live-p (process-buffer proc))
     (with-current-buffer (process-buffer proc)
@@ -67,37 +152,57 @@
           (set-marker (process-mark proc) (point)))
         (if moving (goto-char (process-mark proc))))
 
-      (while (realgud--dap-parse-output) ) ; (thread-yield) ??
+      (while (realgud--dap-parse-output cmdbuff) ) ; (thread-yield) ??
       )))
 
 (defun realgud--dap-start-client (server port)
   ;; Create buffer with leading space, so it's hidden from user and have no undo history.
   ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Buffer-Names.html
-  (let* ((name (concat " *dap " server ":" (number-to-string port) "*"))
+  (let* (
+	 (name
+	  (concat " *dap " server ":" (number-to-string port) "*"))
 	 (netbuff (get-buffer-create name))
+	 (cmdbuff (realgud-get-cmdbuf))
 	 )
-      (make-network-process
-       :name name
-       :buffer netbuff
-       :filter 'realgud--dap-process-filter
-       :host server
-       :service port
-       ; :filter-multibyte 't ??
-       )))
+    (with-current-buffer netbuff
+      (delete-region (point-min) (point-max))) ;; Cleanup after previous connections
+    ;; TODO make sure buffer is deleted once process is dead and kill process
+    (with-current-buffer cmdbuff
+      (realgud-cmdbuf-info-dap-msg-loop-thread=
+       (make-thread (lambda nil (while 't (realgud--dap-event-handler cmdbuff)))
+		    "realgud-message-handler"))
+      (realgud-cmdbuf-info-dap-network-process=
+       (make-network-process
+	:name name
+	:buffer netbuff
+	:filter (lambda (proc string) (realgud--dap-process-filter proc string cmdbuff))
+	:host server
+	:service port
+	;; :filter-multibyte 't ??
+	)))))
 
-(defun realgud--dap-event-loop nil
-  (with-mutex (alist-get 'mutex realgud-dap-message-que)
-    (condition-wait (alist-get 'notify-var realgud-dap-message-que))
-    (let* ((msg (pop (alist-get 'que realgud-dap-message-que)))
-	   (msg-body (plist-get :body msg)))
-      )
-    ))
+(defun realgud--dap-event-handler (cmdbuf) ;; Catch and report errors
+  (with-current-buffer cmdbuf
+    (with-mutex (alist-get 'mutex realgud-dap-message-que)
+      (condition-wait (alist-get 'notify-var realgud-dap-message-que))
+      (let* ((msg (pop (alist-get 'que realgud-dap-message-que)))
+	     (msg-body (plist-get :body msg))
+	     (msg-type (gethash "type" msg-body)))
+	(cond
+					       ;((string= msg-type "breakpoint") nil)
+	 ('t (message (concat "gotta event: " msg-type)))
+	 )
+	))))
 
-(defun realgud--dap-start-message-loop nil
+(defun realgud--dap-cleanup nil
   (with-current-buffer-safe (realgud-get-cmdbuf)
-    ; TODO register thread in cmdbuf so we can kill it
-    (make-thread (lambda nil (while 't (realgud--dap-message-handle)))
-		 "realgud message handler")
+    (let ((proc (realgud-sget 'cmdbuf-info 'dap-network-process))
+	  (thread (realgud-sget 'cmdbuf-info 'dap-msg-loop-thread)))
+      (when (threadp thread)
+	(thread-signal thread 'quit nil))
+      (when (processp proc)
+	(delete-process proc)))
+    ;; kill buffer (process-contact proc :buffer)
     ))
 
 (defgroup realgud:dap nil
@@ -128,7 +233,7 @@ You should set this variable in your project's directory variables"
 
 (defun dap-suggest-invocation (debugger-name)
   "Suggest a pdb command invocation via `realgud-suggest-invocaton'"
-  "debugpy")
+  (concat "python -m debugpy --wait-for-client --log-to-stderr --listen 10000 /srv/git/youtube-dl/youtube-dl https://www.youtube.com/watch?v=OxnicJ-jPWo"))
 
 (defun dap-query-cmdline (&optional opt-debugger)
   (realgud-query-cmdline
@@ -158,7 +263,7 @@ a process shell.
 "
   :init-value nil
   :global nil
-  :group 'realgud:dap
+  :group 'realgud:
   :keymap dap-track-mode-map
   (realgud:track-set-debugger "dap")
   (if dap-track-mode
@@ -168,6 +273,7 @@ a process shell.
     (progn
       (setq realgud-track-mode nil)
       ))
+  (set (make-local-variable 'realgud-command-name-hash) (make-hash-table :test 'equal))
   )
 
 (defun dap-parse-cmd-args (args)
@@ -198,7 +304,11 @@ fringe and marginal icons.
   (realgud:run-debugger "dap" 'dap-query-cmdline
 			'dap-parse-cmd-args
 			'realgud:dap-minibuffer-history
-			opt-cmd-line no-reset) )
+			opt-cmd-line no-reset)
+  (sit-for 2) ;; TODO smart wait until server is ready
+  (realgud--dap-start-client "127.0.0.1" 10000)
+  (realgud--dap-process-send-message (realgud--dap-make-request-InitializeRequestArguments))
+  )
 
 (provide-me "realgud:dap-")
 

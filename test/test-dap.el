@@ -8,30 +8,51 @@
 (test-simple-start)
 
 (load-file "../realgud/dap/dap.el")
-
+(defvar backtrace-mode-map nil)
+(defvar backtrace-print nil)
 (setq test-message "Content-Length: 82
 
 {\"seq\": 153, \"type\": \"request\", \"command\": \"next\", \"arguments\": { \"threadId\": 3 }}")
 
-(setq server-buffer (generate-new-buffer "*server-buffer*"))
-;; https://github.com/methane/echoserver/blob/master/server_elisp.el
-(setq test-server
-      (make-network-process
-       :name "test-server"
-       :buffer server-buffer
-       :filter (lambda (process string)
-                 (process-send-string process test-message) )
-       ; (delete-process process) close connection
-       :host 'local
-       :service 't
-       :server 't
+(defun realgud--dap-get-free-port nil
+  (let* ((free-port-finder
+          (make-network-process
+           :name "free port finder"
+           :filter (lambda (process string)
+                     (process-send-string process "I just want to find free port.")
+                     )
+           :host 'local
+           :service 't
+           :server 't
        ; :filter-multibyte 't ??
-       ))
-(realgud--dap-start-client "127.0.0.1" (nth 1 (process-contact test-server )))
+           ))
+         ;; https://github.com/methane/echoserver/blob/master/server_elisp.el
+         (port (nth 1 (process-contact free-port-finder))))
+    (delete-process free-port-finder)
+    port
+))
 
 (defun setup-fake-cmdbuf ()
-  (kill-all-local-variables)
-  (realgud-cmdbuf-init (current-buffer) "dap" realgud:dap-pat-hash) )
+  (let* ((test-server)
+         (port (realgud--dap-get-free-port)))
+      (kill-all-local-variables)
+  (setq-local test-server
+                (make-network-process
+                 :name "test-server"
+                 :buffer (generate-new-buffer "*test-server-buffer*")
+                 :filter (lambda (process string)
+                           (process-send-string process
+                                                string)
+                           )
+                 :host 'local
+                 :service port
+                 :server 't
+                 ;; :filter-multibyte 't ??
+                 ))
+  (realgud-cmdbuf-init (current-buffer) "dap" realgud:dap-pat-hash)
+  (realgud--dap-start-client "127.0.0.1"
+                             port))
+  )
 
 (with-temp-buffer
   ;; https://github.com/rocky/emacs-test-simple/pull/13/files
@@ -100,5 +121,14 @@
     (let-alist realgud-dap-message-que
       (assert-equal 2 (proper-list-p .que) (concat ".que: " (pp-to-string .que))) )
     ) )
+
+(note "send message")
+(with-temp-buffer
+  (setup-fake-cmdbuf)
+  (realgud--dap-process-send-message (realgud--dap-make-request-InitializeRequestArguments))
+  (let* ((ret (realgud--dap-parse-output)))
+    (let-alist realgud-dap-message-que
+      (message (pp-to-string .que)) )
+    ))
 
 (end-tests)

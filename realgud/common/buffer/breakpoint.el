@@ -91,6 +91,17 @@
 ;; FIXME: create this in a new frame.
 (defun realgud:breakpoint-init ()
   (interactive)
+  (let (cmdbuf (realgud-get-cmdbuf))
+    (with-current-buffer-safe cmdbuf
+      (if (string= (realgud-cmdbuf-debugger-name) "dap")
+	  (realgud--dap-breakpoint-init)
+	  (realgud--classic-dbg-breakpoint-init)) )))
+
+;; (defun realgud--dap-handle-response-breakpoint-list ()
+;;   (let* ((cmdbuf (realgud-get-cmdbuf)))
+;;     (realgud-breakpoint-mode cmdbuf)) )
+
+(defun realgud--classic-dbg-breakpoint-init ()
   (let ((buffer (current-buffer))
   	(cmdbuf (realgud-get-cmdbuf))
   	(process)

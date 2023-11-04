@@ -143,15 +143,14 @@
                ;; see realgud-lochist
   starting-directory    ;; directory where initial debug command was issued.
                         ;; this can be used to resolve relative file names
+  dap-network-process
+  dap-msg-loop-thread
+  dap-seq
   )
 (make-variable-buffer-local 'realgud-cmdbuf-info)
 (make-variable-buffer-local 'realgud-last-output-start)
-(defvar-local realgud-dap-message-que '((que . nil)
-					(mutex . nil)
-					(notify-var . nil)))
-(defvar-local realgud-dap-que nil)
-(defvar-local realgud-dap-mutex nil)
-(defvar-local realgud-dap-notify-var nil)
+
+(defvar-local realgud-dap-message-que nil)
 
 (defalias 'realgud-cmdbuf-info? 'realgud-cmdbuf-info-p)
 
@@ -174,6 +173,9 @@
 (realgud-struct-field-setter "realgud-cmdbuf-info" "callback-eval-filter")
 (realgud-struct-field-setter "realgud-cmdbuf-info" "starting-directory")
 (realgud-struct-field-setter "realgud-cmdbuf-info" "ignore-re-file-list")
+(realgud-struct-field-setter "realgud-cmdbuf-info" "dap-seq")
+(realgud-struct-field-setter "realgud-cmdbuf-info" "dap-network-process")
+(realgud-struct-field-setter "realgud-cmdbuf-info" "dap-msg-loop-thread")
 ;; (realgud-struct-field-setter "realgud-cmdbuf-info" "filename-remap-alist")
 
 (defun realgud-cmdbuf-filename-remap-alist= (value &optional buffer)
@@ -436,7 +438,7 @@ This is based on an org-mode buffer. Hit tab to expand/contract sections.
 	      (make-condition-variable realgud-dap-mutex session-name))
   (setf (alist-get 'notify-var realgud-dap-message-que) realgud-dap-notify-var)
 
-  (setf (alist-get 'que realgud-dap-message-que) realgud-dap-que)
+  (setf (alist-get 'que realgud-dap-message-que) realgud-dap-message-que)
   )
 
 ;; FIXME cmd-hash should not be optional. And while I am at it, remove
@@ -494,6 +496,9 @@ values set in the debugger's init.el."
 	     :mutex (make-mutex (buffer-name))
 	     :loc-hist (make-realgud-loc-hist)
 	     :starting-directory starting-directory
+	     :dap-network-process nil
+	     :dap-msg-loop-thread nil
+	     :dap-seq 1
 	     ))
       (setq font-lock-keywords (realgud-cmdbuf-pat "font-lock-keywords"))
       (if font-lock-keywords
