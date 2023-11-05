@@ -151,6 +151,8 @@
 (make-variable-buffer-local 'realgud-last-output-start)
 
 (defvar-local realgud-dap-message-que nil)
+(defvar-local realgud-dap-mutex nil)
+(defvar-local realgud-dap-notify-var nil)
 
 (defalias 'realgud-cmdbuf-info? 'realgud-cmdbuf-info-p)
 
@@ -433,13 +435,8 @@ This is based on an org-mode buffer. Hit tab to expand/contract sections.
 
 (defun realgud-dap-setup-que (session-name)
   (setq-local realgud-dap-mutex (make-mutex session-name))
-  (setf (alist-get 'mutex realgud-dap-message-que) realgud-dap-mutex)
   (setq-local realgud-dap-notify-var
-	      (make-condition-variable realgud-dap-mutex session-name))
-  (setf (alist-get 'notify-var realgud-dap-message-que) realgud-dap-notify-var)
-
-  (setf (alist-get 'que realgud-dap-message-que) realgud-dap-message-que)
-  )
+	      (make-condition-variable realgud-dap-mutex session-name)))
 
 ;; FIXME cmd-hash should not be optional. And while I am at it, remove
 ;; parameters loc-regexp, file-group, and line-group which can be found

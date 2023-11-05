@@ -1,7 +1,7 @@
 ;; Tests for DAP -*- lexical-binding: t -*-
 
 ;; Press C-x C-e at the end of the next line to run this file test non-interactively
-;; (test-simple-run "emacs -batch -L %s -L %s -L %s -l %s" (file-name-directory (locate-library "load-relative.elc")) (file-name-directory (locate-library "test-simple.elc")) (file-name-directory (locate-library "loc-changes.elc")) buffer-file-name)
+;; (test-simple-run "emacs -batch -L %s -L %s -L %s -l %s" (file-name-directory (locate-library "load-relative.el")) (file-name-directory (locate-library "test-simple.el")) (file-name-directory (locate-library "loc-changes.el")) buffer-file-name)
 
 (require 'test-simple)
 
@@ -35,7 +35,7 @@
 (defun setup-fake-cmdbuf ()
   (let* ((test-server)
          (port (realgud--dap-get-free-port)))
-      (kill-all-local-variables)
+    (kill-all-local-variables)
   (setq-local test-server
                 (make-network-process
                  :name "test-server"
@@ -66,17 +66,16 @@
 (with-temp-buffer
   (setup-fake-cmdbuf)
   (assert-t (realgud-cmdbuf? (current-buffer)))
-  (let-alist realgud-dap-message-que
-    (assert-nil .que (pp-to-string .que))
-    (assert-t (mutexp .mutex))
-    (assert-t (condition-variable-p .notify-var))
-    ))
+  (assert-nil realgud-dap-message-que (pp-to-string realgud-dap-message-que))
+  (assert-t (mutexp realgud-dap-mutex))
+  (assert-t (condition-variable-p realgud-dap-notify-var))
+  )
 
 (note "connection buffer is empty after passing full message")
 (with-temp-buffer
   (setup-fake-cmdbuf)
   (insert test-message)
-  (let* ((ret (realgud--dap-parse-output)))
+  (let* ((ret (realgud--dap-parse-output (current-buffer))))
     (assert-t ret)
     (assert-t (equal (point-min) (point-max) ))
     ))
@@ -84,24 +83,22 @@
 (note "empty connection buffer don't mess things up")
 (with-temp-buffer
   (setup-fake-cmdbuf)
-  (let* ((ret (realgud--dap-parse-output)))
+  (let* ((ret (realgud--dap-parse-output (current-buffer))))
     (assert-nil ret)
     (assert-equal (point-min) (point-max) )
-    (let-alist realgud-dap-message-que
-      (assert-nil .que (pp-to-string .que)))
-    ))
+    (assert-nil realgud-dap-message-que (pp-to-string realgud-dap-message-que)))
+    )
 
 (note "trailing partial message")
 (with-temp-buffer
   (setup-fake-cmdbuf)
-  (assert-equal 0 (proper-list-p (alist-get 'que realgud-dap-message-que)) "que len")
+  (assert-equal 0 (proper-list-p realgud-dap-message-que) "que len")
   (insert (concat test-message "x"))
-  (let* ((ret (realgud--dap-parse-output)))
+  (let* ((ret (realgud--dap-parse-output (current-buffer))))
     (assert-t ret)
     (assert-nil (equal (point-min) (point-max)) "Buffer is empty!")
     (assert-t (string-equal "x" (buffer-string)) (concat "Buffer content is: " (buffer-string)) )
-    (let-alist realgud-dap-message-que
-      (assert-equal 1 (proper-list-p .que) (concat ".que: " (pp-to-string .que))) )
+    (assert-equal 1 (proper-list-p realgud-dap-message-que) (concat "realgud-dap-message-que: " (pp-to-string realgud-dap-message-que)))
     ))
 
 (note "2 messages")
@@ -109,26 +106,23 @@
   (setup-fake-cmdbuf)
   (assert-equal 0 (proper-list-p (alist-get 'que realgud-dap-message-que)) "que len")
   (insert (concat test-message test-message))
-  (let* ((ret (realgud--dap-parse-output)))
+  (let* ((ret (realgud--dap-parse-output (current-buffer))))
     (assert-t ret)
     (assert-nil (equal (point-min) (point-max)) "Buffer is empty!")
-    (let-alist realgud-dap-message-que
-      (assert-equal 1 (proper-list-p .que) (concat ".que: " (pp-to-string .que))) )
+    (assert-equal 1 (proper-list-p realgud-dap-message-que) (concat "realgud-dap-message-que: " (pp-to-string realgud-dap-message-que)))
     )
-  (let* ((ret (realgud--dap-parse-output)))
+  (let* ((ret (realgud--dap-parse-output (current-buffer))))
     (assert-t ret)
     (assert-t (equal (point-min) (point-max)) "Buffer is NOT empty!")
-    (let-alist realgud-dap-message-que
-      (assert-equal 2 (proper-list-p .que) (concat ".que: " (pp-to-string .que))) )
+    (assert-equal 2 (proper-list-p realgud-dap-message-que) (concat "realgud-dap-message-que: " (pp-to-string realgud-dap-message-que)))
     ) )
 
 (note "send message")
 (with-temp-buffer
   (setup-fake-cmdbuf)
   (realgud--dap-process-send-message (realgud--dap-make-request-InitializeRequestArguments))
-  (let* ((ret (realgud--dap-parse-output)))
-    (let-alist realgud-dap-message-que
-      (message (pp-to-string .que)) )
+  (let* ((ret (realgud--dap-parse-output (current-buffer))))
+    (message (pp-to-string realgud-dap-message-que))
     ))
 
 (end-tests)

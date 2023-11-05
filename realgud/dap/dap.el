@@ -85,20 +85,12 @@ https://microsoft.github.io/debug-adapter-protocol/specification#leftwards_arrow
 		      (buffer-substring headers-end-point
 					(+ headers-end-point len))))
 	       (new-message (list :headers headers :body body)))
-	  ;;let-alist cant be used as it's not place form
-	  ;; (let-alist realgud-dap-message-que
-	  ;;   (with-mutex .mutex
-	  ;;     (if .que
-	  ;; 	  (push new-message (cdr (last .que)) )
-	  ;; 	(setf .que (list new-message)) )
-	  ;;     (condition-notify .notify-var) )
-	  ;;   )
 	  (with-current-buffer cmdbuff
-	    (with-mutex (alist-get 'mutex realgud-dap-message-que)
-	      (if (alist-get 'que realgud-dap-message-que)
-		  (push new-message (cdr (last (alist-get 'que realgud-dap-message-que))))
-		(setf (alist-get 'que realgud-dap-message-que) (list new-message)) )
-	      (condition-notify (alist-get 'notify-var realgud-dap-message-que)) )) )
+	    (with-mutex realgud-dap-mutex
+	      (if realgud-dap-message-que
+		  (push new-message (cdr (last realgud-dap-message-que)))
+		(setf realgud-dap-message-que (list new-message)) )
+	      (condition-notify realgud-dap-notify-var) )) )
 	(when realgud--dap--debug-msg-buf-to-message
 	  (message (concat "===== DAP MESSAGE BEGIN =======\n"
 			   (buffer-substring (point-min) (+ headers-end-point len))
@@ -183,14 +175,14 @@ Add `seq' to message and increment it."
 
 (defun realgud--dap-event-handler (cmdbuf) ;; Catch and report errors
   (with-current-buffer cmdbuf
-    (with-mutex (alist-get 'mutex realgud-dap-message-que)
-      (condition-wait (alist-get 'notify-var realgud-dap-message-que))
-      (let* ((msg (pop (alist-get 'que realgud-dap-message-que)))
-	     (msg-body (plist-get :body msg))
+    (with-mutex realgud-dap-mutex
+      (condition-wait realgud-dap-notify-var)
+      (let* ((msg (pop realgud-dap-message-que))
+	     (msg-body (plist-get msg :body))
 	     (msg-type (gethash "type" msg-body)))
 	(cond
-					       ;((string= msg-type "breakpoint") nil)
-	 ('t (message (concat "gotta event: " msg-type)))
+	 ((string= msg-type "breakpoint") nil)
+	 ('t (message (concat "Unsupported DAP message: " msg-type)))
 	 )
 	))))
 
