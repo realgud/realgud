@@ -212,7 +212,7 @@ message."
 
 (defun realgud:message-eval-results(text)
   "Output the TEXT to the message area."
-  (message (realgud:truncate-eval-message (realgud:get-eval-output text))))
+  (message "%s" (realgud:truncate-eval-message (realgud:get-eval-output text))))
 
 (defun realgud:track-from-region(from to &optional cmd-mark opt-cmdbuf
 				      shortkey-on-tracing? no-warn-if-no-match?)
