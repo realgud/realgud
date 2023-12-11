@@ -128,6 +128,30 @@ in a particular debugger.
 (defun realgud:cmd-run-command(arg cmd-name &optional
                                    default-cmd-template no-record?
                                    frame-switch? realgud-prompts?)
+  (let ((dbg-name (with-current-buffer (realgud-get-cmdbuf)
+                   (realgud-cmdbuf-debugger-name))))
+    (if (string= dbg-name "dap")
+	(realgud:dap-cmd-run-command arg cmd-name
+                                     default-cmd-template no-record?
+                                     frame-switch? realgud-prompts?)
+      (realgud:classic-cmd-run-command arg cmd-name
+                                       default-cmd-template no-record?
+                                       frame-switch? realgud-prompts?)) )
+  )
+
+(defun realgud:dap-cmd-run-command (arg cmd-name &optional
+                                        default-cmd-template no-record?
+                                        frame-switch? realgud-prompts?)
+  (cond
+   ((string= cmd-name "break")
+    (realgud--dap-cmd-break arg) )
+   ('t (message (concat "unhandled: " cmd-name "(" (pp-to-string arg) ")")))
+   )
+  )
+
+(defun realgud:classic-cmd-run-command(arg cmd-name &optional
+                                           default-cmd-template no-record?
+                                           frame-switch? realgud-prompts?)
   "Run debugger command CMD-NAME.
 If CMD-NAME isn't set in the command buffer's command hash, use
 DEFAULT-CMD-TEMPLATE and fall back to looking CMD-NAME up in

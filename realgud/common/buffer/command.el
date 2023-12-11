@@ -146,6 +146,10 @@
   dap-network-process
   dap-msg-loop-thread
   dap-seq
+  dap-breakpoints
+  dap-FunctionBreakpoints
+  dap-ExceptionBreakpoints
+  dap-telemetry-data
   )
 (make-variable-buffer-local 'realgud-cmdbuf-info)
 (make-variable-buffer-local 'realgud-last-output-start)
@@ -178,6 +182,7 @@
 (realgud-struct-field-setter "realgud-cmdbuf-info" "dap-seq")
 (realgud-struct-field-setter "realgud-cmdbuf-info" "dap-network-process")
 (realgud-struct-field-setter "realgud-cmdbuf-info" "dap-msg-loop-thread")
+(realgud-struct-field-setter "realgud-cmdbuf-info" "dap-telemetry-data")
 ;; (realgud-struct-field-setter "realgud-cmdbuf-info" "filename-remap-alist")
 
 (defun realgud-cmdbuf-filename-remap-alist= (value &optional buffer)
@@ -496,6 +501,10 @@ values set in the debugger's init.el."
 	     :dap-network-process nil
 	     :dap-msg-loop-thread nil
 	     :dap-seq 1
+	     :dap-breakpoints (make-hash-table :test 'equal)
+	     :dap-FunctionBreakpoints (make-hash-table :test 'equal)
+	     :dap-ExceptionBreakpoints (make-hash-table :test 'equal)
+	     :dap-telemetry-data nil
 	     ))
       (setq font-lock-keywords (realgud-cmdbuf-pat "font-lock-keywords"))
       (if font-lock-keywords

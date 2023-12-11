@@ -91,6 +91,74 @@
 ;; FIXME: create this in a new frame.
 (defun realgud:breakpoint-init ()
   (interactive)
+  (let (cmdbuf (realgud-get-cmdbuf))
+    (with-current-buffer-safe cmdbuf
+      (if (string= (realgud-cmdbuf-debugger-name) "dap")
+	  (realgud--dap-breakpoint-init)
+	  (realgud--classic-dbg-breakpoint-init)) )))
+
+(defun realgud--dap-breakpoint-init ()
+  (let ((buffer (current-buffer))
+  	(cmdbuf (realgud-get-cmdbuf))
+  	(process)
+  	)
+    (with-current-buffer cmdbuf
+      (let ((brkpt-pat (realgud-cmdbuf-pat "debugger-breakpoint"))
+	    (brkpt-pos-ring)
+	    (bp-list (realgud-cmdbuf-info-bp-list realgud-cmdbuf-info))
+	    (divert-string nil)
+	    )
+	(unless brkpt-pat
+	  (error "No 'debugger-breakpoint' regular expression recorded for debugger %s"
+		 (realgud-cmdbuf-debugger-name)))
+	(realgud-cmdbuf-info-in-srcbuf?= (not (realgud-cmdbuf? buffer)))
+
+	(let ((brkpt-buffer (get-buffer-create
+			     (format "*Breakpoint %s*"
+				     (realgud-get-buffer-base-name
+				     (buffer-name))))) )
+	  (realgud-cmdbuf-info-brkpt-buf= brkpt-buffer)
+	  (setq divert-string (realgud--dap-fake-divert-string-break))
+	    (with-current-buffer brkpt-buffer
+	      (setq buffer-read-only nil)
+	      (delete-region (point-min) (point-max))
+	      (if divert-string
+		  (let* ((duple
+			  (realgud:breakpoint-add-text-properties
+			   brkpt-pat cmdbuf divert-string bp-list))
+			 (string-with-props
+			  (ansi-color-filter-apply (car duple)))
+			 (brkpt-num-pos-list (cadr duple))
+			 )
+		    (insert string-with-props)
+		    ;; add marks for each position
+		    (realgud-breakpoint-mode cmdbuf)
+		    (setq brkpt-pos-ring
+			  (make-ring (length brkpt-num-pos-list)))
+		    (dolist (pos brkpt-num-pos-list)
+		      (goto-char (1+ pos))
+		      (ring-insert-at-beginning brkpt-pos-ring (point-marker))
+		      )
+		    )
+		)
+	      ;; realgud-breakpoint-mode kills all local variables so
+	      ;; we set this after. Alternatively change realgud-breakpoint-mode.
+	      (set (make-local-variable 'realgud-breakpoint-info)
+		   (make-realgud-breakpoint-info
+		    :cmdbuf cmdbuf
+		    :breakpoint-ring brkpt-pos-ring
+		    ))
+	      )
+	    )
+
+	)
+      )
+    (unless cmdbuf
+      (message "Unable to find debugger command buffer for %s" buffer))
+    )
+  )
+
+(defun realgud--classic-dbg-breakpoint-init ()
   (let ((buffer (current-buffer))
   	(cmdbuf (realgud-get-cmdbuf))
   	(process)

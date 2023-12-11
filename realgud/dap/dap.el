@@ -15,9 +15,7 @@
 (defun realgud--dap-make-type-Source (path)
   "Build source object for file under PATH.
 https://microsoft.github.io/debug-adapter-protocol/specification#Types_Source"
-  `(:path ,path :adapterData nil :checksums ('TODO) :origin ""
-	  :presentationHint "normal" :sourceReference 0
-	  :sources nil)
+  `(:path ,path :presentationHint "normal" :sourceReference 0)
   )
 
 ;; TODO; rest of fields.
@@ -32,35 +30,164 @@ https://microsoft.github.io/debug-adapter-protocol/specification#Types_Source"
 (defun realgud--dap-make-type-SourceBreakpoint (line)
   "Build SourceBreakpoint object pointing at LINE.
 https://microsoft.github.io/debug-adapter-protocol/specification#Types_SourceBreakpoint"
-  `(:line ,line)
+  (list :line line)
   )
 
-(defun realgud--dap-make-request-SetBreakpointsRequest (path line)
+(defun realgud--dap-make-request-SetBreakpointsRequest (path brk-points)
   "Build SetBreakpointsRequest payload.
 Add breakpoint for source referenced by PATH at LINE.
 https://microsoft.github.io/debug-adapter-protocol/specification#leftwards_arrow_with_hook-setbreakpoints-request"
   `(:command "setBreakpoints" :type "request" :arguments
 	     (:breakpoints
-		,(realgud--dap-make-type-SourceBreakpoint line)
-		:source
-		,(realgud--dap-make-type-Source path))
-	     ))
+	      ,(map 'vector 'identity brk-points) ;; Just fancy way to convert list to vector
+	      :source
+	      ,(realgud--dap-make-type-Source path))) )
 
 (defun realgud--dap-make-request-InitializeRequestArguments nil
-  `(:command "initialize" :type "request" :arguments
-	     (
-	      :adapterID "idk" ;; TODO
-			 :linesStartAt1 t :columnsStartAt1 nil
-			 :pathFormat "path" ;; TODO probably should be URI GNU/Linux->M$ windows connection
-			 :supportsRunInTerminalRequest nil
-			 :supportsArgsCanBeInterpretedByShell nil
-			 :supportsVariablePaging nil
-			 :supportsProgressReporting nil
-			 :supportsInvalidatedEvent nil
-			 :supportsMemoryEvent nil ;; TODO?
-			 :supportsVariableType nil ;; TODO?
-			 :supportsMemoryReferences nil ;; TODO?)
-	     )))
+  (list :command "initialize" :type "request" :arguments
+	(list
+	 :adapterID "idk" ;; TODO
+	 :linesStartAt1 t :columnsStartAt1 nil
+	 :pathFormat "path" ;; TODO probably should be URI GNU/Linux->M$ windows connection
+	 :supportsRunInTerminalRequest nil
+	 :supportsArgsCanBeInterpretedByShell nil
+	 :supportsVariablePaging nil
+	 :supportsProgressReporting nil
+	 :supportsInvalidatedEvent nil
+	 :supportsMemoryEvent nil ;; TODO?
+	 :supportsVariableType nil ;; TODO?
+	 :supportsMemoryReferences nil ;; TODO?)
+	 )))
+
+(defun realgud--dap-cmd-break (arg)
+  (let* ((cmdbuf (realgud-get-cmdbuf))
+	 (src-path (realgud-expand-format "%X"))
+	 (new-brk-line (string-to-number (realgud-expand-format "%l")))
+	 (brk-points)
+	 )
+    (with-current-buffer cmdbuf
+      (setq brk-points
+	    (append (gethash src-path (realgud-get-info 'dap-breakpoints) nil)
+		    (list (realgud--dap-make-type-SourceBreakpoint new-brk-line))
+		    )))
+    (with-current-buffer cmdbuf
+      (puthash src-path brk-points (realgud-get-info 'dap-breakpoints)))
+
+    (realgud--dap-process-send-message
+     (realgud--dap-make-request-SetBreakpointsRequest
+      src-path
+      brk-points)))
+  )
+
+
+;; {"seq": 16, "type": "response", "request_seq": 9, "success": true, "command": "setBreakpoints",
+;; "body": {"breakpoints":
+;; [
+;;  {"verified": true, "id": 15, "source": {"path": "/srv/git/youtube-dl/yt_dlp/__main__.py", "sourceReference": 0, "presentationHint": "normal"}, "line": 8},
+;;   {"verified": true, "id": 16, "source": {"path": "/srv/git/youtube-dl/yt_dlp/__main__.py", "sourceReference": 0, "presentationHint": "normal"}, "line": 17},
+;;   {"verified": true, "id": 17, "source": {"path": "/srv/git/youtube-dl/yt_dlp/__main__.py", "sourceReference": 0, "presentationHint": "normal"}, "line": 14},
+;;   {"verified": true, "id": 18, "source": {"path": "/srv/git/youtube-dl/yt_dlp/__main__.py", "sourceReference": 0, "presentationHint": "normal"}, "line": 12},
+;;   {"verified": true, "id": 19, "source": {"path": "/srv/git/youtube-dl/yt_dlp/__main__.py", "sourceReference": 0, "presentationHint": "normal"}, "line": 17},
+;;   {"verified": true, "id": 20, "source": {"path": "/srv/git/youtube-dl/yt_dlp/__main__.py", "sourceReference": 0, "presentationHint": "normal"}, "line": 11}]}}
+
+(if (require 'yaml nil 'noerror)
+    (defun realgud--pp-hash (hash) (yaml-encode hash))
+  (defun realgud--pp-hash (hash) (pp-to-string hash)) )
+
+(defun realgud--dap--debug-msg-current-time-microseconds ()
+  "Return the current time formatted to include microseconds."
+  ;; https://emacs.stackexchange.com/questions/32150/how-to-add-a-timestamp-to-each-entry-in-emacs-messages-buffer
+  (let* ((nowtime (current-time))
+	 (now-ms (nth 2 nowtime)))
+    (concat (format-time-string "[%Y-%m-%dT%T" nowtime)
+	    (format ".%d]" now-ms))))
+
+(defun realgud--dap--debug-msg (func-sym msg)
+  (when realgud--dap--debug-msg-buf-to-message
+    (let* ((time (realgud--dap--debug-msg-current-time-microseconds))
+	   (func (pp-to-string func-sym))
+	   (inhibit-read-only 't))
+      (with-current-buffer (get-buffer-create "*dap debug log*")
+	(end-of-buffer)
+	(insert
+	 (format-message "%s" (concat "\nXXXXXXXXXXX `" func "'@" time " XXXXXXXXXXXXXXX\n"
+				      (if (stringp msg) msg (pp-to-string msg)) )))) )))
+
+(defun realgud--dap-handle-response-setBreakpoints (body)
+  (let* ((all-brk-points (realgud-get-info 'dap-breakpoints))
+	 (brk-format "Breakpoint %s,   at %s:%s.\n")
+	 (brk-points (gethash "breakpoints" body))
+	 (brk-num 0) )
+    ;; TODO probably need to cleanup all breakpiont and set em again
+    (mapcar (lambda (brk-point)
+	      (let* ((src (gethash "source" brk-point))
+		     (path (gethash "path" src))
+		     (line (gethash "line" brk-point))
+		     (rg-fake-input
+		      (format brk-format
+			 (setq brk-num (1+ brk-num))
+			 path line)))
+		(realgud--dap--debug-msg "realgud--dap-handle-response-setBreakpoints"
+					 (concat "passing fake input:\n" rg-fake-input))
+		(realgud:track-add-breakpoint
+		 rg-fake-input
+		 nil; (point-marker) ;; Not used but rg wants it.
+		 (current-buffer) )
+		))
+	    brk-points)
+    (realgud--dap--debug-msg "realgud--dap-handle-response-setBreakpoints"
+			     (concat "current brk-points in rg bp-list"
+				     (realgud-sget 'cmdbuf-info 'bp-list)))
+    ))
+
+(defun realgud--dap-fake-divert-string-break nil
+  (let* ((all-brk-points (realgud-get-info 'dap-breakpoints))
+	 (brk-format "%d	breakpoint	keep y	0xTODO in TODO at %s:%d\n")
+	 (brk-num 0) )
+
+    (with-temp-buffer
+      (maphash (lambda (src brk-points)
+		 (mapcar (lambda (brk-point)
+			   (insert
+			    (format brk-format
+				    (setq brk-num (1+ brk-num))
+				    src
+				    (plist-get brk-point :line)
+				    )))
+			 brk-points
+			 ))
+	       all-brk-points)
+      (buffer-substring-no-properties (point-min) (point-max)) )
+    ))
+
+(defun realgud--dap-handle-response-event-telemetry (body)
+  ;; TODO include it in realgud:cmdbuf-info-describe
+  (let ((tele-data (realgud-sget 'cmdbuf-info 'dap-telemetry-data)))
+    (if tele-data
+	(realgud-cmdbuf-info-dap-telemetry-data=
+	 (append tele-data body))
+      (realgud-cmdbuf-info-dap-telemetry-data= (list body)) )))
+
+(defun realgud--dap-make-request-configurationDone nil
+  ;; https://microsoft.github.io/debug-adapter-protocol/specification#leftwards_arrow_with_hook-configurationdone-request
+  `(:command "configurationDone" :type "request")
+  )
+
+(defun realgud--dap-make-request-LaunchRequest nil
+  ;; https://microsoft.github.io/debug-adapter-protocol/specification#leftwards_arrow_with_hook-launch-request
+  `(:command "launch" :type "request" :arguments
+	     (:noDebug nil))
+  )
+
+(defun realgud--dap-make-request-AttachRequest nil
+  ;; https://microsoft.github.io/debug-adapter-protocol/specification#leftwards_arrow_with_hook-attach-request
+  `(:command "attach" :type "request" :arguments
+	     (:restart nil)))
+
+(defun realgud--dap-make-request-StackTraceRequest nil
+  ;; https://microsoft.github.io/debug-adapter-protocol/specification#leftwards_arrow_with_hook-attach-request
+  `(:command "stackTrace" :type "request" :arguments
+	     (:threadId 1)))
 
 (defun realgud--dap-headers-make-assoc (headers-str)
   (let* ((splitted (split-string headers-str ": " 't "[ \n\r]+")))
@@ -78,7 +205,7 @@ https://microsoft.github.io/debug-adapter-protocol/specification#leftwards_arrow
 		 (cdr (assoc "Content-Length" headers))))
 	   (inhibit-read-only 't) )
       (when (>= (- (point-max) headers-end-point) len)
-	(let* ((json-array-type 'list)
+	(let* ((json-array-type 'vector)
                (json-object-type 'hash-table)
                (json-false nil)
 	       (body (json-read-from-string
@@ -91,15 +218,14 @@ https://microsoft.github.io/debug-adapter-protocol/specification#leftwards_arrow
 		  (push new-message (cdr (last realgud-dap-message-que)))
 		(setf realgud-dap-message-que (list new-message)) )
 	      (condition-notify realgud-dap-notify-var) )) )
-	(when realgud--dap--debug-msg-buf-to-message
-	  (message (concat "===== DAP MESSAGE BEGIN =======\n"
-			   (buffer-substring (point-min) (+ headers-end-point len))
-			   (unless (equal (+ headers-end-point len) (point-max))
-			     (concat "\n===== DAP MESSAGE TRAILING ====\n"
-				     (buffer-substring (+ headers-end-point len) (point-max))))
-			   "\n=== DAP MESSAGE END ===========\n"
-			   )
-		   ))
+	(realgud--dap--debug-msg "realgud--dap-parse-output"
+	 (concat "<<<<< DAP MESSAGE BEGIN <<<<<<<\n"
+		 (buffer-substring (point-min) (+ headers-end-point len))
+		 (unless (equal (+ headers-end-point len) (point-max))
+		   (concat "\n+++++ DAP MESSAGE TRAILING ++++\n"
+			   (buffer-substring (+ headers-end-point len) (point-max))))
+		 "\n<<< DAP MESSAGE END <<<<<<<<<<<\n"
+		 ))
 	(delete-region (point-min) (+ headers-end-point len))
 	't) )) )
 
@@ -118,13 +244,12 @@ Add `seq' to message and increment it."
       (setq message-str
 	    (json-encode-plist (append message-plist `(:seq ,seq))))
       (setq len (string-bytes message-str))
-      (when realgud--dap--debug-msg-buf-to-message
-	(message (concat "===== DAP SEND BEGIN =======\n"
-			 (concat "Content-Length: " (int-to-string len) "\r\n\r\n"
-				 message-str)
-			 "\n=== DAP MESSAGE END ===========\n"
-			 )
-		 ))
+      (realgud--dap--debug-msg "realgud--dap-process-send-message"
+       (concat ">>>>> DAP SEND BEGIN >>>>>>>\\n"
+	       (concat "Content-Length: " (int-to-string len) "\r\n\r\n"
+		       message-str)
+	       "\\n>>> DAP MESSAGE END >>>>>>>>>>>\\n"
+	       ))
       (unless proc (error "dap-network-process is nil!!!"))
       (process-send-string proc
        (concat "Content-Length: " (int-to-string len) "\r\n\r\n"
@@ -161,7 +286,11 @@ Add `seq' to message and increment it."
     ;; TODO make sure buffer is deleted once process is dead and kill process
     (with-current-buffer cmdbuff
       (realgud-cmdbuf-info-dap-msg-loop-thread=
-       (make-thread (lambda nil (while 't (realgud--dap-event-handler cmdbuff)))
+       (make-thread (lambda nil
+		      (while 't
+			(condition-case nil
+			    (realgud--dap-event-handler cmdbuff)
+			  ((debug error) nil) )))
 		    "realgud-message-handler"))
       (realgud-cmdbuf-info-dap-network-process=
        (make-network-process
@@ -173,18 +302,46 @@ Add `seq' to message and increment it."
 	;; :filter-multibyte 't ??
 	)))))
 
-(defun realgud--dap-event-handler (cmdbuf) ;; Catch and report errors
+(defun realgud--dap-event-handler (cmdbuf) ;;  report errors
   (with-current-buffer cmdbuf
     (with-mutex realgud-dap-mutex
       (condition-wait realgud-dap-notify-var)
-      (let* ((msg (pop realgud-dap-message-que))
-	     (msg-body (plist-get msg :body))
-	     (msg-type (gethash "type" msg-body)))
-	(cond
-	 ((string= msg-type "breakpoint") nil)
-	 ('t (message (concat "Unsupported DAP message: " msg-type)))
-	 )
-	))))
+      (while realgud-dap-message-que
+	(let* ((msg (pop realgud-dap-message-que))
+	       (dap-message (plist-get msg :body)) ;; TODO rename :body to :raw-body or something
+	       (msg-type (gethash "type" dap-message))
+	       (msg-body (gethash "body" dap-message))
+	       (command "")
+	       (category "")
+	       (success nil))
+	  (cond
+	   ((string= msg-type "response")
+	    (setq command (gethash "command" dap-message)
+		  success (gethash "success" dap-message)
+		  ))
+	   ((string= msg-type "event")
+	    (setq category (gethash "category" msg-body)))
+	   )
+
+	  (realgud--dap--debug-msg
+	   "realgud--dap-event-handler"
+	   (concat "handling message: " msg-type "\n" (realgud--pp-hash msg) ))
+
+	  (cond
+	   ;; Response to initialize request. Get capabilities. ;; TODO. do something smart with it
+	   ((string= command "initialize") (setq dap-capabilities dap-message))
+	   ;; Resoponse to setBreakpoints
+	   ((and (string= msg-type "response") (string= command "setBreakpoints"))
+	    (realgud--dap-handle-response-setBreakpoints msg-body))
+	   ;; Telemetry
+	   ((and (string= msg-type "event") (string= category "telemetry"))
+	    (realgud--dap-handle-response-event-telemetry msg-body))
+	   ;; Not implemented
+	   ('t (realgud--dap--debug-msg
+		"realgud--dap-event-handler"
+		(concat "Unsupported DAP message: " msg-type ";" command category)))
+	   )
+	  )))))
 
 (defun realgud--dap-cleanup nil
   (with-current-buffer-safe (realgud-get-cmdbuf)
@@ -225,7 +382,7 @@ You should set this variable in your project's directory variables"
 
 (defun dap-suggest-invocation (debugger-name)
   "Suggest a pdb command invocation via `realgud-suggest-invocaton'"
-  (concat "python -m debugpy --wait-for-client --log-to-stderr --listen 10000 /srv/git/youtube-dl/youtube-dl https://www.youtube.com/watch?v=OxnicJ-jPWo"))
+  (concat "python -m debugpy --wait-for-client --log-to-stderr --listen 10000 /srv/git/youtube-dl/yt_dlp/__main__.py https://www.youtube.com/watch?v=OxnicJ-jPWo"))
 
 (defun dap-query-cmdline (&optional opt-debugger)
   (realgud-query-cmdline
@@ -234,11 +391,12 @@ You should set this variable in your project's directory variables"
    'realgud:dap-minibuffer-history
    opt-debugger))
 
+(realgud-track-mode-vars "dap")
 (defun dap-track-mode-hook()
   (if dap-track-mode
       (progn
         (use-local-map dap-track-mode-map)
-        (message "using dap mode map")
+        (message "using dap mode map") ;; TODO
         )
     (message "dap track-mode-hook disable called")
     )
@@ -293,6 +451,7 @@ fringe and marginal icons.
 "
 					; TODO doc
   (interactive)
+  ;; Initialisaton sequence is in https://microsoft.github.io/debug-adapter-protocol/specification#arrow_left-initialized-event, TODO configurationDone
   (realgud:run-debugger "dap" 'dap-query-cmdline
 			'dap-parse-cmd-args
 			'realgud:dap-minibuffer-history
@@ -300,6 +459,10 @@ fringe and marginal icons.
   (sit-for 2) ;; TODO smart wait until server is ready
   (realgud--dap-start-client "127.0.0.1" 10000)
   (realgud--dap-process-send-message (realgud--dap-make-request-InitializeRequestArguments))
+  (sit-for 2) ;; TODO smart wait until server is ready
+  (realgud--dap-process-send-message (realgud--dap-make-request-AttachRequest))
+  (sit-for 2) ;; TODO smart wait until server is ready
+  ;(realgud--dap-process-send-message (realgud--dap-make-request-configurationDone))
   )
 
 (provide-me "realgud:dap-")
