@@ -145,6 +145,8 @@ in a particular debugger.
   (cond
    ((string= cmd-name "break")
     (realgud--dap-cmd-break arg) )
+   ((string= cmd-name "restart")
+    (realgud--dap-cmd-restart))
    ('t (message (concat "unhandled: " cmd-name "(" (pp-to-string arg) ")")))
    )
   )
@@ -164,6 +166,7 @@ DEFAULT-CMD-TEMPLATE and fall back to looking CMD-NAME up in
                        (gethash cmd-name cmd-hash))
                   default-cmd-template
                   (gethash cmd-name realgud-cmd:default-hash))))
+    (message (concat "got: " cmd-name "(" (pp-to-string arg) ")"))
     (if (or (null cmd) (equal cmd "*not-implemented*"))
 	(message "Command %s is not implemented for this debugger" cmd-name)
       (progn

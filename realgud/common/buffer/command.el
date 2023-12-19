@@ -150,6 +150,7 @@
   dap-FunctionBreakpoints
   dap-ExceptionBreakpoints
   dap-telemetry-data
+  dap-debugger-state
   )
 (make-variable-buffer-local 'realgud-cmdbuf-info)
 (make-variable-buffer-local 'realgud-last-output-start)
@@ -505,6 +506,7 @@ values set in the debugger's init.el."
 	     :dap-FunctionBreakpoints (make-hash-table :test 'equal)
 	     :dap-ExceptionBreakpoints (make-hash-table :test 'equal)
 	     :dap-telemetry-data nil
+	     :dap-debugger-state nil
 	     ))
       (setq font-lock-keywords (realgud-cmdbuf-pat "font-lock-keywords"))
       (if font-lock-keywords

@@ -79,6 +79,29 @@ https://microsoft.github.io/debug-adapter-protocol/specification#leftwards_arrow
       brk-points)))
   )
 
+(defvar realgud--dap-debugger-state-dead 0)
+(defvar realgud--dap-debugger-state-initialised 1)
+(defvar realgud--dap-debugger-state-configuration-done 2)
+
+(defun realgud--dap-handle-response-initialize (success body)
+  ;; TODO. do something smart with capabilities
+  (if success
+      (setq realgud--dap-debugger-state-initialised
+	    (realgud-sget 'cmdbuf-info 'dap-debugger-state)))
+  )
+
+(defun realgud--dap-cmd-restart nil
+  (with-current-buffer (realgud-get-cmdbuf)
+    (let* ((dbg-state (realgud-sget 'cmdbuf-info 'dap-debugger-state)))
+      (cond
+       ((eql dbg-state realgud--dap-debugger-state-dead)
+	(message "Debugger is dead bro")) ;; TODO restart it then.
+       ((eql dbg-state realgud--dap-debugger-state-initialised)
+	(realgud--dap-process-send-message (realgud--dap-make-request-configurationDone)))
+       ((eql dbg-state realgud--dap-debugger-state-configuration-done)
+	(message "ur done"))
+       ))))
+
 
 ;; {"seq": 16, "type": "response", "request_seq": 9, "success": true, "command": "setBreakpoints",
 ;; "body": {"breakpoints":
@@ -320,7 +343,7 @@ Add `seq' to message and increment it."
 		  success (gethash "success" dap-message)
 		  ))
 	   ((string= msg-type "event")
-	    (setq category (gethash "category" msg-body)))
+	    (setq category (gethash "category" msg-body "")))
 	   )
 
 	  (realgud--dap--debug-msg
@@ -328,8 +351,9 @@ Add `seq' to message and increment it."
 	   (concat "handling message: " msg-type "\n" (realgud--pp-hash msg) ))
 
 	  (cond
-	   ;; Response to initialize request. Get capabilities. ;; TODO. do something smart with it
-	   ((string= command "initialize") (setq dap-capabilities dap-message))
+	   ;; Response to initialize request. Get capabilities.
+	   ((string= command "initialize")
+	    (realgud--dap-handle-response-initialize success dap-message))
 	   ;; Resoponse to setBreakpoints
 	   ((and (string= msg-type "response") (string= command "setBreakpoints"))
 	    (realgud--dap-handle-response-setBreakpoints msg-body))
@@ -462,7 +486,6 @@ fringe and marginal icons.
   (sit-for 2) ;; TODO smart wait until server is ready
   (realgud--dap-process-send-message (realgud--dap-make-request-AttachRequest))
   (sit-for 2) ;; TODO smart wait until server is ready
-  ;(realgud--dap-process-send-message (realgud--dap-make-request-configurationDone))
   )
 
 (provide-me "realgud:dap-")
