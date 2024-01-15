@@ -109,6 +109,16 @@ https://microsoft.github.io/debug-adapter-protocol/specification#leftwards_arrow
        ))))
 
 
+(defun realgud--dap-cmd-variables nil
+  (with-current-buffer (realgud-get-cmdbuf)
+      (let ((request_seq nil))
+	(setq request_seq
+	      (realgud--dap-process-send-message
+	       (realgud--dap-make-request-StackTraceRequest nil)))
+	(puthash request_seq :variables realgud-dap-handler-response-hash)
+	)))
+
+
 ;; {"seq": 16, "type": "response", "request_seq": 9, "success": true, "command": "setBreakpoints",
 ;; "body": {"breakpoints":
 ;; [
@@ -197,7 +207,7 @@ https://microsoft.github.io/debug-adapter-protocol/specification#leftwards_arrow
 	 (append tele-data body))
       (realgud-cmdbuf-info-dap-telemetry-data= (list body)) )))
 
-(defun realgud--dap-handle-response-StackTrace (body)
+(defun realgud--dap-handle-response-StackTrace (body handler-response)
   ""
   (let* ((stack-frames (gethash "stackFrames" body))
 	 (first-stack-frame (car (mapcar 'identity stack-frames )))
@@ -208,29 +218,44 @@ https://microsoft.github.io/debug-adapter-protocol/specification#leftwards_arrow
 	 (fake-string
 	  (format "%s:%s:0:beg:0x0000" first-stack-frame-source-path first-stack-frame-line))
 	 )
-    (realgud-cmdbuf-info-in-srcbuf?= 't)
-    (realgud-track-loc-action
-     (realgud-track-loc fake-string (point-marker)) (realgud-get-cmdbuf) nil 't)
+    (realgud-cmdbuf-info-in-srcbuf?= 't) ; ??
+
+    (if handler-response ;; Unconditional loc-track triggers refresh with starts infinite loop
+	(let ((frameId (gethash "id" first-stack-frame)))
+	(realgud--dap-process-send-message (realgud--dap-make-request-scopes-request frameId)))
+      (realgud-track-loc-action
+       (realgud-track-loc fake-string (point-marker)) (realgud-get-cmdbuf) nil 't) )
     ))
 
+(defun realgud--dap-handle-resonse-scopes (body handler-response)
+  (let* ((scopes (gethash "scopes" body))
+	 (local-scope nil)
+	 (local-var-ref nil))
+    (setq local-scope
+	  (car
+	   (mapcar (lambda (scope) (when (string= "Locals" (gethash "name" scope) ) scope))
+		   scopes)))
+    (setq local-var-ref (gethash "variablesReference" local-scope))
+    (realgud--dap-process-send-message (realgud--dap-make-request-variables-request local-var-ref))
+    ))
 
 (defun realgud--dap-handle-event-stopped (body)
   "https://microsoft.github.io/debug-adapter-protocol/specification#leftwards_arrow_with_hook-setbreakpoints-request#arrow_left-stopped-event"
-  (realgud--dap-process-send-message (realgud--dap-make-request-StackTraceRequest)) )
+  (realgud--dap-process-send-message (realgud--dap-make-request-StackTraceRequest nil)) )
 
 (defun realgud--dap-handle-event-module (body)
   "https://microsoft.github.io/debug-adapter-protocol/specification#leftwards_arrow_with_hook-setbreakpoints-request#arrow_left-stopped-event"
-  (realgud--dap-process-send-message (realgud--dap-make-request-StackTraceRequest)) )
+  (realgud--dap-process-send-message (realgud--dap-make-request-StackTraceRequest nil)) )
 
 (defun realgud--dap-make-request-scopes-request (frameId)
   "https://microsoft.github.io/debug-adapter-protocol/specification#leftwards_arrow_with_hook-scopes-request"
   `(:command "scopes" :type "request" :arguments
-	     (:frameId frameId)) )
+	     (:frameId ,frameId)) )
 
 (defun realgud--dap-make-request-variables-request (variablesReference)
   "https://microsoft.github.io/debug-adapter-protocol/specification#leftwards_arrow_with_hook-scopes-request"
   `(:command "variables" :type "request" :arguments
-	     (:variablesReference variablesReference)) )
+	     (:variablesReference ,variablesReference)) )
 
 (defun realgud--dap-make-request-StepInRequest ()
   `(:command "stepIn" :type "request" :arguments
@@ -256,10 +281,10 @@ https://microsoft.github.io/debug-adapter-protocol/specification#leftwards_arrow
   `(:command "attach" :type "request" :arguments
 	     (:restart nil)))
 
-(defun realgud--dap-make-request-StackTraceRequest nil
+(defun realgud--dap-make-request-StackTraceRequest (threadId)
   ;; https://microsoft.github.io/debug-adapter-protocol/specification#leftwards_arrow_with_hook-attach-request
   `(:command "stackTrace" :type "request" :arguments
-	     (:threadId 1)))
+	     (:threadId 1)) )
 
 (defun realgud--dap-headers-make-assoc (headers-str)
   (let* ((splitted (split-string headers-str ": " 't "[ \n\r]+")))
@@ -326,7 +351,7 @@ Add `seq' to message and increment it."
       (process-send-string proc
        (concat "Content-Length: " (int-to-string len) "\r\n\r\n"
 	       message-str))
-      )))
+      seq)))
 
 (defun realgud--dap-process-filter (proc string cmdbuff)
   ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Filter-Functions.html
@@ -390,7 +415,8 @@ Add `seq' to message and increment it."
 	       (category "")
 	       (event "")
 	       (success nil)
-	       (request_seq 0))
+	       (request_seq 0)
+	       (handler-response nil))
 	  (cond
 	   ((string= msg-type "response")
 	    (setq command (gethash "command" dap-message)
@@ -399,12 +425,14 @@ Add `seq' to message and increment it."
 		  ))
 	   ((string= msg-type "event")
 	    (setq category (gethash "category" msg-body "")
-		  event (gethash "event" dap-message "")))
-	   )
+		  event (gethash "event" dap-message ""))) )
 
 	  (realgud--dap--debug-msg
 	   "realgud--dap-event-handler"
 	   (concat "handling message: " msg-type "\n" (realgud--pp-hash msg) ))
+
+	  (setq handler-response
+		(gethash request_seq realgud-dap-handler-response-hash nil))
 
 	  (cond
 	   ;; Response to initialize request. Get capabilities.
@@ -418,18 +446,23 @@ Add `seq' to message and increment it."
 	    (realgud--dap-handle-response-event-telemetry msg-body))
 	   ;; Backtrace
 	   ((and (string= msg-type "response") (string= command "stackTrace"))
-	    (realgud--dap-handle-response-StackTrace msg-body))
+	    (realgud--dap-handle-response-StackTrace msg-body handler-response))
 	   ;; stopped event
 	   ((and (string= msg-type "event") (string= event "stopped"))
 	    (realgud--dap-handle-event-stopped msg-body))
 	   ;; module
 	   ((and (string= msg-type "event") (string= event "module"))
 	    (realgud--dap-handle-event-module msg-body))
+	   ;; Scope
+	   ((and (string= msg-type "response") (string= command "scopes"))
+	    (realgud--dap-handle-resonse-scopes msg-body handler-response))
+	   ;; Variables
+	   ((and (string= msg-type "response") (string= command "variables"))
+	    (realgud--dap-handle-response-variables msg-body))
 	   ;; Not implemented
 	   ('t (realgud--dap--debug-msg
 		"realgud--dap-event-handler"
-		(concat "Unsupported DAP message: " msg-type ";" command category)))
-	   )
+		(concat "Unsupported DAP message: " msg-type ";" command category))) )
 	  )))))
 
 (defun realgud--dap-cleanup nil

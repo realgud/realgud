@@ -442,7 +442,8 @@ This is based on an org-mode buffer. Hit tab to expand/contract sections.
 (defun realgud-dap-setup-que (session-name)
   (setq-local realgud-dap-mutex (make-mutex session-name))
   (setq-local realgud-dap-notify-var
-	      (make-condition-variable realgud-dap-mutex session-name)))
+	      (make-condition-variable realgud-dap-mutex session-name))
+  (setq-local realgud-dap-handler-response-hash (make-hash-table :test 'equal)))
 
 ;; FIXME cmd-hash should not be optional. And while I am at it, remove
 ;; parameters loc-regexp, file-group, and line-group which can be found
