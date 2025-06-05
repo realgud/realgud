@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2016, 2018-2019 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016, 2018-2019, 2025 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -74,7 +74,7 @@ marginal icons is reset. See `loc-changes-clear-buffer' to clear
 fringe and marginal icons.
 "
   (interactive)
-  (realgud:run-debugger "bashdb"
+  (realgud:run-debugger realgud:bashdb-command-name
 			'bashdb-query-cmdline
 			'bashdb-parse-cmd-args
 			'realgud:bashdb-minibuffer-history

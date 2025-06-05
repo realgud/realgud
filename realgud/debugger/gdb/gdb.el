@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2016, 2019-2020 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016, 2019-2020, 2025 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -133,7 +133,7 @@ fringe and marginal icons.
 "
 
   (interactive)
-  (let* ((cmd-str (or opt-cmd-line (realgud:gdb-query-cmdline "gdb")))
+  (let* ((cmd-str (or opt-cmd-line (realgud:gdb-query-cmdline realgud:gdb-command-name)))
 	 (cmd-args (split-string-and-unquote cmd-str))
 	 (parsed-args (realgud:gdb-parse-cmd-args cmd-args))
 	 (script-args (cl-caddr parsed-args))
