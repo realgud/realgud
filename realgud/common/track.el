@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2020 Free Software Foundation, Inc
+;; Copyright (C) 2015-2020, 2025 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -659,7 +659,9 @@ of the breakpoints found in command buffer."
         (when loc-pat
           (let ((bp-num-group (realgud-loc-pat-num loc-pat))
                 (loc-regexp   (realgud-loc-pat-regexp loc-pat)))
-            (when (and loc-regexp (string-match loc-regexp text))
+                (found-locs nil)
+                (current-pos 0))
+            (while (and loc-regexp current-pos (string-match loc-regexp text current-pos))
               (let* ((bp-nums-str (match-string bp-num-group text))
                      (bp-num-strs (split-string bp-nums-str "[^0-9]+" t))
                      (bp-nums (mapcar #'string-to-number bp-num-strs))
@@ -672,8 +674,12 @@ of the breakpoints found in command buffer."
                     ;; Remove loc from breakpoint list
                     (realgud-cmdbuf-info-bp-list=
                      (remove loc (realgud-cmdbuf-info-bp-list info)))))
-                ;; return the locations
-                found-locs))))))))
+                (setq current-pos (match-end 0))))
+                ;; Match-end returns 0 when the whole string was matched.
+                ;; Setting current-pos to nil exits the loop
+                (if (= current-pos 0) (setq current-pos nil))
+            ;; return the locations
+            found-locs)))))
 
 (defun realgud-track-bp-enable-disable(text loc-pat enable? &optional cmdbuf)
   "Do regular-expression matching see if a breakpoint has been enabled or disabled inside

@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2017, 2019 Free Software Foundation, Inc
+;; Copyright (C) 2015-2017, 2019, 2025 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -82,7 +82,7 @@ realgud-loc-pat struct")
 ;;   Deleted breakpoints 1 2 3 4
 (setf (gethash "brkpt-del" realgud:gdb-pat-hash)
       (make-realgud-loc-pat
-       :regexp "^Deleted breakpoints? \\(\\([0-9]+ *\\)+\\)\n"
+       :regexp "^\\(?:Deleted breakpoints? \\(\\([0-9]+ *\\)+\\) *\\)\\{1,2\\}\n"
        :num 1))
 
 (defconst realgud:gdb-frame-start-regexp
