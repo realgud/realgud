@@ -64,6 +64,9 @@ This should be an executable on your path, or an absolute file name."
     ;; if a relative path is supplied to gcc, gdb will display the relative path
     ;; tripping up realgud, causing it to ask if you want to blacklist the file.
     "set filename-display absolute"
+    ;; gdb doesn't print a confirmation that a breakpoint was deleted successfully by default.
+    ;; This event listener adds a status message for every deleted breakpoint.
+    (realgud-command "python gdb.events.breakpoint_deleted.connect(lambda b: print(f\"Deleted breakpoint {b.number}\"))" nil nil nil)
     )
   "List of commands to be executed right after command buffer setup.")
 
