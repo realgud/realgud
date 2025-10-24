@@ -143,9 +143,21 @@
                ;; see realgud-lochist
   starting-directory    ;; directory where initial debug command was issued.
                         ;; this can be used to resolve relative file names
+  dap-network-process
+  dap-msg-loop-thread
+  dap-seq
+  dap-breakpoints
+  dap-FunctionBreakpoints
+  dap-ExceptionBreakpoints
+  dap-telemetry-data
+  dap-debugger-state
   )
 (make-variable-buffer-local 'realgud-cmdbuf-info)
 (make-variable-buffer-local 'realgud-last-output-start)
+
+(defvar-local realgud-dap-message-que nil)
+(defvar-local realgud-dap-mutex nil)
+(defvar-local realgud-dap-notify-var nil)
 
 (defalias 'realgud-cmdbuf-info? 'realgud-cmdbuf-info-p)
 
@@ -168,6 +180,10 @@
 (realgud-struct-field-setter "realgud-cmdbuf-info" "callback-eval-filter")
 (realgud-struct-field-setter "realgud-cmdbuf-info" "starting-directory")
 (realgud-struct-field-setter "realgud-cmdbuf-info" "ignore-re-file-list")
+(realgud-struct-field-setter "realgud-cmdbuf-info" "dap-seq")
+(realgud-struct-field-setter "realgud-cmdbuf-info" "dap-network-process")
+(realgud-struct-field-setter "realgud-cmdbuf-info" "dap-msg-loop-thread")
+(realgud-struct-field-setter "realgud-cmdbuf-info" "dap-telemetry-data")
 ;; (realgud-struct-field-setter "realgud-cmdbuf-info" "filename-remap-alist")
 
 (defun realgud-cmdbuf-filename-remap-alist= (value &optional buffer)
@@ -423,6 +439,12 @@ This is based on an org-mode buffer. Hit tab to expand/contract sections.
 		       cmd-args)))))
      (t nil)))
 
+(defun realgud-dap-setup-que (session-name)
+  (setq-local realgud-dap-mutex (make-mutex session-name))
+  (setq-local realgud-dap-notify-var
+	      (make-condition-variable realgud-dap-mutex session-name))
+  (setq-local realgud-dap-handler-response-hash (make-hash-table :test 'equal)))
+
 ;; FIXME cmd-hash should not be optional. And while I am at it, remove
 ;; parameters loc-regexp, file-group, and line-group which can be found
 ;; inside pat-hash
@@ -478,6 +500,14 @@ values set in the debugger's init.el."
 	     :mutex (make-mutex (buffer-name))
 	     :loc-hist (make-realgud-loc-hist)
 	     :starting-directory starting-directory
+	     :dap-network-process nil
+	     :dap-msg-loop-thread nil
+	     :dap-seq 1
+	     :dap-breakpoints (make-hash-table :test 'equal)
+	     :dap-FunctionBreakpoints (make-hash-table :test 'equal)
+	     :dap-ExceptionBreakpoints (make-hash-table :test 'equal)
+	     :dap-telemetry-data nil
+	     :dap-debugger-state nil
 	     ))
       (setq font-lock-keywords (realgud-cmdbuf-pat "font-lock-keywords"))
       (if font-lock-keywords
@@ -488,6 +518,7 @@ values set in the debugger's init.el."
 	  (set (make-local-variable 'font-lock-breakpoint-keywords)
 	       (list font-lock-breakpoint-keywords)))
       )
+    (realgud-dap-setup-que "realgud-dap")
     (put 'realgud-cmdbuf-info 'variable-documentation
 	 "Debugger object for a process buffer."))
   )
