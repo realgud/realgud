@@ -658,7 +658,7 @@ of the breakpoints found in command buffer."
       (let* ((loc-pat (realgud-cmdbuf-pat "brkpt-del")))
         (when loc-pat
           (let ((bp-num-group (realgud-loc-pat-num loc-pat))
-                (loc-regexp   (realgud-loc-pat-regexp loc-pat)))
+                (loc-regexp   (realgud-loc-pat-regexp loc-pat))
                 (found-locs nil)
                 (current-pos 0))
             (while (and loc-regexp current-pos (string-match loc-regexp text current-pos))
@@ -679,7 +679,7 @@ of the breakpoints found in command buffer."
                 ;; Setting current-pos to nil exits the loop
                 (if (= current-pos 0) (setq current-pos nil))
             ;; return the locations
-            found-locs)))))
+            found-locs))))))
 
 (defun realgud-track-bp-enable-disable(text loc-pat enable? &optional cmdbuf)
   "Do regular-expression matching see if a breakpoint has been enabled or disabled inside
