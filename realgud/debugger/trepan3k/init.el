@@ -1,4 +1,4 @@
-;; Copyright (C) 2010-2019, 2020 Free Software Foundation, Inc
+;; Copyright (C) 2010-2019, 2020, 2026 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -42,6 +42,7 @@ realgud-loc-pat struct")
 ;; For example:
 ;;   (/usr/bin/zonetab2pot.py:15 @3): <module>
 ;;   (/usr/bin/zonetab2pot.py:15 remapped <string>): <module>
+;;   (/usr/bin/zonetab2pot.py:15:1 remapped <string>): <module>
 ;; or MS Windows:
 ;;   (c:\\mydirectory\\gcd.py:10): <module>
 (setf (gethash "loc" realgud:trepan3k-pat-hash)
@@ -80,6 +81,7 @@ realgud-loc-pat struct")
 ;;  realgud-loc-pat that describes a line a Python "info break" line.
 ;; For example:
 ;; 1   breakpoint    keep y   at /usr/local/bin/trepan3k:7
+;; 1   breakpoint    keep y   at /usr/local/bin/trepan3k:7:3
 (setf (gethash "debugger-breakpoint" realgud:trepan3k-pat-hash)
       realgud-python-breakpoint-pat)
 

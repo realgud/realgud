@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2019 Free Software Foundation, Inc
+;; Copyright (C) 2015-2019, 2026 Free Software Foundation, Inc
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -105,6 +105,7 @@
   loc-regexp   ;; Location regular expression string
   file-group
   line-group
+  column-group
   alt-file-group
   alt-line-group
   text-group

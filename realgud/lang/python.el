@@ -1,4 +1,4 @@
-;; Copyright (C) 2011, 2014-2016 Free Software Foundation, Inc
+;; Copyright (C) 2011, 2014-2016, 2025-2026 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -60,15 +60,21 @@ traceback) line."  )
 ;;
 ;; For example:
 ;;   (/usr/bin/zonetab2pot.py:15 @10): <module>
+;;   (/usr/bin/zonetab2pot.py:15:3 @10): <module>
 ;;   (/usr/bin/zonetab2pot.py:15 remapped <string>): <module>
+;;   (/usr/bin/zonetab2pot.py:15:3 remapped <string>): <module>
 ;; or MS Windows:
 ;;   (c:\\mydirectory\\gcd.py:10): <module>
-
+;;   (c:\\mydirectory\\gcd.py:10:0): <module>
+;;
+;; In the regexp below, note that we need \\| for the column so as to preserve the numbered placeholder for file-group.
+;; The elisp code handles column-group nil correctly.
 (defconst realgud:python-trepan-loc-pat
       (make-realgud-loc-pat
-       :regexp "^(\\(\\(?:[a-zA-Z]:\\)?[-a-zA-Z0-9_/.\\\\ ]+\\):\\([0-9]+\\)\\(?: @[0-9]+\\)?\\(?: remapped .*?\\)?): \\(?:<module>\\)?\\(?:\n.. [0-9]+ \\(.*?\\)\n\\)?"
+       :regexp "^(\\(\\(?:[a-zA-Z]:\\)?[-a-zA-Z0-9_/.\\\\ ]+\\):\\([0-9]+\\)\\(?:[:]\\([0-9]+\\)?\\|\\)\\(?: @[0-9]+\\)?\\(?: remapped .*?\\)?): \\(?:<module>\\)?\\(?:\n.. [0-9]+ \\(.*?\\)\n\\)?"
        :file-group 1
        :line-group 2
+       :column-group 3
        :text-group 3
        :ignore-file-re  realgud-python-ignore-file-re)
       "A realgud-loc-pat struct that describes a Python trepan
@@ -111,13 +117,21 @@ traceback) line."  )
    :line-group 6)
   "A realgud-loc-pat struct that describes a Python breakpoint."  )
 
-;;  Regular expression that describes a "breakpoint set" line
+;; Regular expression that describes a "breakpoint set" line.
+;; For example:
+;;   Breakpoint 1 set at line 17, column 9 in check_args() of file /tmp/gcd.py
+;;   Breakpoint 1 set at line 17 in check_args() of file /tmp/gcd.py
+;;
+;; In the regexp below, note that we need \\| for the column so as to preserve the numbered placeholder for file-group.
+;; The elisp code handles column-group nil correctly.
 (defconst realgud:python-trepan-brkpt-set-pat
   (make-realgud-loc-pat
-   :regexp "^Breakpoint \\([0-9]+\\) set at line \\([0-9]+\\)[ \t\n]+of file[ \t\n]+\\(.+\\)\\(\n\\|$\\)"
+   :regexp "^Breakpoint \\([0-9]+\\) set at line \\([0-9]+\\)\\(?:[,] column \\([0-9]+\\)\\|\\)[ \t\n]+of file[ \t\n]+\\(.+\\)\\(\n\\|$\\)"
    :num 1
-   :file-group 3
-   :line-group 2))
+   :file-group 4
+   :column-group 3
+   :line-group 2)
+  )
 
 ;; Regular expression that describes a debugger "delete" (breakpoint) response.
 (defconst realgud:python-trepan-brkpt-del-pat
@@ -212,7 +226,7 @@ traceback) line."  )
    :regexp "^\\(.*\\):\\([0-9]+\\):\\([0-9]+\\): [EFWCN]\\([0-9]+\\) "
    :file-group 1
    :line-group 2
-   :char-offset-group 3
+   :column-group 3
    )
   "A realgud-loc-pat struct that describes a flake8 warning or error line"
   )

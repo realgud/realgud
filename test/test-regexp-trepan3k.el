@@ -1,5 +1,5 @@
 ;; Press C-x C-e at the end of the next line to run this file test non-interactively
-;; (test-simple-run "emacs -batch -L %s -l %s" (file-name-directory (locate-library "test-simple.elc")) buffer-file-name)
+;; (test-simple-run "emacs -batch -L %s -L %s -L %s -l %s" (file-name-directory (locate-library "load-relative.elc")) (file-name-directory (locate-library "test-simple.elc")) (file-name-directory (locate-library "loc-changes.elc")) buffer-file-name)
 
 (require 'test-simple)
 (require 'load-relative)
@@ -118,6 +118,21 @@
 	      (match-string (realgud-loc-pat-line-group helper-bps)
 			    test-s1)
 	      "extract breakpoint line number")
+
+
+(setq test-s1
+      "Breakpoint 1 set at line 13, column 5 of file /src/git/code/gcd.py")
+
+(assert-t (numberp (loc-match test-s1 helper-bps))
+	  "basic breakpoint location")
+(assert-equal "/src/git/code/gcd.py"
+	      (match-string (realgud-loc-pat-file-group helper-bps)
+			    test-s1)   "extract breakpoint file name")
+(assert-equal "13"
+	      (match-string (realgud-loc-pat-line-group helper-bps)
+			    test-s1)
+	      "extract breakpoint line number")
+
 (setq test-s1 "(c:\\working\\python\\helloworld.py:30): <module>")
 (assert-t (numberp (loc-match test-s1 helper-loc))
 	  "MS DOS position location")
