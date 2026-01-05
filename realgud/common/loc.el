@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2017, 2019 Free Software Foundation, Inc
+;; Copyright (C) 2015-2017, 2019, 2026 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -54,8 +54,8 @@ want to save the values that were seen/requested originally."
 (defun realgud:buffer-line-no-props()
   "Returns a string containing the line that `point' is at,
 without buffer properties."
-  (buffer-substring-no-properties (point-at-bol)
-				  (point-at-eol)))
+  (buffer-substring-no-properties (pos-at-bol)
+				  (pos-at-eol)))
 
 (defun realgud:loc-describe (loc)
   "Display realgud-cmdcbuf-info.
@@ -153,7 +153,7 @@ the source-code buffer, is returned. Otherwise, nil is returned."
   (if (realgud-loc? loc)
       (let* ((filename    (realgud-loc-filename loc))
 	     (line-number (realgud-loc-line-number loc))
-	     (column-number (realgud-loc-column-number loc))
+	     (column-number (or (realgud-loc-column-number loc) 0))
 	     (marker      (realgud-loc-marker loc))
 	     (cmd-marker  (realgud-loc-cmd-marker loc))
 	     (use-marker  nil)
@@ -167,11 +167,10 @@ the source-code buffer, is returned. Otherwise, nil is returned."
 	    (with-current-buffer src-buffer
 	      (when (and marker (marker-position marker))
 		;; A marker has been set in loc, so use that.
-		(goto-char (marker-position marker))
 		(setq use-marker 't)
 		(let ((current-text (realgud:buffer-line-no-props))
 		      (loc-text (realgud-loc-source-text loc)))
-		  (unless (and loc-text
+		  (unless (and loc-text (eql column-number 0)
 			       (equal (realgud:strip current-text) (realgud:strip loc-text)))
 		    (loc-changes-goto line-number)
 		    (setq current-text (realgud:buffer-line-no-props))
@@ -195,6 +194,7 @@ the source-code buffer, is returned. Otherwise, nil is returned."
 		  (setq src-marker (point-marker))
 		  (realgud-loc-marker= loc src-marker)
 		  ))))
+
 	src-buffer )))
 
 (provide-me "realgud-")

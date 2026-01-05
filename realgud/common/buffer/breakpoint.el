@@ -198,7 +198,7 @@ non-digit will start entry number from the beginning again."
 
 (defun realgud-goto-breakpoint ()
   "Go to the breakpoint number. We get the breakpoint number from the
-'brkpt-num property"
+brkpt-num property"
   (interactive)
   (if (realgud-breakpoint?)
       (let ((loc (get-text-property (point) 'loc)))
@@ -226,10 +226,10 @@ non-digit will start entry number from the beginning again."
 (defun realgud-goto-breakpoint-n ()
   "Goto breakpoint number indicated by the accumulated numeric keys just entered.
 
-This function is usually bound to a numeric key in a 'frame'
+This function is usually bound to a numeric key in a frame
 secondary buffer. To go to an entry above 9, just keep entering
 the number. For example, if you press 1 and then 9, frame 1 is selected
-\(if it exists) and then frame 19 (if that exists). Entering any
+(if it exists) and then frame 19 (if that exists). Entering any
 non-digit will start entry number from the beginning again."
   (interactive)
   (if (not (eq last-command 'realgud-goto-breakpoint-n))

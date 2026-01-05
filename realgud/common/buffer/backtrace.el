@@ -324,7 +324,7 @@ non-digit will start entry number from the beginning again."
 
 (defun realgud-goto-frame ()
   "Go to the frame number. We get the frame number from the
-'frame-num property"
+frame-num property"
   (interactive)
   (if (realgud-backtrace?)
       (let ((frame-num (get-text-property (point) 'frame-num)))
@@ -376,10 +376,10 @@ non-digit will start entry number from the beginning again."
 (defun realgud-goto-frame-n ()
   "Go to the frame number indicated by the accumulated numeric keys just entered.
 
-This function is usually bound to a numeric key in a 'frame'
+This function is usually bound to a numeric key in a frame
 secondary buffer. To go to an entry above 9, just keep entering
 the number. For example, if you press 1 and then 9, frame 1 is selected
-\(if it exists) and then frame 19 (if that exists). Entering any
+(if it exists) and then frame 19 (if that exists). Entering any
 non-digit will start entry number from the beginning again."
   (interactive)
   (if (not (eq last-command 'realgud-goto-frame-n))

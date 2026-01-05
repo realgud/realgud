@@ -1,4 +1,4 @@
-;; Copyright (C) 2010-2011, 2013-2014, 2016-2020 Free Software Foundation, Inc
+;; Copyright (C) 2010-2011, 2013-2014, 2016-2020, 2026 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -69,13 +69,13 @@ at LINE-NUMBER or nil if it is not there"
 (defun realgud:file-ignore(filename ignore-re-file-list)
   (seq-find '(lambda (file-re) (string-match file-re filename)) ignore-re-file-list))
 
-;; FIXME: should allow column number to be passed in.
 (defun realgud:file-loc-from-line(filename line-number
-					   &optional cmd-marker source-text bp-num
+					   &optional column-number cmd-marker source-text bp-num
 					   find-file-fn directory)
-  "Return a realgud-loc for FILENAME and LINE-NUMBER and the
+  "Return a realgud-loc for FILENAME, LINE-NUMBER and the
 other optional position information.
 
+COLUMN-NUMBER is the optional staring column number. 0 is the first column.
 CMD-MARKER and BP-NUM get stored in the realgud-loc
 object. FIND-FILE-FN is a function which do special things to
 transform filename so it can be found. This could include
@@ -162,10 +162,10 @@ problem as best as we can determine."
 		  (let ((line-count))
 		    (if (setq line-count (realgud:file-line-count filename))
 			(if (> line-count line-number)
-			    (let* ((column-number
+			    (let* ((column-number (or column-number
 				    (realgud:file-column-from-string filename
 								    line-number
-								    source-text))
+								    source-text)))
 				   (source-buffer (find-file-noselect filename))
 				   (source-mark))
 
@@ -176,8 +176,10 @@ problem as best as we can determine."
 			      ;; doing something other than validation?
 			      (with-current-buffer source-buffer
 				(goto-char (point-min))
-				;; FIXME also allow column number and byte offset
 				(forward-line (1- line-number))
+				(if (and column-number (numberp column-number))
+				    (forward-char column-number))
+				;; FIXME also allow byte offset.
 				(make-realgud-loc
 				      :num           bp-num
 				      :cmd-marker    cmd-marker

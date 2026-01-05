@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2020, 2025 Free Software Foundation, Inc
+;; Copyright (C) 2015-2020, 2025-2026 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -90,18 +90,26 @@
 (fn-p-to-fn?-alias 'realgud-loc-p)
 
 (defvar realgud-track-divert-string
-  ""
-  "Some commands need information from the debugger to perform certain actions, such as show what breapoints exist, give back trace information. The output of debugger commands which need to be captured, are stored in this buffer-local string variable.")
+  "Some commands need information from the debugger to perform
+  certain actions, such as show what breapoints exist, give back trace
+  information. The output of debugger commands which need to be
+  captured, are stored in this buffer-local string variable.")
 
 (defvar starting-directory
   nil
-  "When set this indicates the base directory that source code path should be based off of when the path is a relative path."
+  "When set this indicates the base directory that source code path
+should be based off of when the path is a relative path."
   )
 
 
 (defvar realgud-command-name-hash
   nil
-  "This buffer-local hash maps a debugger, like `gdb', or `pdb', to a hash table which describes how to implement generic debugger functions into the commands of that debugger. This information is set up by individual `init' function of the debugger. The keys at any given time will be those debuggers that have been used so far in the Emacs session.")
+  "This buffer-local hash maps a debugger, like `gdb', or `pdb', to a
+  hash table which describes how to implement generic debugger
+  functions into the commands of that debugger. This information is
+  set up by individual `init' function of the debugger. The keys at
+  any given time will be those debuggers that have been used so far in
+  the Emacs session.")
 
 (defun realgud-track-comint-output-filter-hook(text)
   "An output-filter hook custom for comint shells.  Find
@@ -382,6 +390,7 @@ encountering a new loc."
 	   (srcbuf-loc-hist)
 	   )
 
+	;; (message "loc-action %s" loc)
 	(setq srcbuf (realgud-loc-goto loc))
 	(realgud-srcbuf-init-or-update srcbuf cmdbuf)
 	(setq srcbuf-loc-hist (realgud-srcbuf-loc-hist srcbuf))
@@ -420,7 +429,11 @@ encountering a new loc."
 		      ;; 	(set-fringe-bitmap-face 'realgud-right-triangle1
 		      ;; 				'realgud-overlay-arrow1)
 		      ;; 	)
-		      (realgud-window-update-position srcbuf realgud-overlay-arrow1)))
+		      (realgud-window-update-position srcbuf realgud-overlay-arrow1)
+		      ;; FIXME: realgud-overlay-arrow1 doesn't seem to capture a column number
+		      ;; so instead explicitly go to "loc".
+		      (realgud-loc-goto loc)
+		      ))
 		)
 	      (if cmd-window (select-window cmd-window)))
 	  ; else
@@ -440,7 +453,7 @@ encountering a new loc."
   )
 
 (defun realgud-track-loc(text cmd-mark &optional opt-regexp opt-file-group
-			   opt-line-group no-warn-on-no-match?)
+			   opt-line-group opt-column-group no-warn-on-no-match?)
   "Do regular-expression matching to find a file name and line number inside
 string TEXT. If we match, we will turn the result into a realgud-loc struct.
 Otherwise return nil."
@@ -461,6 +474,9 @@ Otherwise return nil."
 			   (realgud-sget 'cmdbuf-info 'file-group)))
 	   (line-group (or opt-line-group
 			   (realgud-sget 'cmdbuf-info 'line-group)))
+	   ;; If column-group is nil, we'll use a large number to match to nil
+	   (column-group (or opt-column-group
+			   (realgud-sget 'cmdbuf-info 'column-group) 1000))
 	   (alt-file-group (realgud-sget 'cmdbuf-info 'alt-file-group))
 	   (alt-line-group (realgud-sget 'cmdbuf-info 'alt-line-group))
 	   (text-group (realgud-sget 'cmdbuf-info 'text-group))
@@ -472,9 +488,11 @@ Otherwise return nil."
 				     (match-string alt-file-group text)))
 		       (line-str (or (match-string line-group text)
 				     (match-string alt-line-group text)))
+		       (column-str (match-string column-group text))
 		       (source-str (and text-group
 					(match-string text-group text)))
 		       (lineno (string-to-number (or line-str "1")))
+		       (column (string-to-number (or column-str "0")))
 		       (directory
 			(cond ((boundp 'starting-directory) starting-directory)
 				     (t nil)))
@@ -491,6 +509,7 @@ Otherwise return nil."
 			   (message "line number not found -- using 1"))
 			 (if (and filename lineno)
 			     (realgud:file-loc-from-line filename lineno
+							 column
 							 cmd-mark
 							 source-str nil
 							 nil
@@ -534,8 +553,8 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 		  (loc-regexp     (realgud-loc-pat-regexp loc-pat))
 		  (file-group     (realgud-loc-pat-file-group loc-pat))
 		  (line-group     (realgud-loc-pat-line-group loc-pat))
-		  (text-group     (realgud-loc-pat-text-group loc-pat))
 		  (column-group   (realgud-loc-pat-column-group loc-pat))
+		  (text-group     (realgud-loc-pat-text-group loc-pat))
 		  (ignore-re-file-list (or opt-ignore-re-file-list
 					   (realgud-sget 'cmdbuf-info 'ignore-re-file-list)))
 		  (callback-loc-fn (realgud-sget 'cmdbuf-info 'callback-loc-fn))
@@ -552,7 +571,7 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
 			     (source-str (and text-group (match-string text-group text)))
 			     (lineno (string-to-number (or line-str "1")))
 			     (column-str (and column-group (match-string column-group text)))
-			     (column (string-to-number (or column-str "1")))
+			     (column (string-to-number (or column-str "0")))
 			     (directory
 			      (cond ((boundp 'starting-directory) starting-directory)
 				    (t nil)))
@@ -682,10 +701,10 @@ of the breakpoints found in command buffer."
             found-locs))))))
 
 (defun realgud-track-bp-enable-disable(text loc-pat enable? &optional cmdbuf)
-  "Do regular-expression matching see if a breakpoint has been enabled or disabled inside
-string TEXT. If we match, we will do the action to the breakpoint found and return the
-breakpoint location. Otherwise return nil.
-"
+  "Do regular-expression matching see if a breakpoint has been enabled
+or disabled inside string TEXT. If we match, we will do the action to
+the breakpoint found and return the breakpoint location. Otherwise
+return nil."
   (setq cmdbuf (or cmdbuf (current-buffer)))
   (with-current-buffer cmdbuf
     (if (realgud-cmdbuf?)
@@ -766,10 +785,12 @@ loc-regexp pattern"
 	    (if (string-match frame-num-regexp text)
 		(let* ((file-group (realgud-loc-pat-file-group selected-frame-pat))
 		       (line-group (realgud-loc-pat-line-group selected-frame-pat))
+		       (column-group (realgud-loc-pat-column-group selected-frame-pat))
 		       (filename (match-string file-group text))
-		       (lineno (string-to-number (match-string line-group text))))
+		       (lineno (string-to-number (match-string line-group text)))
+		       (column (string-to-number (or (match-string column-group text) "0"))))
 		  (if (and filename lineno)
-		      (realgud:file-loc-from-line filename lineno
+		      (realgud:file-loc-from-line filename lineno column
 						  cmd-mark nil nil)
 		    nil))
 	      nil)
@@ -777,7 +798,7 @@ loc-regexp pattern"
     nil))
 
 (defun realgud-track-termination?(text)
-  "Return 't and call `realgud:terminate' we we have a termination message"
+  "Return 't and call realgud:terminate we we have a termination message"
   (if (realgud-cmdbuf?)
       (let ((termination-re (realgud-cmdbuf-pat "termination"))
 	    )
@@ -843,6 +864,7 @@ find a location. non-nil if we can find a location.
 				(realgud-loc-pat-regexp loc-pat)
 				(realgud-loc-pat-file-group loc-pat)
 				(realgud-loc-pat-line-group loc-pat)
+				(realgud-loc-pat-column-group loc-pat)
 				nil
 				))
       (if (stringp loc)
@@ -853,7 +875,8 @@ find a location. non-nil if we can find a location.
   )
 
 (defun realgud:populate-command-hash(key value)
-  "Adds a KEY and VALUE to the realgud-command-name-hash the command name to a debugger specific command."
+  "Adds a KEY and VALUE to the realgud-command-name-hash the
+ command name to a debugger specific command."
   (puthash key
            (replace-regexp-in-string "%.*" "" (car (split-string value " ")))
            realgud-command-name-hash))
@@ -909,16 +932,16 @@ we can't find a debugger with that information.`.
 (defun realgud-goto-line-for-pt-and-type (pt type pat-hash)
   "Position the source code at the location that is matched by
 PAT-HASH with key TYPE. The line at PT is used as the string
-to match against and has location info embedded in it"
+to match against and has location info embedded in it."
   (realgud-goto-line-for-loc-pat pt (gethash type pat-hash)))
 
 
 (defun realgud-goto-line-for-pt (pt pattern-key)
   "Position the source code at the location indicated by a
 pattern found in the command buffer with pattern-key
-PATTERN-KEY. (PATTERN-KEY is something like 'debugger-backtrace'
-or 'loc'.) The line at PT is used as the string to match against
-and has location info embedded in it"
+PATTERN-KEY. (PATTERN-KEY is something like debugger-backtrace
+or loc.) The line at PT is used as the string to match against
+and has location info embedded in it."
   (interactive "d")
   (unless (realgud-cmdbuf?)
     (error "You need to be in a debugger command buffer to run this"))

@@ -42,6 +42,7 @@ output by a debugger inside a process shell"
   (regexp)             ;; a stack position, or thread number.
   (file-group)         ;; Filename position in struct
   (line-group)         ;; Line number position in struct
+  (column-group)       ;; Starting column position in struct
 
   ;; FIXME: fix code to handle lists of locs and then remove
   (alt-file-group)     ;; Used when regexp is too complicated and use \|
@@ -51,7 +52,6 @@ output by a debugger inside a process shell"
 
   (char-offset-group)  ;; Character offset position in struct
   (instruction-address-group)
-  (column-group)
   (ignore-file-re)     ;; Some debuggers create pseudo files in eval strings
                        ;; for example "(eval)" in Ruby and Perl
   (text-group)         ;; Some source text that should found at position

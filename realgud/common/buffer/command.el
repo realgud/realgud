@@ -471,6 +471,7 @@ values set in the debugger's init.el."
 	     :loc-regexp (realgud-sget 'loc-pat 'regexp)
 	     :file-group (realgud-sget 'loc-pat 'file-group)
 	     :line-group (realgud-sget 'loc-pat 'line-group)
+	     :column-group (realgud-sget 'loc-pat 'column-group)
 	     :alt-file-group (realgud-sget 'loc-pat 'alt-file-group)
 	     :alt-line-group (realgud-sget 'loc-pat 'alt-line-group)
 	     :text-group (realgud-sget 'loc-pat 'text-group)

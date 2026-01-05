@@ -75,7 +75,7 @@ traceback) line."  )
        :file-group 1
        :line-group 2
        :column-group 3
-       :text-group 3
+       :text-group 4
        :ignore-file-re  realgud-python-ignore-file-re)
       "A realgud-loc-pat struct that describes a Python trepan
       location line."  )
