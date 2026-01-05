@@ -87,11 +87,10 @@
   :version "27.1")
 
 ;; FIXME: extend require-relative for "autoload".
-(defun realgud:load-features()
+(defun realgud:load-features ()
   (progn
     (require-relative-list
-     '(
-       "./realgud/common/attach"
+     '("./realgud/common/attach"
        "./realgud/common/track-mode"
        "./realgud/common/backtrack-mode"
        "./realgud/common/breakpoint-mode"
@@ -110,54 +109,54 @@
        "./realgud/debugger/trepan.pl/trepanpl"
        "./realgud/debugger/trepan2/trepan2"
        "./realgud/debugger/trepan3k/trepan3k"
-       "./realgud/debugger/zshdb/zshdb"
-       ) "realgud-")
+       "./realgud/debugger/zshdb/zshdb")
+     "realgud-")
     (require-relative-list
-     '(
-       "./realgud/lang/java"
+     '("./realgud/lang/java"
        "./realgud/lang/js"
        "./realgud/lang/perl"
        "./realgud/lang/posix-shell"
        "./realgud/lang/python"
-       "./realgud/lang/ruby"
-       ) "realgud-lang-")
-    (realgud:loaded-features)
-    )
-  )
+       "./realgud/lang/ruby")
+     "realgud-lang-")
+    (realgud:loaded-features)))
 
 (load-relative "./realgud/common/custom")
 (load-relative "./realgud/lang/java")
 
-(defun realgud-feature-starts-with(feature prefix)
+(defun realgud-feature-starts-with (feature prefix)
   "realgud-strings-starts-with on stringified FEATURE and PREFIX."
   (declare (indent 1))
-  (string-prefix-p (symbol-name feature) prefix)
-  )
+  (string-prefix-p (symbol-name feature) prefix))
 
-(defun realgud:loaded-features()
+(defun realgud:loaded-features ()
   "Return a list of loaded debugger features. These are the features
 that start with \"realgud-\" and \"realgud:\""
 
-  (delq nil
-		(mapcar (lambda (x) (and (string-match-p "^\\(realgud:\\|realgud-\\)" (symbol-name x)) x))
-				features)))
+  (delq
+   nil
+   (mapcar
+    (lambda (x)
+      (and (string-match-p
+            "^\\(realgud:\\|realgud-\\)" (symbol-name x))
+           x))
+    features)))
 
-(defun realgud:unload-features()
+(defun realgud:unload-features ()
   "Remove all features loaded from this package. Used in
 `realgud:reload-features'. See that."
   (let ((removal-set (realgud:loaded-features)))
-	(dolist (feature removal-set)
-	  (unload-feature feature t))
-	removal-set)) ; return removed set
+    (dolist (feature removal-set)
+      (unload-feature feature t))
+    removal-set)) ; return removed set
 
-(defun realgud:reload-features()
+(defun realgud:reload-features ()
   "Reload all features loaded from this package. Useful if have
 changed some code or want to reload another version, say a newer
 development version and you already have this package loaded."
   (interactive "")
   (realgud:unload-features)
-  (realgud:load-features)
-  )
+  (realgud:load-features))
 
 ;; Load everything.
 (realgud:load-features)
@@ -171,13 +170,15 @@ development version and you already have this package loaded."
 ;; autoloded form.
 
 ;;;###autoload
-(defconst realgud--recursive-autoloads-file-name "realgud-recursive-autoloads.el"
+(defconst realgud--recursive-autoloads-file-name
+  "realgud-recursive-autoloads.el"
   "Where to store autoloads for subdirectory contents.")
 
 ;;;###autoload
 (defconst realgud--recursive-autoloads-base-directory
   (file-name-directory
-   (if load-in-progress load-file-name
+   (if load-in-progress
+       load-file-name
      buffer-file-name)))
 
 ;;;###autoload
@@ -195,13 +196,16 @@ autoloaded form.  Maintainers should run this after adding
 autoloaded functions, and commit the resulting changes."
   (interactive)
   (let ((generated-autoload-file
-         (expand-file-name realgud--recursive-autoloads-file-name
-                           realgud--recursive-autoloads-base-directory)))
+         (expand-file-name
+          realgud--recursive-autoloads-file-name
+          realgud--recursive-autoloads-base-directory)))
     (when (file-exists-p generated-autoload-file)
       (delete-file generated-autoload-file))
-    (dolist (name (with-no-warnings
-                    (directory-files-recursively
-                     realgud--recursive-autoloads-base-directory "" t)))
+    (dolist (name
+             (with-no-warnings
+               (directory-files-recursively
+                realgud--recursive-autoloads-base-directory ""
+                t)))
       (when (file-directory-p name)
         (update-directory-autoloads name)))))
 
