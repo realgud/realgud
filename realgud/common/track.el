@@ -1,3 +1,4 @@
+;; -- lexical-binding: t; --
 ;; Copyright (C) 2015-2020, 2025-2026 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
@@ -24,6 +25,7 @@
 (require 'esh-mode)
 (require 'ansi-color)
 (require 'comint)
+(require 'cl-lib)
 
 (require 'load-relative)
 (require-relative-list
@@ -315,7 +317,7 @@ selected location in the location history. If we started in a
 command buffer, we stay in a command buffer. Moving inside a
 command buffer always shows the corresponding source
 file. However it is possible in shortkey mode to show only the
-source code window, even the commmand buffer is updated albeit
+source code window, even the command buffer is updated albeit
 unshown."
 
   (let ((cmdbuf (realgud-get-cmdbuf (current-buffer))))
@@ -463,7 +465,7 @@ Otherwise return nil."
   ;; the fields loc-regexp, file-group, line-group, alt-file-group, and alt-line-group.
   ;;
   ;; By setting the the fields of realgud-cmdbuf-info appropriately, we
-  ;; can accomodate a family of debuggers -- one at a time -- for the
+  ;; can accommodate a family of debuggers -- one at a time -- for the
   ;; buffer process.
 
   (unless (realgud:track-complain-if-not-in-cmd-buffer)
@@ -534,7 +536,7 @@ Otherwise return nil. CMD-MARK is set in the realgud-loc object created.
   ; NOTE: realgud-cmdbuf-info is a buffer variable local to the process
   ; running the debugger. It contains a realgud-cmdbuf-info "struct". In
   ; that struct is the regexp hash to match positions. By setting the
-  ; the fields of realgud-cmdbuf-info appropriately we can accomodate a
+  ; the fields of realgud-cmdbuf-info appropriately we can accommodate a
   ; family of debuggers -- one at a time -- for the buffer process.
 
   (setq cmdbuf (or cmdbuf (current-buffer)))
@@ -668,7 +670,7 @@ of the breakpoints found in command buffer."
   ; NOTE: realgud-cmdbuf-info is a buffer variable local to the process
   ; running the debugger. It contains a realgud-cmdbuf-info "struct". In
   ; that struct is the regexp hash to match positions. By setting the
-  ; the fields of realgud-cmdbuf-info appropriately we can accomodate a
+  ; the fields of realgud-cmdbuf-info appropriately we can accommodate a
   ; family of debuggers -- one at a time -- for the buffer process.
 
   (setq cmdbuf (or cmdbuf (current-buffer)))
@@ -798,7 +800,8 @@ loc-regexp pattern"
     nil))
 
 (defun realgud-track-termination?(text)
-  "Return 't and call realgud:terminate we we have a termination message"
+  "Return non-nil and call `realgud:terminate' we we have a
+termination message"
   (if (realgud-cmdbuf?)
       (let ((termination-re (realgud-cmdbuf-pat "termination"))
 	    )
@@ -840,7 +843,7 @@ loc-regexp pattern"
 
 (defun realgud-goto-line-for-loc-pat (pt &optional opt-realgud-loc-pat)
   "Display the location mentioned in line described by
-PT. OPT-REALGUD-LOC-PAT is used to get regular-expresion pattern
+PT. OPT-REALGUD-LOC-PAT is used to get regular-expression pattern
 matching information. If not supplied we use the current buffer's \"location\"
 pattern found via realgud-cmdbuf information. nil is returned if we can't
 find a location. non-nil if we can find a location.

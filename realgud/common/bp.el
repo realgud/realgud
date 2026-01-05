@@ -1,4 +1,4 @@
-;; Copyright (C) 2010, 2012-2015, 2017-2018 Free Software Foundation, Inc
+;; Copyright (C) 2010, 2012-2015, 2017-2018, 2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -185,7 +185,7 @@ the current buffer."
       (setq bp-text (propertize bp-text 'help-echo help-echo)))
     (with-current-buffer (or buf (current-buffer))
       (realgud-bp-remove-icons pos (1+ pos) bp-num)
-      (let* ((eol (save-excursion (goto-char pos) (point-at-eol)))
+      (let* ((eol (save-excursion (goto-char pos) (pos-eol)))
              (ov (make-overlay pos (1+ eol) (current-buffer) t nil)))
         (if (and realgud-bp-use-fringe (display-images-p))
             (realgud-bp-add-fringe-icon ov fringe-icon)
@@ -198,7 +198,7 @@ the current buffer."
 (defun realgud-bp-del-icon (pos &optional buf bpnum)
   "Delete breakpoint icon at POS.
 BUF is the buffer which pos refers to (default: current buffer).
-If BPNUM is non-nil, only remove overlays maching that breakpoint
+If BPNUM is non-nil, only remove overlays matching that breakpoint
 number."
   (with-current-buffer (or buf (current-buffer))
     (realgud-bp-remove-icons pos (1+ pos) bpnum)))

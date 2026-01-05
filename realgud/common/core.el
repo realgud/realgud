@@ -1,4 +1,4 @@
-;; Copyright (C) 2010-2016, 2020 Free Software Foundation, Inc
+;; Copyright (C) 2010-2016, 2020, 2016 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -107,12 +107,12 @@ dbgr invocations "
 entire first option and the cdr is the remaining arguments from ARGS.
 
 We determine if an option has length one or two using the lists
-TWO-ARGS and OPT-TWO-ARGS. Both of these are list of 'options',
+TWO-ARGS and OPT-TWO-ARGS. Both of these are list of \"options\",
 that is strings without the leading dash. TWO-ARGS takes a
 mandatory additional argument. OPT-TWO-ARGS might take two
 arguments. The rule for an optional argument that we use is if
-the next parameter starts with a dash ('-'), it is not part of
-the preceeding parameter when that parameter is optional.
+the next parameter starts with a dash (\"-\"), it is not part of
+the preceding parameter when that parameter is optional.
 
 NOTE: we don't check whether the first arguments of ARGS is an
 option by testing to see if it starts say with a dash. So on

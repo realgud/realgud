@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc
+;; Copyright (C) 2015-2016, 2026 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -17,7 +17,7 @@
 
 ;;  Used to parse programming-language backtrace-like tracks
 ;;  output. In contrast to track-mode, there doesn't have to be a
-;;  process shell arround Compare with backtrace-mode.el which
+;;  process shell around Compare with backtrace-mode.el which
 ;;  handles backtraces inside the debugger
 
 (require 'shell)

@@ -1,4 +1,4 @@
-;; Copyright (C) 2016 Free Software Foundation, Inc
+;; Copyright (C) 2016, 2026 Free Software Foundation, Inc
 
 ;; Authors: Clément Pit--Claudel, Nick Roberts <nickrob@gnu.org>,
 ;; Rocky Bernstein

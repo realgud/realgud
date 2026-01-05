@@ -1,4 +1,4 @@
-;; Copyright (C) 2015-2017, 2019 Free Software Foundation, Inc
+;; Copyright (C) 2015-2017, 2019, 2026 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
@@ -462,7 +462,7 @@ what is getting stepped."
 
 (defun realgud:cmd-terminate ()
   "Gently terminate source and command buffers without possibly
-issuing a command to the underlying debuger.  Use this if the
+issuing a command to the underlying debugger.  Use this if the
 underlying debugger has died or you want to get out of all
 shortkey modes in the source window and possibly restart
 debugging after editing source."

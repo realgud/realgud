@@ -178,7 +178,7 @@ problem as best as we can determine."
 				(goto-char (point-min))
 				(forward-line (1- line-number))
 				(if (and column-number (numberp column-number))
-				    (forward-char column-number))
+				    (forward-char (1- column-number)))
 				;; FIXME also allow byte offset.
 				(make-realgud-loc
 				      :num           bp-num

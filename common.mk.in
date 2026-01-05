@@ -18,6 +18,6 @@ short:
 	  EMACSLOADPATH=$(EMACSLOADPATH) $(EMACS) --batch \
 	    $(AM_ELCFLAGS) $(ELCFLAGS) \
 	    $$am__subdir_includes -L $(builddir) -L $(srcdir) \
-	    --eval "(defun byte-compile-dest-file (f) \"$@\")" \
+	    --eval "(defun byte-compile-dest-file-function (f) \"$@\")" \
 	    --eval "(unless (byte-compile-file \"$<\") (kill-emacs 1))"; \
 	else :; fi

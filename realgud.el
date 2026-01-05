@@ -1,13 +1,13 @@
 ;;; realgud.el --- A modular front-end for interacting with external debuggers -*- lexical-binding: t -*-
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
-;; Version: 1.5.1
+;; Version: 1.6.0
 ;; Package-Type: multi
-;; Package-Requires: ((load-relative "1.3.1") (loc-changes "1.2") (test-simple  "1.3.0") (emacs "25"))
+;; Package-Requires: ((load-relative "1.3.2") (loc-changes "1.2") (test-simple  "1.3.0") (emacs "27"))
 ;; URL: https://github.com/realgud/realgud/
 ;; Keywords: debugger, gdb, python, perl, go, bash, zsh, bashdb, zshdb, remake, trepan, perldb, pdb
 
-;; Copyright (C) 2015-2020 Free Software Foundation, Inc
+;; Copyright (C) 2015-2020, 2026 Free Software Foundation, Inc
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -84,7 +84,7 @@
   "The Grand Cathedral Debugger rewrite"
   :group 'processes
   :group 'tools
-  :version "25.1")
+  :version "27.1")
 
 ;; FIXME: extend require-relative for "autoload".
 (defun realgud:load-features()
@@ -136,7 +136,7 @@
 
 (defun realgud:loaded-features()
   "Return a list of loaded debugger features. These are the features
-that start with 'realgud-' and 'realgud:'"
+that start with \"realgud-\" and \"realgud:\""
 
   (delq nil
 		(mapcar (lambda (x) (and (string-match-p "^\\(realgud:\\|realgud-\\)" (symbol-name x)) x))
