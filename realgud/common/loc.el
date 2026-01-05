@@ -54,8 +54,8 @@ want to save the values that were seen/requested originally."
 (defun realgud:buffer-line-no-props()
   "Returns a string containing the line that `point' is at,
 without buffer properties."
-  (buffer-substring-no-properties (pos-at-bol)
-				  (pos-at-eol)))
+  (buffer-substring-no-properties (pos-bol)
+				  (pos-eol)))
 
 (defun realgud:loc-describe (loc)
   "Display realgud-cmdcbuf-info.

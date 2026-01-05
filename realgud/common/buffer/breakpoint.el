@@ -2,7 +2,7 @@
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 
-;; Copyright (C) 2019 Free Software Foundation, Inc
+;; Copyright (C) 2019, 2026 Free Software Foundation, Inc
 
 ;; This program is free software: you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -29,7 +29,7 @@
 (require-relative-list
  '("command") "realgud-buffer-")
 
-(declare-function realgud-breakpoint-mode              'realgud-breakpoint-mod)
+(declare-function realgud-breakpoint-mode             'realgud-breakpoint-mod)
 (declare-function realgud-get-buffer-base-name        'realgud-buffer-backtrace)
 (declare-function realgud-cmdbuf-debugger-name        'realgud-buffer-command)
 (declare-function realgud-cmdbuf?                     'realgud-buffer-command)
@@ -198,7 +198,7 @@ non-digit will start entry number from the beginning again."
 
 (defun realgud-goto-breakpoint ()
   "Go to the breakpoint number. We get the breakpoint number from the
-brkpt-num property"
+\'brkpt-num property"
   (interactive)
   (if (realgud-breakpoint?)
       (let ((loc (get-text-property (point) 'loc)))
@@ -226,7 +226,7 @@ brkpt-num property"
 (defun realgud-goto-breakpoint-n ()
   "Goto breakpoint number indicated by the accumulated numeric keys just entered.
 
-This function is usually bound to a numeric key in a frame
+This function is usually bound to a numeric key in a \"frame\"
 secondary buffer. To go to an entry above 9, just keep entering
 the number. For example, if you press 1 and then 9, frame 1 is selected
 (if it exists) and then frame 19 (if that exists). Entering any

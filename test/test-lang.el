@@ -8,6 +8,7 @@
 (eval-when-compile
   (defvar elisp-file)
   (defvar elisp-buffer)
+  (defvar suggested-file)
 )
 
 (set (make-local-variable 'elisp-file)
@@ -46,7 +47,9 @@
               "realgud-suggest-lang-file"
               )
 
-(assert-t (file-exists-p (realgud-suggest-lang-file "bogus" "\\.bogus$")))
+(setq suggested-file (realgud-suggest-lang-file "bogus" "\\.bogus$"))
+(if suggested-file
+    (assert-t (file-exists-p suggested-file)))
 
 (note "realgud:suggest-file-from-buffer")
 

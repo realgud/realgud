@@ -61,7 +61,7 @@ at LINE-NUMBER or nil if it is not there"
               (forward-line (1- line-number))
               (unless no-strip-blanks
                 (setq source-text (realgud:strip source-text)))
-              (when (search-forward source-text (point-at-eol))
+              (when (search-forward source-text (pos-at-eol))
                 (goto-char (match-beginning 0))
                 (current-column))))))
     (error nil)))
@@ -72,16 +72,16 @@ at LINE-NUMBER or nil if it is not there"
 (defun realgud:file-loc-from-line(filename line-number
 					   &optional column-number cmd-marker source-text bp-num
 					   find-file-fn directory)
-  "Return a realgud-loc for FILENAME, LINE-NUMBER and the
-other optional position information.
+  "Return a realgud-loc for FILENAME, LINE-NUMBER and the other
+optional position information.
 
-COLUMN-NUMBER is the optional staring column number. 0 is the first column.
-CMD-MARKER and BP-NUM get stored in the realgud-loc
+COLUMN-NUMBER is the optional staring column number. 0 is the first
+column.  CMD-MARKER and BP-NUM get stored in the realgud-loc
 object. FIND-FILE-FN is a function which do special things to
-transform filename so it can be found. This could include
-searching classpaths (in Java), stripping leading and trailing
-blanks, or deliberately ignoring 'pseudo-file patterns like (eval
-1) of Perl and <string> of Python.
+transform filename so it can be found. This could include searching
+classpaths (in Java), stripping leading and trailing blanks, or
+deliberately ignoring 'pseudo-file patterns like (eval 1) of Perl and
+<string> of Python.
 
 If we're unable find the source code we return a string describing the
 problem as best as we can determine."

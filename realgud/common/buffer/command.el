@@ -235,7 +235,7 @@
 					 (substring (symbol-name object) 1)))
 		((symbolp object)      (json-encode-string
 					 (symbol-name object)))
-		((numberp object)      (json-encode-number object))
+		((numberp object)      (json-encode object))
 		((arrayp object)       (json-encode-array object))
 		((hash-table-p object) (realgud:org-mode-encode-htable object))
 		;; ((listp object)        (realgud:org-mode-encodelist object))
