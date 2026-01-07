@@ -50,7 +50,7 @@
 ;; several simultaneous debug sessions.
 
 ;; RealGUD supports many external debuggers.  See URL
-;; `https://github.com/realgud/realgud/wiki/Debuggers-Supported' for a
+;; `https://github.com/realgud/realgud/wiki/Debuggers-Available' for a
 ;; list.  However, if you don't see your favorite debugger, see URL
 ;; `https://github.com/realgud/realgud/wiki/How-to-add-a-new-debugger/'
 ;; for how you can add your own.

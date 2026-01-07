@@ -66,7 +66,7 @@ at LINE-NUMBER or nil if it is not there"
              (forward-line (1- line-number))
              (unless no-strip-blanks
                (setq source-text (realgud:strip source-text)))
-             (when (search-forward source-text (pos-at-eol))
+             (when (search-forward source-text (pos-eol))
                (goto-char (match-beginning 0))
                (current-column))))))
     (error

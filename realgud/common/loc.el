@@ -192,7 +192,7 @@ the source-code buffer, is returned. Otherwise, nil is returned."
                 ;; reliable.
                 (let ((src-marker))
                   (loc-changes-goto line-number)
-                  (when column-number
+                  (when (and column-number (> column-number 0))
                     (move-to-column (1- column-number)))
                   (setq src-marker (point-marker))
                   (realgud-loc-marker= loc src-marker)))))
