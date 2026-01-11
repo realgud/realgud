@@ -1,3 +1,4 @@
+;; -- lexical-binding: t; --
 ;; Copyright (C) 2015-2017, 2019, 2026 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
@@ -172,7 +173,7 @@ the source-code buffer, is returned. Otherwise, nil is returned."
                 (let ((current-text (realgud:buffer-line-no-props))
                       (loc-text (realgud-loc-source-text loc)))
                   (unless (and loc-text
-                               (eql column-number 1)
+                               (> column-number 1)
                                (equal
                                 (realgud:strip current-text)
                                 (realgud:strip loc-text)))
@@ -192,7 +193,7 @@ the source-code buffer, is returned. Otherwise, nil is returned."
                 ;; reliable.
                 (let ((src-marker))
                   (loc-changes-goto line-number)
-                  (when (and column-number (> column-number 0))
+                  (when (and column-number (> column-number 1))
                     (move-to-column (1- column-number)))
                   (setq src-marker (point-marker))
                   (realgud-loc-marker= loc src-marker)))))

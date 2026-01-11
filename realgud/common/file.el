@@ -95,7 +95,7 @@ column.  CMD-MARKER and BP-NUM get stored in the realgud-loc
 object. FIND-FILE-FN is a function which do special things to
 transform filename so it can be found. This could include searching
 classpaths (in Java), stripping leading and trailing blanks, or
-deliberately ignoring 'pseudo-file patterns like (eval 1) of Perl and
+deliberately ignoring pseudo-file patterns like (eval 1) of Perl and
 <string> of Python.
 
 If we're unable find the source code we return a string describing the
