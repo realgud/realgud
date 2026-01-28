@@ -210,9 +210,10 @@ problem as best as we can determine."
                               (with-current-buffer source-buffer
                                 (goto-char (point-min))
                                 (forward-line (1- line-number))
-                                (if (and column-number
-                                         (numberp column-number))
-                                    (forward-char (1- column-number)))
+                                (when (and column-number
+                                           (numberp column-number)
+                                           (> column-number 0))
+                                  (forward-char (1- column-number)))
                                 ;; FIXME also allow byte offset.
                                 (make-realgud-loc
                                  :num bp-num
