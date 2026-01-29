@@ -128,6 +128,36 @@ in a particular debugger.
 (defun realgud:cmd-run-command(arg cmd-name &optional
                                    default-cmd-template no-record?
                                    frame-switch? realgud-prompts?)
+  (let ((dbg-name (with-current-buffer (realgud-get-cmdbuf)
+                   (realgud-cmdbuf-debugger-name))))
+    (if (string= dbg-name "dap")
+	(realgud:dap-cmd-run-command arg cmd-name
+                                     default-cmd-template no-record?
+                                     frame-switch? realgud-prompts?)
+      (realgud:classic-cmd-run-command arg cmd-name
+                                       default-cmd-template no-record?
+                                       frame-switch? realgud-prompts?)) )
+  )
+
+(defun realgud:dap-cmd-run-command (arg cmd-name &optional
+                                        default-cmd-template no-record?
+                                        frame-switch? realgud-prompts?)
+  (cond
+   ((string= cmd-name "break")
+    (realgud--dap-cmd-break arg) )
+   ((string= cmd-name "restart")
+    (realgud--dap-cmd-restart))
+   ((string= cmd-name "step")
+    (realgud--dap-cmd-step))
+   ((string= cmd-name "next")
+    (realgud--dap-cmd-next))
+   ('t (message (concat "unhandled: " cmd-name "(" (pp-to-string arg) ")")))
+   )
+  )
+
+(defun realgud:classic-cmd-run-command(arg cmd-name &optional
+                                           default-cmd-template no-record?
+                                           frame-switch? realgud-prompts?)
   "Run debugger command CMD-NAME.
 If CMD-NAME isn't set in the command buffer's command hash, use
 DEFAULT-CMD-TEMPLATE and fall back to looking CMD-NAME up in
@@ -140,6 +170,7 @@ DEFAULT-CMD-TEMPLATE and fall back to looking CMD-NAME up in
                        (gethash cmd-name cmd-hash))
                   default-cmd-template
                   (gethash cmd-name realgud-cmd:default-hash))))
+    (message (concat "got: " cmd-name "(" (pp-to-string arg) ")"))
     (if (or (null cmd) (equal cmd "*not-implemented*"))
 	(message "Command %s is not implemented for this debugger" cmd-name)
       (progn
