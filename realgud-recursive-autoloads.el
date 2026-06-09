@@ -1,4 +1,4 @@
-;;; realgud-recursive-autoloads.el --- automatically extracted autoloads
+;;; realgud-recursive-autoloads.el --- automatically extracted autoloads  -*- lexical-binding: t; -*-
 ;;
 ;;; Code:
 
