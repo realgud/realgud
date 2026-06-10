@@ -83,8 +83,27 @@ ARGS - arguments for command"
 	  (set (make-local-variable 'realgud-locals-info)
 	       (make-realgud-locals-info
 		:cmdbuf cmdbuf)) )
-	(realgud-locals-register-reload)
-	(realgud-locals-insert) ))))
+	(let ((dbg-name (with-current-buffer (realgud-get-cmdbuf)
+			  (realgud-cmdbuf-debugger-name))))
+	  (if (string= (realgud-cmdbuf-debugger-name) "dap")
+	      (realgud--dap-cmd-variables)
+	    (progn
+	      (realgud-locals-register-reload)
+	      (realgud-locals-insert)) ))))))
+
+(defun realgud--dap-handle-response-variables (body)
+  (with-current-buffer (realgud-cmdbuf-info-locals-buf realgud-cmdbuf-info)
+    (let ((frame-id 1)
+	  (var-list (gethash "variables" body))
+	  (locals-data-hash (realgud-get-info 'locals-data))
+	  (new-frame-data-hash (make-hash-table :test 'equal)) )
+      (dolist (var (map 'list 'identity var-list))
+	(puthash (gethash "name" var)
+		 (list (gethash "type" var) (gethash "value" var))
+		 new-frame-data-hash) )
+
+      (puthash frame-id new-frame-data-hash locals-data-hash) )
+    (realgud-locals-insert) ))
 
 (defun realgud-locals-terminate (&optional buf)
   (with-current-buffer (or buf (current-buffer))
@@ -123,13 +142,17 @@ If ACTION is set to 'hideall hide all values."
 	(puthash local-var-name nil new-frame-data-hash) ) )
     (puthash frame-id new-frame-data-hash locals-data-hash) )) ; TODO remove non-exising keys instead creating new hash?
 
+(defun realgud-locals--get-frame-id nil ;; should be named scope id i guess
+  1)
+
+  ;(realgud-run-command-get-output 'realgud:cmd-info-locals-name-list))
+
 (defun realgud-locals-toggle-value-visibility (local-var-name)
   "Update value of single variable in frame hash and update locale buffer.
 
 LOCAL-VAR-NAME - variable to toggle"
   (interactive "sVariable: ")
-  (let* ((locals-names-list (realgud-run-command-get-output 'realgud:cmd-info-locals-name-list))
-	 (frame-id locals-names-list)
+  (let* ((frame-id (realgud-locals--get-frame-id))
 	 (locals-data-hash (realgud-get-info 'locals-data))
 	 (frame-data-hash (gethash frame-id locals-data-hash))
 	 (value nil))
@@ -159,9 +182,9 @@ LOCAL-VAR-NAME - variable to toggle"
 
 (defun realgud-locals-insert ()
   "Serialize and format locales data."
-  (let* ((locals-names-list (realgud-run-command-get-output 'realgud:cmd-info-locals-name-list))
+  (let* ((frame-id (realgud-locals--get-frame-id))
 	 (frame-data-hash
-	  (gethash locals-names-list (realgud-get-info 'locals-data)))
+	  (gethash frame-id (realgud-get-info 'locals-data)))
 	 (variable-data nil)
 	 (prev-buffer-end (point-min)) )
     (with-current-buffer (realgud-get-locals-buf)

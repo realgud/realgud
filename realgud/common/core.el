@@ -161,6 +161,7 @@ icons and resets short-key mode."
     (if cmdbuf
 	(with-current-buffer cmdbuf
 	  (realgud-locals-terminate)
+	  (realgud--dap-cleanup) ;; is it always avaliable??
 	  (realgud-cmdbuf-info-in-debugger?= nil)
 	  (realgud-cmdbuf-info-bp-list= '())
 	  (realgud-cmdbuf-mode-line-update)
