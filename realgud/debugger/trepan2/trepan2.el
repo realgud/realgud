@@ -94,7 +94,7 @@ Therefore we invoke python rather than the debugger initially.
 	 (script-args (nth 1 parsed-args))
 	 (script-name (car script-args))
 	 (parsed-cmd-args
-	  (cl-remove-if 'nil (realgud:flatten parsed-args))))
+	  (cl-remove-if #'null (realgud:flatten parsed-args))))
     (realgud:run-process actual-debugger script-name parsed-cmd-args
 			 'realgud:trepan2-minibuffer-history)))
 
