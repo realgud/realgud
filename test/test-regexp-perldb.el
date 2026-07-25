@@ -164,7 +164,7 @@ p")
 (note "carp-backtrace")
 (setq test-s1
       " at /tmp/foo.pl line 7
- 	main::__ANON__('Illegal division by zero at /tmp/foo.pl line 4.\x{a}') called at foo2.pl line 5
+ 	main::__ANON__('Illegal division by zero at /tmp/foo.pl line 4.\\x{a}') called at foo2.pl line 5
  	main::foo(3) called at foo3.pl line 8
 ")
 (setq lang-bt-pat (gethash "lang-backtrace"
@@ -194,7 +194,7 @@ p")
 			 (match-end line-group)))
 
 (setq test-pos (match-end 0))
-(assert-equal 119 (string-match carp-bt-re test-s1 test-pos))
+(assert-equal 120 (string-match carp-bt-re test-s1 test-pos))
 (assert-equal "foo3.pl"
 	      (substring test-s1
 			 (match-beginning file-group)
