@@ -191,7 +191,7 @@ Otherwise nil is returned.
 	 (script-args (cl-caddr parsed-args))
 	 (script-name (or opt-script-name (car script-args)))
 	 (parsed-cmd-args
-	  (cl-remove-if 'nil (realgud:flatten parsed-args)))
+	  (cl-remove-if #'null (realgud:flatten parsed-args)))
 	 )
     (realgud:run-process debugger-name script-name parsed-cmd-args
 			 minibuffer-history no-reset)
