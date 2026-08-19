@@ -23,6 +23,19 @@
 (declare-function realgud-goto-line-for-pt 'realgud-track)
 (declare-function make-realgud-loc-pat 'realgud-regexp)
 
+(defcustom realgud:python-version 313
+  "Python version used for realgud debugging commands.
+
+Specified as an integer where 313 represents Python 3.13,
+312 represents Python 3.12, etc.
+
+This influences pdb; specifically whether step counts are allowed after
+stepping commands. Newer versions of pdb do not allow step counts.
+"
+  :type 'integer
+  :safe #'integerp
+  :group 'realgud-python)
+
 (defconst realgud-python-backtrace-loc-pat
   (make-realgud-loc-pat
    :regexp "^[ \t]+File \"\\(.+\\)\", line \\([0-9]+\\)"
