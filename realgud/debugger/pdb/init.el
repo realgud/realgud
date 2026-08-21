@@ -163,6 +163,12 @@ the pdb command to use, like 'return'")
 (setf (gethash "info-value" realgud:pdb-command-hash) "pp %s")
 (setf (gethash "info-type" realgud:pdb-command-hash) "type(%s)")
 
+;; pdb in versions of Python starting in 3.13 do not allow a step count.
+(when (>= realgud:python-version 313)
+    (setf (gethash "step" realgud:pdb-command-hash) "step")
+    (setf (gethash "next" realgud:pdb-command-hash) "next"))
+
+
 ;; Unsupported features:
 (setf (gethash "shell" realgud:pdb-command-hash) "*not-implemented*")
 (setf (gethash "frame" realgud:pdb-command-hash) "*not-implemented*")
