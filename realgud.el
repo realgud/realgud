@@ -1,7 +1,7 @@
 ;;; realgud.el --- A modular front-end for interacting with external debuggers -*- lexical-binding: t -*-
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
-;; Version: 1.6.0
+;; Version: 1.6.1
 ;; Package-Type: multi
 ;; Package-Requires: ((load-relative "1.3.2") (loc-changes "1.2") (test-simple  "1.3.0") (emacs "27"))
 ;; URL: https://github.com/realgud/realgud/
