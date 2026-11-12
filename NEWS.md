@@ -1,3 +1,8 @@
+1.6.1 2026-11-12
+================
+
+Numerous fixes. See ChangeLog or Merged pull requests from #265-#333
+
 1.5.1 2019-07-15
 ================
 

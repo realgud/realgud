@@ -1,4 +1,5 @@
-;; Copyright (C) 2015-2017, 2020 Free Software Foundation, Inc
+;; -*- lexical-binding: t; -*-
+;; Copyright (C) 2015-2017, 2020, 2026 Free Software Foundation, Inc
 
 ;; Author: Rocky Bernstein <rocky@gnu.org>
 

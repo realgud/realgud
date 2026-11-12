@@ -1,8 +1,508 @@
+2026-11-12  rocky <rocky@gnu.org>
+
+	* configure.ac, realgud/common/track-mode.el: Administrivia
+
+2026-11-12  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #333 from realgud/add-pdb-version-setting Bump version
+
+2026-08-21  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #332 from realgud/add-pdb-version-setting Add customizable variable realgud:python-version
+
+2026-07-25  rocky <rocky@gnu.org>
+
+	* test/test-regexp-perldb.el: Adjust perldb test for backslash in a
+	string
+
+2026-07-25  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #330 from arouene/fix-cl-remove-if-nil Fix cl-remove-if 'nil
+
+2026-06-09  rocky <rocky@gnu.org>
+
+	* realgud-recursive-autoloads.el: Enable lexical bindings Fixes #329
+
+2026-04-11  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #328 from pestctrl/fix-gdb-delete-bp Fix breakpoint tracking for gdb
+
+2026-04-07  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #327 from pestctrl/patch-1 Fixed arguments for call to realgud:file-loc-from-line
+
+2026-03-03  rocky <rocky@gnu.org>
+
+	* realgud/debugger/trepan3k/init.el, realgud/lang/python.el: "*" is
+	now address specifier in trepan3k
+
+2026-01-28  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #326 from yangyingchao/master Fix wrong cursor location for gdb source buffers
+
+2026-01-11  rocky <rocky@gnu.org>
+
+	* realgud/common/file.el, realgud/common/loc.el, test/test-track.el: 
+	Add more-careful column number test
+
+2026-01-07  rocky <rocky@gnu.org>
+
+	* realgud.el, realgud/common/file.el, realgud/common/loc.el: Update
+	Available debuggers link
+
+2026-01-05  rocky <rocky@gnu.org>
+
+	* realgud.el, realgud/common/file.el, realgud/common/loc.el: Try
+	elisp-autofmt
+
+2026-01-05  rocky <rocky@gnu.org>
+
+	* common.mk.in, realgud.el, realgud/common/backtrack-mode.el,
+	realgud/common/bp-image-data.el, realgud/common/bp.el,
+	realgud/common/cmds.el, realgud/common/core.el,
+	realgud/common/file.el, realgud/common/loc.el,
+	realgud/common/track.el: Misc fixes
+
+2026-01-05  rocky <rocky@gnu.org>
+
+	* realgud/common/buffer/backtrace.el,
+	realgud/common/buffer/breakpoint.el,
+	realgud/common/buffer/command.el, realgud/common/cmds.el,
+	realgud/common/file.el, realgud/common/loc.el, test/test-lang.el,
+	test/test-regexp-python.el: Lint and testing changes
+
+2026-01-05  rocky <rocky@gnu.org>
+
+	* realgud/common/buffer/backtrace.el,
+	realgud/common/buffer/breakpoint.el,
+	realgud/common/buffer/command.el, realgud/common/file.el,
+	realgud/common/loc.el, realgud/common/regexp.el,
+	realgud/common/track.el, realgud/lang/python.el, test/test-file.el,
+	test/test-lang.el: Improve column handling
+
+2026-01-04  rocky <rocky@gnu.org>
+
+	* realgud/common/buffer/command.el,
+	realgud/debugger/trepan3k/init.el, realgud/lang/python.el,
+	test/test-regexp-trepan3k.el: Changes to accomodate upcoming
+	trepan3k...  This supports column positions in tracking info.  Column position
+	tracking is something we should have independent of trepan3k
+
+2025-10-24  rocky <rocky@gnu.org>
+
+	* realgud/common/track.el: Fix wrong ")" placement
+
+2025-10-23  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #324 from
+	realgud/gdb-support-for-detecting-breakpoints Gdb support for detecting breakpoints.  Apathy means we'll plow ahead and let users be the beta testers :-(
+
+2025-10-21  rocky <rocky@gnu.org>
+
+	* configure.ac: Autoupdate configure.ac
+
+2025-10-21  rocky <rocky@gnu.org>
+
+	* realgud/common/track.el, realgud/debugger/gdb/gdb.el,
+	realgud/debugger/gdb/init.el: gdb support for detecting deleted
+	breakpoints This code was provided by Lennart Rittel (lrittel)
+
+2025-06-05  rocky <rocky@gnu.org>
+
+	* realgud/debugger/bashdb/bashdb.el, realgud/debugger/gdb/gdb.el: 
+	Use custom variables for gdb and bashdb
+
+2023-11-13  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #319 from pestctrl/master Escape the escape characters for message
+
+2023-10-20  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #318 from yangyingchao/master Fix error in realgud-expand-format introduced in `d21f338`
+
+2023-09-27  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #316 from JeremyWeed/patch-1 Support tramp buffers in command expansion
+
+2023-07-04  rocky <rocky@gnu.org>
+
+	* .github/ISSUE_TEMPLATE/bug-report.md: Start giving instructions of
+	bug reporting.
+
+2023-06-19  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #313 from yangyingchao/master (gdb) use variable to hold commands to be executed after command
+	buff‚Ä¶
+
+2022-08-18  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #308 from jaccarmac/fix-trepan3k-history Use the right variable for trepan3k minibuffer history.
+
+2022-07-13  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #304 from yilkalargaw/patch-1 Update README.md by changing a single quantifier
+
+2022-01-04  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #302 from skangas/gplv3 Upgrade to GPLv3 in git2cl
+
+2021-12-30  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #300 from skangas/gnu-elpa-badge Add GNU ELPA badge to README.md
+
+2021-11-07  rocky <rocky@gnu.org>
+
+	* : commit 06d54b833d7b263d9406c440e7b258a64a4a7322 Author: rocky
+	<rocky@gnu.org> Date:   Sun Nov 7 17:10:00 2021 -0500
+
+2021-05-22  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #295 from yberfrankc/master Include "comint-mode-map" bindings in "realgud-track-mode-map".
+
+2021-05-16  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #294 from realgud/revert-293-master Revert "Fix focus lose in source buffer after invoking debugger
+	command."
+
+2021-05-08  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #293 from yberfrankc/master Fix focus lose in source buffer after invoking debugger command.
+
+2021-04-20  rocky <rocky@gnu.org>
+
+	* realgud-recursive-autoloads.el: Remove "+".  Thanks ShuguangSun!
+
+2021-04-18  rocky <rocky@gnu.org>
+
+	* realgud/debugger/remake/track-mode.el, test/test-send.el,
+	test/test-srcbuf.el, test/test-track-mode.el: Remove redundant code
+	from a `define-minor-mode` Fixes realgud tarball build errors
+
+2021-04-17  rocky <rocky@gnu.org>
+
+	* : commit aeafefa1ba641e73e269210336ee0b3ab1762efb Author: rocky
+	<rocky@gnu.org> Date:   Sat Apr 17 10:19:54 2021 -0400
+
+2021-04-13  rocky <rocky@gnu.org>
+
+	* realgud-recursive-autoloads.el: Update recursive autoloads
+
+2021-04-11  rocky <rocky@gnu.org>
+
+	* realgud/common/track-mode.el: Autoload realgud-track-mode
+
+2020-12-21  rocky <rocky.bernstein@crunch.io>
+
+	* realgud/debugger/trepan2/core.el: trepan2-loc-fn-callback allow
+	for optional callback The "breakpoint" command was supplying a 7th parameter, the column.
+	Tolerate this.
+
+2020-09-23  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #288 from
+	yangyingchao/hotfix_failed_to_load_helper fix issue: failed to load file buffer/locals.
+
+2020-09-22  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #287 from
+	yangyingchao/hotfix_failed_to_load_helper fix issue: failed to load file realgud/common/helper.
+
+2020-09-19  rocky <rocky@gnu.org>
+
+	* realgud/common/buffer/locals.el, realgud/common/core.el,
+	realgud/common/locals-mode.el, realgud/common/window.el,
+	realgud/debugger/trepan2/init.el,
+	realgud/debugger/trepan3k/init.el, test/test-regexp-trepan2.el,
+	test/test-regexp-trepan3k.el: trepan2/3k re prompts & locals
+	require...  Expand trepan2 & trepan3k to handle thread prompts Workaround some
+	bug in buffer/locals with its requires
+
+2020-08-31  813gan <29867887+813gan@users.noreply.github.com>
+
+	* : Merge pull request #286 from 813gan/fix_locales_reload Add proper cleanup for locals. Fix broken logic from b5ee91c.
+
+2020-08-30  rocky <rocky@gnu.org>
+
+	* realgud/common/file.el, realgud/debugger/trepan2/init.el,
+	realgud/debugger/trepan3k/init.el: Avoid running y-n-prompt from
+	inside minubuffer...  It should be done inside the command buffer.  We were getting into a loop where we were constantly prompting for a
+	name but couldn't enter one because only "y" and "n" were allowed.  trepan{2,3k}: some support for new locals window
+
+2020-08-27  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #285 from
+	yangyingchao/feature/split-orientation Add option to control orientation when splitting window.
+
+2020-08-09  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #282 from 813gan/list-all-locals Final changes for initial version of loclas
+
+2020-07-31  813 <813gan@protonmail.com>
+
+	* realgud/common/buffer/locals.el, realgud/common/custom.el,
+	realgud/common/locals-mode.el: add ability to show all locals in one
+	command This commits introduces var realgud-immediately-show-all-locals,
+	realgud-locals-show-all-values and realgud-locals-hide-all-values
+
+2020-08-02  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #277 from 813gan/fix_gh275 Fix #275. Add srcbuf-mode to allow cleaning up shortcuts at quit.
+
+2020-08-01  813 <813gan@protonmail.com>
+
+	* realgud/common/buffer/source.el, realgud/common/core.el: Fix #275.
+	Add srcbuf-mode to allow cleaning up shortcuts at quit.
+
+2020-07-28  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #276 from 813gan/locals-window-v2.1 Locals window v2.1
+
+2020-07-27  rocky <rocky@gnu.org>
+
+	* test/test-trepan2.el: Remove circular-causing require
+
+2020-07-27  813 <813gan@protonmail.com>
+
+	* realgud/common/buffer/helper.el, realgud/common/buffer/locals.el: 
+	fix function declaration to calm down travis
+
+2020-07-27  813 <813gan@protonmail.com>
+
+	* realgud/common/buffer/locals.el, realgud/common/custom.el,
+	realgud/common/track.el: Introduce realgud-update-hook and add
+	locals auto-refresh
+
+2020-07-27  813 <813gan@protonmail.com>
+
+	* realgud/common/buffer/command.el,
+	realgud/common/buffer/locals.el, realgud/common/locals-mode.el: Add
+	comments
+
+2020-07-27  813 <813gan@protonmail.com>
+
+	* realgud/common/buffer/locals.el: allow displaying multi-line
+	values
+
+2020-07-26  813 <813gan@protonmail.com>
+
+	* realgud/common/window.el: add realgud:window-locals-undisturb-src since now locals window is immediately visible after creation, just
+	like other windows
+
+2020-07-26  813 <813gan@protonmail.com>
+
+	* realgud/common/buffer/locals.el: fix buffer type detection for
+	locals.
+
+2020-07-26  813 <813gan@protonmail.com>
+
+	* realgud.el, realgud/common/buffer/command.el,
+	realgud/common/buffer/helper.el, realgud/common/buffer/locals.el,
+	realgud/common/cmds.el, realgud/common/key.el,
+	realgud/common/locals-mode.el, realgud/common/window.el,
+	realgud/debugger/pdb/init.el: Add locals window
+
+2020-07-22  rocky <rocky@gnu.org>
+
+	* realgud.el: http:// -> https://
+
+2020-07-07  rocky <rocky@gnu.org>
+
+	* realgud/common/core.el: Add "Signals" menu in comint debugger
+	shells
+
+2020-06-09  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #272 from
+	Apteryks/fix-unbound-realgud-run-process debbugers: Fix duplicate require-relative-list for ../../common/run.
+
+2020-06-07  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #270 from
+	Apteryks/fix-unbound-realgud-run-process debuggers: Fix void realgud:run-process error in gdb and gub.
+
+2020-06-06  rocky <rocky@gnu.org>
+
+	* realgud/debugger/gdb/gdb.el: Add a missing require-relative in
+	gdb.el
+
+2020-06-06  rocky <rocky@gnu.org>
+
+	* realgud/debugger/gdb/gdb.el, realgud/debugger/gub/gub.el,
+	realgud/debugger/pdb/pdb.el, realgud/debugger/trepan2/trepan2.el,
+	realgud/debugger/trepan3k/trepan3k.el: Correct some declare-function
+	locations Thanks to Apteryks. See:
+	https://github.com/Apteryks/realgud/commit/bbc78b863bc80ce1be53cc5a5f9e222ae4e884a8
+
+2020-05-13  rocky <rocky@gnu.org>
+
+	* realgud/common/track.el: Fix bug when invalid debugger name ...  in realgud:track-set-debugger()
+
+2020-04-18  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #265 from
+	realgud/feature/comint-truncate-buffer Feature/comint truncate buffer
+
+2020-04-18  rocky <rocky@gnu.org>
+
+	* realgud/common/track-mode.el: 
+	realgud-track-{truncate,clear}-buffer ...  truncate truncates to the last n steps.  The default number of steps is set by
+	realgud-track-truncate-default.  Also, the top portion of a process
+	buffer, which has cwd and command doesn't get deleted.
+
+2020-04-17  rocky <rocky@gnu.org>
+
+	* realgud/common/track-mode.el: realgud-clear-bufferr &
+	realgud-truncate-buffer..  start...
+
+2020-04-17  R. Bernstein <rocky@users.noreply.github.com>
+
+	* .github/FUNDING.yml: Create FUNDING.yml
+
+2020-03-07  rocky <rocky@gnu.org>
+
+	* test/test-regexp-remake.el: Just another remake test
+
+2019-11-23  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #259 from JohnC32/master gdb: handle ANSI escape codes, relative paths, blacklist, and doc
+	fix
+
+2019-11-22  John Ciolfi <ciolfi@mathworks.com>
+
+	* INSTALL.md, configure.ac, realgud/common/file.el,
+	realgud/common/track.el, realgud/debugger/gdb/gdb.el: gdb: handle
+	ANSI escape codes, relative paths, blacklist, and doc fix 1. track.el: gdb will generate ANSI escape sequences (emacs 25,
+	   Debian 9, gdb 7.12) into the comint buffer which was causing the
+	   regex matches to fail resulting in no location tracking. Fix by
+	stripping the ANSI escape sequences when we extract the buffer text
+	from the comint buffer.  2. gdb.el: When setting a breakpoint to a function, gdb by default
+	     displays a relative path, e.g.  (gdb) b functionName       Breakpoint 1 at 0x7fff607e4dd6: file dir/file.cpp, line 273.     where dir/file.cpp is relative which occurs when you compile
+	   using a relative path, g++ -c dir/file.cpp    We want it to display       (gdb) b functionName       Breakpoint 1 at 0x7fff607e4dd6: file /abs/path/to/file.cpp,
+	   line 273.  which is achieved by setting "set filename-display
+	absolute" at gdb startup.  3. file.el: Improve the prompt on file blacklist to indicate why
+	   blacklisting is occurring, i.e. the file is not found. (Also fix
+	typo, black-list is spelled blacklist).  4. Minor doc fixes on how to use ./configure.
+
+2019-11-20  rocky <rocky@gnu.org>
+
+	* .travis.yml: Travis has changed - attempted fix #9
+
+2019-11-20  rocky <rocky@gnu.org>
+
+	* .travis.yml: Travis has changed - attempted fix #8
+
+2019-11-20  rocky <rocky@gnu.org>
+
+	* .travis.yml: Travis has changed - attempted fix #7
+
+2019-11-20  rocky <rocky@gnu.org>
+
+	* .travis.yml: Travis has changed - attempted fix #6
+
+2019-11-20  rocky <rocky@gnu.org>
+
+	* .travis.yml: Travis has changed - attempted fix #5
+
+2019-11-20  rocky <rocky@gnu.org>
+
+	* .travis.yml: Travis has changed - attempted fix #4
+
+2019-11-20  rocky <rocky@gnu.org>
+
+	* .travis.yml: Travis has changed - attempted fix #3
+
+2019-11-20  rocky <rocky@gnu.org>
+
+	* .travis.yml: Travis has changed - attempted fix #2
+
+2019-11-20  rocky <rocky@gnu.org>
+
+	* .travis.yml: Travis has changed - attempted fix #1
+
+2019-11-20  rocky <rocky@gnu.org>
+
+	* INSTALL.md, configure.ac, realgud/debugger/Makefile.am: Improve
+	instruction for building from source Thanks to JohnC32. Fixes #256
+
+2019-09-12  rocky <rocky@gnu.org>
+
+	* .travis.yml: One more emacs version to try
+
+2019-09-12  rocky <rocky@gnu.org>
+
+	* .travis.yml: One more emacs version to try
+
+2019-09-12  rocky <rocky@gnu.org>
+
+	* .travis.yml: Test using more emacs versions
+
+2019-09-12  rocky <rocky@gnu.org>
+
+	* README.md: Put back travis badge
+
+2019-09-12  rocky <rocky@gnu.org>
+
+	* test/Makefile.am: Try adding back more test for Travis
+
+2019-09-12  rocky <rocky@gnu.org>
+
+	* cask-install.el: 10th travis try
+
+2019-09-12  rocky <rocky@gnu.org>
+
+	* cask-install.el, test/Makefile.am: 9th travis try
+
+2019-09-12  rocky <rocky@gnu.org>
+
+	* test/Makefile.am: Travis 7th try
+
+2019-09-12  rocky <rocky@gnu.org>
+
+	* .travis.yml, test/Makefile.am: Travis 7th try
+
+2019-09-12  rocky <rocky@gnu.org>
+
+	* test/Makefile.am: Travis 6th try
+
+2019-09-12  rocky <rocky@gnu.org>
+
+	* run-travis-ci.sh: Travis 5th try
+
+2019-09-12  rocky <rocky@gnu.org>
+
+	* Cask, cask-install.el, test/Makefile.am: Travis 4th try
+
+2019-09-12  rocky <rocky@gnu.org>
+
+	* run-travis-ci.sh: Travis 3rd try
+
+2019-09-12  rocky <rocky@gnu.org>
+
+	* .travis.yml: Travis 2nd try
+
+2019-09-12  rocky <rocky@gnu.org>
+
+	* .travis.yml, realgud/common/file.el, run-travis-ci.sh, travis.sh: 
+	Try using cask
+
+2019-07-24  rocky <rocky@gnu.org>
+
+	* NEWS, realgud/common/buffer/source.el, realgud/common/file.el: Add
+	suffix file matching
+
+2019-07-24  rocky <rocky@gnu.org>
+
+	* NEWS.md, realgud/common/buffer/command.el,
+	realgud/common/buffer/source.el: More safety checks working with
+	buffers...  Add to srcbuf-list a source buffer as soon as it is init'd.  This
+	add attached source buffers.
+
 2019-07-15  rocky <rocky@gnu.org>
 
-	* configure.ac, realgud-recursive-autoloads.el, realgud.el,
-	realgud/debugger/kshdb/kshdb.el, realgud/debugger/pdb/pdb.el,
-	realgud/debugger/perldb/perldb.el: Get ready for release 1.5.1...  * recursive-autoloads: Remove autoloads from packages that no longer
+	* ChangeLog, NEWS, configure.ac, realgud-recursive-autoloads.el,
+	realgud.el, realgud/debugger/kshdb/kshdb.el,
+	realgud/debugger/pdb/pdb.el, realgud/debugger/perldb/perldb.el: Get
+	ready for release 1.5.1...  * recursive-autoloads: Remove autoloads from packages that no longer
 	  are included, e.g. ipdb, jdb, nodejs * Require 25.1 or greater pervasively; :version 24.3 -> 25.1
 	  wherever that appears * perldb.el: fix small cut-and-paste holdover * NEWS -> NEWS.md
 
@@ -1263,7 +1763,7 @@
 	* : commit bc1f4ba4944ff83f19cbf02ff0dd5414589a15ec Author: rocky
 	<rocky@gnu.org> Date:   Sun Jun 12 18:32:23 2016 -0400
 
-2016-06-12  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-06-12  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/debugger/ipdb/init.el, realgud/debugger/pdb/init.el: Relax
 	deleted breakpoint regexp in PDB to support Python 2 and 3 In Python 3, the deleted breakpoint message include a file path and
@@ -1306,11 +1806,11 @@
 	"breakpoint deleted" regexp test-regexp-zshdb.el: beef up and sync to corresponding bashdb test.
 	Makefile.am: make "make check-short" in this directory work
 
-2016-06-04  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-06-04  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* README.md: Update Travis links
 
-2016-06-04  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-06-04  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* INSTALL, README.md, realgud.el: A few more link updates (+ small
 	edits in Commentary)
@@ -1325,7 +1825,7 @@
 
 	* realgud.el: Update doc links
 
-2016-06-02  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-06-02  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/follow.el, realgud/common/fringe.el,
 	realgud/common/shortkey.el: Fix invalid references to
@@ -1333,7 +1833,7 @@
 	dcc152aa6aea8d201596750c1b69b63e57c4fd43, but a few references to
 	loc-follow had remained since then.  Also replace a few instances of (interactive "") with (interactive).  Fixes #91.
 
-2016-06-01  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-06-01  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* README.md, realgud/common/cmds.el, realgud/common/shortkey.el: Add
 	basic support for jumping
@@ -1342,13 +1842,13 @@
 
 	* : Merge pull request #119 from realgud/improve-break-C-u Further cleanups of cmds.el + improved C-u behaviour
 
-2016-06-01  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-06-01  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/cmds.el: Further cleanup in cmds.el: remove unused
 	arguments Affected commands: kill, next-no-arg, repeat-last, restart, and
 	shell.
 
-2016-06-01  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-06-01  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/send.el: Clarify %p in documentation of
 	expand-format Also ensure %s formats nil as an empty string (for consistency with
@@ -1358,34 +1858,34 @@
 
 	* : Merge pull request #114 from rocky/default-hash Further refactor cmds.el
 
-2016-05-31  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-31  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* : Ensure that the Github organization logo is a square
 
-2016-05-31  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-31  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/cmds.el: Further refactor cmds.el Instead of passing a default template in each individual call,
 	collect all default templates in a single hash.  Take that
 	opportunity to clean up the two 'cmd-*-no-args' implementations.
 
-2016-05-31  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-31  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/cmds.el: Remove unwanted argument in call to
 	cmd-run-command (this is a leftover from d2b8d132388d18c0ce865a21eafc666ecb7d2b03)
 
-2016-05-31  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-31  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* : Merge pull request #113 from rocky/logo New RealGUD logo
 
-2016-05-31  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-31  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* etc/screenshot.el: Update screenshot
 
-2016-05-31  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-31  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* README.md: Slightly shorten setup instructions in README
 
-2016-05-30  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-30  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/file.el: Fix file-column-to-string in the presence
 	of composed characters (- (current-column) (length source-text)) is not necessarily a valid
@@ -1419,7 +1919,7 @@
 
 	* : Merge pull request #110 from rocky/delete-multiple-breakpoints Allow realgud-track-bp-delete to recognize multiple breakpoints
 
-2016-05-30  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-30  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/track.el, realgud/debugger/gdb/init.el: Allow
 	realgud-track-bp-delete to recognize multiple breakpoints
@@ -1443,30 +1943,30 @@
 
 	* : Merge pull request #106 from rocky/75-ipdb-completion Improve IPDB completion
 
-2016-05-30  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-30  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/debugger/ipdb/core.el: Improve IPDB completion Fail gracefully if point isn't at prompt, and get prefix from
 	iPython instead of relying on bounds-of-thing-at-point.  Fixes #75.
 
-2016-05-30  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-30  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* README.md, etc/screenshot.el: Rewrite README Closes #72.  Screenshot is auto-generated using etc/screenshot.el.
 
-2016-05-30  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-30  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/fringe-utils.py: Add python3 shebang to
 	fringe-utils.py
 
-2016-05-30  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-30  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* Cask: Fill in missing bits of Cask file
 
-2016-05-30  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-30  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/buffer/source.el: Simplify the implementation of
 	realgud:cmdbuf-associate
 
-2016-05-29  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-29  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/buffer/source.el: Show default buffer when
 	automatically attaching
@@ -1480,7 +1980,7 @@
 
 	* realgud.el: Update commentary; e.g. link to debuggers handled
 
-2016-05-29  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-29  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/buffer/source.el, realgud/common/shortkey.el: 
 	Automatically attach to a command buffer when enabling
@@ -1490,12 +1990,12 @@
 	only if there is no available command buffer).  Additionally make shortkey-mode-setup more robust by restoring the
 	original local map properly disabling the toolbar after exiting.  Closes #36; thanks for the suggestion!
 
-2016-05-29  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-29  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/buffer/source.el, realgud/common/shortkey.el: Minor
 	docstring and code cleanups
 
-2016-05-29  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-29  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/helper.el: Use `buffer-live-p' instead of
 	`buffer-name' in `buffer-killed?'
@@ -1504,7 +2004,7 @@
 
 	* : Merge pull request #101 from rocky/bp-icon-in-fringe Refactor and improve breakpoint UI
 
-2016-05-29  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-29  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/cmds.el: Ignore safe-mode setting when clicking a
 	toolbar button
@@ -1513,12 +2013,12 @@
 
 	* : Merge pull request #98 from rocky/83-better-scope-keybindings Fix 83 and 88: refactor cmds.el
 
-2016-05-28  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-28  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/key.el: Add a few bindings to shortkey-mode This is in preparation for refactoring cmds.el.  All keys were
 	picked from calls to cmd-remap.
 
-2016-05-28  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-28  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/debugger/nodejs/init.el,
 	realgud/debugger/nodejs/track-mode.el,
@@ -1527,7 +2027,7 @@
 	realgud/debugger/zshdb/track-mode.el: Prepare for refactoring of
 	realgud-cmd * all: remove (declare-function cmd-remap) * perldb: Remove custom binding for backtrace * nodejs: Remove custom bindings for backtrace.  Remove rebinding of   ‚Äúbreak‚Äù and update hash instead.
 
-2016-05-28  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-28  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/cmds.el: Rename
 	realgud:prompt-if-{prefix-or-,}safe-mode The if-prefix part was an unfortunate choice.
@@ -1549,7 +2049,7 @@
 	* : Merge pull request #89 from
 	cpitclaudel/87-improve-delete-command Improve behavior of delete, enable, and disable
 
-2016-05-28  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-28  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/cmds.el: Add a "safe mode" setting (on by default) In safe mode, prompt and offer a tip on how to disable safe mode
 	before running "continue".
@@ -1558,7 +2058,7 @@
 
 	* : Merge pull request #90 from cpitclaudel/82-add-prefix-arg-to-c Add a prefix arg to "continue" command
 
-2016-05-28  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-28  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/cmds.el: Improve behavior of delete, enable, and
 	disable Interactively, these three commands now disable, enable, or delete a
@@ -1574,7 +2074,7 @@
 
 	* : Merge pull request #85 from cpitclaudel/84-pdb-fixes Improve command mappings in pdb-command-hash
 
-2016-05-27  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-27  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/debugger/pdb/init.el: Improve command mappings in
 	pdb-command-hash This fixes parts of issue #82.
@@ -1583,7 +2083,7 @@
 
 	* : Merge pull request #81 from rocky/ipdb-complete Ipdb complete
 
-2016-05-25  ClÈment Pit--Claudel <clement.pitclaudel@live.com>
+2016-05-25  Cl√©ment Pit--Claudel <clement.pitclaudel@live.com>
 
 	* realgud/common/core.el: Improve completion and default value in
 	realgud-query-cmdline
